@@ -1,4 +1,4 @@
-package kh.finalproject.hollosekki;
+package kh.finalproj.hollosekki;
 
 import java.text.DateFormat;
 import java.util.Date;

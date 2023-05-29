@@ -5,12 +5,12 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	
-	<typeAliases>
+<!-- 	<typeAliases> -->
 <!-- 		<typeAlias type="kh.finalproj.hollosekki.board.model.vo.Board" alias="Board"/> -->
-	</typeAliases>
+<!-- 	</typeAliases> -->
 	
 	<mappers>
-<!-- 		<mapper resource="mappers/board-mapper.xml"/> -->
+		<mapper resource="mappers/admin-mapper.xml"/>
 	</mappers>
 	
 </configuration>

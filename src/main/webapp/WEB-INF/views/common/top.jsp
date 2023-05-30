@@ -23,7 +23,7 @@
 		display: flex; justify-content: center;
 		}
 	.menu, .dropdown{
-		font-size: 16px; 
+		font-size: 20spx; 
 		width: 70px; 
 		color:black; 
 		text-decoration: none;

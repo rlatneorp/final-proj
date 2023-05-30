@@ -12,6 +12,7 @@
 		<h1>메인화면</h1>
 		<h3>임시화면</h3>
 		<a href="adminMain.ad"><span>adminMain</span></a>
+		<a href="myPage_Main.me"><span>myPageMain</span></a>
 	</div>
 </body>
 </html>

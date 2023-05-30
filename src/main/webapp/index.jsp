@@ -14,6 +14,7 @@
 		<a href="adminMain.ad"><span>adminMainhi</span></a>
 		<a href="myPage_Main.me"><span>myPageMain</span></a>
 		<a href="askBoard.cs"><span>askBoard</span></a>
+		<a href="home.do"><span>HOME</span></a>
 	</div>
 </body>
 </html>

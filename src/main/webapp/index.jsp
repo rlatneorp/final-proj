@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>INDEX</title>
+<title>index</title>
+
 </head>
 <body>
 	<div style="margin: 100px;">

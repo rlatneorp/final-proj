@@ -59,7 +59,7 @@
 	.barSpan{
 		font-weight:bold;
 		font-size:17px;
-		left:690px; position:relative
+		left:625px; position:relative
 	}
 	
 	.check {
@@ -104,6 +104,9 @@
 		color:#0055FF;
 	}
 	
+	.chBox {
+		width: 20px; height: 20px;
+	}
 </style>
 </head>
 <body>
@@ -123,7 +126,7 @@
 
 <!-- 장바구니 표 부분 -->
 <div class="carrier">
-	<span style="font-size:30px;"><b>장바구니</b></span>
+	<span style="font-size:30px;"><b>주문상세내역</b></span>
  	<span class="barSpan"><a class="aHover">01 장바구니 > </a><a class="aHover">02 ㅈㅁㅅㅈㅅ/ㄱㅈ</a> <a class="aHover"> > 03 ㅈㅁㅇㄹ</a> </span>
 </div>
 <br>
@@ -135,12 +138,12 @@
 	<table>
 	    <tbody>
 	        <tr style="border: 1px solid black; background-color:#B0DAFF;">
-	            <td class="tableBorder1" colspan="2" style="height:40px">상품/옵션정보</td>
-	            <td class="tableBorder1">수량</td>
-	            <td class="tableBorder1">상품가격</td>
-	            <td class="tableBorder1">적립/할인</td>
-	            <td class="tableBorder1">합계금액</td>
-	            <td style="border-bottom: 1px solid black">배송비</td>
+	            <th class="tableBorder1" colspan="2" style="height:40px"><b>상품/옵션정보</b></th>
+	            <th class="tableBorder1"><b>수량</b></th>
+	            <th class="tableBorder1"><b>상품가격</b></th>
+	            <th class="tableBorder1"><b>적립/할인</b></th>
+	            <th class="tableBorder1"><b>합계금액</b></th>
+	            <th style="border-bottom: 1px solid black">배송비</th>
 	        </tr>
 	        <tr style="border-top: 1px solid black;">
 	            <td class="imgTab"><img src="" style="border: 1px solid black; width: 200px; height: 200px;"></td>
@@ -166,16 +169,28 @@
 	        </tr>
         </tbody>
 	 </table>
-	 <br><br><div style="width:1200px; margin:0 auto; text-align:right"><button>전체 상품 주문</button>&nbsp;&nbsp;<button>전체 상품 주문</button></div>
-   
-   
+   <br>
+   	<table>
+   		<tr>
+   			<td style="width:250px; height:50px; border:1px solid black">배송지 확인</td>
+   			<td>
+   				<div style="text-align:left">
+   					<div><input type="checkbox" class="chBox" style="text-align:center; margin-left:20px; margin-right: 10px;">직접입력</div>
+   					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   					<div><input type="checkbox" class="chBox" style="text-align:center; margin-left:-20px; margin-right: 20px;">주문자 정보와 동일</div>
+   				</div>
+   			</td>
+   		</tr>
+   	
+   	
+   	</table>
    
 	   
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
-
+<%@include file="../common/footer.jsp" %>
 
 
 

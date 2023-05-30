@@ -17,7 +17,9 @@
 		<a href="askBoard.cs"><span>askBoard</span></a>
 		<a href="home.do"><span>HOME</span></a>
 		<a href="market_detail.ma"><span>market</span></a>
-		<a href="market.mk"><span>marketPage</span></a>
+		<a href="basket.ma"><span>basket</span></a>
+		<a href="payDetail.ma"><span>payDetail</span></a>
+		
 	</div>
 </body>
 </html>

@@ -21,3 +21,4 @@ public class RecipeController {
 	public String recipeDetailWriter() {
 		return "recipeDetailWriter";
 	}
+}

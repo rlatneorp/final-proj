@@ -1,1 +1,10 @@
 ﻿target
+*.springBeans
+*/.git/*
+*/target/*
+.classpath
+.deployables
+.git
+.project
+.settings
+.target/*

@@ -70,13 +70,6 @@ ul{
 	margin-bottom: 10px;
 }
 
-.productNo {
-	display: inline-block;
-	margin-right: 50px;
-	font-size: 20px;
-}
-
-
 
 #movebtn {
 	font-size: 25px;
@@ -87,7 +80,6 @@ ul{
 	display: inline-block;
 	border-radius: 10px;
 	font-size: 32px;
-	font-weight: 300;
 	width: 60px;
 	height: 45px;
 	text-align: center;
@@ -107,7 +99,7 @@ ul{
 	height: 120px;
 	padding-bottom: 5px;
 	display: none;
-	border: 1px solid #dfdfdf;
+	border: 1px solid #4485d7;
 }
 
 .right {
@@ -123,9 +115,6 @@ ul{
 	height: 100%;
 }
 
-h2 {
-	margin-right: 30px;
-}
 
 #originalPrice {
 	font-size: 25px;
@@ -175,9 +164,10 @@ b {
 	height: 40px;
 	margin-top: 10px;
 	border-radius: 5px;
-	background-color: black;
+	background-color: #4485d7;
 	color: white;
-	font-weight: 200;
+	font-weight: 400;
+	border-color: white;
 }
 
 #cartbtn {
@@ -186,8 +176,8 @@ b {
 	margin-top: 10px;
 	border-radius: 5px;
 	background-color: white;
-	border: 1px solid #dfdfdf;
-	color: dimgray;
+	border: 1px solid #4485d7;
+	color: #4485d7;
 	font-weight: 400;
 }
 
@@ -200,22 +190,10 @@ select {
 	text-align: center;
 	height: 40px;
 	width: 100%;
-	border: 1px solid #dfdfdf;
-	color: rgb;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
 }
 
-h4 {
-	font-weight: 200;
-}
-
-h3 {
-	font-weight: 200;
-}
-
-
-.productNO {
-	margin: 0px;
-}
 
 p b {
 	font-weight: 200;
@@ -420,43 +398,44 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
 			<img src="${contextPath}/resources/product_img/${p.productMainPic}.jpg">
 		</div>
-		<div>
-			<li></li>
-		</div>
 		<div class="right">
 			<!-- 상품 정보 -->
 			<div class="top">
-				<div class="brandNameBox">
-					<a href="${contextPath}" class="aStyle"> <h3>passion for Fashion</h3>
-					<span class="movebtn">&rang;&rang;</span></a> <br> <br>
-					<!-- 브랜드명 옆 > 모양 -->
+				<div class="productNameBox" style="text-align: center">
+					 <h3 style="font-weight: 400; font-size: 42px;">캠핑용 후라이팬</h3>
 				</div>
-				<div style="font-size: 20px; font-weight: 200;">상품명 :   </div>
-				<h2 class="productName" style="font-weight: 300; margin-bottom: 15px; font-size: 30px;">${p.productName}</h2>
-				<hr style="color: #dfdfdf;">
-				<div class="productNO">
-					<span class="productNo" style="margin-top: 5px; margin-bottom: 5px; font-size: 20px; font-weight: 200;">No. ${p.productNo}</span>
+				<div style="margin: auto; text-align: center;">
+				<br>
+					<h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
+						${ p.discountRate }20<span>%</span>
+						<!-- 할인율 -->
+					</h2>
+					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
+						450,000원
+					</h2>
+					&nbsp;&nbsp;
+					<h4 style="display: inline-block; font-size: 40px; color: #4485d7;">♥</h4>
+					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
+						540,000원
+					</h2>
 				</div>
-
-				<h2 id="discount" >
-					${ p.discountRate }<span>%</span>
-					<!-- 할인율 -->
-				</h2>
-				<div id="originalPrice"
-					style="font-size: 25px; display: inline-block; font-weight: 200; margin-right: 180px;">
-					 <fmt:formatNumber value="${p.productPrice}" pattern="#,###" /> </div>
-				<span id="totalPrice" style="float: rightl; font-weight: 200;">
-				<c:set var="totalPrice"  value="${ p.productPrice -(p.productPrice * p.discountRate*0.01)}" />
-				<fmt:formatNumber value="${totalPrice}" pattern="###,###" />
-				</span>
-				<!-- 상품가격 -->
-			</div>
 			<div>
-				배송정보
-				<p>
-					택배배송 | 무료
-				</p>
-				<h3 style="font-size: 20px;">사이즈</h3>
+					<div class="info_delivery_area">
+                        <dl class="info_delivery">
+                            <dt style="font-size: 20px; padding: 5px;">
+                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px; margin-bottom: 5px;">
+                            	&nbsp;배송
+                            </dt>
+                            <hr>
+                                </dl>
+                                <dl class="info_point">
+                            <dt style="font-size: 20px; padding: 5px;">
+                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px; margin-bottom: 5px;">
+                            	&nbsp;적립<p style="font-size: 15px; display: inline-block;">(구매가격의 0.5% 적립)</p>
+                            </dt>
+                                </dl>
+                                 <hr>
+                                 <br>
 				<form action="${contextPath}" method="get">
 					<select class='size' name='size' required>
 						<!-- 사이즈 선택 창 -->
@@ -475,7 +454,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							<input type="hidden" name="productName" value="${p.productName}">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
 						</h4>
-						<input type="hidden" name="productNo" value="${p.productNo}">
 						<div class="btnbox">
 							<button id="decrease" type="button">-</button>
 							<input type="number" class="buyCount"
@@ -495,15 +473,9 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<input type="hidden" name="productMainPic" value="${p.productMainPic}">
 						</strong> <br>
 					</div>
-						<button type="submit" id="buybtn" onclick="form.action='${contextPath}/buyProduct.pr'">구매하기</button>
-						<c:if test="${ loginUser.memberPwd != null }">
-							<button type="button" id="cartbtn" class="cartbtn"> 장바구니</button>
-						</c:if>
-<%-- 					<c:if test="${!empty loginUser}"> --%>
-<!-- 						<script type="text/javascript"> -->
-<!-- 		alert("로그인이 필요합니다."); -->
-<!-- 						</script> -->
-<%-- 					</c:if> --%>
+						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+							<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
+				</div>
 				</form>
 
 			</div>
@@ -594,7 +566,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		style="margin-left: 110px; margin-right: 110px; margin-top: 5px;">
 		<h3 style="display: inline-block; font-size: 25px; font-weight: 200;">review</h3>
 		 <span></span> 
-<%-- 		<span style="font-weight: 200; margin-left: 20px;"><a  onclick="location.href='${ contextPath }/createReview/${p.productNo}.pr'" style="cursor: pointer;"> Write &rang;&rang;</a></span> --%>
 		
 		<div style="font-size: 20px; font-weight: 200;">★★★★☆</div>
 		<div class="textbox">
@@ -618,7 +589,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					듭니다.</p>
 			</div>
 		</div>
-<%-- 		<span style="font-weight: 200;"><a  onclick="location.href='${ contextPath }/reviewBoard/${p.productNo}.pr'" style="cursor: pointer;"> more &rang;&rang;</a></span> --%>
 	</div>
 	<br>
 	

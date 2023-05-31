@@ -20,5 +20,7 @@
 		<a href="payDetail.ma"><span>payDetail</span></a>
 		<a href="paySuccess.ma"><span>paySuccess</span></a>
 	</div>
+<%@ include file="WEB-INF/views/home.jsp" %>
+	
 </body>
 </html>

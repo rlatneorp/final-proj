@@ -18,6 +18,7 @@ font-family: 'Noto Sans KR', sans-serif;
 </style>
 </head>
 <body>
+<%@ include file="../common/top.jsp" %>
 	<div class="container-xxl" align="center">
 		<h1>1:1 문의하기</h1>
 		<br>

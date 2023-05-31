@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>Customer Center AskBoard</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
@@ -14,8 +13,6 @@
 *{
 font-family: 'Noto Sans KR', sans-serif;
 }
-
-
 
 .csTitle{
 	text-align: center;
@@ -37,25 +34,50 @@ font-family: 'Noto Sans KR', sans-serif;
 }
 
 
-.nav-pills .active{
-	--bs-nav-pills-link-active-bg: #F9F9F9;
+.nav-pills{
+	background-color: white;
 	color: black;
-	--bs-nav-link-color: black;
 }
-
-.nav-link{ 
+.customer .nav-link{
 	color:black;
-	--bs-nav-pills-link-active-color: #146C94;
+	font-size: 20px; 
+}
+.customer .nav-pills .nav-link.active{ 
+	color:black;
 	width: 200px;
 	height: 50px;
-	text-align: left;
+	text-align: left; 
+	align: right;
+	font-size: 20px; 
+	background-color: #B0DAFF; 
+}
+.customer .btn-light{
+	width:200px;
+	height:50px;
+	text-align: left; 
 	align: right;
 	font-size: 20px;
 }
-
 .nav{
-	--bs-nav-link-hover-color: black;
+	color: black;
 	
+}
+
+.categoryBtn .btn-secondary{
+	margin-left: -10px;
+	width:170px;
+	height:50px;
+	background-color: #B0DAFF;
+	color:black;
+	border: 2px solid black;
+}
+.categoryBtn .btn-secondary:hover{
+	background-color: #B0DAFF;
+	color:black;
+}
+.categoryBtn .btn-secondary:focus{
+	background-color: #B0DAFF;
+	color:black;
 }
 .table{
 	width: 1050px;
@@ -89,9 +111,6 @@ font-family: 'Noto Sans KR', sans-serif;
 	font-size: 20px;
 	font-weight: 500;
 }
-.dropdown-menu{
-	--bs-dropdown-link-active-bg: #e9ecef;
-}
 
 #searchText{
 	width:400px;
@@ -105,33 +124,33 @@ font-family: 'Noto Sans KR', sans-serif;
 	font-size: 23px;
 	text-align: center;
 }
-.btn-outline-secondary{
-	--bs-btn-hover-bg: #B0DAFF;
-	--bs-btn-active-bg: #B0DAFF;
-	--bs-btn-active-color: black;
-	--bs-btn-hover-color: black;
+/* .btn-outline-secondary{ */
+/* 	--bs-btn-hover-bg: #B0DAFF; */
+/* 	--bs-btn-active-bg: #B0DAFF; */
+/* 	--bs-btn-active-color: black; */
+/* 	--bs-btn-hover-color: black; */
 
-}
-.btn{
---bs-btn-line-height:35px;
-    --bs-btn-font-size: 20px;
+/* } */
+/* .btn{ */
+/* --bs-btn-line-height:35px; */
+/*     --bs-btn-font-size: 20px; */
 
-}
-.btn-secondary{
-	--bs-btn-bg: #B0DAFF;
-	--bs-btn-hover-bg: #999a9a;
-	--bs-btn-color: black;
-	--bs-btn-font-size: 20px;
-	--bs-btn-font-weight: 500;
-	--bs-btn-active-bg: #B0DAFF;
-	--bs-btn-active-color: black;
+/* } */
+/* .btn-secondary{ */
+/* 	--bs-btn-bg: #B0DAFF; */
+/* 	--bs-btn-hover-bg: #999a9a; */
+/* 	--bs-btn-color: black; */
+/* 	--bs-btn-font-size: 20px; */
+/* 	--bs-btn-font-weight: 500; */
+/* 	--bs-btn-active-bg: #B0DAFF; */
+/* 	--bs-btn-active-color: black; */
 
-}
+/* } */
 
-.accordion-button:not(.collapsed){
-	color:black;
-	background-color: #B0DAFF;
-}
+/* .accordion-button:not(.collapsed){ */
+/* 	color:black; */
+/* 	background-color: #B0DAFF; */
+/* } */
 
 .question{
 	width:1020px;
@@ -150,16 +169,24 @@ font-family: 'Noto Sans KR', sans-serif;
 	height:130px;
 }
 
+.acCustomer .accordion-button:not(.collapsed){
+	color:black;
+	backgorund-color: #B0DAFF;
+}
 
+.pageCustomers .pageCoustomer .page-item .page-link{
+	color: black;
+}
 
 </style>
 </head>
 <body>
+<%@ include file="../common/top.jsp" %>
 	<div class="container-xxl" align="center">
 		<br><br><br>
 		<br>
 			<br>
-			<div class="d-flex align-items-start">
+			<div class="customer d-flex align-items-start">
 				<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 					<div class="csTitle">고객센터</div><br>
 				    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">공지사항<span class="material-symbols-outlined" style="margin-left: 60px; vertical-align: middle;">chevron_right</span></button><br>
@@ -208,13 +235,13 @@ font-family: 'Noto Sans KR', sans-serif;
 					    </tr>
 					</table>
 					<br><br>
-					<div> 
+					<div class="pageCustomers" > 
 						<nav aria-label="Page navigation example">
-							<ul class="pagination justify-content-center">
+							<ul class="pageCustomer pagination justify-content-center">
 							    <li class="page-item disabled">
 								    <a class="page-link">이전</a>
 								</li>
-							    <li class="page-item"><a class="page-link" href="#">1</a></li>
+							    <li class="page-item pageCustomer"><a class="page-link" href="#">1</a></li>
 							    <li class="page-item"><a class="page-link" href="#">2</a></li>
 							    <li class="page-item"><a class="page-link" href="#">3</a></li>
 							    <li class="page-item"><a class="page-link" href="#">4</a></li>
@@ -232,8 +259,8 @@ font-family: 'Noto Sans KR', sans-serif;
 					<br>
 					<hr style="width: 1050px;">
 					<br>
-					<div class="row justify-content-end" style="margin-right: 20px;">
-						<div class="col-2 dropdown-center">
+					<div class="categoryBtn row justify-content-end" style="margin-right: 20px;">
+						<div class="ddd col-2 dropdown-center">
 							<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							    카테고리 전체
 							</button>
@@ -248,7 +275,7 @@ font-family: 'Noto Sans KR', sans-serif;
 						<button id="serachBtn" type="button" class="col-1 btn btn-outline-secondary">검색</button>
 					</div>	
 					<br>
-					<div class="accordion" id="accordionFlush1">
+					<div class="accordion acCustomer" id="accordionFlush1">
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="flush-headingOne1">
 							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne1" aria-expanded="false" aria-controls="flush-collapseOne1">
@@ -311,9 +338,9 @@ font-family: 'Noto Sans KR', sans-serif;
 						</div>
 					</div>
 					<br><br><br>
-					<div> 
+					<div class="pageCustomers" > 
 						<nav aria-label="Page navigation example">
-							<ul class="pagination justify-content-center">
+							<ul class="pageCustomer pagination justify-content-center">
 							    <li class="page-item disabled">
 								    <a class="page-link">이전</a>
 								</li>
@@ -335,7 +362,7 @@ font-family: 'Noto Sans KR', sans-serif;
 					<br>
 					<hr style="width: 1050px;">
 					<br>
-					<div class="accordion" id="accordionFlushExample">
+					<div class="accordion acCustomer" id="accordionFlushExample">
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="flush-headingOne">
 							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -400,9 +427,9 @@ font-family: 'Noto Sans KR', sans-serif;
 					<div style="text-align: right;">
 						<button class="askBtn" onclick="location.href='personalQuestion.cs'">문의하기</button>
 					</div>
-					<div> 
+					<div class="pageCustomers"> 
 						<nav aria-label="Page navigation example">
-							<ul class="pagination justify-content-center">
+							<ul class="pageCustomer pagination justify-content-center">
 							    <li class="page-item disabled">
 								    <a class="page-link">이전</a>
 								</li>
@@ -424,6 +451,5 @@ font-family: 'Noto Sans KR', sans-serif;
 	
 			
 		
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	
 </body>
 </html>

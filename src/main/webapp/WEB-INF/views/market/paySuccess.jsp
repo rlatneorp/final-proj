@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
@@ -16,36 +17,16 @@
 		text-align:center;
 		padding:70px;
 	}
-
-	.button {
-	  display: block;
-	  position: relative;
-	  float: left;
-	  width: 120px;
-	  padding: 0;
-	  margin: 10px 20px 10px 0;
-	  font-weight: 600;
-	  text-align: center;
-	  line-height: 50px;
-	  color: #00AAFF;
-	  border-radius: 5px;
-	  transition: all 0.2s ;
-	   color: #333;
-	   font-size: 20px;
-  	background: #ececec;
+	
+	.btn.green {background: #B0DAFF; box-shadow: 0px 4px 0px #87a86f;}
+	.btn.green:active {box-shadow: 0 0 #311B92; background-color: #0067A3;}
+	.rounded {
+	  border-radius: 10px;
 	}
 	
-	.btnPush:hover {
-	  margin-top: 15px;
-	  margin-bottom: 5px;
-	}
-	
-	.btnLightBlue.btnPush {
-	  box-shadow: 0px 5px 0px 0px #1E8185;
-	}
-	
-		
 </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	
@@ -56,7 +37,7 @@
 		<h3>박보서 고객님,</h3>
 		<h3><span style="color:#2962FF"><b>결제</b></span>가 <span style="color:#2962FF"><b>완료</b></span>되었습니다.</h3>
 		<br><button class="Btn">메인으로</button>&nbsp;&nbsp;&nbsp;<button class="Btn">구매내역 확인</button>
-		<button class="button btnPush btnLightBlue">메인으로</button>
+		<a class="btn green rounded">Button</a>
 	</div>
 </div>
 
@@ -64,4 +45,9 @@
 	<%@include file="../common/footer.jsp" %>
 
 </body>
+<script>
+	$('a').click(function(event) {
+		event.preventDefault();
+	})
+</script>
 </html>

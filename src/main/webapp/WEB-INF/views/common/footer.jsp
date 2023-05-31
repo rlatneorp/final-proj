@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	#up{width: 64px; display: block; border-radius: 100%; margin: 0px auto;}
+	.right{display: inline-block; text-align: left;}		
 	.out{
 		background: #B0DAFF;
 		width: 1200px; height: 200px;
@@ -19,11 +21,12 @@
 		}
 	.out33{padding-top: 50px; padding-left: 20px; padding-right: 20px;}
 	.large{font-size: 20px; color: white; font-weight: bold;}
-	#up{width: 64px; display: block; border-radius: 100%; margin: 0px auto;}
-	.right{display: inline-block; text-align: left;}		
 </style>
 </head>
 <body>
+	<div class="right" id="upToTop" style="position: fixed; bottom: 150px; right: 15%;">
+ 		<img class="up" src="resources/images/uptotop.png" onmouseover="this.src='resources/images/uptotop2.png'" onmouseout="this.src='resources/images/uptotop.png'" id="up">
+  	</div>
 	<div class="out">	
 		<div class="out22">
 			<div class="out33">
@@ -46,14 +49,12 @@
 		<br>
 		<div style="color:white; text-align: center; font-weight: bold;">Copyright (C) 2023 HOLLO. All Rights Reserved</div>
 	</div>
-	<div class="right" id="upToTop" style="position: fixed; bottom: 150px; right: 15%;">
- 		<img class="up" src="resources/image/uptotop.png" onmouseover="this.src='resources/images/uptotop2.png'" onmouseout="this.src='resources/images/uptotop.png'" id="up">
-  	</div>
 <script>	
+window.onload=()=>{ 
 	var upToTop = () => {
 		let up = document.getElementById('up');
 			window.addEventListener('scroll', () => {
-				if (document.querySelector('html').scrollTop > 10) {
+				if (document.querySelector('html').scrollTop > 15) {
 				up.style.display = "block";
 		   		} else {
 		      	up.style.display = "none";
@@ -65,6 +66,7 @@
 			})
 		};
 		upToTop();
+}		
 </script>
 </body>
 </html>

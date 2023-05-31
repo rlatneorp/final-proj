@@ -20,4 +20,5 @@ public class AdminController {
 		return "adminMemberDetail";
 	}
 	
+	
 }

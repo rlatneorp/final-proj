@@ -128,22 +128,26 @@
 </div>
 <br>
 
-<div style="height:50px; margin:0 auto; width:1200px; background-color:#B0DAFF; border-bottom:2px solid gray; border-left:none; border-right:none; border-top:2px solid gray"></div><br><br>
+<div style="height: 50px; margin: 0 auto; width: 1200px; background-color: #B0DAFF; border-bottom: 2px solid gray; border-left: none; border-right: none; border-top: 2px solid gray; display: flex; align-items: center;">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="selectAllCheckBox" style="width: 20px; height: 20px; margin-right: 10px;">
+  <div>전체 선택</div>
+</div>
 
+<br><br>
 
 <!-- 장바구니 테이블 -->
 	<table>
 	    <tbody>
 	        <tr style="border: 1px solid black; background-color:#B0DAFF;">
-	            <td class="tableBorder1" colspan="2" style="height:40px">상품/옵션정보</td>
-	            <td class="tableBorder1">수량</td>
-	            <td class="tableBorder1">상품가격</td>
-	            <td class="tableBorder1">적립/할인</td>
-	            <td class="tableBorder1">합계금액</td>
-	            <td style="border-bottom: 1px solid black">배송비</td>
+	            <th class="tableBorder1" colspan="2" style="height:40px"><b>상품/옵션정보</b></th>
+	            <th class="tableBorder1"><b>수량</b></th>
+	            <th class="tableBorder1"><b>상품가격</b></th>
+	            <th class="tableBorder1"><b>적립/할인</b></th>
+	            <th class="tableBorder1"><b>합계금액</b></th>
+	            <th style="border-bottom: 1px solid black">배송비</th>
 	        </tr>
 	        <tr style="border-top: 1px solid black;">
-	            <td class="imgTab"><img src="" style="border: 1px solid black; width: 200px; height: 200px;"></td>
+	            <td class="imgTab"><input type="checkbox" style="width: 20px; height: 20px; margin-left:-45px; margin-right: 20px;"><img src="" style="border: 1px solid black; width: 200px; height: 200px;"></td>
 	            <td style="border-right:2px solid gray; text-align:left">접이식 밥상<br>옵션 : Brown</td>
 	            <td style="border-right:2px solid gray;"><span>1</span>개<br><br><br><button>옵션/수량변경</button></td>
 	            <td style="border-right:2px solid gray;"><span>46,500</span>원</td>
@@ -151,11 +155,10 @@
 	            <td style="border-right:2px solid gray;">46,500원</td>
 	            <td>무료배송</td>
 	        </tr>
-	        
 	    </tbody>
 	 </table><br><br>
 	 <div style="width:1200px; margin:0 auto; font-align:right"><i class="bi bi-caret-left-fill"></i><i class="bi bi-caret-left-fill"></i><i class="bi bi-caret-left-fill"><b>쇼핑 계속하기</b></i></div><br>
-	 <table >
+	 <table>
 	 	<tbody>
 		 	<tr style="height:130px; font-size:20px;">
 	            <td style="width:800px; text-align:right"><b>총 1개의 상품 금액<br><br><span style="color:#00AAFF">46,500</span>원</b></td>
@@ -168,24 +171,28 @@
 	 </table>
 	 <br><br><div style="width:1200px; margin:0 auto; text-align:right"><button>전체 상품 주문</button>&nbsp;&nbsp;<button>전체 상품 주문</button></div>
    
-   
-   
+  
 	   
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
-
-
-
-
-
+<%@include file="../common/footer.jsp" %>
 
 
 </body>
 
 <script>
 	
+	//전체 선택 체크 
+	const selAllChec = document.getElementById('selectAllCheckBox');
+	selAllChec.addEventListener('change', function() { //속성이 변할 때마다 이벤트 발생 
+		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		checkboxes.forEach(function(checkbox) { //모든 checkbox를 순회 
+		      checkbox.checked = selAllChec.checked; //selAllChec의 체크 속성을 대입 (항상 같이 움직이게)
+		    });
+		
+	})
 </script>
 
 

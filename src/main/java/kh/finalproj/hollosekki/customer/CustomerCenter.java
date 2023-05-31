@@ -11,4 +11,9 @@ public class CustomerCenter {
 		return "askBoard";
 		
 	}
+	
+	@RequestMapping("pesonalQuestion.cs")
+	public String pesonalQuestion() {
+		return "pesonalQuestion";
+	}
 }

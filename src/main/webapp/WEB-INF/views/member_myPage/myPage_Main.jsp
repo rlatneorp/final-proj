@@ -6,38 +6,13 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
-	#Div{
-		display: flex; justify-content: center;
-	}
-	.myPageDiv{
-		border: 1px solid black; width: 1200px;
-	}
-	.sideBar{
-		width: 200px; height: 700px; border-right: 1px solid gray;
-		display: inline-block; vertical-align: top;
-	}
-	.myPage{
-		border: 3px solid black; width: 170px; height: 50px;
-		margin: 0 auto; text-align: center; border-radius: 20px;
-		font-size: 28px; background: rgb(176, 218, 255);
-		box-shadow: 8px 0px 0px 0px black;
- 		margin-right: 15px; line-height : 50px;
-	}
-	#menu{
-		font-size: 20px; text-align: center;
-		vertical-align: center;
-	}
-	.arrow{
-		font-size: 30px; vertical-align: middle; 
-		margin-bottom: 7px;
-	}
 	.arrow1{
 		font-size: 30px; color: black;
   		margin-bottom: 10px;
 		vertical-align: middle;
 	}
 	.content{
-		border: 1px solid black; display: inline-block;
+		display: inline-block;
 		width: 990px; height: 700px; vertical-align: top;
 	}
 	.nameBar{
@@ -62,61 +37,29 @@
 	}
 	.profile{
 		font-size: 26px; font-weight: bold;
+		margin-left: 20px;
+	}
+	.sub{
+		margin-left: 25px;
+	}
+	.moveBtn{
+		width: 80px; height: 33px;
+		border: 2px solid black;
+		border-radius: 20px;
+		box-shadow: 0px 5px black;
 	}
 </style>
 </head>
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br>
+	<br><br><br><br><br><br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
-			<div class="sideBar">
-				<br>
-				<div class="myPage">
-					마이페이지
-				</div>
-				<br><br>
-				<div id="menu">
-					<a>나의 레시피 &nbsp;&nbsp;&nbsp;
-					<span class="material-symbols-outlined arrow">
-					chevron_right
-					</span></a>
-					<br><br>
-					<a>스크랩 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<span class="material-symbols-outlined arrow">
-					chevron_right
-					</span></a>
-					<br><br>
-					<a>좋아요 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<span class="material-symbols-outlined arrow">
-					chevron_right
-					</span></a>
-					<br><br>
-					<a>상품 구매내역
-					<span class="material-symbols-outlined arrow" style="margin-left: 10px;">
-					chevron_right
-					</span></a>
-					<br><br>
-					<a>배송지 관리 &nbsp;&nbsp;&nbsp;
-					<span class="material-symbols-outlined arrow">
-					chevron_right
-					</span></a>
-					<br><br>
-					<a>포인트 관리 &nbsp;&nbsp;&nbsp;
-					<span class="material-symbols-outlined arrow">
-					chevron_right
-					</span></a>
-					<br><br>
-					<a>회원 정보 수정
-					<span class="material-symbols-outlined arrow">
-					chevron_right
-					</span></a>
-				</div>
-			</div>
+			<%@ include file="../common/memberSideBar.jsp" %>
 			<div class="content">
-				<p style="font-size: 25px; margin-top: 25px; margin-left: 30px;">마이페이지</p>
+				<p id="pmyPage">마이페이지</p>
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
 				<br>
 				<div class="nameBar">
@@ -153,13 +96,19 @@
 					</div>
 				</div>
 				<br><br>
-				<label class="profile">프로필 관리하기</label><button>이동</button><br><br><br><br>
-				<label class="profile">프로필 관리하기</label><button>이동</button><br><br><br><br>
-				<label class="profile">프로필 관리하기</label><button>이동</button>
+				<label class="profile" style="margin-right: 600px;">프로필 관리하기</label><button class="moveBtn" onclick="location.href='myPage_Profile.me'">이동</button>
+				<p class="sub">나의 프로필을 수정합니다.</p><br><br>
+				<label class="profile" style="margin-right: 575px;">자기소개 관리하기</label><button class="moveBtn" onclick="location.href='myPage_Intro.me'">이동</button>
+				<p class="sub">나를 직접 소개하여 사람들에게 알려보세요.</p><br><br>
+				<label class="profile" style="margin-right: 605px;">팔로잉 / 팔로워</label><button class="moveBtn" onclick="location.href='myPage_Follow.me'">이동</button>
+				<p class="sub">팔로잉과 팔로워를 볼 수 있습니다.</p>
 			</div>
 		</div>
 	</div>
-	<br><br><br><br><br><br>
+	
+	<br><br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br>
+	
 	<%@ include file="../common/footer.jsp" %>
 </body>
 </html> 

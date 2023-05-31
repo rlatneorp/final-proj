@@ -50,7 +50,6 @@
 		<div style="color:white; text-align: center; font-weight: bold;">Copyright (C) 2023 HOLLO. All Rights Reserved</div>
 	</div>
 <script>	
-window.onload=()=>{ 
 	var upToTop = () => {
 		let up = document.getElementById('up');
 			window.addEventListener('scroll', () => {
@@ -66,7 +65,6 @@ window.onload=()=>{
 			})
 		};
 		upToTop();
-}		
 </script>
 </body>
 </html>

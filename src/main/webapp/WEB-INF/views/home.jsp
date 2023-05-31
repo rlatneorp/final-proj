@@ -140,6 +140,7 @@ font-family: 'Noto Sans KR', sans-serif;
 </style>
 <body>
 <%@ include file="common/top.jsp" %>
+<br><br>
 <div class="container-xxl" align="center">
 	<div id="carouselExampleInterval" class="carousel slide position-relative mainAd" data-bs-ride="carousel">
 	  <div class="carousel-inner">

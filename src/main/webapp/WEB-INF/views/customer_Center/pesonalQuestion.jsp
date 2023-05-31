@@ -14,27 +14,115 @@
 *{
 font-family: 'Noto Sans KR', sans-serif;
 }
+.Qtitle .dropdown-center{
+	margin-left: -40px;
+}
 
+.customerQ #floatingInput{
+	width: 900px;
+	height: 85px;
+}
+
+.customerQ #floatingText{
+	width: 900px;
+	height: 500px;
+}
+.customerQ .form-floating{
+	width: 900px;
+}
+.customerQ .dropdown-item:active{
+	background-color: #B0DAFF;
+	color:black;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.filebox label {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #999999;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 10px;
+}
+
+.filebox .upload-name {
+    display: inline-block;
+    height: 40px;
+    padding: 0 7px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 35%;
+    color: #999999;
+}
+
+#add{
+	width: 200px;
+	height: 50px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	margin: 10px;
+	font-size: 20px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 7px; 
+	margin-top: 30px;
+}
 </style>
 </head>
 <body>
 <%@ include file="../common/top.jsp" %>
+<br><br>
 	<div class="container-xxl" align="center">
-		<h1>1:1 문의하기</h1>
+		<h1 style="text-align: left; margin-left: 100px;">1:1 문의하기</h1>
 		<br>
 		<hr>
 		<br>
 		<div>
-			<h1>문의 작성</h1>
-			<div>
-				<input type="text"/>
-				<input type="file" value="사진첨부">
+			<h2>문의 작성</h2>
+			<br><br>
+			<div class="customerQ">
+				<div class="Qtitle row justify-content-evenly">
+					<div class="dropdown-center d-inline col-4">
+					    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					    문의종류
+					    </button>
+					    <ul class="dropdown-menu">
+					        <li><a class="dropdown-item" href="#">배송</a></li>
+					        <li><a class="dropdown-item" href="#">결제</a></li>
+					        <li><a class="dropdown-item" href="#">회원</a></li>
+					    </ul>
+					</div>
+					<div class="filebox d-inline col-4">
+					    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+					    <label for="file">사진첨부</label> 
+					    <input type="file" id="file">
+					</div>
+				</div>
+				<br><br>
+				<div class="form-floating mb-3">
+				  <input type="text" class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요.">
+				  <label for="floatingInput">제목</label>
+				</div>
+				<div class="form-floating">
+				  <input type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요.">
+				  <label for="floatingText">내용</label>
+				</div>
 				<br>
-				<input type="text"/>
 			</div>
 			<div>
-				<button>등록</button>
-				<button>작성</button>
+				<button id="add">작성완료</button>
+			
 			</div>
 		</div>
 	</div>

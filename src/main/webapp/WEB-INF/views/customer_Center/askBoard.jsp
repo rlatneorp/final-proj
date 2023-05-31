@@ -186,6 +186,7 @@ font-family: 'Noto Sans KR', sans-serif;
 </head>
 <body>
 <%@ include file="../common/top.jsp" %>
+<br><br>
 	<div class="container-xxl" align="center">
 		<br><br><br>
 		<br>

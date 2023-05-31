@@ -1,77 +1,110 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>adminMain</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<link href="../../../resources/css/sidebars.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<style>
+	tr{height: 34px;}
+	td{font-size: 14px;}
+	.dataBox{height: 400px;}
+</style>
 </head>
-
 <body>
+	<jsp:include page="../common/adminSidebar.jsp"/>
 	
-	<div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-		<a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-      <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-      <span class="fs-5 fw-semibold">Collapsible</span>
-      
-    </a>
-    <ul class="list-unstyled ps-0">
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-          Home
-        </button>
-        <div class="collapse show" id="home-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-          Dashboard
-        </button>
-        <div class="collapse" id="dashboard-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Weekly</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Monthly</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Annually</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-          Orders
-        </button>
-        <div class="collapse" id="orders-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="border-top my-3"></li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-          Account
-        </button>
-        <div class="collapse" id="account-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New...</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Profile</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Settings</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Sign out</a></li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-  </div>
+	<div class="d-inline-block align-top mt-5" style="width: 900px;">
+		<div class="row mt-5">
+			<div class="dataBox col-6 border-end border-bottom p-4">
+				<h4>매출</h4>
+				<table class="w-100 text-center mt-3">
+					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
+						<th>날짜</th>
+						<th>매출액</th>
+						<th>월 누적 매출액</th>
+					</tr>
+					
+					<c:forEach begin="1" end="7" varStatus="vs">
+						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
+							<td>2023-05-${20-vs.index}</td>
+							<td>30,302,000원</td>
+							<td>603,203,200원</td>
+						</tr>
+					</c:forEach>
+				</table>
+				<a href="${contextPath}/adminSalesManage.ad">
+					<h6 class="text-end mt-2">더보기</h6>
+				</a>
+			</div>
+			
+			<div class="dataBox col-6 border-bottom p-4">
+				<h4>레시피 등록수</h4>
+				<table class="w-100 text-center mt-3">
+					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
+						<th>날짜</th>
+						<th>신규 등록</th>
+						<th>누적 등록</th>
+					</tr>
+					
+					<c:forEach begin="1" end="7" varStatus="vs">
+						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
+							<td>2023-05-${20-vs.index}</td>
+							<td>${11-vs.index}명</td>
+							<td>000명</td>
+						</tr>
+					</c:forEach>
+				</table>
+				<a href="${contextPath}/adminRecipeManage.ad">
+					<h6 class="text-end mt-2">더보기</h6>
+				</a>
+			</div>
+			
+			<div class="dataBox col-6 border-end p-4">
+				<h4>회원 수</h4>
+				<table class="w-100 text-center mt-3">
+					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
+						<th>날짜</th>
+						<th>신규 가입</th>
+						<th>누적 가입</th>
+					</tr>
+					
+					<c:forEach begin="1" end="7" varStatus="vs">
+						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
+							<td>2023-05-${20-vs.index}</td>
+							<td>${51-vs.index}명</td>
+							<td>000명</td>
+						</tr>
+					</c:forEach>
+				</table>
+				<a href="${contextPath}/adminMemberManage.ad">
+					<h6 class="text-end mt-2">더보기</h6>
+				</a>
+			</div>
+			
+			<div class="dataBox col-6 p-4">
+				<h4>구독회원 수</h4>
+				<table class="w-100 text-center mt-3">
+					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
+						<th>날짜</th>
+						<th>신규 가입</th>
+						<th>누적 가입</th>
+					</tr>
+					
+					<c:forEach begin="1" end="7" varStatus="vs">
+						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
+							<td>2023-05-${20-vs.index}</td>
+							<td>${11-vs.index}명</td>
+							<td>000명</td>
+						</tr>
+					</c:forEach>
+				</table>
+				<a href="${contextPath}/adminMenuManage.ad">
+					<h6 class="text-end mt-2">더보기</h6>
+				</a>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

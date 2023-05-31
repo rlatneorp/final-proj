@@ -14,6 +14,7 @@
 		<a href="adminMain.ad"><span>adminMainhi</span></a>
 		<a href="myPage_Main.me"><span>myPageMain</span></a>
 		<a href="askBoard.cs"><span>askBoard</span></a>
+		<a href="pesonalQuestion.cs"><span>1:1문의</span></a>
 		<a href="home.do"><span>HOME</span></a>
 		<a href="market_detail.ma"><span>market</span></a>
 		<a href="basket.ma"><span>basket</span></a>

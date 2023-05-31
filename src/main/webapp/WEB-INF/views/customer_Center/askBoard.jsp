@@ -13,6 +13,9 @@
 *{
 font-family: 'Noto Sans KR', sans-serif;
 }
+.customer .page-link{
+	color: black;
+}
 
 .csTitle{
 	text-align: center;
@@ -34,11 +37,11 @@ font-family: 'Noto Sans KR', sans-serif;
 }
 
 
-.nav-pills{
-	background-color: white;
-	color: black;
-}
-.customer .nav-link{
+/* .nav-pills{ */
+/* 	background-color: white; */
+/* 	color: black; */
+/* } */
+.customer .nav-pills .nav-link{
 	color:black;
 	font-size: 20px; 
 }
@@ -49,7 +52,7 @@ font-family: 'Noto Sans KR', sans-serif;
 	text-align: left; 
 	align: right;
 	font-size: 20px; 
-	background-color: #B0DAFF; 
+	background-color: rgb(248, 249, 250); 
 }
 .customer .btn-light{
 	width:200px;
@@ -78,10 +81,6 @@ font-family: 'Noto Sans KR', sans-serif;
 .categoryBtn .btn-secondary:focus{
 	background-color: #B0DAFF;
 	color:black;
-}
-.table{
-	width: 1050px;
-	height: auto;
 }
 
 .askBtn{
@@ -174,10 +173,15 @@ font-family: 'Noto Sans KR', sans-serif;
 	backgorund-color: #B0DAFF;
 }
 
-.pageCustomers .pageCoustomer .page-item .page-link{
-	color: black;
+.customer .table{
+	width: 1050px;
+	height: auto;
 }
 
+.customer .dropdown-item:active{
+	background-color: #B0DAFF;
+	color:black;
+}
 </style>
 </head>
 <body>
@@ -193,7 +197,7 @@ font-family: 'Noto Sans KR', sans-serif;
 				    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">자주 묻는 질문<span class="material-symbols-outlined" style="margin-left: 12px; vertical-align: middle;">chevron_right</span></button><br>
 				    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">1:1 문의<span class="material-symbols-outlined" style="margin-left: 62px; vertical-align: middle;">chevron_right</span></button><br>
 			   		<br><br>
-			   		<button class="btn btn-light" id="11Btn"  onclick="location.href='personalQuestion.cs'">바로 1:1 문의하기</button>			   
+			   		<button class="btn btn-light" id="11Btn"  onclick="location.href='${contextPath}/personalQuestion.cs'">바로 1:1 문의하기</button>			   
 			    </div>
 			    <div class="tab-content" id="v-pills-tabContent">
 				    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
@@ -425,7 +429,7 @@ font-family: 'Noto Sans KR', sans-serif;
 						</div>
 					</div>
 					<div style="text-align: right;">
-						<button class="askBtn" onclick="location.href='personalQuestion.cs'">문의하기</button>
+						<button class="askBtn" onclick="location.href='${contextPath}/personalQuestion.cs'">문의하기</button>
 					</div>
 					<div class="pageCustomers"> 
 						<nav aria-label="Page navigation example">
@@ -448,7 +452,8 @@ font-family: 'Noto Sans KR', sans-serif;
 		    </div>
 		</div> 
 	</div>
-	
+	<br><br><br><br><br>
+<%@ include file="../common/footer.jsp" %>	
 			
 		
 </body>

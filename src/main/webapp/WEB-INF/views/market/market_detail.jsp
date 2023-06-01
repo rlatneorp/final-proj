@@ -21,15 +21,6 @@ html{
 	scroll-behavior: smooth;
 }
 
- li img{
-  	width: 200px;
-  	height: 230px;
- }
- 
- li p {
- 	font-weight: 200;
- }
-
  .aStyle {
  	color: black;
  	text-decoration: none;
@@ -126,7 +117,7 @@ ul {
     line-height: 1.42857143;
     color: #333;
     box-sizing: border-box;
-    margin: 0;
+    margin: auto;
     margin-top: 0;
     margin-bottom: 0;
     list-style: none;
@@ -157,37 +148,7 @@ ul li{
 }
 
 ul li:hover {
-    color: #4485d7;
-    border-bottom: 2px solid #4485d7;
-    font-weight: 600;
-}
-/* ul li:hover{ */
-/* 	border-bottom-width: 1px; */
-/* 	border-bottom: 1px solid #4485d7; */
-/* } */
-
-
-.btnbox>button:nth-child(-n+3) {
-	display: inline-block;
-	width: 30px;
-	height: 100%;
-	font-size: 18px;
-	background: white;
-	border-style: none;
-	font-weight: 200;
-	margin: 0px;
-	border: 1px solid #dfdfdf;
-	padding: 0px;
-	box-shadow: 2px 2px 2px #666;
-}
-
-.btnbox>button:nth-child(-n+3):active {
-	box-shadow: 2px 2px 2px white;
-}
-
-.btnbox>button:nth-child(-n+3):hover {
-	border-color: 2px sold #dfdfdf;
-	color: black;
+	border-bottom: 1px solid #4485d7;
 }
 
 .btnbox {
@@ -243,42 +204,6 @@ p b {
 	font-size: 20px;
 }
 
-.reviewbox {
-	width: 1100px;
-	margin: auto;
-	height: 50px;
-	background-color: white;
-	height: 50px;
-	margin-top: 30px;
-}
-
-.reviewbox>h3:hover {
-	color: black;
-}
-
-.reviewbox>h3 {
-	text-align: center;
-	background-color: white;
-	width: 270px;
-	display: inline-block;
-	margin: 0px;
-	height: 100%;
-	line-height: 50px;
-	border: 1px solid #dfdfdf;
-	color: black;
-}
-
-.reviewbox>h3:after {
-	display: block;
-	content: '';
-	border-bottom: solid 3px dimgray;
-	transform: scaleX(0);
-	transition: transform 250ms ease-in-out;
-}
-
-.reviewbox>h3:hover:after {
-	transform: scaleX(1);
-}
 
 .Infobox {
 	text-align: center;
@@ -287,18 +212,9 @@ p b {
 }
 
 .imgbox>img {
-	width: 700px;;
-	height: 850px;
 	margin: auto;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	display: block;
-}
-
-.imgbox>img:nth-child(2) {
-	width: 700px;
-	height: 850px;
-	margin: auto;
+	width: auto;
+	height: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	display: block;
@@ -324,31 +240,6 @@ p b {
 	width: 80%;
 }
 
-.productInfo:first-child {
-	width: 60%;
-	border: 1px solid #dfdfdf;
-	border-top: 3px solid black;
-	border-collapse: collapse;
-}
-
-.productInfo:first-child td {
-	border: 1px solid #dfdfdf;
-	height: 45px;
-	font-weight: 200;
-}
-
-.productInfo tr td b {
-	float: left;
-	font-size: 12px;
-	font-weight: 200;
-	margin-left: 10px;
-}
-
-.productInfo tr td+td {
-	margin-left: 10px;
-	text-align: left;
-}
-
 .removeProudct {
 	font-weight: bold;
 	font-size: 20px;
@@ -360,11 +251,6 @@ p b {
 	display: inline-block;
 }
 
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
-	{
-	-webkit-appearance: none;
-	margin: 0;
-}
 
 .buyCount {
 	padding: 0px;
@@ -422,10 +308,49 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	trasition: 0.75s;
 }
 
-.recommProduct img:hover{
-	transform: scale(1.1);
-	trasition: 0.75s;
+.DetailMoreBtn{
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    background: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 30px 0 15px;
 }
+
+.review_btn{
+	float:right;
+	vertical-align: top;
+	padding-right: 10px;
+}
+
+.review_btn a {
+    font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
+    color: #333;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid #2b2f3a;
+    line-height: 1;
+    padding: 10px 40px 12px;
+    text-align: center;
+    margin-top: -6px;
+}
+
+.review_btn img{
+	width:18px;
+	vertical-align: bottom;
+	margin-right: 4px;
+}
+
+
 
 </style>
 <body>
@@ -434,7 +359,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<img src="${contextPath}/resources/product_img/${p.productMainPic}.jpg">
+			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg">
 		</div>
 		<div class="right">
 			<!-- 상품 정보 -->
@@ -532,76 +457,52 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	<div class="Infobox">
 		<!-- 제품 사진 및 소개 칸 -->
 		<div class="imgbox">
-			<img src="${contextPath}/resources/product_img/${p.productDetailPic1}.jpg"> <img src="${contextPath}/resources/product_img/${p.productDetailPic2}.jpg"> <img
-				src="${contextPath}/resources/product_img/${p.productDetailPic3}.jpg">
+			<img src="https://recipe1.ezmember.co.kr/cache/shop/2023/04/24/5ba96dd7aef9a27712340b1795b190d3_m.jpg"> 
 		</div>
-		<br>
-		<div class="productInfo">
-			<!-- 제품소재 를 담은 박스 -->
-			<table class="productInfo">
-				<!-- 제품소재 및 정보 테이블 -->
-				<tr>
-					<td><b>제품 소재</b></td>
-					<td>&nbsp;&nbsp;Rayon 70% Nylon 30%</td>
-				</tr>
-
-				<tr>
-					<td><b>색상</b></td>
-					<td>&nbsp;&nbsp;제품명 참조</td>
-				</tr>
-
-				<tr>
-					<td><b>제조사</b></td>
-					<td>&nbsp;&nbsp;passion for Fashion</td>
-				</tr>
-
-				<tr>
-					<td><b>제조국</b></td>
-					<td>&nbsp;&nbsp;korea</td>
-				</tr>
-
-				<tr>
-					<td><b>세탁 방법 및 취급 시 주의사항</b></td>
-					<td>&nbsp;&nbsp;라벨 및 고객센터 참조</td>
-				</tr>
-
-				<tr>
-					<td><b>제조년원</b></td>
-					<td>&nbsp;&nbsp;2023/04</td>
-				</tr>
-
-				<tr>
-					<td><b>품질보증 기준</b></td>
-					<td>&nbsp;&nbsp;관련 법 및 소비자 분쟁 해결기준에 따름</td>
-				</tr>
-
-				<tr>
-					<td><b>A/S 책임자</b></td>
-					<td>&nbsp;passion for Fashion 고객센터</td>
-				</tr>
-			</table>
-			<br>
-		</div>
-	</div>
-	<hr style="color: #dfdfdf; width: 90%; margin: auto;">
-	<div class="reviewWrap"
-		style="margin-left: 110px; margin-right: 110px; margin-top: 5px;">
-		<h3 style="display: inline-block; font-size: 25px; font-weight: 200;">review</h3>
-		 <span></span> 
 		
-		<div style="font-size: 20px; font-weight: 200;">★★★★☆</div>
+<!-- 		<div class="DetailMoreBtn"> -->
+<!-- 			<a>상세정보 더보기</a> -->
+<!-- 		</div> -->
+	</div>
+		<br>
+	
+	
+	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
+	
+		<div class="reviewWrap1" style="padding: 10px;">
+				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">1</span>
+
+			<div class="review_btn">
+				<a href="javascript:gd_open_write_popup('goodsreview', '1000030759')">
+				<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
+			</div>
+			
+			<div class="photoList">
+				<ul style="padding: 10px;">
+					<li ><img src="img" alt=""style="width: 142px; height: 142px; display: inline-block; float: left; margin-right: 5px;" /></li>
+					<li><img src="img" alt=""style="width: 142px; height: 142px; display: inline-block; float: left; margin-right: 5px;" /></li>
+					<li ><img src="img"" alt=""style="width: 142px; height: 142px; display: inline-block; float: left; margin-right: 5px;" /></li>
+				</ul>
+			</div>
+			
+		</div>
+		
 		<div class="textbox">
-			<div>
-				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; display: inline-block; font-weight: 200;">user***</div>
-				<span style="float: right; font-size: 20px; font-weight: 200;">2023-05-05</span>
+			<div style="padding: 10px;">
+				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
+				
+				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
+				&nbsp;
+				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
 			</div>
 			<img src="${contextPath}/resources/product_img/review.jpg" alt=""
-				style="width: 170px; height: 190px; display: inline-block; float: left; margin-bottom: 15px" />
+				style="width: 100px; height: 100px; display: inline-block; float: left; margin-bottom: 15px; margin-right: 5px;" />
+			<img src="${contextPath}/resources/product_img/review.jpg" alt=""
+				style="width: 100px; height: 100px; display: inline-block; float: left; margin-bottom: 15px; margin-right: 5px;" />
+			<img src="${contextPath}/resources/product_img/review.jpg" alt=""
+				style="width: 100px; height: 100px; display: inline-block; float: left; margin-bottom: 15px; margin-right: 5px;" />
 
 			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
-				<span class="reviewComment" style="font-weight: 200;">사이즈 좋아요</span> 
-				<span class="reviewComment" style="font-weight: 200;">착용감 굿</span> 
-				<span class="reviewComment" style="font-weight: 200;">실물이랑 같아요</span>
 
 				<p style="margin-left: 5px; margin-top: 10px; font-weight: 200;">지난해 색상 별로 3가지 다
 					구매해서 정말 활용도 있게 착용한 제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다. 지난해 색상 별로 3가지
@@ -613,100 +514,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		</div>
 	</div>
 	<br>
-	
-		<div class="commProduct" style="width:100%; height:500px;margin-top: 100px; text-align: center;">
-				<h3 style="margin-bottom: 50px; display:inline-block; font-weight: 200;">commend item</h3>
-				<ul>
-					<li>
-						<a href="${contextPath}/productDetail/detail/124.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/Half Zipup SweatShirt NavY.jpg">
-							<p>Half Zipup Sweat Shirt_ Navy</p>
-							<p>120,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/125.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/cloths2.jpg">
-							<p>One Pocket Stand Collar Shirt_ Black</p>
-							<p>148,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/126.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/cloths3.jpg">
-							<p>Boucle Cable-knit Zip-up_ Down Pink</p>
-							<p>145,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/127.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/cloths5.jpg">
-							<p>One Tuck Curve Denim Pants_ Indigo Blue</p>
-							<p>100,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/128.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/1281.jpg">
-							<p>One Tuck Curve Denim Pants_ Light Blue</p>
-							<p>150,000</p>
-						</a>
-					</li>
-				</ul>
-		
-		</div>	
-		
-		<div class="recommProduct" style="width:100%; height:500px; margin-top: 15px; margin: auto; text-align: center;">
-				<h3 style="margin-bottom: 50px; margin-top: 10px; font-weight: 200;">with item</h3>
-				<ul>
-					<li>
-						<a href="${contextPath}/productDetail/detail/129.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/cloths6.jpg">
-							<p>Fatigue Parachute Pants_ Light Grey</p>
-							<p>145,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/130.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/shirts7.jpg">
-							<p>Dewdrop Boucle Knit Cardigan_ Brown</p>
-							<p>135,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/131.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/shirts5.jpg">
-							<p>Stripe Shirt_ Indigo</p>
-							<p>125,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/132.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/pants2.jpg">
-							<p>Heavy Sweat Pants_ Navy</p>
-							<p>110,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/133.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/pants1.jpg">
-							<p>Wide Denim Pants_ Indigo</p>
-							<p>155,000</p>
-						</a>
-					</li>
-				</ul>
-		
-		</div>	
-		
-		<hr style="color: #dfdfdf; width: 2%; margin: auto; margin-bottom: 100px;">
 		
 		<div class="refundWrap" style="text-align: center;">
 		<h3>배송 및 교환/환불 정보</h3>
@@ -715,7 +522,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			<img alt="" src="${contextPath}/resources/image/refund.jpg">
 		</div>
 		
-<%-- 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/> --%>
+
 	<script>
 	
 	const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명

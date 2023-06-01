@@ -12,8 +12,8 @@ public class CustomerCenter {
 		
 	}
 	
-	@RequestMapping("pesonalQuestion.cs")
-	public String pesonalQuestion() {
-		return "pesonalQuestion";
+	@RequestMapping("personalQuestion.cs")
+	public String personalQuestion() {
+		return "personalQuestion";
 	}
 }

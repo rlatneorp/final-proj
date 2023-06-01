@@ -96,7 +96,7 @@
 			</div>
 			
 			<div id="userInfo">
-				<img src="resources/image/mudo.png" style="width: 100px; height: 100px;">
+				<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%">
 				<p>닉네임</p>
 				<p>*****</p>
 				<p>레시피에 대한 설명입니다. 이 요리는 어떠어떠한 요리입니다.</p>

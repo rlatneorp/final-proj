@@ -92,7 +92,7 @@
 			</div>
 			<br>
 			<div id="userInfo">
-				<img src="resources/image/mudo.png" style="width: 100px; height: 100px;">
+				<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%">
 				<p style="font-weight: bold;">닉네임</p>
 				<p>*****(별점)</p>
 				<p>식단에 대한 설명입니다. 이 식단는 어떠어떠한 요리가 있고 어떤 부분에서 좋습니다.</p>

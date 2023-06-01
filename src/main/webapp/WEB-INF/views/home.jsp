@@ -17,6 +17,14 @@
 font-family: 'Noto Sans KR', sans-serif;
 }
 
+.carousel-control-next{
+	opacity: 1.0;
+}
+
+.carousel-control-next:hover{
+	opacity: 1.0;
+}
+
 .mainAd{
 	border: 2px solid black;
 	box-shadow: 0px 15px black;
@@ -128,15 +136,11 @@ font-family: 'Noto Sans KR', sans-serif;
 	width: 1120px;
 }
 
-.carousel-control-next{
-	opacity: 1.0;
-}
 
-.carousel-control-next:hover{
-	opacity: 0.5;
-}
 </style>
 <body>
+<%@ include file="common/top.jsp" %>
+<br><br>
 <div class="container-xxl" align="center">
 	<div id="carouselExampleInterval" class="carousel slide position-relative mainAd" data-bs-ride="carousel">
 	  <div class="carousel-inner">
@@ -549,7 +553,7 @@ font-family: 'Noto Sans KR', sans-serif;
 				</div>	
 			</div>		
 		</div>
-		<button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next" style="width: 0%">
+		<button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next" style="width: 0% ">
 			<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 80px; margin-bottom: 40px; z-index: 9999;">
  				<img src="resources/images/rightBtn.png">
 			</div>
@@ -901,7 +905,8 @@ font-family: 'Noto Sans KR', sans-serif;
 
 
 </div>
-
+<br><br><br><br><br>
+<%@ include file="common/footer.jsp" %>
 
 
 

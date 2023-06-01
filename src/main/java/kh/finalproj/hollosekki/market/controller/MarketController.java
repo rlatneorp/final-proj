@@ -25,6 +25,12 @@ public class MarketController {
 		return "market_detail";
 	}
 	
+	@RequestMapping("paySuccess.ma")
+	public String paySuccess() {
+		
+		return "paySuccess";
+	}
+	
 
 	
 	

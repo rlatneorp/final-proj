@@ -21,17 +21,6 @@ html{
 	scroll-behavior: smooth;
 }
 
-ul{
-	text-align: center;
-}
-
- li{
- 	display: inline-block;
- 	list-style: none;
- 	margin:auto;
- 	margin-right: 10px;
- }
- 
  li img{
   	width: 200px;
   	height: 230px;
@@ -128,6 +117,55 @@ ul{
 b {
 	font-size: 20px;
 }
+
+ul {
+	width:1200px;
+	-webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: #4485d7;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
+    border-bottom: 1px solid #ebebeb;
+    border-top: 2px solid #4485d7;
+    display: table;
+    padding: 0 2px;
+    background: #fff;
+    overflow: hidden;
+	height: 66px;
+}
+
+ul li{
+	 -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: #4485d7;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: table-cell;
+    width: 1%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+}
+
+ul li:hover {
+    color: #4485d7;
+    border-bottom: 2px solid #4485d7;
+    font-weight: 600;
+}
+/* ul li:hover{ */
+/* 	border-bottom-width: 1px; */
+/* 	border-bottom: 1px solid #4485d7; */
+/* } */
+
 
 .btnbox>button:nth-child(-n+3) {
 	display: inline-block;
@@ -482,28 +520,12 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		</div>
 	</main>
 	<div class="reviewbox">
-		<!-- 상세정보 리뷰 연관 상품 반품 navbar -->
-		<h3>
-			<a href="javascript:window.scrollTo( 0, 2800 );" class="aStyle" style="font-size: 20px; vertical-align: bottom;"> 
-				상세 정보
-			</a>
-		
-		</h3>
-		<h3>
-			<a href="javascript:window.scrollTo( 0, 3500 );" class="aStyle" style="font-size: 20px; vertical-align: bottom;"> 
-				리뷰
-			</a>
-		</h3>
-		<h3>
-			<a href="javascript:window.scrollTo( 0, 4250 );" class="aStyle" style="font-size: 20px; vertical-align: bottom;">
-				연관 상품
-			</a>
-		</h3>
-		<h3>
-			<a href="javascript:window.scrollTo( 0, 5500 );" class="aStyle" style="font-size: 20px; vertical-align: bottom;">
-			반품 및 교환
-			</a>
-		</h3>
+		<ul>
+			<li>상세정보</li>
+			<li>후기</li>
+			<li>배송환불</li>
+			<li>문의</li>
+		</ul>
 	</div>
 	<br>
 

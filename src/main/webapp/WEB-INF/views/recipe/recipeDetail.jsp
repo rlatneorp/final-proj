@@ -16,6 +16,9 @@
 	#title{border-bottom: 1px solid black; width: 630px;}
 	#grade{width: 570px; height: 50px; margin-left: 50px; margin-right: 50px; margin-top: 50px;}
 	#userInfo{text-align: center;}
+	#updateBox{width: 180px; margin: auto;}
+	#updateBtn{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px;}
+	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; margin-left: 10px;}
 	
 /* 	재료 */
 	#ingredient{width: 1100px; height: 300px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
@@ -70,6 +73,48 @@
 	.star{width: 110px;}
 	.reviewWrite{width: 100px;}
 	.reviewDate{width: 150px;}
+	
+	.modal-body{text-align: center;}
+	.bi-emoji-frown-fill{font-size: 60px; color: #B0DAFF;}
+	.btn-n{background: lightgray; color: white;}
+	.btn-n:hover{background: darkgray; color: black;}
+	.btn-y{background: rgba(255, 170, 0, 0.5); color: white;}
+	.btn-y:hover{background: rgba(255, 170, 0); color: black;}
+
+	/*버튼*/
+	.button {
+	  width: 100px; height: 45px;
+	  font-family: ;
+	  font-size: 13px;
+	  letter-spacing: 2.5px;
+	  font-weight: 500;
+	  color: #000;
+	  background-color: #fff;
+	  border: none;
+	  border-radius: 45px;
+	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	  transition: all 0.3s ease 0s;
+	  cursor: pointer;
+	  outline: none;
+	  margin: 5px;
+	  }
+	.button:hover {
+		background-color: #B0DAFF;
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+		color: #fff;
+		transform: translateY(-7px);
+		}
+		
+	.footer{
+		display: flex; 
+		justify-content: center;
+		align-items : center;
+		margin-top: 10px; margin-bottom: 30px;
+		padding-top: 20px;
+		border-top: 1px solid lightgray;
+		}
+	.footer{text-align: center;}
+	.footer> .button{font-weight: bold;}
 </style>
 </head>
 <body>
@@ -105,7 +150,7 @@
 			<br><br>
 			
 <%-- 			<c:if test="${loginUser eq recipeWriter }"> --%>
-			<div id="buttonBox">
+			<div id="updateBox">
 				<button id="updateBtn">수정</button>
 				<button id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
 			</div>
@@ -331,6 +376,31 @@
 </div>
 <br><br>
 <br>
+
+<!-- 삭제 알림 모달 -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">게시글 삭제하기</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<i class="bi bi-emoji-frown-fill"></i><br>
+				삭제 된 게시글은 복구 할 수 없습니다.<br>
+				정말 삭제하시겠습니까?
+			</div>
+			<div class="footer">
+				<button type="button" class="button btn-n" data-bs-dismiss="modal">취소</button>
+				<button type="button" class="button btn-y" id="deleteBoard">삭제하기</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
 <%@ include file="../common/footer.jsp" %>
 
 

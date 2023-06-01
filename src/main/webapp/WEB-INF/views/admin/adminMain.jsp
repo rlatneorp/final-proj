@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>adminMain</title>
 <style>
-	tr{height: 34px;}
+	table tr{height: 34px;}
 	td{font-size: 14px;}
 	.dataBox{height: 400px;}
 </style>
@@ -34,9 +34,11 @@
 						</tr>
 					</c:forEach>
 				</table>
-				<a href="${contextPath}/adminSalesManage.ad">
-					<h6 class="text-end mt-2">더보기</h6>
-				</a>
+				<div class="text-end">
+					<a href="${contextPath}/adminSalesManage.ad">
+						<h6 class="mt-2 d-inline-block">더보기</h6>
+					</a>
+				</div>
 			</div>
 			
 			<div class="dataBox col-6 border-bottom p-4">
@@ -56,9 +58,11 @@
 						</tr>
 					</c:forEach>
 				</table>
-				<a href="${contextPath}/adminRecipeManage.ad">
-					<h6 class="text-end mt-2">더보기</h6>
-				</a>
+				<div class="text-end">
+					<a href="${contextPath}/adminRecipeManage.ad">
+						<h6 class="mt-2 d-inline-block">더보기</h6>
+					</a>
+				</div>
 			</div>
 			
 			<div class="dataBox col-6 border-end p-4">
@@ -78,9 +82,11 @@
 						</tr>
 					</c:forEach>
 				</table>
-				<a href="${contextPath}/adminMemberManage.ad">
-					<h6 class="text-end mt-2">더보기</h6>
-				</a>
+				<div class="text-end">
+					<a href="${contextPath}/adminMemberManage.ad">
+						<h6 class="mt-2 d-inline-block">더보기</h6>
+					</a>
+				</div>
 			</div>
 			
 			<div class="dataBox col-6 p-4">
@@ -100,9 +106,11 @@
 						</tr>
 					</c:forEach>
 				</table>
-				<a href="${contextPath}/adminMenuManage.ad">
-					<h6 class="text-end mt-2">더보기</h6>
-				</a>
+				<div class="text-end">
+					<a href="${contextPath}/adminMenuManage.ad">
+						<h6 class="mt-2 d-inline-block">더보기</h6>
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>

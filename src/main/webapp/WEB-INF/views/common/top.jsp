@@ -58,8 +58,8 @@
 				<div class="menus">
 					<div style="width:80px"></div>
 					<div class="menu" onclick="location.href='#'">공지</div>
-					<div class="menu" onclick="location.href='#'">레시피</div>
-					<div class="menu" onclick="location.href='#'">식단</div>
+					<div class="menu" onclick="location.href='${contextPath}/recipeList.rc'">레시피</div>
+					<div class="menu" onclick="location.href='${contextPath}/menuList.mn'">식단</div>
 					
 				</div>
 			</div>

@@ -168,7 +168,11 @@
 						<div class="card-body cardColor">
 							<h5>고단백 / 영양사C</h5>
 							<div class="d-inline-block" style="width: 130px; height: 50px;"></div>
-							<a class="likeBtn" role="button"><i class="bi bi-heart d-inline-block iconMar"></i></a>&nbsp;<p class="d-inline-block likeNum">1000</p>
+							<a class="likeBtn" role="button">
+								<input type="hidden" value="off">
+								<i class='bi bi-heart d-inline-block iconMar'></i>
+							</a>&nbsp;
+							<p class="d-inline-block likeNum">1000</p>
 						</div>
 					</div>
 				</div>
@@ -179,6 +183,27 @@
 
 <br>
 <%@ include file="../common/footer.jsp" %>
+
+<script>
+	const likeBtns = document.getElementsByClassName('likeBtn');
+	for(const likeBtn of likeBtns){
+		likeBtn.addEventListener('click', function(){
+			
+			const num = parseInt(this.nextElementSibling.innerText);
+			
+			if(this.querySelector('input').value == "off"){
+				this.querySelector('input').value = "on";
+				this.querySelector('i').classList.replace("bi-heart", "bi-heart-fill");
+				this.nextElementSibling.innerText = num + 1;
+			} else if(this.querySelector('input').value == "on"){
+				this.querySelector('input').value = "off";
+				this.querySelector('i').classList.replace("bi-heart-fill", "bi-heart");
+				this.nextElementSibling.innerText = num - 1;
+			}
+			
+		})
+	}
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>

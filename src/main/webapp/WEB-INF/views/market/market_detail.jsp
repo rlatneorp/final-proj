@@ -105,11 +105,8 @@ html{
 	font-size: 24px;
 }
 
-b {
-	font-size: 20px;
-}
 
-ul {
+.reviewbox ul {
 	width:1200px;
 	-webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: #4485d7;
@@ -130,7 +127,7 @@ ul {
 	height: 66px;
 }
 
-ul li{
+.reviewbox ul li{
 	 -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: #4485d7;
     font-size: 14px;
@@ -147,7 +144,7 @@ ul li{
     font-size: 20px;
 }
 
-ul li:hover {
+.reviewbox ul li:hover {
 	border-bottom: 1px solid #4485d7;
 }
 
@@ -185,6 +182,15 @@ ul li:hover {
 }
 
 select {
+	width: 150px;
+	text-align: center;
+	height: 40px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+select option {
 	width: 150px;
 	text-align: center;
 	height: 40px;
@@ -350,7 +356,73 @@ p b {
 	margin-right: 4px;
 }
 
+.photoList ul {
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
+    border-bottom: 1px solid #ebebeb;
+    display: table;
+    padding: 0 2px;
+    background: #fff;
+    overflow: hidden;
+}
 
+.photoList ul li{
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 20px;
+}
+
+.photoList ul li img {
+	width: 142px; 
+	height: 142px; 
+	display: inline-block; 
+	float: left; 
+	margin-right: 5px;"
+}
+
+.reviewPhot ul {
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
+    border-bottom: 1px solid #ebebeb;
+    display: table;
+    padding: 0 2px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.reviewPhoto ul li {
+	line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 20px;
+}
+
+.reviewPhoto ul li img {
+	width: 100px; 
+	height: 100px; 
+	display: inline-block; 
+	float: left; 
+	margin-right: 5px;"
+}
 
 </style>
 <body>
@@ -394,7 +466,7 @@ p b {
                                 <dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
                             	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px; margin-bottom: 5px;">
-                            	&nbsp;적립<p style="font-size: 15px; display: inline-block;">(구매가격의 0.5% 적립)</p>
+                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
                             </dt>
                                 </dl>
                                  <hr>
@@ -403,10 +475,10 @@ p b {
 					<select class='size' name='size' required>
 						<!-- 사이즈 선택 창 -->
 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option>
-						<option value='S'>S</option>
-						<option value='M'>M</option>
-						<option value='L'>L</option>
-						<option value='XL'>XL</option>
+						<option value='S'>옵션1</option>
+						<option value='M'>옵션2</option>
+						<option value='L'>옵션3</option>
+						<option value='XL'>옵션4</option>
 					</select>
 
 
@@ -476,15 +548,14 @@ p b {
 				<a href="javascript:gd_open_write_popup('goodsreview', '1000030759')">
 				<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 			</div>
-			
 			<div class="photoList">
 				<ul style="padding: 10px;">
-					<li ><img src="img" alt=""style="width: 142px; height: 142px; display: inline-block; float: left; margin-right: 5px;" /></li>
-					<li><img src="img" alt=""style="width: 142px; height: 142px; display: inline-block; float: left; margin-right: 5px;" /></li>
-					<li ><img src="img"" alt=""style="width: 142px; height: 142px; display: inline-block; float: left; margin-right: 5px;" /></li>
+					<li ><img src="img" alt="" /></li>
+					<li><img src="img" alt="" /></li>
+					<li ><img src="img"" alt=""/></li>
 				</ul>
 			</div>
-			
+			<hr style="color: #4485d7;">
 		</div>
 		
 		<div class="textbox">
@@ -494,34 +565,28 @@ p b {
 				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
 				&nbsp;
 				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
+				
+				<div class="reviewPhoto">
+					<ul style="padding: 10px;">
+						<li ><img src="img" alt="" /></li>
+						<li><img src="img" alt="" /></li>
+						<li ><img src="img"" alt=""/></li>
+					</ul>
+				</div>
 			</div>
-			<img src="${contextPath}/resources/product_img/review.jpg" alt=""
-				style="width: 100px; height: 100px; display: inline-block; float: left; margin-bottom: 15px; margin-right: 5px;" />
-			<img src="${contextPath}/resources/product_img/review.jpg" alt=""
-				style="width: 100px; height: 100px; display: inline-block; float: left; margin-bottom: 15px; margin-right: 5px;" />
-			<img src="${contextPath}/resources/product_img/review.jpg" alt=""
-				style="width: 100px; height: 100px; display: inline-block; float: left; margin-bottom: 15px; margin-right: 5px;" />
-
+			
+				
 			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
 
-				<p style="margin-left: 5px; margin-top: 10px; font-weight: 200;">지난해 색상 별로 3가지 다
-					구매해서 정말 활용도 있게 착용한 제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다. 지난해 색상 별로 3가지
-					다 구매해서 정말 활용도 있게 착용한 제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다. 착용한 제품이라
-					두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다. 지난해 색상 별로 3가지 다 구매해서 정말 활용도 있게 착용한
-					제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다 착용한 제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에
-					듭니다.</p>
+				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
+					</div>
+					<hr>
 			</div>
+			
 		</div>
+		
 	</div>
-	<br>
-		
-		<div class="refundWrap" style="text-align: center;">
-		<h3>배송 및 교환/환불 정보</h3>
-		<br>
-		<br>
-			<img alt="" src="${contextPath}/resources/image/refund.jpg">
-		</div>
-		
 
 	<script>
 	

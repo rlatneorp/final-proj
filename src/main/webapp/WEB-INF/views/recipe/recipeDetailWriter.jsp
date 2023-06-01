@@ -14,7 +14,7 @@
 	#title{border-bottom: 1px solid black; width: 630px;}
 	#grade{width: 570px; height: 50px; margin-left: 50px; margin-right: 50px; margin-top: 50px;}
 	#userInfo{text-align: center;}
-	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px;}
+	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; margin-left: 10px;}
 	#setBox{width: 180px; margin-left: 235px;}
 	
 /* 	재료 */
@@ -47,7 +47,7 @@
 	.complPic{margin-left: 250px; margin-right: 250px;}
 	
 /* 	버튼 */
-	#buttonBox{width: 270px; margin: auto;}
+	#buttonBox{width: 180px; margin: auto;}
 	.buy{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 130px; height: 40px;}
 	
 /* 	문의 */
@@ -106,6 +106,10 @@
 </style>
 </head>
 <body>
+
+<%@ include file="../common/top.jsp" %>
+<br><br>
+
 	<div id="top">
 		<div id="thumImg">
 			<img src="resources/image/chicken1.png" style="width: 100%; height: 100%; border-radius: 5px;">
@@ -133,7 +137,7 @@
 			
 			<br><br>
 			
-			<div id="setBox">
+			<div id="buttonBox">
 				<button class="enter">수정</button>
 				<button id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
 			</div>
@@ -232,11 +236,6 @@
 		  <span class="visually-hidden">Next</span>
 		</button>
 	</div>
-</div>
-<br>
-<div id="buttonBox">
-	<button class="buy">밀키트 구매</button>
-	<button class="buy">식재료 구매</button>
 </div>
 
 <br><br>
@@ -371,6 +370,9 @@
 		</div>
 	</div>
 </div>
+
+<br>
+<%@ include file="../common/footer.jsp" %>
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	
 </body>

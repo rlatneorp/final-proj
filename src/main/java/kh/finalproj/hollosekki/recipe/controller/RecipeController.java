@@ -21,4 +21,9 @@ public class RecipeController {
 	public String recipeDetailWriter() {
 		return "recipeDetailWriter";
 	}
+	
+	@RequestMapping("recipeWrite.rc")
+	public String recipeWrite() {
+		return "recipeWrite";
+	}
 }

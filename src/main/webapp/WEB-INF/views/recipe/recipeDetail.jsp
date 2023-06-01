@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <style>
 /* 	레시피 소개 */
@@ -69,6 +70,10 @@
 </style>
 </head>
 <body>
+
+<%@ include file="../common/top.jsp" %>
+<br><br>
+
 	<div id="top">
 		<div id="thumImg">
 			<img src="resources/image/chicken1.png" style="width: 100%; height: 100%; border-radius: 5px;">
@@ -77,7 +82,7 @@
 		<div id="imformation">
 			<div id="title">
 				<h2 style="display: inline-block; margin-right: 470px;">치킨치킨</h2>
-				<input type="radio">
+				<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
 			</div>
 			<div id="grade">
 				<div class="d-inline-block" style="width: 50px; font-weight: bold">난이도</div>
@@ -306,7 +311,8 @@
 <input type="text" class="inputText" placeholder=" 내용을 입력해주세요.">&nbsp;<button class="enter">등록</button>
 </div>
 <br><br>
-
+<br>
+<%@ include file="../common/footer.jsp" %>
 
 
 	

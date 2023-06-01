@@ -17,13 +17,43 @@
 		text-align:center;
 		padding:70px;
 	}
-	
-	.btn.green {background: #B0DAFF; box-shadow: 0px 4px 0px #87a86f;}
-	.btn.green:active {box-shadow: 0 0 #311B92; background-color: #0067A3;}
-	.rounded {
-	  border-radius: 10px;
-	}
-	
+
+	/* 3D Button */
+.btn-3d {
+  text-decoration:none;
+  width:100px; height:35px;
+  position: relative;
+  display: inline-block;
+  font-weight:bold;
+  font-size: 15px;
+  padding:5px;
+/*   padding: 20px 60px; */
+  color: white;
+  margin: 20px 10px 10px;
+  border-radius: 6px;
+  text-align: center;
+  transition: top .01s linear;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+.btn-3d.blue:hover   {color:white; background-color: #699DD1;}
+.btn-3d:active {
+  top: 9px;
+}
+.btn-3d.blue {
+  background-color: #6DA2D9;
+  box-shadow: 0 0 0 1px #6698cb inset,
+        0 0 0 2px rgba(255,255,255,0.15) inset,
+        0 8px 0 0 rgba(110, 164, 219, .7),
+        0 8px 0 1px rgba(0,0,0,.4),
+        0 8px 8px 1px rgba(0,0,0,0.5);
+}
+.btn-3d.blue:active {
+  box-shadow: 0 0 0 1px #6191C2 inset,
+        0 0 0 2px rgba(255,255,255,0.15) inset,
+        0 0 0 1px rgba(0,0,0,0.4);
+}
+
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -36,9 +66,13 @@
 		<i class="bi bi-bag-heart-fill" style=" font-size:120px;  text-shadow: 3px 2px 2px gray;color:#B0DAFF"></i>
 		<h3>박보서 고객님,</h3>
 		<h3><span style="color:#2962FF"><b>결제</b></span>가 <span style="color:#2962FF"><b>완료</b></span>되었습니다.</h3>
-		<br><button class="Btn">메인으로</button>&nbsp;&nbsp;&nbsp;<button class="Btn">구매내역 확인</button>
-		<a class="btn green rounded">Button</a>
-	</div>
+		
+		<div class="btn-container">
+  			<a href="#" class="btn-3d blue">메인으로</a>
+  			<a href="#" class="btn-3d blue" style="width:120px;">구매내역 확인</a>
+		</div>
+		
+ 
 </div>
 
 	<br><br><br><br><br><br>

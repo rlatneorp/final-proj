@@ -31,7 +31,10 @@ public class MarketController {
 		return "paySuccess";
 	}
 	
-
+	@RequestMapping("attendance_Check.ma")
+	public String attendance_Check() {
+		return "attendance_Check";
+	}
 	
 	
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +16,8 @@
 	#title{border-bottom: 1px solid black; width: 630px;}
 	#category{width: 550px; height: 50px; margin-left: 50px; margin-right: 50px; margin-top: 50px; font-weight: bold; font-size: 18px; text-align: center;}
 	#userInfo{text-align: center;}
+	#updateBtn{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px;}
+	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; margin-left: 10px;}
 	
 /* 	중간선 */
 	.mid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 30px; margin: 5px 0px; font-weight: bold;}
@@ -41,8 +44,8 @@
 	.infoContent td{padding: 3px; border-right: 1px solid black}
 	
 /* 	버튼 */
-	#buttonBox{width: 110px; margin: auto;}
-	.buy{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 110px; height: 50px;}
+	#buttonBox{width: 180px; margin: auto;}
+	.buy{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 130px; height: 40px;}
 	
 /* 	문의 */
 	#qna{width: 1000px; margin: auto; text-align: center;}
@@ -56,14 +59,17 @@
 	.lineAll:hover{background-color: #19A7CE; color: white;}
 	
 /* 	입력 박스 */
-	.inputBox{width:730px; height: 50px; margin: auto;}
-	.inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px;}
-	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px;}
+	.inputBox{width:730px; height: 50px; margin: auto; position: relative;}
+	.profile{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
+	.profileImg{width:35px; height: 35px; border-radius: 50%;}
+	.inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px; position: absolute; left: 40px;}
+	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; position: absolute; right: 0;}
 	
 /* 	후기 */
 	.star{width: 110px;}
 	.boardReviewWrite{width: 100px;}
 	.boardReviewDate{width: 150px;}
+
 </style>
 </head>
 <body>
@@ -91,8 +97,20 @@
 				<p>*****(별점)</p>
 				<p>식단에 대한 설명입니다. 이 식단는 어떠어떠한 요리가 있고 어떤 부분에서 좋습니다.</p>
 			</div>
+			
+			<br><br>
+			
+<%-- 			<c:if test="${ loginUser eq menuWriter }"> --%>
+				<div id="buttonBox">
+					<button id="updateBtn">수정</button>
+					<button id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
+				</div>
+<%-- 			</c:if> --%>
+			
 		</div>
 	</div>
+	
+
 	
 	<div class="mid">
 		식단 종류
@@ -258,10 +276,11 @@
 	
 	<br><br>	
 	
+<%-- <c:if test="${!(loginUser eq menuWriter) }"> --%>
 <div id="buttonBox">
 	<button class="buy">식단 구독</button>
 </div>
-
+<%-- </c:if> --%>
 <br><br>
 <br><br>
 
@@ -312,8 +331,10 @@
 <br>
 
 <div class="inputBox">
-프사
-<input type="text" class="inputText" placeholder=" 내용을 입력해주세요.">&nbsp;<button class="enter">등록</button>
+	<div class="profile d-inline-block">
+		<img src="resources/image/mudo.png" class="profileImg">
+	</div>
+	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuQnaInput">&nbsp;<button class="enter">등록</button>
 </div>
 <br><br>
 
@@ -370,8 +391,10 @@
 
 <br>
 <div class="inputBox">
-프사
-<input type="text" class="inputText" placeholder=" 내용을 입력해주세요.">&nbsp;<button class="enter">등록</button>
+	<div class="profile d-inline-block">
+		<img src="resources/image/mudo.png" class="profileImg">
+	</div>
+	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuReviewInput">&nbsp;<button class="enter">등록</button>
 </div>
 <br><br>
 

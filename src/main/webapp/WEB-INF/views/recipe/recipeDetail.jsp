@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,9 +60,11 @@
 	.lineAll:hover{background-color: #19A7CE; color: white;}
 	
 /* 	입력 박스 */
-	.inputBox{width:730px; height: 50px; margin: auto;}
-	.inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px;}
-	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px;}
+	.inputBox{width:730px; height: 50px; margin: auto; position: relative;}
+	.profile{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
+	.profileImg{width:35px; height: 35px; border-radius: 50%;}
+	.inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px; position: absolute; left: 40px;}
+	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; position: absolute; right: 0;}
 	
 /* 	후기 */
 	.star{width: 110px;}
@@ -98,6 +101,15 @@
 				<p>*****</p>
 				<p>레시피에 대한 설명입니다. 이 요리는 어떠어떠한 요리입니다.</p>
 			</div>
+			
+			<br><br>
+			
+<%-- 			<c:if test="${loginUser eq recipeWriter }"> --%>
+			<div id="buttonBox">
+				<button id="updateBtn">수정</button>
+				<button id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
+			</div>
+<%-- 			</c:if> --%>
 		</div>
 	</div>
 	
@@ -195,10 +207,13 @@
 	</div>
 </div>
 <br>
+
+<%-- <c:if test="${!(loginUser eq recipeWriter) }"> --%>
 <div id="buttonBox">
 	<button class="buy">밀키트 구매</button>
 	<button class="buy">식재료 구매</button>
 </div>
+<%-- </c:if> --%>
 
 <br><br>
 
@@ -249,8 +264,10 @@
 <br>
 
 <div class="inputBox">
-프사
-<input type="text" class="inputText" placeholder=" 내용을 입력해주세요.">&nbsp;<button class="enter">등록</button>
+	<div class="profile d-inline-block">
+		<img src="resources/image/mudo.png" class="profileImg">
+	</div>	
+	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeQnaInput">&nbsp;<button class="enter">등록</button>
 </div>
 <br><br>
 
@@ -307,8 +324,10 @@
 
 <br>
 <div class="inputBox">
-프사
-<input type="text" class="inputText" placeholder=" 내용을 입력해주세요.">&nbsp;<button class="enter">등록</button>
+	<div class="profile d-inline-block">
+		<img src="resources/image/mudo.png" class="profileImg">
+	</div>
+	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeReviewInput">&nbsp;<button class="enter">등록</button>
 </div>
 <br><br>
 <br>

@@ -166,7 +166,7 @@
 	</div>
 </div>
 
-<button type="button" id="recipeWrite">레시피 등록</button>
+<button type="button" id="recipeWrite" onclick="location.href='recipeWrite.rc'">레시피 등록</button>
 
 <br>
 

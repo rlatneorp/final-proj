@@ -75,7 +75,7 @@
 				  		<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 				  			<div class="drop-list">이름</div>
 				  			<div><button class="dropdown-item" type="button"><i class="bi bi-coin"></i> 1000 포인트</button></div>
-				  			<div><button class="dropdown-item" type="button"><i class="bi bi-person-circle"></i> 마이페이지</button></div>
+				  			<div><button class="dropdown-item" type="button" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle"></i> 마이페이지</button></div>
 				  			<div><button class="dropdown-item" type="button"><i class="bi bi-bookmark"></i> 스크랩</button></div>
 				  			<div class="drop-list"><button class="drop-btn" type="button">로그아웃</button></div>
 				  		</div>

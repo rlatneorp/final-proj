@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>마이페이지 - 프로필</title>
 <style>
 	#btn{
 		width: 85px; height: 40px;
@@ -13,6 +13,11 @@
 		box-shadow: 0px 5px black;
 		margin-left: 425px;
 		font-weight: bold;
+		background: white;
+	}
+	#btn:active{
+		box-shadow: 0px 1px 0px black; transform: translateY(5px);
+		background: #B0DAFF;
 	}
 </style>
 </head>

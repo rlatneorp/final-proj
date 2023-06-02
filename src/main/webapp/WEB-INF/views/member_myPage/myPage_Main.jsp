@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<title>마이페이지</title>
 <style>
 	.arrow1{
 		font-size: 30px; color: black;
@@ -48,6 +49,11 @@
 		border: 2px solid black;
 		border-radius: 20px;
 		box-shadow: 0px 5px black;
+		background: white;
+	}
+	.moveBtn:active{
+		box-shadow: 0px 1px 0px black; transform: translateY(5px);
+		background: #B0DAFF;
 	}
 	.follow{
 		border: none; border-radius: 5px;
@@ -72,7 +78,18 @@
 		border: none; border-radius: 5px;
 		font-weight: bold; font-size: 12px;
 		width: 60px; height: 30px;
-		background: rgba(224, 224, 224, 0.74);
+		background: rgba(224, 224, 224, 0.29);
+		color: rgba(231, 76, 60, 0.86);
+	}
+	.modalFollower{
+		border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		background: #B0DAFF;
+	}
+	#follower{
+		width: 500px; height: 600px;
+		margin-left: 750px;
 	}
 </style>
 </head>
@@ -92,13 +109,13 @@
 					<div class="name">
 						<br>
 						<p style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219);">홍길동님</p>
-						<button id="mbtn">출석하기</button><br>
+						<button id="mbtn" onclick="location.href='${contextPath}/attendance_Check.ma'">출석하기</button><br>
 						<button class="follow" data-bs-toggle="modal" data-bs-target="#following">팔로잉</button>
-						<button class="follow">팔로워</button>
+						<button class="follow" data-bs-toggle="modal" data-bs-target="#follower">팔로워</button>
 					</div>
 					<div class="name">
 						<br>
-						<a style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219); margin-left: 10px;">고객센터
+						<a style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219); margin-left: 10px;" href="${ contextPath }/askBoard.cs">고객센터
 						<span class="material-symbols-outlined arrow1">
 						chevron_right
 						</span></a><br><br>
@@ -122,13 +139,11 @@
 						<p style="font-size: 13px;">소멸 예정 포인트 0원</p>
 					</div>
 				</div>
-				<br><br>
+				<br><br><br><br>
 				<label class="profile" style="margin-right: 600px;">프로필 관리하기</label><button class="moveBtn" onclick="location.href='myPage_Profile.me'">이동</button>
-				<p class="sub">나의 프로필을 수정합니다.</p><br><br>
+				<p class="sub">나의 프로필을 수정합니다.</p><br><br><br><br>
 				<label class="profile" style="margin-right: 575px;">자기소개 관리하기</label><button class="moveBtn" onclick="location.href='myPage_Intro.me'">이동</button>
 				<p class="sub">나를 직접 소개하여 사람들에게 알려보세요.</p><br><br>
-				<label class="profile" style="margin-right: 605px;">팔로잉 / 팔로워</label><button class="moveBtn" onclick="location.href='myPage_Follow.me'">이동</button>
-				<p class="sub">팔로잉과 팔로워를 볼 수 있습니다.</p>
 			</div>
 		</div>
 	</div>
@@ -136,7 +151,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="followingLabel">팔로잉</h1>
+					<h1 class="modal-title fs-5" id="followingLabel">팔로잉  0명</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -171,40 +186,40 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="followingLabel">팔로워</h1>
+					<h1 class="modal-title fs-5" id="followingLabel">팔로워  0명</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
+					<button class="modalFollower">팔로우</button>
 				</div>
 			</div>
 		</div>

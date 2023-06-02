@@ -9,6 +9,9 @@
 <title>passion for Fashion</title>
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
 	rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../js/jquery-ui-1.12.1/jquery-ui.min.css" />
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 </head>
 <style>
 * {
@@ -19,6 +22,15 @@
 
 html{
 	scroll-behavior: smooth;
+}
+
+dl, ul, ol, li {
+    list-style: none;
+    padding:0px;
+}
+
+hr{
+	color:#e8e8e8;
 }
 
  .aStyle {
@@ -78,7 +90,6 @@ html{
 	margin-top: 10px;
 	height: 120px;
 	padding-bottom: 5px;
-	display: none;
 	border: 1px solid #4485d7;
 }
 
@@ -283,6 +294,7 @@ p b {
 
 .textbox {
 	width: 100%;
+	margin-bottom: 70px;
 }
 
 .reviewComment {
@@ -424,6 +436,51 @@ p b {
 	margin-right: 5px;"
 }
 
+ .productInfoWrap{ 
+ 	height: 35px;
+ 	text-align: left; 
+ 	list-style: none; 
+     box-sizing: border-box; 
+     background-color: transparent; 
+     text-decoration: none; 
+     display: block; 
+     font-weight: 400; 
+     line-height: 1; 
+     font-size: 24px; 
+     color: #222; 
+     padding: 22px 18px 24px; 
+     border-top: 1px solid #e8e8e8; 
+ } 
+
+.productInfoWrap a {
+	 font-size: 28px;
+}
+
+.productInfoWrap li {
+	list-style:none;
+	border-bottom: 1px solid #ebebeb;
+    position: relative;
+}
+
+.pDetailWrap{
+	padding: 0px;
+
+}
+
+.pDetailWrap-body{
+/* 	display: none;  */
+	border-top: 1px solid #e8e8e8;
+	padding: 15px;
+}
+
+.pDetailWrap-li{
+	border-top: 1px solid #e8e8e8;
+	padding: 15px;
+    margin: 5px;
+}
+}
+
+
 </style>
 <body>
 	
@@ -484,8 +541,8 @@ p b {
 
 					<div id="productResult">
 						<!-- 사이즈 선택시 내려오는 창 -->
-						<h4 class="productName" style="font-size: 15px;">
-							상품명 : ${p.productName} <span></span>
+						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
+							캠핑용 후라이팬 <span>(-20,000)</span>
 							<input type="hidden" name="productName" value="${p.productName}">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
 						</h4>
@@ -586,7 +643,8 @@ p b {
 			
 		</div>
 		
-	</div>
+
+	
 
 	<script>
 	
@@ -682,8 +740,7 @@ p b {
 });
 	
 	
-	
-<!-- </script> -->
+	 </script> 
 
 </body>
 </html>

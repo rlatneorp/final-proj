@@ -16,10 +16,10 @@
 
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="d-inline-block align-top mt-5" style="width: 1200px;">
-		<h4 class="py-4 mb-3">매출관리</h4>
+	<div class="mainBox d-inline-block align-top mt-5" style="width: 1200px;">
+		<h4 class="py-4 mb-3">주문관리</h4>
 		
-		<h5 class="mb-4">2023년 5월 20일 매출현황</h5>
+<!-- 		<h5 class="mb-4">2023년 5월 20일 매출현황</h5> -->
 		<table class="w-100 text-center mb-3">
 			<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 				<th class="border" style="width: 13%;">주문번호</th>
@@ -37,7 +37,7 @@
 			<c:forEach begin="1" end="7" varStatus="vs">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
 						<td class="border">
-							<a href="${contextPath}/adminSalesDetail.ad?page=${pi.currentPage}&orderNo=">
+							<a href="${contextPath}/adminOrderDetail.ad?page=${pi.currentPage}&orderNo=">
 								20230523170110${21-vs.index}
 							</a>
 						
@@ -59,7 +59,7 @@
 			
 			<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
 				<td rowspan="2" class="border">
-					<a href="${contextPath}/adminSalesDetail.ad?page=${pi.currentPage}&orderNo=">
+					<a href="${contextPath}/adminOrderDetail.ad?page=${pi.currentPage}&orderNo=">
 						2023052317011010
 					</a>
 				</td>

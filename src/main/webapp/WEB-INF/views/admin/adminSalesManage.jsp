@@ -16,7 +16,7 @@
 
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="d-inline-block align-top mt-5" style="width: 900px;">
+	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
 		<h4 class="py-4 mb-3">매출관리</h4>
 		
 		<h5 class="mb-4">일일 매출 현황</h5>

@@ -30,6 +30,18 @@ public class AdminController {
 		return "redirect:adminSalesDaily.ad";
 	}
 	
+//	order-주문 관리
+	@GetMapping("adminOrderManage.ad")
+	public String adminOrderManage() {
+		return "adminOrderManage";
+	}
+	@GetMapping("adminOrderDetail.ad")
+	public String adminOrderDetail() {
+		return "adminOrderDetail";
+	}
+	
+	
+	
 	
 //	Member-회원 관리
 	@GetMapping("adminMemberManage.ad")
@@ -66,6 +78,10 @@ public class AdminController {
 	@GetMapping("adminIngredientDetail.ad")
 	public String adminIngredientDetail() {
 		return "adminIngredientDetail";
+	}
+	@GetMapping("adminIngredientWrite.ad")
+	public String adminIngredientWrite() {
+		return "adminIngredientWrite";
 	}
 	
 	
@@ -105,6 +121,10 @@ public class AdminController {
 	@GetMapping("adminFAQUpdate.ad")
 	public String adminFAQUpdate() {
 		return "redirect:adminFAQManage.ad";
+	}
+	@GetMapping("adminFAQWrite.ad")
+	public String adminFAQWrite() {
+		return "adminFAQWrite";
 	}
 	
 	

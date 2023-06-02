@@ -14,7 +14,7 @@
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	
-	<div class="d-inline-block align-top mt-5 p-4 ps-5 rounded" style="width: 900px; height:1000px; border: 2px solid rgba(0,0,0,0.1);">
+	<div class="mainBox d-inline-block align-top mt-5 p-4 ps-5 rounded" style="width: 900px; height:1000px; border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">상품관리</h4>
 		<div class="row">
 			<div class="col-6 row">

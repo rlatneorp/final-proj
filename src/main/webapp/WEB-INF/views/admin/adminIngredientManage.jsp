@@ -16,7 +16,7 @@
 
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="d-inline-block align-top mt-5" style="width: 900px;">
+	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
 		<h4 class="py-4 mb-0">식재료관리</h4>
 		
 		<table class="w-100 text-center mb-3">
@@ -55,7 +55,11 @@
 				</tr>
 			</c:forEach>
 		</table>
-		
+		<div class="d-flex justify-content-end mb-5">
+			<div class="d-flex">
+				<button onclick="location.href='${contextPath}/adminIngredientWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식재료등록</button>
+			</div>
+		</div>
 		<jsp:include page="../common/adminPaging.jsp"/>
 		
 	</div>

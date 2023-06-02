@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
@@ -9,92 +8,101 @@
 <meta charset="UTF-8">
 <title>adminSalesDetail</title>
 <style>
-	tr{height: 40px;}
-	td{font-size: 14px;}
+	span{height:25px;}
+/*  	input .modifyAble{border: 1px solid rgba(0,0,0,0.3);} */
 </style>
 </head>
-
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="d-inline-block align-top mt-5" style="width: 900px;">
-		<h4 class="py-4 mb-3">매출관리</h4>
+	
+	<div class="d-inline-block align-top my-5 p-4 ps-5 rounded" style="width: 900px; border: 2px solid rgba(0,0,0,0.1);">
+		<h4 class="py-4 mb-0">주문정보관리</h4>
 		
-		<h5 class="mb-4">2023년 5월 20일 매출현황</h5>
-		<table class="w-100 text-center mb-3">
-			<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
-				<th class="border" style="width: 16%;">주문번호</th>
-				<th class="border" style="width: 14%;">주문자</th>
-				<th class="border" style="width: 16%;">주문합계</th>
-				<th class="border" style="width: 10%;">쿠폰</th>
-				<th class="border" style="width: 10%;">포인트</th>
-				<th class="border" style="width: 12%;">계좌이체</th>
-				<th class="border" style="width: 12%;">카드결제</th>
-				<th class="border" style="width: 10%;">주문취소</th>
-			</tr>
-			
-			
-			<c:forEach begin="1" end="10" varStatus="vs">
-				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
-					<td class="border">
-						<a href="${contextPath}/adminOrderDetail.ad?page=${pi.currentPage}&orderNo=">
-							20230523170110${21-vs.index}
-						</a>		
-					</td>
-					<td class="border">ganggangsu${vs.index}</td>
-					<td class="border">
-						<fmt:formatNumber pattern="###,###,###,###" value="38000"/>
-					</td>
-					<td class="border">
-						<fmt:formatNumber pattern="###,###,###,###" value="1000"/>
-					</td>
-					<td class="border">
-						<fmt:formatNumber pattern="###,###,###,###" value="3000"/>
-					</td>
-					<td class="border">
-						<fmt:formatNumber pattern="###,###,###,###" value="0"/>
-					</td>
-					<td class="border">
-						<fmt:formatNumber pattern="###,###,###,###" value="34000"/>
-					</td>
-					<td class="border">
-						<fmt:formatNumber pattern="###,###,###,###" value="0"/>
-					</td>
-				</tr>
-			</c:forEach>
-			
-			
-			<tr style="background: rgba(176, 218, 255, 0.7);">
-				<th class="border" colspan="2">일일 합계</th>
-				<th class="border">
-					<fmt:formatNumber pattern="###,###,###,###" value="970400"/>
-				</th>
-				<th class="border">
-					<fmt:formatNumber pattern="###,###,###,###" value="21000"/>
-				</th>
-				<th class="border">
-					<fmt:formatNumber pattern="###,###,###,###" value="44000"/>
-				</th>
-				<th class="border">
-					<fmt:formatNumber pattern="###,###,###,###" value="84000"/>
-				</th>
-				<th class="border">
-					<fmt:formatNumber pattern="###,###,###,###" value="760700"/>
-				</th>
-				<th class="border">
-					<fmt:formatNumber pattern="###,###,###,###" value="0"/>
-				</th>
+		<form action="${contextPath}/adminSalesEdit.ad" method="post">
+			<div class="row">
+				<div class="col-12 row">
+					<h5 class="my-3">- 주문자정보 -</h5>
+					<span class="col-2">주문번호</span>
+					<input type="text" class="col-10 pb-1 mb-2 rounded border" value="2023052317011020" readonly>
+					<span class="col-2">주문일자</span>
+					<input type="date" class="col-10 pb-1 mb-2 rounded border" value="2023-05-05" readonly>
+					<span class="col-2">주문자</span>
+					<input type="text" class="col-10 pb-1 mb-2 rounded modifyAble" value="강건강">
+					<span class="col-2">전화번호</span>
+					<input type="text" class="col-10 pb-1 mb-2 rounded modifyAble" value="010-9111-2222">
+					<span class="col-2">주소</span>
+					<input type="text" class="col-10 pb-1 mb-2 rounded modifyAble" value="서울시 중구 남대문로1 2층 KH정보교육원">
+					<span class="col-2">총 결제액</span>
+					<span class="col-2 pb-1 mb-2 rounded border text-end">
+						<fmt:formatNumber pattern="###,###,###" value="84000"/>
+					</span>
+					
+					<span class="col-12"></span>
+					
+					<h5 class="mb-3">- 주문정보 -</h5>
+					
+					<div class="col-12 row py-3 mb-3 rounded border">
+						<h6 class="col-12 mb-2 fw-bold">- 주문 상품 1 -</h6>
+						<span class="col-2">상품코드</span>
+						<span class="col-10 pb-1 mb-2 rounded border">1071</span>
+						<span class="col-2">상품명</span>
+						<span class="col-10 pb-1 mb-2 rounded border">국자세트</span>
+						<span class="col-2">옵션명</span>
+						<input type="text" class="col-10 pb-1 mb-2 rounded modifyAble" value="color-white">
+						<span class="col-2">수량</span>
+						<input type="number" class="col-10 pb-1 mb-2 rounded modifyAble" value="3">
+						
+						<span class="col-2">합계</span>
+						<span class="col-2 pb-1 mb-2 rounded border text-end">
+							<fmt:formatNumber pattern="###,###,###" value="36000"/>
+						</span>
+						<span class="col-2 text-end">할인율</span>
+						<span class="col-2 pb-1 mb-2 rounded border text-end">0%</span>
+						<span class="col-2 text-end">단가</span>
+						<span class="col-2 pb-1 mb-2 rounded border text-end">
+							<fmt:formatNumber pattern="###,###,###" value="12000"/>
+						</span>
+						<span class="col-2">처리상태</span>
+						<span class="col-2 pb-1 mb-2 rounded border">배송완료</span>
+					</div>
+					
+					
+					<div class="col-12 row py-3 mb-3 rounded border">
+						<h6 class="col-12 mb-2 fw-bold">- 주문 상품 2 -</h6>
+						<span class="col-2">상품코드</span>
+						<span class="col-10 pb-1 mb-2 rounded border">1072</span>
+						<span class="col-2">상품명</span>
+						<span class="col-10 pb-1 mb-2 rounded border">도마세트</span>
+						<span class="col-2">옵션명</span>
+						<input type="text" class="col-10 pb-1 mb-2 rounded modifyAble" value="color-black">
+						<span class="col-2">수량</span>
+						<input type="number" class="col-10 pb-1 mb-2 rounded modifyAble" value="2">
+						
+						<span class="col-2">합계</span>
+						<span class="col-2 pb-1 mb-2 rounded border text-end">
+							<fmt:formatNumber pattern="###,###,###" value="48000"/>
+						</span>
+						<span class="col-2 text-end">할인율</span>
+						<span class="col-2 pb-1 mb-2 rounded border text-end">0%</span>
+						<span class="col-2 text-end">단가</span>
+						<span class="col-2 pb-1 mb-2 rounded border text-end">
+							<fmt:formatNumber pattern="###,###,###" value="24000"/>
+						</span>
+						<span class="col-2">처리상태</span>
+						<span class="col-2 pb-1 mb-2 rounded border">배송완료</span>
+					</div>
+				</div>
 				
-			</tr>
-		</table>
-		
-		<jsp:include page="../common/adminPaging.jsp"/>
+				
+				<input type="hidden" name="page" value="">
+				<div class="d-flex justify-content-center pt-5">
+					<button type="submit" class="rounded me-4" style="width: 100px; height:40px; border: 2px solid rgba(0,0,0,0.1); background:white; color: rgba(0,0,0,0.8);">수정하기</button>
+					<button type="button" class="rounded" onclick="location.href='${contextPath}/adminSalesDaily.ad?page='" style="width: 100px; height:40px; border: 2px solid rgba(0,0,0,0.1); background:white; color: rgba(0,0,0,0.8);">뒤로가기</button>
+				</div>
+			</div>
+		</form>
 		
 	</div>
-
-
-	
-	
-	
 	
 </body>
 </html>

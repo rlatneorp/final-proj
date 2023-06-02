@@ -11,4 +11,16 @@ public class BoardController {
 		
 		return "freeBoard";
 	}
+	
+	@RequestMapping("freeBoardWrite.bo")
+	public String freeBoardWrite() {
+		
+		return "freeBoardWrite";
+	}
+	
+	@RequestMapping("selectFreeBoard.bo")
+	public String selectFreeBoard() {
+		
+		return "detailFreeBoard";
+	}
 }

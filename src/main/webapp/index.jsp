@@ -24,6 +24,7 @@
 		<a href="recipeList.rc"><span>레시피 메인</span></a>
 		<a href="freeBoard.bo"><span>freeBoard</span></a>
 		
+		
 	</div>
 <%@ include file="WEB-INF/views/home.jsp" %>
 	

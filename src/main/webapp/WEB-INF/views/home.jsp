@@ -357,6 +357,11 @@ font-family: 'Noto Sans KR', sans-serif;
 				</div>	
 			</div>		
 		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+			<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 76px; margin-bottom: 40px; z-index: 9999;">
+ 				<img src="resources/images/leftBtn.png">
+			</div>	    
+		</button>
 		<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next"  style="width: 0%">
 			<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 80px; margin-bottom: 40px; z-index: 9999;">
  				<img src="resources/images/rightBtn.png">
@@ -553,6 +558,11 @@ font-family: 'Noto Sans KR', sans-serif;
 				</div>	
 			</div>		
 		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
+			<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 76px; margin-bottom: 40px; z-index: 9999;">
+ 				<img src="resources/images/leftBtn.png">
+			</div>	    
+		</button>
 		<button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next" style="width: 0% ">
 			<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 80px; margin-bottom: 40px; z-index: 9999;">
  				<img src="resources/images/rightBtn.png">
@@ -801,6 +811,11 @@ font-family: 'Noto Sans KR', sans-serif;
 					</div>	
 				</div>		
 			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carousel3" data-bs-slide="prev">
+				<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 10px; margin-bottom: 40px; z-index: 9999;">
+	 				<img src="resources/images/leftBtn.png">
+				</div>	    
+			</button>
 			<button class="carousel-control-next" type="button" data-bs-target="#carousel3" data-bs-slide="next"  style="width: 0%">
 				<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 10px; margin-bottom: 40px; z-index: 9999;">
 	 				<img src="resources/images/rightBtn.png">

@@ -29,7 +29,9 @@ font-family: 'Noto Sans KR', sans-serif;
 	background-color: #B0DAFF;
 	padding: 7px; 
 	margin-left: -10px;
-}
+	cursor: pointer;
+	}
+	
 
 .csSide{
 	padding: 10px;
@@ -67,8 +69,8 @@ font-family: 'Noto Sans KR', sans-serif;
 }
 
 .categoryBtn .btn-secondary{
-	margin-left: -10px;
-	width:170px;
+	
+	width:150px;
 	height:50px;
 	background-color: #B0DAFF;
 	color:black;
@@ -112,7 +114,7 @@ font-family: 'Noto Sans KR', sans-serif;
 }
 
 #searchText{
-	width:400px;
+	width:300px;
 	height:50px;
 	border: 1px solid lightgray;
 }
@@ -193,7 +195,7 @@ font-family: 'Noto Sans KR', sans-serif;
 			<br>
 			<div class="customer d-flex align-items-start">
 				<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<div class="csTitle">고객센터</div><br>
+					<div class="csTitle" onclick="location.href='${contextPath }/askBoard.cs'">고객센터</div><br>
 				    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">공지사항<span class="material-symbols-outlined" style="margin-left: 60px; vertical-align: middle;">chevron_right</span></button><br>
 				    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">자주 묻는 질문<span class="material-symbols-outlined" style="margin-left: 12px; vertical-align: middle;">chevron_right</span></button><br>
 				    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">1:1 문의<span class="material-symbols-outlined" style="margin-left: 62px; vertical-align: middle;">chevron_right</span></button><br>

@@ -35,8 +35,14 @@
 		font-weight: bold;}
 	.logo{
 		width: 120px; height: 120px; 
-		border: 2px solid black; border-radius: 50%;
-		margin-left:10px; margin-right: 10px;}
+		border-radius: 50%;
+		margin-left:10px; margin-right: 10px;
+		}
+	.logo-img{
+		width: 100%; height: 100%;
+		object-fit: cover;
+		object-position: center;
+		}
 	
 	#dropdownMenu2{border: none; background: none;}
 	.drop-list{text-align: center; font-weight: bold; margin-bottom: 5px;}
@@ -63,7 +69,9 @@
 					
 				</div>
 			</div>
-			<div class="logo"></div>
+			<div class="logo">
+				<img class="logo-img" src="resources/images/Logo.png">
+			</div>
 			<div>
 				<div class="menus">
 					<div class="menu" onclick="location.href='#'">쇼핑</div>

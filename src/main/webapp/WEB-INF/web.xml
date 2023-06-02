@@ -86,7 +86,50 @@
     <servlet-name>enroll</servlet-name>
     <url-pattern>*.en</url-pattern>
   </servlet-mapping>
+
+<!-- 	레시피 관련 -->
+	<servlet>
+		<servlet-name>recipeServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/recipe-context.xml</param-value>
+			</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>recipeServlet</servlet-name>
+		<url-pattern>*.rc</url-pattern>
+	</servlet-mapping>
+	
+<!-- 	식단 관련 -->
+	<servlet>
+		<servlet-name>menuServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/menu-context.xml</param-value>
+			</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>menuServlet</servlet-name>
+		<url-pattern>*.mn</url-pattern>
+	</servlet-mapping>
   
+  
+   <servlet>
+    <servlet-name>board</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/spring/appServlet/board-context.xml</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>board</servlet-name>
+    <url-pattern>*.bo</url-pattern>
+  </servlet-mapping>
   
 	
 	

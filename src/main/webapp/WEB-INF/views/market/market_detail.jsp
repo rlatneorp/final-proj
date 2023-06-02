@@ -9,6 +9,7 @@
 <title>passion for Fashion</title>
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
 	rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <style>
 * {
@@ -21,14 +22,11 @@ html{
 	scroll-behavior: smooth;
 }
 
- li img{
-  	width: 200px;
-  	height: 230px;
- }
- 
- li p {
- 	font-weight: 200;
- }
+ ul, li {
+    list-style: none;
+    padding:0px;
+}
+
 
  .aStyle {
  	color: black;
@@ -87,7 +85,6 @@ html{
 	margin-top: 10px;
 	height: 120px;
 	padding-bottom: 5px;
-	display: none;
 	border: 1px solid #4485d7;
 }
 
@@ -114,11 +111,8 @@ html{
 	font-size: 24px;
 }
 
-b {
-	font-size: 20px;
-}
 
-ul {
+.reviewbox ul {
 	width:1200px;
 	-webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: #4485d7;
@@ -126,7 +120,7 @@ ul {
     line-height: 1.42857143;
     color: #333;
     box-sizing: border-box;
-    margin: 0;
+    margin: auto;
     margin-top: 0;
     margin-bottom: 0;
     list-style: none;
@@ -139,8 +133,7 @@ ul {
 	height: 66px;
 }
 
-ul li{
-	 -webkit-text-size-adjust: 100%;
+.reviewbox ul li{
     -webkit-tap-highlight-color: #4485d7;
     font-size: 14px;
     line-height: 1.42857143;
@@ -156,38 +149,8 @@ ul li{
     font-size: 20px;
 }
 
-ul li:hover {
-    color: #4485d7;
-    border-bottom: 2px solid #4485d7;
-    font-weight: 600;
-}
-/* ul li:hover{ */
-/* 	border-bottom-width: 1px; */
-/* 	border-bottom: 1px solid #4485d7; */
-/* } */
-
-
-.btnbox>button:nth-child(-n+3) {
-	display: inline-block;
-	width: 30px;
-	height: 100%;
-	font-size: 18px;
-	background: white;
-	border-style: none;
-	font-weight: 200;
-	margin: 0px;
-	border: 1px solid #dfdfdf;
-	padding: 0px;
-	box-shadow: 2px 2px 2px #666;
-}
-
-.btnbox>button:nth-child(-n+3):active {
-	box-shadow: 2px 2px 2px white;
-}
-
-.btnbox>button:nth-child(-n+3):hover {
-	border-color: 2px sold #dfdfdf;
-	color: black;
+.reviewbox ul li:hover {
+	border-bottom: 1px solid #4485d7;
 }
 
 .btnbox {
@@ -232,6 +195,15 @@ select {
 	border-radius: 5px;
 }
 
+select option {
+	width: 150px;
+	text-align: center;
+	height: 40px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
 
 p b {
 	font-weight: 200;
@@ -243,42 +215,6 @@ p b {
 	font-size: 20px;
 }
 
-.reviewbox {
-	width: 1100px;
-	margin: auto;
-	height: 50px;
-	background-color: white;
-	height: 50px;
-	margin-top: 30px;
-}
-
-.reviewbox>h3:hover {
-	color: black;
-}
-
-.reviewbox>h3 {
-	text-align: center;
-	background-color: white;
-	width: 270px;
-	display: inline-block;
-	margin: 0px;
-	height: 100%;
-	line-height: 50px;
-	border: 1px solid #dfdfdf;
-	color: black;
-}
-
-.reviewbox>h3:after {
-	display: block;
-	content: '';
-	border-bottom: solid 3px dimgray;
-	transform: scaleX(0);
-	transition: transform 250ms ease-in-out;
-}
-
-.reviewbox>h3:hover:after {
-	transform: scaleX(1);
-}
 
 .Infobox {
 	text-align: center;
@@ -287,18 +223,9 @@ p b {
 }
 
 .imgbox>img {
-	width: 700px;;
-	height: 850px;
 	margin: auto;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	display: block;
-}
-
-.imgbox>img:nth-child(2) {
-	width: 700px;
-	height: 850px;
-	margin: auto;
+	width: auto;
+	height: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	display: block;
@@ -324,31 +251,6 @@ p b {
 	width: 80%;
 }
 
-.productInfo:first-child {
-	width: 60%;
-	border: 1px solid #dfdfdf;
-	border-top: 3px solid black;
-	border-collapse: collapse;
-}
-
-.productInfo:first-child td {
-	border: 1px solid #dfdfdf;
-	height: 45px;
-	font-weight: 200;
-}
-
-.productInfo tr td b {
-	float: left;
-	font-size: 12px;
-	font-weight: 200;
-	margin-left: 10px;
-}
-
-.productInfo tr td+td {
-	margin-left: 10px;
-	text-align: left;
-}
-
 .removeProudct {
 	font-weight: bold;
 	font-size: 20px;
@@ -360,11 +262,6 @@ p b {
 	display: inline-block;
 }
 
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
-	{
-	-webkit-appearance: none;
-	margin: 0;
-}
 
 .buyCount {
 	padding: 0px;
@@ -391,6 +288,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 .textbox {
 	width: 100%;
+	margin-bottom: 70px;
 }
 
 .reviewComment {
@@ -422,10 +320,306 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	trasition: 0.75s;
 }
 
-.recommProduct img:hover{
-	transform: scale(1.1);
-	trasition: 0.75s;
+.DetailMoreBtn{
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    background: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 30px 0 15px;
 }
+
+.review_btn{
+	float:right;
+	vertical-align: top;
+	padding-right: 10px;
+}
+
+.review_btn a {
+    font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
+    color: #333;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid #2b2f3a;
+    line-height: 1;
+    padding: 10px 40px 12px;
+    text-align: center;
+    margin-top: -6px;
+}
+
+.review_btn img{
+	width:18px;
+	vertical-align: bottom;
+	margin-right: 4px;
+}
+
+.photoList{
+	border-bottom: 1px solid #222;
+}
+
+.photoList ul {
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
+    display: table;
+    padding: 0 2px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.photoList ul li{
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 20px;
+}
+
+.photoList ul li img {
+	width: 142px; 
+	height: 142px; 
+	display: inline-block; 
+	float: left; 
+	margin-right: 5px;"
+}
+
+.reviewContent {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ebebeb;
+}
+
+.reviewPhoto ul {
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
+    display: table;
+    padding: 0 2px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.reviewPhoto ul li {
+	line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 20px;
+    
+}
+
+
+.reviewPhoto ul li img {
+	width: 100px; 
+	height: 100px; 
+	display: inline-block; 
+	float: left; 
+	margin-right: 5px;"
+}
+
+.productBox {
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 40px auto 0;
+    padding-bottom: 60px;
+}
+
+.productBoxInfo{
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid #ebebeb;
+}
+
+.productPageInfo{
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid #ebebeb;
+    position: relative;
+}
+
+[class*= "accordion_i_tit"]{
+	font-family: 'Noto Sans KR', sans-serif;
+    list-style: none;
+    box-sizing: border-box;
+    background-color: transparent;
+    text-decoration: none;
+    display: block;
+    font-weight: 400;
+    line-height: 1;
+    font-size: 24px;
+    color: #222;
+    padding: 22px 18px 24px;
+}
+
+.productPageInfo .accordion_i_tit:after {
+    width: 12px;
+    height: 12px;
+    border-right: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+    position: absolute;
+    right: 25px;
+    content: " ";
+    top: 30px;
+    transform: rotate(315deg);
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+.accodion_content dl dt {
+	padding: 5px 10px 0;
+    white-space: normal;
+    font-weight: bold;
+    color: #111111;
+}
+
+.accodion_content dl dd {
+    color: #555555;
+    vertical-align: top;
+    padding: 20px 10px 40px;
+}
+
+.goods_accordion_qna li{
+   border-bottom: 1px solid #e8e8e8;
+    position: relative;
+}
+
+[class*="accordion_q_tit"]{
+	display: block;
+    line-height: 1;
+    font-size: 15px;
+    color: #222;
+    padding: 14px 14px;
+}
+.js_detail accordion_q_cont{
+	display: none;
+    border-top: 1px solid #e8e8e8;
+    background: #f6f6f6;
+    padding: 40px 60px;
+    color: #222;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+}
+.pagination{
+	display: inline-block;
+    padding-left: 0;
+    margin: 30px 0;
+    border-radius: 0;
+}
+
+.qna
+{
+    padding: 1px 0 4px 0;
+    font-size: 14px;
+    width: 724px;
+    display: inline-block;
+    color: #888;
+}
+
+.qna_result{
+    width: 70px;
+    text-align: center;
+    display: inline-block;
+}
+
+.qnaWrap{
+	display: block;
+    line-height: 1;
+    font-size: 15px;
+    color: #222;
+    padding: 9px 9px;
+}
+
+.accordion_q_tit1{
+	display: inline-block;
+}
+
+.accordion_i_cont3{
+    display: none;
+    color: #6b97a4;
+    background: #fff;
+    padding: 8px;
+}
+
+.review_btn_wr{
+	float:right;
+	vertical-align: top;
+	padding-right: 10px;
+}
+
+.review_btn_wr a {
+   font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
+    color: #333;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid #2b2f3a;
+    line-height: 1;
+    padding: 10px 40px 12px;
+    text-align: center;
+    margin-top: -6px;
+}
+
+.review_btn_wr img{
+	width:18px;
+	vertical-align: bottom;
+	margin-right: 4px;
+}
+.pagination li.on span {
+    font-weight: bold;
+    color: #ff5e5e;
+}
+.pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 30px 0;
+    border-radius: 0;
+}
+
+.pagination ul {
+    padding: 20px 0 0;
+    text-align: center;
+}
+
 
 </style>
 <body>
@@ -434,7 +628,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<img src="${contextPath}/resources/product_img/${p.productMainPic}.jpg">
+			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg">
 		</div>
 		<div class="right">
 			<!-- 상품 정보 -->
@@ -469,7 +663,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
                                 <dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
                             	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px; margin-bottom: 5px;">
-                            	&nbsp;적립<p style="font-size: 15px; display: inline-block;">(구매가격의 0.5% 적립)</p>
+                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
                             </dt>
                                 </dl>
                                  <hr>
@@ -478,17 +672,17 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					<select class='size' name='size' required>
 						<!-- 사이즈 선택 창 -->
 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option>
-						<option value='S'>S</option>
-						<option value='M'>M</option>
-						<option value='L'>L</option>
-						<option value='XL'>XL</option>
+						<option value='S'>옵션1</option>
+						<option value='M'>옵션2</option>
+						<option value='L'>옵션3</option>
+						<option value='XL'>옵션4</option>
 					</select>
 
 
 					<div id="productResult">
 						<!-- 사이즈 선택시 내려오는 창 -->
-						<h4 class="productName" style="font-size: 15px;">
-							상품명 : ${p.productName} <span></span>
+						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
+							캠핑용 후라이팬 <span>(-20,000)</span>
 							<input type="hidden" name="productName" value="${p.productName}">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
 						</h4>
@@ -532,286 +726,244 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	<div class="Infobox">
 		<!-- 제품 사진 및 소개 칸 -->
 		<div class="imgbox">
-			<img src="${contextPath}/resources/product_img/${p.productDetailPic1}.jpg"> <img src="${contextPath}/resources/product_img/${p.productDetailPic2}.jpg"> <img
-				src="${contextPath}/resources/product_img/${p.productDetailPic3}.jpg">
+			<img src="https://recipe1.ezmember.co.kr/cache/shop/2023/04/24/5ba96dd7aef9a27712340b1795b190d3_m.jpg"> 
 		</div>
-		<br>
-		<div class="productInfo">
-			<!-- 제품소재 를 담은 박스 -->
-			<table class="productInfo">
-				<!-- 제품소재 및 정보 테이블 -->
-				<tr>
-					<td><b>제품 소재</b></td>
-					<td>&nbsp;&nbsp;Rayon 70% Nylon 30%</td>
-				</tr>
-
-				<tr>
-					<td><b>색상</b></td>
-					<td>&nbsp;&nbsp;제품명 참조</td>
-				</tr>
-
-				<tr>
-					<td><b>제조사</b></td>
-					<td>&nbsp;&nbsp;passion for Fashion</td>
-				</tr>
-
-				<tr>
-					<td><b>제조국</b></td>
-					<td>&nbsp;&nbsp;korea</td>
-				</tr>
-
-				<tr>
-					<td><b>세탁 방법 및 취급 시 주의사항</b></td>
-					<td>&nbsp;&nbsp;라벨 및 고객센터 참조</td>
-				</tr>
-
-				<tr>
-					<td><b>제조년원</b></td>
-					<td>&nbsp;&nbsp;2023/04</td>
-				</tr>
-
-				<tr>
-					<td><b>품질보증 기준</b></td>
-					<td>&nbsp;&nbsp;관련 법 및 소비자 분쟁 해결기준에 따름</td>
-				</tr>
-
-				<tr>
-					<td><b>A/S 책임자</b></td>
-					<td>&nbsp;passion for Fashion 고객센터</td>
-				</tr>
-			</table>
-			<br>
-		</div>
-	</div>
-	<hr style="color: #dfdfdf; width: 90%; margin: auto;">
-	<div class="reviewWrap"
-		style="margin-left: 110px; margin-right: 110px; margin-top: 5px;">
-		<h3 style="display: inline-block; font-size: 25px; font-weight: 200;">review</h3>
-		 <span></span> 
 		
-		<div style="font-size: 20px; font-weight: 200;">★★★★☆</div>
-		<div class="textbox">
-			<div>
-				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; display: inline-block; font-weight: 200;">user***</div>
-				<span style="float: right; font-size: 20px; font-weight: 200;">2023-05-05</span>
-			</div>
-			<img src="${contextPath}/resources/product_img/review.jpg" alt=""
-				style="width: 170px; height: 190px; display: inline-block; float: left; margin-bottom: 15px" />
-
-			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
-				<span class="reviewComment" style="font-weight: 200;">사이즈 좋아요</span> 
-				<span class="reviewComment" style="font-weight: 200;">착용감 굿</span> 
-				<span class="reviewComment" style="font-weight: 200;">실물이랑 같아요</span>
-
-				<p style="margin-left: 5px; margin-top: 10px; font-weight: 200;">지난해 색상 별로 3가지 다
-					구매해서 정말 활용도 있게 착용한 제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다. 지난해 색상 별로 3가지
-					다 구매해서 정말 활용도 있게 착용한 제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다. 착용한 제품이라
-					두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다. 지난해 색상 별로 3가지 다 구매해서 정말 활용도 있게 착용한
-					제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에 듭니다 착용한 제품이라 두벌재 구매합니다. 색상 핏 머두 너무 맘에
-					듭니다.</p>
-			</div>
-		</div>
+<!-- 		<div class="DetailMoreBtn"> -->
+<!-- 			<a>상세정보 더보기</a> -->
+<!-- 		</div> -->
 	</div>
-	<br>
+		<br>
 	
-		<div class="commProduct" style="width:100%; height:500px;margin-top: 100px; text-align: center;">
-				<h3 style="margin-bottom: 50px; display:inline-block; font-weight: 200;">commend item</h3>
-				<ul>
-					<li>
-						<a href="${contextPath}/productDetail/detail/124.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/Half Zipup SweatShirt NavY.jpg">
-							<p>Half Zipup Sweat Shirt_ Navy</p>
-							<p>120,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/125.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/cloths2.jpg">
-							<p>One Pocket Stand Collar Shirt_ Black</p>
-							<p>148,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/126.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/cloths3.jpg">
-							<p>Boucle Cable-knit Zip-up_ Down Pink</p>
-							<p>145,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/127.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/cloths5.jpg">
-							<p>One Tuck Curve Denim Pants_ Indigo Blue</p>
-							<p>100,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/128.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/1281.jpg">
-							<p>One Tuck Curve Denim Pants_ Light Blue</p>
-							<p>150,000</p>
-						</a>
-					</li>
+	
+	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
+	
+		<div class="reviewWrap1" style="padding: 10px;">
+				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">1</span>
+
+			<div class="review_btn">
+				<a href="javascript:gd_open_write_popup('goodsreview', '1000030759')">
+				<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
+			</div>
+			<div class="photoList">
+				<ul style="padding: 10px;">
+					<li ><img src="img" alt="" /></li>
+					<li><img src="img" alt="" /></li>
+					<li ><img src="img"" alt=""/></li>
 				</ul>
-		
-		</div>	
-		
-		<div class="recommProduct" style="width:100%; height:500px; margin-top: 15px; margin: auto; text-align: center;">
-				<h3 style="margin-bottom: 50px; margin-top: 10px; font-weight: 200;">with item</h3>
-				<ul>
-					<li>
-						<a href="${contextPath}/productDetail/detail/129.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/cloths6.jpg">
-							<p>Fatigue Parachute Pants_ Light Grey</p>
-							<p>145,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/130.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/shirts7.jpg">
-							<p>Dewdrop Boucle Knit Cardigan_ Brown</p>
-							<p>135,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/131.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/shirts5.jpg">
-							<p>Stripe Shirt_ Indigo</p>
-							<p>125,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/132.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/pants2.jpg">
-							<p>Heavy Sweat Pants_ Navy</p>
-							<p>110,000</p>
-						</a>
-					</li>
-					
-					<li>
-						<a href="${contextPath}/productDetail/detail/133.pr" class="aStyle">
-							<img alt="" src="${contextPath}/resources/product_img/pants1.jpg">
-							<p>Wide Denim Pants_ Indigo</p>
-							<p>155,000</p>
-						</a>
-					</li>
-				</ul>
-		
-		</div>	
-		
-		<hr style="color: #dfdfdf; width: 2%; margin: auto; margin-bottom: 100px;">
-		
-		<div class="refundWrap" style="text-align: center;">
-		<h3>배송 및 교환/환불 정보</h3>
-		<br>
-		<br>
-			<img alt="" src="${contextPath}/resources/image/refund.jpg">
+			</div>
 		</div>
 		
-<%-- 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/> --%>
+		<div class="textbox">
+			<div style="padding: 10px;">
+				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
+				
+				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
+				&nbsp;
+				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
+				
+				<div class="reviewPhoto">
+					<ul style="padding: 10px;">
+						<li ><img src="img" alt="" /></li>
+						<li><img src="img" alt="" /></li>
+						<li ><img src="img"" alt=""/></li>
+					</ul>
+				</div>
+			</div>
+			
+				
+			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
+
+				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
+					</div>
+			</div>
+			
+		</div>
+	
+	
+	<div class="productBox">
+		<ul	class="productBoxInfo">
+			<li class="productPageInfo">
+				<a class="accordion_i_tit" data-bdid="info">상품정보</a>			
+				<div class="accordion_i_cont" style="display: none;">
+					<div class="accodion_content">
+                        <dl>
+                            <dt>제품의 유형</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>생산자 및 소재지</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>제조연월일 및 유통기한</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>포장 단위별 용량(중량), 수량</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>원재료명 및 함량</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>소비자 상담 전화번호</dt>
+                            <dd>1234-1033</dd>
+                        </dl>
+                    </div>
+                </div>
+			</li>
+			<li class="productPageInfo">
+				<a class="accordion_i_tit2" data-bdid="info">배송/환불/교환</a>
+					<div class="accordion_i_cont2" style="display: none;">
+						<dl>
+                            <dt><h3 style="margin-left: 30px; margin-top: 20px;">배송안내</h3></dt>
+                            <dd>
+                                <div class="admin_msg"><div style="text-align: center;" align="center"><img src="https://ai.esmplus.com/nowhome22/%EC%83%81%ED%92%88%EB%B3%B4%EA%B8%B0/%EB%B0%B0%EC%86%A1%EC%95%88%EB%82%B4_5000.jpg"></div></div>
+                            </dd>
+        
+                            <dt><h3>교환/반품시 주의사항</h3></dt>
+                            <dd>
+                                <div class="admin_msg">
+                                    <p>
+                                        <strong><span style="font-size: 10pt;">- 판매 업체마다 반품 회수지와 택배사가 다르므로 네이버페이로 결제하셨을 경우 반품접수가 불가합니다. (고객센터로 문의하시기 바랍니다.)</span></strong>
+                                    </p>
+                                </div>
+                            </dd>
+
+                            <dt><h3>판매자 정보</h3></dt>
+                            <dd>
+                                <table style="width:100%;">
+                                    <tbody><tr>
+                                        <th style="width:150px;">상호 / 대표</th>
+                                        <td>주식회사 ㅎㄹㅅㄲ / 박신우</td>
+                                        <th style="width:150px;">사업장 소재지</th>
+                                        <td>서울특별시 중구 남대문로 120 그레이츠 청계(구 대일빌딩) 2F, 3F</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:150px;">e-mail</th>
+                                        <td>hollosekki@google.co.kr</td>
+                                        <th style="width:150px;">연락처</th>
+                                        <td>1133-1234</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:150px;">통신판매업 신고번호</th>
+                                        <td>2023-서울중구-11133</td>
+                                        <th style="width:150px;">사업자번호</th>
+                                        <td>333-10-02541</td>
+                                    </tr>
+                                </tbody></table>
+                            </dd>
+        					<br>
+                            <dt style="background:#E3F6FF; border:1px solid #ddd; padding:9px 12px 10px; border-radius:6px;">본 상품과 컨텐츠는 입점 판매자가 등록한 것으로 (주)홀로세끼는 통신판매중개자로서 거래 당사자가 아니기 때문에 그 내용과 거래에 대한 책임을 일체 지지 않습니다.<br>
+                                <span style="color:#065E87;">만개의레시피 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
+                            <dd></dd>
+                        </dl>
+                      </div> 
+					</li>
+				</ul>
+				
+				<li id="page-qna" class="accordion_i_li">
+                <a class="accordion_i_tit3">문의<span>(2)</span></a>
+                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
+                    <div id="ajax-goods-goodsqa-list">
+                    
+              	<ul class="goods_accordion_qna">
+            <li class="accordion_q_li js_data_row">
+                <a href="javascript:void(0)" class="qnaWrap">
+                    <div class="accordion_q_tit1">
+                    <div class="qna">
+                        상품문의 입니다.
+                    </div>
+                        <b class="writer">조단</b>
+                        <span class="rv_cont_date">2023.01.31</span>
+                        <span class="qna_result">답변완료</span>
+                    </div>
+                </a>
+                
+                <div class="js_detail accordion_q_cont"></div>
+            </li>
+            <li class="accordion_q_li js_data_row" >
+                <a href="javascript:void(0)" class="qnaWrap">
+                    <div class="accordion_q_tit1">
+                    <div class="qna">
+                        상품문의 입니다.
+                    </div>
+                        <b class="writer">조단</b>
+                        <span class="rv_cont_date">2023.01.31</span>
+                        <span class="qna_result">답변완료</span>
+                    </div>
+                </a>
+                
+                <div class="js_detail accordion_q_cont"></div>
+            </li>
+			</ul>
+				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
+				    <div class="review_btn_wr"><a href="">
+				    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
+				    </div>
+				</div>
+								<div class="pagination">
+							<ul>
+								<li class="on">
+								<span>1</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+          	</li>
+				
+	
+	
+</div><!-- 전체를 감싸는 박스 -->
 	<script>
 	
-	const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명
-	
-	const size = document.getElementsByClassName("size"); //사이즈 선택 창
-	
-	let buyCount = document.getElementsByClassName("buyCount")[0]; // 상품 수량 
-	const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
-	const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
-	let productPrice = document.getElementsByClassName("productPrice")[0];
-	const buyBtn = document.getElementById("buyBtn");
-	
-	
-	function priceToString(productPrice) {
-	    return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	}
+	$('.accordion_i_tit').click(function(){
+		$('.accordion_i_cont').toggle(400);
+	})
+	$('.accordion_i_tit2').click(function(){
+		$('.accordion_i_cont2').toggle(400);
+	})
+	$('.accordion_i_tit3').click(function(){
+		$('.accordion_i_cont3').toggle(400);
+	})
 	
 	
 
-	size[0].addEventListener("change", function(){	// select사이즈 의 value값이 바뀌면 실행
-		
-		for(const sizeSelect of size){
-			if(sizeSelect.value != ''){	
-					document.getElementById("productResult").style.display='block'; //사이즈 가 선택으로 되어있을시 display block;
-					productPrice.innerText=priceToString(buyCount.value*${totalPrice});
-					size[0].addEventListener("change", function(){	//사이즈를 선택 시 다시 다른 사이즈로 변경시 수량 1로 초기화
-						buyCount.value = 1;
-
-				})
-				
-				document.getElementsByClassName("removeProudct")[0].addEventListener("click", function(){ //x 버튼을 클릭시 수량구매창이 닫힌다.
-					document.getElementById("productResult").style.display='none';
-					sizeSelect.value = ''; // 사이즈를 선택으로 바뀐다.
-				})
-		
-				
-				} else if(sizeSelect.value == ''){
-					document.getElementById("productResult").style.display='none';
-					
-				}
-					productName.childNodes[1].innerText = sizeSelect.value;
-					
-			}
-		})
-		
-	
-	increase.addEventListener("click", function(){
-		buyCount.value++;
-		productPrice.innerText = priceToString(buyCount.value*${totalPrice});
-		
-	})
-	
-	decrease.addEventListener("click", function(){
-		buyCount.value--;
-		
-		productPrice.innerText = priceToString(buyCount.value*${totalPrice});
-		
-		if(buyCount.value < 1){
-			buyCount.value = 1
-		productPrice.innerText = priceToString(buyCount.value*${totalPrice});
-			
-		}
-	})
-	
-	$(document).ready(function() {
-    $(".cartbtn").click(function() {
-        var productNo = $("input[name='productNo']").val();
-        var cartCount = $(".buyCount").val();
-        var optionSize = $(".size").val();
+// 	$(document).ready(function() {
+//     $(".cartbtn").click(function() {
+//         var productNo = $("input[name='productNo']").val();
+//         var cartCount = $(".buyCount").val();
+//         var optionSize = $(".size").val();
         
         
-        var data = {
-            productNo: productNo,
-            cartCount: cartCount,
-            optionSize: optionSize
-        };
+//         var data = {
+//             productNo: productNo,
+//             cartCount: cartCount,
+//             optionSize: optionSize
+//         };
         
-        $.ajax({
-            url: "${contextPath}/addCart.ca",
-            type: "post",
-            data: data,
-            success: function(data) {
-            	if(data > 0) {
-                alert("카트 담기 성공");
-            	}
-            },
-            error: function(data) {
-                alert("카트 담기 실패");
-            }
-        });
-    });
-});
+//         $.ajax({
+//             url: "${contextPath}/addCart.ca",
+//             type: "post",
+//             data: data,
+//             success: function(data) {
+//             	if(data > 0) {
+//                 alert("카트 담기 성공");
+//             	}
+//             },
+//             error: function(data) {
+//                 alert("카트 담기 실패");
+//             }
+//         });
+//     });
+// });
 	
 	
-	
-<!-- </script> -->
+	 </script> 
 
 </body>
 </html>

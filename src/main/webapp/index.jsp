@@ -22,6 +22,10 @@
 		<a href="paySuccess.ma"><span>paySuccess</span></a>
 		<a href="join.en"><span>join</span></a>
 		<a href="recipeList.rc"><span>레시피 메인</span></a>
+		<a href="freeBoard.bo"><span>freeBoard</span></a>
+		<a href="attendance_Check.ma"><span>출석확인</span></a>
+		
+		
 	</div>
 <%@ include file="WEB-INF/views/home.jsp" %>
 	

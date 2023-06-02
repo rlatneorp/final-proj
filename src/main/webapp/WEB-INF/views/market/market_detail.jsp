@@ -9,6 +9,7 @@
 <title>passion for Fashion</title>
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
 	rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <style>
 * {
@@ -20,6 +21,12 @@
 html{
 	scroll-behavior: smooth;
 }
+
+ ul, li {
+    list-style: none;
+    padding:0px;
+}
+
 
  .aStyle {
  	color: black;
@@ -78,7 +85,6 @@ html{
 	margin-top: 10px;
 	height: 120px;
 	padding-bottom: 5px;
-	display: none;
 	border: 1px solid #4485d7;
 }
 
@@ -128,7 +134,6 @@ html{
 }
 
 .reviewbox ul li{
-	 -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: #4485d7;
     font-size: 14px;
     line-height: 1.42857143;
@@ -283,6 +288,7 @@ p b {
 
 .textbox {
 	width: 100%;
+	margin-bottom: 70px;
 }
 
 .reviewComment {
@@ -356,6 +362,10 @@ p b {
 	margin-right: 4px;
 }
 
+.photoList{
+	border-bottom: 1px solid #222;
+}
+
 .photoList ul {
     line-height: 1.42857143;
     color: #333;
@@ -363,7 +373,6 @@ p b {
     margin-top: 0;
     margin-bottom: 0;
     list-style: none;
-    border-bottom: 1px solid #ebebeb;
     display: table;
     padding: 0 2px;
     background: #fff;
@@ -390,14 +399,18 @@ p b {
 	margin-right: 5px;"
 }
 
-.reviewPhot ul {
+.reviewContent {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ebebeb;
+}
+
+.reviewPhoto ul {
     line-height: 1.42857143;
     color: #333;
     box-sizing: border-box;
     margin-top: 0;
     margin-bottom: 0;
     list-style: none;
-    border-bottom: 1px solid #ebebeb;
     display: table;
     padding: 0 2px;
     background: #fff;
@@ -414,7 +427,9 @@ p b {
     display: table-cell;
     vertical-align: middle;
     font-size: 20px;
+    
 }
+
 
 .reviewPhoto ul li img {
 	width: 100px; 
@@ -423,6 +438,188 @@ p b {
 	float: left; 
 	margin-right: 5px;"
 }
+
+.productBox {
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 40px auto 0;
+    padding-bottom: 60px;
+}
+
+.productBoxInfo{
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid #ebebeb;
+}
+
+.productPageInfo{
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid #ebebeb;
+    position: relative;
+}
+
+[class*= "accordion_i_tit"]{
+	font-family: 'Noto Sans KR', sans-serif;
+    list-style: none;
+    box-sizing: border-box;
+    background-color: transparent;
+    text-decoration: none;
+    display: block;
+    font-weight: 400;
+    line-height: 1;
+    font-size: 24px;
+    color: #222;
+    padding: 22px 18px 24px;
+}
+
+.productPageInfo .accordion_i_tit:after {
+    width: 12px;
+    height: 12px;
+    border-right: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+    position: absolute;
+    right: 25px;
+    content: " ";
+    top: 30px;
+    transform: rotate(315deg);
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+.accodion_content dl dt {
+	padding: 5px 10px 0;
+    white-space: normal;
+    font-weight: bold;
+    color: #111111;
+}
+
+.accodion_content dl dd {
+    color: #555555;
+    vertical-align: top;
+    padding: 20px 10px 40px;
+}
+
+.goods_accordion_qna li{
+   border-bottom: 1px solid #e8e8e8;
+    position: relative;
+}
+
+[class*="accordion_q_tit"]{
+	display: block;
+    line-height: 1;
+    font-size: 15px;
+    color: #222;
+    padding: 14px 14px;
+}
+.js_detail accordion_q_cont{
+	display: none;
+    border-top: 1px solid #e8e8e8;
+    background: #f6f6f6;
+    padding: 40px 60px;
+    color: #222;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+}
+.pagination{
+	display: inline-block;
+    padding-left: 0;
+    margin: 30px 0;
+    border-radius: 0;
+}
+
+.qna
+{
+    padding: 1px 0 4px 0;
+    font-size: 14px;
+    width: 724px;
+    display: inline-block;
+    color: #888;
+}
+
+.qna_result{
+    width: 70px;
+    text-align: center;
+    display: inline-block;
+}
+
+.qnaWrap{
+	display: block;
+    line-height: 1;
+    font-size: 15px;
+    color: #222;
+    padding: 9px 9px;
+}
+
+.accordion_q_tit1{
+	display: inline-block;
+}
+
+.accordion_i_cont3{
+    display: none;
+    color: #6b97a4;
+    background: #fff;
+    padding: 8px;
+}
+
+.review_btn_wr{
+	float:right;
+	vertical-align: top;
+	padding-right: 10px;
+}
+
+.review_btn_wr a {
+   font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
+    color: #333;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid #2b2f3a;
+    line-height: 1;
+    padding: 10px 40px 12px;
+    text-align: center;
+    margin-top: -6px;
+}
+
+.review_btn_wr img{
+	width:18px;
+	vertical-align: bottom;
+	margin-right: 4px;
+}
+.pagination li.on span {
+    font-weight: bold;
+    color: #ff5e5e;
+}
+.pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 30px 0;
+    border-radius: 0;
+}
+
+.pagination ul {
+    padding: 20px 0 0;
+    text-align: center;
+}
+
 
 </style>
 <body>
@@ -484,8 +681,8 @@ p b {
 
 					<div id="productResult">
 						<!-- 사이즈 선택시 내려오는 창 -->
-						<h4 class="productName" style="font-size: 15px;">
-							상품명 : ${p.productName} <span></span>
+						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
+							캠핑용 후라이팬 <span>(-20,000)</span>
 							<input type="hidden" name="productName" value="${p.productName}">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
 						</h4>
@@ -555,7 +752,6 @@ p b {
 					<li ><img src="img"" alt=""/></li>
 				</ul>
 			</div>
-			<hr style="color: #4485d7;">
 		</div>
 		
 		<div class="textbox">
@@ -581,109 +777,193 @@ p b {
 				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
 					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
 					</div>
-					<hr>
 			</div>
 			
 		</div>
-		
-	</div>
+	
+	
+	<div class="productBox">
+		<ul	class="productBoxInfo">
+			<li class="productPageInfo">
+				<a class="accordion_i_tit" data-bdid="info">상품정보</a>			
+				<div class="accordion_i_cont" style="display: none;">
+					<div class="accodion_content">
+                        <dl>
+                            <dt>제품의 유형</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>생산자 및 소재지</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>제조연월일 및 유통기한</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>포장 단위별 용량(중량), 수량</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>원재료명 및 함량</dt>
+                            <dd>상세 페이지 참고</dd>
+                        </dl>
+                        <dl>
+                            <dt>소비자 상담 전화번호</dt>
+                            <dd>1234-1033</dd>
+                        </dl>
+                    </div>
+                </div>
+			</li>
+			<li class="productPageInfo">
+				<a class="accordion_i_tit2" data-bdid="info">배송/환불/교환</a>
+					<div class="accordion_i_cont2" style="display: none;">
+						<dl>
+                            <dt><h3 style="margin-left: 30px; margin-top: 20px;">배송안내</h3></dt>
+                            <dd>
+                                <div class="admin_msg"><div style="text-align: center;" align="center"><img src="https://ai.esmplus.com/nowhome22/%EC%83%81%ED%92%88%EB%B3%B4%EA%B8%B0/%EB%B0%B0%EC%86%A1%EC%95%88%EB%82%B4_5000.jpg"></div></div>
+                            </dd>
+        
+                            <dt><h3>교환/반품시 주의사항</h3></dt>
+                            <dd>
+                                <div class="admin_msg">
+                                    <p>
+                                        <strong><span style="font-size: 10pt;">- 판매 업체마다 반품 회수지와 택배사가 다르므로 네이버페이로 결제하셨을 경우 반품접수가 불가합니다. (고객센터로 문의하시기 바랍니다.)</span></strong>
+                                    </p>
+                                </div>
+                            </dd>
 
+                            <dt><h3>판매자 정보</h3></dt>
+                            <dd>
+                                <table style="width:100%;">
+                                    <tbody><tr>
+                                        <th style="width:150px;">상호 / 대표</th>
+                                        <td>주식회사 ㅎㄹㅅㄲ / 박신우</td>
+                                        <th style="width:150px;">사업장 소재지</th>
+                                        <td>서울특별시 중구 남대문로 120 그레이츠 청계(구 대일빌딩) 2F, 3F</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:150px;">e-mail</th>
+                                        <td>hollosekki@google.co.kr</td>
+                                        <th style="width:150px;">연락처</th>
+                                        <td>1133-1234</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:150px;">통신판매업 신고번호</th>
+                                        <td>2023-서울중구-11133</td>
+                                        <th style="width:150px;">사업자번호</th>
+                                        <td>333-10-02541</td>
+                                    </tr>
+                                </tbody></table>
+                            </dd>
+        					<br>
+                            <dt style="background:#E3F6FF; border:1px solid #ddd; padding:9px 12px 10px; border-radius:6px;">본 상품과 컨텐츠는 입점 판매자가 등록한 것으로 (주)홀로세끼는 통신판매중개자로서 거래 당사자가 아니기 때문에 그 내용과 거래에 대한 책임을 일체 지지 않습니다.<br>
+                                <span style="color:#065E87;">만개의레시피 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
+                            <dd></dd>
+                        </dl>
+                      </div> 
+					</li>
+				</ul>
+				
+				<li id="page-qna" class="accordion_i_li">
+                <a class="accordion_i_tit3">문의<span>(2)</span></a>
+                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
+                    <div id="ajax-goods-goodsqa-list">
+                    
+              	<ul class="goods_accordion_qna">
+            <li class="accordion_q_li js_data_row">
+                <a href="javascript:void(0)" class="qnaWrap">
+                    <div class="accordion_q_tit1">
+                    <div class="qna">
+                        상품문의 입니다.
+                    </div>
+                        <b class="writer">조단</b>
+                        <span class="rv_cont_date">2023.01.31</span>
+                        <span class="qna_result">답변완료</span>
+                    </div>
+                </a>
+                
+                <div class="js_detail accordion_q_cont"></div>
+            </li>
+            <li class="accordion_q_li js_data_row" >
+                <a href="javascript:void(0)" class="qnaWrap">
+                    <div class="accordion_q_tit1">
+                    <div class="qna">
+                        상품문의 입니다.
+                    </div>
+                        <b class="writer">조단</b>
+                        <span class="rv_cont_date">2023.01.31</span>
+                        <span class="qna_result">답변완료</span>
+                    </div>
+                </a>
+                
+                <div class="js_detail accordion_q_cont"></div>
+            </li>
+			</ul>
+				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
+				    <div class="review_btn_wr"><a href="">
+				    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
+				    </div>
+				</div>
+								<div class="pagination">
+							<ul>
+								<li class="on">
+								<span>1</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+          	</li>
+				
+	
+	
+</div><!-- 전체를 감싸는 박스 -->
 	<script>
 	
-	const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명
-	
-	const size = document.getElementsByClassName("size"); //사이즈 선택 창
-	
-	let buyCount = document.getElementsByClassName("buyCount")[0]; // 상품 수량 
-	const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
-	const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
-	let productPrice = document.getElementsByClassName("productPrice")[0];
-	const buyBtn = document.getElementById("buyBtn");
-	
-	
-	function priceToString(productPrice) {
-	    return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	}
+	$('.accordion_i_tit').click(function(){
+		$('.accordion_i_cont').toggle(400);
+	})
+	$('.accordion_i_tit2').click(function(){
+		$('.accordion_i_cont2').toggle(400);
+	})
+	$('.accordion_i_tit3').click(function(){
+		$('.accordion_i_cont3').toggle(400);
+	})
 	
 	
 
-	size[0].addEventListener("change", function(){	// select사이즈 의 value값이 바뀌면 실행
-		
-		for(const sizeSelect of size){
-			if(sizeSelect.value != ''){	
-					document.getElementById("productResult").style.display='block'; //사이즈 가 선택으로 되어있을시 display block;
-					productPrice.innerText=priceToString(buyCount.value*${totalPrice});
-					size[0].addEventListener("change", function(){	//사이즈를 선택 시 다시 다른 사이즈로 변경시 수량 1로 초기화
-						buyCount.value = 1;
-
-				})
-				
-				document.getElementsByClassName("removeProudct")[0].addEventListener("click", function(){ //x 버튼을 클릭시 수량구매창이 닫힌다.
-					document.getElementById("productResult").style.display='none';
-					sizeSelect.value = ''; // 사이즈를 선택으로 바뀐다.
-				})
-		
-				
-				} else if(sizeSelect.value == ''){
-					document.getElementById("productResult").style.display='none';
-					
-				}
-					productName.childNodes[1].innerText = sizeSelect.value;
-					
-			}
-		})
-		
-	
-	increase.addEventListener("click", function(){
-		buyCount.value++;
-		productPrice.innerText = priceToString(buyCount.value*${totalPrice});
-		
-	})
-	
-	decrease.addEventListener("click", function(){
-		buyCount.value--;
-		
-		productPrice.innerText = priceToString(buyCount.value*${totalPrice});
-		
-		if(buyCount.value < 1){
-			buyCount.value = 1
-		productPrice.innerText = priceToString(buyCount.value*${totalPrice});
-			
-		}
-	})
-	
-	$(document).ready(function() {
-    $(".cartbtn").click(function() {
-        var productNo = $("input[name='productNo']").val();
-        var cartCount = $(".buyCount").val();
-        var optionSize = $(".size").val();
+// 	$(document).ready(function() {
+//     $(".cartbtn").click(function() {
+//         var productNo = $("input[name='productNo']").val();
+//         var cartCount = $(".buyCount").val();
+//         var optionSize = $(".size").val();
         
         
-        var data = {
-            productNo: productNo,
-            cartCount: cartCount,
-            optionSize: optionSize
-        };
+//         var data = {
+//             productNo: productNo,
+//             cartCount: cartCount,
+//             optionSize: optionSize
+//         };
         
-        $.ajax({
-            url: "${contextPath}/addCart.ca",
-            type: "post",
-            data: data,
-            success: function(data) {
-            	if(data > 0) {
-                alert("카트 담기 성공");
-            	}
-            },
-            error: function(data) {
-                alert("카트 담기 실패");
-            }
-        });
-    });
-});
+//         $.ajax({
+//             url: "${contextPath}/addCart.ca",
+//             type: "post",
+//             data: data,
+//             success: function(data) {
+//             	if(data > 0) {
+//                 alert("카트 담기 성공");
+//             	}
+//             },
+//             error: function(data) {
+//                 alert("카트 담기 실패");
+//             }
+//         });
+//     });
+// });
 	
 	
-	
-<!-- </script> -->
+	 </script> 
 
 </body>
 </html>

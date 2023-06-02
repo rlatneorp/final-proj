@@ -111,6 +111,10 @@ img {
 	margin-left: 30px;
 }
 
+img:hover {
+	cursor:pointer;
+}
+
 #searchElement{
 	width:1200px;
 	right:1200;
@@ -125,10 +129,8 @@ img {
 	
 	<br><br><br><br>
 	
-	<!-- 자유게시글 -->
-	<div id="searchTable">
-		<!-- search  -->
 	
+	<div id="searchTable">	
 		<div class="search" style="margin:0 auto; left:290px;">
 			<select style="width: 100px">
 				<option>글번호</option>
@@ -137,134 +139,144 @@ img {
 				<option>내용</option>
 			</select>
 			<div>
-				<input type="text" placeholder="검색어 입력"> <img
-					src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
+				<input id="searchInput" type="text" placeholder="검색어 입력"> 
+				<img id="searchIcon" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
 			</div>
-			<div></div>
-		</div>
-	<br><br><br><br><br>
+		</div><br><br><br><br><br>
+	
+	<!-- 자유게시글 -->
 	<table>
-		<tr style="background-color: #B0DAFF; opacity: 90%">
-			<th>글번호</th>
-			<th>작성자</th>
-			<th>제목</th>
-			<th>작성일</th>
-			<th>조회수</th>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[59]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[10]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[19]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[2]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[8]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[8]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[8]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[8]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[8]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>박보보</td>
-			<td>이렇게 드셔보세요[8]</td>
-			<td>2023-06-01</td>
-			<td>15912</td>
-		</tr>
-
-
+			<tr style="background-color: #B0DAFF; opacity: 90%">
+				<th>글번호</th>
+				<th>작성자</th>
+				<th>제목</th>
+				<th>작성일</th>
+				<th>조회수</th>
+			</tr>
+			<tbody id="tbody">
+			<tr>
+				<td>1</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[59]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[10]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[19]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[2]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[8]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[8]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[8]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[8]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[8]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>박보보</td>
+				<td>이렇게 드셔보세요[8]</td>
+				<td>2023-06-01</td>
+				<td>15912</td>
+			</tr>
+		</tbody>
 	</table>
 	</div>
 	
+	<!-- 작성 버튼 -->
 	<div style="width: 900px; margin: 0 auto; text-align: right;">
-		<a href="#" class="btn-3d blue">작성하기</a>
-	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-
-
+		<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
+	</div><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 	<%@include file="../common/footer.jsp"%>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
+<script>
+	//테이블에 마우스 올렸을 때 css
+	const tbody = document.getElementById('tbody');
+	const trs = tbody.children;
+	
+	for(tr of trs) {
+		tr.addEventListener('click', function() {
+			location.href = '${contextPath}/selectFreeBoard.bo';
+		})
+		
+		 tr.addEventListener('mouseenter', function() {
+			    this.style.backgroundColor = 'rgba(176, 218, 255, 0.3)'; // 마우스를 올렸을 때의 스타일
+			    this.style.cursor = 'pointer';
+			  });
+
+		  tr.addEventListener('mouseleave', function() {
+		    this.style.backgroundColor = ''; // 마우스를 뗐을 때의 스타일 (기존 스타일로 복구)
+		  }); 
+	}
+	
+	//검색 img 클릭했을 때
+	const searchInput = document.getElementById('searchInput');
+	document.getElementById('searchIcon').addEventListener('click', function() {
+		//여기에 ajax
+		searchInput.value = '';
+		
+	})
+	
+	//검색어 입력 엔터 기능 
+	searchInput.addEventListener('keyup', function(event) {
+	  if (event.key === 'Enter') {
+	    const searchText = searchInput.value
+	    //여기에 ajax로 searchText 넘기기 
+	    
+	    console.log('검색어:', searchText);
+	    searchInput.value = '';
+	  }
+	});
+	
+	//작성하기 버튼 클릭 시 작성하기 페이지로 이동 
+	document.getElementById('')
+</script>
 </html>

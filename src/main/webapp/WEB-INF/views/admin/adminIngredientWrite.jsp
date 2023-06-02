@@ -19,9 +19,9 @@
 		<form action="${contextPath}/adminIngredientUpdate.ad" method="post">
 			<div class="row">
 				<div class="col-6 row">
-					<h5 class="my-3">- 식재료정보 -</h5>
-					<span class="col-3">재료번호</span>
-					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="1" readonly>
+					<h5 class="mt-3 mb-5">- 식재료등록 -</h5>
+<!-- 					<span class="col-3">재료번호</span> -->
+<!-- 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="1" readonly> -->
 					<span class="col-3">등록자</span>
 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="관리자1" readonly>
 					<span class="col-3">재료이름</span>
@@ -42,7 +42,7 @@
 					<span class="col-3">원</span>
 					
 					<span class="col-3">내용</span>					
-					<textarea rows="10" class="col-9 mb-2 rounded" placeholder="재료 내용을 입력해주세요.">어느 요리에나 쓰이는 양파! 배송할 때 같이 주문하세요!</textarea>
+					<textarea rows="10" class="col-9 mb-2 rounded" placeholder="재료 내용을 입력해주세요."></textarea>
 					
 					<span class="col-3">공식등록</span>
 					<button type="button" class="col-2 mb-2 rounded" style="border: 2px solid rgba(0,0,0,0.1); ">O</button>
@@ -62,10 +62,11 @@
 					</div>
 				</div>
 				
-				<input type="hidden" name="page" value="">
-				<div class="d-flex justify-content-center pt-5">
-					<button type="submit" class="rounded me-4" style="width: 100px; height:40px; border: 2px solid rgba(0,0,0,0.1); background:white; color: rgba(0,0,0,0.8);">수정하기</button>
-					<button type="button" class="rounded" onclick="location.href='${contextPath}/adminIngredientManage.ad?page='" style="width: 100px; height:40px; border: 2px solid rgba(0,0,0,0.1); background:white; color: rgba(0,0,0,0.8);">뒤로가기</button>
+				<div class="d-flex justify-content-center mb-5">
+					<div class="d-flex">
+						<button onclick="location.href='${contextPath}/adminIngredientInsert.ad'" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">등록하기</button>
+						<button onclick="location.href='${contextPath}/adminIngredientManage.ad'" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+					</div>
 				</div>
 			</div>
 		</form>

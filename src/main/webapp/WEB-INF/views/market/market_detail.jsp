@@ -109,7 +109,7 @@ b {
 	font-size: 20px;
 }
 
-ul {
+.reviewbox ul {
 	width:1200px;
 	-webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: #4485d7;
@@ -130,8 +130,7 @@ ul {
 	height: 66px;
 }
 
-ul li{
-	 -webkit-text-size-adjust: 100%;
+.reviewbox ul li{
     -webkit-tap-highlight-color: #4485d7;
     font-size: 14px;
     line-height: 1.42857143;

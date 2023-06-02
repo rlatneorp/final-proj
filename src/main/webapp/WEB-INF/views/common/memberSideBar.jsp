@@ -52,7 +52,7 @@
 		margin: 70px; display: inline-block;
 	}
 	#mbtn{
-		width: 140px; height: 45px; border-radius: 10px;
+		width: 130px; height: 40px; border-radius: 10px;
 		border: none; font-weight: bold; font-size: 17px;
 	}
 	.service{

@@ -26,8 +26,9 @@
 		margin: 70px; display: inline-block;
 	}
 	#mbtn{
-		width: 140px; height: 45px; border-radius: 10px;
+		width: 130px; height: 40px; border-radius: 10px;
 		border: none; font-weight: bold; font-size: 17px;
+		margin-bottom: 10px;
 	}
 	.service{
 		font-weight: bold; font-size: 16px;
@@ -48,6 +49,31 @@
 		border-radius: 20px;
 		box-shadow: 0px 5px black;
 	}
+	.follow{
+		border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		background: #B0DAFF;
+	}
+	#modal{
+		border: 1px solid black; width: 500px; height: 600px;
+		border-radius: 15px; margin: 0 auto;
+	}
+	.modal-header{background: #B0DAFF;}
+	#following{
+		width: 500px; height: 600px;
+		margin-left: 750px;
+	}
+	.followName{
+		font-size: 17px; font-weight: bold;
+		margin-right: 200px;
+	}
+	.modalFollow{
+		border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		background: rgba(224, 224, 224, 0.74);
+	}
 </style>
 </head>
 <body>
@@ -66,8 +92,9 @@
 					<div class="name">
 						<br>
 						<p style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219);">홍길동님</p>
-						<br>
-						<button id="mbtn">출석하기</button>
+						<button id="mbtn">출석하기</button><br>
+						<button class="follow" data-bs-toggle="modal" data-bs-target="#following">팔로잉</button>
+						<button class="follow">팔로워</button>
 					</div>
 					<div class="name">
 						<br>
@@ -102,6 +129,83 @@
 				<p class="sub">나를 직접 소개하여 사람들에게 알려보세요.</p><br><br>
 				<label class="profile" style="margin-right: 605px;">팔로잉 / 팔로워</label><button class="moveBtn" onclick="location.href='myPage_Follow.me'">이동</button>
 				<p class="sub">팔로잉과 팔로워를 볼 수 있습니다.</p>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="followingLabel">팔로잉</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="followingLabel">팔로워</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
+					<button class="modalFollow">언팔로우</button>
+				</div>
 			</div>
 		</div>
 	</div>

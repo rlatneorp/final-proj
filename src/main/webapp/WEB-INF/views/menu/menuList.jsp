@@ -53,6 +53,46 @@
 	#middle{width: 1250px; height: 50px; font-weight: bold; font-size: 20px; border-bottom: 1px solid black; margin: auto;}
 	.cardColor{background-color: #B0DAFF;}
 	.likeBtn{color: black;}
+	
+	/* 	페이지 */
+	.page_wrap {
+		text-align:center;
+		font-size:0;
+	}
+	.page_nation {
+		display:inline-block;
+	}
+	.page_nation .none {
+		display:none;
+	}
+	.page_nation a {
+		display:block;
+		margin:0 3px;
+		float:left;
+		width:28px;
+		height:28px;
+		line-height:28px;
+		text-align:center;
+		background-color:#fff;
+		font-size:13px;
+		color:#999999;
+		text-decoration:none;
+	}
+	.page_nation .arrow {
+		margin-top: 0;
+	}
+	.page_nation .prev {
+		background:white;
+	}
+	.page_nation .next {
+		background:white;
+	}
+	.page_nation a.active {
+		background-color:#B0DAFF;
+		color:white;
+		border:1px solid #B0DAFF;
+		border-radius: 100%;
+	}
 </style>
 
 </head>
@@ -179,6 +219,18 @@
 			</c:forEach>
 		</div>
 	</div>
+</div>
+
+<div class="page_wrap">
+   <div class="page_nation">
+      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a href="#">5</a>
+      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+   </div>
 </div>
 
 <br>

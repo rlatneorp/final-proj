@@ -124,6 +124,46 @@
 	
 	.modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
 	.moCon{height: 75px; border-radius: 10px;}
+	
+	/* 	페이지 */
+	.page_wrap {
+		text-align:center;
+		font-size:0;
+	}
+	.page_nation {
+		display:inline-block;
+	}
+	.page_nation .none {
+		display:none;
+	}
+	.page_nation a {
+		display:block;
+		margin:0 3px;
+		float:left;
+		width:28px;
+		height:28px;
+		line-height:28px;
+		text-align:center;
+		background-color:#fff;
+		font-size:13px;
+		color:#999999;
+		text-decoration:none;
+	}
+	.page_nation .arrow {
+		margin-top: 0;
+	}
+	.page_nation .prev {
+		background:white;
+	}
+	.page_nation .next {
+		background:white;
+	}
+	.page_nation a.active {
+		background-color:#19A7CE;
+		color:white;
+		border:1px solid #19A7CE;
+		border-radius: 100%;
+	}
 </style>
 </head>
 <body>
@@ -382,6 +422,20 @@
 		</tr>
 	</table>
 </div>
+
+<br>
+
+<div class="page_wrap">
+   <div class="page_nation">
+      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+   </div>
+</div>
+
 <br>
 
 <div class="inputBox">
@@ -442,7 +496,18 @@
 		</tr>
 	</table>
 </div>
+<br>
 
+<div class="page_wrap">
+   <div class="page_nation">
+      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+   </div>
+</div>
 <br>
 <div class="inputBox">
 	<div class="profile d-inline-block">

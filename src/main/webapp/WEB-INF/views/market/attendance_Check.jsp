@@ -10,9 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
- <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <style>
 
@@ -64,13 +65,13 @@ font-family: 'Noto Sans KR', sans-serif;
 	display: none;
 }
 
-.fc td:active{
-	background-image: url("resources/images/checked.png") !important;
-	z-index:12 !important;
-	background-position: center !important;
-	background-size: 110% !important;
+ .fc td:active{ 
+ 	background-image: url("resources/images/checked.png") !important;
+ 	z-index:12 !important; 
+ 	background-position: center !important; 
+	background-size: 110% !important; 
 	
-}
+} 
 
 :root{
 	--fc-border-color: white;
@@ -153,6 +154,11 @@ font-family: 'Noto Sans KR', sans-serif;
 	background-color: #B0DAFF;
 	padding: 5px; 
 }
+
+ .fc-day-selected {
+   background-image: url("resources/images/checked.png") !important;
+   z-index: 15 !important;
+ }
 </style>
 <body>
 <br><br>
@@ -169,50 +175,108 @@ font-family: 'Noto Sans KR', sans-serif;
 				<div  class="customCheck" id='calendar'><br><br><br><br></div>
 			<div> 
 			<h3 class="d-inline">출석체크 방법 : TODAY 출석체크 버튼 클릭! </h3>
-			<button>TODAY출석체크</button>
+			<button id="checkAttendanceBtn">TODAY출석체크</button>
 			<br><br><br>
 			</div>
 		</div>
 	</div>
 	<br><br><br>
 <%@ include file="../common/footer.jsp" %>
+
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-	var calendarEl = document.getElementById('calendar');
-	 
-	  var calendar = new FullCalendar.Calendar(calendarEl, {
-	
-	    headerToolbar: {
-	      left: '',
-	      center: 'title',
-	      right: ''
-	    },
-	    locale: 'ko',
-	    dateClick: function(info) {
-	      alert('[출석확인 날짜 : ' + info.dateStr + ']');
-	      var todayDate = this.$moment().format("YYYY-MM-DD")			
-	      var clickDate = this.$moment(arg.date).format("YYYY-MM-DD")	
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var attendanceDates = []; 
+    var checkCount = {}; 
 
-	      if (todayDate != clickDate) return alert("접근할 수 없음");	
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+        left: '',
+        center: 'title',
+        right: ''
+      },
+      locale: 'ko',
+      dateClick: function(info) {
+        var clickedDate = moment(info.date).format('YYYYMMDD');
+        var todayDate = moment().format('YYYYMMDD');
 
-	      var todayDone = this.attendanceDates.some(date => date.attendanceDate == todayDate);
-	      if(todayDone) {		
-	      	return alert("이미 출석되었습니다");
-	      } else {			
-	      	alert("출석되었습니다");
-	      	var newDate = {
-	      		attendanceDate: clickDate,
-	      		isChecked : true
-	      	}
-	      	this.attendanceDates.push(newDate);
-	      }
-	    }
-	  });
+        if (clickedDate !== todayDate) {
+          alert('출석체크할 수 없는 날짜입니다.');
+          return;
+        }
 
-	  calendar.render();
-	});
- 
+        if (attendanceDates.includes(clickedDate)) {
+          alert('해당 날짜의 출석체크가 이미 기록되었습니다.');
+        } else {
+          alert('출석체크가 완료되었습니다. 날짜: ' + clickedDate);
+          attendanceDates.push(clickedDate);
+          info.dayEl.classList.add('fc-day-selected');
+
+          if (checkCount.hasOwnProperty(clickedDate)) {
+            checkCount[clickedDate]++;
+          } else {
+            checkCount[clickedDate] = 1;
+          }
+
+          $.ajax({
+            url: '${contextPath}/attendance_Check.ma',
+            type: 'POST',
+            data: { attendanceDate: 'sysdate', checkDay: checkCount[clickedDate] },
+            success: function(response) {
+              console.log(response);
+            },
+            error: function(xhr, status, error) {
+              console.error(error);
+            }
+          });
+        }
+      }
+    });
+
+    calendar.render();
+
+    var checkAttendanceBtn = document.getElementById('checkAttendanceBtn');
+    checkAttendanceBtn.addEventListener('click', function() {
+      var todayDate = moment().format('YYYYMMDD');
+      var currentDate = calendar.getDate().toISOString().slice(0, 10);
+
+      if (todayDate !== currentDate) {
+        alert('출석체크할 수 없는 날짜입니다.');
+        return;
+      }
+
+      if (attendanceDates.includes(todayDate)) {
+        alert('오늘은 이미 출석체크되었습니다.');
+      } else {
+        alert('출석체크가 완료되었습니다. 날짜: ' + todayDate);
+        attendanceDates.push(todayDate);
+        var todayElement = document.querySelector('.fc-day[data-date="' + todayDate + '"]');
+        if (todayElement) {
+          todayElement.classList.add('fc-day-selected');
+        }
+
+        if (checkCount.hasOwnProperty(todayDate)) {
+          checkCount[todayDate]++;
+        } else {
+          checkCount[todayDate] = 1;
+        }
+
+        $.ajax({
+          url: '${contextPath}/attendance_Check.ma',
+          type: 'POST',
+          data: { attendanceDate: 'sysdate', checkDay: checkCount[todayDate] },
+          success: function(response) {
+           
+            console.log(response);
+          },
+          error: function(xhr, status, error) {
+            console.error(error);
+          }
+        });
+      }
+    });
+  });
 </script>
 </body>
 </html>

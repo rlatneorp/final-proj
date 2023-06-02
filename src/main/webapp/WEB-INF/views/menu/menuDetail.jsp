@@ -16,6 +16,7 @@
 	#title{border-bottom: 1px solid black; width: 630px;}
 	#category{width: 550px; height: 50px; margin-left: 50px; margin-right: 50px; margin-top: 50px; font-weight: bold; font-size: 18px; text-align: center;}
 	#userInfo{text-align: center;}
+	#nickBtn{width: 150px; font-weight: bold; margin-left: 250px; margin-top: 10px;}
 	#updateBtn{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px;}
 	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; margin-left: 10px;}
 	
@@ -69,7 +70,100 @@
 	.star{width: 110px;}
 	.boardReviewWrite{width: 100px;}
 	.boardReviewDate{width: 150px;}
+	
+/* 	모달 */
+	.modal-body{text-align: center;}
+	.bi-person-circle{font-size: 60px; color: black;}
+	.btn-n{background: lightgray; color: white;}
+	.btn-n:hover{background: darkgray; color: black;}
+	.btn-y{background: rgba(255, 170, 0, 0.5); color: white;}
+	.btn-y:hover{background: rgba(255, 170, 0); color: black;}
 
+	/*버튼*/
+	.button {
+	  width: 100px; height: 45px;
+	  font-family: ;
+	  font-size: 13px;
+	  letter-spacing: 2.5px;
+	  font-weight: 500;
+	  color: #000;
+	  background-color: #fff;
+	  border: none;
+	  border-radius: 45px;
+	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	  transition: all 0.3s ease 0s;
+	  cursor: pointer;
+	  outline: none;
+	  margin: 5px;
+	  }
+	.button:hover {
+		background-color: #B0DAFF;
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+		color: #fff;
+		transform: translateY(-7px);
+		}
+		
+	.footer{
+		display: flex; 
+		justify-content: center;
+		align-items : center;
+		margin-top: 10px; margin-bottom: 30px;
+		padding-top: 20px;
+		border-top: 1px solid lightgray;
+		}
+	.footer{text-align: center;}
+	.footer> .button{font-weight: bold;}
+	
+	#modalNick{display: inline-block;}
+	#modalInfo{height: 100px;}
+
+/* 모달 중간선	 */
+	.modalMid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 15px; margin: 5px 0px; font-weight: bold;}
+	.modalMid::before{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0spx;}
+	.modalMid::after{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
+	
+	.modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
+	.moCon{height: 75px; border-radius: 10px;}
+	
+	/* 	페이지 */
+	.page_wrap {
+		text-align:center;
+		font-size:0;
+	}
+	.page_nation {
+		display:inline-block;
+	}
+	.page_nation .none {
+		display:none;
+	}
+	.page_nation a {
+		display:block;
+		margin:0 3px;
+		float:left;
+		width:28px;
+		height:28px;
+		line-height:28px;
+		text-align:center;
+		background-color:#fff;
+		font-size:13px;
+		color:#999999;
+		text-decoration:none;
+	}
+	.page_nation .arrow {
+		margin-top: 0;
+	}
+	.page_nation .prev {
+		background:white;
+	}
+	.page_nation .next {
+		background:white;
+	}
+	.page_nation a.active {
+		background-color:#19A7CE;
+		color:white;
+		border:1px solid #19A7CE;
+		border-radius: 100%;
+	}
 </style>
 </head>
 <body>
@@ -93,7 +187,7 @@
 			<br>
 			<div id="userInfo">
 				<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%">
-				<p style="font-weight: bold;">닉네임</p>
+				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn">닉네임</p>
 				<p>*****(별점)</p>
 				<p>식단에 대한 설명입니다. 이 식단는 어떠어떠한 요리가 있고 어떤 부분에서 좋습니다.</p>
 			</div>
@@ -328,6 +422,20 @@
 		</tr>
 	</table>
 </div>
+
+<br>
+
+<div class="page_wrap">
+   <div class="page_nation">
+      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+   </div>
+</div>
+
 <br>
 
 <div class="inputBox">
@@ -388,7 +496,18 @@
 		</tr>
 	</table>
 </div>
+<br>
 
+<div class="page_wrap">
+   <div class="page_nation">
+      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+   </div>
+</div>
 <br>
 <div class="inputBox">
 	<div class="profile d-inline-block">
@@ -399,6 +518,68 @@
 <br><br>
 
 <br>
+
+<!-- 삭제 알림 모달 -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">게시글 삭제하기</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<i class="bi bi-emoji-frown-fill"></i><br>
+				삭제 된 게시글은 복구 할 수 없습니다.<br>
+				정말 삭제하시겠습니까?
+			</div>
+			<div class="footer">
+				<button type="button" class="button btn-n" data-bs-dismiss="modal">취소</button>
+				<button type="button" class="button btn-y" id="deleteBoard">삭제하기</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 식단 작성자 프로필 -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">영양사 프로필</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="modalNick">
+					<i class="bi bi-person-circle"></i><br>
+					<p style="font-weight: bold;">닉네임</p>
+				</div>
+				<div id="modalInfo">
+				삭제 된 게시글은 복구 할 수 없습니다.<br>
+				정말 삭제하시겠습니까?
+				</div>
+				
+				<p class="modalMid">등록한 식단표</p>
+				<div class="album p-3 bg-white">
+					<div class="container px-3">
+						<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-4">
+							<c:forEach begin="1" end="4">
+								<div class="col">
+									<div class="shadow-sm">
+										<div class="card-body moCon" style="background-color: lightgray">
+											<h6 style="font-weight: bold;"><a href="menuDetail.mn" style="text-decoration: none; color: black;">식단 명 / 카테고리</a></h6>
+											<p>별점</p>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <%@ include file="../common/footer.jsp" %>
 
 	

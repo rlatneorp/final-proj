@@ -18,12 +18,51 @@
 	.title{font-weight: bold;}
 	.group-button1, .group-button2, .group-button3{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
 	
-	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; margin-top: 30px; margin-left: 1410px; cursor: pointer;}
-	
-	#align{margin-left: 1300px; margin-top: 25px;}
+	#side{width: 250px; height: 100px; margin-top: 25px; margin-left: 1150px;}
+	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; margin-left: 100px; cursor: pointer;}
 	.group-button{padding: 10px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
 	
 	#recipeList{width: 1150px;}
+	
+/* 	페이지 */
+	.page_wrap {
+		text-align:center;
+		font-size:0;
+	}
+	.page_nation {
+		display:inline-block;
+	}
+	.page_nation .none {
+		display:none;
+	}
+	.page_nation a {
+		display:block;
+		margin:0 3px;
+		float:left;
+		width:28px;
+		height:28px;
+		line-height:28px;
+		text-align:center;
+		background-color:#fff;
+		font-size:13px;
+		color:#999999;
+		text-decoration:none;
+	}
+	.page_nation .arrow {
+		margin-top: 8px;
+	}
+	.page_nation .prev {
+		background:white;
+	}
+	.page_nation .next {
+		background:white;
+	}
+	.page_nation a.active {
+		background-color:#B0DAFF;
+		color:white;
+		border:1px solid #B0DAFF;
+		border-radius: 100%;
+	}
 </style>
 	
 </head>
@@ -65,14 +104,16 @@
 	</div>
 </div>
 
-<button type="button" id="recipeWrite" onclick="location.href='recipeWrite.rc'">레시피 등록</button>
-
-<br>
-
-<div id="align">
-	<button class="group-button" data-value="최신">최신순</button>
-	<button class="group-button" data-value="인기">인기순</button>
-	<button class="group-button" data-value="리뷰">리뷰순</button>
+<div id="side">
+	<button type="button" id="recipeWrite" onclick="location.href='recipeWrite.rc'">레시피 등록</button>
+	
+	<br><br>
+	
+	<div id="align">
+		<button class="group-button" data-value="최신">최신순</button>
+		<button class="group-button" data-value="인기">인기순</button>
+		<button class="group-button" data-value="리뷰">리뷰순</button>
+	</div>
 </div>
 
 <div class="album p-5 bg-white">
@@ -96,6 +137,18 @@
 			</c:forEach>
 		</div>
 	</div>
+</div>
+
+<div class="page_wrap">
+   <div class="page_nation">
+      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a href="#">5</a>
+      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+   </div>
 </div>
 
 <br>

@@ -54,6 +54,30 @@
 }
 
 
+.search {
+	  position: relative;
+	  width: 300px;
+	  height:40px;
+	  left:65%;
+	  color:#808080;
+	}
+	
+	.searchIcon {
+ 	  position : absolute; 
+ 	  width: 17px; 
+	  top: 10px;
+ 	  right: 12px; 
+	  margin: 0; 
+ 	} 
+ 	
+ 	#searchInput {
+	  border: 2px solid #dee2e6;
+	  border-radius: 50px;
+	  width: 100%;
+	  height: 100%;
+	  
+	}
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

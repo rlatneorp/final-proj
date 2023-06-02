@@ -122,7 +122,7 @@
 		border-right:none; text-align:left; padding:20px;
 	}
 	
-	
+
 </style>
 </head>
 <body>
@@ -143,7 +143,7 @@
 <!-- 장바구니 표 부분 -->
 <div class="carrier" style="margin-bottom:10px; ">
 	<span style="font-size:30px;"><b>주문상세내역</b></span>
- 	<span class="barSpan"><a class="aHover">01 장바구니 > </a><a class="aHover">02 ㅈㅁㅅㅈㅅ/ㄱㅈ</a> <a class="aHover"> > 03 ㅈㅁㅇㄹ</a> </span>
+ 	<span class="barSpan"><a class="aHover">01 장바구니 > </a><a class="aHover" style="color:#0055FF">02 주문서작성/결제</a> <a class="aHover"> > 03 주문완료</a> </span>
 </div>
 
 <div style="height:50px; margin:0 auto; width:1200px; background-color:#B0DAFF; border-bottom:2px solid #dee2e6; border-left:none; border-right:none; border-top:2px solid #dee2e6"></div><br><br>
@@ -162,11 +162,18 @@
 	        </tr>
 	        <tr style="border-top: 2px solid #dee2e6;">
 	            <td class="imgTab"><img src="" style="border: 2px solid #dee2e6; width: 200px; height: 200px;"></td>
-	            <td style="border-right:2px solid #dee2e6; text-align:left">접이식 밥상<br>옵션 : Brown</td>
-	            <td style="border-right:2px solid #dee2e6;"><span>1</span>개<br><br><br><button>옵션/수량변경</button></td>
-	            <td style="border-right:2px solid #dee2e6;"><span>46,500</span>원</td>
+	            <td style="border-right:2px solid #dee2e6; text-align:left">접이식 밥상<br><br>옵션 : 
+	            	<select>
+	            		<option>Brown</option>
+	            		<option>Pink</option>
+	            		<option>Yellow</option>
+	            		<option>Black</option>
+	            	</select>
+	            </td>
+	            <td style="border-right:2px solid #dee2e6;"><i class="bi bi-dash-square-fill" id="minus" style="color:#00AAFF; font-size:15px;"></i>&nbsp;<span id="size">1</span>개&nbsp;<i class="bi bi-plus-square-fill" id="plus" style="color:#00AAFF; font-size:15px"></i></td>
+	            <td style="border-right:2px solid #dee2e6;"><span id="price">46,500</span>원</td>
 	            <td style="border-right:2px solid #dee2e6;"><span>2,325</span>P적립</td>
-	            <td style="border-right:2px solid #dee2e6;">46,500원</td>
+	            <td style="border-right:2px solid #dee2e6;"><span id="sum">46,500</span>원</td>
 	            <td>무료배송</td>
 	        </tr>
 	        
@@ -211,15 +218,13 @@
    			 </td>
    		</tr>
 		<tr>
-			<td class="address" style="height:110" rowspan="2"><b>받으실 곳</b></td>
-			<td style="text-align:left">
-				<input type="text" style="margin-left:15px; width:300px"name="payName">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:left">
-				<input type="text" style="margin-left:15px; width:200px"name="payName">
-				<input type="text" style="margin-left:15px; width:200px"name="payName">
+			<td class="address" style="height:200" ><b>받으실 곳</b></td>
+			<td style="text-align:left; height:30px ">
+			    <input type="text" style="width:150px; margin-bottom: 10px; margin-left:15px;" id="sample6_postcode" placeholder="우편번호">
+			    <input type="button" style="border-radius:10; height:35px;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+			    <input type="text" id="sample6_address" style="margin-bottom: 10px; width:400px; margin-left:15px;" placeholder="주소"><br>
+			    <input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width:400px; margin-left:15px;" placeholder="상세주소"><br>
+			    <input type="text" id="sample6_extraAddress" style="width:400px; margin-left:15px;" placeholder="참고항목">
 			</td>
 		</tr>
    		<tr>
@@ -260,14 +265,15 @@
    		</tr>
    		<tr>
    			<td class="address"><b>휴대폰 번호</b></td>
-   			<td style="width:400px; text-align:left; height:50px; border-bottom:2px solid #dee2e6; border-top:2px solid #dee2e6" ><input type="text" style="width:200px; margin-left:15px;"name="payName"></td>
+   			<td style="width:400px; text-align:left; height:50px; border-bottom:2px solid #dee2e6; border-top:2px solid #dee2e6" >
+   				<input type="text" style="width:200px; margin-left:15px;" oninput="phoneNumber(this)" maxlength="14" name="phone">
+   			</td>
    		</tr>
    		<tr>
    			<td class="address"><b>이메일</b></td>
    			<td style="width:400px; text-align:left; height:50px; border-bottom:2px solid #dee2e6; border-top:2px solid #dee2e6" >
    				<input type="email" style="width:200px; height:35px; margin-left:15px;"name="payName">
-   			</td>
-   		</tr>
+  			</td>
    	</table>
    	
    	<br><br>
@@ -295,6 +301,7 @@
 		<i class="bi bi-credit-card" style="font-size:45px;"></i><div>신용카드 결제</div>
 	</div>
 	
+	<button id="pay_btn" onclick="requestPay({{ auth()->check() }})">결제하기</button>
 	
 <br><br><br><br><br><br>
 
@@ -302,15 +309,94 @@
 <%@include file="../common/footer.jsp" %>
 
 
-
-
-
-
 </body>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+	//주소 찾기 
+    function sample6_execDaumPostcode() { //우편번호 찾기 클릭 시
+        new daum.Postcode({ //다음에서 제공하는 Postcode 메서드 
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("sample6_extraAddress").value = extraAddr;
+                
+                } else {
+                    document.getElementById("sample6_extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample6_postcode').value = data.zonecode;
+                document.getElementById("sample6_address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("sample6_detailAddress").focus();
+            }
+        }).open();
+    }
 </script>
 
+<script>
+	window.onload = () => {
+		
+		let price = parseInt(document.getElementById('price').innerText);
+		let size = parseInt(document.getElementById('size').innerText);
+		document.getElementById('plus').addEventListener('click', function() {
+			 size++;
+			 document.getElementById('size').innerText = size;
+			 
+			 let priceString = document.getElementById('price').innerText;
+			 console.log(priceString);
+			    
+		    // 쉼표 제거
+		    let price = parseFloat(priceString.replace(/,/g, ''));
+		    console.log(price);
+		    
+		    let total = price*size;
+		    let formattedTotal = total.toLocaleString();
+		    document.getElementById('sum').innerText = formattedTotal
+			 
+		})
+		
+		document.getElementById('minus').addEventListener('click', function() {
+			if(size >= 1) {
+				size--;
+				document.getElementById('size').innerText = size;
+			}
+		})
+		
+		
+		
+		
+		
+	}
+</script>
 
 </html>

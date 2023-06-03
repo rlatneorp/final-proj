@@ -70,12 +70,12 @@
 				</div>
 			</div>
 			<div class="logo">
-				<img class="logo-img" src="resources/images/Logo.png">
+				<img class="logo-img" src="/resources/images/Logo.png">
 			</div>
 			<div>
 				<div class="menus">
 					<div class="menu" onclick="location.href='#'">쇼핑</div>
-					<div class="menu" onclick="location.href='#'">게시판</div>
+					<div class="menu" onclick="location.href='${contextPath}/freeBoard.bo'">게시판</div>
 					<div class="dropdown">
 						<button type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
 					    로그인
@@ -89,7 +89,7 @@
 				  		</div>
 					</div>
 					<div style="width:80px"></div>
-					<div class="cart"><i class="bi bi-basket2-fill"></i></div>
+					<div class="cart" style="cursor:pointer;" onclick="location.href='${contextPath }/basket.ma'"><i class="bi bi-basket2-fill"></i></div>
 				</div>
 			</div>
 		</header>

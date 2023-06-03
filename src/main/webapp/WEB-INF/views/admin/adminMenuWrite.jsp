@@ -83,7 +83,7 @@
 	
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	<div class="mainBox">
-		<form action="${contextPath}/adminMenuUpdate.ad" method="post">
+		<form action="${contextPath}/adminMenuInsert.ad" method="post">
 			<div id="top">
 				<div id="thumImg">
 					<img src="${contextPath}/resources/images/logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
@@ -334,7 +334,7 @@
 			
 			<div class="d-flex justify-content-center mb-5">
 				<div class="d-flex">
-					<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
+					<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">작성하기</button>
 					<button onclick="location.href='${contextPath}/adminMenuManage.ad'" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 				</div>
 			</div>

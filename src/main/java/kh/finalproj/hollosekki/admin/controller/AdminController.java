@@ -25,10 +25,6 @@ public class AdminController {
 	public String adminSalesDetail() {
 		return "adminSalesDetail";
 	}
-	@PostMapping("adminSalesEdit.ad")
-	public String adminSalesEdit() {
-		return "redirect:adminSalesDaily.ad";
-	}
 	
 //	order-주문 관리
 	@GetMapping("adminOrderManage.ad")
@@ -39,8 +35,10 @@ public class AdminController {
 	public String adminOrderDetail() {
 		return "adminOrderDetail";
 	}
-	
-	
+	@PostMapping("adminOrderUpdate.ad")
+	public String adminOrderUpdate() {
+		return "redirect:adminOrderManage.ad";
+	}
 	
 	
 //	Member-회원 관리
@@ -68,6 +66,18 @@ public class AdminController {
 	public String adminMenuDetail() {
 		return "adminMenuDetail";
 	}
+	@PostMapping("adminMenuUpdate.ad")
+	public String adminMenuUpdate() {
+		return "redirect:adminMenuManage.ad";
+	}
+	@GetMapping("adminMenuWrite.ad")
+	public String adminMenuWrite() {
+		return "adminMenuWrite";
+	}
+	@PostMapping("adminMenuInsert.ad")
+	public String adminMenuInsert() {
+		return "redirect:adminMenuManage.ad";
+	}
 	
 	
 //	Ingredient-식재료 관리
@@ -79,9 +89,17 @@ public class AdminController {
 	public String adminIngredientDetail() {
 		return "adminIngredientDetail";
 	}
+	@PostMapping("adminIngredientUpdate.ad")
+	public String adminIngredientUpdate() {
+		return "redirect:adminIngredientManage.ad";
+	}
 	@GetMapping("adminIngredientWrite.ad")
 	public String adminIngredientWrite() {
 		return "adminIngredientWrite";
+	}
+	@PostMapping("adminIngredientInsert.ad")
+	public String adminIngredientInsert() {
+		return "redirect:adminIngredientManage.ad";
 	}
 	
 	
@@ -94,6 +112,18 @@ public class AdminController {
 	public String adminFoodDetail() {
 		return "adminFoodDetail";
 	}
+	@PostMapping("adminFoodUpdate.ad")
+	public String adminFoodUpdate() {
+		return "redirect:adminFoodManage.ad";
+	}
+	@GetMapping("adminFoodWrtie.ad")
+	public String adminFoodWrite() {
+		return "adminFoodWrite";
+	}
+	@PostMapping("adminFoodInsert.ad")
+	public String adminFoodInsert() {
+		return "redirect:adminFoodManage.ad";
+	}
 	
 	
 //	Product-상품 관리
@@ -104,6 +134,18 @@ public class AdminController {
 	@GetMapping("adminProductDetail.ad")
 	public String adminProductDetail() {
 		return "adminProductDetail";
+	}
+	@PostMapping("adminProductUpdate.ad")
+	public String adminProductUpdate() {
+		return "redirect:adminProductManage.ad";
+	}
+	@GetMapping("adminProductWrite.ad")
+	public String adminProductWrite() {
+		return "adminProductWrite";
+	}
+	@PostMapping("adminProductInsert.ad")
+	public String adminProductInsert() {
+		return "redirect:adminProductManage.ad";
 	}
 	
 	
@@ -118,13 +160,17 @@ public class AdminController {
 	public String adminFAQDetail() {
 		return "adminFAQDetail";
 	}
-	@GetMapping("adminFAQUpdate.ad")
+	@PostMapping("adminFAQUpdate.ad")
 	public String adminFAQUpdate() {
 		return "redirect:adminFAQManage.ad";
 	}
 	@GetMapping("adminFAQWrite.ad")
 	public String adminFAQWrite() {
 		return "adminFAQWrite";
+	}
+	@PostMapping("adminFAQInsert.ad")
+	public String adminFAQInsert() {
+		return "redirect:adminFAQManage.ad";
 	}
 	
 	
@@ -139,7 +185,7 @@ public class AdminController {
 	public String adminQNADetail() {
 		return "adminQNADetail";
 	}
-	@GetMapping("adminQNAUpdate.ad")
+	@PostMapping("adminQNAUpdate.ad")
 	public String adminQNAUpdate() {
 		return "redirect:adminQNAManage.ad";
 	}

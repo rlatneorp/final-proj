@@ -36,10 +36,10 @@
 				<div class="col-6"></div>
 				
 				<span class="col-2">제목</span>
-				<input type="text" class="col-10 pb-1 mb-5" placeholder="제목을 입력해주세요." value="비밀번호 찾는 방법 문의드려요1">
+				<input type="text" class="col-10 pb-1 mb-5" placeholder="제목을 입력해주세요." value="비밀번호 찾는 방법 문의드려요1" readonly>
 				
 				<span class="col-2">내용</span>
-				<textarea rows="10" class="col-10 mb-5" placeholder="내용을 입력해주세요.">비밀번호를 분실하였습니다. 어떻게하면 제 머릿속에서 찾아낼 수 있을까요?</textarea>
+				<textarea rows="10" class="col-10 mb-5" placeholder="내용을 입력해주세요." readonly>비밀번호를 분실하였습니다. 어떻게하면 제 머릿속에서 찾아낼 수 있을까요?</textarea>
 				
 				<div class="col-12 mb-5" style="border-bottom: 2px solid rgb(200,200,200);"></div>
 				

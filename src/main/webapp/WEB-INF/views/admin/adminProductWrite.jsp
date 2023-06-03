@@ -75,7 +75,7 @@
 	<jsp:include page="../common/adminSidebar.jsp"/>
 		
 	<div class="mainBox">
-		<form action="${contextPath}/adminFoodUpdate.ad" method="post">
+		<form action="${contextPath}/adminProductInsert.ad" method="post">
 			<div id="top">
 				<div id="thumImg">
 					<img src="${contextPath}/resources/images/logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
@@ -84,33 +84,27 @@
 				<div style="width: 50px; height: 500px; display: inline-block; left: 500px;"></div>
 				<div id="imformation">
 					<div id="title">
-						<input type="text" name="title" style="font-size: 20px; margin-right: 360px;" placeholder="식품 이름을 적어주세요.">
+						<input type="text" name="title" style="font-size: 20px; margin-right: 360px;" placeholder="상품 이름을 적어주세요.">
 						<a href="#"><i class="bi bi-bookmark " style="font-size: 20px;"></i></a>
 					</div>
+					<br><br>
 					<div id="category">
-						아이콘 식단 카테고리 선택
+						아이콘 상품 카테고리 선택
 						<select name="category">
-							<option>다이어트</option>
-							<option>육류</option>
-							<option>해산물</option>
+							<option>주방도구</option>
+							<option>소모품</option>
+							<option>기타</option>
 						</select>
 					</div>
-					<br>
-					<div id="userInfo">
-						<img src="#" style="width: 100px; height: 100px; border-radius: 50%">
-						<p style="font-weight: bold;">000영양사</p>
-						<p>*****(별점)</p>
-						<textarea name="subContent" rows="6" cols="80" placeholder="식품에 대한 설명을 입력해주세요."></textarea>
-					</div>
-					
-					<br><br>
-					
+					<br><br><br><br><br>
+					<textarea name="subContent" rows="6" cols="80" placeholder="상품에 대한 설명을 입력해주세요."></textarea>
 				</div>
 			</div>
+			<br><br>
 		
 			
 			<div class="mid">
-				식품 상세설명
+				상품 상세설명
 			</div>
 			
 			<br>
@@ -196,60 +190,12 @@
 				</div>
 			</div>
 			
-		
-			
-			
 			<br><br><br>
-			
-			<div class="mid">
-				영양 정보
-			</div>
-			
-			<br><br>
-			
-			<table id="infoTable" style="margin-bottom: 100px;">
-				<tr id="infoTop">
-					<th>칼로리</th>
-					<th>탄수화물</th>
-					<th>지방</th>
-					<th>트랜스지방</th>
-					<th>포화지방</th>
-					<th>나트륨</th>
-					<th>당류</th>
-					<th>콜레스테롤</th>
-				</tr>
-				<tr class="infoContent">
-					<td>
-						<input type="number" min="0">kcal
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">mg
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">mg
-					</td>
-				</tr>
-			</table>
 		
-			<div class="d-flex justify-content-center" style="margin: 100px;">
-				<div id="buttonBox" class="d-flex">
-					<button class="buy me-4">수정하기</button>
-					<button onclick="location.href='${contextPath}/adminFoodManage.ad'" class="buy">취소하기</button>
+			<div class="d-flex justify-content-center mb-5">
+				<div class="d-flex">
+					<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">작성하기</button>
+					<button onclick="location.href='${contextPath}/adminProductManage.ad'" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 				</div>
 			</div>
 		</form>

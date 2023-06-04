@@ -35,7 +35,7 @@
   transition: top .01s linear;
   text-shadow: 0 1px 0 rgba(0,0,0,0.15);
 }
-.btn-3d.blue:hover   {color:white; background-color: #699DD1;}
+.btn-3d.blue:hover   {cursor:pointer; color:white; background-color: #699DD1;}
 .btn-3d:active {
   top: 9px;
 }
@@ -85,19 +85,17 @@
 <body>
 	
 	<%@include file="../common/top.jsp" %>
-<div>
+
 	<div id="successPage">
 		<i class="bi bi-bag-heart-fill" style=" font-size:120px;  text-shadow: 3px 2px 2px gray;color:#B0DAFF"></i>
 		<h3>박보서 고객님,</h3>
 		<h3><span style="color:#2962FF"><b>결제</b></span>가 <span style="color:#2962FF"><b>완료</b></span>되었습니다.</h3>
 		
 		<div class="btn-container">
-  			<a href="#" class="btn-3d blue">메인으로</a>
-  			<a href="#" class="btn-3d blue" style="width:120px;">구매내역 확인</a>
+  			<a onclick="location.href='${contextPath}'" class="btn-3d blue">메인으로</a>
+  			<a onclick="location.href='${contextPath}/myPage_MyOrder.me'" class="btn-3d blue" style="width:120px;">구매내역 확인</a>
 		</div>
-		
- 
-</div>
+	</div>
 
 	<br><br><br><br><br><br>
 	<%@include file="../common/footer.jsp" %>

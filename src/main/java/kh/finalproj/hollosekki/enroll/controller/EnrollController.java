@@ -17,4 +17,36 @@ public class EnrollController {
 			
 			return "login";
 		}
+		
+		@RequestMapping("findId.en")
+		public String findId(){
+			
+			return "findId";
+		}
+		
+		@RequestMapping("findIdResult.en")
+		public String findIdResult() {
+			
+			return "findIdResult";
+		}
+		
+		@RequestMapping("findPwd.en")
+		public String findPwd() {
+			
+			return "findPwd";
+		}
+		
+		@RequestMapping("findPwdCheck.en")
+		public String findPwdcheck() {
+			
+			return "findPwd2";
+		}
+		
+		@RequestMapping("updatePwd.en")
+		public String updatePwd() {
+			
+			return "updatePwd";
+		}
+		
+		
 }

@@ -8,21 +8,21 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트아이콘 -->
 <title>회원가입</title>
 <style>
-	body{background: #1f8acb;}
+	body{background: #B0DAFF;}
 	.form-line{
-		width: 600px; height: 1200px;
+		width: 600px; height: 1310px;
 		border: 5px solid white;;
 		border-radius: 45px; 
 		margin-left: auto; margin-right: auto; margin-top: 100px; margin-bottom: 100px;
 		}
 	.form-dot{
-		width: 580px; height: 1180px;
+		width: 580px; height: 1290px;
 		border: 5px dotted white;
 		border-radius: 40px;
 		margin: 5px;
 		}
 	.join-form{
-		width: 560px; height: 1155px;
+		width: 560px; height: 1265px;
 		background: white;
 		border-radius: 30px;
 		margin: 0 auto; margin-top: 12px;
@@ -33,20 +33,20 @@
 		}
 	.join{
 		font-size: 25px; font-weight: bold;
-		margin: 10px; margin-top: 50px;
+		margin: 10px; margin-top: 100px;
 		color: #1f8acb;
 		}
 	.join-line{
-		width: 140px; height: 65px;
+		width: 140px; height: 120px;
 		border-bottom: 3px solid #1f8acb;}
 	.input{
 		border-radius: 8px; border: 2px solid #1f8acb;
-		width: 284px; height: 35px;
+		width: 320px; height: 35px;
 		padding-left: 5px;
 		margin-bottom: 25px; margin-top: 5px;
 		font-size : 15px; 
 		}
-	.input, .label, .checkbox{margin-left: 50px;}
+	.input, .label, .checkbox{margin-left: 35px;}
 	.line{
 		width: 400px; border-bottom: 3px solid #1f8acb;
 		margin: 0 auto; margin-top: 30px; margin-bottom: 30px;
@@ -55,7 +55,8 @@
 	.checkbox{width: 18px; height: 18px; margin-right: 10px;}
 	.required{color: red; margin-left: 10px;}
 	.text{ font-size: 12px; color: lightgray;}
-	.more{margin-left: 100px;}
+	.more{margin-left: 100px; cursor: pointer;}
+	.more2{margin-left: 14px; cursor: pointer;}
 	.mid22{margin: 0 auto;}
 	
 	.button{
@@ -63,10 +64,10 @@
 		border-radius: 25px; border: 2px solid black;
 		font-size: 20px; font-weight: bold;
 		margin-top: 50px; margin-bottom: 20px; margin-left: 130px;
-		background: white;
+		background: #f0f0f0;
 		box-shadow: 0px 5px 0px black;
 		}
-	.button:active{box-shadow: 0px 1px 0px black; transform: translateY(5px);}
+	.button:active{box-shadow: 0px 1px 0px black; transform: translateY(5px); background: #b0daff;}
 	
 	.swal-overlay {background-color: rgba(0, 0, 0, 0.5);}
 		
@@ -80,6 +81,7 @@
 	
 	/*모달 관련*/
 	pre{white-space: pre-wrap; word-wrap: break-word; padding: 15px;}
+	.modal-footer{justify-content: center; padding: 30px;}
 	
 	canvas{z-index:10; pointer-events: none; position: fixed; top: 0; transform: scale(1.1);}
 </style>
@@ -105,11 +107,12 @@
 							<form class="form" action="" method="post">
 								<label class="label">아이디 <span class="text">| 3~15자의 영어, 숫자</span></label><br>
 								<input type="text" name="id" id="id" class="input" placeholder="아이디를 입력하세요" required><br>
-								<label class="label">비밀번호 <span class="text">| 영어, 숫자 포함 8자 이상</span></label><br>
+								<label class="label">비밀번호 <span class="text">| 영어, 숫자, 특수문자 포함 8자 이상</span></label><br>
 								<input type="password" name="pwd" id="pwd" class="input" placeholder="비밀번호를 입력하세요" required><br>
 								<div class="pwd-ck">
 									<div class="pwd-ck2" id="eng"><i class="bi bi-circle"></i> 영어</div>
 									<div class="pwd-ck2" id="num"><i class="bi bi-circle"></i> 숫자</div>
+									<div class="pwd-ck2" id="special"><i class="bi bi-circle"></i> 특수문자</div>
 									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 8자 이상</div>
 								</div>
 								<label class="label">비밀번호 확인</label><br>
@@ -126,16 +129,18 @@
 								<div class="line"></div>
 								<div class="checkboxs">
 <!-- 									<input type="checkbox" class="checkbox" id="check0"><label for="check0">전체 동의</label><br> -->
-									<input type="checkbox" class="checkbox" id="check1" required><label for="check1">이용약관 동의</label>
+									<input type="checkbox" class="checkbox" id="check1" name="check1" required><label for="check1">이용약관 동의</label>
 										<span class="required">(필수)</span>
 										<a class="more" data-bs-toggle="modal" data-bs-target="#exampleModal">약관보기</a><br>
-									<input type="checkbox" class="checkbox" id="check2" required><label for="check2">개인정보 수집 및 이용동의</label><span class="required">(필수)</span><br>
+									<input type="checkbox" class="checkbox" id="check2" required><label for="check2">개인정보 수집 및 이용동의</label>
+										<span class="required">(필수)</span>
+										<a class="more2" data-bs-toggle="modal" data-bs-target="#exampleModal2">약관보기</a><br>
 <!-- 									<input type="checkbox" class="checkbox" id="check3"><label for="check3">이벤트/마케팅 수신동의</label><br> -->
 								</div>
 								<div><button class="button" id="submit">가입하기</button></div>
-<!-- 								<div><button class="button" id="submit" data-bs-toggle="modal" data-bs-target="#exampleModal2">가입하기</button></div> -->
+<!-- 								<div><button class="button" id="submit" data-bs-toggle="modal" data-bs-target="#exampleModal3">가입하기</button></div> -->
 								<div class="line"></div>
-								<div class="logincheck" onclick="location.href='login.en'"> 이미 홀로세끼의 회원이신가요? LOGIN</div>
+								<div class="logincheck" onclick="location.href='login.en'">이미 홀로세끼의 회원이신가요? LOG IN</div>
 							</form>
 			
 						</div>
@@ -316,21 +321,96 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="button" data-bs-dismiss="modal">확인</button>
+					<div data-bs-dismiss="modal"><input type="checkbox" class="checkbox" id="check1-1"><label for="check1-1">이용약관에 동의합니다.</label></div>
+<!-- 					<div><button type="button" class="button button2" data-bs-dismiss="modal">확인</button></div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 개인정보수집 모달 -->
+	<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel2">개인정보 수집</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<pre>▪개인정보의 처리목적
+<개인정보처리자명>은(는) 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다. 
+1. 회원 가입 및 관리
+  회원 가입의사 확인, 회원제 서비스 제공에 따른 본인 식별·인증, 회원자격 유지·관리, 서비스 부정이용 방지, 만 14세 미만 아동의 개인정보 처리 시 법정대리인의 동의여부 확인, 각종 고지·통지, 고충처리 목적으로 개인정보를 처리합니다. 
+2. 재화 또는 서비스 제공
+  물품배송, 서비스 제공, 계약서·청구서 발송, 콘텐츠 제공, 맞춤서비스 제공, 본인인증, 연령인증, 요금결제·정산, 채권추심으로 개인정보를 처리합니다. 
+0. <해당 개인정보처리자의 개인정보 처리업무>
+  <개인정보 처리업무에 따른 처리목적>으로 개인정보를 처리합니다. 
+  
+▪개인정보의 처리 및 보유기간 
+  ① <개인정보처리자명>은(는) 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의 받은 개인정보 보유·이용기간 내에서 개인정보를 처리·보유합니다. 
+  ② 각각의 개인정보 처리 및 보유 기간은 다음과 같습니다. 
+	1. 홈페이지 회원 가입 및 관리 : 사업자/단체 홈페이지 탈퇴 시까지 
+	  다만, 다음의 사유에 해당하는 경우에는 해당 사유 종료 시까지 
+	  1) 관계 법령 위반에 따른 수사·조사 등이 진행 중인 경우에는 해당 수사·조사 종료 시까지
+	  2) 홈페이지 이용에 따른 채권·채무관계 잔존 시에는 해당 채권·채무관계 정산 시까지 
+	  3) <예외 사유> 시에는 <보유기간> 까지
+	2. 재화 또는 서비스 제공 : 재화·서비스 공급완료 및 요금결제·정산 완료시까지
+	  다만, 다음의 사유에 해당하는 경우에는 해당 기간 종료 시까지 
+	  1) 「전자상거래 등에서의 소비자 보호에 관한 법률」에 따른 표시·광고, 계약내용 및 이행 등 거래에 관한 기록 
+		- 표시·광고에 관한 기록 : 6개월 
+		- 계약 또는 청약철회, 대금결제, 재화 등의 공급기록 : 5년 
+		- 소비자 불만 또는 분쟁처리에 관한 기록 : 3년 
+	  2) 「통신비밀보호법」에 따른 통신사실확인자료 보관
+		- 가입자 전기통신일시, 개시·종료시간, 상대방 가입자번호, 사용도수, 발신기지국 위치추적자료 : 1년 
+		- 컴퓨터통신, 인터넷 로그기록자료, 접속지 추적자료 : 3개월
+	  3) <개인정보 보유기간 근거법령 및 조문> : <보유기간>
+
+▪처리하는 개인정보 항목 
+<개인정보처리자명>은(는) 다음의 개인정보 항목을 처리하고 있습니다. 
+	1. 회원 가입 및 관리 
+	  • 필수항목 : 성명, 생년월일, 주소, 전화번호, 이메일주소 
+	  • 선택항목 : 결혼여부, 관심분야 
+	2. 재화 또는 서비스 제공 
+	  • 필수항목 : 성명, 생년월일, 주소, 전화번호, 이메일주소, 신용카드번호, 은행 계좌정보
+	  • 선택항목 : 관심분야, 과거 구매내역 
+	3. <개인정보 처리업무> (필수항목만 수집하는 경우)
+	  • <처리항목>, <처리항목>
+
+▪만 14세 미만 아동의 개인정보 처리에 관한 사항
+  ① <개인정보처리자명>은(는) 만 14세 미만 아동에 대해 개인정보를 수집할 때 법정대리인의 동의를 얻어 해당 서비스 수행에 필요한 최소한의 개인정보를 수집합니다. 
+ 	  • 필수항목 : 법정 대리인의 성명, 관계, 연락처부록 | 87
+  ② 또한, <개인정보처리자명>의 <처리목적> 관련 홍보를 위해 아동의 개인정보를 수집할 경우에는 법정대리인으로부터 별도의 동의를 얻습니다.
+  ③ <개인정보처리자명>은(는) 만 14세 미만 아동의 개인정보를 수집할 때에는 아동에게 법정대리인의 성명, 연락처와 같이 최소한의 정보를 요구할 수 있으며, 다음 중 하나의 방법으로 적법한 법정대리인이 동의하였는지를 확인합니다.
+	  • 동의 내용을 게재한 인터넷 사이트에 법정대리인이 동의 여부를 표시하도록 하고 개인정보처리자가 그 동의 표시를 확인했음을 법정대리인의 휴대전화 문자메시지로 알리는 방법
+	  • 동의 내용을 게재한 인터넷 사이트에 법정대리인이 동의 여부를 표시하도록 하고 법정대리인의 신용카드·직불카드 등의 카드정보를 제공받는 방법
+	  • 동의 내용을 게재한 인터넷 사이트에 법정대리인이 동의 여부를 표시하도록 하고 법정대리인의 휴대전화 본인인증 등을 통해 본인 여부를 확인하는 방법
+	  • 동의 내용이 적힌 서면을 법정대리인에게 직접 발급하거나, 우편 또는 팩스를 통하여 전달하고 법정대리인이 동의 내용에 대하여 서명날인 후 제출하도록 하는 방법
+	  • 동의 내용이 적힌 전자우편을 발송하여 법정대리인으로부터 동의의 의사표시가 적힌 전자우편을 전송받는 방법
+	  • 전화를 통하여 동의 내용을 법정대리인에게 알리고 동의를 얻거나 인터넷주소 등 동의 내용을 확인할 수 있는 방법을 안내하고 재차 전화 통화를 통하여 동의를 얻는 방법
+	  • 그 밖에 위와 준하는 방법으로 법정대리인에게 동의 내용을 알리고 동의의 의사표시를 확인하는 방법
+
+▪개인정보의 제3자 제공 
+  ① <개인정보처리자명>은(는) 정보주체의 개인정보를 개인정보의 처리 목적에서 명시한 범위 내에서만 처리하며, 정보주체의 동의, 법률의 특별한 규정 등 개 「개인정보 보호법」 제17조 및 제18조에 해당하는 경우에만 개인정보를 제3자에게 제공하고 그 이외에는 정보주체의 개인정보를 제3자에게 제공하지 않습니다.
+  ② <개인정보처리자명>은(는) 원활한 서비스 제공을 위해 다음의 경우 정보주체의 동의를 얻어 필요 최소한의 범위로만 제공합니다.</pre>
+
+				</div>
+				<div class="modal-footer">
+					<div data-bs-dismiss="modal"><input type="checkbox" class="checkbox" id="check2-1"><label for="check2-1">이용약관에 동의합니다.</label></div>
+<!-- 					<div><button type="button" class="button button2" data-bs-dismiss="modal">확인</button></div> -->
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<!-- 회원가입 완료 모달 -->
-	<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+	<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>최정흠님! 홀로세끼의 회원이 되신걸 환영합니다!</div>			
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="button" data-bs-dismiss="modal" onclick="location.href='login.en'">로그인</button>
+					<button type="button" class="button button2" data-bs-dismiss="modal" onclick="location.href='login.en'">로그인</button>
 				</div>
 			</div>
 		</div>
@@ -338,7 +418,14 @@
 	
 
 <script>
+	// 토글로 바꾸기
+	document.getElementById('check1-1').addEventListener('change', ()=>{
+		document.getElementById('check1').checked = true;
+	})
 	
+	document.getElementById('check2-1').addEventListener('change', ()=>{
+		document.getElementById('check2').checked = true;
+	})
 
 	// 아이디 유효성검사 (영어, 숫자 3~15자리)
 	document.getElementById("id").addEventListener('focusout', ()=>{
@@ -373,10 +460,12 @@
 	pwd.onkeyup = () => {
 	  const checkEng = /[a-zA-Z]/;
 	  const checkNum = /[0-9]/;
+	  const checkSpecial = /[@$!%*#?&]/;
 	  
 	  const eng = document.getElementById('eng');
 	  const num = document.getElementById('num');
 	  const more8 = document.getElementById('more8');
+	  const special = document.getElementById('special');
 	  
 	  eng.style.color = checkEng.test(pwd.value) ? '#8bb572' : '';
 	  eng.innerHTML =  checkEng.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 영어' : '<i class="bi bi-circle"></i> 영어';
@@ -386,16 +475,19 @@
 	  
 	  more8.style.color = pwd.value.length >= 8 ? '#8bb572' : '';
 	  more8.innerHTML = pwd.value.length >= 8 ? '<i class="bi bi-check-circle"></i> 8자 이상' : '<i class="bi bi-circle"></i> 8자 이상';
+	  
+	  special.style.color = checkSpecial.test(pwd.value) ? '#8bb572' : '';
+	  special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
 	};
 
 	document.getElementById('pwd').addEventListener('focusout', ()=>{
-		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 		const pwd = document.getElementById('pwd').value;
 		
 		if(pwd.length > 0){
 			if(!regPwd.test(pwd)){
 				swal({
-					 text: "비밀번호는 영어와 숫자를 포함해 8자리 이상의 글자여야 합니다.",
+					 text: "비밀번호는 영어와 숫자, 특수문자를 포함해 8자리 이상이어야 합니다.",
 					 icon: "error",
 					 button: "확인",
 					});
@@ -405,6 +497,10 @@
 				document.getElementById('eng').innerHTML = "<i class='bi bi-circle'></i> 영어";
 				document.getElementById('num').style.color = '';
 				document.getElementById('num').innerHTML = "<i class='bi bi-circle'></i> 숫자";
+				document.getElementById('more8').style.color = '';
+				document.getElementById('more8').innerHTML = "<i class='bi bi-circle'></i> 8자 이상";
+				document.getElementById('special').style.color = '';
+				document.getElementById('special').innerHTML = "<i class='bi bi-circle'></i> 특수문자";
 			}
 		}
 	})
@@ -440,14 +536,12 @@
 		}
 	})
 	
-	
-	
 </script>
+
 <!-- 꽃가루 -->
 	<button hidden="" class="canvasBtn" id="stopButton">Stop Confetti</button>
 	<button hidden="" class="canvasBtn" id="startButton">Drop Confetti</button>	
 	<canvas id="canvas"></canvas>
-
 <script>
 	$(document).ready(function(){
 		function reAction(){
@@ -461,7 +555,6 @@
 // 		}); 
 	});
 </script>
-
 
 </body>
 </html>

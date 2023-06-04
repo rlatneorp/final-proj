@@ -13,8 +13,7 @@
 </head>
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	
-	<div class="d-inline-block align-top mt-5 p-4 ps-5 rounded" style="width: 900px; height:1000px; border: 2px solid rgba(0,0,0,0.1);">
+	<div class="mainBox d-inline-block align-top mt-5 p-4 ps-5 rounded" style="width: 900px; height:1000px; border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">회원정보관리</h4>
 		
 		<form action="${contextPath}/adminMemberUpdate.ad" method="post">
@@ -78,11 +77,12 @@
 						<img class="w-100 rounded border" alt="로드 실패" src="${contextPath}/resources/images/persons.png"/>
 					</div>
 				</div>
-				
-				<input type="hidden" name="page" value="">
-				<div class="d-flex justify-content-center pt-5">
-					<button type="submit" class="rounded me-4" style="width: 100px; height:40px; border: 2px solid rgba(0,0,0,0.1); background:white; color: rgba(0,0,0,0.8);">수정하기</button>
-					<button type="button" class="rounded" onclick="location.href='${contextPath}/adminMemberManage.ad?page='" style="width: 100px; height:40px; border: 2px solid rgba(0,0,0,0.1); background:white; color: rgba(0,0,0,0.8);">뒤로가기</button>
+				<div class="mb-5"></div>
+				<div class="d-flex justify-content-center mb-5">
+					<div class="d-flex">
+						<button onclick="location.href='${contextPath}/adminMemberUpdate.ad'" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
+						<button onclick="location.href='${contextPath}/adminMemberManage.ad'" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+					</div>
 				</div>
 			</div>
 		</form>

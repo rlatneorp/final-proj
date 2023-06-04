@@ -35,8 +35,14 @@
 		font-weight: bold;}
 	.logo{
 		width: 120px; height: 120px; 
-		border: 2px solid black; border-radius: 50%;
-		margin-left:10px; margin-right: 10px;}
+		border-radius: 50%;
+		margin-left:10px; margin-right: 10px;
+		}
+	.logo-img{
+		width: 100%; height: 100%;
+		object-fit: cover;
+		object-position: center;
+		}
 	
 	#dropdownMenu2{border: none; background: none;}
 	.drop-list{text-align: center; font-weight: bold; margin-bottom: 5px;}
@@ -63,11 +69,13 @@
 					
 				</div>
 			</div>
-			<div class="logo"></div>
+			<div class="logo">
+				<img class="logo-img" src="/resources/images/Logo.png">
+			</div>
 			<div>
 				<div class="menus">
 					<div class="menu" onclick="location.href='#'">쇼핑</div>
-					<div class="menu" onclick="location.href='#'">게시판</div>
+					<div class="menu" onclick="location.href='${contextPath}/freeBoard.bo'">게시판</div>
 					<div class="dropdown">
 						<button type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
 					    로그인
@@ -75,13 +83,13 @@
 				  		<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 				  			<div class="drop-list">이름</div>
 				  			<div><button class="dropdown-item" type="button"><i class="bi bi-coin"></i> 1000 포인트</button></div>
-				  			<div><button class="dropdown-item" type="button"><i class="bi bi-person-circle"></i> 마이페이지</button></div>
+				  			<div><button class="dropdown-item" type="button" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle"></i> 마이페이지</button></div>
 				  			<div><button class="dropdown-item" type="button"><i class="bi bi-bookmark"></i> 스크랩</button></div>
 				  			<div class="drop-list"><button class="drop-btn" type="button">로그아웃</button></div>
 				  		</div>
 					</div>
 					<div style="width:80px"></div>
-					<div class="cart"><i class="bi bi-basket2-fill"></i></div>
+					<div class="cart" style="cursor:pointer;" onclick="location.href='${contextPath }/basket.ma'"><i class="bi bi-basket2-fill"></i></div>
 				</div>
 			</div>
 		</header>

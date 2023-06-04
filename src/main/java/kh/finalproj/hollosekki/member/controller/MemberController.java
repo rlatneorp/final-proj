@@ -24,4 +24,24 @@ public class MemberController {
 	public String myPage_Follow() {
 		return "myPage_Follow";
 	}
+	
+	@RequestMapping("myPage_MyRecipe.me")
+	public String myPage_MyRecipe() {
+		return "myPage_MyRecipe";
+	}
+	
+	@RequestMapping("myPage_MyBookMark.me")
+	public String myPage_MyBookMark() {
+		return "myPage_MyBookMark";
+	}
+	
+	@RequestMapping("myPage_MyFavorite.me")
+	public String myPage_MyFavorite() {
+		return "myPage_MyFavorite";
+	}
+	
+	@RequestMapping("myPage_MyOrder.me")
+	public String myPage_MyOrder() {
+		return "myPage_MyOrder";
+	}
 }

@@ -42,7 +42,7 @@ input {
 	width: 300px;
 }
 
-img {
+#searchIcon {
 	position: absolute;
 	width: 20px;
 	top: 12px;
@@ -72,15 +72,25 @@ th, td {
 th:first-child, td:first-child {
    border-left: none;
 }
-img:hover {
+#searchIcon:hover {
    cursor:pointer;
 }
 .info{font-size: 12px;}
 #orderSelect{
-	border: none; height: 100px;
+	border: none;; height: 100px;
 	background: rgba(224, 224, 224, 0.74);
 	display: flex; justify-content: center; align-items: center;
 }
+.term{
+	width: 80px;
+}
+.search{
+	width: 940px;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.date{width: 140px;}
 </style>
 </head>
 <body>
@@ -97,7 +107,7 @@ img:hover {
 				<br>
 				<div id="orderSelect">
 					<div class="search" style="margin: 0 auto;">
-						<select style="width: 200px;">
+						<select style="width: 180px;">
 							<option>전체 주문처리상태</option>
 							<option>입금전</option>
 							<option>배송준비중</option>
@@ -106,11 +116,16 @@ img:hover {
 							<option>취소</option>
 							<option>교환</option>
 							<option>반품</option>
-						</select>
-						<input type="button" name="today" value="오늘">
-						<input type="button" value="1개월">
-						<input type="button" value="3개월">
-						<input type="button" value="6개월">
+						</select>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" name="today" value="오늘" class="term">
+						<input type="button" value="1개월" class="term">
+						<input type="button" value="3개월" class="term">
+						<input type="button" value="6개월" class="term">
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="date" class="date">~
+						<input type="date" class="date">
+						&nbsp;&nbsp;
+						<input type="button" value="조회" style="width:70px;">
 					</div>
 				</div>
 				<br>
@@ -123,61 +138,61 @@ img:hover {
 						<thead>
 							<tr style="background-color: #B0DAFF; opacity: 90%">
 								<th>주문번호</th>
+								<th>주문 종류</th>
 								<th>상품 명</th>
+								<th>주문 날짜</th>
 								<th>총 주문금액</th>
-								<th>조회수</th>
-								<th>좋아요수</th>
-								<th>스크랩수</th>
+								<th>주문 상태</th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<tr>
+							<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me'">
 								<td>1</td>
-								<td>미역국</td>
+								<td>식품</td>
+								<td>다이어트 식단</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td>25000</td>
+								<td>결제 확인중</td>
 							</tr>
 							<tr>
-								<td>1</td>
-								<td>미역국</td>
+								<td>2</td>
+								<td>식품</td>
+								<td>당근 외 2개</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td>10000</td>
+								<td>결제 완료</td>
 							</tr>
 							<tr>
-								<td>1</td>
-								<td>미역국</td>
+								<td>3</td>
+								<td>상품</td>
+								<td>냄비</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td>25000</td>
+								<td>배송중</td>
 							</tr>
 							<tr>
-								<td>1</td>
-								<td>미역국</td>
-								<td>2020-0620</td>
-								<td>5</td>
 								<td>4</td>
-								<td>1</td>
+								<td>식품</td>
+								<td>몸보신 식단</td>
+								<td>2020-0620</td>
+								<td>25000</td>
+								<td>주문 취소</td>
 							</tr>
 							<tr>
-								<td>1</td>
-								<td>미역국</td>
-								<td>2020-0620</td>
 								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td>상품</td>
+								<td>튀김기</td>
+								<td>2020-0620</td>
+								<td>25000</td>
+								<td>배송완료</td>
 							</tr>
 							<tr>
-								<td>1</td>
-								<td>미역국</td>
+								<td>6</td>
+								<td>식품</td>
+								<td>고단백 식단</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td>25000</td>
+								<td>배송완료</td>
 							</tr>
 						</tbody>
 					</table>
@@ -213,8 +228,8 @@ img:hover {
 				</div>
 				<br>
 				<div style="display: flex; width:300px; position: relative; margin: 0 auto;">
-					<input type="text" placeholder="검색어 입력"> 
-					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
+					<input type="text" placeholder="검색어 입력" id="searchInput"> 
+					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="searchIcon">
 				</div>
 			</div>
 		</div>

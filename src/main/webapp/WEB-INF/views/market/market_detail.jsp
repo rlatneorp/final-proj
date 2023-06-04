@@ -14,7 +14,7 @@
 <style>
 * {
 	outline: none;
-	margin: 0;
+	margin: 0px;
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -46,7 +46,7 @@ html{
 #order-wrap {
 	width: 1200px;
 	background: white;
-	height: 610px;
+	height: auto;
 	display: flex;
 	flex-flow: nowrap;
 	justify-content: space-around;
@@ -86,6 +86,7 @@ html{
 	height: 120px;
 	padding-bottom: 5px;
 	border: 1px solid #4485d7;
+	display: none;
 }
 
 .right {
@@ -560,7 +561,6 @@ p b {
 }
 
 .qnaWrap{
-	display: block;
     line-height: 1;
     font-size: 15px;
     color: #222;
@@ -620,15 +620,75 @@ p b {
     text-align: center;
 }
 
+#decrease{
+	color:#4485d7;
+	font-size:20px;
+	size:32px;
+	background:white;
+	font-weight:bold;
+	width:32px;
+    background-size: 14px;
+    display: inline-block;
+    border: none;
+    margin: -1px 0 0 6px;
+}
+
+#increase{
+	color:#4485d7;
+	font-size:20px;
+	background:white;
+	font-weight:bold;
+	width:32px;
+    background-size: 14px;
+    display: inline-block;
+    border: none;
+    margin: -1px 6px 0 0;
+}
+.buyCount{
+    padding: 0px 5px 2px;
+    width: 54px;
+    outline: none;
+    height: 33px;
+    color: #222;
+    font-size: 16px;
+    line-height: 31px;
+    text-align: center;
+    display: inline-block;
+    float: none;
+    border: none
+}
+
+#qnaModal{
+	width: 1900px;
+	height: 1900px;
+	position:fixed;
+	top:0px;
+	left:0px;
+	right: 0px;
+	bottom:0px;
+	background-color: white;
+	justify-content: center;
+	align-items: center;
+}
+
+.qnaModalContent{
+	width:500px;
+	height: 1800px;
+}
 
 </style>
 <body>
-	
+<span>
+<%@include file="../common/top.jsp" %>
+<br>
+</span>
+
+	<form action="${contextPath}" method="get">
 	<main id="order-wrap">
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg">
+			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;">
 		</div>
 		<div class="right">
 			<!-- 상품 정보 -->
@@ -646,7 +706,7 @@ p b {
 						450,000원
 					</h2>
 					&nbsp;&nbsp;
-					<h4 style="display: inline-block; font-size: 40px; color: #4485d7;">♥</h4>
+					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
 						540,000원
 					</h2>
@@ -655,21 +715,22 @@ p b {
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px; margin-bottom: 5px;">
+                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;배송
                             </dt>
-                            <hr>
+                            <hr style="margin: 0px;">
                                 </dl>
                                 <dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px; margin-bottom: 5px;">
+                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
                             </dt>
+                             	<hr style="margin: 0px;">
                                 </dl>
-                                 <hr>
-                                 <br>
-				<form action="${contextPath}" method="get">
-					<select class='size' name='size' required>
+                                
+				
+				
+					<select class='options' name='options' required>
 						<!-- 사이즈 선택 창 -->
 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option>
 						<option value='S'>옵션1</option>
@@ -686,17 +747,16 @@ p b {
 							<input type="hidden" name="productName" value="${p.productName}">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
 						</h4>
-						<div class="btnbox">
+						<div class="btnbox" style=" margin: 0 0 0 -1px;">
 							<button id="decrease" type="button">-</button>
 							<input type="number" class="buyCount"
-								style="height: 29px; width: 29px; text-align: center;" value="1"
-								name="buyCount" max="90" min="1" readonly>
+								style="" value="1" name="buyCount" min="1" readonly>
 								
 							<button id="increase" type="button">+</button>
 							
 						</div>
 						<button class="removeProudct" type="button" style="float: right;">
-							<img src="${contextPath}/resources/product_img/close.png" style="width: 10px;">
+							<img src="resources/images/close.png" style="width: 10px;">
 						</button>
 						<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격</div>
 						<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
@@ -705,14 +765,20 @@ p b {
 						<input type="hidden" name="productMainPic" value="${p.productMainPic}">
 						</strong> <br>
 					</div>
+					
+				</div>
+					
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 							<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
 				</div>
-				</form>
-
 			</div>
 		</div>
 	</main>
+</form>
+<br>
+		
+	
+<div class ="productInfoMain" st>
 	<div class="reviewbox">
 		<ul>
 			<li>상세정보</li>
@@ -864,48 +930,53 @@ p b {
                       </div> 
 					</li>
 				</ul>
-				
 				<li id="page-qna" class="accordion_i_li">
                 <a class="accordion_i_tit3">문의<span>(2)</span></a>
                 <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
                     <div id="ajax-goods-goodsqa-list">
                     
               	<ul class="goods_accordion_qna">
-            <li class="accordion_q_li js_data_row">
-                <a href="javascript:void(0)" class="qnaWrap">
-                    <div class="accordion_q_tit1">
+              	
+        <!--  반복 될 부분 -->      	
+             <li class="accordion_q_li js_data_row" >
+                <div class="accordion_q_tit1">
+                   
                     <div class="qna">
                         상품문의 입니다.
                     </div>
-                        <b class="writer">조단</b>
-                        <span class="rv_cont_date">2023.01.31</span>
-                        <span class="qna_result">답변완료</span>
-                    </div>
-                </a>
+                        <span class="writer" style="margin-right: 60px">조단</span>
+                        <span class="rv_cont_date" style="margin-right: 60px">2023.01.31</span>
+                        <span class="qna_result" style="float: right;">답변완료</span>
+                    
                 
+                </div>
                 <div class="js_detail accordion_q_cont"></div>
             </li>
+            <!-- 여기 까지 반복 -->
+            
             <li class="accordion_q_li js_data_row" >
-                <a href="javascript:void(0)" class="qnaWrap">
-                    <div class="accordion_q_tit1">
+                <div class="accordion_q_tit1">
+                   
                     <div class="qna">
                         상품문의 입니다.
                     </div>
-                        <b class="writer">조단</b>
-                        <span class="rv_cont_date">2023.01.31</span>
-                        <span class="qna_result">답변완료</span>
-                    </div>
-                </a>
+                        <span class="writer" style="margin-right: 60px">조단</span>
+                        <span class="rv_cont_date" style="margin-right: 60px">2023.01.31</span>
+                        <span class="qna_result" style="float: right;">답변완료</span>
+                    
                 
+                </div>
                 <div class="js_detail accordion_q_cont"></div>
             </li>
+            
+            
 			</ul>
 				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
 				    <div class="review_btn_wr"><a href="">
 				    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
 				    </div>
 				</div>
-								<div class="pagination">
+								<div class="pagination" style="display: block">
 							<ul>
 								<li class="on">
 								<span>1</span>
@@ -915,10 +986,43 @@ p b {
 					</div>
 				</div>
           	</li>
-				
-	
-	
+	</div>
 </div><!-- 전체를 감싸는 박스 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<script>
 	
 	$('.accordion_i_tit').click(function(){
@@ -930,6 +1034,86 @@ p b {
 	$('.accordion_i_tit3').click(function(){
 		$('.accordion_i_cont3').toggle(400);
 	})
+
+   const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명
+   
+   const option = document.getElementsByClassName("options"); //사이즈 선택 창
+   
+   let buyCount = document.getElementsByClassName("buyCount")[0]; // 상품 수량 
+   const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
+   const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
+   let productPrice = document.getElementsByClassName("productPrice")[0];
+   const buyBtn = document.getElementById("buyBtn");
+   const removeProudct = document.getElementsByClassName("removeProudct")[0];
+   const result = document.getElementById("productResult");
+   const like = document.querySelector(".like");
+   
+      like.addEventListener("click", function() {
+	    if(like.innerText === '♡') {
+	        like.innerText = '♥';
+	    } else like.innerText ='♡';
+	});
+   
+   
+      
+      
+      
+   
+   
+   function priceToString(productPrice) {
+       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+   }
+   
+   
+   
+//    console.log(option);
+   
+   
+   removeProudct.addEventListener("click",function(){
+	   document.getElementById("productResult").style.display="none";
+   })
+
+   
+   increase.addEventListener("click", function(){
+      buyCount.value++;
+      productPrice.innerText = priceToString(buyCount.value*450000);
+      
+   })
+   
+   decrease.addEventListener("click", function(){
+      buyCount.value--;
+      
+      productPrice.innerText = priceToString(buyCount.value*450000);
+      
+      if(buyCount.value < 1){
+         buyCount.value = 1
+      productPrice.innerText = priceToString(buyCount.value*450000);
+         
+      }
+   })
+   
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

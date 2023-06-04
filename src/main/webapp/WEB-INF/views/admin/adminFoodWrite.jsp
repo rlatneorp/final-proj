@@ -75,7 +75,7 @@
 	<jsp:include page="../common/adminSidebar.jsp"/>
 		
 	<div class="mainBox">
-		<form action="${contextPath}/adminFoodUpdate.ad" method="post">
+		<form action="${contextPath}/adminFoodInsert.ad" method="post">
 			<div id="top">
 				<div id="thumImg">
 					<img src="${contextPath}/resources/images/logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
@@ -88,7 +88,7 @@
 						<a href="#"><i class="bi bi-bookmark " style="font-size: 20px;"></i></a>
 					</div>
 					<div id="category">
-						아이콘 식단 카테고리 선택
+						카테고리 선택
 						<select name="category">
 							<option>다이어트</option>
 							<option>육류</option>

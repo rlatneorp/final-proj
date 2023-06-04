@@ -75,7 +75,7 @@
 	<jsp:include page="../common/adminSidebar.jsp"/>
 		
 	<div class="mainBox">
-		<form action="${contextPath}/adminFoodUpdate.ad" method="post">
+		<form action="${contextPath}/adminRecipeUpdate.ad" method="post">
 			<div id="top">
 				<div id="thumImg">
 					<img src="${contextPath}/resources/images/logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
@@ -84,11 +84,11 @@
 				<div style="width: 50px; height: 500px; display: inline-block; left: 500px;"></div>
 				<div id="imformation">
 					<div id="title">
-						<input type="text" name="title" style="font-size: 20px; margin-right: 360px;" placeholder="식품 이름을 적어주세요.">
+						<input type="text" name="title" style="font-size: 20px; width: 250px; margin-right: 340px;" placeholder="레시피 이름을 적어주세요.">
 						<a href="#"><i class="bi bi-bookmark " style="font-size: 20px;"></i></a>
 					</div>
 					<div id="category">
-						아이콘 식단 카테고리 선택
+						카테고리 선택
 						<select name="category">
 							<option>다이어트</option>
 							<option>육류</option>
@@ -100,7 +100,7 @@
 						<img src="#" style="width: 100px; height: 100px; border-radius: 50%">
 						<p style="font-weight: bold;">000영양사</p>
 						<p>*****(별점)</p>
-						<textarea name="subContent" rows="6" cols="80" placeholder="식품에 대한 설명을 입력해주세요."></textarea>
+						<textarea name="subContent" rows="6" cols="80" placeholder="레시피에 대한 설명을 입력해주세요."></textarea>
 					</div>
 					
 					<br><br>
@@ -110,7 +110,7 @@
 		
 			
 			<div class="mid">
-				식품 상세설명
+				레시피 상세설명
 			</div>
 			
 			<br>
@@ -164,39 +164,8 @@
 						<button id="addLeft" type="button" style="width: 100px; border: 2px solid rgba(0,0,0,0.3); border-radius: 10px;">왼쪽사진<br>내용추가</button>
 						<button id="addRight" type="button" style="width: 100px; border: 2px solid rgba(0,0,0,0.3); border-radius: 10px;">오른쪽사진<br>내용추가</button>
 					</div>
-					
-		<!-- 			<p style="font-size: 20px; font-weight: bold; text-align: right;">가격</p> -->
-					<div class="d-flex justify-content-end">
-						<table class="d-flex text-center border-none">
-							<tr>
-								<th>단가</th>
-								<th></th>
-								<th>할인율</th>
-								<th></th>
-								<th colspan="2">최종가격</th>
-							</tr>
-							<tr>
-								<td>
-									<input type="number" class="cost" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0">
-								</td>
-								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">원 - </td>
-								<td>
-									<input type="number" class="discount" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0" max="99">
-								</td>
-								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">% =</td>
-								<td>
-									<input type="number" class="resultCost" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" readonly>
-								</td>
-								<td style="width: 30px; font-size: 16px; font-weight: bold; text-align: left;">원</td>
-							</tr>
-							
-						
-						</table>
-					</div>
 				</div>
 			</div>
-			
-		
 			
 			
 			<br><br><br>
@@ -248,8 +217,8 @@
 		
 			<div class="d-flex justify-content-center mb-5">
 				<div class="d-flex">
-					<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">작성하기</button>
-					<button onclick="location.href='${contextPath}/adminFoodManage.ad'" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+					<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
+					<button onclick="location.href='${contextPath}/adminRecipeManage.ad'" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 				</div>
 			</div>
 		</form>

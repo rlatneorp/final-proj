@@ -33,7 +33,13 @@ public class MarketController {
 	public String marketdetail() {
 		return "market_detail";
 	}
-
+	
+	@GetMapping("kitchenToolMain.ma")
+	public String kitchenToolMain() {
+		
+		return "kitchenToolMainPage";
+	}
+	
 	@RequestMapping("paySuccess.ma")
 	public String paySuccess() {
 		return "paySuccess";

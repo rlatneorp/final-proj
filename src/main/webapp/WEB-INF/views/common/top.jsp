@@ -70,7 +70,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<img class="logo-img" src="/resources/images/Logo.png">
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
 			</div>
 			<div>
 				<div class="menus">

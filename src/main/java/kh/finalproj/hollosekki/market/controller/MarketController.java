@@ -25,6 +25,12 @@ public class MarketController {
 		return "market_detail";
 	}
 	
+	@GetMapping("kitchenToolMain.ma")
+	public String kitchenToolMain() {
+		
+		return "kitchenToolMainPage";
+	}
+	
 	@RequestMapping("paySuccess.ma")
 	public String paySuccess() {
 		

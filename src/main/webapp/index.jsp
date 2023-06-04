@@ -17,6 +17,7 @@
 		<a href="personalQuestion.cs"><span>1:1문의</span></a>
 		<a href="home.do"><span>HOME</span></a>
 		<a href="market_detail.ma"><span>market</span></a>
+		<a href="kitchenToolMain.ma"><span>kitchenToolMain</span></a>
 		<a href="basket.ma"><span>basket</span></a>
 		<a href="payDetail.ma"><span>payDetail</span></a>
 		<a href="paySuccess.ma"><span>paySuccess</span></a>

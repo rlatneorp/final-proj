@@ -115,17 +115,17 @@
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">배송지 관리 &nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyAddress.me">배송지 관리 &nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">포인트 관리 &nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_Point.me">포인트 관리 &nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">회원 정보 수정
+			<a class="menuBar" href="${ contextPath }/myPage_checkPwd.me">회원 정보 수정
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>

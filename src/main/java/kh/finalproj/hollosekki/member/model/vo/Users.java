@@ -1,5 +1,6 @@
 package kh.finalproj.hollosekki.member.model.vo;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Users {
@@ -18,13 +19,14 @@ public class Users {
 	private int checkDay;
 	private int point;
 	private String isAdmin;
-	private Date attendanceDate;
+	private String attendanceDate;
+	private String attendanceDay;
 	
 	public Users() {}
 
 	public Users(int usersNo, String usersId, String usersPw, String checkPw, String hintPw, String usersName,
 			String nickName, String email, String phone, Date enrollDate, Date exitDate, char status, int checkDay,
-			int point, String isAdmin, Date attendanceDate) {
+			int point, String isAdmin, String attendanceDate, String attendanceDay) {
 		super();
 		this.usersNo = usersNo;
 		this.usersId = usersId;
@@ -42,6 +44,7 @@ public class Users {
 		this.point = point;
 		this.isAdmin = isAdmin;
 		this.attendanceDate = attendanceDate;
+		this.attendanceDay = attendanceDay;
 	}
 
 	public int getUsersNo() {
@@ -164,14 +167,33 @@ public class Users {
 		this.isAdmin = isAdmin;
 	}
 
-	public Date getAttendanceDate() {
+	public String getAttendanceDate() {
 		return attendanceDate;
 	}
 
-	public void setAttendanceDate(Date attendanceDate) {
+	public void setAttendanceDate(String attendanceDate) {
 		this.attendanceDate = attendanceDate;
+	}
+
+	public String getAttendanceDay() {
+		return attendanceDay;
+	}
+
+	public void setAttendanceDay(String attendanceDay) {
+		this.attendanceDay = attendanceDay;
+	}
+
+	@Override
+	public String toString() {
+		return "Users [usersNo=" + usersNo + ", usersId=" + usersId + ", usersPw=" + usersPw + ", checkPw=" + checkPw
+				+ ", hintPw=" + hintPw + ", usersName=" + usersName + ", nickName=" + nickName + ", email=" + email
+				+ ", phone=" + phone + ", enrollDate=" + enrollDate + ", exitDate=" + exitDate + ", status=" + status
+				+ ", checkDay=" + checkDay + ", point=" + point + ", isAdmin=" + isAdmin + ", attendanceDate="
+				+ attendanceDate + ", attendanceDay=" + attendanceDay + "]";
 	}
 
 	
 	
-}
+	
+	
+}	

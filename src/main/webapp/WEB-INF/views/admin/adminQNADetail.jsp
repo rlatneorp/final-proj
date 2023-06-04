@@ -18,7 +18,7 @@
 		
 		<form action="${contextPath}/adminQNAUpdate.ad" method="post">
 			<div class="row" style="padding: 0px 35px 0px 15px;">
-				<h5 class="mt-3 mb-5">- 자주묻는질문 -</h5>
+				<h5 class="mt-3 mb-5">- 1:1문의 -</h5>
 				<span class="col-2">카테고리</span>
 				<input type="text" class="col-4 pb-1 mb-2 rounded border" value="이용방법" readonly>
 				<div class="col-6"></div>

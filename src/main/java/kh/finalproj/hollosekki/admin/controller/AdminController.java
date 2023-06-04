@@ -116,7 +116,7 @@ public class AdminController {
 	public String adminFoodUpdate() {
 		return "redirect:adminFoodManage.ad";
 	}
-	@GetMapping("adminFoodWrtie.ad")
+	@GetMapping("adminFoodWrite.ad")
 	public String adminFoodWrite() {
 		return "adminFoodWrite";
 	}
@@ -149,6 +149,72 @@ public class AdminController {
 	}
 	
 	
+//	Recipe-레시피 관리
+	@GetMapping("adminRecipeManage.ad")
+	public String adminRecipeManage() {
+		return "adminRecipeManage";
+	}
+	@GetMapping("adminRecipeDetail.ad")
+	public String adminRecipeDetail() {
+		return "adminRecipeDetail";
+	}
+	@PostMapping("adminRecipeUpdate.ad")
+	public String adminRecipeUpdate() {
+		return "redirect:adminRecipeManage.ad";
+	}
+	@GetMapping("adminRecipeWrite.ad")
+	public String adminRecipeWrite() {
+		return "adminRecipeWrite";
+	}
+	@PostMapping("adminRecipeInsert.ad")
+	public String adminRecipeInsert() {
+		return "redirect:adminRecipeManage.ad";
+	}
+	
+	
+//	RecipeReview-레시피 후기 관리
+	@GetMapping("adminRecipeReviewManage.ad")
+	public String adminRecipeReviewManage() {
+		return "adminRecipeReviewManage";
+	}
+	@GetMapping("adminRecipeReviewDetail.ad")
+	public String adminRecipeReviewDetail() {
+		return "adminRecipeReviewDetail";
+	}
+	@PostMapping("adminRecipeReviewUpdate.ad")
+	public String adminRecipeReviewUpdate() {
+		return "redirect:adminRecipeReviewManage.ad";
+	}
+	
+	
+//	MenuReview-식단구독 후기 관리
+	@GetMapping("adminMenuReviewManage.ad")
+	public String adminMenuReviewManage() {
+		return "adminMenuReviewManage";
+	}
+	@GetMapping("adminMenuReviewDetail.ad")
+	public String adminMenuReviewDetail() {
+		return "adminMenuReviewDetail";
+	}
+	@PostMapping("adminMenuReviewUpdate.ad")
+	public String adminMenuReviewUpdate() {
+		return "redirect:adminMenuReviewManage.ad";
+	}
+	
+	
+//	Product-상품 관리
+	@GetMapping("adminProductReviewManage.ad")
+	public String adminProductReviewManage() {
+		return "adminProductReviewManage";
+	}
+	@GetMapping("adminProductReviewDetail.ad")
+	public String adminProductReviewDetail() {
+		return "adminProductReviewDetail";
+	}
+	@PostMapping("adminProductReviewUpdate.ad")
+	public String adminProductReviewUpdate() {
+		return "redirect:adminProductReviewManage.ad";
+	}
 	
 	
 //	FAQ-자주묻는질문 관리
@@ -172,8 +238,6 @@ public class AdminController {
 	public String adminFAQInsert() {
 		return "redirect:adminFAQManage.ad";
 	}
-	
-	
 	
 	
 //	QNA-1:1문의 관리

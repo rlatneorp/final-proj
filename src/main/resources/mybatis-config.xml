@@ -10,10 +10,6 @@
 		<typeAlias type="kh.finalproj.hollosekki.enroll.model.vo.Users" alias="Users"/>
 	</typeAliases>
 	
-	<typeAliases>
-		<typeAlias type="kh.finalproj.hollosekki.member.model.vo.Users" alias="Users"/>
-	</typeAliases>
-	
 	<mappers>
 		<mapper resource="mappers/admin-mapper.xml"/>
 		<mapper resource="mappers/market-mapper.xml"/>

@@ -124,6 +124,43 @@ input[type="text"] {
 .payElement:hover{
 	cursor:pointer;
 }
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  border-radius:2em;
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 880px;
+  height:500px
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -225,6 +262,10 @@ input[type="text"] {
 				<div>
 					<input type="radio" name="payment" style="margin-left: 10px; font-size: 70px; margin-right: 10px;">&nbsp;직접입력&nbsp;&nbsp;&nbsp;&nbsp; 
 					<input type="radio" name="payment" style="font-size: 70px; margin-right: 10px;">&nbsp;주문자정보와 동일
+					<button id="openButton">배송지 관리</button>
+					 
+					 
+					 
 				</div>
 			</td>
 		</tr>
@@ -240,29 +281,23 @@ input[type="text"] {
 		</tr>
 		<tr>
 			<td class="address" style="height: 167"><b>받으실 곳</b></td>
-			<td style="text-align: left; height: 30px"><input type="text"
-				style="width: 150px; margin-bottom: 10px; margin-left: 15px;"
-				id="sample6_postcode" placeholder="우편번호"> <input
-				type="button" style="border-radius: 10; height: 35px;"
-				onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-				<input type="text" id="sample6_address"
-				style="margin-bottom: 10px; width: 400px; margin-left: 15px;"
-				placeholder="주소"><br> <input type="text"
-				id="sample6_detailAddress"
-				style="margin-bottom: 10px; width: 400px; margin-left: 15px;"
-				placeholder="상세주소"><br>
+			<td style="text-align: left; height: 30px">
+				<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="sample6_postcode" placeholder="우편번호"> 
+				<input type="button" style="border-radius: 10; height: 35px;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+				<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소"><br> 
+				<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소"><br>
 		</tr>
 		<tr>
 			<td class="address"><b>전화번호</b></td>
-			<td
-				style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"><input
-				type="text" style="width: 200px; margin-left: 15px;" name="payName"></td>
+			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
+				<input type="text" style="width: 200px; margin-left: 15px;" name="payName">
+			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
-			<td
-				style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6"><input
-				type="text" style="width: 200px; margin-left: 15px;" name="payName"></td>
+			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
+				<input type="text" style="width: 200px; margin-left: 15px;" name="payName">
+			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>배송 요청사항</b></td>
@@ -358,17 +393,74 @@ input[type="text"] {
   </div>
 </div>
 
+	<!-- 배송지 관리 창  -->
+	<div id="popup" class="popup">
+	  <div class="popup-content">
+	    <span class="close" id="closeButton">&times;</span>
+	    <br><br>
+	    <h3>나의 배송지 목록</h3><br>
+	    <button id="openSecondButton" style="margin-left:600x;">+ 새 배송지 추가</button><br><br>
+	    <table style="height:35px; width:100%; border-left:none; border-right:none;">
+	    	<tr style="border-bottom:2px solid lightgray; height:35px">
+	    		<th>선택</th>
+	    		<th>받으실 분</th>
+	    		<th>배송지</th>
+	    		<th>전화번호</th>
+	    		<th>휴대폰 번호</th>
+	    		<th>수정/삭제</th>
+	    	</tr>
+	    	<tr>
+	    		<td><input type="checkbox"></td>
+	    		<td>박보보</td>
+	    		<td>(01015)서울특별시 KH학원 박보보네 집</td>
+	    		<td>0620581545</td>
+	    		<td>01011119999</td>
+	    		<td><button>수정</button><button>삭제</button></td>
+	    		
+	    	</tr>
+	    	
+	    </table>
+	  </div>
+	</div>
 
+	<!-- 배송지 추가 시 입력 창 -->
+	<div id="secondPopup" class="popup">
+  <div class="popup-content">
+    <table style="width:800px; margin-top:20px">
+		<tr>
+			<td class="address"><b>받으실 분</b></td>
+			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
+				<div>
+					<input type="text" id="orderName2" style="width: 400px; margin-left: 15px" name="payName">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="address" style="height: 167"><b>받으실 곳</b></td>
+			<td style="text-align: left; height: 30px">
+				<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="sample7_postcode" placeholder="우편번호"> 
+				<input type="button" style="border-radius: 10; height: 35px;" onclick="sample7_execDaumPostcode()" value="우편번호 찾기"><br>
+				<input type="text" id="sample7_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소"><br> 
+				<input id="detailAddress2" type="text" id="sample7_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소"><br>
+		</tr>
+		<tr>
+			<td class="address"><b>전화번호</b></td>
+			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
+				<input id="homeNumber2" type="text" style="width: 200px; margin-left: 15px;" name="payName">
+			</td>
+		</tr>
+		<tr>
+			<td class="address"><b>휴대폰 번호</b></td>
+			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
+				<input id="phoneNumber2" type="text" style="width: 200px; margin-left: 15px;" name="payName">
+			</td>
+		</tr>
+	</table>
+    <button id="confirmButton">확인</button>
+  </div>
+</div><br><br><br><br><br><br>
 
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-
-
-	<%@include file="../common/footer.jsp"%>
+<%@include file="../common/footer.jsp"%>
 
 
 </body>
@@ -392,13 +484,34 @@ input[type="text"] {
                 } else { // 사용자가 지번 주소를 선택했을 경우(J)
                     addr = data.jibunAddress;
                 }
-
-
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+			    // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('sample6_postcode').value = data.zonecode;
                 document.getElementById("sample6_address").value = addr;
                 // 커서를 상세주소 필드로 이동한다.
                 document.getElementById("sample6_detailAddress").focus();
+            }
+        }).open();
+    }
+	
+  //주소 찾기 
+    function sample7_execDaumPostcode() { //우편번호 찾기 클릭 시
+        new daum.Postcode({ //다음에서 제공하는 Postcode 메서드 
+            oncomplete: function(data) {
+                var addr = ''; // 주소 변수
+
+                if (data.userSelectedType === 'R') { 
+                    addr = data.roadAddress;
+                } else { 
+                    addr = data.jibunAddress;
+                }
+                console.log(document.getElementById('sample7_postcode'));
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample7_postcode').value = data.zonecode;
+                document.getElementById("sample7_address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+//                 document.getElementById("sample7_detailAddress").focus();
+                window.close();
             }
         }).open();
     }
@@ -450,8 +563,39 @@ input[type="text"] {
 		})
 		
 	
-		
-		
+		//배송지 관리 - 추가 
+		const openButton = document.getElementById("openButton");
+		const closeButton = document.getElementById("closeButton");
+		const openSecondButton = document.getElementById("openSecondButton");
+		const closeSecondButton = document.getElementById("closeSecondButton");
+		const confirmButton = document.getElementById("confirmButton");
+		console.log(confirmButton);
+		const popup = document.getElementById("popup");
+		const secondPopup = document.getElementById("secondPopup");
+
+		// 버튼 클릭 이벤트 처리
+		openButton.addEventListener("click", function() {
+		  popup.style.display = "block";
+		});
+
+		// "x" 버튼 클릭 이벤트 처리
+		closeButton.addEventListener("click", function() {
+		  popup.style.display = "none";
+		});
+
+		// 두 번째 창 열기 버튼 클릭 이벤트 처리
+		openSecondButton.addEventListener("click", function() {
+		  popup.style.display = "none";
+		  secondPopup.style.display = "block";
+		});
+
+		// 확인 버튼 클릭 이벤트 처리
+		confirmButton.addEventListener("click", function() {
+			console.log('asdf');
+		  secondPopup.style.display = "none";
+		  popup.style.display = "block";
+		});
+
 		
 	}
 </script>

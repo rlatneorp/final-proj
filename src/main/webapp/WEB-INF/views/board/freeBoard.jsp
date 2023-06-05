@@ -103,7 +103,7 @@ input {
 	border-top-left-radius: 0;
 }
 
-img {
+#searchIcon {
 	position: absolute;
 	width: 20px;
 	top: 12px;
@@ -111,7 +111,7 @@ img {
 	margin-left: 30px;
 }
 
-img:hover {
+#searchIcon:hover {
 	cursor:pointer;
 }
 

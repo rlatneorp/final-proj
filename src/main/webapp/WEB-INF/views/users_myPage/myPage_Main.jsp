@@ -108,7 +108,7 @@
 				<div class="nameBar">
 					<div class="name">
 						<br>
-						<p style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219);">홍길동님</p>
+						<p style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219);">${ loginUser.usersName }님</p>
 						<button id="mbtn" onclick="location.href='${contextPath}/attendance_Check.ma'">출석하기</button><br>
 						<button class="follow" data-bs-toggle="modal" data-bs-target="#following">팔로잉</button>
 						<button class="follow" data-bs-toggle="modal" data-bs-target="#follower">팔로워</button>
@@ -133,7 +133,7 @@
 						<td>
 						<i class="bi bi-currency-dollar dollars"></i>
 						</td>
-						<td style="font-size: 18px; color: rgb(52, 152, 219);"><b>1000 포인트</b></td>
+						<td style="font-size: 18px; color: rgb(52, 152, 219);"><b>${ loginUser.point } 포인트</b></td>
 						</tr>
 						</table>
 						<p style="font-size: 13px;">소멸 예정 포인트 0원</p>

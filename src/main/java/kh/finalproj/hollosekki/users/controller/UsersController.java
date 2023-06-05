@@ -1,18 +1,42 @@
 package kh.finalproj.hollosekki.users.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.users.model.service.UsersService;
+
+@SessionAttributes("loginUser")
 @Controller
 public class UsersController {
+	
+	@Autowired
+	private EnrollService eService;
+	
+//	@Autowired
+//	private UsersService uService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
+	
 	@RequestMapping("myPage_Main.me")
-	public String myPage_Main() {
+	public String myPage_Main(Model model, Users u) {
+		Users loginUser = eService.login(u);
+		model.addAttribute("loginUser", loginUser);
 		return "myPage_Main";
 	}
 	
 	@RequestMapping("myPage_Profile.me")
 	public String myPage_Profile() {
-		return "myPage_profile";
+		return "myPage_Profile";
 	}
 	
 	@RequestMapping("myPage_Intro.me")
@@ -65,9 +89,23 @@ public class UsersController {
 		return "myPage_Point";
 	}
 	
-	@RequestMapping("myPage_checkPwd.me")
-	public String myPage_checkPwd() {
+	@RequestMapping("myPage_UpdateInfo.me")
+	public String myPage_UpdateInfo() {
 		return "myPage_checkPwd";
+	}
+	
+	// 회원정보 수정 전 비밀번호 확인
+	@RequestMapping("myPage_checkPwd.me")
+	@ResponseBody
+	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
+		System.out.println(usersPwd);
+		String pwd = ((Users)model.getAttribute("loginUser")).getUsersPw();
+		
+		if(bcrypt.matches(usersPwd, pwd)) {
+			return "yes";
+		} else {
+			return "no";
+		}
 	}
 	
 	@RequestMapping("myPage_editInfo.me")

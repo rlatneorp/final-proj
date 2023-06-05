@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
-import kh.finalproj.hollosekki.member.model.vo.Users;
+import kh.finalproj.hollosekki.users.model.vo.Users;
 
 @Service("mkService")
 public class MarketService {

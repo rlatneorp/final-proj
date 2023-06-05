@@ -17,9 +17,10 @@
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
-		<h4 class="py-4 mb-3">매출관리</h4>
-		
-		<h5 class="mb-4">일일 매출 현황</h5>
+		<h4 class="py-4 mb-2">매출관리</h4>
+		<h5 class="mb-4 mb-2">일일 매출 현황</h5>
+		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>
+		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
 		
 		<table class="w-100 text-center mb-3">
 			<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">

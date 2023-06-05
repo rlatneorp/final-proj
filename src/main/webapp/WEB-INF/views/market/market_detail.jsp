@@ -808,7 +808,7 @@ p b {
 				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">1</span>
 
 			<div class="review_btn">
-				<a href="javascript:gd_open_write_popup('goodsreview', '1000030759')">
+				<a href="createReview.ma">
 				<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 			</div>
 			<div class="photoList">

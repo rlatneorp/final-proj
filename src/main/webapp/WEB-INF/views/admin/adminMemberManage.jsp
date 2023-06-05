@@ -16,6 +16,8 @@
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
 		<h4 class="py-4 mb-0">회원관리</h4>
+		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>
+		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
 		
 		<table class="w-100 text-center mb-3">
 			<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
@@ -24,9 +26,9 @@
 				<th style="width: 13%">아이디</th>
 				<th style="width: 24%">이메일</th>
 				<th style="width: 13%">전화번호</th>
-				<th style="width: 14%">가입일자</th>
-				<th style="width: 14%">탈퇴일자</th>
-				<th style="width: 6%">상태</th>
+				<th style="width: 12%">가입일자</th>
+				<th style="width: 12%">탈퇴일자</th>
+				<th style="width: 10%">상태</th>
 			</tr>
 			
 			<c:forEach begin="1" end="10" varStatus="vs">
@@ -41,7 +43,10 @@
 					<td>010-${vs.index-1}111-2222</td>
 					<td>2023-05-05</td>
 					<td>-</td>
-					<td>활동</td>
+					<td>
+						<button type="button" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;">Y</button>
+						<button type="button" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;">N</button>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>

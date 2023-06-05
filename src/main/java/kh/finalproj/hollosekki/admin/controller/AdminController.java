@@ -1,11 +1,21 @@
 package kh.finalproj.hollosekki.admin.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import kh.finalproj.hollosekki.admin.model.service.AdminService;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 
 @Controller
 public class AdminController {
+	
+	@Autowired
+	private AdminService aService;
 	
 	@GetMapping("adminMain.ad")
 	public String adminMain() {
@@ -98,7 +108,15 @@ public class AdminController {
 		return "adminIngredientWrite";
 	}
 	@PostMapping("adminIngredientInsert.ad")
-	public String adminIngredientInsert() {
+	public String adminIngredientInsert(@ModelAttribute Ingredient igd,
+										HttpSession session) {
+//		Users user = (Users)session.getAttribute("loginUser");
+		igd.setUsersNo(1);
+		
+		int result = aService.insertIngredient(igd);
+//		상품등록여부 확인 후 상품등록도 진행해야함
+		
+		
 		return "redirect:adminIngredientManage.ad";
 	}
 	

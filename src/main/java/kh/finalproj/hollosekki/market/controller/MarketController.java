@@ -34,6 +34,11 @@ public class MarketController {
 		return "market_detail";
 	}
 	
+	@GetMapping("createReview.ma")
+	public String createReview() {
+		return "createReview";
+	}
+	
 	@GetMapping("kitchenToolMain.ma")
 	public String kitchenToolMain() {
 		

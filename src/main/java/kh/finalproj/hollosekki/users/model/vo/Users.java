@@ -1,4 +1,4 @@
-package kh.finalproj.hollosekki.member.model.vo;
+package kh.finalproj.hollosekki.users.model.vo;
 
 import java.time.LocalDate;
 import java.util.Date;

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="enrollMapper"> 
+	<insert id="insertUser">
+		insert into users
+		values(SEQ_USERS_NO.nextval, #{usersId}, #{usersPw}, #{usersName}, #{nickName}, #{email}, #{phone}, 
+				sysdate, default, default, default, default, default, default, default, default)
+	</insert>
+	
+	<select id="login" resultMap="usersResultSet">
+		select *
+		from users
+		where users_id = #{usersId} and status = 'Y'
+	</select>
+	
+	<resultMap type="Users" id="usersResultSet">
+		<id column="USERS_NO" property="usersNo"/>
+		<result column="USERS_ID" property="usersId"/>
+		<result column="USERS_PW" property="usersPw"/>
+		<result column="USERS_NAME" property="usersName"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="EMAIL" property="email"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="EXIT_DATE" property="eixtDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="CHECK_DAY" property="checkDay"/>
+		<result column="POINT" property="point"/>
+		<result column="IS_ADMIN" property="isAdmin"/>
+		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
+		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
+		<result column="USERS_ADDRESS" property="usersAddress"/>
+	</resultMap>
+	
+	
+	
+</mapper>

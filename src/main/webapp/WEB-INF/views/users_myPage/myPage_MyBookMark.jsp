@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지 - 내 레시피</title>
+<title>마이페이지 - 스크랩</title>
 <style>
 
 .search {
@@ -36,7 +36,7 @@ select {
 	background-position: right 10px center;
 }
 
-input {
+#search {
 	width: 300px;
 }
 
@@ -73,8 +73,19 @@ th:first-child, td:first-child {
 #searchIcon:hover {
    cursor:pointer;
 }
-
-
+.delete{
+	box-shadow: none;
+	width: 20px; height: 20px;
+}
+#trash{
+	font-size: 30px;
+}
+ #delete{ 
+ 	font-size: 18px;
+ 	margin-left: 791px;
+ }
+ #tbody tr {height: 150px;}
+ #tbody tr img {width: 50%;}
 </style>
 </head>
 <body>
@@ -84,80 +95,81 @@ th:first-child, td:first-child {
 	
 	<div id="Div">
 		<div class="myPageDiv">
-		<%@ include file="../common/memberSideBar.jsp" %>
+		<%@ include file="../common/usersSideBar.jsp" %>
 			<div class="content">
-				<p id="pmyPage">나의 레시피</p>
+				<p id="pmyPage">스크랩</p>
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
 				<br><br>
 				<div class="search" style="margin: 0 auto; left: 480px;">
-					<select style="width: 120px">
+					<select style="width: 100px">
 						<option>최신순</option>
-						<option>조회순</option>
-						<option>스크랩순</option>
-						<option>좋아요순</option>
+						<option>레시피</option>
+						<option>식단</option>
 					</select>
 				</div>
+				<br>
+				<label id="delete">선택삭제</label><i class="bi bi-trash" id="trash"></i>
 				<br>
 				<div id="tableDiv">
 					<table>
 						<thead>
 							<tr style="background-color: #B0DAFF; opacity: 90%">
-								<th>번호</th>
-								<th>레시피</th>
-								<th>작성 날짜</th>
-								<th>조회수</th>
-								<th>좋아요수</th>
-								<th>스크랩수</th>
+								<th width=200>사진</th>
+								<th>종류</th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>작성날짜</th>
+								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
 							<tr>
-								<td>1</td>
+								<td><img src="resources/images/food3.jpg"/></td>
+								<td>레시피</td>
 								<td>미역국</td>
+								<td>강건강</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td><input type="checkbox" class="delete"></td>
 							</tr>
 							<tr>
-								<td>1</td>
+								<td><img src="resources/images/food4.jpg"/></td>
+								<td>식단</td>
 								<td>미역국</td>
+								<td>강건강</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td><input type="checkbox" class="delete"></td>
 							</tr>
 							<tr>
-								<td>1</td>
+								<td><img src="resources/images/food5.jpg"/></td>
+								<td>식단</td>
 								<td>미역국</td>
+								<td>강건강</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td><input type="checkbox" class="delete"></td>
 							</tr>
 							<tr>
-								<td>1</td>
+								<td><img src="resources/images/food6.jpg"/></td>
+								<td>레시피</td>
 								<td>미역국</td>
+								<td>강건강</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td><input type="checkbox" class="delete"></td>
 							</tr>
 							<tr>
-								<td>1</td>
+								<td><img src="resources/images/food7.jpg"/></td>
+								<td>식단</td>
 								<td>미역국</td>
+								<td>강건강</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td><input type="checkbox" class="delete"></td>
 							</tr>
 							<tr>
-								<td>1</td>
+								<td><img src="resources/images/food8.jpg"/></td>
+								<td>레시피</td>
 								<td>미역국</td>
+								<td>강건강</td>
 								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
+								<td><input type="checkbox" class="delete"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -193,7 +205,7 @@ th:first-child, td:first-child {
 				</div>
 				<br>
 				<div style="display: flex; width:300px; position: relative; margin: 0 auto;">
-					<input type="text" placeholder="검색어 입력" id="searchInput"> 
+					<input type="text" placeholder="검색어 입력" id="search"> 
 					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="searchIcon">
 				</div>
 			</div>
@@ -217,7 +229,7 @@ th:first-child, td:first-child {
 	   }
 	   
 	   //검색 img 클릭했을 때
-	   const searchInput = document.getElementById('searchInput');
+	   const searchInput = document.getElementById('search');
 	   document.getElementById('searchIcon').addEventListener('click', function() {
 	      //여기에 ajax
 	      searchInput.value = '';
@@ -236,6 +248,16 @@ th:first-child, td:first-child {
 	       searchInput.value = '';
 	     }
 	   });
+	   
+	 //전체 선택 체크 
+		const selAllChec = document.getElementById('selectAllCheckBox');
+		selAllChec.addEventListener('change', function() { //속성이 변할 때마다 이벤트 발생 
+			const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+			checkboxes.forEach(function(checkbox) { //모든 checkbox를 순회 
+			      checkbox.checked = selAllChec.checked; //selAllChec의 체크 속성을 대입 (항상 같이 움직이게)
+			    });
+			
+		})
 	</script>
 	
 	

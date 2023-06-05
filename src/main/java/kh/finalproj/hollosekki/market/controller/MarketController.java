@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kh.finalproj.hollosekki.market.model.service.MarketService;
-import kh.finalproj.hollosekki.member.model.vo.Users;
+import kh.finalproj.hollosekki.users.model.vo.Users;
 
 @Controller
 public class MarketController {

@@ -16,13 +16,18 @@ public class Users {
 	private int checkDay;
 	private int point;
 	private String isAdmin;
-	private Date attendanceDate;
+	private String attendanceDate;
+	private String attendanceDay;
+	private String usersAddress;
 	
 	public Users() {}
 	
+
+
+
 	public Users(int usersNo, String usersId, String usersPw, String usersName, String nickName, String email,
 			String phone, Date enrollDate, Date eixtDate, String status, int checkDay, int point, String isAdmin,
-			Date attendanceDate) {
+			String attendanceDate, String attendanceDay, String usersAddress) {
 		super();
 		this.usersNo = usersNo;
 		this.usersId = usersId;
@@ -38,7 +43,24 @@ public class Users {
 		this.point = point;
 		this.isAdmin = isAdmin;
 		this.attendanceDate = attendanceDate;
+		this.attendanceDay = attendanceDay;
+		this.usersAddress = usersAddress;
 	}
+
+
+	public String getUsersAddress() {
+		return usersAddress;
+	}
+
+
+
+
+	public void setUsersAddress(String usersAddress) {
+		this.usersAddress = usersAddress;
+	}
+
+
+
 
 	public int getUsersNo() {
 		return usersNo;
@@ -144,21 +166,36 @@ public class Users {
 		this.isAdmin = isAdmin;
 	}
 
-	public Date getAttendanceDate() {
+	public String getAttendanceDate() {
 		return attendanceDate;
 	}
 
-	public void setAttendanceDate(Date attendanceDate) {
+	public void setAttendanceDate(String attendanceDate) {
 		this.attendanceDate = attendanceDate;
 	}
+	
+	public String getAttendanceDay() {
+		return attendanceDay;
+	}
+
+	public void setAttendanceDay(String attendanceDay) {
+		this.attendanceDay = attendanceDay;
+	}
+
+
 
 	@Override
 	public String toString() {
 		return "Users [usersNo=" + usersNo + ", usersId=" + usersId + ", usersPw=" + usersPw + ", usersName="
 				+ usersName + ", nickName=" + nickName + ", email=" + email + ", phone=" + phone + ", enrollDate="
 				+ enrollDate + ", eixtDate=" + eixtDate + ", status=" + status + ", checkDay=" + checkDay + ", point="
-				+ point + ", isAdmin=" + isAdmin + ", attendanceDate=" + attendanceDate + "]";
+				+ point + ", isAdmin=" + isAdmin + ", attendanceDate=" + attendanceDate + ", attendanceDay="
+				+ attendanceDay + ", usersAddress=" + usersAddress + "]";
 	}
+
+
+
+	
 	
 	
 	

@@ -100,7 +100,7 @@
 	
 	<div id="Div">
 		<div class="myPageDiv">
-			<%@ include file="../common/memberSideBar.jsp" %>
+			<%@ include file="../common/usersSideBar.jsp" %>
 			<div class="content">
 				<p id="pmyPage">마이페이지</p>
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>

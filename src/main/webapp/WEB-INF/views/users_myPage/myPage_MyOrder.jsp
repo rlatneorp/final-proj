@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지 - 스크랩</title>
+<title>마이페이지 - 상품 구매내역</title>
 <style>
 
 .search {
@@ -19,6 +19,7 @@ input, select {
 	border-radius: 8px;
 	padding: 10px 12px;
 	font-size: 14px;
+	background: white;
 }
 
 select {
@@ -34,9 +35,10 @@ select {
 /* 	border-bottom-right-radius: 0; */
 /* 	border-top-right-radius: 0; */
 	background-position: right 10px center;
+	background-color: white;
 }
 
-#search {
+input {
 	width: 300px;
 }
 
@@ -73,19 +75,22 @@ th:first-child, td:first-child {
 #searchIcon:hover {
    cursor:pointer;
 }
-.delete{
-	box-shadow: none;
-	width: 20px; height: 20px;
+.info{font-size: 12px;}
+#orderSelect{
+	border: none;; height: 100px;
+	background: rgba(224, 224, 224, 0.74);
+	display: flex; justify-content: center; align-items: center;
 }
-#trash{
-	font-size: 30px;
+.term{
+	width: 80px;
 }
- #delete{ 
- 	font-size: 18px;
- 	margin-left: 791px;
- }
- #tbody tr {height: 150px;}
- #tbody tr img {width: 50%;}
+.search{
+	width: 940px;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.date{width: 140px;}
 </style>
 </head>
 <body>
@@ -95,81 +100,99 @@ th:first-child, td:first-child {
 	
 	<div id="Div">
 		<div class="myPageDiv">
-		<%@ include file="../common/memberSideBar.jsp" %>
+		<%@ include file="../common/usersSideBar.jsp" %>
 			<div class="content">
-				<p id="pmyPage">스크랩</p>
+				<p id="pmyPage">상품 구매내역</p>
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
-				<br><br>
-				<div class="search" style="margin: 0 auto; left: 480px;">
-					<select style="width: 100px">
-						<option>최신순</option>
-						<option>레시피</option>
-						<option>식단</option>
-					</select>
+				<br>
+				<div id="orderSelect">
+					<div class="search" style="margin: 0 auto;">
+						<select style="width: 180px;">
+							<option>전체 주문처리상태</option>
+							<option>입금전</option>
+							<option>배송준비중</option>
+							<option>배송중</option>
+							<option>배송완료</option>
+							<option>취소</option>
+							<option>교환</option>
+							<option>반품</option>
+						</select>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" name="today" value="오늘" class="term">
+						<input type="button" value="1개월" class="term">
+						<input type="button" value="3개월" class="term">
+						<input type="button" value="6개월" class="term">
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="date" class="date">~
+						<input type="date" class="date">
+						&nbsp;&nbsp;
+						<input type="button" value="조회" style="width:70px;">
+					</div>
 				</div>
 				<br>
-				<label id="delete">선택삭제</label><i class="bi bi-trash" id="trash"></i>
+				<p class="info">- 주문이 <b>[상품준비중]</b>일 경우 취소 및 변경이 가능합니다.</p>
+				<p class="info">- <b>[배송준비중]</b>은 배송이 준비 중인 상태이므로 배송 전 취소를 원하실 경우 고객센터로 문의 부탁드립니다.</p>
+				<p class="info">- 제품 수령 후 교환/반품 신청은 배송 완료일 기준 7일 이내 부탁드립니다.</p>
 				<br>
 				<div id="tableDiv">
 					<table>
 						<thead>
 							<tr style="background-color: #B0DAFF; opacity: 90%">
-								<th width=200>사진</th>
-								<th>종류</th>
-								<th>제목</th>
-								<th>작성자</th>
-								<th>작성날짜</th>
-								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
+								<th>주문번호</th>
+								<th>주문 종류</th>
+								<th>상품 명</th>
+								<th>주문 날짜</th>
+								<th>총 주문금액</th>
+								<th>주문 상태</th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<tr>
-								<td><img src="resources/images/food3.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td>강건강</td>
+							<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me'">
+								<td>1</td>
+								<td>식품</td>
+								<td>다이어트 식단</td>
 								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
+								<td>25000</td>
+								<td>결제 확인중</td>
 							</tr>
 							<tr>
-								<td><img src="resources/images/food4.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td>강건강</td>
+								<td>2</td>
+								<td>식품</td>
+								<td>당근 외 2개</td>
 								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
+								<td>10000</td>
+								<td>결제 완료</td>
 							</tr>
 							<tr>
-								<td><img src="resources/images/food5.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td>강건강</td>
+								<td>3</td>
+								<td>상품</td>
+								<td>냄비</td>
 								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
+								<td>25000</td>
+								<td>배송중</td>
 							</tr>
 							<tr>
-								<td><img src="resources/images/food6.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td>강건강</td>
+								<td>4</td>
+								<td>식품</td>
+								<td>몸보신 식단</td>
 								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
+								<td>25000</td>
+								<td>주문 취소</td>
 							</tr>
 							<tr>
-								<td><img src="resources/images/food7.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td>강건강</td>
+								<td>5</td>
+								<td>상품</td>
+								<td>튀김기</td>
 								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
+								<td>25000</td>
+								<td>배송완료</td>
 							</tr>
 							<tr>
-								<td><img src="resources/images/food8.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td>강건강</td>
+								<td>6</td>
+								<td>식품</td>
+								<td>고단백 식단</td>
 								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
+								<td>25000</td>
+								<td>배송완료</td>
 							</tr>
 						</tbody>
 					</table>
@@ -205,7 +228,7 @@ th:first-child, td:first-child {
 				</div>
 				<br>
 				<div style="display: flex; width:300px; position: relative; margin: 0 auto;">
-					<input type="text" placeholder="검색어 입력" id="search"> 
+					<input type="text" placeholder="검색어 입력" id="searchInput"> 
 					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="searchIcon">
 				</div>
 			</div>
@@ -229,7 +252,7 @@ th:first-child, td:first-child {
 	   }
 	   
 	   //검색 img 클릭했을 때
-	   const searchInput = document.getElementById('search');
+	   const searchInput = document.getElementById('searchInput');
 	   document.getElementById('searchIcon').addEventListener('click', function() {
 	      //여기에 ajax
 	      searchInput.value = '';
@@ -248,16 +271,6 @@ th:first-child, td:first-child {
 	       searchInput.value = '';
 	     }
 	   });
-	   
-	 //전체 선택 체크 
-		const selAllChec = document.getElementById('selectAllCheckBox');
-		selAllChec.addEventListener('change', function() { //속성이 변할 때마다 이벤트 발생 
-			const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-			checkboxes.forEach(function(checkbox) { //모든 checkbox를 순회 
-			      checkbox.checked = selAllChec.checked; //selAllChec의 체크 속성을 대입 (항상 같이 움직이게)
-			    });
-			
-		})
 	</script>
 	
 	

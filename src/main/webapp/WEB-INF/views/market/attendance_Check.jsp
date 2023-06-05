@@ -10,15 +10,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
- <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <style>
 
 *{
 font-family: 'Noto Sans KR', sans-serif;
 }
+
+/* .fc-h-event .fc-event-title-container{ */
+/*    background-image: url("resources/images/checked.png") !important; */
+/*    z-index: 999 !important; */
+/*  } */
 .eventTr{
 	width: 1000px;
 	height: 1276px;
@@ -64,13 +70,13 @@ font-family: 'Noto Sans KR', sans-serif;
 	display: none;
 }
 
-.fc td:active{
-	background-image: url("resources/images/checked.png") !important;
-	z-index:12 !important;
-	background-position: center !important;
-	background-size: 110% !important;
+ .fc td:active{ 
+ 	background-image: url("resources/images/checked.png") !important;
+ 	z-index:12 !important; 
+ 	background-position: center !important; 
+	background-size: 110% !important; 
 	
-}
+} 
 
 :root{
 	--fc-border-color: white;
@@ -153,6 +159,8 @@ font-family: 'Noto Sans KR', sans-serif;
 	background-color: #B0DAFF;
 	padding: 5px; 
 }
+
+ 
 </style>
 <body>
 <br><br>
@@ -166,53 +174,146 @@ font-family: 'Noto Sans KR', sans-serif;
 				<span class="material-symbols-outlined">done</span><p class="event1 d-inline">총 30일 연속 출석체크 시</p><p class="event1 d-inline"> 추가 포인트 2,000원 지급 </p>
 				<br>
 				<br><br> 
-				<div  class="customCheck" id='calendar'><br><br><br><br></div>
-			<div> 
+			<div  class="customCheck" id='calendar'><br><br><br><br></div>
+			<div>
 			<h3 class="d-inline">출석체크 방법 : TODAY 출석체크 버튼 클릭! </h3>
-			<button>TODAY출석체크</button>
+			<button id="checkAttendanceBtn">TODAY출석체크</button>
 			<br><br><br>
 			</div>
 		</div>
 	</div>
 	<br><br><br>
 <%@ include file="../common/footer.jsp" %>
+
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 <script>
+let isAttendanceChecked = false;
+let checkedDates = [];
+
 document.addEventListener('DOMContentLoaded', function() {
-	var calendarEl = document.getElementById('calendar');
-	 
-	  var calendar = new FullCalendar.Calendar(calendarEl, {
-	
-	    headerToolbar: {
-	      left: '',
-	      center: 'title',
-	      right: ''
-	    },
-	    locale: 'ko',
-	    dateClick: function(info) {
-	      alert('[출석확인 날짜 : ' + info.dateStr + ']');
-	      var todayDate = this.$moment().format("YYYY-MM-DD")			
-	      var clickDate = this.$moment(arg.date).format("YYYY-MM-DD")	
+  const calendarEl = document.getElementById('calendar');
+  const checkAttendanceBtn = document.getElementById('checkAttendanceBtn');
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    headerToolbar: {
+      left: '',
+      center: 'title',
+      right: ''
+    },
+    locale: 'ko',
+    dateClick: function(info) {
+      const clickedDate = moment(info.date).format('yyyy-MM-DD');
+      const todayDate = moment().format('yyyy-MM-DD');
 
-	      if (todayDate != clickDate) return alert("접근할 수 없음");	
+      if (clickedDate === todayDate && !isAttendanceChecked) {
+        let checkDays = clickedDate.indexOf(clickedDate) + 1;
+        console.log(clickedDate);
+        console.log(checkDays);
 
-	      var todayDone = this.attendanceDates.some(date => date.attendanceDate == todayDate);
-	      if(todayDone) {		
-	      	return alert("이미 출석되었습니다");
-	      } else {			
-	      	alert("출석되었습니다");
-	      	var newDate = {
-	      		attendanceDate: clickDate,
-	      		isChecked : true
-	      	}
-	      	this.attendanceDates.push(newDate);
-	      }
-	    }
-	  });
+        // 출석체크 Ajax 호출
+        $.ajax({
+          url: '${contextPath}/attendance_Check.ma',
+          data: { attendanceDate: clickedDate, checkDay: checkDays, attendanceDay: clickedDate },
+          success: function(data) {
+            alert('출석체크가 완료되었습니다. 날짜: ' + info.dateStr);
+            checkAttendanceBtn.disabled = true;
+            isAttendanceChecked = true;
+            checkedDates.push(clickedDate);
 
-	  calendar.render();
-	});
- 
+            const event = {
+              title: '　출석완료',
+              start: clickedDate,
+              allDay: true
+            };
+
+            calendar.addEvent(event);
+
+            // 출석체크 완료 후 화면을 비활성화합니다.
+            disableScreen();
+          },
+          error: function(error) {
+            console.error(error);
+          }
+        });
+      } else if (clickedDate === todayDate && isAttendanceChecked) {
+        alert('오늘은 이미 출석체크를 하셨습니다.');
+      } else {
+        alert('오늘 날짜만 출석체크가 가능합니다.');
+      }
+    }
+  });
+
+  checkAttendanceBtn.addEventListener('click', function() {
+    if (!isAttendanceChecked) {
+      const todayDate = moment().format('yyyy-MM-DD');
+      const currentDate = moment().format('yyyy-MM-DD');
+
+      if (currentDate === todayDate) {
+        let checkDays = currentDate.indexOf(currentDate) + 1;
+
+        // 출석체크 Ajax 호출
+        $.ajax({
+          url: '${contextPath}/attendance_Check.ma',
+          data: { attendanceDate: todayDate, checkDay: checkDays, attendanceDay: todayDate },
+          success: function(data) {
+            alert('출석체크가 완료되었습니다. 날짜: ' + todayDate);
+            checkAttendanceBtn.disabled = true;
+            isAttendanceChecked = true;
+            checkedDates.push(todayDate);
+
+            const event = {
+              title: '　출석완료',
+              start: todayDate,
+              allDay: true
+            };
+
+            calendar.addEvent(event);
+
+            // 출석체크 완료 후 화면을 비활성화합니다.
+            disableScreen();
+          },
+          error: function(error) {
+            console.error(error);
+          }
+        });
+      } else {
+        alert('오늘 날짜만 출석체크가 가능합니다.');
+      }
+    } else {
+      alert('오늘은 이미 출석체크를 하셨습니다.');
+    }
+  });
+
+  // 출석체크 상태 확인 및 처리
+  function checkAttendanceStatus() {
+    const todayDate = moment().format('yyyy-MM-DD');
+    const currentDate = moment().format('yyyy-MM-DD');
+
+    // 출석체크가 완료된 경우
+    if (isAttendanceChecked) {
+      disableScreen();
+    }
+    // 오늘 날짜에 출석체크가 가능한 경우
+    else if (checkedDates.indexOf(todayDate) === -1 && currentDate === todayDate) {
+      checkAttendanceBtn.disabled = false;
+    }
+  }
+
+  // 화면 비활성화 처리
+  function disableScreen() {
+    const calendarContainer = document.getElementById('calendar');
+    calendarContainer.style.opacity = '0.5';
+    calendarContainer.style.pointerEvents = 'none';
+  }
+
+  // 페이지 로드 시 출석체크 상태 확인 및 처리
+  window.addEventListener('load', function() {
+    checkAttendanceStatus();
+  });
+
+  calendar.render();
+});
+
+
 </script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>마이페이지 - 자기소개 등록</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -21,6 +21,11 @@
 		box-shadow: 0px 5px black;
 		margin-left: 330px;
 		font-weight: bold;
+		background: white;
+	}
+	#btn:active{
+		box-shadow: 0px 1px 0px black; transform: translateY(5px);
+		background: #B0DAFF;
 	}
 	.intro{
 		font-size: 18px; font-weight: bold;
@@ -28,6 +33,7 @@
 	#introForm{
 		margin-left: 120px;
 	}
+	.note-modal-content{height: 350px;}
 </style>
 </head>
 <body>

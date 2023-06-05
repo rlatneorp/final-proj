@@ -13,7 +13,7 @@
 		width: 1200px;
 	}
 	.sideBar{
-		width: 200px; height: 700px; border-right: 1px solid gray;
+		width: 200px; height: 700px;
 		display: inline-block; vertical-align: top;
 	}
 	.myPage{
@@ -95,37 +95,37 @@
 		</div>
 		<br><br>
 		<div id="menu">
-			<a class="menuBar">나의 레시피 &nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyRecipe.me">나의 레시피 &nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">스크랩 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyBookMark.me">스크랩 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">좋아요 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyFavorite.me">좋아요 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">상품 구매내역
+			<a class="menuBar" href="${ contextPath }/myPage_MyOrder.me">상품 구매내역
 			<span class="material-symbols-outlined arrow" style="margin-left: 10px;">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">배송지 관리 &nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyAddress.me">배송지 관리 &nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">포인트 관리 &nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_Point.me">포인트 관리 &nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar">회원 정보 수정
+			<a class="menuBar" href="${ contextPath }/myPage_checkPwd.me">회원 정보 수정
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>

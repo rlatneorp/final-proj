@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="marketMapper">
+	<update id="attendanceCheck">
+		update users
+		set attendance_date = #{attendanceDate}
+	</update>
+	
+	<update id="checkDay">
+		update users
+		set check_day = #{checkDay}
+	</update>
+	
+	<select id="aDateCheck" resultType="_int">
+		select count(*)
+		from users
+		where users_no = 1 and attendance_date = #{attendanceDate}
+	</select>
+	<resultMap type="Users" id="UsersResultSet">
+		<id column="USERS_NO" property="usersNo"/>
+		<result column="USERS_ID" property="usersId"/>
+		<result column="USERS_PW" property="usersPw"/>
+		<result column="USERS_NAME" property="usersName"/>
+		<result column="NICKNAME" property="nickname"/>
+		<result column="EMAIL" property="email"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="EXIT_DATE" property="exitDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="CHECK_DAY" property="checkDay"/>
+		<result column="POINT" property="point"/>
+		<result column="IS_ADMIN" property="isAdmin"/>
+		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
+		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
+	</resultMap>
+	
+	<update id="attendanceDay">
+		update users
+		set attendance_day = #{ddattendanceDay} || ',' 
+	</update>
+	
+	
+	
+</mapper>

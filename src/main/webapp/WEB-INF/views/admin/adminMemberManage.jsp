@@ -14,7 +14,7 @@
 
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="d-inline-block align-top mt-5" style="width: 900px;">
+	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
 		<h4 class="py-4 mb-0">회원관리</h4>
 		
 		<table class="w-100 text-center mb-3">

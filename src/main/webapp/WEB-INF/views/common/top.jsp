@@ -160,7 +160,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<img class="logo-img" src="resources/images/Logo.png" onclick="location.href='${contextPath}'">
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">

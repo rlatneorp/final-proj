@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 <style>
 	.top-top{
 		width: 100%; height: 40px; 

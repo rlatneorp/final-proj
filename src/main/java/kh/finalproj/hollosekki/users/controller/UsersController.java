@@ -1,10 +1,10 @@
-package kh.finalproj.hollosekki.member.controller;
+package kh.finalproj.hollosekki.users.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class MemberController {
+public class UsersController {
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main() {
 		return "myPage_Main";

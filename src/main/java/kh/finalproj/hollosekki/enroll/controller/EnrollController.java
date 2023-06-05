@@ -35,6 +35,9 @@ public class EnrollController {
 			
 			int result = eService.insertUser(u);
 			if(result > 0) {
+				
+				System.out.println(userPwd);
+				
 				return "redirect:login.en";
 			} else {
 				return "회원가입실패...페이지 만드나? 아님 exception?";
@@ -50,9 +53,11 @@ public class EnrollController {
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
 			Users loginUser = eService.login(u);
-			System.out.println(loginUser);
-			
+//			System.out.println(loginUser);
+			System.out.println(bcrypt.encode(u.getUsersPw()));
 			if(bcrypt.matches(u.getUsersPw(), loginUser.getUsersPw())) {
+			
+				
 				model.addAttribute("loginUser", loginUser);
 				return "redirect:home.do";
 			} else {

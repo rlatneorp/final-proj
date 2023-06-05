@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.market.model.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,22 @@ public class MarketService {
 	@Autowired
 	private MarketDAO mkDAO;
 	
-	public int attendanceCheck(int attendanceDateInt) {
+	public int attendanceCheck(String attendanceDate) {
 	
-		return mkDAO.attendanceCheck(sqlSession, attendanceDateInt);
+		return mkDAO.attendanceCheck(sqlSession, attendanceDate);
 	}
 
 	public int checkDay(int checkDay) {
 		return mkDAO.checkDay(sqlSession, checkDay);
 	}
+
+	public int aDateCheck(String attendanceDate) {
+		return mkDAO.aDateCheck(sqlSession, attendanceDate);
+	}
+
+	public int attendanceDay(String ddattendanceDay) {
+		return mkDAO.attendanceDay(sqlSession, ddattendanceDay);
+	}
+
 
 }

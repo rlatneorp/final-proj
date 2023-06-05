@@ -74,8 +74,8 @@
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 							<li><a href="${contextPath}/adminRecipeManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">레시피관리</a></li>
 							<li><a href="${contextPath}/adminRecipeReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">레시피후기관리</a></li>
-							<li><a href="${contextPath}/adminSubscribeReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">구독후기관리</a></li>
-							<li><a href="${contextPath}/adminPaymentReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">상품구매후기관리</a></li>
+							<li><a href="${contextPath}/adminMenuReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">식단구독후기관리</a></li>
+							<li><a href="${contextPath}/adminProductReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">상품구매후기관리</a></li>
 						</ul>
 					</div>
 				</li>

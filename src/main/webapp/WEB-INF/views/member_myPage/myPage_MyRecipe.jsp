@@ -40,7 +40,7 @@ input {
 	width: 300px;
 }
 
-img {
+#searchIcon {
 	position: absolute;
 	width: 20px;
 	top: 12px;
@@ -70,7 +70,7 @@ th, td {
 th:first-child, td:first-child {
    border-left: none;
 }
-img:hover {
+#searchIcon:hover {
    cursor:pointer;
 }
 
@@ -193,8 +193,8 @@ img:hover {
 				</div>
 				<br>
 				<div style="display: flex; width:300px; position: relative; margin: 0 auto;">
-					<input type="text" placeholder="검색어 입력"> 
-					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
+					<input type="text" placeholder="검색어 입력" id="searchInput"> 
+					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="searchIcon">
 				</div>
 			</div>
 		</div>

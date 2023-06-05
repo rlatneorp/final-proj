@@ -81,11 +81,11 @@
 					<br>
 					<div class="mid">
 						<div class="mid22">
-							<form class="form" action="" method="post">
+							<form class="form" action="loginCheck.en" method="post">
 								<label class="label">아이디</label><br>
-								<input type="text" name="id" id="id" class="input" placeholder="아이디를 입력하세요" required><br>
+								<input type="text" name="usersId" id="id" class="input" placeholder="아이디를 입력하세요" required><br>
 								<label class="label">비밀번호</label><br>
-								<input type="password" name="pwd" id="pwd" class="input" placeholder="비밀번호를 입력하세요" required><br>
+								<input type="password" name="usersPw" id="pwd" class="input" placeholder="비밀번호를 입력하세요" required><br>
 								<div><button class="button">로그인</button></div>
 								<div class="find">
 									<div class="find2" onclick="location.href='findId.en'">ID 찾기</div>

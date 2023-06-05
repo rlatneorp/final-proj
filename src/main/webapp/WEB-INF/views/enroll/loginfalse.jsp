@@ -84,8 +84,8 @@
 					</div>
 					<div class="mid33">
 						<div class="mid">
-							<div><button class="button">로그인</button></div>
-							<div><button class="button">메인</button></div>
+							<div><button class="button" onclick="location.href='login.en'">로그인</button></div>
+							<div><button class="button" onclick="location.href='home.do'">메인</button></div>
 							
 						</div>
 						<div class="mid33">

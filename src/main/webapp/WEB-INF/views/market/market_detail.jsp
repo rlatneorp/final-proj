@@ -25,6 +25,11 @@ html{
  ul, li {
     list-style: none;
     padding:0px;
+    margin-bottom: 0px;
+}
+
+.info_delivery{
+	margin-bottom: 
 }
 
 
@@ -289,8 +294,9 @@ p b {
 
 .textbox {
 	width: 100%;
-	margin-bottom: 70px;
+	display: none;
 }
+
 
 .reviewComment {
 	display: inline-block;
@@ -489,20 +495,20 @@ p b {
     padding: 22px 18px 24px;
 }
 
-.productPageInfo .accordion_i_tit:after {
-    width: 12px;
-    height: 12px;
-    border-right: 1px solid #808080;
-    border-bottom: 1px solid #808080;
-    position: absolute;
-    right: 25px;
-    content: " ";
-    top: 30px;
-    transform: rotate(315deg);
-    -webkit-transition: all 0.1s ease-in-out;
-    -moz-transition: all 0.1s ease-in-out;
-    transition: all 0.1s ease-in-out;
-}
+/* .productPageInfo .accordion_i_tit:after { */
+/*     width: 12px; */
+/*     height: 12px; */
+/*     border-right: 1px solid #808080; */
+/*     border-bottom: 1px solid #808080; */
+/*     position: absolute; */
+/*     right: 25px; */
+/*     content: " "; */
+/*     top: 30px; */
+/*     transform: rotate(315deg); */
+/*     -webkit-transition: all 0.1s ease-in-out; */
+/*     -moz-transition: all 0.1s ease-in-out; */
+/*     transition: all 0.1s ease-in-out; */
+/* } */
 
 .accodion_content dl dt {
 	padding: 5px 10px 0;
@@ -676,10 +682,24 @@ p b {
 	height: 1800px;
 }
 
+.moreView{
+	text-align: center;
+    width: 350px;
+    height: 90px;
+    background: #4485d7;
+    margin: auto;
+    line-height: 90px;
+    font-family: 'Noto Sans KR';
+    font-size: xx-large;
+    font-weight: bold;
+    color: white;
+}
+
+
 </style>
 <body>
 <span>
-<%@include file="../common/top.jsp" %>
+<%@include file="../common/storeTop.jsp" %>
 <br>
 </span>
 
@@ -718,17 +738,16 @@ p b {
                             	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;배송
                             </dt>
-                            <hr style="margin: 0px;">
                                 </dl>
+                                <hr style="margin: 0px;">
                                 <dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
                             	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
                             </dt>
-                             	<hr style="margin: 0px;">
                                 </dl>
                                 
-				
+						<hr style="margin: 0px;">
 				
 					<select class='options' name='options' required>
 						<!-- 사이즈 선택 창 -->
@@ -846,8 +865,93 @@ p b {
 			</div>
 			
 		</div>
+		
+		
+		
+		<div class="textbox">
+			<div style="padding: 10px;">
+				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
+				
+				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
+				&nbsp;
+				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
+				
+				<div class="reviewPhoto">
+					<ul style="padding: 10px;">
+						<li ><img src="img" alt="" /></li>
+						<li><img src="img" alt="" /></li>
+						<li ><img src="img"" alt=""/></li>
+					</ul>
+				</div>
+			</div>
+			
+				
+			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
+
+				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
+					</div>
+			</div>
+			
+		</div>
+		<div class="textbox">
+			<div style="padding: 10px;">
+				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
+				
+				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
+				&nbsp;
+				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
+				
+				<div class="reviewPhoto">
+					<ul style="padding: 10px;">
+						<li ><img src="img" alt="" /></li>
+						<li><img src="img" alt="" /></li>
+						<li ><img src="img"" alt=""/></li>
+					</ul>
+				</div>
+			</div>
+			
+				
+			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
+
+				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
+					</div>
+			</div>
+			
+		</div>
+		<div class="textbox">
+			<div style="padding: 10px;">
+				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
+				
+				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
+				&nbsp;
+				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
+				
+				<div class="reviewPhoto">
+					<ul style="padding: 10px;">
+						<li ><img src="img" alt="" /></li>
+						<li><img src="img" alt="" /></li>
+						<li ><img src="img"" alt=""/></li>
+					</ul>
+				</div>
+			</div>
+			
+				
+			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
+
+				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
+					</div>
+			</div>
+			
+		</div>
 	
-	
+				<div class="moreView">더보기</div>
+				
+				
+				
+				
 	<div class="productBox">
 		<ul	class="productBoxInfo">
 			<li class="productPageInfo">
@@ -924,7 +1028,7 @@ p b {
                             </dd>
         					<br>
                             <dt style="background:#E3F6FF; border:1px solid #ddd; padding:9px 12px 10px; border-radius:6px;">본 상품과 컨텐츠는 입점 판매자가 등록한 것으로 (주)홀로세끼는 통신판매중개자로서 거래 당사자가 아니기 때문에 그 내용과 거래에 대한 책임을 일체 지지 않습니다.<br>
-                                <span style="color:#065E87;">만개의레시피 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
+                                <span style="color:#065E87;">홀로세끼 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
                             <dd></dd>
                         </dl>
                       </div> 
@@ -972,7 +1076,7 @@ p b {
             
 			</ul>
 				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
-				    <div class="review_btn_wr"><a href="">
+				    <div class="review_btn_wr"><a href="createqna.ma">
 				    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
 				    </div>
 				</div>
@@ -988,38 +1092,6 @@ p b {
           	</li>
 	</div>
 </div><!-- 전체를 감싸는 박스 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1055,19 +1127,12 @@ p b {
 	});
    
    
-      
-      
-      
-   
    
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
    
-   
-   
 //    console.log(option);
-   
    
    removeProudct.addEventListener("click",function(){
 	   document.getElementById("productResult").style.display="none";
@@ -1092,21 +1157,19 @@ p b {
       }
    })
    
-
 	
+$(function(){
+    $(".textbox").slice(0, 2).show(); // 초기갯수
+    $(".moreView").click(function(e){ // 클릭시 more
+        e.preventDefault();
+        $("div:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
+        if($("div:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
+        }
+    });
+});
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+ 
 	
 	
 	

@@ -4,7 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지 - 프로필</title>
+<title>마이페이지 - 회원정보 수정</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 .btn-3d {
 	text-decoration: none;
@@ -66,10 +68,10 @@
 					<label style="font-size: 15px;">회원님의 개인정보를 안전하게 보호하기 위해<br>
 					<a style="color: red;">인증 후 변경이 가능</a>합니다.</label><br><br>
 					<b style="font-size: 20px;">아이디 : </b>&nbsp;&nbsp;&nbsp;
-					<label style="margin-right: 215px; font-size: 20px;">user01</label><br><br>
-					<input type="text" name="memberPwd" placeholder="비밀번호를 입력하세요" style="width: 300px; height: 40px;">
+					<label style="margin-right: 215px; font-size: 20px;">${ loginUser.usersId }</label><br><br>
+					<input type="password" name="usersPwd" placeholder="비밀번호를 입력하세요" style="width: 300px; height: 40px;" id="pwd">
 					<br><br>
-					<a class="btn-3d blue" href="${ contextPath }/myPage_editInfo.me">확인</a>
+					<a class="btn-3d blue" id="checkBtn">확인</a>
 				</div>
 			</div>
 		</div>
@@ -79,5 +81,46 @@
 	<br><br><br><br><br><br><br>
 	
 	<%@ include file="../common/footer.jsp" %>
+	
+	<script>
+		const checkBtn = document.getElementById('checkBtn');
+		const pwd = document.getElementById('pwd');
+		
+		checkBtn.addEventListener('click', () => {
+			if(pwd.value == ''){
+				swal({
+					 text: "비밀번호를 입력해주세요.",
+					 icon: "error",
+					 button: "확인",
+					});
+			} else{
+				$.ajax({
+					type : 'POST',
+					url : '${ contextPath }/myPage_checkPwd.me',
+					data : {usersPwd : pwd.value},
+					success : data => {
+						console.log(data);
+						if(data == 'yes'){
+							location.href = '${ contextPath }/myPage_editInfo.me'
+						} else {
+							swal({
+								 text: "비밀번호를 다시 확인해주세요.",
+								 icon: "error",
+								 button: "확인",
+								});
+						}
+					},
+					error : data => {
+						console.log(data);
+						swal({
+							 text: "에러 발생.",
+							 icon: "error",
+							 button: "확인",
+							});
+					}
+				});
+			}
+		});
+	</script>
 </body>
 </html>

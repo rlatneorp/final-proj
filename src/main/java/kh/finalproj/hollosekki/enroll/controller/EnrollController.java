@@ -12,10 +12,12 @@ import org.springframework.web.bind.support.SessionStatus;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
+
 @SessionAttributes("loginUser")
 @Controller
 public class EnrollController {
-	
+		
+
 		@Autowired
 		private BCryptPasswordEncoder bcrypt;
 		
@@ -49,6 +51,7 @@ public class EnrollController {
 			return "login";
 		}
 		
+
 		@RequestMapping("loginCheck.en")
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			

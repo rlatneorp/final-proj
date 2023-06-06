@@ -61,33 +61,33 @@
 				<table>
 					<tr>
 						<td class="detail">아이디</td>
-						<td><input type="text" style="width: 300px; margin-left: 15px" name="payName"></td>
+						<td><input type="text" style="width: 300px; margin-left: 15px; background: lightgray;" name="usersName" readonly value="${ loginUser.usersId }"></td>
 					</tr>
 					<tr>
 						<td class="detail">현재 비밀번호</td>
 						<td>
-							<input type="text" style="width: 300px; margin-left: 15px" name="payName" placeholder="현재 비밀번호를 입력해주세요">
+							<input type="password" style="width: 300px; margin-left: 15px" placeholder="현재 비밀번호를 입력해주세요">
 						</td>
 					</tr>
 					<tr>
 						<td class="detail">새 비밀번호</td>
 						<td>
-							<input type="text" style="width: 300px; margin-left: 15px;" placeholder="새로운 비밀번호를 입력해주세요">
+							<input type="password" style="width: 300px; margin-left: 15px;" name="newPw" placeholder="새로운 비밀번호를 입력해주세요">
 						</td>
 					</tr>
 					<tr>
 						<td class="detail">새 비밀번호 확인</td>
-						<td><input type="text" style="width: 300px; margin-left: 15px;" placeholder="한번 더 입력해주세요"></td>
+						<td><input type="password" style="width: 300px; margin-left: 15px;" placeholder="한번 더 입력해주세요"></td>
 					</tr>
 					<tr>
 						<td class="detail">이름</td>
-						<td><input type="text" style="width: 300px; margin-left: 15px" name="payName"></td>
+						<td><input type="text" style="width: 300px; margin-left: 15px; background: lightgray;" name="payName" readonly value="${ loginUser.usersName }"></td>
 					</tr>
 					<tr>
 						<td class="detail">이메일</td>
 						<td style="vertical-align: middle;">
 							<div style="display: flex; align-items: center;">
-								<input type="email" style="width: 190px; margin-left: 15px; margin-right: 10px; height: 35px;" name="payName" placeholder="이메일을 입력해주세요">
+								<input type="email" style="width: 190px; margin-left: 15px; margin-right: 10px; height: 35px;" name="email" placeholder="이메일을 입력해주세요" value="${ loginUser.email }">
 								<input type="button" style="width: 100px; height: 35px;" value="중복확인">
 							</div>
 						</td>
@@ -96,14 +96,10 @@
 						<td class="detail">휴대전화</td>
 						<td>
 							<div style="display: flex; align-items: center;">
-								<input type="text" style="width: 190px; margin-left: 15px; margin-right: 10px; height: 35px;" name="payName" placeholder="번호를 입력해주세요">
+								<input type="text" style="width: 190px; margin-left: 15px; margin-right: 10px; height: 35px;" name="phone" placeholder="번호를 입력해주세요" value="${ loginUser.phone }">
 								<input type="button" style="width: 100px; height: 35px;" value="중복확인">
 							</div>
 						</td>
-					</tr>
-					<tr>
-						<td class="detail">생년월일</td>
-						<td><input type="date" style="width: 300px; margin-left: 15px;" name="payName"></td>
 					</tr>
 				</table>
 				<br><br>

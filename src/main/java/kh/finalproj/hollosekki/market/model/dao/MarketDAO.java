@@ -1,12 +1,7 @@
 package kh.finalproj.hollosekki.market.model.dao;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-
-import kh.finalproj.hollosekki.users.model.vo.Users;
 
 
 @Repository

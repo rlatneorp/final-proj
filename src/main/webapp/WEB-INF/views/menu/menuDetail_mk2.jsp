@@ -6,7 +6,7 @@
 <html>
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
-<title>passion for Fashion</title>
+<title>menu detail</title>
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
 	rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -83,10 +83,15 @@ html{
 	background: white;
 	padding: 10px;
 	margin-top: 10px;
-	height: 120px;
+	height: 150px;
 	padding-bottom: 5px;
 	border: 1px solid #4485d7;
-	display: none;
+	display: block;
+}
+
+#productResult h4 span{
+	display: block;
+	margin: 5px 20px;
 }
 
 .right {
@@ -102,7 +107,42 @@ html{
 	height: 100%;
 }
 
+.inputBox{
+	width: 150px;
+	text-align: center;
+	height: 40px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
 
+.select1st, .select2nd, .select3rd, .select4th{
+	display: none;
+}
+
+.menuBox{
+	width: 150px;
+	text-align: center;
+	height: 165px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+.menuName{
+	margin: 8px 20px;
+}
+
+.inputNum{
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+.selectPeriod{
+	margin: 12px 0;
+	
+}
+ 
 #originalPrice {
 	font-size: 25px;
 	text-decoration: line-through;
@@ -252,16 +292,6 @@ p b {
 	width: 80%;
 }
 
-.removeProudct {
-	font-weight: bold;
-	font-size: 20px;
-	right: 10px;
-	width: 30px;
-	height: 30px;
-	background: none;
-	border-style: none;
-	display: inline-block;
-}
 
 
 .buyCount {
@@ -694,82 +724,102 @@ p b {
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center">
-					 <h3 style="font-weight: 400; font-size: 42px;">캠핑용 후라이팬</h3>
+					 <h3 style="font-weight: 400; font-size: 42px;">식단</h3>
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
-					<h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
-						${ p.discountRate }20<span>%</span>
-						<!-- 할인율 -->
-					</h2>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						450,000원
+						9,900원
 					</h2>
 					&nbsp;&nbsp;
-					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
-					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-						540,000원
-					</h2>
+					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7;">♡</h4>
 				</div>
-			<div>
+				<div>
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;배송
+                            	<img src="resources/image/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
+                            	&nbsp;배송 | 3,000원 
                             </dt>
-                            <hr style="margin: 0px;">
-                                </dl>
-                                <dl class="info_point">
+							<hr style="margin: 0px;">
+						</dl>
+						<dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
+                            	<img src="resources/image/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
+                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립) | 0,000원</p>
                             </dt>
-                             	<hr style="margin: 0px;">
-                                </dl>
-                                
-				
-				
-					<select class='options' name='options' required>
-						<!-- 사이즈 선택 창 -->
-						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option>
-						<option value='S'>옵션1</option>
-						<option value='M'>옵션2</option>
-						<option value='L'>옵션3</option>
-						<option value='XL'>옵션4</option>
-					</select>
-
-
-					<div id="productResult">
-						<!-- 사이즈 선택시 내려오는 창 -->
-						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
-							캠핑용 후라이팬 <span>(-20,000)</span>
-							<input type="hidden" name="productName" value="${p.productName}">
-							<input type="hidden" name="productPrice" value="${p.productPrice}">
-						</h4>
-						<div class="btnbox" style=" margin: 0 0 0 -1px;">
-							<button id="decrease" type="button">-</button>
-							<input type="number" class="buyCount"
-								style="" value="1" name="buyCount" min="1" readonly>
-								
-							<button id="increase" type="button">+</button>
-							
+							<hr style="margin: 0px;">
+						</dl>
+						
+						
+						<label>희망 배송일</label>
+						<input type="date" name="date" id="wantDate" class="inputBox">
+						<br><br>
+						<hr style="margin: 0px;">
+						<br>	
+						
+						<label>[필수] 기간을 선택해주세요.</label><br>
+						<div id="period" class="inputBox">
+							<label for="first">1주</label><input type="radio" name="period" value="1st" id="first" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="second">2주</label><input type="radio" name="period" value="2nd" id="second" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="third">3주</label><input type="radio" name="period" value="3rd" id="third" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="fourth">4주</label><input type="radio" name="period" value="4th" id="fourth" class="selectPeriod" onchange="show()">
 						</div>
-						<button class="removeProudct" type="button" style="float: right;">
-							<img src="resources/images/close.png" style="width: 10px;">
-						</button>
-						<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격</div>
-						<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
-						<input type="hidden" name="productPrice" value="${p.productPrice}">
-						<input type="hidden" name="discountRate" value="${p.discountRate}">
-						<input type="hidden" name="productMainPic" value="${p.productMainPic}">
-						</strong> <br>
+						
+						<br>
+						
+						<label class="select1st">식단과 수량을 선택해주세요.(총 1개 선택가능)</label>
+						<div class="menuBox select1st">
+							<label class="menuName">식단1</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu1"><br>
+							<label class="menuName">식단2</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu2"><br>
+							<label class="menuName">식단3</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu3"><br>
+							<label class="menuName">식단4</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu4"><br>
+						</div>
+						
+						<label class="select2nd">식단과 수량을 선택해주세요.(총 2개 선택가능)</label>
+						<div class="menuBox select2nd">
+							<label class="menuName">식단1</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu1"><br>
+							<label class="menuName">식단2</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu2"><br>
+							<label class="menuName">식단3</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu3"><br>
+							<label class="menuName">식단4</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu4"><br>
+						</div>
+						
+						<label class="select3rd">식단과 수량을 선택해주세요.(총 3개 선택가능)</label>
+						<div class="menuBox select3rd">
+							<label class="menuName">식단1</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu1"><br>
+							<label class="menuName">식단2</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu2"><br>
+							<label class="menuName">식단3</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu3"><br>
+							<label class="menuName">식단4</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu4"><br>
+						</div>
+						
+						<label class="select4th">식단과 수량을 선택해주세요.(총 4개 선택가능)</label>
+						<div class="menuBox select4th">
+							<label class="menuName">식단1</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu1"><br>
+							<label class="menuName">식단2</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu2"><br>
+							<label class="menuName">식단3</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu3"><br>
+							<label class="menuName">식단4</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu4"><br>
+						</div>
+						
+						<div id="productResult">
+							<!-- 사이즈 선택시 내려오는 창 -->
+							<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
+								<span id="menuOne">식단1 : 0개</span>
+								<span id="menuTwo">식단2 : 0개</span>
+								<span id="menuThree">식단3 : 0개</span>
+								<span id="menuFour">식단4 : 0개</span>
+							</h4>
+							<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격 : 0원</div>
+							<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
+							<input type="hidden" name="productPrice" value="${p.productPrice}">
+							<input type="hidden" name="discountRate" value="${p.discountRate}">
+							<input type="hidden" name="productMainPic" value="${p.productMainPic}">
+							</strong> <br>
+						</div>
+					
 					</div>
 					
-				</div>
-					
-						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-							<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
+					<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
 				</div>
 			</div>
 		</div>
@@ -808,7 +858,7 @@ p b {
 				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">1</span>
 
 			<div class="review_btn">
-				<a href="createReview.ma">
+				<a href="javascript:gd_open_write_popup('goodsreview', '1000030759')">
 				<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 			</div>
 			<div class="photoList">
@@ -1024,6 +1074,104 @@ p b {
 
 
 	<script>
+	function show(){
+		const check = document.querySelector('input[name="period"]:checked');
+		const first = document.getElementById('first');
+		const second = document.getElementById('second');
+		const third = document.getElementById('third');
+		const fourth = document.getElementById('fourth');
+		const sel1sts = document.getElementsByClassName('select1st');
+		const sel2nds = document.getElementsByClassName('select2nd');
+		const sel3rds = document.getElementsByClassName('select3rd');
+		const sel4ths = document.getElementsByClassName('select4th');
+		
+		const one = document.getElementsByClassName('oneWeek');
+		const two = document.getElementsByClassName('twoWeek');
+		const three = document.getElementsByClassName('threeWeek');
+		const four = document.getElementsByClassName('fourWeek');
+		
+		
+		
+		for(const sel1st of sel1sts){
+			if(check && check.id == "first"){
+				sel1st.style.display = 'block';
+			} else{
+				sel1st.style.display = 'none';
+				for(const o of one){
+					o.value = 0;
+				}
+			}
+		}
+		for(const sel2nd of sel2nds){
+			if(check && check.id == "second"){
+				sel2nd.style.display = 'block';
+			} else{
+				sel2nd.style.display = 'none';
+				for(const t of two){
+					t.value = 0;
+				}
+			}
+		}
+		for(const sel3rd of sel3rds){
+			if(check && check.id == "third"){
+				sel3rd.style.display = 'block';
+			} else{
+				sel3rd.style.display = 'none';
+				for(const th of three){
+					th.value = 0;					
+				}
+			}
+		}
+		for(const sel4th of sel4ths){
+			if(check && check.id == "fourth"){
+				sel4th.style.display = 'block';
+			} else{
+				sel4th.style.display = 'none';
+				for(const f of four){
+					f.value = 0;
+				}
+			}
+		}
+	}
+	
+// 	상품수량 입력
+	const menu1s = document.getElementsByClassName("menu1");
+	const menu2s = document.getElementsByClassName("menu2");
+	const menu3s = document.getElementsByClassName("menu3");
+	const menu4s = document.getElementsByClassName("menu4");
+	
+// 	상품수량 출력
+	const menuOne = document.getElementById('menuOne');
+	const menuTwo = document.getElementById('menuTwo');
+	const menuThree = document.getElementById('menuThree');
+	const menuFour = document.getElementById('menuFour');
+	
+	for(const menu1 of menu1s){
+		menu1.addEventListener('input', function(){
+			menuOne.textContent = "식단1 : " + menu1.value + "개";
+		})
+	}
+	for(const menu2 of menu2s){
+		menu2.addEventListener('input', function(){
+			menuTwo.textContent = "식단2 : " + menu2.value + "개";
+		})
+	}
+	for(const menu3 of menu3s){
+		menu3.addEventListener('input', function(){
+			menuThree.textContent = "식단1 : " + menu3.value + "개";
+		})
+	}
+	for(const menu4 of menu4s){
+		menu4.addEventListener('input', function(){
+			menuFour.textContent = "식단4 : " + menu4.value + "개";
+		})
+	}
+	
+	
+	
+	
+	
+	
 	
 	$('.accordion_i_tit').click(function(){
 		$('.accordion_i_cont').toggle(400);
@@ -1044,7 +1192,6 @@ p b {
    const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
    let productPrice = document.getElementsByClassName("productPrice")[0];
    const buyBtn = document.getElementById("buyBtn");
-   const removeProudct = document.getElementsByClassName("removeProudct")[0];
    const result = document.getElementById("productResult");
    const like = document.querySelector(".like");
    
@@ -1069,28 +1216,7 @@ p b {
 //    console.log(option);
    
    
-   removeProudct.addEventListener("click",function(){
-	   document.getElementById("productResult").style.display="none";
-   })
-
    
-   increase.addEventListener("click", function(){
-      buyCount.value++;
-      productPrice.innerText = priceToString(buyCount.value*450000);
-      
-   })
-   
-   decrease.addEventListener("click", function(){
-      buyCount.value--;
-      
-      productPrice.innerText = priceToString(buyCount.value*450000);
-      
-      if(buyCount.value < 1){
-         buyCount.value = 1
-      productPrice.innerText = priceToString(buyCount.value*450000);
-         
-      }
-   })
    
 
 	

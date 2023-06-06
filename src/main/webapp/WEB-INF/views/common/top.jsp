@@ -207,7 +207,7 @@
 						</div>
 					</div>
 					<div style="width:80px"></div>
-					<div class="cart"><i class="fa-solid fa-cart-shopping"></i></div>
+					<div class="cart"onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
 				</div>
 			</div>
 		</header>

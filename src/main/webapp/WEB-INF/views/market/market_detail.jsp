@@ -22,14 +22,14 @@ html{
 	scroll-behavior: smooth;
 }
 
- ul, li {
+ul, li {
     list-style: none;
     padding:0px;
     margin-bottom: 0px;
 }
 
 .info_delivery{
-	margin-bottom: 
+	margin-bottom: 0px;
 }
 
 
@@ -1132,23 +1132,12 @@ p b {
 					productPrice.innerText=priceToString(cartCount.value*450000)
 					productOption[0].addEventListener("change", function(){	//사이즈를 선택 시 다시 다른 사이즈로 변경시 수량 1로 초기화
 						cartCount.value = 1;
-
 				})
-				
-				document.getElementsByClassName("removeProudct")[0].addEventListener("click", function(){ //x 버튼을 클릭시 수량구매창이 닫힌다.
-					document.getElementById("productResult").style.display='none';
-					op.value = ''; // 사이즈를 선택으로 바뀐다.
-				})
-		
-				
-				} else if(op.value == ''){
-					document.getElementById("productResult").style.display='none';
-					
-				}
-					productName.childNodes[0].innerText = op.value;
-					
-			}
-	
+			
+      document.getElementsByClassName("removeProudct")[0].addEventListener("click", function(){ //x 버튼을 클릭시 수량구매창이 닫힌다.
+			document.getElementById("productResult").style.display='none';
+			op.value = ''; // 사이즈를 선택으로 바뀐다.
+		})
       
       
       
@@ -1226,11 +1215,11 @@ $(function(){
             data: data,
             success: function(data) {
             	if(data > 0) {
-                alert("카트 담기 성공");
+                alert("상품이 장바구니에 담겼습니다.");
             	}
             },
             error: function(data) {
-                alert("카트 담기 실패");
+                alert("상품이 장바구니에 담기지 못했습니다.");
             }
         });
     });

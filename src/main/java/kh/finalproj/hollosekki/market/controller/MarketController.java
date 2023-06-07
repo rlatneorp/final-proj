@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
@@ -126,7 +127,7 @@ public class MarketController {
 	    return "attendance_Check";
 	}
 
-
+	@ResponseBody
 	@PostMapping("insertCart.ma")
 	public int insertCart(@ModelAttribute Cart c) {
 	

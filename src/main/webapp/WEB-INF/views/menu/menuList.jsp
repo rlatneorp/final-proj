@@ -203,7 +203,7 @@
 				<div class="col">
 					<div class="card shadow-sm">
 					<a href="menuDetail.mn">
-						<img src="resources/image/chicken1.png" style="width: 100%; height: 100%;">
+						<img src="resources/images/chicken1.png" style="width: 100%; height: 100%;">
 					</a>
 						<div class="card-body cardColor">
 							<h5>고단백 / 영양사C</h5>

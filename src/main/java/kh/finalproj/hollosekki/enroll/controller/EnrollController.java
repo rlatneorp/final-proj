@@ -1,11 +1,14 @@
 package kh.finalproj.hollosekki.enroll.controller;
 
+import java.io.PrintWriter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -35,9 +38,6 @@ public class EnrollController {
 			
 			int result = eService.insertUser(u);
 			if(result > 0) {
-				
-				System.out.println(userPwd);
-				
 				return "redirect:login.en";
 			} else {
 				return "회원가입실패...페이지 만드나? 아님 exception?";
@@ -54,15 +54,30 @@ public class EnrollController {
 			
 			Users loginUser = eService.login(u);
 //			System.out.println(loginUser);
-			System.out.println(bcrypt.encode(u.getUsersPw()));
-			if(bcrypt.matches(u.getUsersPw(), loginUser.getUsersPw())) {
 			
-				
+			if(bcrypt.matches(u.getUsersPw(), loginUser.getUsersPw())) {
 				model.addAttribute("loginUser", loginUser);
 				return "redirect:home.do";
 			} else {
 				return "loginfalse";
 			}
+		}
+		
+		@RequestMapping("checkId.en")
+		public void checkId(@RequestParam("id") String id, PrintWriter out) {
+			
+			int count = (int)eService.checkId(id);
+			
+			String result = count == 0 ? "yes" : "no";
+			out.print(result);
+		}
+		
+		@RequestMapping("checkNickName.en")
+		public void checkNickName(@RequestParam("nickName") String nickName, PrintWriter out) {
+			
+			int count = (int)eService.checkNickName(nickName);
+			String result = count == 0 ? "yes" : "no";
+			out.print(result);
 		}
 		
 		@RequestMapping("logout.en")

@@ -1,5 +1,11 @@
 package kh.finalproj.hollosekki.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 
 @Controller
@@ -109,16 +119,57 @@ public class AdminController {
 	}
 	@PostMapping("adminIngredientInsert.ad")
 	public String adminIngredientInsert(@ModelAttribute Ingredient igd,
+										@RequestParam("imageFile") MultipartFile imageFile, 
+										HttpServletRequest request,
 										HttpSession session) {
 //		Users user = (Users)session.getAttribute("loginUser");
 		igd.setUsersNo(1);
 		
-		int result = aService.insertIngredient(igd);
-//		상품등록여부 확인 후 상품등록도 진행해야함
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
+		
+		if(igd.getProductStatus().equals("Y")) {
+			igd.setProductType(3);
+			igd.setProductOption("N");
+			result2 = aService.insertProduct(igd);
+		}
+		
+		result1 = aService.insertIngredient(igd);
+		
+//		이미지 저장
+		Image image = new Image();
+		if(imageFile != null && !imageFile.isEmpty()) {
+			String[] returnArr = saveFile(imageFile, request);
+			if(returnArr[1] != null) {
+				image.setImageDivideNo(aService.getNowIngredientNo());
+				image.setImageType(5);
+				image.setImagePath(returnArr[0]);
+				image.setImageOriginalName(imageFile.getOriginalFilename());
+				image.setImageRenameName(returnArr[1]);
+			}
+		}
+		
+		result3 = aService.insertImage(image);
+		
+		if(result1 + result3 == 2) {
+			if(igd.getProductStatus().equals("Y")) {
+				if(result2 > 0) {
+					return "redirect:adminIngredientManage.ad";
+				}else {
+					throw new AdminException("식재료 상품 등록에 실패하였습니다.");
+				}
+			}else {
+				return "redirect:adminIngredientManage.ad";
+			}
+		}else {
+			throw new AdminException("식재료 등록에 실패하였습니다.");
+		}
 		
 		
-		return "redirect:adminIngredientManage.ad";
+
 	}
+	
 	
 	
 //	Food-식품 관리
@@ -270,6 +321,40 @@ public class AdminController {
 	@PostMapping("adminQNAUpdate.ad")
 	public String adminQNAUpdate() {
 		return "redirect:adminQNAManage.ad";
+	}
+	
+	
+	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
+//		파일 저장소 지정
+		String root = request.getSession().getServletContext().getRealPath("resources");	// webapp-resources 폴더 의미
+//								  ┌ String에서 역슬래쉬를 표현하기 위해 '\\' 라고 적음  
+		String savePath = root + "\\uploadFiles";
+		File folder = new File(savePath);
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+//		파일 이름 변경 형식 지정
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		int ranNum = (int)(Math.random()*100000);
+		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum 
+								+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		
+//		변경된 이름의 파일을 저장
+		String renamePath = folder + "\\" + renameFileName;
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String[] returnArr = new String[2];
+		returnArr[0] = savePath;
+		returnArr[1] = renameFileName;
+		
+		return returnArr; 
 	}
 	
 }

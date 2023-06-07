@@ -1,53 +1,259 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <!DOCTYPE html>
 <html>
-<head>
+<head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<title>menu detail</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
 <style>
-/* 	식단 소개 */
-	#top{width: 1200px; height: 600px; margin: auto; position: relative;}
-	#thumImg{width: 500px; height: 500px; display: inline-block; position: absolute; border-radius: 5px;}
-	#imformation{width: 650px; height: 500px; display: inline-block; position: absolute; left: 550px;}
-	#title{border-bottom: 1px solid black; width: 630px;}
-	#category{width: 550px; height: 50px; margin-left: 50px; margin-right: 50px; margin-top: 50px; font-weight: bold; font-size: 18px; text-align: center;}
-	#userInfo{text-align: center;}
-	#nickBtn{width: 150px; font-weight: bold; margin-left: 250px; margin-top: 10px;}
-	#updateBtn{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px;}
-	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; margin-left: 10px;}
+* {
+	outline: none;
+	margin: 0px;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+html{
+	scroll-behavior: smooth;
+}
+
+#order-wrap {
+	width: 1200px;
+	background: white;
+	height: auto;
+	display: flex;
+	flex-flow: nowrap;
+	justify-content: space-around;
+	margin: auto;
+}
+
+.top {
+	margin-bottom: 10px;
+}
+
+#productResult {
+	position: relative;
+	background: white;
+	padding: 10px;
+	margin-top: 10px;
+	height: 120px;
+	padding-bottom: 5px;
+	border: 1px solid #4485d7;
+	display: block;
+}
+
+#productResult h4 span{
+	display: block;
+	margin: 5px 20px;
+}
+
+.right {
+	width: 40%;
+}
+
+.left {
+	width: 50%;
+	height: 80%;
+}
+
+.left img {
+	width: 90%;
+	height: 70%;
+}
+
+#userInfo{
+	width: 90%; 
+	height: 20%; 
+	text-align: center;
+}
+
+.inputBox{
+	width: 150px;
+	text-align: center;
+	height: 40px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+.select1st, .select2nd, .select3rd, .select4th{
+	display: none;
+}
+
+.menuBox{
+	width: 150px;
+	text-align: center;
+	height: 165px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+.menuName{
+	margin: 8px 20px;
+}
+
+.inputNum{
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+.selectPeriod{
+	margin: 12px 0;
 	
+}
+ 
+#buybtn {
+	width: 100%;
+	height: 40px;
+	margin-top: 10px;
+	border-radius: 5px;
+	background-color: #4485d7;
+	color: white;
+	font-weight: 400;
+	border-color: white;
+}
+
+#cartbtn {
+	width: 100%;
+	height: 38px;
+	margin-top: 10px;
+	border-radius: 5px;
+	background-color: white;
+	border: 1px solid #4485d7;
+	color: #4485d7;
+	font-weight: 400;
+}
+
+select {
+	width: 150px;
+	text-align: center;
+	height: 40px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+select option {
+	width: 150px;
+	text-align: center;
+	height: 40px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+p b {
+	font-weight: 200;
+}
+
+.productInfo {
+	margin: auto;
+	padding: 10px;
+	width: 80%;
+}
+
+.product ul li:hover {
+	transform: scale(1.1);
+	transition: 0.45s;
+}
+
+#decrease{
+	color:#4485d7;
+	font-size:20px;
+	size:32px;
+	background:white;
+	font-weight:bold;
+	width:32px;
+    background-size: 14px;
+    display: inline-block;
+    border: none;
+    margin: -1px 0 0 6px;
+}
+
+#increase{
+	color:#4485d7;
+	font-size:20px;
+	background:white;
+	font-weight:bold;
+	width:32px;
+    background-size: 14px;
+    display: inline-block;
+    border: none;
+    margin: -1px 6px 0 0;
+}
+
+/* 추천대상 */
+	#target{
+		width: 500px;
+		height: 200px;
+		margin: auto;
+		background-color: lightgray;
+		border-radius: 10px;
+		position: relative;
+	}
+	
+	#pushPin{
+		position: absolute;
+		font-size: 30px;
+		left: 235px;
+		top: -20px;
+	}
+	
+	#target ul{
+		padding: 0 100px;
+	}
+	
+	#detailInfo{
+		width: 80%;
+		height: 200px;
+		margin: auto;
+	}
+	
+	.detailInfoElem{
+		width: 22.5%;
+		height: 180px;
+		margin: 0 1%;
+		display: inline-block;
+		text-align: center;
+	}
+	
+	.detailIcon{
+		font-size: 70px;
+		color: #B0DAFF;
+	}
+	
+/* 	식단 설명 */
+	.menuABCD{
+		width: 65%;
+		height: 290px;
+		background-color: lightgray;
+		margin: 25px auto;
+		border-radius: 10px;
+		box-shadow: 5px 5px 7px 0px black;
+	}
+	
+	.menuABCD h2{
+		padding: 30px 60px; 
+	}
+	
+	.menuMiniPic{
+		width: 150px;
+		height: 150px;
+		display: inline-block;
+		margin: 0px 5px;
+	}
+
 /* 	중간선 */
 	.mid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 30px; margin: 5px 0px; font-weight: bold;}
 	.mid::before{content: ""; flex-grow: 1; margin: 23px 16px 15px 200px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0spx;}
 	.mid::after{content: ""; flex-grow: 1; margin: 23px 200px 15px 16px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
-	
-/* 	식단 종류 */
-	#order{width: 900px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
-	#orderList{padding: 30px 80px; }
-	#menuTable{
-		border-collapse: separate;
-		border-spacing:0 30px;
-	}
-	#menuTable tr td{text-align: center;}
-	.no{width: 50px;}
-	.content{width: 400px;}
-	.content2{border-top: 1px solid black;}
-	.image{width: 250px; height:200px}
-	
-/* 	영양 정보 */
-	#infoTable{width: 1100px; margin: auto; border: 1px solid black; border-radius: 10px;}
-	#infoTop{border-bottom: 1px solid black; background-color: lightgray; border-radius: 10px 10px 0 0;}
-	#infoTop th{width: 157px; text-align: center; border-right: 1px solid black}
-	.infoContent td{padding: 3px; border-right: 1px solid black}
-	
-/* 	버튼 */
-	#buttonBox{width: 180px; margin: auto;}
-	.buy{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 130px; height: 40px;}
-	
+
 /* 	문의 */
 	#qna{width: 1000px; margin: auto; text-align: center;}
 	.boardNo{width: 100px;}
@@ -60,8 +266,8 @@
 	.lineAll:hover{background-color: #19A7CE; color: white;}
 	
 /* 	입력 박스 */
-	.inputBox{width:730px; height: 50px; margin: auto; position: relative;}
-	.profile{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
+	.inputTextBox{width:730px; height: 50px; margin: auto; position: relative;}
+	.profilePic{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
 	.profileImg{width:35px; height: 35px; border-radius: 50%;}
 	.inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px; position: absolute; left: 40px;}
 	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; position: absolute; right: 0;}
@@ -70,7 +276,7 @@
 	.star{width: 110px;}
 	.boardReviewWrite{width: 100px;}
 	.boardReviewDate{width: 150px;}
-	
+
 /* 	모달 */
 	.modal-body{text-align: center;}
 	.bi-person-circle{font-size: 60px; color: black;}
@@ -117,15 +323,14 @@
 	#modalNick{display: inline-block;}
 	#modalInfo{height: 100px;}
 
-/* 모달 중간선	 */
-	.modalMid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 15px; margin: 5px 0px; font-weight: bold;}
-	.modalMid::before{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0spx;}
-	.modalMid::after{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
-	
-	.modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
-	.moCon{height: 75px; border-radius: 10px;}
-	
-	/* 	페이지 */
+.modalMid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 15px; margin: 5px 0px; font-weight: bold;}
+.modalMid::before{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0spx;}
+.modalMid::after{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
+
+.modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
+.moCon{height: 75px; border-radius: 10px;}
+
+/* 	페이지 */
 	.page_wrap {
 		text-align:center;
 		font-size:0;
@@ -164,379 +369,364 @@
 		border:1px solid #19A7CE;
 		border-radius: 100%;
 	}
+
 </style>
-</head>
 <body>
+<span>
+<%@include file="../common/top.jsp" %>
+<br>
+</span>
 
-<%@ include file="../common/top.jsp" %>
-<br><br>
-
-	<div id="top">
-		<div id="thumImg">
-			<img src="resources/image/chicken1.png" style="width: 100%; height: 100%; border-radius: 5px;">
-		</div>
-		<div style="width: 50px; height: 500px; display: inline-block; position: absolute; left: 500px;"></div>
-		<div id="imformation">
-			<div id="title">
-				<h2 style="display: inline-block; margin-right: 470px;">치킨치킨</h2>
-				<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
-			</div>
-			<div id="category">
-				아이콘 식단 카테고리
-			</div>
+	<form action="${contextPath}" method="get">
+	<main id="order-wrap">
+		<!-- 구매창 컨테이너 -->
+		<div class="left">
+			<!-- 구매창 왼쪽 사진 넣는 곳 -->
+			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg">
+			<br>
 			<br>
 			<div id="userInfo">
-				<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%">
-				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn">닉네임</p>
-				<p>*****(별점)</p>
-				<p>식단에 대한 설명입니다. 이 식단는 어떠어떠한 요리가 있고 어떤 부분에서 좋습니다.</p>
+				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
 			</div>
-			
-			<br><br>
-			
-<%-- 			<c:if test="${ loginUser eq menuWriter }"> --%>
-				<div id="buttonBox">
-					<button id="updateBtn">수정</button>
-					<button id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
-				</div>
-<%-- 			</c:if> --%>
-			
 		</div>
-	</div>
+		<div class="right">
+			<!-- 상품 정보 -->
+			<div class="top">
+				<div class="productNameBox" style="text-align: center">
+					 <h3 style="font-weight: 400; font-size: 42px;">식단명 들어가는 곳</h3>
+				</div>
+				<div style="margin: auto; text-align: center;">
+				<br>
+					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
+						9,900원
+					</h2>
+					&nbsp;&nbsp;
+					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7;">♡</h4>
+				</div>
+				<div>
+					<div class="info_delivery_area">
+                        <dl class="info_delivery">
+                            <dt style="font-size: 20px; padding: 5px;">
+                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
+                            	&nbsp;배송 | 3,000원 
+                            </dt>
+							<hr style="margin: 0px;">
+						</dl>
+						<dl class="info_point">
+                            <dt style="font-size: 20px; padding: 5px;">
+                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
+                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립) | 0,000원</p>
+                            </dt>
+							<hr style="margin: 0px;">
+						</dl>
+						
+						
+						<label>희망 배송일</label>
+						<input type="date" name="date" id="wantDate" class="inputBox">
+						<br><br>
+						<hr style="margin: 0px;">
+						<br>	
+						
+						<label>[필수] 기간을 선택해주세요.</label><br>
+						<div id="period" class="inputBox">
+							<label for="first">1주</label><input type="radio" name="period" value="1st" id="first" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="second">2주</label><input type="radio" name="period" value="2nd" id="second" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="third">3주</label><input type="radio" name="period" value="3rd" id="third" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="fourth">4주</label><input type="radio" name="period" value="4th" id="fourth" class="selectPeriod" onchange="show()">
+						</div>
+						
+						<br>
+						
+						<label class="select1st">식단과 수량을 선택해주세요.(총 1개 선택가능)</label>
+						<div class="menuBox select1st">
+							<label class="menuName">식단1(9,900원)</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu1"><br>
+							<label class="menuName">식단2(10,900원)</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu2"><br>
+							<label class="menuName">식단3(9,900원)</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu3"><br>
+							<label class="menuName">식단4(10,900원)</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu4"><br>
+						</div>
+						
+						<label class="select2nd">식단과 수량을 선택해주세요.(총 2개 선택가능)</label>
+						<div class="menuBox select2nd">
+							<label class="menuName">식단1(9,900원)</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu1"><br>
+							<label class="menuName">식단2(10,900원)</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu2"><br>
+							<label class="menuName">식단3(9,900원)</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu3"><br>
+							<label class="menuName">식단4(10,900원)</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu4"><br>
+						</div>
+						
+						<label class="select3rd">식단과 수량을 선택해주세요.(총 3개 선택가능)</label>
+						<div class="menuBox select3rd">
+							<label class="menuName">식단1(9,900원)</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu1"><br>
+							<label class="menuName">식단2(10,900원)</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu2"><br>
+							<label class="menuName">식단3(9,900원)</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu3"><br>
+							<label class="menuName">식단4(10,900원)</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu4"><br>
+						</div>
+						
+						<label class="select4th">식단과 수량을 선택해주세요.(총 4개 선택가능)</label>
+						<div class="menuBox select4th">
+							<label class="menuName">식단1(9,900원)</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu1"><br>
+							<label class="menuName">식단2(10,900원)</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu2"><br>
+							<label class="menuName">식단3(9,900원)</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu3"><br>
+							<label class="menuName">식단4(10,900원)</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu4"><br>
+						</div>
+						
+						<div id="productResult">
+							<!-- 사이즈 선택시 내려오는 창 -->
+							<div style="display: inline-block; margin-right: 150px;">
+								<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
+									<span id="menuOne">식단1 : 0개</span>
+									<span id="menuTwo">식단2 : 0개</span>
+									<span id="menuThree">식단3 : 0개</span>
+									<span id="menuFour">식단4 : 0개</span>
+								</h4>
+							</div>
+							
+							<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격 : 1,000,000원</div>
+							<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
+								<input type="hidden" name="productPrice" value="${p.productPrice}">
+								<input type="hidden" name="discountRate" value="${p.discountRate}">
+								<input type="hidden" name="productMainPic" value="${p.productMainPic}">
+							</strong>
+							<br>
+						</div>
+					
+					</div>
+					
+					<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+				</div>
+			</div>
+		</div>
+	</main>
+</form>
+<br>
+<br>
+		
 	
+<div class ="productInfoMain">
 
-	
-	<div class="mid">
-		식단 종류
+	<div id="target">
+		<i id="pushPin" class="bi bi-pin-fill"></i>
+		<h2 style="padding: 30px 0 10px 100px;">추천대상</h2>
+		<ul>
+			<li>식단 관리가 필요하신 분</li>
+			<li>식단 관리가 필요하신 분</li>
+			<li>식단 관리가 필요하신 분</li>
+		</ul>
 	</div>
 	
 	<br>
 	
-	<div id="order">
-		<div id="orderList">
-			<table id="menuTable">
-				<tr>
-					<td class="no" rowspan="2">1</td>
-					<td class="image" rowspan="2"><img src="resources/image/mudo.png" width="200px" height="200px" alt="식단 사진 1"></td>
-					<td class="content">밥 / 국 / 메인 반찬 / 반찬1 / 반찬2</td>
-				</tr>
-				<tr>
-					<td class="content2">주요 / 재료 / 넣는 / 공간</td>
-				</tr>
-				<tr>
-					<td class="no" rowspan="2">2</td>
-					<td class="image" rowspan="2"><img src="resources/image/mudo.png" width="200px" height="200px" alt="식단 사진 1"></td>
-					<td class="content">밥 / 국 / 메인 반찬 / 반찬1 / 반찬2</td>
-				</tr>
-				<tr>
-					<td class="content2">주요 / 재료 / 넣는 / 공간</td>
-				</tr>
-				<tr>
-					<td class="no" rowspan="2">3</td>
-					<td class="image" rowspan="2"><img src="resources/image/mudo.png" width="200px" height="200px" alt="식단 사진 1"></td>
-					<td class="content">밥 / 국 / 메인 반찬 / 반찬1 / 반찬2</td>
-				</tr>
-				<tr>
-					<td class="content2">주요 / 재료 / 넣는 / 공간</td>
-				</tr>
-				<tr>
-					<td class="no" rowspan="2">4</td>
-					<td class="image" rowspan="2"><img src="resources/image/mudo.png" width="200px" height="200px" alt="식단 사진 1"></td>
-					<td class="content">밥 / 국 / 메인 반찬 / 반찬1 / 반찬2</td>
-				</tr>
-				<tr>
-					<td class="content2">주요 / 재료 / 넣는 / 공간</td>
-				</tr>
-				<tr>
-					<td class="no" rowspan="2">5</td>
-					<td class="image" rowspan="2"><img src="resources/image/mudo.png" width="200px" height="200px" alt="식단 사진 1"></td>
-					<td class="content">밥 / 국 / 메인 반찬 / 반찬1 / 반찬2</td>
-				</tr>
-				<tr>
-					<td class="content2">주요 / 재료 / 넣는 / 공간</td>
-				</tr>
-				<tr>
-					<td class="no" rowspan="2">6</td>
-					<td class="image" rowspan="2"><img src="resources/image/mudo.png" width="200px" height="200px" alt="식단 사진 1"></td>
-					<td class="content">밥 / 국 / 메인 반찬 / 반찬1 / 반찬2</td>
-				</tr>
-				<tr>
-					<td class="content2">주요 / 재료 / 넣는 / 공간</td>
-				</tr>
-				<tr>
-					<td class="no" rowspan="2">7</td>
-					<td class="image" rowspan="2"><img src="resources/image/mudo.png" width="200px" height="200px" alt="식단 사진 1"></td>
-					<td class="content">밥 / 국 / 메인 반찬 / 반찬1 / 반찬2</td>
-				</tr>
-				<tr>
-					<td class="content2">주요 / 재료 / 넣는 / 공간</td>
-				</tr>
-			</table>
+	<p class="mid">상세 설명</p>
+	
+	<br>
+	<div id="detailInfo">
+		<div class="detailInfoElem">
+			<i class="bi bi-calendar-check detailIcon"></i><br>
+			<p>1주일 치 식단을 기간별로 선택 가능</p>
+		</div>
+		
+		<div class="detailInfoElem">
+			<i class="bi bi-hand-thumbs-up detailIcon"></i><br>
+			<p>1일 1키트</p>
+		</div>
+		
+		<div class="detailInfoElem">
+			<i class="bi bi-check-lg detailIcon"></i><br>
+			<p>다양하게 골라먹을 수 있다</p>
+		</div>
+		
+		<div class="detailInfoElem">
+			<i class="bi bi-journal-check detailIcon"></i><br>
+			<p>전문 영양사가 직접 구성한 식단</p>
 		</div>
 	</div>
 	
-	<br><br><br>
+	<p class="mid">식단</p>
 	
-	<div class="mid">
-		영양 정보
+	
+	<div class="menuABCD">
+		<h2>식단A</h2>
+		<div style="margin: 0 40px;">
+			<c:forEach begin="1" end="7">
+				<div class="menuMiniPic">
+					<img src="resources/images/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
+				</div>
+			</c:forEach>
+		</div>
 	</div>
 	
+	<div class="menuABCD">
+		<h2>식단B</h2>
+		<div style="margin: 0 40px;">
+			<c:forEach begin="1" end="7">
+				<div class="menuMiniPic">
+					<img src="resources/images/chicken2.jpg" width=100%; height=100%; style="border-radius: 5px;">
+				</div>
+			</c:forEach>
+		</div>
+	</div>
+	
+	<div class="menuABCD">
+		<h2>식단C</h2>
+		<div style="margin: 0 40px;">
+			<c:forEach begin="1" end="7">
+				<div class="menuMiniPic">
+					<img src="resources/images/pork.JPG" width=100%; height=100%; style="border-radius: 5px;">
+				</div>
+			</c:forEach>
+		</div>
+	</div>
+	
+	<div class="menuABCD">
+		<h2>식단D</h2>
+		<div style="margin: 0 40px;">
+			<c:forEach begin="1" end="7">
+				<div class="menuMiniPic">
+					<img src="resources/images/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
+				</div>
+			</c:forEach>
+		</div>
+	</div>
+	
+	<br>
+	
+	<p class="mid">문의</p>
+	
+	<br>
+	
+	<div id="qna">
+		<table class="board">
+			<tr class="boardTop">
+				<th class="line boardNo">No.</th>
+				<th class="line boardContent">내용</th>
+				<th class="line boardWrite">작성자</th>
+				<th class="line boardDate">날짜</th>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">1</td>
+				<td class="line">문의~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">2</td>
+				<td class="line">문의~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">3</td>
+				<td class="line">문의~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">4</td>
+				<td class="line">문의~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">5</td>
+				<td class="line">문의~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+		</table>
+	</div>
+	
+	<br>
+	
+	<div class="page_wrap">
+	   <div class="page_nation">
+	      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
+	      <a href="#" class="active">1</a>
+	      <a href="#">2</a>
+	      <a href="#">3</a>
+	      <a href="#">4</a>
+	      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+	   </div>
+	</div>
+	
+	<br>
+	
+	<div class="inputTextBox">
+		<div class="profilePic d-inline-block">
+			<img src="resources/images/mudo.png" class="profileImg">
+		</div>
+		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuQnaInput">&nbsp;<button class="enter">등록</button>
+	</div>
 	<br><br>
 	
-	<table id="infoTable">
-		<tr id="infoTop">
-			<th>1</th>
-			<th>2</th>
-			<th>3</th>
-			<th>4</th>
-			<th>5</th>
-			<th>6</th>
-			<th>7</th>
-		</tr>
-		<tr class="infoContent">
-			<td>칼로리 : ...kcal</td>
-			<td>칼로리 : ...kcal</td>
-			<td>칼로리 : ...kcal</td>
-			<td>칼로리 : ...kcal</td>
-			<td>칼로리 : ...kcal</td>
-			<td>칼로리 : ...kcal</td>
-			<td>칼로리 : ...kcal</td>
-		</tr>
-		<tr class="infoContent">
-			<td>탄수화물 : ...g</td>
-			<td>탄수화물 : ...g</td>
-			<td>탄수화물 : ...g</td>
-			<td>탄수화물 : ...g</td>
-			<td>탄수화물 : ...g</td>
-			<td>탄수화물 : ...g</td>
-			<td>탄수화물 : ...g</td>
-		</tr>
-		<tr class="infoContent">
-			<td>지방 : ...g</td>
-			<td>지방 : ...g</td>
-			<td>지방 : ...g</td>
-			<td>지방 : ...g</td>
-			<td>지방 : ...g</td>
-			<td>지방 : ...g</td>
-			<td>지방 : ...g</td>
-		</tr>
-		<tr class="infoContent">
-			<td>트랜스지방 : ...g</td>
-			<td>트랜스지방 : ...g</td>
-			<td>트랜스지방 : ...g</td>
-			<td>트랜스지방 : ...g</td>
-			<td>트랜스지방 : ...g</td>
-			<td>트랜스지방 : ...g</td>
-			<td>트랜스지방 : ...g</td>
-		</tr>
-		<tr class="infoContent">
-			<td>포화지방 : ...g</td>
-			<td>포화지방 : ...g</td>
-			<td>포화지방 : ...g</td>
-			<td>포화지방 : ...g</td>
-			<td>포화지방 : ...g</td>
-			<td>포화지방 : ...g</td>
-			<td>포화지방 : ...g</td>
-		</tr>
-		<tr class="infoContent">
-			<td>나트륨: ...mg</td>
-			<td>나트륨: ...mg</td>
-			<td>나트륨: ...mg</td>
-			<td>나트륨: ...mg</td>
-			<td>나트륨: ...mg</td>
-			<td>나트륨: ...mg</td>
-			<td>나트륨: ...mg</td>
-		</tr>
-		<tr class="infoContent">
-			<td>당류 : ...</td>
-			<td>당류 : ...</td>
-			<td>당류 : ...</td>
-			<td>당류 : ...</td>
-			<td>당류 : ...</td>
-			<td>당류 : ...</td>
-			<td>당류 : ...</td>
-		</tr>
-		<tr class="infoContent">
-			<td>콜레스테롤 : ...mg</td>
-			<td>콜레스테롤 : ...mg</td>
-			<td>콜레스테롤 : ...mg</td>
-			<td>콜레스테롤 : ...mg</td>
-			<td>콜레스테롤 : ...mg</td>
-			<td>콜레스테롤 : ...mg</td>
-			<td>콜레스테롤 : ...mg</td>
-		</tr>
-		
-	</table>
+	<p class="mid">후기</p>
 	
-	<br><br>	
+	<br>
 	
-<%-- <c:if test="${!(loginUser eq menuWriter) }"> --%>
-<div id="buttonBox">
-	<button class="buy">식단 구독</button>
-</div>
-<%-- </c:if> --%>
-<br><br>
-<br><br>
-
-<p class="mid">문의</p>
-
-<br>
-
-<div id="qna">
-	<table class="board">
-		<tr class="boardTop">
-			<th class="line boardNo">No.</th>
-			<th class="line boardContent">내용</th>
-			<th class="line boardWrite">작성자</th>
-			<th class="line boardDate">날짜</th>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">1</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">2</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">3</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">4</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">5</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-	</table>
-</div>
-
-<br>
-
-<div class="page_wrap">
-   <div class="page_nation">
-      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-      <a href="#" class="active">1</a>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">4</a>
-      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
-   </div>
-</div>
-
-<br>
-
-<div class="inputBox">
-	<div class="profile d-inline-block">
-		<img src="resources/image/mudo.png" class="profileImg">
+	<div id="qna">
+		<table class="board">
+			<tr class="boardTop">
+				<th class="line boardNo">No.</th>
+				<th class="line star">별점</th>
+				<th class="line boardContent">내용</th>
+				<th class="line boardReviewWrite">작성자</th>
+				<th class="line boardReviewDate">날짜</th>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">1</td>
+				<td class="line">*****</td>
+				<td class="line">후기~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">2</td>
+				<td class="line">*****</td>
+				<td class="line">후기~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">3</td>
+				<td class="line">*****</td>
+				<td class="line">후기~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">4</td>
+				<td class="line">*****</td>
+				<td class="line">후기~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+			<tr class="lineAll">
+				<td class="line">5</td>
+				<td class="line">*****</td>
+				<td class="line">후기~~~~~~~내용</td>
+				<td class="line">작성자 아이디or닉네임</td>
+				<td class="line">작성 날짜</td>
+			</tr>
+		</table>
 	</div>
-	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuQnaInput">&nbsp;<button class="enter">등록</button>
-</div>
-<br><br>
-
-<p class="mid">후기</p>
-
-<br>
-
-<div id="qna">
-	<table class="board">
-		<tr class="boardTop">
-			<th class="line boardNo">No.</th>
-			<th class="line star">별점</th>
-			<th class="line boardContent">내용</th>
-			<th class="line boardReviewWrite">작성자</th>
-			<th class="line boardReviewDate">날짜</th>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">1</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">2</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">3</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">4</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">5</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-	</table>
-</div>
-<br>
-
-<div class="page_wrap">
-   <div class="page_nation">
-      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-      <a href="#" class="active">1</a>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">4</a>
-      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
-   </div>
-</div>
-<br>
-<div class="inputBox">
-	<div class="profile d-inline-block">
-		<img src="resources/image/mudo.png" class="profileImg">
+	<br>
+	
+	<div class="page_wrap">
+	   <div class="page_nation">
+	      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
+	      <a href="#" class="active">1</a>
+	      <a href="#">2</a>
+	      <a href="#">3</a>
+	      <a href="#">4</a>
+	      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+	   </div>
 	</div>
-	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuReviewInput">&nbsp;<button class="enter">등록</button>
-</div>
-<br><br>
-
-<br>
-
-<!-- 삭제 알림 모달 -->
-<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">게시글 삭제하기</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<i class="bi bi-emoji-frown-fill"></i><br>
-				삭제 된 게시글은 복구 할 수 없습니다.<br>
-				정말 삭제하시겠습니까?
-			</div>
-			<div class="footer">
-				<button type="button" class="button btn-n" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="button btn-y" id="deleteBoard">삭제하기</button>
-			</div>
+	<br>
+	<div class="inputTextBox">
+		<div class="profilePic d-inline-block">
+			<img src="resources/images/mudo.png" class="profileImg">
 		</div>
+		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuReviewInput">&nbsp;<button class="enter">등록</button>
 	</div>
 </div>
 
@@ -550,12 +740,11 @@
 			</div>
 			<div class="modal-body">
 				<div id="modalNick">
-					<i class="bi bi-person-circle"></i><br>
+					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
 					<p style="font-weight: bold;">닉네임</p>
 				</div>
 				<div id="modalInfo">
-				삭제 된 게시글은 복구 할 수 없습니다.<br>
-				정말 삭제하시겠습니까?
+				영양사의 정보를 알려주는 창입니다.
 				</div>
 				
 				<p class="modalMid">등록한 식단표</p>
@@ -580,9 +769,170 @@
 	</div>
 </div>
 
+<br><br>
 <%@ include file="../common/footer.jsp" %>
 
+<script>
+	function show(){
+		const check = document.querySelector('input[name="period"]:checked');
+		const first = document.getElementById('first');
+		const second = document.getElementById('second');
+		const third = document.getElementById('third');
+		const fourth = document.getElementById('fourth');
+		const sel1sts = document.getElementsByClassName('select1st');
+		const sel2nds = document.getElementsByClassName('select2nd');
+		const sel3rds = document.getElementsByClassName('select3rd');
+		const sel4ths = document.getElementsByClassName('select4th');
+		
+		const one = document.getElementsByClassName('oneWeek');
+		const two = document.getElementsByClassName('twoWeek');
+		const three = document.getElementsByClassName('threeWeek');
+		const four = document.getElementsByClassName('fourWeek');
+		
+		for(const sel1st of sel1sts){
+			if(check && check.id == "first"){
+				sel1st.style.display = 'block';
+			} else{
+				sel1st.style.display = 'none';
+				for(const o of one){
+					o.value = 0;
+				}
+			}
+		}
+		for(const sel2nd of sel2nds){
+			if(check && check.id == "second"){
+				sel2nd.style.display = 'block';
+			} else{
+				sel2nd.style.display = 'none';
+				for(const t of two){
+					t.value = 0;
+				}
+			}
+		}
+		for(const sel3rd of sel3rds){
+			if(check && check.id == "third"){
+				sel3rd.style.display = 'block';
+			} else{
+				sel3rd.style.display = 'none';
+				for(const th of three){
+					th.value = 0;					
+				}
+			}
+		}
+		for(const sel4th of sel4ths){
+			if(check && check.id == "fourth"){
+				sel4th.style.display = 'block';
+			} else{
+				sel4th.style.display = 'none';
+				for(const f of four){
+					f.value = 0;
+				}
+			}
+		}
+	}
 	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	
+// 	상품수량 입력
+	const menu1s = document.getElementsByClassName("menu1");
+	const menu2s = document.getElementsByClassName("menu2");
+	const menu3s = document.getElementsByClassName("menu3");
+	const menu4s = document.getElementsByClassName("menu4");
+	
+// 	상품수량 출력
+	const menuOne = document.getElementById('menuOne');
+	const menuTwo = document.getElementById('menuTwo');
+	const menuThree = document.getElementById('menuThree');
+	const menuFour = document.getElementById('menuFour');
+	
+	for(const menu1 of menu1s){
+		menu1.addEventListener('input', function(){
+			menuOne.textContent = "식단1 : " + menu1.value + "개";
+		})
+	}
+	for(const menu2 of menu2s){
+		menu2.addEventListener('input', function(){
+			menuTwo.textContent = "식단2 : " + menu2.value + "개";
+		})
+	}
+	for(const menu3 of menu3s){
+		menu3.addEventListener('input', function(){
+			menuThree.textContent = "식단1 : " + menu3.value + "개";
+		})
+	}
+	for(const menu4 of menu4s){
+		menu4.addEventListener('input', function(){
+			menuFour.textContent = "식단4 : " + menu4.value + "개";
+		})
+	}
+	
+	
+	
+	$('.accordion_i_tit').click(function(){
+		$('.accordion_i_cont').toggle(400);
+	})
+	$('.accordion_i_tit2').click(function(){
+		$('.accordion_i_cont2').toggle(400);
+	})
+	$('.accordion_i_tit3').click(function(){
+		$('.accordion_i_cont3').toggle(400);
+	})
+
+   const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명
+   
+   const option = document.getElementsByClassName("options"); //사이즈 선택 창
+   
+   let buyCount = document.getElementsByClassName("buyCount")[0]; // 상품 수량 
+   const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
+   const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
+   let productPrice = document.getElementsByClassName("productPrice")[0];
+   const buyBtn = document.getElementById("buyBtn");
+   const result = document.getElementById("productResult");
+   const like = document.querySelector(".like");
+   
+      like.addEventListener("click", function() {
+	    if(like.innerText === '♡') {
+	        like.innerText = '♥';
+	    } else like.innerText ='♡';
+	});
+   
+   
+   function priceToString(productPrice) {
+       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+   }
+   
+//    console.log(option);
+	
+
+// 	$(document).ready(function() {
+//     $(".cartbtn").click(function() {
+//         var productNo = $("input[name='productNo']").val();
+//         var cartCount = $(".buyCount").val();
+//         var optionSize = $(".size").val();
+        
+        
+//         var data = {
+//             productNo: productNo,
+//             cartCount: cartCount,
+//             optionSize: optionSize
+//         };
+        
+//         $.ajax({
+//             url: "${contextPath}/addCart.ca",
+//             type: "post",
+//             data: data,
+//             success: function(data) {
+//             	if(data > 0) {
+//                 alert("카트 담기 성공");
+//             	}
+//             },
+//             error: function(data) {
+//                 alert("카트 담기 실패");
+//             }
+//         });
+//     });
+// });
+	
+	
+ </script> 
+
 </body>
 </html>

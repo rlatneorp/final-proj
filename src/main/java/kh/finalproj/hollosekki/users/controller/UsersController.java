@@ -89,8 +89,8 @@ public class UsersController {
 		return "myPage_Point";
 	}
 	
-	@RequestMapping("myPage_UpdateInfo.me")
-	public String myPage_UpdateInfo() {
+	@RequestMapping("myPage_edit.me")
+	public String myPage_edit() {
 		return "myPage_checkPwd";
 	}
 	
@@ -98,7 +98,6 @@ public class UsersController {
 	@RequestMapping("myPage_checkPwd.me")
 	@ResponseBody
 	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
-		System.out.println(usersPwd);
 		String pwd = ((Users)model.getAttribute("loginUser")).getUsersPw();
 		
 		if(bcrypt.matches(usersPwd, pwd)) {
@@ -109,7 +108,18 @@ public class UsersController {
 	}
 	
 	@RequestMapping("myPage_editInfo.me")
-	public String myPage_editInfo() {
+	public String myPage_editInfo(Model model) {
 		return "myPage_editInfo";
+	}
+	
+	@RequestMapping("myPage_UpdatePwd.me")
+	@ResponseBody
+	public String myPage_UpdatePwd(@RequestParam("newPw") String newPw, Model model) {
+		return null;
+	}
+	
+	@RequestMapping("myPage_UpdateInfo.me")
+	public String myPage_UpdateInfo() {
+		return null;
 	}
 }

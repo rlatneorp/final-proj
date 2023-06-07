@@ -34,6 +34,11 @@ public class MarketController {
 		return "market_detail";
 	}
 	
+	@GetMapping("createqna.ma")
+	public String createqna() {
+		return "createQnA";
+	}
+	
 	@GetMapping("createReview.ma")
 	public String createReview() {
 		return "createReview";

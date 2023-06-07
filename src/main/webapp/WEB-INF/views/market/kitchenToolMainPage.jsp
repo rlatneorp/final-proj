@@ -8,11 +8,19 @@
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
+	rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
 	<title>kitchenToolMainPage</title>
 </head>
 <style>
+
+* {
+	outline: none;
+	margin: 0px;
+	font-family: 'Noto Sans KR', sans-serif;
+}
 
 body{
 	text-align: center;
@@ -33,9 +41,7 @@ ul li {
 	  z-index: 5
 	  
 	  }
-	 
-	 
-	   .slick-prev:before, .slick-next:before {
+   .slick-prev:before, .slick-next:before {
         font-size: 45px;
       	color:#4485d7;
       }
@@ -94,7 +100,7 @@ ul li {
 }
 
 .nomalProduct {
-	width:1100px;
+	width:1150px;
 	padding: 25px;
 	text-align: center;
 	display: inline-block;
@@ -119,8 +125,9 @@ ul li {
   margin:0px auto;
 }
 .product-slider .product-wrapper .productList{
+  text-align:center;
   width:400px;
-  height:370px;
+  height:390px;
   display:inline-block;
   background: #edf8ff;
   padding:15px;
@@ -163,8 +170,9 @@ ul li {
   margin:0px auto;
 }
 .product-slider2 .product-wrapper .productList{
+  text-align:center;
   width:400px;
-  height:370px;
+  height:390px;
   display:inline-block;
   background: #edf8ff;
   padding:15px;
@@ -201,76 +209,88 @@ ul li {
     cursor: pointer;
 }
 
+.sider-title{
+	text-align: center;
+	font-weight: 500;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 32px;
+	color: #243ad5;
+}
+
+.bannerTitle{
+	margin-left: 325px;
+}
 
 </style>
 
 
 <body>
+<%@include file="../common/storeTop.jsp"%>
 
-
+<div class="bannerTitle"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
  <div class="slick">
         <div class="list"><img src="resources/images/listProduct.jpg"></div>
-        <div class="list"><img src="resources/images/listProduct.jpg"></div>
-        <div class="list"><img src="resources/images/listProduct.jpg"></div>
+        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></div>
+        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/06/02/c2136bce9904c2d3bf3b3795b69b8c7c.jpg"></div>
+        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/75bcd3ca5e31e19105d9a4a8b16ba1a3.jpg"></div>
  </div>
 <br>
-<br>
 
- <h1 class="sider-title">인기상품</h1>
+ <h1 class="sider-title">핫딜존</h1>
 <div class="product-slider">
         <div class="product-wrapper">
         
           <div class="productList">
-			<a><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+    		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
@@ -279,63 +299,61 @@ ul li {
 </div>
 <br>
 <br>
-
-
  <h1 class="sider-title">추천상품</h1>
 <div class="product-slider2">
        
         <div class="product-wrapper">
           <div class="productList">
-			<a><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
           
           <div class="productList">
-          	<a><img src="resources/images/product1.png"></a>
+          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div>전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
@@ -344,115 +362,119 @@ ul li {
         </div>
 </div>
 
+<br>
+<br>
+<br>
 
 
+<div style="text-align: center;">
 <ul class="nomalProduct">
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 		<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
 	
 	<li>
-		<a><img src="resources/images/product1.png"></a>
+		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 		<div>전기 믹서기</div>
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
@@ -460,11 +482,13 @@ ul li {
 	
 	
 </ul>
+</div>
 <script>
 $('.slick').slick({
-	
+	autoplay: true,
+	autoplaySpeed: 2000,
 	prevArrow : "<button type='button' class='slick-prev'></button>",
-		nextArrow : "<button type='button' class='slick-next'></button>"
+	nextArrow : "<button type='button' class='slick-next'></button>"
 	
 });
 
@@ -472,11 +496,11 @@ $('.slick').slick({
 $('.product-wrapper').slick({
 	  slidesToShow: 4,
 	  slidesToScroll: 2,
-	  autoplay: true,
-	  autoplaySpeed: 2000,
-	  nextArrow:$('.next'),
-	  prevArrow:$('.prev'),
-	  infinite : true
+	  nextArrow:$('.nextBtn'),
+	  prevArrow:$('.prevBtn'),
+	  prevArrow : "<button type='button' class='slick-prev'></button>",
+	  nextArrow : "<button type='button' class='slick-next'></button>",
+	  infinite : true,
 	});
 
 

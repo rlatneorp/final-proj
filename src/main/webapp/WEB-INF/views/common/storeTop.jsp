@@ -164,7 +164,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/storeLogo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
@@ -211,7 +211,7 @@
 						</div>
 					</div>
 					<div style="width:80px"></div>
-					<div class="cart"onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+					<div class="cart"><i class="fa-solid fa-cart-shopping"></i></div>
 				</div>
 			</div>
 		</header>

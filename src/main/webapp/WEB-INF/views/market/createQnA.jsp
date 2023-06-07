@@ -41,7 +41,8 @@ button:hover{
 	border: 0.5px solid white;
 }
 
- button:active{
+ button:focus{
+ 	outline: white;
 	color: white;
 	background:rgb(68, 133, 215);
 	border: 0.5px solid white;
@@ -94,39 +95,45 @@ dl dd div label{
 }
 
 
-.reviewForm fieldset {
+.qnaForm fieldset {
 	display: inline-block;
 	direction: rtl;
 	border: 0;
 }
 
-.reviewForm fieldset input[type=radio]{
+.qnaForm fieldset input[type=radio]{
 	display: none;
 }
 
-.reviewForm fieldset label {
+.qnaForm fieldset label {
 	font-size: 2em;
 	color: transparent;
 }
 
-.reviewForm fieldset label:hover{
+.qnaForm fieldset label:hover{
 	text-shadow: 0 0 0 rgb(68, 133, 215);
 }
 
-.reviewForm fieldset label:hover ~ label{
+.qnaForm fieldset label:hover ~ label{
 	text-shadow: 0 0 0 rgb(68, 133, 215);
 }
 
-.reviewForm fieldset input[type=radio]:checked ~ label{
+.qnaForm fieldset input[type=radio]:checked ~ label{
 	text-shadow: 0 0 0  rgb(68, 133, 215);
 }
 
- button:focus{
- 	outline: white;
-	color: white;
-	background:rgb(68, 133, 215);
-	border: 0.5px solid white;
+select option {
+	font-size: 18px;
+	font-weight: bold;
 }
+
+select .form-control {
+	font-size: 18px;
+	font-weight: bold;
+	color: rgb(68, 133, 215);
+	
+}
+
 
 
 </style>
@@ -141,36 +148,30 @@ dl dd div label{
 
 			<div style="font-weight: 200; border-bottom: 1px solid black; color: rgb(68, 133, 215); font-weight: bold; 10px; font-size: 20px;">리뷰 작성</div>
 
-			<form name="form" id="form" role="form" method="post" action="${ contextPath }/insertReview.pr" class="reviewForm">
+			<form name="form" id="form" role="form" method="post" action="${ contextPath }/insertqna.pr" class="qnaForm">
 
 				<div class="mb-3">
+				
+					<label for="title" style="font-weight: 800;">문의 내용</label>
+					<select class="form-control" name="qnaOption">
+						<option value="배송" >배송</option>
+						<option value="환불">환불</option>
+						<option value="상품"> 상품</option>
+						<option value="기타">기타</option>
+					</select>
+				
 
 					<label for="title" style="font-weight: 800;">아이디</label>
 
-					<input type="text" class="form-control" name="title" id="title" value="${productNo}" readonly>
+					<input type="text" class="form-control" name="userId" id="userId" value="아이디" readonly>
+					
+					<br>
+					<label for="qnaTitle" style="font-weight: 800;">제목</label>
+					
+					<input type="text" class="form-control" name="qnaTitle" id="qnaTitle" placeholder="제목을 입력해주세요 ">
 
 				</div>
 
-					<fieldset>
-					<span style="font-weight: 800;"> 별점을 남겨주세요</span>
-					<br>
-					<input type="radio" name="reviewStar" value="★★★★★" id="reviewStar5">
-					<label for="reviewStar5">★</label>
-					<input type="radio" name="reviewStar" value="★★★★" id="reviewStar4">
-					<label for="reviewStar4">★</label>
-					<input type="radio" name="reviewStar" value="★★★" id="reviewStar3">
-					<label for="reviewStar3">★</label>
-					<input type="radio" name="reviewStar" value="★★" id="reviewStar2">
-					<label for="reviewStar2">★</label>
-					<input type="radio" name="reviewStar" value="★" id="reviewStar1">
-					<label for="reviewStar1">★</label>
-				</fieldset>
-				
-				<br>
-				
-				<br>
-				
-				
 				<div class="mb-3">
 
 					<label for="content" style="font-weight: 800;">내용</label>

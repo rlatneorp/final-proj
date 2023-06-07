@@ -188,9 +188,9 @@ html{
 	font-weight: 400;
 }
 
-.productCount {
-	display: inline-block;
-}
+/* .cartCount { */
+/* 	display: inline-block; */
+/* } */
 
 select {
 	width: 150px;
@@ -703,7 +703,7 @@ p b {
 <br>
 </span>
 
-	<form action="${contextPath}" method="get">
+	<form action="${contextPath}/insertCart.ma" method="get">
 	<main id="order-wrap">
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
@@ -749,13 +749,13 @@ p b {
                                 
 						<hr style="margin: 0px;">
 				
-					<select class='options' name='options' required>
+					<select class='productOption' name='productOption' required>
 						<!-- 사이즈 선택 창 -->
 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option>
-						<option value='S'>옵션1</option>
-						<option value='M'>옵션2</option>
-						<option value='L'>옵션3</option>
-						<option value='XL'>옵션4</option>
+						<option value='옵션1'>옵션1</option>
+						<option value='옵션2'>옵션2</option>
+						<option value='옵션3'>옵션3</option>
+						<option value='옵션4'>옵션4</option>
 					</select>
 
 
@@ -763,13 +763,14 @@ p b {
 						<!-- 사이즈 선택시 내려오는 창 -->
 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
 							캠핑용 후라이팬 <span>(-20,000)</span>
-							<input type="hidden" name="productName" value="${p.productName}">
+							<input type="hidden" name="productNo" value="134">
+							<input type="hidden" name="productName" value="캠핑용 후라이팬">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
 						</h4>
 						<div class="btnbox" style=" margin: 0 0 0 -1px;">
 							<button id="decrease" type="button">-</button>
-							<input type="number" class="buyCount"
-								style="" value="1" name="buyCount" min="1" readonly>
+							<input type="number" class="cartCount"
+								style="" value="1" name="cartCount" min="1" readonly>
 								
 							<button id="increase" type="button">+</button>
 							
@@ -779,9 +780,7 @@ p b {
 						</button>
 						<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격</div>
 						<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
-						<input type="hidden" name="productPrice" value="${p.productPrice}">
 						<input type="hidden" name="discountRate" value="${p.discountRate}">
-						<input type="hidden" name="productMainPic" value="${p.productMainPic}">
 						</strong> <br>
 					</div>
 					
@@ -824,7 +823,7 @@ p b {
 	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
 	
 		<div class="reviewWrap1" style="padding: 10px;">
-				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">1</span>
+				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">${textboxCount}</span>
 
 			<div class="review_btn">
 				<a href="createReview.ma">
@@ -1107,11 +1106,11 @@ p b {
 		$('.accordion_i_cont3').toggle(400);
 	})
 
-   const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명
+   const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
    
-   const option = document.getElementsByClassName("options"); //사이즈 선택 창
+   const productOption = document.getElementsByClassName("productOption"); //사이즈 선택 창
    
-   let buyCount = document.getElementsByClassName("buyCount")[0]; // 상품 수량 
+   let cartCount = document.getElementsByClassName("cartCount")[0]; // 상품 수량 
    const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
    const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
    let productPrice = document.getElementsByClassName("productPrice")[0];
@@ -1126,13 +1125,42 @@ p b {
 	    } else like.innerText ='♡';
 	});
    
+      
+      for(let op of productOption){
+			if(op.value != ''){	
+					document.getElementById("productResult").style.display='block'; //사이즈 가 선택으로 되어있을시 display block;
+					productPrice.innerText=priceToString(cartCount.value*450000)
+					productOption[0].addEventListener("change", function(){	//사이즈를 선택 시 다시 다른 사이즈로 변경시 수량 1로 초기화
+						cartCount.value = 1;
+
+				})
+				
+				document.getElementsByClassName("removeProudct")[0].addEventListener("click", function(){ //x 버튼을 클릭시 수량구매창이 닫힌다.
+					document.getElementById("productResult").style.display='none';
+					op.value = ''; // 사이즈를 선택으로 바뀐다.
+				})
+		
+				
+				} else if(op.value == ''){
+					document.getElementById("productResult").style.display='none';
+					
+				}
+					productName.childNodes[0].innerText = op.value;
+					
+			}
+	
+      
+      
+      
+      
+      
+      
    
    
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
    
-//    console.log(option);
    
    removeProudct.addEventListener("click",function(){
 	   document.getElementById("productResult").style.display="none";
@@ -1140,19 +1168,19 @@ p b {
 
    
    increase.addEventListener("click", function(){
-      buyCount.value++;
-      productPrice.innerText = priceToString(buyCount.value*450000);
+      cartCount.value++;
+      productPrice.innerText = priceToString(cartCount.value*450000);
       
    })
    
    decrease.addEventListener("click", function(){
-      buyCount.value--;
+      cartCount.value--;
       
-      productPrice.innerText = priceToString(buyCount.value*450000);
+      productPrice.innerText = priceToString(cartCount.value*450000);
       
-      if(buyCount.value < 1){
-         buyCount.value = 1
-      productPrice.innerText = priceToString(buyCount.value*450000);
+      if(cartCount.value < 1){
+         cartCount.value = 1
+      productPrice.innerText = priceToString(cartCount.value*450000);
          
       }
    })
@@ -1162,52 +1190,51 @@ $(function(){
     $(".textbox").slice(0, 2).show(); // 초기갯수
     $(".moreView").click(function(e){ // 클릭시 more
         e.preventDefault();
-        $("div:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
-        if($("div:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+        $(".textbox:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
+        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
         	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
         }
     });
 });
 	
  
+  
+	let textboxCount = document.getElementsByClassName("textbox").length;	   
+  
 	
 	
-	
-	
-	
-	
-	
-	
-	
-
-// 	$(document).ready(function() {
-//     $(".cartbtn").click(function() {
-//         var productNo = $("input[name='productNo']").val();
-//         var cartCount = $(".buyCount").val();
-//         var optionSize = $(".size").val();
+	$(document).ready(function() {
+    $(".cartbtn").click(function() {
+        var productNo = $("input[name='productNo']").val();
+        var cartCount = $(".cartCount").val();
+        var productOption = $(".productOption").val();
+        
+        console.log(productNo);
+        console.log(cartCount);
+        console.log(productOption);
         
         
-//         var data = {
-//             productNo: productNo,
-//             cartCount: cartCount,
-//             optionSize: optionSize
-//         };
+        var data = {
+            productNo: productNo,
+            cartCount: cartCount,
+            productOption: productOption
+        };
         
-//         $.ajax({
-//             url: "${contextPath}/addCart.ca",
-//             type: "post",
-//             data: data,
-//             success: function(data) {
-//             	if(data > 0) {
-//                 alert("카트 담기 성공");
-//             	}
-//             },
-//             error: function(data) {
-//                 alert("카트 담기 실패");
-//             }
-//         });
-//     });
-// });
+        $.ajax({
+            url: "insertCart.ma",
+            type: "post",
+            data: data,
+            success: function(data) {
+            	if(data > 0) {
+                alert("카트 담기 성공");
+            	}
+            },
+            error: function(data) {
+                alert("카트 담기 실패");
+            }
+        });
+    });
+});
 	
 	
 	 </script> 

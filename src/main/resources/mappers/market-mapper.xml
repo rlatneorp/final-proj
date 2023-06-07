@@ -12,10 +12,17 @@
 	</update>
 	
 	<select id="aDateCheck" resultType="_int">
-		select count(*)
-		from users
-		where users_no = 1 and attendance_date = #{attendanceDate}
+		 select count(*) 
+		 from users 
+		 where attendance_date in(
+		    					select substring_index(#{attendanceDate}, ',', -1) 
+		    					from users)
 	</select>
+<!-- 	<select id="aDateCheck" resultType="_int"> -->
+<!-- 		select count(*) -->
+<!-- 		from users -->
+<!-- 		where users_no = 1 and attendance_date = #{attendanceDate} -->
+<!-- 	</select> -->
 	<resultMap type="Users" id="UsersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>
@@ -39,6 +46,10 @@
 		set attendance_day = #{ddattendanceDay} || ',' 
 	</update>
 	
+	<insert id="insertCart">
+		INSERT INTO CART
+		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
+	</insert>
 	
 	
 </mapper>

@@ -16,8 +16,4 @@ public class MenuController {
 		return "menuDetail";
 	}
 	
-	@RequestMapping("menuDetail_mk2.mn")
-	public String menuDetail_mk2() {
-		return "menuDetail_mk2";
-	}
 }

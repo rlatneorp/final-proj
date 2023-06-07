@@ -40,7 +40,7 @@ public class EnrollController {
 				
 				return "redirect:login.en";
 			} else {
-				return "회원가입실패...페이지 만드나? 아님 exception?";
+				return "�쉶�썝媛��엯�떎�뙣...�럹�씠吏� 留뚮뱶�굹? �븘�떂 exception?";
 			}
 		}
 		
@@ -53,11 +53,7 @@ public class EnrollController {
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
 			Users loginUser = eService.login(u);
-//			System.out.println(loginUser);
-			System.out.println(bcrypt.encode(u.getUsersPw()));
 			if(bcrypt.matches(u.getUsersPw(), loginUser.getUsersPw())) {
-			
-				
 				model.addAttribute("loginUser", loginUser);
 				return "redirect:home.do";
 			} else {

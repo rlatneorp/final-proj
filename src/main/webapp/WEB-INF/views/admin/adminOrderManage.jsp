@@ -18,7 +18,8 @@
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	<div class="mainBox d-inline-block align-top mt-5" style="width: 1200px;">
 		<h4 class="py-4 mb-3">주문관리</h4>
-		
+		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>
+		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
 <!-- 		<h5 class="mb-4">2023년 5월 20일 매출현황</h5> -->
 		<table class="w-100 text-center mb-3">
 			<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">

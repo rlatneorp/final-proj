@@ -285,10 +285,13 @@ input[type="text"] {
 					<b>합계<br><br><span style="color: #00AAFF">46,500</span>원</b>
 				</td>
 			</tr>
+			<tr>
+				
+			</tr>
 		</tbody>
 	</table><br>
 	<!-- 작성 버튼 -->
-	<div style="width:1370px; text-align: right;">
+	<div style="width:1370px; text-align: right; margin-left: 190px;">
 		<a id="goPay" class="btn-3d blue">구매</a>
 	</div>
 	<br><br><br><br><br><br><br><br><br><br><br><br>

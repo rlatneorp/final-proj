@@ -164,7 +164,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/storeLogo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">

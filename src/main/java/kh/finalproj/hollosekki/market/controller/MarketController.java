@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
-import kh.finalproj.hollosekki.users.model.vo.Users;
 
 @Controller
 public class MarketController {
@@ -32,6 +32,16 @@ public class MarketController {
 	@GetMapping("market_detail.ma")
 	public String marketdetail() {
 		return "market_detail";
+	}
+	
+	@GetMapping("createqna.ma")
+	public String createqna() {
+		return "createQnA";
+	}
+	
+	@GetMapping("createReview.ma")
+	public String createReview() {
+		return "createReview";
 	}
 	
 	@GetMapping("kitchenToolMain.ma")
@@ -91,12 +101,12 @@ public class MarketController {
 //	    HashMap<String, String> map = new HashMap<>();
 //	    map.put("attendanceDate", attendanceDate);
 //	    map.put("checkDay", String.valueOf(checkDay));
+//	    map.put("attendanceDay", formattedAttendanceDay);
+		
+//	    mv.addObject("map", map);
+		
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
 //	    String formattedAttendanceDay = dateFormat.format(new Date());
-//	    map.put("attendanceDay", formattedAttendanceDay);
-
-//	    mv.addObject("map", map);
-	     
 	    int aDateCheck = mkService.aDateCheck(u.getAttendanceDate());
 	    model.addAttribute("aDateCheck", aDateCheck);
 	    int attendanceDateValue = mkService.attendanceCheck(u.getAttendanceDate());

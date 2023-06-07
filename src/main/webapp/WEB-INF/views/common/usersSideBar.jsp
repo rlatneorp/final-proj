@@ -125,7 +125,7 @@
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar" href="${ contextPath }/myPage_checkPwd.me">회원 정보 수정
+			<a class="menuBar" href="${ contextPath }/myPage_UpdateInfo.me">회원 정보 수정
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>

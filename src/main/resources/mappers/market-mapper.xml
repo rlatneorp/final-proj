@@ -39,6 +39,10 @@
 		set attendance_day = #{ddattendanceDay} || ',' 
 	</update>
 	
+	<insert id="insertCart">
+		INSERT INTO CART
+		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
+	</insert>
 	
 	
 </mapper>

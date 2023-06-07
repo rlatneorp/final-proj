@@ -25,4 +25,14 @@ public class EnrollServiceImpl implements EnrollService{
 	public Users login(Users u) {
 		return eDAO.login(sqlSession, u);
 	}
+
+	@Override
+	public int checkId(String id) {
+		return eDAO.checkId(sqlSession, id);
+	}
+
+	@Override
+	public int checkNickName(String nickName) {
+		return eDAO.checkNickName(sqlSession, nickName);
+	}
 }

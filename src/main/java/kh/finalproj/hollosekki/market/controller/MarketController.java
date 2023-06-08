@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.exception.MarketException;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
+import kh.finalproj.hollosekki.market.model.vo.Cart;
+import kh.finalproj.hollosekki.market.model.vo.Product;
 
 @Controller
 public class MarketController {
@@ -131,5 +135,11 @@ public class MarketController {
 	    }
 	}
 
-
+	@ResponseBody
+	@PostMapping("insertCart.ma")
+	public int insertCart(@ModelAttribute Cart c) {
+	
+		int result = mkService.insertCart(c);
+		return result;
+	}
 }

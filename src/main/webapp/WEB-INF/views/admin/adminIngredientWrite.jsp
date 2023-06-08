@@ -16,7 +16,7 @@
 	<div class="mainBox d-inline-block align-top my-5 p-4 ps-5 rounded" style="width: 900px; height:1000px; border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">식재료관리</h4>
 		
-		<form action="${contextPath}/adminIngredientInsert.ad" method="post">
+		<form action="${contextPath}/adminIngredientInsert.ad" method="post" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-6 row">
 					<input type="hidden" name="productType" value="3">
@@ -71,10 +71,12 @@
 					
 				</div>
 				
-				<div class="col-6">
-					<div class="ms-5" style="padding-top:56px;">
-						<img class="w-100 rounded border" alt="로드 실패" src="${contextPath}/resources/images/logo.png"/>
+				<div class="col-6 ps-5">
+					<div class="border" style="margin-top:56px; width:360px; height:270px;">
+						<img class="previewImage" width="360px" height="270px">
 					</div>
+					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
+					<p style="font-size: 12px; color: gray">최적 이미지 비율은 4:3입니다.</p>
 				</div>
 				
 				<div class="d-flex justify-content-center mb-5">
@@ -90,6 +92,29 @@
 	
 	<script>
 		window.onload = () =>{
+			
+// 			이미지 미리보기 함수, 이벤트
+			const imageFile = document.getElementsByName('imageFile')[0];
+			const previewImage = document.getElementsByClassName('previewImage')[0];
+			
+			function readImage(imageFile) {
+			    // 인풋 태그에 파일이 있는 경우
+			    if(imageFile.files && imageFile.files[0]) {
+			        // 이미지 파일인지 검사 (생략)
+			        // FileReader 인스턴스 생성
+			        const reader = new FileReader()
+			        // 이미지가 로드가 된 경우
+			        reader.onload = e => {
+			            previewImage.src = e.target.result
+			        }
+			        // reader가 이미지 읽도록 하기
+			        reader.readAsDataURL(imageFile.files[0])
+			    }
+			}
+			// input file에 change 이벤트 부여
+			imageFile.addEventListener("change", e => {
+			    readImage(e.target);
+			})
 			
 // 			공식등록 / 공개상태 버튼 이벤트
 			const acBtns = document.getElementsByClassName('isAccept');
@@ -131,7 +156,7 @@
 				if(pPrice.value < 0){
 					pPrice.value = 0;
 				}else{
-					if(pPrice.value != 0 && pSale.value != 0){
+					if(pPrice.value != 0){
 						tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
 					}
 				}
@@ -142,7 +167,7 @@
 				}else if(pSale.value < 0){
 					pSale.value = 0;
 				}else{
-					if(pPrice.value != 0 && pSale.value != 0){
+					if(pPrice.value != 0){
 						tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
 					}
 				}

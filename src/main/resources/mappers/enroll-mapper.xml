@@ -32,6 +32,16 @@
 		<result column="USERS_ADDRESS" property="usersAddress"/>
 	</resultMap>
 	
+	<select id="checkId" resultType="_int">
+		select count(*)
+		from users
+		where users_id = #{id}
+	</select>
 	
+	<select id="checkNickName" resultType="_int">
+		select count(*)
+		from users
+		where nickName = #{nickName}
+	</select>
 	
 </mapper>

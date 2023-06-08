@@ -43,6 +43,10 @@
 	    update users set attendance_day =  attendance_day || substr(attendance_date, 9, 2)
 	</update>
 	
+	<insert id="insertCart">
+		INSERT INTO CART
+		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
+	</insert>
 	
 	
 </mapper>

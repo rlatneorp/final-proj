@@ -4,7 +4,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
+import kh.finalproj.hollosekki.market.model.vo.Cart;
+import kh.finalproj.hollosekki.market.model.vo.Product;
 
 @Service("mkService")
 public class MarketService {
@@ -29,6 +32,11 @@ public class MarketService {
 
 	public int attendanceDay(String ddattendanceDay) {
 		return mkDAO.attendanceDay(sqlSession, ddattendanceDay);
+	}
+
+
+	public int insertCart(Cart c) {
+		return mkDAO.insertCart(sqlSession,c);
 	}
 
 

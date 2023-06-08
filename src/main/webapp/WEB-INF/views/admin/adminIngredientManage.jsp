@@ -68,8 +68,22 @@
 				<button onclick="location.href='${contextPath}/adminIngredientWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식재료등록</button>
 			</div>
 		</div>
-		<jsp:include page="../common/adminPaging.jsp"/>
 		
+		<form>
+			<div class="text-center">
+				<input type="hidden" name="page" value="${pi.currentPage}"> 
+				<select name="searchType" class="border" style="padding: 6px 7px;">
+					<option value="name">이름</option>
+				</select>
+
+				<div style="width:200px" class="d-inline-block mb-4">
+					<input type="text" class="form-control" name="searchText">
+				</div>
+				<button onclick="location.href='${contextPath}/adminIngredientManage.ad?page='" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 38px; font-size: 14px; font-weight: bold;">검색</button>
+			</div>
+		</form>
+		
+		<jsp:include page="../common/adminPaging.jsp"/>
 	</div>
 
 

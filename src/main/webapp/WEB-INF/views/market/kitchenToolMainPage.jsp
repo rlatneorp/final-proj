@@ -231,7 +231,9 @@ ul li {
 <body>
 <%@include file="../common/storeTop.jsp"%>
 
-<div class="bannerTitle"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
+
+ 
+ <div class="bannerTitle"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
  <div class="slick">
         <div class="list"><img src="resources/images/listProduct.jpg"></div>
         <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></div>

@@ -23,6 +23,8 @@ public class EnrollDAO {
 	public int checkNickName(SqlSessionTemplate sqlSession, String nickName) {
 		return sqlSession.selectOne("enrollMapper.checkNickName",nickName);
 	}
+	
+	
 
 	public int checkEmail(SqlSessionTemplate sqlSession, String email) {
 		return sqlSession.selectOne("enrollMapper.checkEmail", email);

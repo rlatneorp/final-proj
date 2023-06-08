@@ -1,7 +1,8 @@
 package kh.finalproj.hollosekki.market.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,14 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
-import kh.finalproj.hollosekki.market.model.exception.MarketException;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
-import kh.finalproj.hollosekki.market.model.vo.Product;
 
 @Controller
 public class MarketController {
@@ -60,79 +58,25 @@ public class MarketController {
 	public String paySuccess() {
 		return "paySuccess";
 	}
-//	@GetMapping("attendance_Check.ma")
-//	@ResponseBody
-//	public ModelAndView aDate(@RequestParam(value = "attendanceDate", required = false) String attendanceDate,
-//			@RequestParam(value = "attendanceDay", required = false) String attendanceDay,
-//			@RequestParam(value = "checkDay", required = false, defaultValue = "0") Integer checkDay, 
-//			ModelAndView mv) {
-//	    HashMap<String, String> map = new HashMap<>();
-//	    map.put("attendanceDate", attendanceDate);
-//	    map.put("checkDay", String.valueOf(checkDay));
-//	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
-//	    String formattedAttendanceDay = dateFormat.format(new Date());
-//	    map.put("attendanceDay", formattedAttendanceDay);
-//
-//	    int aDateCheck = mkService.aDateCheck(map);
-//    	mv.addObject("aDateCheck ", aDateCheck);
-//    	mv.addObject("map ", map);
-//    	
-//        System.out.println(mv);
-//        return mv;
-//	     
-//	}
-
-
-//	@RequestMapping("attendance_Check.ma")
-//	public String attendanceCheck(Users u, Model model) {
-//	    
-//        int attendanceDate = mkService.attendanceCheck(u.getAttendanceDate());
-//        int checkDay = mkService.checkDay(u.getCheckDay());
-//        int attendanceDay = mkService.attendanceCheck(u.getAttendanceDay());
-//        model.addAttribute("attendanceDate", attendanceDate);
-//        model.addAttribute("checkDay", checkDay);
-//        model.addAttribute("attendanceDay", attendanceDay);
-//        System.out.println(model);
-//	    return "attendance_Check";
-//	}
-	
 	
 	@RequestMapping("attendance_Check.ma")
-	public String attendanceCheck(
-	    @RequestParam(value = "attendanceDate", required = false) String attendanceDate,
-	    @RequestParam(value = "attendanceDay", required = false) String attendanceDay,
-	    @RequestParam(value = "checkDay", required = false, defaultValue = "0") Integer checkDay,
-	    Model model,Users u
-	) {
-//	    HashMap<String, String> map = new HashMap<>();
-//	    map.put("attendanceDate", attendanceDate);
-//	    map.put("checkDay", String.valueOf(checkDay));
-//	    map.put("attendanceDay", formattedAttendanceDay);
+	public String attendanceCheck(HttpSession session, Model model) {
+	    
+		Users u = (Users)session.getAttribute("loginUser");
 		
-//	    mv.addObject("map", map);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("attendanceDate", u.getAttendanceDate());
+		map.put("attendanceDay", u.getAttendanceDay());
+		map.put("uId", u.getUsersId());
 		
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
-//	    String formattedAttendanceDay = dateFormat.format(new Date());
+	    mkService.attendanceCheck(map);
+	    mkService.attendanceDay(map);
+	    mkService.firstAdDay(map);
+	    int checkDay = mkService.checkDay(map);
 	    
-	    int aDateCheck = mkService.aDateCheck(u.getAttendanceDate());
+    	model.addAttribute("checkDay", checkDay);
+    	return "attendance_Check";
 	    
-	    int attendanceDateValue = mkService.attendanceCheck(u.getAttendanceDate());
-	    
-	    int checkDayValue = mkService.checkDay(aDateCheck);
-	    
-	    String ddattendanceDay = dateFormat.format(new Date());
-	    int attendanceDayValue = mkService.attendanceDay(ddattendanceDay);
-	    System.out.println(aDateCheck);
-	    if(checkDayValue > 0){
-	    	model.addAttribute("aDateCheck", aDateCheck);
-	    	model.addAttribute("attendanceDate", attendanceDateValue);
-	    	model.addAttribute("checkDay", checkDayValue);
-	    	model.addAttribute("attendanceDay", attendanceDayValue);
-	    	
-	    	return "attendance_Check";
-	    } else {
-	    	throw new MarketException("하루에 한 번만 출석체크가 가능합니다");
-	    }
 	}
 
 	@ResponseBody

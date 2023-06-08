@@ -31,7 +31,7 @@
 					<span class="col-3">분류</span>
 					<input type="text" name="ingredientType" class="col-9 pb-1 mb-2 rounded" placeholder="재료 종류를 선택해주세요.">
 					<span class="col-3">재고</span>
-					<input type="number" name="productStock" class="col-9 pb-1 mb-2 rounded" placeholder="재고를 입력해주세요.">
+					<input type="number" name="productStock" class="col-9 pb-1 mb-2 rounded" placeholder="재고를 입력해주세요." value="0">
 
 					<div class="col-12 row priceBox" style="opacity: 0.3">
 						<span class="col-4">가격</span>

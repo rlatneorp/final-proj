@@ -91,7 +91,7 @@ ul, li {
 	height: 120px;
 	padding-bottom: 5px;
 	border: 1px solid #4485d7;
-	display: none;
+/* 	display: none; */
 }
 
 .right {
@@ -752,20 +752,35 @@ p b {
                                 
 						<hr style="margin: 0px;">
 				
-					<select class='productOption' name='productOption' required>
+<!-- 					<select class='productOption' name='productOption' required> -->
+<!-- 						사이즈 선택 창 -->
+<!-- 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option> -->
+<!-- 						<option value='옵션1'>옵션1</option> -->
+<!-- 						<option value='옵션2'>옵션2</option> -->
+<!-- 						<option value='옵션3'>옵션3</option> -->
+<!-- 						<option value='옵션4'>옵션4</option> -->
+<!-- 					</select> -->
+					
+					<label for="option1">색상</label>
+					<select class='productOption' name='productOption' onchange="optionChange()"  required>
 						<!-- 사이즈 선택 창 -->
-						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option>
-						<option value='옵션1'>옵션1</option>
-						<option value='옵션2'>옵션2</option>
-						<option value='옵션3'>옵션3</option>
-						<option value='옵션4'>옵션4</option>
+						<option name="black">black</option>
+						<option name="silver">silver</option>
+						<option name="gray">gray</option>
+						<option name="light-gray">light-gray</option>
+					</select>
+					
+					<label for="option2">사이즈</label>
+					<select class='productOption2' name='productOption2' required>
+						<!-- 사이즈 선택 창 -->
+						<option>옵션을 선택해주세요.</option>
 					</select>
 
 
-					<div id="productResult">
+					<div id="productResult" class="productResultSet">
 						<!-- 사이즈 선택시 내려오는 창 -->
 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
-							캠핑용 후라이팬 <span>(-20,000)</span>
+							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span>
 							<input type="hidden" name="productNo" value="134">
 							<input type="hidden" name="productName" value="캠핑용 후라이팬">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
@@ -1111,7 +1126,8 @@ p b {
 
    const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
    
-   const productOption = document.getElementsByClassName("productOption"); //사이즈 선택 창
+   const productOption = document.getElementsByClassName("productOption")[0]; //사이즈 선택 창
+   const productOption2 = document.getElementsByClassName("productOption")[1]; //사이즈 선택 창
    
    let cartCount = document.getElementsByClassName("cartCount")[0]; // 상품 수량 
    const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
@@ -1128,19 +1144,36 @@ p b {
 	    } else like.innerText ='♡';
 	});
    
+        function optionChange() {
+          var b = ['S','M','L', 'XL'];
+          var result = $( '.productOption' ).val();
+          var o;
+          if ( result == 'silver'|| 'black' || "gray" || "light-gray" ) {
+            o = b;
+          } else if ( result == 'b' ) {
+            o = b;
+          } else {
+            o = [];
+          }
+          $( '.productOption2' ).empty();
+          for ( var i = 0; i < o.length; i++ ) {
+            $( '.productOption2' ).append( '<option>'+ o[ i ] + '</option>' );
+            $(".op1").text($("select[name=productOption]").val());
+          }
+         
+         
+         
+        }
       
       for(let productOp of productOption){
-			productOption[0].addEventListener('change',function(){
+			productOption.addEventListener('change',function(){
 				document.getElementById("productResult").style.display='block'
 			})
+			
 		}
       
       
       
-      
-      
-   
-   
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
@@ -1151,9 +1184,12 @@ p b {
    })
 
    
+   
+   
+   
    increase.addEventListener("click", function(){
-      cartCount.value++;
       productPrice.innerText = priceToString(cartCount.value*450000);
+      cartCount.value++;
       
    })
    

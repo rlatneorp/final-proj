@@ -35,4 +35,9 @@ public class EnrollServiceImpl implements EnrollService{
 	public int checkNickName(String nickName) {
 		return eDAO.checkNickName(sqlSession, nickName);
 	}
+
+	@Override
+	public int checkEmail(String email) {
+		return eDAO.checkEmail(sqlSession, email);
+	}
 }

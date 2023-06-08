@@ -59,6 +59,11 @@ public class AdminService {
 		return aDAO.insertImage(sqlSession, image);
 	}
 
+	public Image selectImage(HashMap<String, Integer> map) {
+		return aDAO.selectImage(sqlSession, map);
+	}
+
+
 
 
 

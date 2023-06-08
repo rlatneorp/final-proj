@@ -13,7 +13,9 @@
 	
 	<select id="selectIngredientList" resultMap="ingredientResultSet">
 		select *
-		from ingredient
+		from (select * 
+			  from ingredient
+			  order by ingredient_no desc) 
 		<if test="searchText != null">
 			<if test='searchType == "name"'>
 				where ingredient_name like '%${searchText}%'
@@ -71,6 +73,12 @@
 		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath})
 	</insert>
 	
+	<select id="selectImage" resultMap="imageResultSet">
+		select *
+		from image
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+	</select>
+	
 	
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">
@@ -97,6 +105,14 @@
 		<result column="PRODUCT_STATUS" property="productStatus"/>
 	</resultMap>
 	
+	<resultMap type="Image" id="imageResultSet">
+		<id column="image_no" property="imageNo"/>
+		<result column="image_divide_no" property="imageDivideNo"/>
+		<result column="image_type" property="imageType"/>
+		<result column="image_originalname" property="imageOriginalName"/>
+		<result column="image_renamename" property="imageRenameName"/>
+		<result column="imgae_path" property="imagePath"/>
+	</resultMap>
 	
 	
 	

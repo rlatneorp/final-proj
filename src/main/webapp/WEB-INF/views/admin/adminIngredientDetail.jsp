@@ -25,7 +25,7 @@
 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="${igd.ingredientNo}" readonly>
 					<input type="hidden" name="usersNo" value="1">
 					<span class="col-3">등록자</span>
-					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="----adminNickName----" readonly>
+					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="${igd.usersNo}" readonly>
 					<span class="col-3">재료이름</span>
 					<input type="text" name="ingredientName" class="col-9 pb-1 mb-2 rounded" placeholder="재료 이름을 입력해주세요." value="${igd.ingredientName}">
 					<span class="col-3">분류</span>
@@ -33,7 +33,7 @@
 					<span class="col-3">재고</span>
 					<input type="number" name="productStock" class="col-9 pb-1 mb-2 rounded" placeholder="재고를 입력해주세요." value="${igd.productStock}">
 
-					<div class="col-12 row priceBox" style="opacity: 0.3">
+					<div class="col-12 row priceBox" <c:if test="${igd.productStatus eq 'N'}">style="opacity: 0.3"</c:if>>
 						<span class="col-4">가격</span>
 						<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="${igd.productPrice}" readonly>
 						<span class="col-2">원</span>
@@ -73,7 +73,7 @@
 				
 				<div class="col-6 ps-5">
 					<div class="border" style="margin-top:56px; width:360px; height:270px;">
-						<img class="previewImage" width="360px" height="270px">
+						<img class="previewImage" width="360px" height="270px" src="${contextPath}/resources/uploadFiles/${img.imageRenameName}">
 					</div>
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 					<p style="font-size: 12px; color: gray">최적 이미지 비율은 4:3입니다.</p>
@@ -81,7 +81,7 @@
 				
 				<div class="d-flex justify-content-center mb-5">
 					<div class="d-flex">
-						<button type="button" onclick="check()" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">등록하기</button>
+						<button type="button" onclick="check()" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
 						<button type="button" onclick="location.href='${contextPath}/adminIngredientManage.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 					</div>
 				</div>
@@ -202,7 +202,7 @@
 				}else if(pPrice.value < 0){
 					pPrice.value = 0;
 				}
-				tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
+				cal();
 			});
 			pSale.addEventListener('change', ()=>{
 				if(pSale.value > 99.9){
@@ -210,12 +210,19 @@
 				}else if(pSale.value < 0){
 					pSale.value = 0;
 				}
-				tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
+				cal();
 			});
 			
-
+			cal();
 		}
 		
+// 		가격 계산 함수
+		function cal(){
+			const pPrice = document.getElementsByName('productPrice')[0];
+			const pSale = document.getElementsByName('productSale')[0];
+			const tPrice = document.getElementsByClassName('totalPrice')[0];
+			tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
+		}
 		
 //		Submit 전 검토하기
 		

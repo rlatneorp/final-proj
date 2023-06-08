@@ -158,7 +158,19 @@ public class AdminController {
 									 	Model model) {
 
 		Ingredient igd = aService.selectIngredient(igdNo);
-//		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", igdNo);
+		map.put("imageType", 5);
+		Image img = aService.selectImage(map);
+
+		if(igd.getProductNo() != 0) {
+			int pNo = igd.getProductNo();
+			Product p = aService.selectProduct(pNo);
+			igd.setProductStock(p.getProductStock());
+			igd.setProductPrice(p.getProductPrice());
+			igd.setProductSale(p.getProductSale());
+			igd.setProductStatus(p.getProductStatus());
+		}
 		if(igd != null) {
 			model.addAttribute("ab", ab);
 //			model.addAttribute("page", ab.getPage());
@@ -166,6 +178,7 @@ public class AdminController {
 //			model.addAttribute("searchType", searchType);
 //			model.addAttribute("searchText", searchText);
 			model.addAttribute("igd", igd);
+			model.addAttribute("img", img);
 			return "adminIngredientDetail";
 		}else {
 			throw new AdminException("식재료 상세보기를 실패하였습니다.");

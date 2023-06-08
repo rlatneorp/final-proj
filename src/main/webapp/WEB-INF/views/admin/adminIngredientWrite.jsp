@@ -21,8 +21,6 @@
 				<div class="col-6 row">
 					<input type="hidden" name="productType" value="3">
 					<h5 class="mt-3 mb-5">- 식재료등록 -</h5>
-<!-- 					<span class="col-3">재료번호</span> -->
-<!-- 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="1" readonly> -->
 					<input type="hidden" name="usersNo" value="1">
 					<span class="col-3">등록자</span>
 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="adminNickName" readonly>
@@ -143,37 +141,16 @@
 				igdStBtns[1].style.background = "#19A7CE";
 				igdStBtns[0].style.background = "gray";
 			});
-
-// 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
+			
+			
+// 			상품등록 버튼 이벤트
 			const priceBox = document.getElementsByClassName('priceBox')[0];
 			const pStBtns = document.getElementsByClassName('productStatus');
 			const pStatus = document.getElementsByName('productStatus')[0];
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
-			
-			pPrice.addEventListener('change', ()=>{
-				if(pPrice.value < 0){
-					pPrice.value = 0;
-				}else{
-					if(pPrice.value != 0){
-						tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
-					}
-				}
-			});
-			pSale.addEventListener('change', ()=>{
-				if(pSale.value > 99.9){
-					pSale.value = 99.9;
-				}else if(pSale.value < 0){
-					pSale.value = 0;
-				}else{
-					if(pPrice.value != 0){
-						tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
-					}
-				}
-			});
-			
-// 			상품등록 버튼 이벤트
+
 			pStBtns[0].addEventListener('click', ()=>{
 				pStatus.value = pStBtns[0].innerText;
 				pStBtns[0].style.background = "#19A7CE";
@@ -192,8 +169,36 @@
 // 				pSale.value = '';
 				priceBox.style.opacity ='0.3';
 			});
+
+// 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
+			pPrice.addEventListener('change', ()=>{
+				if(pPrice.value < 0){
+					pPrice.value = 0;
+				}else if(pPrice.value < 0){
+					pPrice.value = 0;
+				}
+				cal();
+			});
+			pSale.addEventListener('change', ()=>{
+				if(pSale.value > 99.9){
+					pSale.value = 99.9;
+				}else if(pSale.value < 0){
+					pSale.value = 0;
+				}
+				cal();
+			});
+			
+			cal();
 		}
 		
+		
+// 		가격 계산 함수
+		function cal(){
+			const pPrice = document.getElementsByName('productPrice')[0];
+			const pSale = document.getElementsByName('productSale')[0];
+			const tPrice = document.getElementsByClassName('totalPrice')[0];
+			tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
+		}
 		
 //		Submit 전 검토하기
 		

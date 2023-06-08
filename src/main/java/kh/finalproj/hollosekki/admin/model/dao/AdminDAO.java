@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.admin.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -51,6 +52,11 @@ public class AdminDAO {
 	public int insertImage(SqlSessionTemplate sqlSession, Image image) {
 		return sqlSession.insert("adminMapper.insertImage", image);
 	}
+
+	public Image selectImage(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.selectOne("adminMapper.selectImage", map);
+	}
+
 
 
 

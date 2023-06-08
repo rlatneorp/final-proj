@@ -78,6 +78,14 @@ public class EnrollController {
 			out.print(result);
 		}
 		
+		@RequestMapping("checkEmail.en")
+		public void checkEmail(@RequestParam("email") String email, PrintWriter out) {
+			
+			int count = (int)eService.checkEmail(email);
+			String result = count == 0 ? "yes" : "no";
+			out.print(result);
+		}
+		
 		@RequestMapping("logout.en")
 		public String logout(SessionStatus status) {
 			status.setComplete();

@@ -203,7 +203,7 @@
 						  			</div>
 						  			<div class="point"><i class="bi bi-coin drop-ic"></i>${ loginUser.point } P</div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
-						  			<div class="dropdown-item"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
+						  			<div class="dropdown-item" onclick="location.href='${ contextPath }/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
 						  		</div>
 							</c:if>

@@ -203,72 +203,67 @@ document.addEventListener('DOMContentLoaded', function() {
     dateClick: function(info) {
       const clickedDate = moment(info.date).format('yyyy-MM-DD');
       const todayDate = moment().format('yyyy-MM-DD');
-
+	  const attendanceDay = moment(info.date).format('yyyy-MM-DD');
       if (clickedDate === todayDate && !isAttendanceChecked) {
-        let checkDays = clickedDate.indexOf(clickedDate) + 1;
+        
         console.log(clickedDate);
-        console.log(checkDays);
 
-        // 출석체크 Ajax 호출
-        $.ajax({
-          url: '${contextPath}/attendance_Check.ma',
-          data: { attendanceDate: clickedDate, checkDay: checkDays, attendanceDay: clickedDate },
-          success: function(data) {
-            alert('출석체크가 완료되었습니다. 날짜: ' + info.dateStr);
-            checkAttendanceBtn.disabled = true;
-            isAttendanceChecked = true;
-            checkedDates.push(clickedDate);
+        async function checkAttendance() {
+        	  try {
+        		  return await $.ajax({
+        	      url: '${contextPath}/attendance_Check.ma',
+        	      data: { attendanceDate: clickedDate, attendanceDay : attendanceDay}
+        	    });
 
-            const event = {
-              title: '　출석완료',
-              start: clickedDate,
-              allDay: true
-            };
+        	    alert('출석체크가 완료되었습니다. 날짜: ' + info.dateStr);
+        	    checkAttendanceBtn.disabled = true;
+        	    isAttendanceChecked = true;
+        	    checkedDates.push(clickedDate);
 
-            calendar.addEvent(event);
-
-            // 출석체크 완료 후 화면을 비활성화합니다.
-            disableScreen();
-          },
-          error: function(error) {
-            console.error(error);
-          }
-        });
+        	    disableScreen();
+        	  } catch (error) {
+        	    console.error(error);
+        	 
+        	  }
+        	}
+        	checkAttendance();
+        	
       } else if (clickedDate === todayDate && isAttendanceChecked) {
         alert('오늘은 이미 출석체크를 하셨습니다.');
       } else {
         alert('오늘 날짜만 출석체크가 가능합니다.');
       }
-    }
+   }
+	
+    const event = {
+      title: '　출석완료',
+      start:  
+      end: clickedDate,
+      allDay: true
+    };
+    		
+    calendar.addEvent(event);
+
+    
   });
 
   checkAttendanceBtn.addEventListener('click', function() {
     if (!isAttendanceChecked) {
       const todayDate = moment().format('yyyy-MM-DD');
-      const currentDate = moment().format('yyyy-MM-DD');
-
+      const todayDD = moment().format('DD'); 
       if (currentDate === todayDate) {
-        let checkDays = currentDate.indexOf(currentDate) + 1;
-
-        // 출석체크 Ajax 호출
-        $.ajax({
+        
+    	  return await $.ajax({
           url: '${contextPath}/attendance_Check.ma',
-          data: { attendanceDate: todayDate, checkDay: checkDays, attendanceDay: todayDate },
+          data: { attendanceDate: todayDate,  attendanceDay: todayDD},
           success: function(data) {
             alert('출석체크가 완료되었습니다. 날짜: ' + todayDate);
             checkAttendanceBtn.disabled = true;
             isAttendanceChecked = true;
             checkedDates.push(todayDate);
 
-            const event = {
-              title: '　출석완료',
-              start: todayDate,
-              allDay: true
-            };
-
             calendar.addEvent(event);
 
-            // 출석체크 완료 후 화면을 비활성화합니다.
             disableScreen();
           },
           error: function(error) {
@@ -283,29 +278,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // 출석체크 상태 확인 및 처리
   function checkAttendanceStatus() {
     const todayDate = moment().format('yyyy-MM-DD');
     const currentDate = moment().format('yyyy-MM-DD');
 
-    // 출석체크가 완료된 경우
     if (isAttendanceChecked) {
       disableScreen();
     }
-    // 오늘 날짜에 출석체크가 가능한 경우
     else if (checkedDates.indexOf(todayDate) === -1 && currentDate === todayDate) {
       checkAttendanceBtn.disabled = false;
     }
   }
 
-  // 화면 비활성화 처리
   function disableScreen() {
     const calendarContainer = document.getElementById('calendar');
     calendarContainer.style.opacity = '0.5';
     calendarContainer.style.pointerEvents = 'none';
   }
 
-  // 페이지 로드 시 출석체크 상태 확인 및 처리
   window.addEventListener('load', function() {
     checkAttendanceStatus();
   });

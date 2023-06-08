@@ -41,7 +41,7 @@ html{
 	background: white;
 	padding: 10px;
 	margin-top: 10px;
-	height: 120px;
+	height: 50px;
 	padding-bottom: 5px;
 	border: 1px solid #4485d7;
 	display: block;
@@ -81,6 +81,10 @@ html{
 	border-radius: 5px;
 }
 
+#period label{
+	margin: 5px;
+}
+
 .select1st, .select2nd, .select3rd, .select4th{
 	display: none;
 }
@@ -94,20 +98,14 @@ html{
 	border-radius: 5px;
 }
 
+.menuSelect{
+	margin: 8px;
+}
+
 .menuName{
 	margin: 8px 20px;
 }
 
-.inputNum{
-	border: 1px solid #4485d7;
-	border-radius: 5px;
-}
-
-.selectPeriod{
-	margin: 12px 0;
-	
-}
- 
 #buybtn {
 	width: 100%;
 	height: 40px;
@@ -131,21 +129,21 @@ html{
 }
 
 select {
-	width: 150px;
+	width: 50%;
 	text-align: center;
-	height: 40px;
-	width: 100%;
+	height: 30px;
 	border: 1px solid #4485d7;
 	border-radius: 5px;
+	margin-top: 10px;
 }
 
 select option {
-	width: 150px;
+	width: 50%;
 	text-align: center;
-	height: 40px;
-	width: 100%;
+	height: 30px;
 	border: 1px solid #4485d7;
 	border-radius: 5px;
+	margin-top: 10px;
 }
 
 p b {
@@ -279,7 +277,7 @@ p b {
 
 /* 	모달 */
 	.modal-body{text-align: center;}
-	.bi-person-circle{font-size: 60px; color: black;}
+	.bi-check-circle-fill{font-size: 60px; color: #B0DAFF;}
 	.btn-n{background: lightgray; color: white;}
 	.btn-n:hover{background: darkgray; color: black;}
 	.btn-y{background: rgba(255, 170, 0, 0.5); color: white;}
@@ -293,9 +291,26 @@ p b {
 	  letter-spacing: 2.5px;
 	  font-weight: 500;
 	  color: #000;
-	  background-color: #fff;
-	  border: none;
-	  border-radius: 45px;
+	  background-color: #B0DAFF;
+	  border: 1px solid black;
+	  border-radius: 10px;
+	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	  transition: all 0.3s ease 0s;
+	  cursor: pointer;
+	  outline: none;
+	  margin: 5px;
+	  }
+	  
+	  .button-n {
+	  width: 100px; height: 45px;
+	  font-family: ;
+	  font-size: 13px;
+	  letter-spacing: 2.5px;
+	  font-weight: 500;
+	  color: #000;
+	  background-color: #lightgray;
+	  border: 1px solid black;
+	  border-radius: 10px;
 	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 	  transition: all 0.3s ease 0s;
 	  cursor: pointer;
@@ -308,6 +323,7 @@ p b {
 		color: #fff;
 		transform: translateY(-7px);
 		}
+		
 		
 	.footer{
 		display: flex; 
@@ -386,7 +402,7 @@ p b {
 			<br>
 			<br>
 			<div id="userInfo">
-				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
 				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
 			</div>
 		</div>
@@ -408,14 +424,14 @@ p b {
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
+                            	<img src="resources/image/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;배송 | 3,000원 
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
 						<dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
+                            	<img src="resources/image/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립) | 0,000원</p>
                             </dt>
 							<hr style="margin: 0px;">
@@ -438,50 +454,121 @@ p b {
 						
 						<br>
 						
-						<label class="select1st">식단과 수량을 선택해주세요.(총 1개 선택가능)</label>
+						<label class="select1st">식단과 수량을 선택해주세요.</label>
 						<div class="menuBox select1st">
-							<label class="menuName">식단1(9,900원)</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu1"><br>
-							<label class="menuName">식단2(10,900원)</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu2"><br>
-							<label class="menuName">식단3(9,900원)</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu3"><br>
-							<label class="menuName">식단4(10,900원)</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu4"><br>
+							<div class="menuSelect">
+								<label>1주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
 						</div>
 						
-						<label class="select2nd">식단과 수량을 선택해주세요.(총 2개 선택가능)</label>
+						<label class="select2nd">식단과 수량을 선택해주세요.</label>
 						<div class="menuBox select2nd">
-							<label class="menuName">식단1(9,900원)</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu1"><br>
-							<label class="menuName">식단2(10,900원)</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu2"><br>
-							<label class="menuName">식단3(9,900원)</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu3"><br>
-							<label class="menuName">식단4(10,900원)</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu4"><br>
+							<div class="menuSelect">
+								<label>1주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
+							<div class="menuSelect">
+								<label>2주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
 						</div>
 						
-						<label class="select3rd">식단과 수량을 선택해주세요.(총 3개 선택가능)</label>
+						<label class="select3rd">식단과 수량을 선택해주세요.</label>
 						<div class="menuBox select3rd">
-							<label class="menuName">식단1(9,900원)</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu1"><br>
-							<label class="menuName">식단2(10,900원)</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu2"><br>
-							<label class="menuName">식단3(9,900원)</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu3"><br>
-							<label class="menuName">식단4(10,900원)</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu4"><br>
+							<div class="menuSelect">
+								<label>1주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
+							<div class="menuSelect">
+								<label>2주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
+							<div class="menuSelect">
+								<label>3주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
 						</div>
 						
-						<label class="select4th">식단과 수량을 선택해주세요.(총 4개 선택가능)</label>
+						<label class="select4th">식단과 수량을 선택해주세요.</label>
 						<div class="menuBox select4th">
-							<label class="menuName">식단1(9,900원)</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu1"><br>
-							<label class="menuName">식단2(10,900원)</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu2"><br>
-							<label class="menuName">식단3(9,900원)</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu3"><br>
-							<label class="menuName">식단4(10,900원)</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu4"><br>
+							<div class="menuSelect">
+								<label>1주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
+							<div class="menuSelect">
+								<label>2주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
+							<div class="menuSelect">
+								<label>3주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
+							<div class="menuSelect">
+								<label>4주차 식단 : </label>
+								<select>
+									<option>식단A(9,900원)</option>
+									<option>식단B(10,900원)</option>
+									<option>식단C(9,900원)</option>
+									<option>식단D(10,900원)</option>
+								</select>
+							</div>
 						</div>
 						
 						<div id="productResult">
 							<!-- 사이즈 선택시 내려오는 창 -->
-							<div style="display: inline-block; margin-right: 150px;">
-								<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
-									<span id="menuOne">식단1 : 0개</span>
-									<span id="menuTwo">식단2 : 0개</span>
-									<span id="menuThree">식단3 : 0개</span>
-									<span id="menuFour">식단4 : 0개</span>
+							<div>
+								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
+									총 상품 가격 : 1,000,000원
 								</h4>
 							</div>
 							
-							<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격 : 1,000,000원</div>
+<!-- 							<div style="display: inline-block; margin-top: 12px; font-weight: 200;"></div> -->
 							<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
 								<input type="hidden" name="productPrice" value="${p.productPrice}">
 								<input type="hidden" name="discountRate" value="${p.discountRate}">
@@ -492,8 +579,8 @@ p b {
 					
 					</div>
 					
-					<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+					<button type="button" id="buybtn" style="display: inline-block; width: 60%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> <!-- 결제 창으로 -->
+					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
 				</div>
 			</div>
 		</div>
@@ -550,7 +637,7 @@ p b {
 		<div style="margin: 0 40px;">
 			<c:forEach begin="1" end="7">
 				<div class="menuMiniPic">
-					<img src="resources/images/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/image/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
 				</div>
 			</c:forEach>
 		</div>
@@ -561,7 +648,7 @@ p b {
 		<div style="margin: 0 40px;">
 			<c:forEach begin="1" end="7">
 				<div class="menuMiniPic">
-					<img src="resources/images/chicken2.jpg" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/image/chicken2.jpg" width=100%; height=100%; style="border-radius: 5px;">
 				</div>
 			</c:forEach>
 		</div>
@@ -572,7 +659,7 @@ p b {
 		<div style="margin: 0 40px;">
 			<c:forEach begin="1" end="7">
 				<div class="menuMiniPic">
-					<img src="resources/images/pork.JPG" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/image/pork.JPG" width=100%; height=100%; style="border-radius: 5px;">
 				</div>
 			</c:forEach>
 		</div>
@@ -583,7 +670,7 @@ p b {
 		<div style="margin: 0 40px;">
 			<c:forEach begin="1" end="7">
 				<div class="menuMiniPic">
-					<img src="resources/images/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/image/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
 				</div>
 			</c:forEach>
 		</div>
@@ -653,7 +740,7 @@ p b {
 	
 	<div class="inputTextBox">
 		<div class="profilePic d-inline-block">
-			<img src="resources/images/mudo.png" class="profileImg">
+			<img src="resources/image/mudo.png" class="profileImg">
 		</div>
 		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuQnaInput">&nbsp;<button class="enter">등록</button>
 	</div>
@@ -724,7 +811,7 @@ p b {
 	<br>
 	<div class="inputTextBox">
 		<div class="profilePic d-inline-block">
-			<img src="resources/images/mudo.png" class="profileImg">
+			<img src="resources/image/mudo.png" class="profileImg">
 		</div>
 		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuReviewInput">&nbsp;<button class="enter">등록</button>
 	</div>
@@ -740,7 +827,7 @@ p b {
 			</div>
 			<div class="modal-body">
 				<div id="modalNick">
-					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
 					<p style="font-weight: bold;">닉네임</p>
 				</div>
 				<div id="modalInfo">
@@ -764,6 +851,52 @@ p b {
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="buyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">구독하시겠습니까?</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<i class="bi bi-check-circle-fill"></i><br>
+				<h3>식단 명</h3><br>
+				1주차 식단 : 식단A<br>
+				2주차 식단 : 식단B<br>
+				3주차 식단 : 식단C<br>
+				4주차 식단 : 식단D
+			</div>
+			<div class="footer">
+				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">취소</button>
+				<button type="button" class="button btn-y" id="subscribe">구독하기</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">장바구니 담기</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<i class="bi bi-check-circle-fill"></i><br>
+				<h3>식단 명</h3><br>
+				1주차 식단 : 식단A<br>
+				2주차 식단 : 식단B<br>
+				3주차 식단 : 식단C<br>
+				4주차 식단 : 식단D
+			</div>
+			<div class="footer">
+				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
+				<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
 			</div>
 		</div>
 	</div>
@@ -830,40 +963,6 @@ p b {
 			}
 		}
 	}
-	
-// 	상품수량 입력
-	const menu1s = document.getElementsByClassName("menu1");
-	const menu2s = document.getElementsByClassName("menu2");
-	const menu3s = document.getElementsByClassName("menu3");
-	const menu4s = document.getElementsByClassName("menu4");
-	
-// 	상품수량 출력
-	const menuOne = document.getElementById('menuOne');
-	const menuTwo = document.getElementById('menuTwo');
-	const menuThree = document.getElementById('menuThree');
-	const menuFour = document.getElementById('menuFour');
-	
-	for(const menu1 of menu1s){
-		menu1.addEventListener('input', function(){
-			menuOne.textContent = "식단1 : " + menu1.value + "개";
-		})
-	}
-	for(const menu2 of menu2s){
-		menu2.addEventListener('input', function(){
-			menuTwo.textContent = "식단2 : " + menu2.value + "개";
-		})
-	}
-	for(const menu3 of menu3s){
-		menu3.addEventListener('input', function(){
-			menuThree.textContent = "식단1 : " + menu3.value + "개";
-		})
-	}
-	for(const menu4 of menu4s){
-		menu4.addEventListener('input', function(){
-			menuFour.textContent = "식단4 : " + menu4.value + "개";
-		})
-	}
-	
 	
 	
 	$('.accordion_i_tit').click(function(){

@@ -9,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.exception.MarketException;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 
 @Controller
@@ -107,19 +109,26 @@ public class MarketController {
 		
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
 //	    String formattedAttendanceDay = dateFormat.format(new Date());
+	    
 	    int aDateCheck = mkService.aDateCheck(u.getAttendanceDate());
-	    model.addAttribute("aDateCheck", aDateCheck);
+	    
 	    int attendanceDateValue = mkService.attendanceCheck(u.getAttendanceDate());
-	    int checkDayValue = mkService.checkDay(u.getCheckDay());
+	    
+	    int checkDayValue = mkService.checkDay(aDateCheck);
+	    
 	    String ddattendanceDay = dateFormat.format(new Date());
 	    int attendanceDayValue = mkService.attendanceDay(ddattendanceDay);
-
-	    model.addAttribute("attendanceDate", attendanceDateValue);
-	    model.addAttribute("checkDay", checkDayValue);
-	    model.addAttribute("attendanceDay", attendanceDayValue);
-	    System.out.println(model);
-
-	    return "attendance_Check";
+	    System.out.println(aDateCheck);
+	    if(checkDayValue > 0){
+	    	model.addAttribute("aDateCheck", aDateCheck);
+	    	model.addAttribute("attendanceDate", attendanceDateValue);
+	    	model.addAttribute("checkDay", checkDayValue);
+	    	model.addAttribute("attendanceDay", attendanceDayValue);
+	    	
+	    	return "attendance_Check";
+	    } else {
+	    	throw new MarketException("하루에 한 번만 출석체크가 가능합니다");
+	    }
 	}
 
 

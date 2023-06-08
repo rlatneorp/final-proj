@@ -11,8 +11,8 @@ public class MarketDAO {
 		return sqlSession.update("marketMapper.attendanceCheck", attendanceDate);
 	}
 
-	public int checkDay(SqlSessionTemplate sqlSession, int checkDay) {
-		return sqlSession.update("marketMapper.checkDay", checkDay);
+	public int checkDay(SqlSessionTemplate sqlSession, int aDateCheck) {
+		return sqlSession.update("marketMapper.checkDay", aDateCheck);
 	}
 
 	public int aDateCheck(SqlSessionTemplate sqlSession, String attendanceDate) {

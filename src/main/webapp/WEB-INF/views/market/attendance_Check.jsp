@@ -205,14 +205,13 @@ document.addEventListener('DOMContentLoaded', function() {
       const todayDate = moment().format('yyyy-MM-DD');
 
       if (clickedDate === todayDate && !isAttendanceChecked) {
-        let checkDays = clickedDate.indexOf(clickedDate) + 1;
+        
         console.log(clickedDate);
-        console.log(checkDays);
 
         // 출석체크 Ajax 호출
         $.ajax({
           url: '${contextPath}/attendance_Check.ma',
-          data: { attendanceDate: clickedDate, checkDay: checkDays, attendanceDay: clickedDate },
+          data: { attendanceDate: clickedDate, attendanceDay: clickedDate },
           success: function(data) {
             alert('출석체크가 완료되었습니다. 날짜: ' + info.dateStr);
             checkAttendanceBtn.disabled = true;
@@ -248,12 +247,12 @@ document.addEventListener('DOMContentLoaded', function() {
       const currentDate = moment().format('yyyy-MM-DD');
 
       if (currentDate === todayDate) {
-        let checkDays = currentDate.indexOf(currentDate) + 1;
+        
 
         // 출석체크 Ajax 호출
         $.ajax({
           url: '${contextPath}/attendance_Check.ma',
-          data: { attendanceDate: todayDate, checkDay: checkDays, attendanceDay: todayDate },
+          data: { attendanceDate: todayDate,  attendanceDay: todayDate },
           success: function(data) {
             alert('출석체크가 완료되었습니다. 날짜: ' + todayDate);
             checkAttendanceBtn.disabled = true;

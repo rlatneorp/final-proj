@@ -8,15 +8,13 @@
 	
 	<update id="checkDay">
 		update users
-		set check_day = #{checkDay}
+		set check_day = #{aDateCheck}
 	</update>
 	
 	<select id="aDateCheck" resultType="_int">
-		 select count(*) 
+		 select length(attendance_day) * 0.5 
 		 from users 
-		 where attendance_date in(
-		    					select substring_index(#{attendanceDate}, ',', -1) 
-		    					from users)
+		 where users_no = 1
 	</select>
 <!-- 	<select id="aDateCheck" resultType="_int"> -->
 <!-- 		select count(*) -->
@@ -42,8 +40,7 @@
 	</resultMap>
 	
 	<update id="attendanceDay">
-		update users
-		set attendance_day = #{ddattendanceDay} || ',' 
+	    update users set attendance_day =  attendance_day || substr(attendance_date, 9, 2)
 	</update>
 	
 	

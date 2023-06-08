@@ -19,8 +19,8 @@ public class MarketService {
 		return mkDAO.attendanceCheck(sqlSession, attendanceDate);
 	}
 
-	public int checkDay(int checkDay) {
-		return mkDAO.checkDay(sqlSession, checkDay);
+	public int checkDay(int aDateCheck) {
+		return mkDAO.checkDay(sqlSession, aDateCheck);
 	}
 
 	public int aDateCheck(String attendanceDate) {

@@ -11,6 +11,7 @@
 		update users
 		set check_day = length(attendance_day) * 0.5 
 		where users_id = #{uId}
+
 	</update>
 	
 	
@@ -51,6 +52,7 @@
 	    where users_id = #{uId}
 	</update>
 	
+	
 	<insert id="insertShipping">
   		insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
   		values (#{usersNo}, #{recipient}, #{address}, #{homePhone}, #{phone}, SEQ_SHIPPING_ADDRESS.nextval, #{shippingName})
@@ -60,6 +62,13 @@
 		INSERT INTO CART
 		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
 	</insert>
+	
+	<select id="allAt" resultMap="UsersResultSet">
+		select *
+		from users
+		where users_id = #{uId}
+	</select>
+	
 	
 	<select id="selectShipping" resultMap="shipAddress">
 		select *

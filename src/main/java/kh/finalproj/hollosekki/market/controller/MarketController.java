@@ -107,10 +107,8 @@ public class MarketController {
 			return "attendance_Check";
 		}
 		
-	    
-	}
 	
-	//諛곗넚吏� 異붽� 諛� 議고쉶
+	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙 獄쏉옙 鈺곌퀬�돳
 	@RequestMapping(value="insertShipping.ma", produces="application/json; charset=UTF-8")
 	public void insertShipping(@ModelAttribute ShippingAddress sa, @RequestParam("postcode") String postcode, @RequestParam("addressInfo") String addressInfo, @RequestParam("detailAddress") String detailAddress,  HttpServletResponse response) {
 		

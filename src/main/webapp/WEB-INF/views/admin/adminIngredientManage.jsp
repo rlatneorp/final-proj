@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>admin</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
+<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -47,27 +48,34 @@
 				<c:forEach items="${igdList}" var="igd" varStatus="vs">
 					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
 						
-						<td>${igd.ingredientNo}<input type="hidden" name="ingredientNo" value="${igd.ingredientNo}"></td>
+						<td>${igd.ingredientNo}
+							<input type="hidden" name="ingredientNo" value="${igd.ingredientNo}">
+							<input type="hidden" name="productNo" value="${igd.productNo}">
+						</td>
 						<td>
 							<a href="${contextPath}/adminIngredientDetail.ad?page=${pi.currentPage}&ingredientNo=${igd.ingredientNo}">
 								${igd.ingredientName}</a>
 						</td>
 						<td>${igd.ingredientType}</td>
 						<td>
-							<c:if test="${igd.productNo ne 0 }">
-								<fmt:formatNumber pattern="###,###,###" value="${igd.productPrice}"/>원
-							</c:if>
-							<c:if test="${igd.productNo eq 0 }">
-								-
-							</c:if>
+							<div class="priceBox">
+								<c:if test="${igd.productStatus eq 'Y' }">
+									<fmt:formatNumber pattern="###,###,###" value="${igd.productPrice}"/>원
+								</c:if>
+								<c:if test="${igd.productStatus eq 'N' }">
+									-
+								</c:if>
+							</div>
 						</td>
 						<td>
-							<c:if test="${igd.productNo ne 0 }">
-								${igd.productSale}%
-							</c:if>
-							<c:if test="${igd.productNo eq 0 }">
-								-
-							</c:if>
+							<div class="saleBox">
+								<c:if test="${igd.productStatus eq 'Y' }">
+									${igd.productSale}%
+								</c:if>
+								<c:if test="${igd.productStatus eq 'N' }">
+									-
+								</c:if>
+							</div>
 						</td>
 						<td>${igd.productStock}</td>
 						<td>${igd.orderCount}</td>
@@ -149,36 +157,97 @@
 			
 // 			공식등록 버튼 이벤트
 			const acceptBtns = document.getElementsByClassName('acceptBtn');
-			const statusBtns = document.getElementsByClassName('statusBtn');
+			const igsNos = document.getElementsByName('ingredientNo');
 
+			
 			for(const i in acceptBtns){
-				if(i%2 == 0){
+				if(i<acceptBtns.length){
+					
 					acceptBtns[i].addEventListener('click', ()=>{
-						acceptBtns[i].style.background = "#19A7CE";
-						acceptBtns[i].nextElementSibling.style.backgroundColor = "gray";
-					});
-				}else if(i%2 == 1){
-					acceptBtns[i].addEventListener('click', ()=>{
-						acceptBtns[i].style.background = "#19A7CE";
-						acceptBtns[i].previousElementSibling.style.backgroundColor = "gray";
-					});
+						let j = Math.floor(i/2);
+						$.ajax({
+							url: '${contextPath}/adminIngredientUpdateIsAccept.ad',
+							data: {ingredientNo:igsNos[j].value,
+								   isAccept:acceptBtns[i].innerText},
+							success: data =>{
+								if(data == "success"){
+									if(i%2 == 0){
+										acceptBtns[i].style.background = "#19A7CE";
+										acceptBtns[i].nextElementSibling.style.backgroundColor = "gray";
+									}else if(i%2 == 1){
+										acceptBtns[i].style.background = "#19A7CE";
+										acceptBtns[i].previousElementSibling.style.backgroundColor = "gray";
+									}
+								}else{
+									alert("상태 변경에 실패하였습니다.");
+								}
+							},
+							error: data => {
+								console.log(data);
+							}
+						})
+					})
 				}
 			}
 			
 // 			상태 버튼 이벤트
+			const statusBtns = document.getElementsByClassName('statusBtn');
+			const pNos = document.getElementsByName('productNo');
+			
 			for(const i in statusBtns){
-				if(i%2 == 0){
-					statusBtns[i].addEventListener('click', ()=>{
-						statusBtns[i].style.background = "#19A7CE";
-						statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
-					});
-				}else if(i%2 == 1){
-					statusBtns[i].addEventListener('click', ()=>{
-						statusBtns[i].style.background = "#19A7CE";
-						statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-					});
+				if(i<statusBtns.length){
+					let j = Math.floor(i/2);
+					if(pNos[j].value != 0){
+						statusBtns[i].addEventListener('click', function(){
+							$.ajax({
+								url: '${contextPath}/adminUpdateStatus.ad',
+								data: {dataNo:pNos[j].value,
+									   dataStatus:statusBtns[i].innerText,
+									   dataType:3},
+								success: data =>{
+									if(data == "success"){
+										if(i%2 == 0){
+											statusBtns[i].style.background = "#19A7CE";
+											statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
+											document.getElementsByClassName('priceBox')[j].style.display="block";
+											document.getElementsByClassName('saleBox')[j].style.display="block";
+										}else if(i%2 == 1){
+											statusBtns[i].style.background = "#19A7CE";
+											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
+											document.getElementsByClassName('priceBox')[j].style.display="none";
+											document.getElementsByClassName('saleBox')[j].style.display="none";
+										}
+									}else{
+										alert("상태 변경에 실패하였습니다.");
+									}
+								},
+								error: data => {
+									console.log(data);
+								}
+							})
+						})
+					}else{
+						statusBtns[i].style.background = "gray";
+						statusBtns[i].addEventListener('click', ()=>{
+							alert("상품 등록을 해야 상태 변경이 가능합니다.");
+						})
+					}
 				}
 			}
+			
+// 			for(const i in statusBtns){
+// 				if(i%2 == 0){
+// 					statusBtns[i].addEventListener('click', ()=>{
+// 						statusBtns[i].style.background = "#19A7CE";
+// 						statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
+// 					});
+// 				}else if(i%2 == 1){
+// 					statusBtns[i].addEventListener('click', ()=>{
+// 						statusBtns[i].style.background = "#19A7CE";
+// 						statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
+// 					});
+// 				}
+// 			}
 		}
 	</script>
 	

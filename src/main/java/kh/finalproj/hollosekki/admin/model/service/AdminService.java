@@ -43,8 +43,12 @@ public class AdminService {
 		return aDAO.updateIngredient(sqlSession, igd);
 	}
 
-	public int insertProduct(Ingredient igd) {
-		return aDAO.insertProduct(sqlSession, igd);
+	public int updateProduct(Product pd) {
+		return aDAO.updateProduct(sqlSession, pd);
+	}
+	
+	public int insertProduct(Product pd) {
+		return aDAO.insertProduct(sqlSession, pd);
 	}
 	
 	public int insertIngredient(Ingredient igd) {
@@ -62,6 +66,23 @@ public class AdminService {
 	public Image selectImage(HashMap<String, Integer> map) {
 		return aDAO.selectImage(sqlSession, map);
 	}
+
+	public int deleteImage(Image img) {
+		return aDAO.deleteImage(sqlSession, img);
+	}
+
+	public int getNowProductNo() {
+		return aDAO.getNowProductNo(sqlSession);
+	}
+
+	public int ingredientUpdateIsAccept(Ingredient igd) {
+		return aDAO.ingredientUpdateIsAccept(sqlSession, igd);
+	}
+
+	public int updateStatus(HashMap<String, String> map) {
+		return aDAO.updateStatus(sqlSession, map);
+	}
+
 
 
 

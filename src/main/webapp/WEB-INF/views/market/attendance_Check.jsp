@@ -187,123 +187,178 @@ font-family: 'Noto Sans KR', sans-serif;
 
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 <script>
-let isAttendanceChecked = false;
-let checkedDates = [];
-
-document.addEventListener('DOMContentLoaded', function() {
-  const calendarEl = document.getElementById('calendar');
-  const checkAttendanceBtn = document.getElementById('checkAttendanceBtn');
-  const calendar = new FullCalendar.Calendar(calendarEl, {
-    headerToolbar: {
-      left: '',
-      center: 'title',
-      right: ''
-    },
-    locale: 'ko',
-    dateClick: function(info) {
-      const clickedDate = moment(info.date).format('yyyy-MM-DD');
-      const todayDate = moment().format('yyyy-MM-DD');
-	  const attendanceDay = moment(info.date).format('yyyy-MM-DD');
-      if (clickedDate === todayDate && !isAttendanceChecked) {
-        
-        console.log(clickedDate);
-
-        async function checkAttendance() {
-        	  try {
-        		  return await $.ajax({
-        	      url: '${contextPath}/attendance_Check.ma',
-        	      data: { attendanceDate: clickedDate, attendanceDay : attendanceDay}
-        	    });
-
-        	    alert('출석체크가 완료되었습니다. 날짜: ' + info.dateStr);
-        	    checkAttendanceBtn.disabled = true;
-        	    isAttendanceChecked = true;
-        	    checkedDates.push(clickedDate);
-
-        	    disableScreen();
-        	  } catch (error) {
-        	    console.error(error);
-        	 
-        	  }
-        	}
-        	checkAttendance();
-        	
-      } else if (clickedDate === todayDate && isAttendanceChecked) {
-        alert('오늘은 이미 출석체크를 하셨습니다.');
-      } else {
-        alert('오늘 날짜만 출석체크가 가능합니다.');
-      }
-   }
+// 	let isAttendanceChecked = false;
+// 	let checkedDates = [];
 	
-    const event = {
-      title: '　출석완료',
-      start:  
-      end: clickedDate,
-      allDay: true
-    };
-    		
-    calendar.addEvent(event);
-
-    
-  });
-
-  checkAttendanceBtn.addEventListener('click', function() {
-    if (!isAttendanceChecked) {
+	document.addEventListener('DOMContentLoaded', function() {
+	  const calendarEl = document.getElementById('calendar');
+// 	  const checkAttendanceBtn = document.getElementById('checkAttendanceBtn'); 
+// 	  const clickedDate = moment(info.date).format('yyyy-MM-DD');
       const todayDate = moment().format('yyyy-MM-DD');
-      const todayDD = moment().format('DD'); 
-      if (currentDate === todayDate) {
+	  const calendar = new FullCalendar.Calendar(calendarEl, {
+	    headerToolbar: {
+	      left: '',
+	      center: 'title',
+	      right: ''
+	    },
+	    locale: 'ko',
+	    dateClick: function(arg) {
+	        
+	        console.log(arg);
+
+	        var title = alert('출석을 완료하였습니다! \n출석일 : ' +todayDate +'\n포인트를 10원 적립하였습니다!');
+	     
+	        if (title) {
+	          calendar.addEvent({
+	            title: ' 출석 완료',
+	            start: arg.dateStr,
+	            attendanceDate: arg.dateStr
+	          })
+	        }
+	        calendar.unselect()
+	      },
+	      
+	      dayMaxEvents: false,
+	      events: function(info, successCallback, failureCallback){
+	       	  $.ajax({
+	     		 type:'get',
+	     		 url:'${contextPath}/attendance_Check.ma',
+	     		dataType:'json'  
+	     	  });
+	    	  
+	      }
+	  });
+	    calendar.render();
+	});
+// 	        if (clickedDate === todayDate && !isAttendanceChecked) {
+// 	          // 출석체크 Ajax 호출
+// 	          $.ajax({
+// 	            url: '${contextPath}/attendance_Check.ma',
+// 	            data: { attendanceDate: attendanceDate, attendanceDay: attendanceDay },
+// 	            success: function(info) {
+// 	              alert('출석체크가 완료되었습니다. 날짜: ' + info.dateStr);
+// 	              checkAttendanceBtn.disabled = true;
+// 	              isAttendanceChecked = true;
+// 	              checkedDates.push(clickedDate);
+
+// 	              disableScreen();
+// 	            },
+// 	            error: function(error) {
+// 	              console.error(error);
+// 	            }
+// 	          });
+// 	        } else if (clickedDate === todayDate && isAttendanceChecked) {
+// 	          alert('오늘은 이미 출석체크를 하셨습니다.');
+// 	        } else {
+// 	          alert('오늘 날짜만 출석체크가 가능합니다.');
+// 	        }
+// 	      },
+// 	    events:function(info, successCallback, failureCallback){
+	   		
+// 	    }
+	    
+// 	    });
+	  
+// 		events: function(info, successCallback, failureCallback) {
+// 			const clickedDate = moment(info.date).format('yyyy-MM-DD');
+//  	        const todayDate = moment().format('yyyy-MM-DD');
+//  	  	    const attendanceDay = moment(info.date).format('yyyy-MM-DD');
+// //  	  	    dateClick: function(info) {
+// //  	  	      const clickedDate = moment(info.date).format('yyyy-MM-DD');
+// //  	  	      const todayDate = moment().format('yyyy-MM-DD');
+
+// //  	  	      if (clickedDate === todayDate && !isAttendanceChecked) {
+ 	  	        
+// //  	  	        console.log(clickedDate);
+
+// //  	  	        // 출석체크 Ajax 호출
+// //  	  	        $.ajax({
+// //  	  	          url: '${contextPath}/attendance_Check.ma',
+// //  	  	          data: { attendanceDate: clickedDate, attendanceDay: clickedDate },
+// //  	  	          success: function(data) {
+// //  	  	            alert('출석체크가 완료되었습니다. 날짜: ' + info.dateStr);
+// //  	  	            checkAttendanceBtn.disabled = true;
+// //  	  	            isAttendanceChecked = true;
+// //  	  	            checkedDates.push(clickedDate);
+ 	  	        
+// //  	  	            disableScreen();
+// //  	  	          },
+// //  	  	          error: function(error) {
+// //  	  	            console.error(error);
+// //  	  	          }
+// //  	  	        });
+// //  	  	      } else if (clickedDate === todayDate && isAttendanceChecked) {
+// //  	  	        alert('오늘은 이미 출석체크를 하셨습니다.');
+// //  	  	      } else {
+// //  	  	        alert('오늘 날짜만 출석체크가 가능합니다.');
+// //  	  	      }
+// //  	  	    }
+// //  	  	  });
+
+// 			title : ' 출석완료',
+// 			start : clickedDate,
+// 			end : attendanceDay,
+// 			allDay: true
+// 		}
+		  
+// 	  });	  
+// 	calendar.render();
+// 	})
+//   checkAttendanceBtn.addEventListener('click', function() {
+//     if (!isAttendanceChecked) {
+//       const todayDate = moment().format('yyyy-MM-DD');
+//       const todayDD = moment().format('DD'); 
+//       if (currentDate === todayDate) {
         
-    	  return await $.ajax({
-          url: '${contextPath}/attendance_Check.ma',
-          data: { attendanceDate: todayDate,  attendanceDay: todayDD},
-          success: function(data) {
-            alert('출석체크가 완료되었습니다. 날짜: ' + todayDate);
-            checkAttendanceBtn.disabled = true;
-            isAttendanceChecked = true;
-            checkedDates.push(todayDate);
+//     	  return await $.ajax({
+//           url: '${contextPath}/attendance_Check.ma',
+//           data: { attendanceDate: todayDate,  attendanceDay: todayDD},
+//           success: function(data) {
+//             alert('출석체크가 완료되었습니다. 날짜: ' + todayDate);
+//             checkAttendanceBtn.disabled = true;
+//             isAttendanceChecked = true;
+//             checkedDates.push(todayDate);
 
-            calendar.addEvent(event);
+//             calendar.addEvent(event);
 
-            disableScreen();
-          },
-          error: function(error) {
-            console.error(error);
-          }
-        });
-      } else {
-        alert('오늘 날짜만 출석체크가 가능합니다.');
-      }
-    } else {
-      alert('오늘은 이미 출석체크를 하셨습니다.');
-    }
-  });
+//             disableScreen();
+//           },
+//           error: function(error) {
+//             console.error(error);
+//           }
+//         });
+//       } else {
+//         alert('오늘 날짜만 출석체크가 가능합니다.');
+//       }
+//     } else {
+//       alert('오늘은 이미 출석체크를 하셨습니다.');
+//     }
+//   });
 
-  function checkAttendanceStatus() {
-    const todayDate = moment().format('yyyy-MM-DD');
-    const currentDate = moment().format('yyyy-MM-DD');
-
-    if (isAttendanceChecked) {
-      disableScreen();
-    }
-    else if (checkedDates.indexOf(todayDate) === -1 && currentDate === todayDate) {
-      checkAttendanceBtn.disabled = false;
-    }
-  }
-
-  function disableScreen() {
-    const calendarContainer = document.getElementById('calendar');
-    calendarContainer.style.opacity = '0.5';
-    calendarContainer.style.pointerEvents = 'none';
-  }
-
-  window.addEventListener('load', function() {
-    checkAttendanceStatus();
-  });
-
-  calendar.render();
-});
+// 	  function checkAttendanceStatus() {
+// 	    const todayDate = moment().format('yyyy-MM-DD');
+// 	    const currentDate = moment().format('yyyy-MM-DD');
+	
+// 	    if (isAttendanceChecked) {
+// 	      disableScreen();
+// 	    }
+// 	    else if (checkedDates.indexOf(todayDate) === -1 && currentDate === todayDate) {
+// 	      checkAttendanceBtn.disabled = false;
+// 	    }
+// 	  }
+	
+// 	  function disableScreen() {
+// 	    const calendarContainer = document.getElementById('calendar');
+// 	    calendarContainer.style.opacity = '0.5';
+// 	    calendarContainer.style.pointerEvents = 'none';
+// 	  }
+	
+// 	  window.addEventListener('load', function() {
+// 	    checkAttendanceStatus();
+// 	  });
 
 
+ 
 </script>
 </body>
 </html>

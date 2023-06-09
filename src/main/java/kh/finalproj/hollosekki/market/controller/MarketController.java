@@ -112,27 +112,42 @@ public class MarketController {
 		return "paySuccess";
 	}
 	
-	@RequestMapping("attendance_Check.ma")
-	public String attendanceCheck(HttpSession session, Model model) {
+	@GetMapping("attendance_Check.ma")
+	public String attendanceCheck(HttpSession session, Model model,
+			@RequestParam(value="start",required=false) String start,@RequestParam(value="end",required=false) String end
+			) {
 	    
 		Users u = (Users)session.getAttribute("loginUser");
+		String uId = null;
 		
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("attendanceDate", u.getAttendanceDate());
-		map.put("attendanceDay", u.getAttendanceDay());
-		map.put("uId", u.getUsersId());
+		System.out.println(u);
+		if(u != null) {
+			uId = u.getUsersId();
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("attendanceDate", start);
+			map.put("attendanceDay", start);
+			map.put("uId", uId);
+			
+			 
+			 
+			mkService.attendanceCheck(map);
+			mkService.attendanceDay(map);
+			mkService.firstAdDay(map);
+			mkService.checkDay(map);
+			ArrayList<Users> list = mkService.allAt(map);
+			
+//			model.addAttribute("firstAdDay", firstAdDay);
+			model.addAttribute("attendanceDate", u.getAttendanceDate());
+			model.addAttribute("attendanceDay", u.getAttendanceDay());
+			model.addAttribute("list", list);
+			
+			return "attendance_Check";
+		}else {
+			return "attendance_Check";
+		}
 		
-	    mkService.attendanceCheck(map);
-	    mkService.attendanceDay(map);
-	    mkService.firstAdDay(map);
-	    int checkDay = mkService.checkDay(map);
-	    
-    	model.addAttribute("checkDay", checkDay);
-    	return "attendance_Check";
-	    
-	}
 	
-	//배송지 추가 및 조회
+	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙 獄쏉옙 鈺곌퀬�돳
 	@RequestMapping(value="insertShipping.ma", produces="application/json; charset=UTF-8")
 	public void insertShipping(@ModelAttribute ShippingAddress sa, @RequestParam("postcode") String postcode, @RequestParam("addressInfo") String addressInfo, @RequestParam("detailAddress") String detailAddress,  HttpServletResponse response) {
 		

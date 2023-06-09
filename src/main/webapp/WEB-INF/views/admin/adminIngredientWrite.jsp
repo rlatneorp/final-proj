@@ -90,7 +90,6 @@
 	
 	<script>
 		window.onload = () =>{
-			
 // 			이미지 미리보기 함수, 이벤트
 			const imageFile = document.getElementsByName('imageFile')[0];
 			const previewImage = document.getElementsByClassName('previewImage')[0];
@@ -215,6 +214,9 @@
 			}else if(document.getElementsByName('ingredientContent')[0].value.trim() == ''){
 				alert("재료 내용을 입력해주세요.");
 				document.getElementsByName('ingredientContent')[0].focus();
+			}else if(document.getElementsByName('imageFile')[0].value == false){
+				alert("이미지를 등록해주세요.");
+				document.getElementsByName('imageFile')[0].focus();
 			}else{
 				document.getElementsByTagName('form')[0].submit();
 			}

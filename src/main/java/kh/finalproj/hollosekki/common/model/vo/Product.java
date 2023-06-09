@@ -10,7 +10,7 @@ public class Product {
 	private int productStock;
 	private Date productCreateDate;
 	private Date productModifyDate;
-	private int productSale;
+	private Double productSale;
 	private int productCount;
 	private String productStatus;
 	
@@ -19,7 +19,8 @@ public class Product {
 	public Product() {}
 
 	public Product(int productNo, int productType, int productPrice, String productOption, int productStock,
-			Date productCreateDate, Date productModifyDate, int productSale, int productCount, String productStatus) {
+			Date productCreateDate, Date productModifyDate, Double productSale, int productCount,
+			String productStatus) {
 		super();
 		this.productNo = productNo;
 		this.productType = productType;
@@ -89,11 +90,11 @@ public class Product {
 		this.productModifyDate = productModifyDate;
 	}
 
-	public int getProductSale() {
+	public Double getProductSale() {
 		return productSale;
 	}
 
-	public void setProductSale(int productSale) {
+	public void setProductSale(Double productSale) {
 		this.productSale = productSale;
 	}
 

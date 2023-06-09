@@ -1,5 +1,6 @@
 package kh.finalproj.hollosekki.market.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -59,23 +61,40 @@ public class MarketController {
 		return "paySuccess";
 	}
 	
-	@RequestMapping("attendance_Check.ma")
-	public String attendanceCheck(HttpSession session, Model model) {
+	@GetMapping("attendance_Check.ma")
+	public String attendanceCheck(HttpSession session, Model model,
+			@RequestParam(value="start",required=false) String start,@RequestParam(value="end",required=false) String end
+			) {
 	    
 		Users u = (Users)session.getAttribute("loginUser");
+		String uId = null;
 		
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("attendanceDate", u.getAttendanceDate());
-		map.put("attendanceDay", u.getAttendanceDay());
-		map.put("uId", u.getUsersId());
+		System.out.println(u);
+		if(u != null) {
+			uId = u.getUsersId();
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("attendanceDate", start);
+			map.put("attendanceDay", start);
+			map.put("uId", uId);
+			
+			 
+			 
+			mkService.attendanceCheck(map);
+			mkService.attendanceDay(map);
+			mkService.firstAdDay(map);
+			mkService.checkDay(map);
+			ArrayList<Users> list = mkService.allAt(map);
+			
+//			model.addAttribute("firstAdDay", firstAdDay);
+			model.addAttribute("attendanceDate", u.getAttendanceDate());
+			model.addAttribute("attendanceDay", u.getAttendanceDay());
+			model.addAttribute("list", list);
+			
+			return "attendance_Check";
+		}else {
+			return "attendance_Check";
+		}
 		
-	    mkService.attendanceCheck(map);
-	    mkService.attendanceDay(map);
-	    mkService.firstAdDay(map);
-	    int checkDay = mkService.checkDay(map);
-	    
-    	model.addAttribute("checkDay", checkDay);
-    	return "attendance_Check";
 	    
 	}
 

@@ -1,5 +1,6 @@
 package kh.finalproj.hollosekki.market.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
@@ -34,8 +35,12 @@ public class MarketDAO {
 //		return sqlSession.update("marketMapper.aDateCheck", map);
 //	}
 
-	public int checkDay(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
-		return sqlSession.selectOne("marketMapper.checkDay", map);
+	public void checkDay(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		sqlSession.selectOne("marketMapper.checkDay", map);
+	}
+
+	public ArrayList<Users> allAt(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return (ArrayList)sqlSession.selectList("marketMapper.allAt", map);
 	}
 
 

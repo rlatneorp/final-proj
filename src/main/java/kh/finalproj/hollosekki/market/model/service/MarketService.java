@@ -1,5 +1,6 @@
 package kh.finalproj.hollosekki.market.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -39,8 +40,13 @@ public class MarketService {
 //		return mkDAO.aDateCheck(sqlSession, map);
 //	}
 
-	public int checkDay(HashMap<String, String> map) {
-		return mkDAO.checkDay(sqlSession, map);
+	public void checkDay(HashMap<String, String> map) {
+		mkDAO.checkDay(sqlSession, map);
+	
+	}
+
+	public ArrayList<Users> allAt(HashMap<String, String> map) {
+		return mkDAO.allAt(sqlSession, map);
 	}
 
 

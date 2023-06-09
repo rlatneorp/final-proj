@@ -9,15 +9,15 @@
 	
 	<update id="checkDay">
 		update users
-		set check_day = (select length(attendance_day) * 0.5 
-								 from users 
-								 where users_id = #{uId})
+		set check_day = length(attendance_day) * 0.5 
+		where users_id = #{uId}
 	</update>
+	
 	
 <!-- 	<select id="aDateCheck" resultType="_int"> -->
 <!-- 		 select length(attendance_day) * 0.5  -->
 <!-- 		 from users  -->
-<!-- 		 where users_no = 1 -->
+<!-- 		 where users_id = #{uId} -->
 <!-- 	</select> -->
 	
 	
@@ -56,5 +56,10 @@
 		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
 	</insert>
 	
+	<select id="allAt" resultMap="UsersResultSet">
+		select *
+		from users
+		where users_id = #{uId}
+	</select>
 	
 </mapper>

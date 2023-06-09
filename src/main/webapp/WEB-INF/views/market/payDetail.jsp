@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
+<%@ page isELIgnored="false" %>
+
 <html>
 <head>
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
 
 .carrier {
@@ -143,8 +144,8 @@ input[type="text"] {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 880px;
-  height:500px
+  width: 950px;
+  height:700px
 }
 
 .close {
@@ -160,6 +161,8 @@ input[type="text"] {
   text-decoration: none;
   cursor: pointer;
 }
+
+.shippingList{border-bottom:2px solid lightgray; height:45px;}
 
 </style>
 </head>
@@ -230,9 +233,9 @@ input[type="text"] {
 	<table>
 		<tbody>
 			<tr style="height: 130px; font-size: 20px;">
-				<td style="width: 800px; text-align: right"><b>총 1개의 상품 금액<br>
+				<td style="width: 800px; text-align: right"><b>총 <span id="total">1</span>개의 상품 금액<br>
 					<br>
-					<span style="color: #00AAFF">46,500</span>원
+					<span style="color: #00AAFF" id="sumTotal">46,500</span>원
 				</b></td>
 				<td>&nbsp;&nbsp;&nbsp;<i class="bi bi-plus-circle-fill"
 					style="color: #00AAFF; font-size: 30px"></i></td>
@@ -244,7 +247,7 @@ input[type="text"] {
 					style="color: #00AAFF">equal</span></td>
 				<td style=""><b>합계<br>
 					<br>
-					<span style="color: #00AAFF">46,500</span>원
+					<span style="color: #00AAFF" id="realTotal">46,500</span>원
 				</b></td>
 			</tr>
 		</tbody>
@@ -263,9 +266,14 @@ input[type="text"] {
 					<input type="radio" name="payment" style="margin-left: 10px; font-size: 70px; margin-right: 10px;">&nbsp;직접입력&nbsp;&nbsp;&nbsp;&nbsp; 
 					<input type="radio" name="payment" style="font-size: 70px; margin-right: 10px;">&nbsp;주문자정보와 동일
 					<button id="openButton">배송지 관리</button>
-					 
-					 
-					 
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="address"><b>배송지 명</b></td>
+			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
+				<div>
+					<input type="text" id="shippingName" style="width: 400px; margin-left: 15px" name="payName">
 				</div>
 			</td>
 		</tr>
@@ -400,25 +408,30 @@ input[type="text"] {
 	    <br><br>
 	    <h3>나의 배송지 목록</h3><br>
 	    <button id="openSecondButton" style="margin-left:600x;">+ 새 배송지 추가</button><br><br>
-	    <table style="height:35px; width:100%; border-left:none; border-right:none;">
-	    	<tr style="border-bottom:2px solid lightgray; height:35px">
+	    <table style=" height:35px; width:100%; border-left:none; border-right:none;">
+	    	<tr class="shippingList">
 	    		<th>선택</th>
-	    		<th>받으실 분</th>
-	    		<th>배송지</th>
+	    		<th style="width:150px">받으실 분</th>
+	    		<th>배송지 명</th>
+	    		<th style="width:300px">배송지</th>
 	    		<th>전화번호</th>
 	    		<th>휴대폰 번호</th>
 	    		<th>수정/삭제</th>
 	    	</tr>
-	    	<tr>
-	    		<td><input type="checkbox"></td>
-	    		<td>박보보</td>
-	    		<td>(01015)서울특별시 KH학원 박보보네 집</td>
-	    		<td>0620581545</td>
-	    		<td>01011119999</td>
-	    		<td><button>수정</button><button>삭제</button></td>
-	    		
-	    	</tr>
-	    	
+	    		<tbody id="tbody">
+		    		<c:forEach items="${shipAddress}" var="sa" >
+					    <tr class="shippingList">
+					        <td><input type="radio" name="ship"></td>
+					        <td>${sa.recipient}</td>
+					        <td>배송지 명</td>
+					        <td>${sa.address}</td>
+					        <td>${sa.homePhone}</td>
+					        <td>${sa.phone}</td>
+					        <td><button>수정</button><button>삭제</button></td>
+					    </tr>
+				    </c:forEach>
+				</tbody>
+			
 	    </table>
 	  </div>
 	</div>
@@ -431,7 +444,15 @@ input[type="text"] {
 			<td class="address"><b>받으실 분</b></td>
 			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
 				<div>
-					<input type="text" id="orderName2" style="width: 400px; margin-left: 15px" name="payName">
+					<input type="text" required id="orderName2" style="width: 400px; margin-left: 15px" name="payName">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="address"><b>배송지 명</b></td>
+			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
+				<div>
+					<input type="text" id="shippingName2" style="width: 400px; margin-left: 15px" name="payName">
 				</div>
 			</td>
 		</tr>
@@ -520,15 +541,18 @@ input[type="text"] {
 <script>
 	window.onload = () => {
 		
-		//수량에 따른 가격 변화 : ajax로 변환 
+		const loginUserNo = '${loginUser.usersNo}'
+		console.log(loginUserNo);
+		
 		let price = parseInt(document.getElementById('price').innerText);
 		let size = parseInt(document.getElementById('size').innerText);
+		let tot = parseInt(document.getElementById('total').innerText);
+		
 		document.getElementById('plus').addEventListener('click', function() {
-			 size++;
+			 size++; tot++; 
 			 document.getElementById('size').innerText = size;
-			 
+			 document.getElementById('total').innerText = tot;
 			 let priceString = document.getElementById('price').innerText;
-			 console.log(priceString);
 			    
 		    // 쉼표 제거
 		    let price = parseFloat(priceString.replace(/,/g, ''));
@@ -536,7 +560,9 @@ input[type="text"] {
 		    
 		    let total = price*size;
 		    let formattedTotal = total.toLocaleString();
-		    document.getElementById('sum').innerText = formattedTotal
+		    document.getElementById('sum').innerText = formattedTotal;
+		    document.getElementById('sumTotal').innerText = formattedTotal;
+		    document.getElementById('realTotal').innerText = formattedTotal; /* 이건 배송지까지 총합이어야 함 */ 
 			 
 		})
 		
@@ -583,19 +609,83 @@ input[type="text"] {
 		  popup.style.display = "none";
 		});
 
+		
 		// 두 번째 창 열기 버튼 클릭 이벤트 처리
 		openSecondButton.addEventListener("click", function() {
-		  popup.style.display = "none";
-		  secondPopup.style.display = "block";
+			if(document.getElementById('tbody').children.length >= 5) {
+				  alert('배송지는 최대 5개만 등록 가능합니다.');
+				  return;
+			  } else {
+				  popup.style.display = "none";
+				  secondPopup.style.display = "block";
+			  }
+		  
+		  
+		  
 		});
+		
+		// 확인 버튼 클릭 이벤트 처리 - 배송지 등록 및 조회 
+		confirmButton.addEventListener("click", function() { 
+			const shippingName = document.getElementById('shippingName2').value;
+			const orderName = document.getElementById('orderName2').value;
+			const postcode = document.getElementById('sample7_postcode').value;
+			const addressInfo = document.getElementById('sample7_address').value;
+			const detailAddress = document.getElementById('detailAddress2').value;
+			const homePhone = document.getElementById('homeNumber2').value;
+			const phone = document.getElementById('phoneNumber2').value;
+			
+		  if (orderName.trim() === '' || postcode.trim() === '' || addressInfo.trim() === '' || detailAddress.trim() === '' || homePhone.trim() === '' || phone.trim() === '') {
+			  alert('모든 입력값은 필수사항입니다.')  
+			  return;
+	      } else {
+	    	  secondPopup.style.display = "none";
+			  popup.style.display = "block";
+			  
+			  // 지우기
+		      const tbody = document.getElementById('tbody');
+		      tbody.innerHTML = '';
+			  $.ajax({
+				  url:'${contextPath}/insertShipping.ma',
+				  data:{usersNo:loginUserNo,
+					  shippingName:shippingName,
+					  recipient:orderName,
+					  postcode:postcode,
+					  addressInfo:addressInfo,
+					  detailAddress:detailAddress,
+					  homePhone:homePhone,
+					  phone:phone
+				  },
+				  success: data => {
+					  const tbody = document.getElementById('tbody');
+					  document.getElementById('tbody').innerHTML = '';
+					  
+					  for(datas of data) {
+						  var row = document.createElement("tr");
+						  row.classList.add('shippingList');
+						  row.innerHTML = "<td><input type='radio' name='ship'></td>" +
+						    "<td>" + datas.recipient + "</td>" +
+						    "<td>" + datas.shippingName + "</td>" +
+						    "<td>" + datas.address + "</td>" +
+						    "<td>" + datas.homePhone + "</td>" +
+						    "<td>" + datas.phone + "</td>" +
+						    "<td><button>수정</button><button>삭제</button></td>";
+						    
+						  tbody.append(row);
+					  }
+					  
+				  },
+				  error: data => {
+					  console.log(data);
+				  }
+			  })
+	      }
+		  
 
-		// 확인 버튼 클릭 이벤트 처리
-		confirmButton.addEventListener("click", function() {
-			console.log('asdf');
-		  secondPopup.style.display = "none";
-		  popup.style.display = "block";
 		});
-
+		
+		
+	
+		
 		
 	}
 </script>

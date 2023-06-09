@@ -49,7 +49,7 @@
 	}
 	.check{display: none; margin-left: 15px; font-size: 12px; color: green;}
 	.pwd-ck2{margin-right: 10px; font-size: 12px; color: lightgray;}
-	.pwd-ck{display: flex; margin-left: 45px; width: 300px;}
+	.pwd-ck{display: flex; margin-left: 45px; width: 300px; margin-top: 5px;}
 	#editb{
 		width: 85px; height: 40px;
 		border: 2px solid black;
@@ -78,11 +78,10 @@
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
 				<br>
 				<label class="profile">회원정보 수정</label><br><br><br>
-				<form action="${ contextPath }/myPage_UpdateInfo.me" method="post" id="eform">
 				<table>
 					<tr>
 						<td class="detail">아이디</td>
-						<td><input type="text" style="width: 300px; margin-left: 15px; background: lightgray;" name="usersId" readonly value="${ loginUser.usersId }"></td>
+						<td><input type="text" style="width: 300px; margin-left: 15px; background: lightgray;" name="usersId" readonly value="${ loginUser.usersId }" id="id"></td>
 					</tr>
 					<tr>
 						<td class="detail">이름</td>
@@ -98,60 +97,55 @@
 					</tr>
 					<tr>
 						<td class="detail">이메일</td>
-						<td style="vertical-align: middle;">
-							<div style="display: flex; align-items: center;">
-								<input type="email" style="width: 190px; margin-left: 15px; margin-right: 10px; height: 35px;" name="email" placeholder="이메일을 입력해주세요" value="${ loginUser.email }" id="email">
-								<input type="button" style="width: 100px; height: 35px;" value="중복확인" id="emailCheck">
-								<div class="check"></div>
-							</div>
+						<td>
+							<input type="email" style="width: 190px; margin-left: 15px; margin-right: 10px; height: 35px;" name="email" placeholder="이메일을 입력해주세요" value="${ loginUser.email }" id="email">
+							<input type="button" style="width: 100px; height: 35px;" value="중복확인" id="emailCheck">
+							<div class="check"></div>
 						</td>
 					</tr>
 					<tr>
 						<td class="detail">휴대전화</td>
 						<td>
 							<div style="display: flex; align-items: center;">
-								<input type="text" style="width: 300px; margin-left: 15px; margin-right: 10px; height: 35px;" name="phone" placeholder="번호를 입력해주세요" value="${ loginUser.phone }">
+								<input type="text" style="width: 300px; margin-left: 15px; margin-right: 10px; height: 35px;" name="phone" placeholder="번호를 입력해주세요" value="${ loginUser.phone }" id="phone">
 							</div>
 						</td>
 					</tr>
 				</table>
 				<br><br>
 				<button id="btn">수정하기</button>
-				</form>
 				<br><br>
 				<label class="profile">비밀번호 변경</label><br><br><br>
-				<form method="post" id="pform">
-					<table>
-						<tr>
-							<td class="detail">현재 비밀번호</td>
-							<td>
-								<input type="password" style="width: 300px; margin-left: 15px" placeholder="현재 비밀번호를 입력해주세요" id="cpwd">
-								<div class="check"></div>
-							</td>
-						</tr>
-						<tr>
-							<td class="detail">새 비밀번호</td>
-							<td>
-								<input type="password" style="width: 300px; margin-left: 15px;" name="newPw" placeholder="새로운 비밀번호를 입력해주세요" id="npwd">
-								<div class="pwd-ck">
-									<div class="pwd-ck2" id="eng"><i class="bi bi-circle"></i> 영어</div>
-									<div class="pwd-ck2" id="num"><i class="bi bi-circle"></i> 숫자</div>
-									<div class="pwd-ck2" id="special"><i class="bi bi-circle"></i> 특수문자</div>
-									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 8자 이상</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="detail">새 비밀번호 확인</td>
-							<td>
-								<input type="password" style="width: 300px; margin-left: 15px;" placeholder="한번 더 입력해주세요" id="fpwd">
-								<div class="check"></div>
-							</td>
-						</tr>
-					</table>
-					<br><br>
-					<button id="editb">변경하기</button>
-				</form>
+				<table>
+					<tr>
+						<td class="detail">현재 비밀번호</td>
+						<td>
+							<input type="password" style="width: 300px; margin-left: 15px" placeholder="현재 비밀번호를 입력해주세요" id="cpwd">
+							<div class="check"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="detail">새 비밀번호</td>
+						<td>
+							<input type="password" style="width: 300px; margin-left: 15px;" name="newPw" placeholder="새로운 비밀번호를 입력해주세요" id="npwd">
+							<div class="pwd-ck">
+								<div class="pwd-ck2" id="eng"><i class="bi bi-circle"></i> 영어</div>
+								<div class="pwd-ck2" id="num"><i class="bi bi-circle"></i> 숫자</div>
+								<div class="pwd-ck2" id="special"><i class="bi bi-circle"></i> 특수문자</div>
+								<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 8자 이상</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="detail">새 비밀번호 확인</td>
+						<td>
+							<input type="password" style="width: 300px; margin-left: 15px;" placeholder="한번 더 입력해주세요" id="fpwd">
+							<div class="check"></div>
+						</td>
+					</tr>
+				</table>
+				<br><br>
+				<button id="editb">변경하기</button>
 			</div>
 		</div>
 	</div>
@@ -175,6 +169,7 @@
 		const email = document.getElementById('email');
 		const nickName = document.getElementById('nickName');
 		const btn = document.getElementById('btn');
+		const phone = document.getElementById('phone');
 		
 		// 비번 = 비번 확인
 		fpwd.addEventListener('keyup', () => {
@@ -237,10 +232,13 @@
 										if(data == 'yes'){
 											swal({
 												 text: "비밀번호가 변경되었습니다.",
-												 icon: "error",
+												 icon: "success",
 												 button: "확인"
-											});
-										} else {
+											}).then(function() {
+										        location.reload();
+										    });;
+											return true;
+										} else if(data == 'no')  {
 											swal({
 												 text: "비밀번호를 다시 확인해주세요.",
 												 icon: "error",
@@ -248,12 +246,16 @@
 											}).then(function() {
 												fpwd.focus();
 											});
+											return false;
 										}
+									},
+									error : data => {
+										console.log(data);
 									}
 								});
 							} else {
 								swal({
-									 text: "비밀번호를 다시 확인해주세요.",
+									 text: "비밀번호를 다시 확인해주세욤.",
 									 icon: "error",
 									 button: "확인"
 								}).then(function() {
@@ -374,13 +376,43 @@
 			}
 		});
 		
-		btn.addEventListener('click', (e) => {
-			if(check[0].style.color == 'green' && check[1].style.color == 'green'){
-				eform.submit();
+		btn.addEventListener('click', () => {
+			if((check[0].style.color == 'green' || check[1].style.color == 'green') && check[0].style.color != 'red' && check[1].style.color != 'red'){
+				$.ajax({
+					type : 'POST',
+					url : '${ contextPath }/myPage_UpdateInfo.me',
+					data : {
+							usersId : id.value,
+							email : email.value, 
+							nickName : nickName.value,
+							phone : phone.value
+						},
+					success : data => {
+						console.log(data);
+						if(data == 'yes'){
+							swal({
+								 text: "정보수정이 완료되었습니다.",
+								 icon: "success",
+								 button: "확인"
+							}).then(function() {
+						        location.reload();
+						    });;
+						} else if(data == 'no')  {
+							swal({
+								 text: "정보를 다시 확인해주세요.",
+								 icon: "error",
+								 button: "확인"
+							});
+							return false;
+						}
+					},
+					error : data => {
+						console.log(data);
+					}
+				});
 			} else {
-				e.preventDefault();
 				swal({
-					 text: "중복확인을 다시 확인해주세요.",
+					 text: "변경된 사항이 없습니다.",
 					 icon: "error",
 					 button: "확인"
 				});

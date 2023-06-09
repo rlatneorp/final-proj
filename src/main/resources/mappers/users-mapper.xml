@@ -10,6 +10,6 @@
 	<update id="updateInfo">
 		update users
 		set nickname = #{nickName}, email = #{email}, phone = #{phone}
-		where users_id = {usersId}
+		where users_id = #{usersId}
 	</update>
 </mapper>

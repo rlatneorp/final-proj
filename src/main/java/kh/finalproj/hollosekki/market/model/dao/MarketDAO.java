@@ -1,7 +1,11 @@
 package kh.finalproj.hollosekki.market.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+
+import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 
 
 @Repository
@@ -21,6 +25,14 @@ public class MarketDAO {
 
 	public int attendanceDay(SqlSessionTemplate sqlSession, String ddattendanceDay) {
 		return sqlSession.update("marketMapper.attendanceDay", ddattendanceDay);
+	}
+
+	public int insertShipping(SqlSessionTemplate sqlSession, ShippingAddress sa) {
+		return sqlSession.insert("marketMapper.insertShipping", sa);
+	}
+
+	public ArrayList<ShippingAddress> selectShipping(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectShipping", usersNo);
 	}
 
 

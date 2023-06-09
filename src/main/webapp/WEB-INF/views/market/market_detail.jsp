@@ -22,14 +22,14 @@ html{
 	scroll-behavior: smooth;
 }
 
- ul, li {
+ul, li {
     list-style: none;
     padding:0px;
     margin-bottom: 0px;
 }
 
 .info_delivery{
-	margin-bottom: 
+	margin-bottom: 0px;
 }
 
 
@@ -91,7 +91,7 @@ html{
 	height: 120px;
 	padding-bottom: 5px;
 	border: 1px solid #4485d7;
-	display: none;
+/* 	display: none; */
 }
 
 .right {
@@ -188,9 +188,9 @@ html{
 	font-weight: 400;
 }
 
-.productCount {
-	display: inline-block;
-}
+/* .cartCount { */
+/* 	display: inline-block; */
+/* } */
 
 select {
 	width: 150px;
@@ -269,21 +269,24 @@ p b {
 }
 
 
-.buyCount {
+.cartCount {
 	padding: 0px;
 	margin: 0px;
 	border: 1px solid #dfdfdf;
+	width: 35px;
+	text-align: center;
+    padding-left: 7px;
 }
 
-.buyCount:focus {
+.cartCount:focus {
 	outline: none;
 }
 
-.buyCount:hover {
+.cartCount:hover {
 	border: 1px solid #dfdfdf;
 }
 
-.size:focus {
+.cartCount:focus {
 	outline: none;
 }
 
@@ -703,7 +706,7 @@ p b {
 <br>
 </span>
 
-	<form action="${contextPath}" method="get">
+	<form action="${contextPath}/insertCart.ma" method="get">
 	<main id="order-wrap">
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
@@ -749,27 +752,43 @@ p b {
                                 
 						<hr style="margin: 0px;">
 				
-					<select class='options' name='options' required>
+<!-- 					<select class='productOption' name='productOption' required> -->
+<!-- 						사이즈 선택 창 -->
+<!-- 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option> -->
+<!-- 						<option value='옵션1'>옵션1</option> -->
+<!-- 						<option value='옵션2'>옵션2</option> -->
+<!-- 						<option value='옵션3'>옵션3</option> -->
+<!-- 						<option value='옵션4'>옵션4</option> -->
+<!-- 					</select> -->
+					
+					<label for="option1">색상</label>
+					<select class='productOption' name='productOption' onchange="optionChange()"  required>
 						<!-- 사이즈 선택 창 -->
-						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option>
-						<option value='S'>옵션1</option>
-						<option value='M'>옵션2</option>
-						<option value='L'>옵션3</option>
-						<option value='XL'>옵션4</option>
+						<option name="black">black</option>
+						<option name="silver">silver</option>
+						<option name="gray">gray</option>
+						<option name="light-gray">light-gray</option>
+					</select>
+					
+					<label for="option2">사이즈</label>
+					<select class='productOption2' name='productOption2' required>
+						<!-- 사이즈 선택 창 -->
+						<option>옵션을 선택해주세요.</option>
 					</select>
 
 
-					<div id="productResult">
+					<div id="productResult" class="productResultSet">
 						<!-- 사이즈 선택시 내려오는 창 -->
 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
-							캠핑용 후라이팬 <span>(-20,000)</span>
-							<input type="hidden" name="productName" value="${p.productName}">
+							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span>
+							<input type="hidden" name="productNo" value="134">
+							<input type="hidden" name="productName" value="캠핑용 후라이팬">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
 						</h4>
 						<div class="btnbox" style=" margin: 0 0 0 -1px;">
 							<button id="decrease" type="button">-</button>
-							<input type="number" class="buyCount"
-								style="" value="1" name="buyCount" min="1" readonly>
+							<input type="number" class="cartCount"
+								style="" value="1" name="cartCount" min="1" readonly>
 								
 							<button id="increase" type="button">+</button>
 							
@@ -779,9 +798,7 @@ p b {
 						</button>
 						<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격</div>
 						<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
-						<input type="hidden" name="productPrice" value="${p.productPrice}">
 						<input type="hidden" name="discountRate" value="${p.discountRate}">
-						<input type="hidden" name="productMainPic" value="${p.productMainPic}">
 						</strong> <br>
 					</div>
 					
@@ -824,7 +841,7 @@ p b {
 	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
 	
 		<div class="reviewWrap1" style="padding: 10px;">
-				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">1</span>
+				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">${textboxCount}</span>
 
 			<div class="review_btn">
 				<a href="createReview.ma">
@@ -1107,11 +1124,12 @@ p b {
 		$('.accordion_i_cont3').toggle(400);
 	})
 
-   const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명
+   const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
    
-   const option = document.getElementsByClassName("options"); //사이즈 선택 창
+   const productOption = document.getElementsByClassName("productOption")[0]; //사이즈 선택 창
+   const productOption2 = document.getElementsByClassName("productOption")[1]; //사이즈 선택 창
    
-   let buyCount = document.getElementsByClassName("buyCount")[0]; // 상품 수량 
+   let cartCount = document.getElementsByClassName("cartCount")[0]; // 상품 수량 
    const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
    const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
    let productPrice = document.getElementsByClassName("productPrice")[0];
@@ -1126,33 +1144,63 @@ p b {
 	    } else like.innerText ='♡';
 	});
    
-   
-   
+        function optionChange() {
+          var b = ['S','M','L', 'XL'];
+          var result = $( '.productOption' ).val();
+          var o;
+          if ( result == 'silver'|| 'black' || "gray" || "light-gray" ) {
+            o = b;
+          } else if ( result == 'b' ) {
+            o = b;
+          } else {
+            o = [];
+          }
+          $( '.productOption2' ).empty();
+          for ( var i = 0; i < o.length; i++ ) {
+            $( '.productOption2' ).append( '<option>'+ o[ i ] + '</option>' );
+            $(".op1").text($("select[name=productOption]").val());
+          }
+         
+         
+         
+        }
+      
+      for(let productOp of productOption){
+			productOption.addEventListener('change',function(){
+				document.getElementById("productResult").style.display='block'
+			})
+			
+		}
+      
+      
+      
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
    
-//    console.log(option);
    
    removeProudct.addEventListener("click",function(){
 	   document.getElementById("productResult").style.display="none";
    })
 
    
+   
+   
+   
    increase.addEventListener("click", function(){
-      buyCount.value++;
-      productPrice.innerText = priceToString(buyCount.value*450000);
+      productPrice.innerText = priceToString(cartCount.value*450000);
+      cartCount.value++;
       
    })
    
    decrease.addEventListener("click", function(){
-      buyCount.value--;
+      cartCount.value--;
       
-      productPrice.innerText = priceToString(buyCount.value*450000);
+      productPrice.innerText = priceToString(cartCount.value*450000);
       
-      if(buyCount.value < 1){
-         buyCount.value = 1
-      productPrice.innerText = priceToString(buyCount.value*450000);
+      if(cartCount.value < 1){
+         cartCount.value = 1
+      productPrice.innerText = priceToString(cartCount.value*450000);
          
       }
    })
@@ -1162,52 +1210,51 @@ $(function(){
     $(".textbox").slice(0, 2).show(); // 초기갯수
     $(".moreView").click(function(e){ // 클릭시 more
         e.preventDefault();
-        $("div:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
-        if($("div:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+        $(".textbox:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
+        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
         	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
         }
     });
 });
 	
  
+  
+	let textboxCount = document.getElementsByClassName("textbox").length;	   
+  
 	
 	
-	
-	
-	
-	
-	
-	
-	
-
-// 	$(document).ready(function() {
-//     $(".cartbtn").click(function() {
-//         var productNo = $("input[name='productNo']").val();
-//         var cartCount = $(".buyCount").val();
-//         var optionSize = $(".size").val();
+	$(document).ready(function() {
+    $(".cartbtn").click(function() {
+        var productNo = $("input[name='productNo']").val();
+        var cartCount = $(".cartCount").val();
+        var productOption = $(".productOption").val();
+        
+        console.log(productNo);
+        console.log(cartCount);
+        console.log(productOption);
         
         
-//         var data = {
-//             productNo: productNo,
-//             cartCount: cartCount,
-//             optionSize: optionSize
-//         };
+        var data = {
+            productNo: productNo,
+            cartCount: cartCount,
+            productOption: productOption
+        };
         
-//         $.ajax({
-//             url: "${contextPath}/addCart.ca",
-//             type: "post",
-//             data: data,
-//             success: function(data) {
-//             	if(data > 0) {
-//                 alert("카트 담기 성공");
-//             	}
-//             },
-//             error: function(data) {
-//                 alert("카트 담기 실패");
-//             }
-//         });
-//     });
-// });
+        $.ajax({
+            url: "insertCart.ma",
+            type: "post",
+            data: data,
+            success: function(data) {
+            	if(data > 0) {
+                alert("상품이 장바구니에 담겼습니다.");
+            	}
+            },
+            error: function(data) {
+                alert("상품이 장바구니에 담기지 못했습니다.");
+            }
+        });
+    });
+});
 	
 	
 	 </script> 

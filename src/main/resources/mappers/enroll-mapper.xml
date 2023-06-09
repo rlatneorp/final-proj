@@ -44,6 +44,12 @@
 		where nickName = #{nickName}
 	</select>
 	
+	<select id="checkEmail" resultType="_int">
+		select count(*)
+		from users
+		where email = #{email}
+	</select>
+	
 	<select id="findIdResult" resultMap="usersResultSet">
 		select *
 		from users

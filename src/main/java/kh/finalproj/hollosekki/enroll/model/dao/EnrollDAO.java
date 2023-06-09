@@ -47,5 +47,11 @@ public class EnrollDAO {
 		map.put("usersPwd", usersPwd);
 		return sqlSession.update("enrollMapper.updatePwdResult", map);
 	}
+	
+	
+
+	public int checkEmail(SqlSessionTemplate sqlSession, String email) {
+		return sqlSession.selectOne("enrollMapper.checkEmail", email);
+	}
 
 }

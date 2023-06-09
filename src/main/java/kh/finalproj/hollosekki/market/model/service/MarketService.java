@@ -1,10 +1,17 @@
 package kh.finalproj.hollosekki.market.model.service;
 
+import java.util.HashMap;
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
+import kh.finalproj.hollosekki.market.model.vo.Cart;
+import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 
 @Service("mkService")
 public class MarketService {
@@ -13,23 +20,41 @@ public class MarketService {
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private MarketDAO mkDAO;
+
+	public int insertCart(Cart c) {
+		return mkDAO.insertCart(sqlSession,c);
+	}
+
+	public void attendanceCheck(HashMap<String, String> map) {
+		mkDAO.attendanceCheck(sqlSession, map);
+	}
+
+	public void attendanceDay(HashMap<String, String> map) {
+		mkDAO.attendanceDay(sqlSession, map);
+	}
+
+	public void firstAdDay(HashMap<String, String> map) {
+		mkDAO.firstAdDay(sqlSession, map);
+	}
 	
-	public int attendanceCheck(String attendanceDate) {
+	//배송지 추가
+	public int insertShipping(ShippingAddress sa) {
+		return mkDAO.insertShipping(sqlSession, sa);
+	}
 	
-		return mkDAO.attendanceCheck(sqlSession, attendanceDate);
+	//배송지 조회
+	public ArrayList<ShippingAddress> selectShipping(int usersNo) {
+		return mkDAO.selectShipping(sqlSession, usersNo);
 	}
 
-	public int checkDay(int checkDay) {
-		return mkDAO.checkDay(sqlSession, checkDay);
+//	public int aDateCheck(HashMap<String, String> map) {
+//		return mkDAO.aDateCheck(sqlSession, map);
+//	}
+
+	public int checkDay(HashMap<String, String> map) {
+		return mkDAO.checkDay(sqlSession, map);
 	}
 
-	public int aDateCheck(String attendanceDate) {
-		return mkDAO.aDateCheck(sqlSession, attendanceDate);
-	}
-
-	public int attendanceDay(String ddattendanceDay) {
-		return mkDAO.attendanceDay(sqlSession, ddattendanceDay);
-	}
 
 
 }

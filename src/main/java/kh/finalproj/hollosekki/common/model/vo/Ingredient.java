@@ -14,6 +14,7 @@ public class Ingredient {
 	private int productNo;
 	private int productType;
 	private int productPrice;
+	private String productOption;
 	private int productStock;
 	private Date productCreateDate;
 	private Date productModifyDate;
@@ -21,12 +22,16 @@ public class Ingredient {
 	private int productCount;
 	private String productStatus;
 	
+	private int orderCount;
+	private int viewCount;
+	private int likeCount;
+	
 	public Ingredient() {}
 
 	public Ingredient(int ingredientNo, String ingredientName, String ingredientType, String ingredientContent,
 			String ingredientStatus, String isAccept, int usersNo, int productNo, int productType, int productPrice,
-			int productStock, Date productCreateDate, Date productModifyDate, double productSale, int productCount,
-			String productStatus) {
+			String productOption, int productStock, Date productCreateDate, Date productModifyDate, double productSale,
+			int productCount, String productStatus, int orderCount, int viewCount, int likeCount) {
 		super();
 		this.ingredientNo = ingredientNo;
 		this.ingredientName = ingredientName;
@@ -38,12 +43,16 @@ public class Ingredient {
 		this.productNo = productNo;
 		this.productType = productType;
 		this.productPrice = productPrice;
+		this.productOption = productOption;
 		this.productStock = productStock;
 		this.productCreateDate = productCreateDate;
 		this.productModifyDate = productModifyDate;
 		this.productSale = productSale;
 		this.productCount = productCount;
 		this.productStatus = productStatus;
+		this.orderCount = orderCount;
+		this.viewCount = viewCount;
+		this.likeCount = likeCount;
 	}
 
 	public int getIngredientNo() {
@@ -126,6 +135,14 @@ public class Ingredient {
 		this.productPrice = productPrice;
 	}
 
+	public String getProductOption() {
+		return productOption;
+	}
+
+	public void setProductOption(String productOption) {
+		this.productOption = productOption;
+	}
+
 	public int getProductStock() {
 		return productStock;
 	}
@@ -174,15 +191,40 @@ public class Ingredient {
 		this.productStatus = productStatus;
 	}
 
+	public int getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(int orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Ingredient [ingredientNo=" + ingredientNo + ", ingredientName=" + ingredientName + ", ingredientType="
 				+ ingredientType + ", ingredientContent=" + ingredientContent + ", ingredientStatus=" + ingredientStatus
 				+ ", isAccept=" + isAccept + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productType="
-				+ productType + ", productPrice=" + productPrice + ", productStock=" + productStock
-				+ ", productCreateDate=" + productCreateDate + ", productModifyDate=" + productModifyDate
-				+ ", productSale=" + productSale + ", productCount=" + productCount + ", productStatus=" + productStatus
-				+ "]";
+				+ productType + ", productPrice=" + productPrice + ", productOption=" + productOption
+				+ ", productStock=" + productStock + ", productCreateDate=" + productCreateDate + ", productModifyDate="
+				+ productModifyDate + ", productSale=" + productSale + ", productCount=" + productCount
+				+ ", productStatus=" + productStatus + ", orderCount=" + orderCount + ", viewCount=" + viewCount
+				+ ", likeCount=" + likeCount + "]";
 	}
-	
+
 }

@@ -24,10 +24,12 @@ import org.springframework.web.bind.support.SessionStatus;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
+
 @SessionAttributes("loginUser")
 @Controller
 public class EnrollController {
-	
+		
+
 		@Autowired
 		private BCryptPasswordEncoder bcrypt;
 		
@@ -77,12 +79,11 @@ public class EnrollController {
 			return "login";
 		}
 		
+
 		@RequestMapping("loginCheck.en")
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
 			Users loginUser = eService.login(u);
-//			System.out.println(loginUser);
-			
 			if(bcrypt.matches(u.getUsersPw(), loginUser.getUsersPw())) {
 				model.addAttribute("loginUser", loginUser);
 				return "redirect:home.do";
@@ -104,6 +105,14 @@ public class EnrollController {
 		public void checkNickName(@RequestParam("nickName") String nickName, PrintWriter out) {
 			
 			int count = (int)eService.checkNickName(nickName);
+			String result = count == 0 ? "yes" : "no";
+			out.print(result);
+		}
+		
+		@RequestMapping("checkEmail.en")
+		public void checkEmail(@RequestParam("email") String email, PrintWriter out) {
+			
+			int count = (int)eService.checkEmail(email);
 			String result = count == 0 ? "yes" : "no";
 			out.print(result);
 		}

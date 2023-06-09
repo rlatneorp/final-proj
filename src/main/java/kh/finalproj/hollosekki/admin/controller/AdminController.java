@@ -1,15 +1,32 @@
 package kh.finalproj.hollosekki.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
+import kh.finalproj.hollosekki.common.model.Pagination;
+import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 
 @Controller
 public class AdminController {
@@ -92,33 +109,179 @@ public class AdminController {
 	
 //	Ingredient-식재료 관리
 	@GetMapping("adminIngredientManage.ad")
-	public String adminIngredientManage() {
-		return "adminIngredientManage";
+	public String adminIngredientManage(@ModelAttribute AdminBasic ab,
+									 	Model model) {
+		int currentPage = 1;
+		if(ab.getPage() == null) {
+			ab.setPage(currentPage);
+		}
+		int pageCount = 10;
+		if(ab.getPageCount() == null) {
+			ab.setPageCount(pageCount);
+		}
+		
+		int listCount = aService.getIngredientCount(ab);
+		
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Ingredient> igdList = aService.selectIngredientList(pi, ab);
+		for(int i = 0; i < igdList.size(); i++) {
+			Ingredient igd = igdList.get(i);
+			if( igd.getProductNo() > 0) {
+				Product p = aService.selectProduct(igd.getProductNo());
+				if(p != null) {
+					igd.setProductType(p.getProductType());
+					igd.setProductPrice(p.getProductPrice());
+					igd.setProductOption(p.getProductOption());
+					igd.setProductStock(p.getProductStock());
+					igd.setProductCreateDate(p.getProductCreateDate());
+					igd.setProductModifyDate(p.getProductModifyDate());
+					igd.setProductSale(p.getProductSale());
+					igd.setProductCount(p.getProductCount());
+					igd.setProductStatus(p.getProductStatus());
+				}
+			}
+		}
+		
+		if(igdList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("ab", ab);
+			model.addAttribute("igdList", igdList);
+			return "adminIngredientManage";
+		}else {
+			throw new AdminException("식재료 조회를 실패하였습니다.");
+		}
+		
 	}
 	@GetMapping("adminIngredientDetail.ad")
-	public String adminIngredientDetail() {
-		return "adminIngredientDetail";
+	public String adminIngredientDetail(@ModelAttribute AdminBasic ab,
+									 	@RequestParam("ingredientNo") int igdNo,
+									 	Model model) {
+
+		Ingredient igd = aService.selectIngredient(igdNo);
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", igdNo);
+		map.put("imageType", 5);
+		Image img = aService.selectImage(map);
+
+		if(igd.getProductNo() != 0) {
+			int pNo = igd.getProductNo();
+			Product p = aService.selectProduct(pNo);
+			igd.setProductStock(p.getProductStock());
+			igd.setProductPrice(p.getProductPrice());
+			igd.setProductSale(p.getProductSale());
+			igd.setProductStatus(p.getProductStatus());
+		}
+		if(igd != null) {
+			model.addAttribute("ab", ab);
+//			model.addAttribute("page", ab.getPage());
+//			model.addAttribute("pageCount", wantPageCount);
+//			model.addAttribute("searchType", searchType);
+//			model.addAttribute("searchText", searchText);
+			model.addAttribute("igd", igd);
+			model.addAttribute("img", img);
+			return "adminIngredientDetail";
+		}else {
+			throw new AdminException("식재료 상세보기를 실패하였습니다.");
+		}
+		
 	}
 	@PostMapping("adminIngredientUpdate.ad")
-	public String adminIngredientUpdate() {
-		return "redirect:adminIngredientManage.ad";
+	public String adminIngredientUpdate(@RequestParam(value="page", required=false) Integer page,
+										@RequestParam(value="pageCount", required=false) Integer wantPageCount,
+									 	@RequestParam(value="searchType", required=false) String searchType,
+									 	@RequestParam(value="searchText", required=false) String searchText,
+									 	@ModelAttribute Ingredient igd,
+									 	Model model) {
+		
+		int result1 = aService.updateIngredient(igd);
+//		int result2 = aService.updateProduct(igd);
+		
+//		if(result > 0) {
+			model.addAttribute("page", page);
+			model.addAttribute("pageCount", wantPageCount);
+			model.addAttribute("searchType", searchType);
+			model.addAttribute("searchText", searchText);
+			return "redirect:adminIngredientManage.ad";
+//		}else {
+//			throw new AdminException("식재료 수정에 실패하였습니다.");
+//		}
 	}
 	@GetMapping("adminIngredientWrite.ad")
-	public String adminIngredientWrite() {
+	public String adminIngredientWrite(@RequestParam(value="page", required=false) Integer page,
+									   @RequestParam(value="pageCount", required=false) Integer wantPageCount,
+									   @RequestParam(value="searchType", required=false) String searchType,
+									   @RequestParam(value="searchText", required=false) String searchText,
+									   Model model) {
+		
+		model.addAttribute("page", page);
+		model.addAttribute("pageCount", wantPageCount);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchText", searchText);
 		return "adminIngredientWrite";
 	}
 	@PostMapping("adminIngredientInsert.ad")
-	public String adminIngredientInsert(@ModelAttribute Ingredient igd,
-										HttpSession session) {
+	public String adminIngredientInsert(@RequestParam(value="page", required=false) Integer page,
+									    @RequestParam(value="pageCount", required=false) Integer wantPageCount,
+									    @RequestParam(value="searchType", required=false) String searchType,
+									    @RequestParam(value="searchText", required=false) String searchText,
+									    @ModelAttribute Ingredient igd,
+										@RequestParam("imageFile") MultipartFile imageFile, 
+										HttpServletRequest request,
+										HttpSession session,
+										Model model) {
 //		Users user = (Users)session.getAttribute("loginUser");
 		igd.setUsersNo(1);
 		
-		int result = aService.insertIngredient(igd);
-//		상품등록여부 확인 후 상품등록도 진행해야함
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
+		
+		if(igd.getProductStatus().equals("Y")) {
+			igd.setProductType(3);
+			igd.setProductOption("N");
+			result2 = aService.insertProduct(igd);
+		}
+		
+		result1 = aService.insertIngredient(igd);
+		
+//		이미지 저장
+		Image image = new Image();
+		if(imageFile != null && !imageFile.isEmpty()) {
+			String[] returnArr = saveFile(imageFile, request);
+			if(returnArr[1] != null) {
+				image.setImageDivideNo(aService.getNowIngredientNo());
+				image.setImageType(5);
+				image.setImagePath(returnArr[0]);
+				image.setImageOriginalName(imageFile.getOriginalFilename());
+				image.setImageRenameName(returnArr[1]);
+			}
+		}
+		
+		result3 = aService.insertImage(image);
+		
+		model.addAttribute("page", page);
+		model.addAttribute("pageCount", wantPageCount);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchText", searchText);
+		
+		if(result1 + result3 == 2) {
+			if(igd.getProductStatus().equals("Y")) {
+				if(result2 > 0) {
+					return "redirect:adminIngredientManage.ad";
+				}else {
+					throw new AdminException("식재료 상품 등록에 실패하였습니다.");
+				}
+			}else {
+				return "redirect:adminIngredientManage.ad";
+			}
+		}else {
+			throw new AdminException("식재료 등록에 실패하였습니다.");
+		}
 		
 		
-		return "redirect:adminIngredientManage.ad";
+
 	}
+	
 	
 	
 //	Food-식품 관리
@@ -270,6 +433,40 @@ public class AdminController {
 	@PostMapping("adminQNAUpdate.ad")
 	public String adminQNAUpdate() {
 		return "redirect:adminQNAManage.ad";
+	}
+	
+	
+	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
+//		파일 저장소 지정
+		String root = request.getSession().getServletContext().getRealPath("resources");	// webapp-resources 폴더 의미
+//								  ┌ String에서 역슬래쉬를 표현하기 위해 '\\' 라고 적음  
+		String savePath = root + "\\uploadFiles";
+		File folder = new File(savePath);
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+//		파일 이름 변경 형식 지정
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		int ranNum = (int)(Math.random()*100000);
+		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum 
+								+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		
+//		변경된 이름의 파일을 저장
+		String renamePath = folder + "\\" + renameFileName;
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String[] returnArr = new String[2];
+		returnArr[0] = savePath;
+		returnArr[1] = renameFileName;
+		
+		return returnArr; 
 	}
 	
 }

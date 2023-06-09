@@ -16,13 +16,11 @@
 	<div class="mainBox d-inline-block align-top my-5 p-4 ps-5 rounded" style="width: 900px; height:1000px; border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">식재료관리</h4>
 		
-		<form action="${contextPath}/adminIngredientInsert.ad" method="post">
+		<form action="${contextPath}/adminIngredientInsert.ad" method="post" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-6 row">
 					<input type="hidden" name="productType" value="3">
 					<h5 class="mt-3 mb-5">- 식재료등록 -</h5>
-<!-- 					<span class="col-3">재료번호</span> -->
-<!-- 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="1" readonly> -->
 					<input type="hidden" name="usersNo" value="1">
 					<span class="col-3">등록자</span>
 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="adminNickName" readonly>
@@ -31,7 +29,7 @@
 					<span class="col-3">분류</span>
 					<input type="text" name="ingredientType" class="col-9 pb-1 mb-2 rounded" placeholder="재료 종류를 선택해주세요.">
 					<span class="col-3">재고</span>
-					<input type="number" name="productStock" class="col-9 pb-1 mb-2 rounded" placeholder="재고를 입력해주세요.">
+					<input type="number" name="productStock" class="col-9 pb-1 mb-2 rounded" placeholder="재고를 입력해주세요." value="0">
 
 					<div class="col-12 row priceBox" style="opacity: 0.3">
 						<span class="col-4">가격</span>
@@ -71,10 +69,12 @@
 					
 				</div>
 				
-				<div class="col-6">
-					<div class="ms-5" style="padding-top:56px;">
-						<img class="w-100 rounded border" alt="로드 실패" src="${contextPath}/resources/images/logo.png"/>
+				<div class="col-6 ps-5">
+					<div class="border" style="margin-top:56px; width:360px; height:270px;">
+						<img class="previewImage" width="360px" height="270px">
 					</div>
+					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
+					<p style="font-size: 12px; color: gray">최적 이미지 비율은 4:3입니다.</p>
 				</div>
 				
 				<div class="d-flex justify-content-center mb-5">
@@ -90,6 +90,29 @@
 	
 	<script>
 		window.onload = () =>{
+			
+// 			이미지 미리보기 함수, 이벤트
+			const imageFile = document.getElementsByName('imageFile')[0];
+			const previewImage = document.getElementsByClassName('previewImage')[0];
+			
+			function readImage(imageFile) {
+			    // 인풋 태그에 파일이 있는 경우
+			    if(imageFile.files && imageFile.files[0]) {
+			        // 이미지 파일인지 검사 (생략)
+			        // FileReader 인스턴스 생성
+			        const reader = new FileReader()
+			        // 이미지가 로드가 된 경우
+			        reader.onload = e => {
+			            previewImage.src = e.target.result
+			        }
+			        // reader가 이미지 읽도록 하기
+			        reader.readAsDataURL(imageFile.files[0])
+			    }
+			}
+			// input file에 change 이벤트 부여
+			imageFile.addEventListener("change", e => {
+			    readImage(e.target);
+			})
 			
 // 			공식등록 / 공개상태 버튼 이벤트
 			const acBtns = document.getElementsByClassName('isAccept');
@@ -118,37 +141,16 @@
 				igdStBtns[1].style.background = "#19A7CE";
 				igdStBtns[0].style.background = "gray";
 			});
-
-// 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
+			
+			
+// 			상품등록 버튼 이벤트
 			const priceBox = document.getElementsByClassName('priceBox')[0];
 			const pStBtns = document.getElementsByClassName('productStatus');
 			const pStatus = document.getElementsByName('productStatus')[0];
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
-			
-			pPrice.addEventListener('change', ()=>{
-				if(pPrice.value < 0){
-					pPrice.value = 0;
-				}else{
-					if(pPrice.value != 0 && pSale.value != 0){
-						tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
-					}
-				}
-			});
-			pSale.addEventListener('change', ()=>{
-				if(pSale.value > 99.9){
-					pSale.value = 99.9;
-				}else if(pSale.value < 0){
-					pSale.value = 0;
-				}else{
-					if(pPrice.value != 0 && pSale.value != 0){
-						tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
-					}
-				}
-			});
-			
-// 			상품등록 버튼 이벤트
+
 			pStBtns[0].addEventListener('click', ()=>{
 				pStatus.value = pStBtns[0].innerText;
 				pStBtns[0].style.background = "#19A7CE";
@@ -167,8 +169,36 @@
 // 				pSale.value = '';
 				priceBox.style.opacity ='0.3';
 			});
+
+// 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
+			pPrice.addEventListener('change', ()=>{
+				if(pPrice.value < 0){
+					pPrice.value = 0;
+				}else if(pPrice.value < 0){
+					pPrice.value = 0;
+				}
+				cal();
+			});
+			pSale.addEventListener('change', ()=>{
+				if(pSale.value > 99.9){
+					pSale.value = 99.9;
+				}else if(pSale.value < 0){
+					pSale.value = 0;
+				}
+				cal();
+			});
+			
+			cal();
 		}
 		
+		
+// 		가격 계산 함수
+		function cal(){
+			const pPrice = document.getElementsByName('productPrice')[0];
+			const pSale = document.getElementsByName('productSale')[0];
+			const tPrice = document.getElementsByClassName('totalPrice')[0];
+			tPrice.value = Math.round(pPrice.value * (1 - pSale.value * 0.01));
+		}
 		
 //		Submit 전 검토하기
 		

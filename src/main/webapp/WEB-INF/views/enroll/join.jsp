@@ -47,7 +47,11 @@
 		margin-bottom: 25px; margin-top: 5px;
 		font-size : 15px; 
 		}
+	.input2{
+		margin-bottom: 5px;
+		}
 	.input, .label, .checkbox{margin-left: 35px;}
+	.check{font-size: 12px; text-align: center; color: rgba(0,0,0,0); margin-bottom: 10px;}
 	.line{
 		width: 400px; border-bottom: 3px solid #1f8acb;
 		margin: 0 auto; margin-top: 30px; margin-bottom: 30px;
@@ -108,7 +112,8 @@
 						<div class="mid22">
 							<form class="form" action="insertUser.en" method="post" onsubmit="return ">
 								<label class="label">아이디 <span class="text">| 3~15자의 영어, 숫자</span></label><br>
-								<input type="text" name="usersId" id="id" class="input" placeholder="아이디를 입력하세요" required><br>
+								<input type="text" name="usersId" id="id" class="input input2" placeholder="아이디를 입력하세요" required><br>
+								<p class="check" id="idCheckMsg">&nbsp;</p>
 								<label class="label">비밀번호 <span class="text">| 영어, 숫자, 특수문자 포함 8자 이상</span></label><br>
 								<input type="password" name="usersPw" id="pwd" class="input" placeholder="비밀번호를 입력하세요" required><br>
 								<div class="pwd-ck">
@@ -119,12 +124,13 @@
 									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 4자 이상</div>
 								</div>
 								<label class="label">비밀번호 확인</label><br>
-								<input type="password" name="checkPwd" id="checkPwd"  class="input" placeholder="비밀번호를 다시 입력하세요" required><br>
-							
+								<input type="password" name="checkPwd" id="checkPwd"  class="input input2" placeholder="비밀번호를 다시 입력하세요" required><br>
+								<p class="check" id="pwdCheckMsg">&nbsp;</p>
 								<label class="label">이름</label><br>
 								<input type="text" name="usersName" id="name" class="input" placeholder="이름을 입력하세요" required><br>
 								<label class="label">닉네임 <span class="text">| 20자 이하</span></label><br>
-								<input type="text" name="nickName" id="nickName" class="input" placeholder="닉네임을 입력하세요" required><br>
+								<input type="text" name="nickName" id="nickName" class="input input2" placeholder="닉네임을 입력하세요" required><br>
+								<p class="check" id="nickNameCheckMsg">&nbsp;</p>
 								<label class="label">핸드폰 번호</label><br>
 								<input type="tel" name="phone" class="input" placeholder="핸드폰 번호를 입력하세요" required><br>
 								<label class="label">이메일</label><br>
@@ -145,7 +151,6 @@
 								<div class="line"></div>
 								<div class="logincheck" onclick="location.href='login.en'">이미 홀로세끼의 회원이신가요? LOG IN</div>
 							</form>
-			
 						</div>
 					</div>
 				</div>
@@ -498,7 +503,6 @@
 		checkbox.checked = !checkbox.checked;
 	})
 	
-	
 
 	// 아이디 유효성검사 (영어, 숫자 3~15자리)
 	document.getElementById("id").addEventListener('focusout', ()=>{
@@ -527,6 +531,40 @@
 	})
 	
 	
+	// 아이디 중복확인
+	const id = document.getElementById("id");
+	const idCheckMsg = document.getElementById("idCheckMsg");
+	
+	id.addEventListener('keyup', function(){
+		
+		if(this.value.trim() != ''){
+			$.ajax({
+				url: 'checkId.en',
+				data: {id: this.value.trim()},
+				success: data =>{
+					if(data == 'yes'){
+						idCheckMsg.innerText = '사용 할 수 있는 아이디 입니다.';
+						idCheckMsg.style.color = '#8bb572';
+					} else if(data == 'no'){
+						idCheckMsg.innerText = '이미 사용중인 아이디 입니다.';
+						idCheckMsg.style.color = 'red';
+					}
+				},
+				error: data =>{
+					console.log('error');
+				}
+			});
+		}
+	});
+	
+	id.addEventListener('focusout', ()=>{
+		if(idCheckMsg.innerHTML === '이미 사용중인 아이디 입니다.'){
+			id.value='';
+			idCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 아이디를 다시 입력해주세요.';
+		}
+	});
+
+
 	// 비번 유효성검사 (영어, 숫자 포함 8자리 이상)
 	const pwd = document.getElementById('pwd');
 	
@@ -552,8 +590,8 @@
 	  more8.style.color = pwd.value.length >= 4 ? '#8bb572' : '';
 	  more8.innerHTML = pwd.value.length >= 4 ? '<i class="bi bi-check-circle"></i> 4자 이상' : '<i class="bi bi-circle"></i> 4자 이상';
 	  
-	  special.style.color = checkSpecial.test(pwd.value) ? '#8bb572' : '';
-	  special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
+// 	  special.style.color = checkSpecial.test(pwd.value) ? '#8bb572' : '';
+// 	  special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
 	};
 
 	document.getElementById('pwd').addEventListener('focusout', ()=>{
@@ -582,36 +620,72 @@
 		}
 	})
 	
+	
 	// 비번-비번확인 같은지 체크
-	document.getElementById('checkPwd').addEventListener('focusout', ()=>{
+	document.getElementById('checkPwd').addEventListener('change', ()=>{
 		const pwd = document.getElementById('pwd').value;
 		const checkPwd = document.getElementById('checkPwd').value;
+		const pwdCheckMsg = document.getElementById('pwdCheckMsg');
 		
 		if(pwd != checkPwd){
-			swal({
-				 text: "비밀번호를 다시 확인해주세요.",
-				 icon: "error",
-				 button: "확인",
-				});
+// 			swal({
+// 				 text: "비밀번호를 다시 확인해주세요.",
+// 				 icon: "error",
+// 				 button: "확인",
+// 				});
+			pwdCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 비밀번호를 정확하게 입력해주세요.';
+			pwdCheckMsg.style.color = 'red';
 			document.getElementById('checkPwd').value = '';
-			
+			document.getElementById('checkPwd').focus();
 		}
 	})
 	
+	
 	// 닉네임 유효성검사 (20자 이하)
-	document.getElementById('nickName').addEventListener('focusout', ()=>{
-		const nickName = document.getElementById('nickName').value;
+	document.getElementById('nickName').addEventListener('keyup', ()=>{
+		const nickName = document.getElementById('nickName');
+		const nickCheckMsg = document.getElementById("nickNameCheckMsg");
 		
-		if(nickName.length > 20){
+		if(nickName.value.length > 20){
 			swal({
 				 text: "닉네임은 20자 이하로 정해주세요",
 				 icon: "error",
 				 button: "확인",
 				});
-			document.getElementById('nickName').value = '';
-			document.getElementById('nickName').focus();
+			nickName.value = '';
+			nickName.focus();
 		}
+		
+		nickName.addEventListener('keyup', function(){
+			
+			if(this.value.trim() != ''){
+				$.ajax({
+					url: "checkNickName.en",
+					data: {nickName: this.value.trim()},
+					success: data =>{
+						if(data == 'yes'){
+							nickCheckMsg.innerText = '사용 가능한 닉네임 입니다.';
+							nickCheckMsg.style.color =  '#8bb572';
+						} else if(data == 'no'){
+							nickCheckMsg.innerText = '이미 사용중인 닉네임 입니다.';
+							nickCheckMsg.style.color =  'red';
+						}
+					},
+					error: data =>{
+						console.log(error);
+					}
+				});
+			}
+		});
+		
+		nickName.addEventListener('focusout', ()=>{
+			if(nickCheckMsg.innerText == '이미 사용중인 닉네임 입니다.'){
+				nickName.value='';
+				nickCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 닉네임을 다시 입력해주세요.';
+			}
+		});
 	})
+	
 	
 </script>
 

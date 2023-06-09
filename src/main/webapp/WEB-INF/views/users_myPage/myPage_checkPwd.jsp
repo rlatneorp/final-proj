@@ -87,40 +87,50 @@
 		const pwd = document.getElementById('pwd');
 		
 		checkBtn.addEventListener('click', () => {
-			if(pwd.value == ''){
-				swal({
-					 text: "비밀번호를 입력해주세요.",
-					 icon: "error",
-					 button: "확인",
-					});
-			} else{
-				$.ajax({
-					type : 'POST',
-					url : '${ contextPath }/myPage_checkPwd.me',
-					data : {usersPwd : pwd.value},
-					success : data => {
-						console.log(data);
-						if(data == 'yes'){
-							location.href = '${ contextPath }/myPage_editInfo.me'
-						} else {
-							swal({
-								 text: "비밀번호를 다시 확인해주세요.",
-								 icon: "error",
-								 button: "확인",
-								});
-						}
-					},
-					error : data => {
-						console.log(data);
-						swal({
-							 text: "에러 발생.",
-							 icon: "error",
-							 button: "확인",
-							});
-					}
-				});
-			}
+		    performAction();
 		});
+
+		pwd.addEventListener('keyup', (event) => {
+		    if (event.key === 'Enter') {
+		        performAction();
+		    }
+		});
+
+		function performAction() {
+		    if (pwd.value == '') {
+		        swal({
+		            text: "비밀번호를 입력해주세요.",
+		            icon: "error",
+		            button: "확인",
+		        });
+		    } else {
+		        $.ajax({
+		            type: 'POST',
+		            url: '${ contextPath }/myPage_checkPwd.me',
+		            data: { usersPwd: pwd.value },
+		            success: data => {
+		                console.log(data);
+		                if (data == 'yes') {
+		                    location.href = '${ contextPath }/myPage_editInfo.me'
+		                } else {
+		                    swal({
+		                        text: "비밀번호를 다시 확인해주세요.",
+		                        icon: "error",
+		                        button: "확인",
+		                    });
+		                }
+		            },
+		            error: data => {
+		                console.log(data);
+		                swal({
+		                    text: "에러 발생.",
+		                    icon: "error",
+		                    button: "확인",
+		                });
+		            }
+		        });
+		    }
+		}
 	</script>
 </body>
 </html>

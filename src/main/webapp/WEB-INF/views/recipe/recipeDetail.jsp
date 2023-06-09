@@ -165,7 +165,7 @@
 
 	<div id="top">
 		<div id="thumImg">
-			<img src="resources/image/chicken1.png" style="width: 100%; height: 100%; border-radius: 5px;">
+			<img src="resources/images/chicken1.png" style="width: 100%; height: 100%; border-radius: 5px;">
 		</div>
 		<div style="width: 50px; height: 500px; display: inline-block; position: absolute; left: 500px;"></div>
 		<div id="imformation">
@@ -182,7 +182,7 @@
 			</div>
 			
 			<div id="userInfo">
-				<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%">
+				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%">
 				<p>닉네임</p>
 				<p>*****</p>
 				<p>레시피에 대한 설명입니다. 이 요리는 어떠어떠한 요리입니다.</p>
@@ -365,7 +365,7 @@
 
 <div class="inputBox">
 	<div class="profile d-inline-block">
-		<img src="resources/image/mudo.png" class="profileImg">
+		<img src="resources/images/mudo.png" class="profileImg">
 	</div>	
 	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeQnaInput">&nbsp;<button class="enter">등록</button>
 </div>
@@ -438,7 +438,7 @@
 <br>
 <div class="inputBox">
 	<div class="profile d-inline-block">
-		<img src="resources/image/mudo.png" class="profileImg">
+		<img src="resources/images/mudo.png" class="profileImg">
 	</div>
 	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeReviewInput">&nbsp;<button class="enter">등록</button>
 </div>

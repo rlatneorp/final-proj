@@ -16,4 +16,18 @@ public class EnrollDAO {
 		return sqlSession.selectOne("enrollMapper.login", u);
 	}
 
+	public int checkId(SqlSessionTemplate sqlSession, String id) {
+		return sqlSession.selectOne("enrollMapper.checkId", id);
+	}
+
+	public int checkNickName(SqlSessionTemplate sqlSession, String nickName) {
+		return sqlSession.selectOne("enrollMapper.checkNickName",nickName);
+	}
+	
+	
+
+	public int checkEmail(SqlSessionTemplate sqlSession, String email) {
+		return sqlSession.selectOne("enrollMapper.checkEmail", email);
+	}
+
 }

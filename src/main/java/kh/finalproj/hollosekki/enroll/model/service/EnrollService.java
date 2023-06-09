@@ -8,4 +8,10 @@ public interface EnrollService {
 
 	Users login(Users u);
 
+	int checkId(String id);
+
+	int checkNickName(String nickName);
+
+	int checkEmail(String email);
+
 }

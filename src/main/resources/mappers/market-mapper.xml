@@ -4,25 +4,23 @@
 	<update id="attendanceCheck">
 		update users
 		set attendance_date = #{attendanceDate}
+		where users_id = #{uId}
 	</update>
 	
 	<update id="checkDay">
 		update users
-		set check_day = #{checkDay}
+		set check_day = (select length(attendance_day) * 0.5 
+								 from users 
+								 where users_id = #{uId})
 	</update>
 	
-	<select id="aDateCheck" resultType="_int">
-		 select count(*) 
-		 from users 
-		 where attendance_date in(
-		    					select substring_index(#{attendanceDate}, ',', -1) 
-		    					from users)
-	</select>
 <!-- 	<select id="aDateCheck" resultType="_int"> -->
-<!-- 		select count(*) -->
-<!-- 		from users -->
-<!-- 		where users_no = 1 and attendance_date = #{attendanceDate} -->
+<!-- 		 select length(attendance_day) * 0.5  -->
+<!-- 		 from users  -->
+<!-- 		 where users_no = 1 -->
 <!-- 	</select> -->
+	
+	
 	<resultMap type="Users" id="UsersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>
@@ -41,14 +39,24 @@
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 	</resultMap>
 	
+	<select id="firstAdDay" resultMap="UsersResultSet">
+		select lpad(attendance_day, 2)
+		from users
+		where users_id = #{uId}
+	</select>
+	
+	
 	<update id="attendanceDay">
-		update users
-		set attendance_day = #{ddattendanceDay} || ',' 
+	    update users set attendance_day = attendance_day || substr(attendance_date, 9, 2)
+	    where users_id = #{uId}
 	</update>
 	
 	<insert id="insertShipping">
   		insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
   		values (#{usersNo}, #{recipient}, #{address}, #{homePhone}, #{phone}, SEQ_SHIPPING_ADDRESS.nextval, #{shippingName})
+	<insert id="insertCart">
+		INSERT INTO CART
+		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
 	</insert>
 	
 	<select id="selectShipping" resultMap="shipAddress">

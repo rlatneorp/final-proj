@@ -1,5 +1,8 @@
 package kh.finalproj.hollosekki.enroll.model.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +24,28 @@ public class EnrollDAO {
 	}
 
 	public int checkNickName(SqlSessionTemplate sqlSession, String nickName) {
-		return sqlSession.selectOne("enrollMapper.checkNickName",nickName);
+		return sqlSession.selectOne("enrollMapper.checkNickName", nickName);
+	}
+
+	public Users findIdResult(SqlSessionTemplate sqlSession, String name, String email) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("name", name);
+		map.put("email", email);
+		return sqlSession.selectOne("enrollMapper.findIdResult", map);
+	}
+
+	public int findPwdCheck(SqlSessionTemplate sqlSession, String id, String email) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("email", email);
+		return sqlSession.selectOne("enrollMapper.findPwdCheck", map);
+	}
+
+	public int updatePwdResult(SqlSessionTemplate sqlSession, String id, String usersPwd) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("usersPwd", usersPwd);
+		return sqlSession.update("enrollMapper.updatePwdResult", map);
 	}
 
 }

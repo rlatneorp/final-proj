@@ -44,4 +44,20 @@
 		where nickName = #{nickName}
 	</select>
 	
+	<select id="findIdResult" resultMap="usersResultSet">
+		select *
+		from users
+		where users_name = #{name} and email = #{email}
+	</select>
+	
+	<select id="findPwdCheck" resultType="_int">
+		select count(*)
+		from users
+		where users_id = #{id} and email = #{email}
+	</select>
+	
+	<update id="updatePwdResult">
+		update users set users_pw = #{usersPwd} where users_id=#{id}
+	</update>
+	
 </mapper>

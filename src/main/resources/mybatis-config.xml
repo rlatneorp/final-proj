@@ -10,6 +10,8 @@
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Ingredient" alias="Ingredient"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Product" alias="Product"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Image" alias="Image"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.ShippingAddress" alias="ShippingAddress"/>
+		
 	</typeAliases>
 	
 
@@ -18,6 +20,7 @@
 		<mapper resource="mappers/admin-mapper.xml"/>
 		<mapper resource="mappers/market-mapper.xml"/>
 		<mapper resource="mappers/enroll-mapper.xml"/>
+		<mapper resource="mappers/users-mapper.xml"/>
 	</mappers>
 	
 </configuration>

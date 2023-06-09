@@ -104,7 +104,7 @@ public class UsersController {
 		return "myPage_checkPwd";
 	}
 	
-	// È¸¿øÁ¤º¸ ¼öÁ¤ Àü ºñ¹Ð¹øÈ£ È®ÀÎ
+	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ È®ï¿½ï¿½
 	@RequestMapping("myPage_checkPwd.me")
 	@ResponseBody
 	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
@@ -128,32 +128,29 @@ public class UsersController {
 								   Model model) {
 		Users u = ((Users)model.getAttribute("loginUser"));
 		
-		if(bcrypt.matches(newPw, u.getUsersPw())) {
-			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("usersId", usersId);
-			map.put("newPw", bcrypt.encode(newPw));
-			int result = uService.updatePwd(map);
-			
-			if(result > 0) {
-				model.addAttribute("loginUser", eService.login(u));
-				return "yes";
-			} else {
-				return "no";
-			}
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("usersId", usersId);
+		map.put("newPw", bcrypt.encode(newPw));
+		int result = uService.updatePwd(map);
+		
+		if(result > 0) {
+			model.addAttribute("loginUser", eService.login(u));
+			return "yes";
 		} else {
-			return "nope";
+			return "no";
 		}
 	}
 	
 	@RequestMapping("myPage_UpdateInfo.me")
+	@ResponseBody
 	public String myPage_UpdateInfo(@ModelAttribute Users u, Model model) {
 		int result = uService.updateInfo(u);
 		
 		if(result > 0) {
 			model.addAttribute("loginUser", eService.login(u));
-			return "myPage_editInfo";
+			return "yes";
 		} else {
-			throw new UsersException("È¸¿ø ¼öÁ¤ ½ÇÆÐ");
+			return "no";
 		}
 	}
 	

@@ -111,6 +111,7 @@
 					<div class="mid">
 						<div class="mid22">
 							<form class="form" action="insertUser.en" method="post" onsubmit="return ">
+<!-- 							<form class="form" id="form" name="form"> -->
 								<label class="label">아이디 <span class="text">| 3~15자의 영어, 숫자</span></label><br>
 								<input type="text" name="usersId" id="id" class="input input2" placeholder="아이디를 입력하세요" required><br>
 								<p class="check" id="idCheckMsg">&nbsp;</p>
@@ -137,14 +138,12 @@
 								<input type="email" name="email" class="input" placeholder="메일주소를 입력하세요" required><br>
 								<div class="line"></div>
 								<div class="checkboxs">
-<!-- 									<input type="checkbox" class="checkbox" id="check0"><label for="check0">전체 동의</label><br> -->
 									<input type="checkbox" class="checkbox" id="check1" name="check1" required><label for="check1">이용약관 동의</label>
 										<span class="required">(필수)</span>
 										<a class="more" data-bs-toggle="modal" data-bs-target="#exampleModal">약관보기</a><br>
 									<input type="checkbox" class="checkbox" id="check2" required><label for="check2">개인정보 수집 및 이용동의</label>
 										<span class="required">(필수)</span>
 										<a class="more2" data-bs-toggle="modal" data-bs-target="#exampleModal2">약관보기</a><br>
-<!-- 									<input type="checkbox" class="checkbox" id="check3"><label for="check3">이벤트/마케팅 수신동의</label><br> -->
 								</div>
 								<div><button class="button" id="submit">가입하기</button></div>
 <!-- 								<div><button class="button" id="submit" data-bs-toggle="modal" data-bs-target="#exampleModal3">가입하기</button></div> -->
@@ -633,7 +632,7 @@
 // 				 icon: "error",
 // 				 button: "확인",
 // 				});
-			pwdCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 비밀번호를 정확하게 입력해주세요.';
+			pwdCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 비밀번호확인을 정확하게 입력해주세요.';
 			pwdCheckMsg.style.color = 'red';
 			document.getElementById('checkPwd').value = '';
 			document.getElementById('checkPwd').focus();
@@ -641,7 +640,7 @@
 	})
 	
 	
-	// 닉네임 유효성검사 (20자 이하)
+	// 닉네임 유효성검사 (20자 이하) + 닉네임 중복확인
 	document.getElementById('nickName').addEventListener('keyup', ()=>{
 		const nickName = document.getElementById('nickName');
 		const nickCheckMsg = document.getElementById("nickNameCheckMsg");
@@ -666,6 +665,7 @@
 						if(data == 'yes'){
 							nickCheckMsg.innerText = '사용 가능한 닉네임 입니다.';
 							nickCheckMsg.style.color =  '#8bb572';
+							return true;
 						} else if(data == 'no'){
 							nickCheckMsg.innerText = '이미 사용중인 닉네임 입니다.';
 							nickCheckMsg.style.color =  'red';
@@ -705,7 +705,44 @@
 // 		    reAction();
 // 		}); 
 	});
+	
+// 	document.getElementById('submit').addEventListener('click', function(){
+// 		var formData = $("#form").serialize();
+		
+// 		console.log(formData);
+		
+// 		$.ajax({
+// 			url: "insertUser.en",
+// 			data: formData,
+// 			type: "POST",
+// 			dataType: "text",
+//          contentType: "application/json; charset=UTF-8",
+//          success: data=>{
+//          	console.log(1);
+//             	if(data == 'yes'){
+//             		$(document).ready(function(){
+//                 		function reAction(){
+//                   			$("#startButton").trigger("click");
+//                   			setTimeout(function(){
+//                   				$("#stopButton").trigger("click");
+//                   			}, 10000);
+//                 		}
+//                 		$("#submit").on('click', function(){
+//                 		    reAction();
+//                 		}); 
+//                 	});
+//             	} else if(data=='no'){
+//             		console.log(3);
+//             	}
+            	
+//             },
+//          error: data =>{
+//             	console.log(2);
+//             }
+// 		});
+// 	})
 </script>
+
 
 </body>
 </html>

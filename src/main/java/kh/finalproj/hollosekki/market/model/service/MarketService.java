@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.market.model.service;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 
 @Service("mkService")
 public class MarketService {
@@ -33,6 +35,16 @@ public class MarketService {
 
 	public void firstAdDay(HashMap<String, String> map) {
 		mkDAO.firstAdDay(sqlSession, map);
+	}
+	
+	//배송지 추가
+	public int insertShipping(ShippingAddress sa) {
+		return mkDAO.insertShipping(sqlSession, sa);
+	}
+	
+	//배송지 조회
+	public ArrayList<ShippingAddress> selectShipping(int usersNo) {
+		return mkDAO.selectShipping(sqlSession, usersNo);
 	}
 
 //	public int aDateCheck(HashMap<String, String> map) {

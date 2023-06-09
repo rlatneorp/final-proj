@@ -90,12 +90,12 @@
 					<br>
 					<div class="mid">
 						<div class="mid22">
-							<form class="form" action="" method="post">
+							<form class="form" action="findIdResult.en" method="post">
 								<label class="label">이름</label><br>
 								<input type="text" name="name" id="name" class="input" placeholder="이름을 입력하세요" required><br>
 								<label class="label">메일주소</label><br>
 								<input type="email" name="email" id="email" class="input" placeholder="메일주소를 입력하세요" required><br>
-								<div><button class="button" onclick="location.href='findIdResult.en'">찾기</button></div>
+								<div><button class="button">찾기</button></div>
 								
 								<div class="line"></div>
 								<div class="find">

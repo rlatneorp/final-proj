@@ -1,16 +1,18 @@
 package kh.finalproj.hollosekki.market.model.vo;
 
+import java.util.Arrays;
+
 public class Cart {
 	private int cartNo;
 	private int usersNo;
 	private int productNo;
-	private String productOption;
+	private String[] productOption;
 	private int cartCount;
 	public Cart() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Cart(int cartNo, int usersNo, int productNo, String productOption, int cartCount) {
+	public Cart(int cartNo, int usersNo, int productNo, String[] productOption, int cartCount) {
 		super();
 		this.cartNo = cartNo;
 		this.usersNo = usersNo;
@@ -36,10 +38,10 @@ public class Cart {
 	public void setProductNo(int productNo) {
 		this.productNo = productNo;
 	}
-	public String getProductOption() {
+	public String[] getProductOption() {
 		return productOption;
 	}
-	public void setProductOption(String productOption) {
+	public void setProductOption(String[] productOption) {
 		this.productOption = productOption;
 	}
 	public int getCartCount() {
@@ -51,8 +53,7 @@ public class Cart {
 	@Override
 	public String toString() {
 		return "Cart [cartNo=" + cartNo + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productOption="
-				+ productOption + ", cartCount=" + cartCount + "]";
+				+ Arrays.toString(productOption) + ", cartCount=" + cartCount + "]";
 	}
-	
 	
 }

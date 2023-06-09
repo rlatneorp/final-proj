@@ -75,6 +75,76 @@
 		<result column="PHONE" property="phone"/>
 		<result column="SHIPPING_NO" property="shippingNo"/>
 		<result column="SHIPPING_NAME" property="shippingName"/>
-		
 	</resultMap>
+	
+	<select id="selectCartList" resultMap="cartList">
+		select *
+		from cart
+		left join product using(product_no)
+		where cart.users_no = #{usersNo} and product.PRODUCT_STATUS = 'Y'
+	</select>
+	
+	<resultMap type="Cart" id="cartList">
+		<id column="CART_NO" property="cartNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_OPTION" property="productOption"/>
+		<result column="CART_COUNT" property="cartCount"/>
+	</resultMap>
+	
+	<resultMap type="Options" id="optionsList">
+		<id column="OPTION_NO" property="optionNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="OPTION_NAME" property="optionName"/>
+		<result column="OPTION_VALUE" property="optionValue"/>
+	</resultMap>
+	
+	<resultMap type="MarketProduct" id="productList">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="PRODUCT_PRICE" property="productPrice"/>
+		<result column="PRODUCT_OPTION" property="productOption"/>
+		<result column="PRODUCT_STOCK" property="productStock"/>
+		<result column="PRODUCT_CREATE_DATE" property="productCreateDate"/>
+		<result column="PRODUCT_MODIFY_DATE" property="productModifyDate"/>
+		<result column="PRODUCT_SALE" property="productSale"/>
+		<result column="PRODUCT_COUNT" property="productCount"/>
+		<result column="PRODUCT_STATUS" property="productStatus"/>
+	</resultMap>
+	
+	<resultMap type="Food" id="foodInfo">
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="FOOD_NAME" property="foodName"/>
+		<result column="FOOD_KIND" property="foodKind"/>
+		<result column="FOOD_TYPE" property="foodType"/>
+	</resultMap>
+	
+	<resultMap type="Tool" id="toolInfo">
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="TOOL_NAME" property="toolName"/>
+		<result column="TOOL_TYPE" property="toolType"/>
+		<result column="TOOL_CONTENT" property="toolContent"/>
+	</resultMap>
+	
+	<resultMap type="Ingredient" id="ingredientInfo">
+		<result column="INGREDIENT_NO" property="ingredientNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="INGREDIENT_NAME" property="ingredientName"/>
+		<result column="INGREDIENT_TYPE" property="ingredientType"/>
+		<result column="INGREDIENT_STATUS" property="ingredientStatus"/>
+	</resultMap>
+	
+	<select id="selectFood" resultMap="foodInfo">
+		select * from food where product_no = #{productNo}
+	</select>
+	
+	<select id="selectTool" resultMap="toolInfo">
+		select * from tool where product_no = #{productNo}
+	</select>
+	
+	<select id="selectIngrdient" resultMap="ingredientInfo">
+		select * from ingredient where product_no = #{productNo}
+	</select>
+	
+	
 </mapper>

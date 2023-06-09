@@ -10,6 +10,7 @@ public class Cart {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public Cart(int cartNo, int usersNo, int productNo, String productOption, int cartCount) {
 		super();
 		this.cartNo = cartNo;

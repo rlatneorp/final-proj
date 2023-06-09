@@ -11,6 +11,12 @@
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Product" alias="Product"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Image" alias="Image"/>
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.ShippingAddress" alias="ShippingAddress"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Cart" alias="Cart"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Product" alias="MarketProduct"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Food" alias="Food"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Tool" alias="Tool"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Options" alias="Options"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Products" alias="Products"/>
 		
 	</typeAliases>
 	

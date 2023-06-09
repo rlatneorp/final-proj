@@ -15,6 +15,7 @@
 		<mapper resource="mappers/admin-mapper.xml"/>
 		<mapper resource="mappers/market-mapper.xml"/>
 		<mapper resource="mappers/enroll-mapper.xml"/>
+		<mapper resource="mappers/users-mapper.xml"/>
 	</mappers>
 	
 </configuration>

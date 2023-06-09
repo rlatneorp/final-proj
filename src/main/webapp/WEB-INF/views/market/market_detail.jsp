@@ -6,7 +6,7 @@
 <html>
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
-<title>passion for Fashion</title>
+<title>Hollo Store</title>
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
 	rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -16,6 +16,10 @@
 	outline: none;
 	margin: 0px;
 	font-family: 'Noto Sans KR', sans-serif;
+}
+
+h4{
+	margin-bottom: 0px;
 }
 
 html{
@@ -83,15 +87,15 @@ ul, li {
 	font-size: 15px;;
 }
 
-#productResult {
-	position: relative;
-	background: white;
-	padding: 10px;
-	margin-top: 10px;
-	height: 120px;
-	padding-bottom: 5px;
-	border: 1px solid #4485d7;
-	display: none;
+.productResultSet {
+    position: relative;
+    background: white;
+    padding: 10px;
+    margin-top: 10px;
+    height: 71px;
+    padding-bottom: 5px;
+    border: 1px solid #4485d7;
+/*  	display: none;   */
 }
 
 .right {
@@ -716,8 +720,8 @@ p b {
 		<div class="right">
 			<!-- 상품 정보 -->
 			<div class="top">
-				<div class="productNameBox" style="text-align: center">
-					 <h3 style="font-weight: 400; font-size: 42px;">캠핑용 후라이팬</h3>
+				<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
+					 <span style="font-weight: 400; font-size: 42px;">캠핑용 후라이팬</span>
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
@@ -752,39 +756,55 @@ p b {
                                 
 						<hr style="margin: 0px;">
 				
-					<select class='productOption' name='productOption' required>
+<!-- 					<select class='productOption' name='productOption' required> -->
+<!-- 						사이즈 선택 창 -->
+<!-- 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option> -->
+<!-- 						<option value='옵션1'>옵션1</option> -->
+<!-- 						<option value='옵션2'>옵션2</option> -->
+<!-- 						<option value='옵션3'>옵션3</option> -->
+<!-- 						<option value='옵션4'>옵션4</option> -->
+<!-- 					</select> -->
+					
+					<label for="option1">색상</label>
+					<select class='productOption' name='productOption' onclick="optionChange()"  required>
 						<!-- 사이즈 선택 창 -->
-						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option>
-						<option value='옵션1'>옵션1</option>
-						<option value='옵션2'>옵션2</option>
-						<option value='옵션3'>옵션3</option>
-						<option value='옵션4'>옵션4</option>
+						<option name="black">black</option>
+						<option name="silver">silver</option>
+						<option name="gray">gray</option>
+						<option name="light-gray">light-gray</option>
+					</select>
+					
+					<label for="option2">사이즈</label>
+					<select class='productOption2' name='productOption' required>
+						<!-- 사이즈 선택 창 -->
+						<option>옵션을 선택해주세요.</option>
 					</select>
 
 
-					<div id="productResult">
+					<div id="productResult" class="productResultSet">
 						<!-- 사이즈 선택시 내려오는 창 -->
-						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
-							캠핑용 후라이팬 <span>(-20,000)</span>
+						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
+							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span>
 							<input type="hidden" name="productNo" value="134">
 							<input type="hidden" name="productName" value="캠핑용 후라이팬">
 							<input type="hidden" name="productPrice" value="${p.productPrice}">
 						</h4>
-						<div class="btnbox" style=" margin: 0 0 0 -1px;">
-							<button id="decrease" type="button">-</button>
-							<input type="number" class="cartCount"
-								style="" value="1" name="cartCount" min="1" readonly>
+						<div style="">
+							<span class="btnbox" style=" margin: 0 0 0 -1px;">
+								<button id="decrease" type="button">-</button>
+								<input type="number" class="cartCount"
+									style="" value="1" name="cartCount" min="1" readonly>
+									
+								<button id="increase" type="button">+</button>
 								
-							<button id="increase" type="button">+</button>
-							
-						</div>
-						<button class="removeProudct" type="button" style="float: right;">
-							<img src="resources/images/close.png" style="width: 10px;">
-						</button>
-						<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격</div>
-						<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
+							</span>
+							<button class="removeProudct" type="button" style="float: right;">
+								<img src="resources/images/close.png" style="width: 10px;">
+							</button>
+							<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>
 						<input type="hidden" name="discountRate" value="${p.discountRate}">
-						</strong> <br>
+						</div>
+						 <br>
 					</div>
 					
 				</div>
@@ -1111,7 +1131,8 @@ p b {
 
    const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
    
-   const productOption = document.getElementsByClassName("productOption"); //사이즈 선택 창
+   const productOption = document.getElementsByClassName("productOption")[0]; //사이즈 선택 창
+   const productOption2 = document.getElementsByClassName("productOption")[1]; //사이즈 선택 창
    
    let cartCount = document.getElementsByClassName("cartCount")[0]; // 상품 수량 
    const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
@@ -1128,19 +1149,49 @@ p b {
 	    } else like.innerText ='♡';
 	});
    
+        function optionChange() {
+          var b = ['S','M','L', 'XL'];
+          var result = $( '.productOption' ).val();
+          var o;
+          if ( result == 'silver'|| 'black' || "gray" || "light-gray" ) {
+            o = b;
+          } else if ( result == 'b' ) {
+            o = b;
+          } else {
+            o = [];
+          }
+          $( '.productOption2' ).empty();
+          for ( var i = 0; i < o.length; i++ ) {
+            $( '.productOption2' ).append( '<option>'+ o[ i ] + '</option>' );
+            
+               
+            }
+          }
+        
+        $(".productOption2").change(function(){
+        	const select =  $('.productOption option:selected').val();
+            const select2 = $('.productOption2 option:selected').val();
+            $(".op1").text(select);
+            $(".op2").text(select2);
+	          let selectGoods = [];
+	          selectGoods.push(select);
+	          selectGoods.push(select2);
+	          console.log(selectGoods);
+	          
+        })
       
       for(let productOp of productOption){
-			productOption[0].addEventListener('change',function(){
+			productOption.addEventListener('click',function(){
 				document.getElementById("productResult").style.display='block'
+				
+				
+	
+				
+				
 			})
+			
 		}
       
-      
-      
-      
-      
-   
-   
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
@@ -1150,6 +1201,9 @@ p b {
 	   document.getElementById("productResult").style.display="none";
    })
 
+   
+   
+   
    
    increase.addEventListener("click", function(){
       cartCount.value++;
@@ -1182,10 +1236,6 @@ $(function(){
 });
 	
  
-  
-	let textboxCount = document.getElementsByClassName("textbox").length;	   
-  
-	
 	
 	$(document).ready(function() {
     $(".cartbtn").click(function() {

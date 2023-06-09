@@ -22,12 +22,16 @@ public class Ingredient {
 	private int productCount;
 	private String productStatus;
 	
+	private int orderCount;
+	private int viewCount;
+	private int likeCount;
+	
 	public Ingredient() {}
 
 	public Ingredient(int ingredientNo, String ingredientName, String ingredientType, String ingredientContent,
 			String ingredientStatus, String isAccept, int usersNo, int productNo, int productType, int productPrice,
 			String productOption, int productStock, Date productCreateDate, Date productModifyDate, double productSale,
-			int productCount, String productStatus) {
+			int productCount, String productStatus, int orderCount, int viewCount, int likeCount) {
 		super();
 		this.ingredientNo = ingredientNo;
 		this.ingredientName = ingredientName;
@@ -46,6 +50,9 @@ public class Ingredient {
 		this.productSale = productSale;
 		this.productCount = productCount;
 		this.productStatus = productStatus;
+		this.orderCount = orderCount;
+		this.viewCount = viewCount;
+		this.likeCount = likeCount;
 	}
 
 	public int getIngredientNo() {
@@ -184,6 +191,30 @@ public class Ingredient {
 		this.productStatus = productStatus;
 	}
 
+	public int getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(int orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Ingredient [ingredientNo=" + ingredientNo + ", ingredientName=" + ingredientName + ", ingredientType="
@@ -192,7 +223,8 @@ public class Ingredient {
 				+ productType + ", productPrice=" + productPrice + ", productOption=" + productOption
 				+ ", productStock=" + productStock + ", productCreateDate=" + productCreateDate + ", productModifyDate="
 				+ productModifyDate + ", productSale=" + productSale + ", productCount=" + productCount
-				+ ", productStatus=" + productStatus + "]";
+				+ ", productStatus=" + productStatus + ", orderCount=" + orderCount + ", viewCount=" + viewCount
+				+ ", likeCount=" + likeCount + "]";
 	}
-	
+
 }

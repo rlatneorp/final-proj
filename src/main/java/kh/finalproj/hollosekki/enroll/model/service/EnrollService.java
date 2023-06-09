@@ -12,4 +12,11 @@ public interface EnrollService {
 
 	int checkNickName(String nickName);
 
+	int checkEmail(String email);
+	Users findIdResult(String name, String email);
+
+	int findPwdCheck(String id, String email);
+
+	int updatePwdResult(String id, String usersPwd);
+
 }

@@ -47,9 +47,9 @@
 		background: lightgray; border: none;
 		border-radius: 5px; font-weight: bold;
 	}
-	.check{display: none; margin-left: 15px; font-size: 12px;}
+	.check{display: none; margin-left: 15px; font-size: 12px; color: green;}
 	.pwd-ck2{margin-right: 10px; font-size: 12px; color: lightgray;}
-	.pwd-ck{display: flex; margin-left: 45px; width: 300px;}
+	.pwd-ck{display: flex; margin-left: 45px; width: 300px; margin-top: 5px;}
 	#editb{
 		width: 85px; height: 40px;
 		border: 2px solid black;
@@ -78,11 +78,10 @@
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
 				<br>
 				<label class="profile">회원정보 수정</label><br><br><br>
-				<form action="${ contextPath }/myPage_UpdateInfo.me" method="post">
 				<table>
 					<tr>
 						<td class="detail">아이디</td>
-						<td><input type="text" style="width: 300px; margin-left: 15px; background: lightgray;" name="usersId" readonly value="${ loginUser.usersId }"></td>
+						<td><input type="text" style="width: 300px; margin-left: 15px; background: lightgray;" name="usersId" readonly value="${ loginUser.usersId }" id="id"></td>
 					</tr>
 					<tr>
 						<td class="detail">이름</td>
@@ -91,66 +90,62 @@
 					<tr>
 						<td class="detail">닉네임</td>
 						<td>
-							<input type="text" style="width: 300px; margin-left: 15px;" name="nickName" value="${ loginUser.nickName }">
+							<input type="text" style="width: 190px; margin-left: 15px;" name="nickName" value="${ loginUser.nickName }" id="nickName">
+							<input type="button" style="width: 100px; height: 35px;" value="중복확인" id="nickCheck">
 							<div class="check"></div>
 						</td>
 					</tr>
 					<tr>
 						<td class="detail">이메일</td>
-						<td style="vertical-align: middle;">
-							<div style="display: flex; align-items: center;">
-								<input type="email" style="width: 190px; margin-left: 15px; margin-right: 10px; height: 35px;" name="email" placeholder="이메일을 입력해주세요" value="${ loginUser.email }" id="email">
-								<input type="button" style="width: 100px; height: 35px;" value="중복확인">
-								<div class="check"></div>
-							</div>
+						<td>
+							<input type="email" style="width: 190px; margin-left: 15px; margin-right: 10px; height: 35px;" name="email" placeholder="이메일을 입력해주세요" value="${ loginUser.email }" id="email">
+							<input type="button" style="width: 100px; height: 35px;" value="중복확인" id="emailCheck">
+							<div class="check"></div>
 						</td>
 					</tr>
 					<tr>
 						<td class="detail">휴대전화</td>
 						<td>
 							<div style="display: flex; align-items: center;">
-								<input type="text" style="width: 300px; margin-left: 15px; margin-right: 10px; height: 35px;" name="phone" placeholder="번호를 입력해주세요" value="${ loginUser.phone }">
+								<input type="text" style="width: 300px; margin-left: 15px; margin-right: 10px; height: 35px;" name="phone" placeholder="번호를 입력해주세요" value="${ loginUser.phone }" id="phone">
 							</div>
 						</td>
 					</tr>
 				</table>
 				<br><br>
 				<button id="btn">수정하기</button>
-				</form>
 				<br><br>
 				<label class="profile">비밀번호 변경</label><br><br><br>
-				<form method="post" id="form">
-					<table>
-						<tr>
-							<td class="detail">현재 비밀번호</td>
-							<td>
-								<input type="password" style="width: 300px; margin-left: 15px" placeholder="현재 비밀번호를 입력해주세요" id="cpwd">
-								<div class="check"></div>
-							</td>
-						</tr>
-						<tr>
-							<td class="detail">새 비밀번호</td>
-							<td>
-								<input type="password" style="width: 300px; margin-left: 15px;" name="newPw" placeholder="새로운 비밀번호를 입력해주세요" id="npwd">
-								<div class="pwd-ck">
-									<div class="pwd-ck2" id="eng"><i class="bi bi-circle"></i> 영어</div>
-									<div class="pwd-ck2" id="num"><i class="bi bi-circle"></i> 숫자</div>
-									<div class="pwd-ck2" id="special"><i class="bi bi-circle"></i> 특수문자</div>
-									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 8자 이상</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="detail">새 비밀번호 확인</td>
-							<td>
-								<input type="password" style="width: 300px; margin-left: 15px;" placeholder="한번 더 입력해주세요" id="fpwd">
-								<div class="check"></div>
-							</td>
-						</tr>
-					</table>
-					<br><br>
-					<button id="editb">변경하기</button>
-				</form>
+				<table>
+					<tr>
+						<td class="detail">현재 비밀번호</td>
+						<td>
+							<input type="password" style="width: 300px; margin-left: 15px" placeholder="현재 비밀번호를 입력해주세요" id="cpwd">
+							<div class="check"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="detail">새 비밀번호</td>
+						<td>
+							<input type="password" style="width: 300px; margin-left: 15px;" name="newPw" placeholder="새로운 비밀번호를 입력해주세요" id="npwd">
+							<div class="pwd-ck">
+								<div class="pwd-ck2" id="eng"><i class="bi bi-circle"></i> 영어</div>
+								<div class="pwd-ck2" id="num"><i class="bi bi-circle"></i> 숫자</div>
+								<div class="pwd-ck2" id="special"><i class="bi bi-circle"></i> 특수문자</div>
+								<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 8자 이상</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="detail">새 비밀번호 확인</td>
+						<td>
+							<input type="password" style="width: 300px; margin-left: 15px;" placeholder="한번 더 입력해주세요" id="fpwd">
+							<div class="check"></div>
+						</td>
+					</tr>
+				</table>
+				<br><br>
+				<button id="editb">변경하기</button>
 			</div>
 		</div>
 	</div>
@@ -167,18 +162,25 @@
 		const editb = document.getElementById('editb');
 		const npwd = document.getElementById('npwd');
 		const fpwd = document.getElementById('fpwd');
-		const form = document.getElementById('form');
+		const pform = document.getElementById('pform');
+		const eform = document.getElementById('eform');
+		const emailCheck = document.getElementById('emailCheck');
+		const nickCheck = document.getElementById('nickCheck');
+		const email = document.getElementById('email');
+		const nickName = document.getElementById('nickName');
+		const btn = document.getElementById('btn');
+		const phone = document.getElementById('phone');
 		
 		// 비번 = 비번 확인
 		fpwd.addEventListener('keyup', () => {
 			if(npwd.value == fpwd.value) {
-				check[1].style.display = 'block';
-				check[1].style.color = 'green';
-				check[1].innerText = '비밀번호가 일치합니다.';
+				check[3].style.display = 'block';
+				check[3].style.color = 'green';
+				check[3].innerText = '비밀번호가 일치합니다.';
 			} else {
-				check[1].style.display = 'block';
-				check[1].style.color = 'red';
-				check[1].innerText = '새 비밀번호가 일치하지 않습니다.';
+				check[3].style.display = 'block';
+				check[3].style.color = 'red';
+				check[3].innerText = '새 비밀번호가 일치하지 않습니다.';
 			}
 		});
 		
@@ -216,24 +218,27 @@
 					success : data => {
 						console.log(data);
 						if(data == 'no'){
-							check[0].style.display = 'block';
-							check[0].style.color = 'red';
-							check[0].innerText = '현재 비밀번호가 일치하지 않습니다.';
+							check[2].style.display = 'block';
+							check[2].style.color = 'red';
+							check[2].innerText = '현재 비밀번호가 일치하지 않습니다.';
 						} else {
-							check[0].style.display = 'none';
-							if(check[1].innerText == '비밀번호가 일치합니다.'){
+							check[2].style.display = 'none';
+							if(check[3].innerText == '비밀번호가 일치합니다.'){
 								$.ajax({
 									type : 'POST',
 									url : '${contextPath}/myPage_UpdatePwd.me',
-									data : {newPw : npwd.value},
+									data : {newPw : npwd.value, usersId : id.value},
 									success : data => {
 										if(data == 'yes'){
 											swal({
 												 text: "비밀번호가 변경되었습니다.",
-												 icon: "error",
+												 icon: "success",
 												 button: "확인"
-											});
-										} else {
+											}).then(function() {
+										        location.reload();
+										    });;
+											return true;
+										} else if(data == 'no')  {
 											swal({
 												 text: "비밀번호를 다시 확인해주세요.",
 												 icon: "error",
@@ -241,12 +246,16 @@
 											}).then(function() {
 												fpwd.focus();
 											});
+											return false;
 										}
+									},
+									error : data => {
+										console.log(data);
 									}
 								});
 							} else {
 								swal({
-									 text: "비밀번호를 다시 확인해주세요.",
+									 text: "비밀번호를 다시 확인해주세욤.",
 									 icon: "error",
 									 button: "확인"
 								}).then(function() {
@@ -262,6 +271,7 @@
 			}
 		})
 		
+		// 비밀번호 정규표현식
 		npwd.onkeyup = () => {
 		  const checkEng = /[a-zA-Z]/;
 		  const checkNum = /[0-9]/;
@@ -308,7 +318,106 @@
 					document.getElementById('special').innerHTML = "<i class='bi bi-circle'></i> 특수문자";
 				}
 			}
-		})
+		});
+		
+		// 닉네임 중복확인
+		nickCheck.addEventListener('click', () => {
+			if(nickName.value == ''){
+				swal({
+					 text: "닉네임을 입력해주세요.",
+					 icon: "error",
+					 button: "확인"
+				});
+			} else {
+				$.ajax({
+					url : '${contextPath}/checkNickName.en',
+					data : {nickName : nickName.value},
+					success : data => {
+						console.log(data);
+						if(data == 'yes'){
+							check[0].style.display = 'block';
+							check[0].style.color = 'green';
+							check[0].innerText = '사용가능한 닉네임입니다.';
+						} else {
+							check[0].style.display = 'block';
+							check[0].style.color = 'red';
+							check[0].innerText = '중복되는 닉네임입니다.';
+						}
+					}
+				});
+			}
+		});
+		
+		// 이메일 중복확인
+		emailCheck.addEventListener('click', () => {
+			if(email.value == ''){
+				swal({
+					 text: "이메일을 입력해주세요.",
+					 icon: "error",
+					 button: "확인"
+				});
+			} else {
+				$.ajax({
+					url : '${contextPath}/checkEmail.en',
+					data : {email : email.value},
+					success : data => {
+						console.log(data);
+						if(data == 'yes'){
+							check[1].style.display = 'block';
+							check[1].style.color = 'green';
+							check[1].innerText = '사용가능한 이메일입니다.';
+						} else {
+							check[1].style.display = 'block';
+							check[1].style.color = 'red';
+							check[1].innerText = '중복되는 이메일입니다.';
+						}
+					}
+				});
+			}
+		});
+		
+		btn.addEventListener('click', () => {
+			if((check[0].style.color == 'green' || check[1].style.color == 'green') && check[0].style.color != 'red' && check[1].style.color != 'red'){
+				$.ajax({
+					type : 'POST',
+					url : '${ contextPath }/myPage_UpdateInfo.me',
+					data : {
+							usersId : id.value,
+							email : email.value, 
+							nickName : nickName.value,
+							phone : phone.value
+						},
+					success : data => {
+						console.log(data);
+						if(data == 'yes'){
+							swal({
+								 text: "정보수정이 완료되었습니다.",
+								 icon: "success",
+								 button: "확인"
+							}).then(function() {
+						        location.reload();
+						    });;
+						} else if(data == 'no')  {
+							swal({
+								 text: "정보를 다시 확인해주세요.",
+								 icon: "error",
+								 button: "확인"
+							});
+							return false;
+						}
+					},
+					error : data => {
+						console.log(data);
+					}
+				});
+			} else {
+				swal({
+					 text: "변경된 사항이 없습니다.",
+					 icon: "error",
+					 button: "확인"
+				});
+			}
+		});
 		
 		
 	</script>

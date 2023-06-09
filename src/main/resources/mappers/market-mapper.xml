@@ -51,15 +51,30 @@
 	    where users_id = #{uId}
 	</update>
 	
+	<insert id="insertShipping">
+  		insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
+  		values (#{usersNo}, #{recipient}, #{address}, #{homePhone}, #{phone}, SEQ_SHIPPING_ADDRESS.nextval, #{shippingName})
+	</insert>
+	
 	<insert id="insertCart">
 		INSERT INTO CART
 		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
 	</insert>
 	
-	<select id="allAt" resultMap="UsersResultSet">
+	<select id="selectShipping" resultMap="shipAddress">
 		select *
-		from users
-		where users_id = #{uId}
+		from shipping_address
+		where users_no = #{usersNo}
 	</select>
 	
+	<resultMap type="ShippingAddress" id="shipAddress">
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="RECIPIENT" property="recipient"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="HOME_PHONE" property="homePhone"/>
+		<result column="PHONE" property="phone"/>
+		<result column="SHIPPING_NO" property="shippingNo"/>
+		<result column="SHIPPING_NAME" property="shippingName"/>
+		
+	</resultMap>
 </mapper>

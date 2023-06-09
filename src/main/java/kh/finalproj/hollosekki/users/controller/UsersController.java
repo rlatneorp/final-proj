@@ -1,5 +1,13 @@
 package kh.finalproj.hollosekki.users.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -9,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
@@ -21,8 +31,8 @@ public class UsersController {
 	@Autowired
 	private EnrollService eService;
 	
-//	@Autowired
-//	private UsersService uService;
+	@Autowired
+	private UsersService uService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
@@ -37,6 +47,72 @@ public class UsersController {
 	@RequestMapping("myPage_Profile.me")
 	public String myPage_Profile() {
 		return "myPage_Profile";
+	}
+	
+	// 파일 저장
+	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
+		// 파일 저장소 지정
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		File folder = new File(savePath);
+		
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		// 파일 이름 변경 형식 지정
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		int ranNum = (int)(Math.random()*100000);
+		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
+										   + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		
+		String renamePath = folder + "\\" + renameFileName;
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		String[] returnArr = new String[2];
+		returnArr[0] = savePath;
+		returnArr[1] = renameFileName;
+		
+		return returnArr;
+	}
+	
+	// 파일 삭제
+	public void deleteFile(String fileName, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		
+		File f = new File(savePath + "\\" + fileName);
+		if(f.exists()) {
+			f.delete();
+		}
+	}
+	
+	@RequestMapping("myPage_UpdateProfile.me")
+	public String myPage_UpdateProfile(@RequestParam("file") MultipartFile file, @RequestParam("usersNo") int usersNo,
+									   Model model, HttpServletRequest request) {
+		if(file != null && !file.isEmpty()) {
+			String[] returnArr = saveFile(file, request);
+			
+			if(returnArr[1] != null) {
+				Image image = new Image();
+				image.setImagePath(returnArr[0]);
+				image.setImageOriginalName(file.getOriginalFilename());
+				image.setImageRenameName(returnArr[1]);
+				image.setImageType(1);
+				image.setImageDivideNo(usersNo);
+				
+				int result = uService.updateImage(image);
+				if(result > 0) {
+					model.addAttribute("image", result);
+					
+				}
+			}
+		}
+		return null;
 	}
 	
 	@RequestMapping("myPage_Intro.me")
@@ -94,7 +170,7 @@ public class UsersController {
 		return "myPage_checkPwd";
 	}
 	
-	// ȸ������ ���� �� ��й�ȣ Ȯ��
+	// 회占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙 占쏙옙橘占싫� 확占쏙옙
 	@RequestMapping("myPage_checkPwd.me")
 	@ResponseBody
 	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
@@ -114,12 +190,37 @@ public class UsersController {
 	
 	@RequestMapping("myPage_UpdatePwd.me")
 	@ResponseBody
-	public String myPage_UpdatePwd(@RequestParam("newPw") String newPw, Model model) {
-		return null;
+	public String myPage_UpdatePwd(@RequestParam("newPw") String newPw, @RequestParam("usersId") String usersId, 
+								   Model model) {
+		Users u = ((Users)model.getAttribute("loginUser"));
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("usersId", usersId);
+		map.put("newPw", bcrypt.encode(newPw));
+		int result = uService.updatePwd(map);
+		
+		if(result > 0) {
+			model.addAttribute("loginUser", eService.login(u));
+			return "yes";
+		} else {
+			return "no";
+		}
 	}
 	
 	@RequestMapping("myPage_UpdateInfo.me")
-	public String myPage_UpdateInfo() {
-		return null;
+	@ResponseBody
+	public String myPage_UpdateInfo(@ModelAttribute Users u, Model model) {
+		int result = uService.updateInfo(u);
+		
+		if(result > 0) {
+			model.addAttribute("loginUser", eService.login(u));
+			return "yes";
+		} else {
+			return "no";
+		}
 	}
+	
+	
+	
+	
 }

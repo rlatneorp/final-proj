@@ -104,7 +104,7 @@ public class UsersController {
 		return "myPage_checkPwd";
 	}
 	
-	// È¸¿øÁ¤º¸ ¼öÁ¤ Àü ºñ¹Ð¹øÈ£ È®ÀÎ
+	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ È®ï¿½ï¿½
 	@RequestMapping("myPage_checkPwd.me")
 	@ResponseBody
 	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
@@ -153,13 +153,13 @@ public class UsersController {
 			model.addAttribute("loginUser", eService.login(u));
 			return "myPage_editInfo";
 		} else {
-			throw new UsersException("È¸¿ø ¼öÁ¤ ½ÇÆÐ");
+			throw new UsersException("È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		}
 	}
 	
-	// ÆÄÀÏ ÀúÀå
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
-		// ÆÄÀÏ ÀúÀå¼Ò ÁöÁ¤
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
 		File folder = new File(savePath);
@@ -168,7 +168,7 @@ public class UsersController {
 			folder.mkdirs();
 		}
 		
-		// ÆÄÀÏ ÀÌ¸§ º¯°æ Çü½Ä ÁöÁ¤
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		int ranNum = (int)(Math.random()*100000);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
@@ -188,7 +188,7 @@ public class UsersController {
 		return returnArr;
 	}
 	
-	// ÆÄÀÏ »èÁ¦
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public void deleteFile(String fileName, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
@@ -166,6 +171,7 @@ public class AdminController {
 		if(igd.getProductNo() != 0) {
 			int pNo = igd.getProductNo();
 			Product p = aService.selectProduct(pNo);
+			igd.setProductOption(p.getProductOption());
 			igd.setProductStock(p.getProductStock());
 			igd.setProductPrice(p.getProductPrice());
 			igd.setProductSale(p.getProductSale());
@@ -173,10 +179,6 @@ public class AdminController {
 		}
 		if(igd != null) {
 			model.addAttribute("ab", ab);
-//			model.addAttribute("page", ab.getPage());
-//			model.addAttribute("pageCount", wantPageCount);
-//			model.addAttribute("searchType", searchType);
-//			model.addAttribute("searchText", searchText);
 			model.addAttribute("igd", igd);
 			model.addAttribute("img", img);
 			return "adminIngredientDetail";
@@ -186,25 +188,118 @@ public class AdminController {
 		
 	}
 	@PostMapping("adminIngredientUpdate.ad")
-	public String adminIngredientUpdate(@RequestParam(value="page", required=false) Integer page,
-										@RequestParam(value="pageCount", required=false) Integer wantPageCount,
-									 	@RequestParam(value="searchType", required=false) String searchType,
-									 	@RequestParam(value="searchText", required=false) String searchText,
+	public String adminIngredientUpdate(@ModelAttribute AdminBasic ab,
 									 	@ModelAttribute Ingredient igd,
+									 	@ModelAttribute Product pd,
+									 	@RequestParam("imageChange") String imageChange,
+									 	@RequestParam("imageFile") MultipartFile imageFile,
+										HttpServletRequest request,
 									 	Model model) {
+		int result1 = 1;
+		int result2 = 1;
+		int result3 = 1;
+		int result4 = 1;
 		
-		int result1 = aService.updateIngredient(igd);
-//		int result2 = aService.updateProduct(igd);
+			
+//		상품등록한 적이 없고(productNo == 0) && productStatus가 Y라면 
+//		== 새로 등록하는 경우
+		if(igd.getProductNo() == 0 && igd.getProductStatus().equals("Y")){
+			result1 = aService.insertProduct(pd);
+			igd.setProductNo(aService.getNowProductNo());
+		}else {
+			result1 = aService.updateProduct(pd);
+		}
+		result2 = aService.updateIngredient(igd);
+			
+		System.out.println(pd);
+		System.out.println(igd);
 		
-//		if(result > 0) {
-			model.addAttribute("page", page);
-			model.addAttribute("pageCount", wantPageCount);
-			model.addAttribute("searchType", searchType);
-			model.addAttribute("searchText", searchText);
+		if(imageChange.equals("Y")) {
+			
+//			데이터 서버 이미지 삭제
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", igd.getIngredientNo());
+			map.put("imageType", 5);
+			Image img = aService.selectImage(map);
+			deleteFile(img.getImageRenameName(), request);
+			
+//			DB서버 이미지 삭제
+			result3 = aService.deleteImage(img);
+			
+//			이미지 저장
+			Image image = new Image();
+			if(imageFile != null && !imageFile.isEmpty()) {
+				String[] returnArr = saveFile(imageFile, request);
+				if(returnArr[1] != null) {
+					image.setImageDivideNo(igd.getIngredientNo());
+					image.setImageType(5);
+					image.setImagePath(returnArr[0]);
+					image.setImageOriginalName(imageFile.getOriginalFilename());
+					image.setImageRenameName(returnArr[1]);
+				}
+			}
+			result4 = aService.insertImage(image);
+			
+		}
+		System.out.println(result1);
+		System.out.println(result2);
+		System.out.println(result3);
+		System.out.println(result4);
+		if(result1+result2+result3+result4 == 4) {
+			model.addAttribute("ab", ab);
 			return "redirect:adminIngredientManage.ad";
-//		}else {
-//			throw new AdminException("식재료 수정에 실패하였습니다.");
-//		}
+		}else {
+			throw new AdminException("식재료 수정에 실패하였습니다.");
+		}
+	}
+	@GetMapping("adminIngredientUpdateIsAccept.ad")
+	public void adminIngredientUpdateIsAccept(@ModelAttribute Ingredient igd,
+											  HttpServletResponse response) {
+		int result = aService.ingredientUpdateIsAccept(igd);
+		String msg = "msg";
+		if(result > 0) {
+			msg = "success";
+		}else {
+			msg = "fail";
+		}
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(msg, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	@GetMapping("adminUpdateStatus.ad")
+	public void adminUpdateStatus(@RequestParam("dataNo") String dataNo,
+								  @RequestParam("dataStatus") String dataStatus,
+								  @RequestParam("dataType") String dataType,
+								  HttpServletResponse response) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("dataNo", dataNo);
+		map.put("dataStatus", dataStatus);
+		map.put("dataType", dataType);
+		
+		int result = aService.updateStatus(map);
+		String msg = "msg";
+		if(result > 0) {
+			msg = "success";
+		}else {
+			msg = "fail";
+		}
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(msg, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	@GetMapping("adminIngredientWrite.ad")
 	public String adminIngredientWrite(@RequestParam(value="page", required=false) Integer page,
@@ -225,6 +320,7 @@ public class AdminController {
 									    @RequestParam(value="searchType", required=false) String searchType,
 									    @RequestParam(value="searchText", required=false) String searchText,
 									    @ModelAttribute Ingredient igd,
+									    @ModelAttribute Product pd,
 										@RequestParam("imageFile") MultipartFile imageFile, 
 										HttpServletRequest request,
 										HttpSession session,
@@ -239,7 +335,7 @@ public class AdminController {
 		if(igd.getProductStatus().equals("Y")) {
 			igd.setProductType(3);
 			igd.setProductOption("N");
-			result2 = aService.insertProduct(igd);
+			result2 = aService.insertProduct(pd);
 		}
 		
 		result1 = aService.insertIngredient(igd);
@@ -256,7 +352,6 @@ public class AdminController {
 				image.setImageRenameName(returnArr[1]);
 			}
 		}
-		
 		result3 = aService.insertImage(image);
 		
 		model.addAttribute("page", page);
@@ -468,5 +563,14 @@ public class AdminController {
 		
 		return returnArr; 
 	}
-	
+
+	private void deleteFile(String fileName, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		
+		File f = new File(savePath + "\\" + fileName);
+		if(f.exists()) {
+			f.delete();
+		}
+	}
 }

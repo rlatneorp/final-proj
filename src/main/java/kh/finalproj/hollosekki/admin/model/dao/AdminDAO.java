@@ -37,8 +37,12 @@ public class AdminDAO {
 		return sqlSession.update("adminMapper.updateIngredient", igd);
 	}
 
-	public int insertProduct(SqlSessionTemplate sqlSession, Ingredient igd) {
-		return sqlSession.insert("adminMapper.insertProduct", igd);
+	public int updateProduct(SqlSessionTemplate sqlSession, Product pd) {
+		return sqlSession.update("adminMapper.updateProduct", pd);
+	}
+
+	public int insertProduct(SqlSessionTemplate sqlSession, Product pd) {
+		return sqlSession.insert("adminMapper.insertProduct", pd);
 	}
 	
 	public int insertIngredient(SqlSessionTemplate sqlSession, Ingredient igd) {
@@ -55,6 +59,22 @@ public class AdminDAO {
 
 	public Image selectImage(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
 		return sqlSession.selectOne("adminMapper.selectImage", map);
+	}
+
+	public int deleteImage(SqlSessionTemplate sqlSession, Image img) {
+		return sqlSession.delete("adminMapper.deleteImage", img);
+	}
+
+	public int getNowProductNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adminMapper.getNowProductNo");
+	}
+
+	public int ingredientUpdateIsAccept(SqlSessionTemplate sqlSession, Ingredient igd) {
+		return sqlSession.update("adminMapper.ingredientUpdateIsAccept", igd);
+	}
+
+	public int updateStatus(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.update("adminMapper.updateStatus", map);
 	}
 
 

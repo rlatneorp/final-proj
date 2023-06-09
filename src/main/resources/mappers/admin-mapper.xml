@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="adminMapper"> 
+	<select id="getIngredientCount" resultType="_int">
+		select count(*)
+		from ingredient
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where ingredient_name like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectIngredientList" resultMap="ingredientResultSet">
+		select *
+		from (select * 
+			  from ingredient
+			  order by ingredient_no desc) 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where ingredient_name like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectProduct" resultMap="productResultSet">
+		select *
+		from product
+		where product_no = #{pNo} 
+	</select>
+
+	<select id="selectIngredient" resultMap="ingredientResultSet">
+		select *
+		from ingredient
+		where ingredient_no = #{igdNo}
+	</select>
+	
+	<update id="updateIngredient">
+		update ingredient
+		set ingredient_name = #{ingredientName},
+			ingredient_type = #{ingredientType},
+			ingredient_content = #{ingredientContent},
+			is_accept = #{isAccept}
+		where ingredient_no = #{ingredientNo}
+	</update>
+
 	<insert id="insertProduct">
 		insert into product
 		values(seq_product_no.nextval, #{productType}, #{productPrice}, #{productOption}, #{productStock}, sysdate, sysdate, #{productSale}, default, default)
@@ -29,5 +72,49 @@
 		insert into image
 		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath})
 	</insert>
+	
+	<select id="selectImage" resultMap="imageResultSet">
+		select *
+		from image
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+	</select>
+	
+	
+	
+	<resultMap type="Ingredient" id="ingredientResultSet">
+		<id column="INGREDIENT_NO" property="ingredientNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="INGREDIENT_NAME" property="ingredientName"/>
+		<result column="INGREDIENT_TYPE" property="ingredientType"/>
+		<result column="INGREDIENT_CONTENT" property="ingredientContent"/>
+		<result column="IS_ACCEPT" property="isAccept"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="INGREDIENT_STATUS" property="ingredientStatus"/>
+	</resultMap>
+	
+	<resultMap type="Product" id="productResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="PRODUCT_PRICE" property="productPrice"/>
+		<result column="PRODUCT_OPTION" property="productOption"/>
+		<result column="PRODUCT_STOCK" property="productStock"/>
+		<result column="PRODUCT_CREATE_DATE" property="productCreateDate"/>
+		<result column="PRODUCT_MODIFY_DATE" property="productModifyDate"/>
+		<result column="PRODUCT_SALE" property="productSale"/>
+		<result column="PRODUCT_COUNT" property="productCount"/>
+		<result column="PRODUCT_STATUS" property="productStatus"/>
+	</resultMap>
+	
+	<resultMap type="Image" id="imageResultSet">
+		<id column="image_no" property="imageNo"/>
+		<result column="image_divide_no" property="imageDivideNo"/>
+		<result column="image_type" property="imageType"/>
+		<result column="image_originalname" property="imageOriginalName"/>
+		<result column="image_renamename" property="imageRenameName"/>
+		<result column="imgae_path" property="imagePath"/>
+	</resultMap>
+	
+	
+	
 	
 </mapper>

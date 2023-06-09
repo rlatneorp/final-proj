@@ -7,6 +7,9 @@
 	
 	<typeAliases>
 		<typeAlias type="kh.finalproj.hollosekki.enroll.model.vo.Users" alias="Users"/>
+		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Ingredient" alias="Ingredient"/>
+		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Product" alias="Product"/>
+		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Image" alias="Image"/>
 	</typeAliases>
 	
 

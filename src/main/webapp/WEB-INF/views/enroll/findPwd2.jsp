@@ -91,6 +91,8 @@
 </style>
 </head>
 <body>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
+
 	<div class="outline">
 		<div class="form-line">
 			<div class="form-dot">
@@ -107,7 +109,7 @@
 					<br>
 					<div class="mid">
 						<div class="mid22">
-							<form class="form" action="" method="post">
+							<form class="form">
 								<label class="label">이름</label><br>
 								<input type="text" name="name" id="name" class="input" placeholder="이름을 입력하세요" required><br>
 								<label class="label">이메일</label><br>
@@ -115,6 +117,7 @@
 									<div><input type="email" name="email" id="email" class="input" placeholder="메일주소를 입력하세요" required></div>
 									<div><button type="button" id="button2">인증번호 받기</button></div>
 								</div>
+							</form>
 								<div class="line2"></div>
 								<label class="label">인증번호</label><span id="time">03:00</span><br>
 								<div class="confirm">
@@ -126,7 +129,7 @@
 								</div>
 								<div><button class="button" onclick="location.href='updatePwd.en'">다음</button></div>
 								<div class="line"></div>
-							</form>
+<!-- 							</form> -->
 						</div>
 					</div>
 				</div>
@@ -135,10 +138,46 @@
 	</div>
 </body>
 <script>
+	const checkBtn = document.getElementById("button2");
 	
-	
-	// 인증메일 받고 3분 카운트다운 
-	document.getElementById("button2").addEventListener('click', function(){
+	checkBtn.addEventListener('click', function(){
+		if(document.getElementById('name').value == ''){
+			swal({
+				 text: "이름을 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			document.getElementById('name').focus();
+			return false;
+		}
+			
+		if(document.getElementById('email').value == ''){
+			swal({
+				 text: "메일주소를 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			document.getElementById('email').focus();
+			return false;
+		} 
+		
+		$.ajax({
+			type:"POST",
+			url: "findPwdCheck.en",
+			data: {name: document.getElementById('name').value, 
+					email:docuent.getElementById('email').value},
+			success: data=>{
+				console.log(1);
+			},
+			error: data =>{
+				console.log(error);
+			}
+			
+		})
+		
+		
+		
+		// 인증메일 보내고 카운트다운 3분
 		const time = document.getElementById('time');
 		const num = document.getElementById('num');
 		const alert = document.getElementById("mid44");
@@ -167,6 +206,39 @@
 				alert.style.color = 'red';
 			}
 		}, 1000);
-	})
+	});
+	
+	
+	// 인증메일 받고 3분 카운트다운 
+// 	checkBtn.addEventListener('click', function(){
+// 		const time = document.getElementById('time');
+// 		const num = document.getElementById('num');
+// 		const alert = document.getElementById("mid44");
+// 		let count = 10; // 시간 나중에 바꿔주기
+		
+// 		time.style.color = 'red';
+// 		num.placeholder = '메일로 받은 인증번호를 입력하세요';
+// 		num.disabled = false;
+// 		alert.innerHTML = '&nbsp;';
+		
+// 		const interval = window.setInterval(() =>{
+			
+// 			let min = Math.floor(count/60);
+// 			let sec = count%60;
+			
+// 			time.innerText = ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2);
+// 			count--;
+			
+// 			if(count < 0){
+// 				clearInterval(interval);
+// 				time.innerText = '';
+// 				document.getElementById("button3").disabled = true;
+// 				num.disabled = true;
+// 				num.placeholder = '시간이 만료되었습니다.';
+// 				alert.innerText = '인증을 다시 진행해주세요.';
+// 				alert.style.color = 'red';
+// 			}
+// 		}, 1000);
+// 	})
 </script>
 </html>

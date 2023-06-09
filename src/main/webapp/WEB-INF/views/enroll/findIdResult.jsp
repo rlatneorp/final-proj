@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>Insert title here</title>
 <style>
 	body{background: #B0DAFF;}	
@@ -48,6 +50,7 @@
 		margin: 0 auto; margin-top: 30px; margin-bottom: 30px;
 		}
 	.mid22{margin: 0 auto;}
+	
 	.button{
 		width: 150px; height: 50px;
 		border-radius: 25px; border: 2px solid black;
@@ -57,7 +60,17 @@
 		box-shadow: 0px 5px 0px black;
 		cursor: pointer; 
 		}
-	.button:active{box-shadow: 0px 1px 0px black; transform: translateY(5px); background: #b0daff;}
+	.button:active, .button2:active{box-shadow: 0px 1px 0px black; transform: translateY(5px); background: #b0daff;}
+ 	.mid-btn{display: flex; justify-content: center;} 
+	.button2{
+		width: 150px; height: 50px;
+		border-radius: 25px; border: 2px solid black;
+		font-size: 20px; font-weight: bold;
+		margin-top: 50px; margin-bottom: 20px; margin-left: 5px; margin-right: 5px;
+		background: #f0f0f0;
+		box-shadow: 0px 5px 0px black;
+		cursor: pointer; 
+		}
 	
 	.find{display: flex; justify-content: center; font-size: 16px;}
 	.find2{cursor: pointer; margin-right: 8px; margin-left: 8px; text-decoration: underline;}
@@ -75,25 +88,67 @@
 						<div class="join">ID 찾기</div>
 						<div class="join-line"></div>
 					</div>
-					<div class="mid33">
-						입력하신 정보와 일치하는 결과 입니다.
-					</div>
-					<br>
-					<div class="mid33">
-						<div class="result">이 름 : 최정흠</div>
-						<div class="result">아이디 : wantyou0421</div>
-						<div class="result">가입일 : 2023-06-02</div>
-					</div>
-					<div class="mid">
-						<div class="mid22">
-							<div><button class="button">로그인</button></div>
-								
-							<div class="line"></div>
-							<div class="find">
-								<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div>
+					<c:if test="${usersInfo == null}">
+						<div class="mid33" style="font-size: 16px; line-height: 30px;">
+							입력하신 정보와 일치하는 결과가 없습니다.<br>
+							사이트 이용을 위해 회원가입을 해주세요.
+						</div>
+						<div class="mid33" style="font-size: 100px;">
+						 	<i class="bi bi-exclamation-triangle-fill"></i>
+						</div> 
+						<div class="mid">
+							<div class="mid22">
+								<div class="mid-btn">
+									<div><button class="button2" onclick="location.href='join.en'">회원가입</button></div>
+									<div><button class="button2" onclick="location.href='home.do'">메인으로</button></div>
+								</div>
+								<div class="line"></div>
+								<div class="find">
+									<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div>
+								</div>
 							</div>
 						</div>
-					</div>
+						
+					</c:if>
+					
+					<c:if test="${ usersInfo != null }">
+						<div class="mid33" style="font-size: 16px;"> 
+ 							입력하신 정보와 일치하는 결과 입니다.
+						</div>
+						<div class="mid33">
+							<div class="result">이 름 : ${ usersInfo.usersName }</div>
+							<div class="result">아이디 : ${ usersInfo.usersId }</div>
+							<div class="result">가입일 : ${ usersInfo.enrollDate }</div>
+						</div>
+						<div class="mid">
+							<div class="mid22">
+								<div><button class="button">로그인</button></div>
+								<div class="line"></div>
+								<div class="find">
+									<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div>
+								</div>
+							</div>
+						</div>
+					</c:if>
+<!-- 					<div class="mid33"> -->
+<!-- 						입력하신 정보와 일치하는 결과 입니다. -->
+<!-- 					</div> -->
+<!-- 					<br> -->
+<!-- 					<div class="mid33"> -->
+<%-- 						<div class="result">이 름 : ${ usersInfo.usersName }</div> --%>
+<%-- 						<div class="result">아이디 : ${ usersInfo.usersId }</div> --%>
+<%-- 						<div class="result">가입일 : ${ usersInfo.enrollDate }</div> --%>
+<!-- 					</div> -->
+<!-- 					<div class="mid"> -->
+<!-- 						<div class="mid22"> -->
+<!-- 							<div><button class="button">로그인</button></div> -->
+								
+<!-- 							<div class="line"></div> -->
+<!-- 							<div class="find"> -->
+<!-- 								<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 				</div>
 			</div>
 		</div>

@@ -39,5 +39,17 @@ public class EnrollServiceImpl implements EnrollService{
 	@Override
 	public int checkEmail(String email) {
 		return eDAO.checkEmail(sqlSession, email);
+	public Users findIdResult(String name, String email) {
+		return eDAO.findIdResult(sqlSession, name, email);
+	}
+
+	@Override
+	public int findPwdCheck(String id, String email) {
+		return eDAO.findPwdCheck(sqlSession, id, email);
+	}
+
+	@Override
+	public int updatePwdResult(String id, String usersPwd) {
+		return eDAO.updatePwdResult(sqlSession, id, usersPwd);
 	}
 }

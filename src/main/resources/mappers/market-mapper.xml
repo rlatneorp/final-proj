@@ -54,6 +54,8 @@
 	<insert id="insertShipping">
   		insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
   		values (#{usersNo}, #{recipient}, #{address}, #{homePhone}, #{phone}, SEQ_SHIPPING_ADDRESS.nextval, #{shippingName})
+	</insert>
+	
 	<insert id="insertCart">
 		INSERT INTO CART
 		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )

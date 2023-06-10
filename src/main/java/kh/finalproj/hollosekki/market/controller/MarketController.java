@@ -145,6 +145,7 @@ public class MarketController {
 		}else {
 			return "attendance_Check";
 		}
+	}
 		
 	
 	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙 獄쏉옙 鈺곌퀬�돳

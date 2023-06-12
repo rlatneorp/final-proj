@@ -154,9 +154,9 @@ public class UsersController {
 		}
 	}
 	
-	// ÆÄÀÏ ÀúÀå
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
-		// ÆÄÀÏ ÀúÀå¼Ò ÁöÁ¤
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
 		File folder = new File(savePath);
@@ -165,7 +165,7 @@ public class UsersController {
 			folder.mkdirs();
 		}
 		
-		// ÆÄÀÏ ÀÌ¸§ º¯°æ Çü½Ä ÁöÁ¤
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		int ranNum = (int)(Math.random()*100000);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
@@ -185,7 +185,7 @@ public class UsersController {
 		return returnArr;
 	}
 	
-	// ÆÄÀÏ »èÁ¦
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public void deleteFile(String fileName, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";

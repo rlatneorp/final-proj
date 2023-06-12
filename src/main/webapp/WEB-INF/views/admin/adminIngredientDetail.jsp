@@ -19,10 +19,12 @@
 		<form action="${contextPath}/adminIngredientUpdate.ad" method="post" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-6 row">
+					<input type="hidden" name="productNo" value="${igd.productNo}">
+					<input type="hidden" name="productOption" value="${igd.productOption}">
 					<input type="hidden" name="productType" value="3">
 					<h5 class="mt-3 mb-5">- 식재료수정 -</h5>
 					<span class="col-3">재료번호</span>
-					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="${igd.ingredientNo}" readonly>
+					<input type="text" name="ingredientNo" class="col-9 pb-1 mb-2 rounded border" value="${igd.ingredientNo}" readonly>
 					<input type="hidden" name="usersNo" value="1">
 					<span class="col-3">등록자</span>
 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="${igd.usersNo}" readonly>
@@ -35,10 +37,10 @@
 
 					<div class="col-12 row priceBox" <c:if test="${igd.productStatus eq 'N'}">style="opacity: 0.3"</c:if>>
 						<span class="col-4">가격</span>
-						<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="${igd.productPrice}" readonly>
+						<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="${igd.productPrice}">
 						<span class="col-2">원</span>
 						<span class="col-4">할인율</span>
-						<input type="number" name="productSale" class="col-6 pb-1 mb-2 rounded" min="0" max="99.9" placeholder="할인율을 입력해주세요." value="${igd.productSale}" readonly>
+						<input type="number" name="productSale" class="col-6 pb-1 mb-2 rounded" min="0" max="99.9" placeholder="할인율을 입력해주세요." value="${igd.productSale}">
 						<span class="col-2">%</span>
 						<span class="col-5 text-end">=</span>
 						<input type="number" class="totalPrice col-5 pb-1 mb-2 rounded border" value="0" readonly>
@@ -76,6 +78,7 @@
 						<img class="previewImage" width="360px" height="270px" src="${contextPath}/resources/uploadFiles/${img.imageRenameName}">
 					</div>
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
+					<input type="hidden" name="imageChange" value="N">
 					<p style="font-size: 12px; color: gray">최적 이미지 비율은 4:3입니다.</p>
 				</div>
 				
@@ -113,6 +116,13 @@
 			// input file에 change 이벤트 부여
 			imageFile.addEventListener("change", e => {
 			    readImage(e.target);
+			})
+			
+// 			이미지 변경 시 상태변경
+			const imageChange = document.getElementsByName('imageChange')[0];
+			imageFile.addEventListener('change', ()=>{
+				imageChange.value = "Y";
+				console.log(imageChange);
 			})
 			
 // 			공식등록 / 공개상태 버튼 - 기존 값 입력, 이벤트

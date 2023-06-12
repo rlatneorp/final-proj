@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -190,28 +191,44 @@ input[type="text"] {
 			<th style="border-bottom: 2px solid #dee2e6">배송비</th>
 		</tr>
 		<tbody id="products">
-			<tr style="border-top: 2px solid #dee2e6;">
-				<td class="imgTab"><input type="checkbox" style="width: 20px; height: 20px; margin-left:-45px; margin-right: 20px;">
-					<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
-				</td>
-				<td style="border-right: 2px solid #dee2e6; text-align: left">접이식밥상<br><br>옵션 : 
-				<select>
-						<option>Brown</option>
-						<option>Pink</option>
-						<option>Yellow</option>
-						<option>Black</option>
-				</select>
-				</td>
-				<td style="border-right: 2px solid #dee2e6; width:130px">
-					<i class="bi bi-dash-square-fill" id="minus" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
-					<span id="size">1</span>개&nbsp;
-					<i class="bi bi-plus-square-fill" id="plus" style="color: #00AAFF; font-size: 15px"></i>
-				</td>
-				<td style="border-right: 2px solid #dee2e6;"><span id="price">46,500</span>원</td>
-				<td style="border-right: 2px solid #dee2e6;"><span>2,325</span>P적립</td>
-				<td style="border-right: 2px solid #dee2e6; width:160px"><span id="sum">46,500</span>원</td>
-				<td>무료배송</td>
-			</tr>
+			<c:forEach items="${ cartList}" var="cl">
+				<tr style="border-top: 2px solid #dee2e6;">
+					<td class="imgTab">
+						<input type="checkbox" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
+						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
+					</td>
+					<td style="border-right: 2px solid #dee2e6; text-align: left">
+						<c:forEach items="${ productList }" var="p">
+							<c:if test="${cl.productNo eq p.productNo }">
+									<c:if test="${p['class'].simpleName eq 'Food'}">
+								    	<b>${p.foodName}</b><br><br>
+								  	</c:if>
+									<c:if test="${p['class'].simpleName eq 'Tool'}">
+								    	<b>${p.ToolName}</b><br><br>
+								  	</c:if>
+									<c:if test="${p['class'].simpleName eq 'Ingredient'}">
+								    	<b>${p.ingredientName}</b><br><br>
+								  	</c:if>
+							</c:if>
+						</c:forEach>
+						옵션 : 
+						<select>
+							<c:forEach var="option" items="${fn:split(cl.productOption, ',')}">
+								<option value="${option}">${option}</option>
+							</c:forEach>
+						</select>
+					</td>
+					<td style="border-right: 2px solid #dee2e6; width:130px">
+						<i class="bi bi-dash-square-fill" id="minus" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
+						<span id="size">1</span>개&nbsp;
+						<i class="bi bi-plus-square-fill" id="plus" style="color: #00AAFF; font-size: 15px"></i>
+					</td>
+					<td style="border-right: 2px solid #dee2e6;"><span id="price">46,500</span>원</td>
+					<td style="border-right: 2px solid #dee2e6;"><span>2,325</span>P적립</td>
+					<td style="border-right: 2px solid #dee2e6; width:160px"><span id="sum">46,500</span>원</td>
+					<td>무료배송</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table><br><br>
 	<div style="width: 1200px; margin: 0 auto; font-align: right">

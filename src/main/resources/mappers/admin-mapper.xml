@@ -40,13 +40,36 @@
 		set ingredient_name = #{ingredientName},
 			ingredient_type = #{ingredientType},
 			ingredient_content = #{ingredientContent},
+			<if test="productNo != 0">
+				product_no = #{productNo},
+			</if>
 			is_accept = #{isAccept}
 		where ingredient_no = #{ingredientNo}
+	</update>
+	
+	<update id="updateProduct">
+		update product
+		set product_price = #{productPrice},
+		<if test="productOption != '' ">
+			product_option = #{productOption},
+		</if>
+			product_stock = #{productStock},
+			product_modify_date = sysdate,
+			product_sale = #{productSale},
+			product_status = #{productStatus}
+		where product_no = #{productNo} 
 	</update>
 
 	<insert id="insertProduct">
 		insert into product
-		values(seq_product_no.nextval, #{productType}, #{productPrice}, #{productOption}, #{productStock}, sysdate, sysdate, #{productSale}, default, default)
+		values(seq_product_no.nextval, #{productType}, #{productPrice},
+		<if test="productOption != '' ">
+		#{productOption}, 
+		</if> 
+		<if test="productOption == '' ">
+		default, 
+		</if> 
+		#{productStock}, sysdate, sysdate, #{productSale}, default, default)
 	</insert>
 	
 	<insert id="insertIngredient">
@@ -68,6 +91,25 @@
 		from dual
 	</select>
 	
+	<select id="getNowProductNo" resultType="_int">
+		select seq_product_no.currval
+		from dual
+	</select>
+	
+	<update id="ingredientUpdateIsAccept">
+		update ingredient
+		set is_accept = #{isAccept}
+		where ingredient_no = #{ingredientNo} 
+	</update>
+	
+	<update id="updateStatus">
+		update product
+		set product_status = #{dataStatus}
+		where product_type = #{dataType} 
+			  and product_no = #{dataNo}
+	</update>
+	
+	
 	<insert id="insertImage">
 		insert into image
 		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath})
@@ -79,6 +121,10 @@
 		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
 	</select>
 	
+	<delete id="deleteImage">
+		delete image
+		where image_type = #{imageType} and image_divide_no = ${imageDivideNo} 
+	</delete>
 	
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">

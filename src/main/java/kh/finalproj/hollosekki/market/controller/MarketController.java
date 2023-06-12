@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,10 +23,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
+import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
+import kh.finalproj.hollosekki.market.model.vo.Tool;
 
 @Controller
 public class MarketController {
@@ -34,7 +38,42 @@ public class MarketController {
 	private MarketService mkService;
 
 	@RequestMapping("basket.ma")
-	public String pay() {
+	public String pay(HttpSession session, Model model) {
+		
+		Users users = (Users)session.getAttribute("loginUser");
+		int userNo = users.getUsersNo();
+		
+		ArrayList<Cart> cartList = mkService.selectCartList(userNo);
+		ArrayList<Food> foodsList = new ArrayList<>();
+		ArrayList<Tool> toolsList = new ArrayList<>();
+		ArrayList<Ingredient> igsList = new ArrayList<>();
+		
+		Food foods = null; Tool tools = null; Ingredient igs = null;
+		for(Cart cart : cartList) {
+			int productNo = cart.getProductNo();
+			
+			foods = mkService.selectFood(productNo);
+			tools = mkService.selectTool(productNo);
+			igs = mkService.selectIngrdient(productNo);
+			
+			if (foods != null) {
+		        foodsList.add(foods);
+		    }
+		    if (tools != null) {
+		        toolsList.add(tools);
+		    }
+		    if (igs != null) {
+		        igsList.add(igs);
+		    }
+		}
+		if(foods != null) {
+			model.addAttribute("productList", foodsList);
+		} else if (tools != null) {
+			model.addAttribute("productList", toolsList);
+		} else if (igs != null) {
+			model.addAttribute("productList", igsList);
+		}
+		model.addAttribute("cartList", cartList);
 		return "basket";
 	}
 
@@ -73,27 +112,43 @@ public class MarketController {
 		return "paySuccess";
 	}
 	
-	@RequestMapping("attendance_Check.ma")
-	public String attendanceCheck(HttpSession session, Model model) {
+	@GetMapping("attendance_Check.ma")
+	public String attendanceCheck(HttpSession session, Model model,
+			@RequestParam(value="start",required=false) String start,@RequestParam(value="end",required=false) String end
+			) {
 	    
 		Users u = (Users)session.getAttribute("loginUser");
+		String uId = null;
 		
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("attendanceDate", u.getAttendanceDate());
-		map.put("attendanceDay", u.getAttendanceDay());
-		map.put("uId", u.getUsersId());
-		
-	    mkService.attendanceCheck(map);
-	    mkService.attendanceDay(map);
-	    mkService.firstAdDay(map);
-	    int checkDay = mkService.checkDay(map);
-	    
-    	model.addAttribute("checkDay", checkDay);
-    	return "attendance_Check";
-	    
+		System.out.println(u);
+		if(u != null) {
+			uId = u.getUsersId();
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("attendanceDate", start);
+			map.put("attendanceDay", start);
+			map.put("uId", uId);
+			
+			 
+			 
+			mkService.attendanceCheck(map);
+			mkService.attendanceDay(map);
+			mkService.firstAdDay(map);
+			mkService.checkDay(map);
+			ArrayList<Users> list = mkService.allAt(map);
+			
+//			model.addAttribute("firstAdDay", firstAdDay);
+			model.addAttribute("attendanceDate", u.getAttendanceDate());
+			model.addAttribute("attendanceDay", u.getAttendanceDay());
+			model.addAttribute("list", list);
+			
+			return "attendance_Check";
+		}else {
+			return "attendance_Check";
+		}
 	}
+		
 	
-	//배송지 추가 및 조회
+	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙 獄쏉옙 鈺곌퀬�돳
 	@RequestMapping(value="insertShipping.ma", produces="application/json; charset=UTF-8")
 	public void insertShipping(@ModelAttribute ShippingAddress sa, @RequestParam("postcode") String postcode, @RequestParam("addressInfo") String addressInfo, @RequestParam("detailAddress") String detailAddress,  HttpServletResponse response) {
 		

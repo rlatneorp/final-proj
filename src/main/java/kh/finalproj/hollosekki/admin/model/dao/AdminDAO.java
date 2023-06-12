@@ -76,6 +76,14 @@ public class AdminDAO {
 	public int updateStatus(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.update("adminMapper.updateStatus", map);
 	}
+	
+	public int deletesProduct(SqlSessionTemplate sqlSession, String[] pDeletes) {
+		return sqlSession.delete("adminMapper.deletesProduct", pDeletes);
+	}
+
+	public int deletesIngredient(SqlSessionTemplate sqlSession, String[] igdDeletes) {
+		return sqlSession.delete("adminMapper.deletesIngredient", igdDeletes);
+	}
 
 
 

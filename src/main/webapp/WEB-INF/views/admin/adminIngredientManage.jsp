@@ -10,24 +10,35 @@
 <title>admin</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
 <script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
+<style>
+	.btns{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;}
+</style>
 </head>
 
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
-		<form id="deleteForm" action="${contextPath}/adminIngredientDeletes.ad">
-			<h4 class="py-4 mb-0">식재료관리</h4>
-			<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>
-			<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
-			<div style="width: 100%; margin-bottom:1px; height: 35px;" class="d-flex justify-content-between">
-				<select name="pageCount" class="d-flex" style="font-size: 14px;">
-					<option value="10" <c:if test="${ab.pageCount eq 10}">selected</c:if>>10개씩 보기</option>
-					<option value="20" <c:if test="${ab.pageCount eq 20}">selected</c:if>>20개씩 보기</option>
-					<option value="40" <c:if test="${ab.pageCount eq 40}">selected</c:if>>40개씩 보기</option>
-				</select>
-				<span class="d-flex material-symbols-outlined me-2 deleteBtn" style="font-size: 36px; color: black; text-shadow: 1px 1px 2px gray; cursor:pointer;">delete</span>
+		<h4 class="py-4 mb-0">식재료관리</h4>
+		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>
+		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
+		<div style="width: 100%; margin-bottom:3px; height: 35px;" class="d-flex justify-content-between">
+			<div class="d-flex">
+				<form id="pageCountForm" action="adminIngredientManage.ad">
+					<input type="hidden" name="page" value="${ab.page}">
+					<input type="hidden" name="searchType" value="${ab.searchType}">
+					<input type="hidden" name="searchText" value="${ab.searchText}">
+					<select name="pageCount" style="font-size: 14px; height:25px">
+						<option value="10" <c:if test="${pageCount eq 10}">selected</c:if>>10개씩 보기</option>
+						<option value="20" <c:if test="${pageCount eq 20}">selected</c:if>>20개씩 보기</option>
+						<option value="40" <c:if test="${pageCount eq 40}">selected</c:if>>40개씩 보기</option>
+					</select>
+					<button style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 45px; height: 25px; font-size: 12px; font-weight: bold;">변경</button>
+				</form>
 			</div>
+			<span class="d-flex material-symbols-outlined me-2 deleteBtn" style="font-size: 36px; color: black; text-shadow: 1px 1px 2px gray; cursor:pointer;">delete</span>
+		</div>
 			
+		<form id="deleteForm" action="${contextPath}/adminIngredientDeletes.ad" method="post">
 			<table class="w-100 text-center mb-3">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>
@@ -53,28 +64,18 @@
 							<input type="hidden" name="productNo" value="${igd.productNo}">
 						</td>
 						<td>
-							<a href="${contextPath}/adminIngredientDetail.ad?page=${pi.currentPage}&ingredientNo=${igd.ingredientNo}">
+							<a href="${contextPath}/adminIngredientDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&ingredientNo=${igd.ingredientNo}">
 								${igd.ingredientName}</a>
 						</td>
 						<td>${igd.ingredientType}</td>
 						<td>
-							<div class="priceBox">
-								<c:if test="${igd.productStatus eq 'Y' }">
-									<fmt:formatNumber pattern="###,###,###" value="${igd.productPrice}"/>원
-								</c:if>
-								<c:if test="${igd.productStatus eq 'N' }">
-									-
-								</c:if>
+							<div class="priceBox" <c:if test="${igd.productStatus eq 'N' }">style="display:none;"</c:if> >
+								<fmt:formatNumber pattern="###,###,###" value="${igd.productPrice}"/>원
 							</div>
 						</td>
 						<td>
-							<div class="saleBox">
-								<c:if test="${igd.productStatus eq 'Y' }">
+							<div class="saleBox" <c:if test="${igd.productStatus eq 'N' }">style="display:none;"</c:if> >
 									${igd.productSale}%
-								</c:if>
-								<c:if test="${igd.productStatus eq 'N' }">
-									-
-								</c:if>
 							</div>
 						</td>
 						<td>${igd.productStock}</td>
@@ -82,24 +83,42 @@
 						<td>${igd.viewCount}</td>
 						<td>${igd.likeCount}</td>
 						<td>
-							<button type="button" class="acceptBtn" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;">Y</button>
-							<button type="button" class="acceptBtn" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;">N</button>
+							<c:if test="${igd.isAccept eq 'Y'}">
+								<button type="button" class="btns acceptBtn" style="background-color: #19A7CE;">Y</button>
+								<button type="button" class="btns acceptBtn" style="background-color: gray;">N</button>
+							</c:if>
+							<c:if test="${igd.isAccept eq 'N'}">
+								<button type="button" class="btns acceptBtn" style="background-color: gray;">Y</button>
+								<button type="button" class="btns acceptBtn" style="background-color: #19A7CE;">N</button>
+							</c:if>
 						</td>
 						<td>
-							<button type="button" class="statusBtn" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;">Y</button>
-							<button type="button" class="statusBtn" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;">N</button>
+							<c:if test="${igd.productStatus eq 'Y'}">
+								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">Y</button>
+								<button type="button" class="btns statusBtn" style="background-color: gray;">N</button>
+							</c:if>
+							<c:if test="${igd.productStatus eq 'N'}">
+								<button type="button" class="btns statusBtn" style="background-color: gray;">Y</button>
+								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">N</button>
+							</c:if>
+							<c:if test="${igd.productStatus eq null}">
+								<button type="button" class="btns statusBtn" style="background-color: gray;">Y</button>
+								<button type="button" class="btns statusBtn" style="background-color: gray;">N</button>
+							</c:if>
 						</td>
-						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;"></td>
+						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;" value="${igd.ingredientNo},${igd.productNo}"></td>
 					</tr>
 				</c:forEach>
 			</table>
 		</form>
 		<div class="d-flex justify-content-end mb-5">
 			<div class="d-flex">
-				<button onclick="location.href='${contextPath}/adminIngredientWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식재료등록</button>
+				<button type="button" onclick="location.href='${contextPath}/adminIngredientWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식재료등록</button>
 			</div>
 		</div>
 		<form id="searchForm">
+			<input type="hidden" name="page" value="${ab.page}">
+			<input type="hidden" name="pageCount" value="${ab.pageCount}">
 			<div class="text-center">
 				<input type="hidden" name="page" value="${pi.currentPage}"> 
 				<select name="searchType" class="border" style="padding: 6px 7px;">
@@ -107,9 +126,10 @@
 				</select>
 
 				<div style="width:200px" class="d-inline-block mb-4">
-					<input type="text" class="form-control" name="searchText">
+					<input type="search" class="form-control" name="searchText" value="${ab.searchText}">
+					
 				</div>
-				<button onclick="location.href='${contextPath}/adminIngredientManage.ad?page='" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 38px; font-size: 14px; font-weight: bold;">검색</button>
+				<button style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 38px; font-size: 14px; font-weight: bold;">검색</button>
 			</div>
 		</form>
 		
@@ -118,13 +138,6 @@
 
 	<script>
 		window.onload = () =>{
-			
-// 			리스트 갯수 이벤트
-			const pageCount = document.getElementsByName('pageCount')[0];
-			pageCount.addEventListener('change', ()=>{
-				location.href='adminIngredientManage.ad?page=&pageCount='+pageCount.value;
-			})
-			
 // 			삭제 체크박스 전체선택 이벤트
 			const allSelect = document.getElementsByClassName('allSelect')[0];
 			allSelect.addEventListener('click', ()=>{
@@ -205,17 +218,22 @@
 									   dataStatus:statusBtns[i].innerText,
 									   dataType:3},
 								success: data =>{
+									let price = "";
+									let sale = "";
 									if(data == "success"){
 										if(i%2 == 0){
 											statusBtns[i].style.background = "#19A7CE";
 											statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
-											document.getElementsByClassName('priceBox')[j].style.display="block";
-											document.getElementsByClassName('saleBox')[j].style.display="block";
+// 											document.getElementsByClassName('priceBox')[j].style.display="block";
+// 											document.getElementsByClassName('saleBox')[j].style.display="block";
 										}else if(i%2 == 1){
 											statusBtns[i].style.background = "#19A7CE";
 											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-											document.getElementsByClassName('priceBox')[j].style.display="none";
-											document.getElementsByClassName('saleBox')[j].style.display="none";
+											
+											price = document.getElementsByClassName('priceBox')[j].innerText;
+											sale = document.getElementsByClassName('saleBox')[j].innerText;
+// 											document.getElementsByClassName('priceBox')[j].style.display="none";
+// 											document.getElementsByClassName('saleBox')[j].style.display="none";
 										}
 									}else{
 										alert("상태 변경에 실패하였습니다.");
@@ -234,20 +252,6 @@
 					}
 				}
 			}
-			
-// 			for(const i in statusBtns){
-// 				if(i%2 == 0){
-// 					statusBtns[i].addEventListener('click', ()=>{
-// 						statusBtns[i].style.background = "#19A7CE";
-// 						statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
-// 					});
-// 				}else if(i%2 == 1){
-// 					statusBtns[i].addEventListener('click', ()=>{
-// 						statusBtns[i].style.background = "#19A7CE";
-// 						statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-// 					});
-// 				}
-// 			}
 		}
 	</script>
 	

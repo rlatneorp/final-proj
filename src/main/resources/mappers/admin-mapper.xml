@@ -61,14 +61,15 @@
 	</update>
 
 	<insert id="insertProduct">
-		insert into product
+		insert into product(product_no, product_type, product_price, product_option, product_stock, 
+			product_create_date, product_modify_date, product_sale, product_count, product_status)
 		values(seq_product_no.nextval, #{productType}, #{productPrice},
-		<if test="productOption != '' ">
+<!-- 		<if test="productOption != null "> -->
 		#{productOption}, 
-		</if> 
-		<if test="productOption == '' ">
-		default, 
-		</if> 
+<!-- 		</if>  -->
+<!-- 		<if test="productOption == null "> -->
+<!-- 		default, -->
+<!-- 		</if>  -->
 		#{productStock}, sysdate, sysdate, #{productSale}, default, default)
 	</insert>
 	
@@ -126,6 +127,21 @@
 		where image_type = #{imageType} and image_divide_no = ${imageDivideNo} 
 	</delete>
 	
+	<delete id="deletesProduct">
+		delete product
+		where product_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deletesIngredient">
+		delete ingredient
+		where ingredient_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">
 		<id column="INGREDIENT_NO" property="ingredientNo"/>

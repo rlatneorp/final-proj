@@ -52,11 +52,11 @@
 					<button type="button" class="col-2 isAccept" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
 					<span class="col-5"></span>
 					
-					<span class="col-3 mb-3">공개상태</span>
-					<input type="hidden" name="ingredientStatus" value="Y">
-					<button type="button" class="col-2 igdStatus" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
-					<button type="button" class="col-2 igdStatus" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
-					<span class="col-5"></span>
+<!-- 					<span class="col-3 mb-3">공개상태</span> -->
+<!-- 					<input type="hidden" name="ingredientStatus" value="Y"> -->
+<!-- 					<button type="button" class="col-2 igdStatus" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button> -->
+<!-- 					<button type="button" class="col-2 igdStatus" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button> -->
+<!-- 					<span class="col-5"></span> -->
 					
 					<span class="col-3">상품등록</span>
 					<input type="hidden" name="productStatus" value="N">
@@ -80,7 +80,7 @@
 				<div class="d-flex justify-content-center mb-5">
 					<div class="d-flex">
 						<button type="button" onclick="check()" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">등록하기</button>
-						<button type="button" onclick="location.href='${contextPath}/adminIngredientManage.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+						<button type="button" onclick="history.back()" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 					</div>
 				</div>
 			</div>
@@ -130,16 +130,16 @@
 				acBtns[0].style.background = "gray";
 			});
 			
-			igdStBtns[0].addEventListener('click', () => {
-				igdStatus.value = igdStBtns[0].innerText;
-				igdStBtns[0].style.background = "#19A7CE";
-				igdStBtns[1].style.background = "gray";
-			});
-			igdStBtns[1].addEventListener('click', () => {
-				igdStatus.value = igdStBtns[1].innerText;
-				igdStBtns[1].style.background = "#19A7CE";
-				igdStBtns[0].style.background = "gray";
-			});
+// 			igdStBtns[0].addEventListener('click', () => {
+// 				igdStatus.value = igdStBtns[0].innerText;
+// 				igdStBtns[0].style.background = "#19A7CE";
+// 				igdStBtns[1].style.background = "gray";
+// 			});
+// 			igdStBtns[1].addEventListener('click', () => {
+// 				igdStatus.value = igdStBtns[1].innerText;
+// 				igdStBtns[1].style.background = "#19A7CE";
+// 				igdStBtns[0].style.background = "gray";
+// 			});
 			
 			
 // 			상품등록 버튼 이벤트

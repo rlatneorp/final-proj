@@ -87,13 +87,28 @@
 								<label class="label">비밀번호</label><br>
 								<input type="password" name="usersPw" id="pwd" class="input" placeholder="비밀번호를 입력하세요" required><br>
 								<div><button class="button">로그인</button></div>
+								
+	
 								<div class="find">
-									<div class="find2" onclick="location.href='findId.en'">ID 찾기</div>
-									<div class="find2" onclick="location.href='findPwd.en'">비밀번호 찾기</div>
+									<div class="find2" onclick="location.href='${contextPath}/findId.en'">ID 찾기</div>
+									<div class="find2" onclick="location.href='${contextPath}/findPwd.en'">비밀번호 찾기</div>
 								</div>
 								<div class="line"></div>
-								<div class="logincheck" onclick="location.href='join.en'"> 아직 홀로세끼 계정이 없으신가요? SIGN IN</div>
+								<div class="logincheck" onclick="location.href='${contextPath}/join.en'"> 아직 홀로세끼 계정이 없으신가요? SIGN IN</div>
 							</form>
+							
+							<ul>
+								<li onclick="kakaoLogin();">
+							      <a href="javascript:void(0)">
+							          <img src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="200" />
+							      </a>
+								</li>
+							</ul>
+							
+							<form id="form-kakao-login" method="post" action="kakaoLogin.en">
+				    			<input type="hidden" name="email" id="kakaoEmail"/>
+				    			<input type="hidden" name="name" id="kakaoNickName"/>
+				    		</form>
 						</div>
 					</div>
 				</div>
@@ -101,4 +116,65 @@
 		</div>
 	</div>
 </body>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script> <!-- 카카오 간편로그인 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	Kakao.init('7bce9522ff9d4cff75ab0ce48d2ba440'); //발급받은 키 중 javascript키를 사용
+	console.log(Kakao.isInitialized()); // sdk초기화여부판단
+	
+	document.getElementById("")
+	
+	
+	//카카오로그인
+	function kakaoLogin() {
+		
+		
+	    Kakao.Auth.login({
+	      success: function (response) {
+	        Kakao.API.request({
+	          url: '/v2/user/me',
+	          success: function (response) { // 여기까진 수정할꺼 없음
+	        	  console.log(response);
+	        	  
+	        	  
+	        	  var account = response.kakao_account;
+	        	  var email = response.email;
+	        	  
+	        		$('#form-kakao-login input[name=email]').val(account.email);
+					$('#form-kakao-login input[name=name]').val(account.profile.nickname);
+					document.querySelector('#form-kakao-login').submit();
+	        	  l
+	          },
+	          fail: function (error) {
+	            console.log(error);
+	          },
+	        })
+	      },
+	      fail: function (error) {
+	        console.log(error);
+	      },
+	    })
+	  }
+	
+// 	function kakaoLogin() {
+		
+// 		document.getElementById("")
+// 	    Kakao.Auth.login({
+// 	      success: function (response) {
+// 	        Kakao.API.request({
+// 	          url: '/v2/user/me',
+// 	          success: function (response) {
+// 	        	  console.log(response)
+// 	          },
+// 	          fail: function (error) {
+// 	            console.log(error)
+// 	          },
+// 	        })
+// 	      },
+// 	      fail: function (error) {
+// 	        console.log(error)
+// 	      },
+// 	    })
+// 	  }
+ </script>
 </html>

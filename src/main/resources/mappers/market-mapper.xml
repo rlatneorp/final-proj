@@ -155,5 +155,9 @@
 		select * from ingredient where product_no = #{productNo}
 	</select>
 	
+	<delete id="delBasket">
+		delete from cart where product_no = #{productNo}
+	</delete>
+	
 	
 </mapper>

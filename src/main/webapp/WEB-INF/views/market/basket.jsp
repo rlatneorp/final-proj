@@ -4,6 +4,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
 <style>
 
@@ -194,6 +195,7 @@ input[type="text"] {
 			<c:forEach items="${ cartList}" var="cl">
 				<tr style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
+						<input type="hidden"  id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
 						<input type="checkbox" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
 					</td>
@@ -311,14 +313,29 @@ input[type="text"] {
 		
 	})
 	
+	//선택 삭제 버튼 클릭 시 선택 된 리스트 삭제 
 	checkDelete = () => {
-		const products = document.getElementById('products');
+		const basketNos = document.getElementsByClassName('basketNos');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
-		
-		for(const checkProduct of checkProducts) {
-			let list = checkProduct.parentNode.parentNode;
-			console.log(list);
-			list.remove(); 
+		//체크 된 부분만 삭제 처리 
+		for(basketNo of basketNos) {
+			if(basketNo.nextSibling.nextSibling.checked) {
+				const delBasket = basketNo.value;
+				$.ajax({
+					url:'${contextPath}/delBasket.ma',
+					data:{ 
+						productNo:delBasket
+					},
+					success: (data) => {
+						for(const checkProduct of checkProducts) {
+							let list = checkProduct.parentNode.parentNode;
+							list.remove(); 
+						}
+					},
+					error: (data) => {
+					}
+				})
+			}
 		}
 	}
 	

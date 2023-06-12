@@ -5,15 +5,16 @@ import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Description;
+import org.springframework.http.MediaType;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,42 +45,37 @@ public class EnrollController {
 			return "join";
 		}
 		
-		@RequestMapping("insertUser.en")
-		public String insertUser(@ModelAttribute Users u) {
-			
-			String userPwd = bcrypt.encode(u.getUsersPw());
-			u.setUsersPw(userPwd);
-			
-			int result = eService.insertUser(u);
-			if(result > 0) {
-				return "redirect:login.en";
-			} else {
-				return "회원가입실패...페이지 만드나? 아님 exception?";
-			}
-		}
-		
 //		@RequestMapping("insertUser.en")
-//		@ResponseBody
-//		public void insertUser(@ModelAttribute Users u, PrintWriter out) {
+//		public String insertUser(@ModelAttribute Users u) {
 //			
 //			String userPwd = bcrypt.encode(u.getUsersPw());
 //			u.setUsersPw(userPwd);
 //			
-//			System.out.println(u);
-//			
-//			int count = eService.insertUser(u);
-//			String result = count > 0 ? "yse" : "no";
-//			System.out.println("result : "+ result);
-//			
-//			out.print(result);
+//			int result = eService.insertUser(u);
+//			if(result > 0) {
+//				return "redirect:login.en";
+//			} else {
+//				return "회원가입실패...페이지 만드나? 아님 exception?";
+//			}
 //		}
+		
+		@RequestMapping("insertUser.en")
+		@ResponseBody
+		public void insertUser(@ModelAttribute Users u, PrintWriter out) {
+			
+			String userPwd = bcrypt.encode(u.getUsersPw());
+			u.setUsersPw(userPwd);
+			
+			int count = eService.insertUser(u);
+			String result = count > 0 ? "yes" : "no";
+			out.print(result);
+		}
 		
 		@RequestMapping("login.en")
 		public String login() {
 			return "login";
 		}
 		
-
 		@RequestMapping("loginCheck.en")
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
@@ -201,9 +197,6 @@ public class EnrollController {
 		public String updatePwdResult(@RequestParam("id") String id, @RequestParam("pwd") String pwd) {
 			
 			String usersPwd = bcrypt.encode(pwd);
-//			System.out.println(id);
-//			System.out.println(pwd);
-//			System.out.println(usersPwd);
 			
 			int result = eService.updatePwdResult(id, usersPwd);
 			
@@ -212,8 +205,27 @@ public class EnrollController {
 			} else {
 				return "";
 			}
-			
 		}
 		
+		@RequestMapping("kakaoLogin.en")
+		public void loginWithKakao(@RequestParam("email") String email){
+			System.out.println("email : " + email);
+			
+//			User user = User.builder()
+//						.email(form.getEmail())
+//						.name(form.getName())
+//						.img(form.getImg())
+//						.loginType(KAKAO_LOGIN_TYPE)
+//						.build();
+//			
+//			Users savedUser = eService.loginWithKakao(user);
+//			
+//			// 저장된 회원정보가 없으면 전달받은 회원정보를 세션에 저장, 있으면 기존 정보 저장.
+//			if(savedUser != null) {
+//				SessionUtils.addAttribute("LOGIN_USER", savedUser);
+//			}else {
+//				SessionUtils.addAttribute("LOGIN_USER", user);
+//			}
+		}
 		
 }

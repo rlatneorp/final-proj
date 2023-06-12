@@ -181,4 +181,15 @@ public class MarketController {
 		int result = mkService.insertCart(c);
 		return result;
 	}
+	
+	//장바구니 목록 삭제 
+	@RequestMapping(value="delBasket.ma", produces="application/json; charset=UTF-8")
+	public String delBasket(@RequestParam("productNo") int productNo) {
+		mkService.delBasket(productNo);
+		return "basket";
+	}
+	
+	
+	
+	
 }

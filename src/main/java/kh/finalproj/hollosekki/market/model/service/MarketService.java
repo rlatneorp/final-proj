@@ -89,6 +89,10 @@ public class MarketService {
 		return mkDAO.selectIngrdient(sqlSession, productNo);
 	}
 
+	public void delBasket(int productNo) {
+		mkDAO.delBasket(sqlSession, productNo);
+	}
+
 	
 	
 

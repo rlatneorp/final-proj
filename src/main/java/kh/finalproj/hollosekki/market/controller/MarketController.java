@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,6 +27,7 @@ import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
+import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
@@ -48,6 +48,7 @@ public class MarketController {
 		ArrayList<Tool> toolsList = new ArrayList<>();
 		ArrayList<Ingredient> igsList = new ArrayList<>();
 		
+		ArrayList<Product> foodInfo = new ArrayList<>();
 		Food foods = null; Tool tools = null; Ingredient igs = null;
 		for(Cart cart : cartList) {
 			int productNo = cart.getProductNo();
@@ -57,6 +58,7 @@ public class MarketController {
 			igs = mkService.selectIngrdient(productNo);
 			
 			if (foods != null) {
+				foodInfo = mkService.selectFoodInfo(productNo);
 		        foodsList.add(foods);
 		    }
 		    if (tools != null) {
@@ -67,6 +69,8 @@ public class MarketController {
 		    }
 		}
 		if(foods != null) {
+			model.addAttribute("foodInfo", foodInfo);
+			System.out.println("foodInfo : " + foodInfo);
 			model.addAttribute("productList", foodsList);
 		} else if (tools != null) {
 			model.addAttribute("productList", toolsList);

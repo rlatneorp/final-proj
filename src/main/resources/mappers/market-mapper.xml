@@ -147,6 +147,10 @@
 		select * from food where product_no = #{productNo}
 	</select>
 	
+	<select id="selectFoodInfo" resultMap="productList">
+		select * from product where product_no = #{productNo}
+	</select>
+	
 	<select id="selectTool" resultMap="toolInfo">
 		select * from tool where product_no = #{productNo}
 	</select>
@@ -158,6 +162,8 @@
 	<delete id="delBasket">
 		delete from cart where product_no = #{productNo}
 	</delete>
+	
+	
 	
 	
 </mapper>

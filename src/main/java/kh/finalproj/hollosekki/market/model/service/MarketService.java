@@ -93,6 +93,10 @@ public class MarketService {
 		mkDAO.delBasket(sqlSession, productNo);
 	}
 
+	public ArrayList<Product> selectFoodInfo(int productNo) {
+		return mkDAO.selectFoodInfo(sqlSession, productNo);
+	}
+
 	
 	
 

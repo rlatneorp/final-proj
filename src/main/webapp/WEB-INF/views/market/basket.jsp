@@ -193,6 +193,7 @@ input[type="text"] {
 		</tr>
 		<tbody id="products">
 			<c:forEach items="${ cartList}" var="cl">
+				<c:forEach items="${foodInfo }" var="fi">
 				<tr style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
 						<input type="hidden"  id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
@@ -225,11 +226,12 @@ input[type="text"] {
 						<span id="size">1</span>개&nbsp;
 						<i class="bi bi-plus-square-fill" id="plus" style="color: #00AAFF; font-size: 15px"></i>
 					</td>
-					<td style="border-right: 2px solid #dee2e6;"><span id="price">46,500</span>원</td>
+					<td style="border-right: 2px solid #dee2e6;"><span id="price-${ fi.productPrice }">${fi.productPrice}</span>원</td>
 					<td style="border-right: 2px solid #dee2e6;"><span>2,325</span>P적립</td>
 					<td style="border-right: 2px solid #dee2e6; width:160px"><span id="sum">46,500</span>원</td>
 					<td>무료배송</td>
 				</tr>
+				</c:forEach>
 			</c:forEach>
 		</tbody>
 	</table><br><br>
@@ -301,6 +303,36 @@ input[type="text"] {
 		})
 		
 		
+		//수량 증감 -> 금액 변화 
+		let price = parseInt(document.getElementById('price').innerText);
+		let size = parseInt(document.getElementById('size').innerText);
+		let tot = parseInt(document.getElementById('total').innerText);
+		
+		document.getElementById('plus').addEventListener('click', function() {
+			 size++; tot++; 
+			 document.getElementById('size').innerText = size;
+			 document.getElementById('total').innerText = tot;
+			 let priceString = document.getElementById('price').innerText;
+			    
+		    // 쉼표 제거
+		    let price = parseFloat(priceString.replace(/,/g, ''));
+		    console.log(price);
+		    
+		    let total = price*size;
+		    let formattedTotal = total.toLocaleString();
+		    document.getElementById('sum').innerText = formattedTotal;
+		    document.getElementById('sumTotal').innerText = formattedTotal;
+		    document.getElementById('realTotal').innerText = formattedTotal; /* 이건 배송지까지 총합이어야 함*/ 
+			 
+		})
+		
+		document.getElementById('minus').addEventListener('click', function() {
+			if(size >= 1) {
+				size--;
+				document.getElementById('size').innerText = size;
+			}
+		})
+		
 	}
 	
 	//전체 선택 체크 
@@ -339,7 +371,7 @@ input[type="text"] {
 		}
 	}
 	
-	//
+	//장바구니 내 상품 한 개 이상 클릭 시 구매 버튼 실행 
 	document.getElementById('goPay').addEventListener('click', function() {
 		const products = document.getElementById('products');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
@@ -353,6 +385,8 @@ input[type="text"] {
 			location.href ='${contextPath}/payDetail.ma'
 		}
 	})
+	
+	//
 	
 	
 </script>

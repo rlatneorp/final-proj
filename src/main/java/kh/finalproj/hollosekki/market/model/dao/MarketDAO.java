@@ -90,6 +90,10 @@ public class MarketDAO {
 		sqlSession.delete("marketMapper.delBasket", productNo);
 	}
 
+	public ArrayList<Product> selectFoodInfo(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectFoodInfo", productNo);
+	}
+
 	
 
 

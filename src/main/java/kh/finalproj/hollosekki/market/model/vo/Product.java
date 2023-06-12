@@ -1,6 +1,9 @@
 package kh.finalproj.hollosekki.market.model.vo;
 
 import java.sql.Date;
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
 
 public class Product {
 	private int productNo;
@@ -37,6 +40,7 @@ public class Product {
 		this.productStatus = productStatus;
 		this.productImg = productImg;
 	}
+	
 
 	public int getProductNo() {
 		return productNo;
@@ -136,8 +140,13 @@ public class Product {
 
 	@Override
 	public String toString() {
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
+        Currency currency = Currency.getInstance(Locale.KOREA);
+        numberFormat.setCurrency(currency);
+        String formattedProductPrice = numberFormat.format(productPrice);
+        
 		return "Product [productNo=" + productNo + ", ProductName=" + ProductName + ", productType=" + productType
-				+ ", productPrice=" + productPrice + ", productOption=" + productOption + ", productStock="
+				+ ", productPrice=" + formattedProductPrice + ", productOption=" + productOption + ", productStock="
 				+ productStock + ", productCreateDate=" + productCreateDate + ", ProductModifyDate=" + ProductModifyDate
 				+ ", productSale=" + productSale + ", productCount=" + productCount + ", productStatus=" + productStatus
 				+ ", productImg=" + productImg + "]";

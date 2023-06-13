@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import kh.finalproj.hollosekki.common.model.Pagination;
@@ -26,6 +27,7 @@ import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.vo.Users;
 
+@SessionAttributes("loginUser")
 @Controller
 public class RecipeController {
 

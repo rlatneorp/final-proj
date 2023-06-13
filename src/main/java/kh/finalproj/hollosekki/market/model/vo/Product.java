@@ -140,13 +140,9 @@ public class Product {
 
 	@Override
 	public String toString() {
-		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
-        Currency currency = Currency.getInstance(Locale.KOREA);
-        numberFormat.setCurrency(currency);
-        String formattedProductPrice = numberFormat.format(productPrice);
         
 		return "Product [productNo=" + productNo + ", ProductName=" + ProductName + ", productType=" + productType
-				+ ", productPrice=" + formattedProductPrice + ", productOption=" + productOption + ", productStock="
+				+ ", productPrice=" + productPrice + ", productOption=" + productOption + ", productStock="
 				+ productStock + ", productCreateDate=" + productCreateDate + ", ProductModifyDate=" + ProductModifyDate
 				+ ", productSale=" + productSale + ", productCount=" + productCount + ", productStatus=" + productStatus
 				+ ", productImg=" + productImg + "]";

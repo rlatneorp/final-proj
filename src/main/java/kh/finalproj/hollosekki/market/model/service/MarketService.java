@@ -97,6 +97,18 @@ public class MarketService {
 		return mkDAO.selectFoodInfo(sqlSession, productNo);
 	}
 
+	public int plusCount(int productNo) {
+		return mkDAO.plusCount(sqlSession, productNo);
+	}
+
+	public int plusResultCount(int productNo) {
+		return mkDAO.plusResultCount(sqlSession, productNo);
+	}
+
+	public void minusCount(int productNo) {
+		mkDAO.minusCount(sqlSession, productNo);
+	}
+
 	
 	
 

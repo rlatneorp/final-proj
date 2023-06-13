@@ -163,6 +163,19 @@
 		delete from cart where product_no = #{productNo}
 	</delete>
 	
+	<update id="plusCount">
+		update cart set cart_count = cart_count + 1 
+		where product_no = #{productNo}
+	</update>
+	
+	<select id="plusResultCount" resultType="_int">
+		select cart_count from cart where product_no = #{productNo}
+	</select>
+	
+	<update id="minusCount">
+		update cart set cart_count = cart_count - 1 
+		where product_no = #{productNo}
+	</update>
 	
 	
 	

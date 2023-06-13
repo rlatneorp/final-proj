@@ -22,7 +22,7 @@
 		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
 		<div style="width: 100%; margin-bottom:3px; height:35px;" class="d-flex justify-content-between">
 			<div class="d-flex">
-				<form id="pageCountForm" action="adminMenuManage.ad">
+				<form id="pageCountForm" action="adminFoodManage.ad">
 					<input type="hidden" name="page" value="${ab.page}">
 					<input type="hidden" name="searchType" value="${ab.searchType}">
 					<input type="hidden" name="searchText" value="${ab.searchText}">

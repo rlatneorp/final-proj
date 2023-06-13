@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
@@ -83,6 +84,14 @@ public class AdminDAO {
 
 	public int deletesIngredient(SqlSessionTemplate sqlSession, String[] igdDeletes) {
 		return sqlSession.delete("adminMapper.deletesIngredient", igdDeletes);
+	}
+
+	public int insertFood(SqlSessionTemplate sqlSession, Food f) {
+		return sqlSession.insert("adminMapper.insertFood", f);
+	}
+
+	public int getNowFoodNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adminMapper.getNowFoodNo");
 	}
 
 

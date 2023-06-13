@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.admin.model.dao.AdminDAO;
 import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
@@ -90,6 +91,15 @@ public class AdminService {
 	public int deletesIngredient(String[] igdDeletes) {
 		return aDAO.deletesIngredient(sqlSession, igdDeletes);
 	}
+
+	public int insertFood(Food f) {
+		return aDAO.insertFood(sqlSession, f);
+	}
+
+	public int getNowFoodNo() {
+		return aDAO.getNowFoodNo(sqlSession);
+	}
+
 
 
 

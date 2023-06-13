@@ -112,8 +112,8 @@
 	
 	
 	<insert id="insertImage">
-		insert into image
-		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath})
+		insert into image(image_no, image_divide_no, image_type, image_originalname, image_renamename, image_path, image_level)
+		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, #{imageLevel})
 	</insert>
 	
 	<select id="selectImage" resultMap="imageResultSet">
@@ -142,6 +142,16 @@
 			#{item}
 		</foreach>
 	</delete>
+	
+	<insert id="insertFood">
+		insert into food(product_no, food_name, food_kind, food_type, food_content)
+		values(#{productNo}, #{foodName}, #{foodKind}, #{foodType}, #{foodContent})
+	</insert>
+	
+	<select id="getNowFoodNo" resultType="_int">
+		select max(product_no)
+		from food
+	</select>
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">
 		<id column="INGREDIENT_NO" property="ingredientNo"/>

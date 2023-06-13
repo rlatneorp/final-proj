@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -30,6 +28,7 @@ import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.common.model.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
@@ -275,15 +274,12 @@ public class AdminController {
 					image.setImagePath(returnArr[0]);
 					image.setImageOriginalName(imageFile.getOriginalFilename());
 					image.setImageRenameName(returnArr[1]);
+					image.setImageLevel(0);
 				}
 			}
 			result4 = aService.insertImage(image);
 			
 		}
-		System.out.println(result1);
-		System.out.println(result2);
-		System.out.println(result3);
-		System.out.println(result4);
 		if(result1+result2+result3+result4 == 4) {
 			model.addAttribute("ab", ab);
 			return "redirect:adminIngredientManage.ad";
@@ -418,6 +414,7 @@ public class AdminController {
 				image.setImagePath(returnArr[0]);
 				image.setImageOriginalName(imageFile.getOriginalFilename());
 				image.setImageRenameName(returnArr[1]);
+				image.setImageLevel(0);
 			}
 		}
 		result3 = aService.insertImage(image);
@@ -484,13 +481,60 @@ public class AdminController {
 		return "adminFoodWrite";
 	}
 	@PostMapping("adminFoodInsert.ad")
-	public String adminFoodInsert() {
-		return "redirect:adminFoodManage.ad";
+	public String adminFoodInsert(@ModelAttribute AdminBasic ab,
+								  HttpServletRequest request,
+								  HttpSession session,
+								  Model model,
+								  @ModelAttribute Food f,
+								  @ModelAttribute Product p,
+								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
+
+//		foodContent값 합치기
+		f.setFoodContent(f.getFoodContent()+f.getFoodTarget()+f.getFoodTable());
+
+//		food 기본값 설정
+		f.setFoodType(0);
+		p.setProductType(1);
+		p.setProductOption("N");
+		p.setProductStatus("Y");
+		
+		int result1 = aService.insertProduct(p);
+		f.setProductNo(aService.getNowProductNo());
+		
+		int result2 = aService.insertFood(f);
+		int nowFoodNo = aService.getNowFoodNo();
+		
+		int result3 = 0;
+		if(result1+result2 == 2) {
+			
+//			이미지 저장
+			int i = 0;
+			for(MultipartFile imageFile: imageFiles) {
+				Image image = new Image();
+				if(imageFile != null && !imageFile.isEmpty()) {
+					String[] returnArr = saveFile(imageFile, request);
+					if(returnArr[1] != null) {
+						image.setImageDivideNo(nowFoodNo);
+						image.setImageType(3);
+						image.setImagePath(returnArr[0]);
+						image.setImageOriginalName(imageFile.getOriginalFilename());
+						image.setImageRenameName(returnArr[1]);
+						image.setImageLevel(0);
+						if(i==0) {
+							image.setImageLevel(1);
+						}
+						result3 += aService.insertImage(image);
+						i++;
+					}
+				}
+			}
+			if(result3 == i ) {
+				return "redirect:adminFoodManage.ad";
+			}
+		}
+		throw new AdminException("식품 등록에 실패하였습니다.");
 	}
 	
-	
-//	Product-상품 관리
-
 	
 //	Product-상품 관리
 	@GetMapping("adminProductManage.ad")
@@ -540,9 +584,6 @@ public class AdminController {
 	}
 	
 	
-//	Recipe-레시피관리	
-	
-	
 //	Recipe-레시피 관리
 	@GetMapping("adminRecipeManage.ad")
 	public String adminRecipeManage() {
@@ -566,9 +607,6 @@ public class AdminController {
 	}
 	
 	
-//	RecipeReview-레시피 후기 관리
-
-
 //	RecipeReview-레시피후기 관리
 	@GetMapping("adminRecipeReviewManage.ad")
 	public String adminRecipeReviewManage() {
@@ -583,9 +621,6 @@ public class AdminController {
 		return "redirect:adminRecipeReviewManage.ad";
 	}
 	
-	
-//	MenuReview-식단구독 후기 관리
-
 	
 //	MenuReview-메뉴후기 관리
 	@GetMapping("adminMenuReviewManage.ad")
@@ -602,9 +637,6 @@ public class AdminController {
 	}
 	
 	
-//	Product-상품 관리
-
-	
 //	ProductReview-상품후기 관리
 	@GetMapping("adminProductReviewManage.ad")
 	public String adminProductReviewManage() {
@@ -618,9 +650,6 @@ public class AdminController {
 	public String adminProductReviewUpdate() {
 		return "redirect:adminProductReviewManage.ad";
 	}
-	
-	
-//	FAQ-자주묻는질문 관리
 	
 	
 //	FAQ-자주묻는질문 관리
@@ -645,9 +674,6 @@ public class AdminController {
 		return "redirect:adminFAQManage.ad";
 	}
 	
-	
-//	QNA-1:1문의 관리
-
 	
 //	QNA-1:1문의 관리	
 	@GetMapping("adminQNAManage.ad")

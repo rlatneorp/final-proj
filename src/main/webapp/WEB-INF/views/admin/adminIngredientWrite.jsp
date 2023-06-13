@@ -164,8 +164,6 @@
 				pStBtns[0].style.background = "gray";
 				pPrice.readOnly = true;
 				pSale.readOnly = true;
-// 				pPrice.value = '';
-// 				pSale.value = '';
 				priceBox.style.opacity ='0.3';
 			});
 
@@ -173,7 +171,7 @@
 			pPrice.addEventListener('change', ()=>{
 				if(pPrice.value < 0){
 					pPrice.value = 0;
-				}else if(pPrice.value < 0){
+				}else if(pPrice.value <= 0){
 					pPrice.value = 0;
 				}
 				cal();
@@ -181,7 +179,7 @@
 			pSale.addEventListener('change', ()=>{
 				if(pSale.value > 99.9){
 					pSale.value = 99.9;
-				}else if(pSale.value < 0){
+				}else if(pSale.value <= 0){
 					pSale.value = 0;
 				}
 				cal();

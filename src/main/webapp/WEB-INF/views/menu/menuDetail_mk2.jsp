@@ -6,7 +6,7 @@
 <html>
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
-<title>Hollo Store</title>
+<title>menu detail</title>
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
 	rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -18,22 +18,13 @@
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
-h4{
-	margin-bottom: 0px;
-}
-
 html{
 	scroll-behavior: smooth;
 }
 
-ul, li {
+ ul, li {
     list-style: none;
     padding:0px;
-    margin-bottom: 0px;
-}
-
-.info_delivery{
-	margin-bottom: 0px;
 }
 
 
@@ -87,15 +78,20 @@ ul, li {
 	font-size: 15px;;
 }
 
-.productResultSet {
-    position: relative;
-    background: white;
-    padding: 10px;
-    margin-top: 10px;
-    height: 71px;
-    padding-bottom: 5px;
-    border: 1px solid #4485d7;
- 	display: none;   
+#productResult {
+	position: relative;
+	background: white;
+	padding: 10px;
+	margin-top: 10px;
+	height: 150px;
+	padding-bottom: 5px;
+	border: 1px solid #4485d7;
+	display: block;
+}
+
+#productResult h4 span{
+	display: block;
+	margin: 5px 20px;
 }
 
 .right {
@@ -111,7 +107,42 @@ ul, li {
 	height: 100%;
 }
 
+.inputBox{
+	width: 150px;
+	text-align: center;
+	height: 40px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
 
+.select1st, .select2nd, .select3rd, .select4th{
+	display: none;
+}
+
+.menuBox{
+	width: 150px;
+	text-align: center;
+	height: 165px;
+	width: 100%;
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+.menuName{
+	margin: 8px 20px;
+}
+
+.inputNum{
+	border: 1px solid #4485d7;
+	border-radius: 5px;
+}
+
+.selectPeriod{
+	margin: 12px 0;
+	
+}
+ 
 #originalPrice {
 	font-size: 25px;
 	text-decoration: line-through;
@@ -192,9 +223,9 @@ ul, li {
 	font-weight: 400;
 }
 
-/* .cartCount { */
-/* 	display: inline-block; */
-/* } */
+.productCount {
+	display: inline-block;
+}
 
 select {
 	width: 150px;
@@ -261,36 +292,23 @@ p b {
 	width: 80%;
 }
 
-.removeProudct {
-	font-weight: bold;
-	font-size: 20px;
-	right: 10px;
-	width: 30px;
-	height: 30px;
-	background: none;
-	border-style: none;
-	display: inline-block;
-}
 
 
-.cartCount {
+.buyCount {
 	padding: 0px;
 	margin: 0px;
 	border: 1px solid #dfdfdf;
-	width: 35px;
-	text-align: center;
-    padding-left: 7px;
 }
 
-.cartCount:focus {
+.buyCount:focus {
 	outline: none;
 }
 
-.cartCount:hover {
+.buyCount:hover {
 	border: 1px solid #dfdfdf;
 }
 
-.cartCount:focus {
+.size:focus {
 	outline: none;
 }
 
@@ -301,9 +319,8 @@ p b {
 
 .textbox {
 	width: 100%;
-	display: none;
+	margin-bottom: 70px;
 }
-
 
 .reviewComment {
 	display: inline-block;
@@ -502,20 +519,20 @@ p b {
     padding: 22px 18px 24px;
 }
 
-/* .productPageInfo .accordion_i_tit:after { */
-/*     width: 12px; */
-/*     height: 12px; */
-/*     border-right: 1px solid #808080; */
-/*     border-bottom: 1px solid #808080; */
-/*     position: absolute; */
-/*     right: 25px; */
-/*     content: " "; */
-/*     top: 30px; */
-/*     transform: rotate(315deg); */
-/*     -webkit-transition: all 0.1s ease-in-out; */
-/*     -moz-transition: all 0.1s ease-in-out; */
-/*     transition: all 0.1s ease-in-out; */
-/* } */
+.productPageInfo .accordion_i_tit:after {
+    width: 12px;
+    height: 12px;
+    border-right: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+    position: absolute;
+    right: 25px;
+    content: " ";
+    top: 30px;
+    transform: rotate(315deg);
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
 
 .accodion_content dl dt {
 	padding: 5px 10px 0;
@@ -633,7 +650,7 @@ p b {
     text-align: center;
 }
 
-.decrease{
+#decrease{
 	color:#4485d7;
 	font-size:20px;
 	size:32px;
@@ -646,7 +663,7 @@ p b {
     margin: -1px 0 0 6px;
 }
 
-.increase{
+#increase{
 	color:#4485d7;
 	font-size:20px;
 	background:white;
@@ -689,28 +706,14 @@ p b {
 	height: 1800px;
 }
 
-.moreView{
-	text-align: center;
-    width: 350px;
-    height: 90px;
-    background: #4485d7;
-    margin: auto;
-    line-height: 90px;
-    font-family: 'Noto Sans KR';
-    font-size: xx-large;
-    font-weight: bold;
-    color: white;
-}
-
-
 </style>
 <body>
 <span>
-<%@include file="../common/storeTop.jsp" %>
+<%@include file="../common/top.jsp" %>
 <br>
 </span>
 
-	<form action="${contextPath}/insertCart.ma" method="get">
+	<form action="${contextPath}" method="get">
 	<main id="order-wrap">
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
@@ -720,98 +723,103 @@ p b {
 		<div class="right">
 			<!-- 상품 정보 -->
 			<div class="top">
-				<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-					 <span style="font-weight: 400; font-size: 42px;">캠핑용 후라이팬</span>
+				<div class="productNameBox" style="text-align: center">
+					 <h3 style="font-weight: 400; font-size: 42px;">식단</h3>
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
-					<h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
-						${ p.discountRate }20<span>%</span>
-						<!-- 할인율 -->
-					</h2>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						450,000원
+						9,900원
 					</h2>
 					&nbsp;&nbsp;
-					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
-					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-						540,000원
-					</h2>
+					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7;">♡</h4>
 				</div>
-			<div>
-					<div class="productSet">
+				<div>
+					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;배송
+                            	<img src="resources/image/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
+                            	&nbsp;배송 | 3,000원 
                             </dt>
-                                </dl>
-                                <hr style="margin: 0px;">
-                                <dl class="info_point">
+							<hr style="margin: 0px;">
+						</dl>
+						<dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
+                            	<img src="resources/image/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
+                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립) | 0,000원</p>
                             </dt>
-                                </dl>
-                                
+							<hr style="margin: 0px;">
+						</dl>
+						
+						
+						<label>희망 배송일</label>
+						<input type="date" name="date" id="wantDate" class="inputBox">
+						<br><br>
 						<hr style="margin: 0px;">
-				
-<!-- 					<select class='productOption' name='productOption' required> -->
-<!-- 						사이즈 선택 창 -->
-<!-- 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option> -->
-<!-- 						<option value='옵션1'>옵션1</option> -->
-<!-- 						<option value='옵션2'>옵션2</option> -->
-<!-- 						<option value='옵션3'>옵션3</option> -->
-<!-- 						<option value='옵션4'>옵션4</option> -->
-<!-- 					</select> -->
+						<br>	
+						
+						<label>[필수] 기간을 선택해주세요.</label><br>
+						<div id="period" class="inputBox">
+							<label for="first">1주</label><input type="radio" name="period" value="1st" id="first" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="second">2주</label><input type="radio" name="period" value="2nd" id="second" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="third">3주</label><input type="radio" name="period" value="3rd" id="third" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
+							<label for="fourth">4주</label><input type="radio" name="period" value="4th" id="fourth" class="selectPeriod" onchange="show()">
+						</div>
+						
+						<br>
+						
+						<label class="select1st">식단과 수량을 선택해주세요.(총 1개 선택가능)</label>
+						<div class="menuBox select1st">
+							<label class="menuName">식단1</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu1"><br>
+							<label class="menuName">식단2</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu2"><br>
+							<label class="menuName">식단3</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu3"><br>
+							<label class="menuName">식단4</label><input type="number" min="0" max="1" value="0" class="inputNum oneWeek menu4"><br>
+						</div>
+						
+						<label class="select2nd">식단과 수량을 선택해주세요.(총 2개 선택가능)</label>
+						<div class="menuBox select2nd">
+							<label class="menuName">식단1</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu1"><br>
+							<label class="menuName">식단2</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu2"><br>
+							<label class="menuName">식단3</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu3"><br>
+							<label class="menuName">식단4</label><input type="number" min="0" max="2" value="0" class="inputNum twoWeek menu4"><br>
+						</div>
+						
+						<label class="select3rd">식단과 수량을 선택해주세요.(총 3개 선택가능)</label>
+						<div class="menuBox select3rd">
+							<label class="menuName">식단1</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu1"><br>
+							<label class="menuName">식단2</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu2"><br>
+							<label class="menuName">식단3</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu3"><br>
+							<label class="menuName">식단4</label><input type="number" min="0" max="3" value="0" class="inputNum threeWeek menu4"><br>
+						</div>
+						
+						<label class="select4th">식단과 수량을 선택해주세요.(총 4개 선택가능)</label>
+						<div class="menuBox select4th">
+							<label class="menuName">식단1</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu1"><br>
+							<label class="menuName">식단2</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu2"><br>
+							<label class="menuName">식단3</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu3"><br>
+							<label class="menuName">식단4</label><input type="number" min="0" max="4" value="0" class="inputNum fourWeek menu4"><br>
+						</div>
+						
+						<div id="productResult">
+							<!-- 사이즈 선택시 내려오는 창 -->
+							<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray;">
+								<span id="menuOne">식단1 : 0개</span>
+								<span id="menuTwo">식단2 : 0개</span>
+								<span id="menuThree">식단3 : 0개</span>
+								<span id="menuFour">식단4 : 0개</span>
+							</h4>
+							<div style="display: inline-block; margin-top: 12px; font-weight: 200;">총 상품 가격 : 0원</div>
+							<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
+							<input type="hidden" name="productPrice" value="${p.productPrice}">
+							<input type="hidden" name="discountRate" value="${p.discountRate}">
+							<input type="hidden" name="productMainPic" value="${p.productMainPic}">
+							</strong> <br>
+						</div>
 					
-					<label for="option1">색상</label>
-					<select class='productOption' name='productOption' required>
-						<!-- 사이즈 선택 창 --> 
-						<option value="">옵션을 선택해주세요</option>
-						<option value="black">black</option>
-						<option value="silver">silver</option>
-						<option value="gray">gray</option>
-						<option value="light-gray">light-gray</option>
-					</select>
+					</div>
 					
-					<label for="option2">사이즈</label>
-					<select class='productOption2' name='productOption'  required>
-						<!-- 사이즈 선택 창 -->
-						<option class='productOption2Set' >옵션을 선택해주세요.</option>
-					</select>
-
-
-<!-- 					<div id="productResult" class="productResultSet"> -->
-<!-- 						사이즈 선택시 내려오는 창 -->
-<!-- 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
-<!-- 							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span> -->
-<!-- 							<input type="hidden" name="productNo" value="134"> -->
-<!-- 							<input type="hidden" name="productName" value="캠핑용 후라이팬"> -->
-<%-- 							<input type="hidden" name="productPrice" value="${p.productPrice}"> --%>
-<!-- 						</h4> -->
-<!-- 						<div style=""> -->
-<!-- 							<span class="btnbox" style=" margin: 0 0 0 -1px;"> -->
-<!-- 								<button class="decrease" type="button">-</button> -->
-<!-- 								<input type="number" class="cartCount" -->
-<!-- 									 value="1" name="cartCount" min="1" readonly> -->
-									
-<!-- 								<button class="increase" type="button">+</button> -->
-								
-<!-- 							</span> -->
-<!-- 							<button class="removeProudct" type="button" style="float: right;"> -->
-<!-- 								<img src="resources/images/close.png" style="width: 10px;"> -->
-<!-- 							</button> -->
-<!-- 							<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
-<%-- 						<input type="hidden" name="discountRate" value="${p.discountRate}"> --%>
-<!-- 						</div> -->
-<!-- 						 <br> -->
-<!-- 					</div> -->
-					
-<!-- 				</div> -->
-					
-						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-							<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
+					<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
 				</div>
 			</div>
 		</div>
@@ -847,10 +855,10 @@ p b {
 	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
 	
 		<div class="reviewWrap1" style="padding: 10px;">
-				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">${textboxCount}</span>
+				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">1</span>
 
 			<div class="review_btn">
-				<a href="createReview.ma">
+				<a href="javascript:gd_open_write_popup('goodsreview', '1000030759')">
 				<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 			</div>
 			<div class="photoList">
@@ -888,93 +896,8 @@ p b {
 			</div>
 			
 		</div>
-		
-		
-		
-		<div class="textbox">
-			<div style="padding: 10px;">
-				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
-				
-				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
-				&nbsp;
-				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
-				
-				<div class="reviewPhoto">
-					<ul style="padding: 10px;">
-						<li ><img src="img" alt="" /></li>
-						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
-					</ul>
-				</div>
-			</div>
-			
-				
-			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
-
-				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
-					</div>
-			</div>
-			
-		</div>
-		<div class="textbox">
-			<div style="padding: 10px;">
-				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
-				
-				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
-				&nbsp;
-				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
-				
-				<div class="reviewPhoto">
-					<ul style="padding: 10px;">
-						<li ><img src="img" alt="" /></li>
-						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
-					</ul>
-				</div>
-			</div>
-			
-				
-			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
-
-				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
-					</div>
-			</div>
-			
-		</div>
-		<div class="textbox">
-			<div style="padding: 10px;">
-				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
-				
-				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
-				&nbsp;
-				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
-				
-				<div class="reviewPhoto">
-					<ul style="padding: 10px;">
-						<li ><img src="img" alt="" /></li>
-						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
-					</ul>
-				</div>
-			</div>
-			
-				
-			<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
-
-				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!!
-					</div>
-			</div>
-			
-		</div>
 	
-				<div class="moreView">더보기</div>
-				
-				
-				
-				
+	
 	<div class="productBox">
 		<ul	class="productBoxInfo">
 			<li class="productPageInfo">
@@ -1051,7 +974,7 @@ p b {
                             </dd>
         					<br>
                             <dt style="background:#E3F6FF; border:1px solid #ddd; padding:9px 12px 10px; border-radius:6px;">본 상품과 컨텐츠는 입점 판매자가 등록한 것으로 (주)홀로세끼는 통신판매중개자로서 거래 당사자가 아니기 때문에 그 내용과 거래에 대한 책임을 일체 지지 않습니다.<br>
-                                <span style="color:#065E87;">홀로세끼 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
+                                <span style="color:#065E87;">만개의레시피 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
                             <dd></dd>
                         </dl>
                       </div> 
@@ -1099,7 +1022,7 @@ p b {
             
 			</ul>
 				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
-				    <div class="review_btn_wr"><a href="createqna.ma">
+				    <div class="review_btn_wr"><a href="">
 				    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
 				    </div>
 				</div>
@@ -1118,9 +1041,137 @@ p b {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<script>
+	function show(){
+		const check = document.querySelector('input[name="period"]:checked');
+		const first = document.getElementById('first');
+		const second = document.getElementById('second');
+		const third = document.getElementById('third');
+		const fourth = document.getElementById('fourth');
+		const sel1sts = document.getElementsByClassName('select1st');
+		const sel2nds = document.getElementsByClassName('select2nd');
+		const sel3rds = document.getElementsByClassName('select3rd');
+		const sel4ths = document.getElementsByClassName('select4th');
+		
+		const one = document.getElementsByClassName('oneWeek');
+		const two = document.getElementsByClassName('twoWeek');
+		const three = document.getElementsByClassName('threeWeek');
+		const four = document.getElementsByClassName('fourWeek');
+		
+		
+		
+		for(const sel1st of sel1sts){
+			if(check && check.id == "first"){
+				sel1st.style.display = 'block';
+			} else{
+				sel1st.style.display = 'none';
+				for(const o of one){
+					o.value = 0;
+				}
+			}
+		}
+		for(const sel2nd of sel2nds){
+			if(check && check.id == "second"){
+				sel2nd.style.display = 'block';
+			} else{
+				sel2nd.style.display = 'none';
+				for(const t of two){
+					t.value = 0;
+				}
+			}
+		}
+		for(const sel3rd of sel3rds){
+			if(check && check.id == "third"){
+				sel3rd.style.display = 'block';
+			} else{
+				sel3rd.style.display = 'none';
+				for(const th of three){
+					th.value = 0;					
+				}
+			}
+		}
+		for(const sel4th of sel4ths){
+			if(check && check.id == "fourth"){
+				sel4th.style.display = 'block';
+			} else{
+				sel4th.style.display = 'none';
+				for(const f of four){
+					f.value = 0;
+				}
+			}
+		}
+	}
 	
-	window.onload = function(){
+// 	상품수량 입력
+	const menu1s = document.getElementsByClassName("menu1");
+	const menu2s = document.getElementsByClassName("menu2");
+	const menu3s = document.getElementsByClassName("menu3");
+	const menu4s = document.getElementsByClassName("menu4");
+	
+// 	상품수량 출력
+	const menuOne = document.getElementById('menuOne');
+	const menuTwo = document.getElementById('menuTwo');
+	const menuThree = document.getElementById('menuThree');
+	const menuFour = document.getElementById('menuFour');
+	
+	for(const menu1 of menu1s){
+		menu1.addEventListener('input', function(){
+			menuOne.textContent = "식단1 : " + menu1.value + "개";
+		})
+	}
+	for(const menu2 of menu2s){
+		menu2.addEventListener('input', function(){
+			menuTwo.textContent = "식단2 : " + menu2.value + "개";
+		})
+	}
+	for(const menu3 of menu3s){
+		menu3.addEventListener('input', function(){
+			menuThree.textContent = "식단1 : " + menu3.value + "개";
+		})
+	}
+	for(const menu4 of menu4s){
+		menu4.addEventListener('input', function(){
+			menuFour.textContent = "식단4 : " + menu4.value + "개";
+		})
+	}
+	
+	
+	
+	
+	
+	
 	
 	$('.accordion_i_tit').click(function(){
 		$('.accordion_i_cont').toggle(400);
@@ -1132,20 +1183,17 @@ p b {
 		$('.accordion_i_cont3').toggle(400);
 	})
 
-   const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
+   const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명
    
-   const productOption = document.querySelector(".productOption"); //사이즈 선택 창
-   const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
-   const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
+   const option = document.getElementsByClassName("options"); //사이즈 선택 창
    
-    // 상품 수량 
-    // 상품 수량 감소 버튼
-  // 상품 수량 증가 버튼
-   
+   let buyCount = document.getElementsByClassName("buyCount")[0]; // 상품 수량 
+   const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
+   const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
+   let productPrice = document.getElementsByClassName("productPrice")[0];
    const buyBtn = document.getElementById("buyBtn");
    const result = document.getElementById("productResult");
    const like = document.querySelector(".like");
-   
    
       like.addEventListener("click", function() {
 	    if(like.innerText === '♡') {
@@ -1153,197 +1201,78 @@ p b {
 	    } else like.innerText ='♡';
 	});
    
+   
       
-      let productOp = []; 
-    	for( prOp  of productOption){ 
-   		 productOp.push(prOp.value);
-   	 }
       
-    	productOption.addEventListener("change", function(){
-    		
-    		if(productOp.value != ""){
-    			let b = ["S","M","L", "XL"];
-                let result = $( '.productOption' ).val();
-                let o;
-                console.log(" 0. result : "+ result);
-                if ( productOp.indexOf(result) > 0  == true && result != "") {
-                  o = b;
-                } else if ( productOp.indexOf(o) > 0 != true && result != "") {
-                  o = b;
-                } else {
-              	o = ["색상 옵션을 선택해주세요"];
-                }
-                $( '.productOption2' ).empty();
-                for ( let i = 0; i < o.length; i++ ) {
-                  $( '.productOption2' ).append( '<option class="productOption2Set">'+ o[ i ] + '</option>' );
-                     
-                  }
-    		}
-    		  
-    	})
-        
-        
-        productOption2.addEventListener("change", function(){
-        	
-             const select =  $('.productOption option:selected');
-             const select2 = $('.productOption2 option:selected');
-
-
-
-      		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
-      		const opop = document.getElementsByClassName('opSearch');
-//             			console.log(opop[0]);
-      		let YN = "Y";
-      		for(let k=0; k<opop.length; k++){
-      			if(opop[k].innerText == optionName){
-      				let cartCount = document.querySelectorAll(".cartCount");
-      				cartCount[k].value++;
-      				YN = "N";
-      			}
-      		}
-      		
-      		if(YN == "Y"){
-      			$(".productSet").append('<div  class="productResultSet" style="display:block">'
-						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-//      							+'캠핑용 후라이팬 <span class="op1">'+select.val()+'</span>'+" "+'<span class="op2">'+select2.val()+'</span>'
-							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
-							+'<input type="hidden" name="productNo" value="134">'
-							+'<input type="hidden" name="productName" value="캠핑용 후라이팬">'
-							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-						+'</h4>'
-						+'<div>'
-							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-							+'<button class="decrease" type="button">-</button>'
-							+'<input type="number" class="cartCount"'
-							+'	value="1" name="cartCount" min="1" readonly>'
-							+'<button class="increase" type="button">+</button>'
-								+'<button class="removeProudct" type="button" style="float: right;">'
-								+'<img src="resources/images/close.png" style="width: 10px;">'
-								+'<span>'
-							+'</button>'
-							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-						+'<input type="hidden" name="discountRate" value="${p.discountRate}">'
-						+'</div>'
-						 +'<br>'
-					+'</div>')
-					
-					const opop2 = document.getElementsByClassName('opSearch');
-      				console.log(document.querySelectorAll(".increase")[opop2.length-1]);
-      				console.log("0번째");
-      				console.log(document.querySelectorAll(".increase")[0]);
-      				console.log("1번째");
-      				console.log(document.querySelectorAll(".increase")[1]);
-      				console.log(opop);
-	  				document.querySelectorAll(".increase")[opop2.length-1].addEventListener('click', function(){
-  					document.querySelectorAll(".cartCount")[opop2.length-1].value++;
-//  			    productPrice[k].innerText = priceToString(cartCount[k].value*450000);
-  			      
-  			      
-  			   })
-  			  		document.querySelectorAll(".decrease")[opop2.length-1].addEventListener("click", function(){
-  			  		document.querySelectorAll(".cartCount")[opop2.length-1].value--;
-//   			    document.querySelectorAll(".productPrice")[k].innerText = priceToString(cartCount[k].value*450000);
-  			      
-  			      if(cartCount[opop2.length-1].value < 1){
-  			         cartCount[opop2.length-1].value = 1
-//   			      productPrice.innerText = priceToString(cartCount[opop.length].value*450000);
-  			         
-  			      }
-  			   })
-      		
-      	}
-      		
-      		
-      	
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				
-
-            
-             
-            })
-        		
-               
-        
-        
       
+   
+   
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
    
    
+   
+//    console.log(option);
+   
+   
+   
+   
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-   
-   
-   
-
-   
-	
-$(function(){
-    $(".textbox").slice(0, 2).show(); // 초기갯수
-    $(".moreView").click(function(e){ // 클릭시 more
-        e.preventDefault();
-        $(".textbox:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
-        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
-        }
-    });
-});
-	
- 
-	
-	$(document).ready(function() {
-    $(".cartbtn").click(function() {
-        var productNo = $("input[name='productNo']").val();
-        var cartCount = $(".cartCount").val();
-        var productOption = $(".productOption").val();
-        
-        console.log(productNo);
-        console.log(cartCount);
-        console.log(productOption);
+// 	$(document).ready(function() {
+//     $(".cartbtn").click(function() {
+//         var productNo = $("input[name='productNo']").val();
+//         var cartCount = $(".buyCount").val();
+//         var optionSize = $(".size").val();
         
         
-        var data = {
-            productNo: productNo,
-            cartCount: cartCount,
-            productOption: productOption
-        };
+//         var data = {
+//             productNo: productNo,
+//             cartCount: cartCount,
+//             optionSize: optionSize
+//         };
         
-        $.ajax({
-            url: "insertCart.ma",
-            type: "post",
-            data: data,
-            success: function(data) {
-            	if(data > 0) {
-                alert("상품이 장바구니에 담겼습니다.");
-            	}
-            },
-            error: function(data) {
-                alert("상품이 장바구니에 담기지 못했습니다.");
-            }
-        })
-    })
-})
+//         $.ajax({
+//             url: "${contextPath}/addCart.ca",
+//             type: "post",
+//             data: data,
+//             success: function(data) {
+//             	if(data > 0) {
+//                 alert("카트 담기 성공");
+//             	}
+//             },
+//             error: function(data) {
+//                 alert("카트 담기 실패");
+//             }
+//         });
+//     });
+// });
 	
-	}
+	
 	 </script> 
 
 </body>

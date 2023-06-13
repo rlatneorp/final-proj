@@ -189,13 +189,13 @@ input[type="text"] {
 			<th class="tableBorder1"><b>상품가격</b></th>
 			<th class="tableBorder1"><b>적립/할인</b></th>
 			<th class="tableBorder1"><b>합계금액</b></th>
-			<th style="border-bottom: 2px solid #dee2e6">배송비</th>
+<!-- 			<th style="border-bottom: 2px solid #dee2e6">배송비</th> -->
 		</tr>
 		<tbody id="products">
-			<c:forEach items="${ cartList}" var="cl">
-				<tr style="border-top: 2px solid #dee2e6;">
+			<c:forEach items="${ cartList}" var="cl" >
+				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
-						<input type="hidden"  id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
+						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
 						<input type="checkbox" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
 					</td>
@@ -221,16 +221,26 @@ input[type="text"] {
 						</select>
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:130px">
-						<i class="bi bi-dash-square-fill" id="minus" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
-						<span id="size">1</span>개&nbsp;
-						<i class="bi bi-plus-square-fill" id="plus" style="color: #00AAFF; font-size: 15px"></i>
+						<i class="bi bi-dash-square-fill" id="minus-${cl.productNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
+						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp;
+						<i class="bi bi-plus-square-fill" id="plus-${cl.productNo }" style="color: #00AAFF; font-size: 15px"></i>
 					</td>
-					<td style="border-right: 2px solid #dee2e6;"><span id="price">46,500</span>원</td>
-					<td style="border-right: 2px solid #dee2e6;"><span>2,325</span>P적립</td>
-					<td style="border-right: 2px solid #dee2e6; width:160px"><span id="sum">46,500</span>원</td>
-					<td>무료배송</td>
+					<td style="border-right: 2px solid #dee2e6;">
+						<span id="pp-${cl.productNo }" class="price">
+						${cl.productPrice}
+						</span>원
+					</td>
+					<td style="border-right: 2px solid #dee2e6;">
+						<span>2,325</span>P적립
+					</td>
+					<td style="border-right: 2px solid #dee2e6; width:160px">
+						<span class="sum" id="sum-${cl.productNo }">
+						${cl.sum }
+						</span>원
+					</td>
+<%-- 					<td id="shippingPrice-${cl.productNo }">${cl.shippingPrice }</td> --%>
 				</tr>
-			</c:forEach>
+				</c:forEach>
 		</tbody>
 	</table><br><br>
 	<div style="width: 1200px; margin: 0 auto; font-align: right">
@@ -243,20 +253,20 @@ input[type="text"] {
 		<tbody>
 			<tr style="height: 130px; font-size: 20px;">
 				<td style="width: 800px; text-align: right">
-					<b>총 <span>1</span>개의 상품 금액<br><br>
-					<span style="color: #00AAFF">46,500</span>원</b>
+					<b>총 <span id="orderSize">1</span>개의 상품 금액<br><br>
+					<span style="color: #00AAFF" id="trTotalSum">46,500</span>원</b>
 				</td>
 				<td>
 					&nbsp;&nbsp;&nbsp;<i class="bi bi-plus-circle-fill" style="color: #00AAFF; font-size: 30px"></i>
 				</td>
 				<td>
-					<b>배송비<br><br><span style="color: #00AAFF">0</span>원</b>
+					<b>배송비<br><br><span style="color: #00AAFF" id="shipPrice">0</span>원</b>
 				</td>
 				<td>
 					<span class="material-symbols-outlined" style="color: #00AAFF">equal</span>
 				</td>
 				<td>
-					<b>합계<br><br><span style="color: #00AAFF">46,500</span>원</b>
+					<b>합계<br><br><span style="color: #00AAFF" id="shipSum">46,500</span>원</b>
 				</td>
 			</tr>
 			<tr>
@@ -285,23 +295,164 @@ input[type="text"] {
 <script>
 	
 	window.onload = () => {
-		
-		//마우스 올렸을 때 글자 변화 
-		document.getElementById('payWrite').addEventListener('mouseover', function() {
-			this.innerHTML = '02 주문서작성/결제';
-		})
-		document.getElementById('payWrite').addEventListener('mouseleave', function() {
-			this.innerHTML = '02 ㅈㅁㅅㅈㅅ/ㄱㅈ';
-		})
-		document.getElementById('paySuccess').addEventListener('mouseover', function() {
-			this.innerHTML = '> 03 주문완료 &nbsp;';
-		})
-		document.getElementById('paySuccess').addEventListener('mouseleave', function() {
-			this.innerHTML = '> 03 ㅈㅁㅇㄹ &nbsp;';
-		})
-		
-		
-	}
+			//총 주문 개수
+			let totalCount = 0;
+			const cartCount = document.getElementsByClassName('cartCount');
+			for(const cc of cartCount) {
+				const intCount = parseInt(cc.innerText);
+				totalCount += intCount;
+			}			
+			document.getElementById('orderSize').innerText = totalCount;
+			
+			//총 합계 금액 
+			let trTotalSum = 0;
+			const trSum = document.getElementsByClassName('sum');
+			for(const sum of trSum) {
+				const intSum = parseInt(sum.innerText);
+				trTotalSum += intSum;
+			}
+			document.getElementById('trTotalSum').innerText = trTotalSum;
+			//배송비
+			if(trTotalSum <= 30000) {
+				document.getElementById('shipPrice').innerText = '3,000';
+			}
+			//총 합계 + 배송비 
+			const intTrTotalSum = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
+			const shipSum = trTotalSum + intTrTotalSum;
+			document.getElementById('shipSum').innerText = shipSum;
+			
+			//상품가격 금액 형태로 변환 
+			const prices = document.getElementsByClassName('price');
+			console.log(prices)
+			for(originPrice of prices) {
+				const detailPrice = originPrice.innerText;
+				const numericPrice = parseFloat(detailPrice);// 숫자로 변환
+	
+				// 금액 형식으로 변환
+				const formattedPrice = new Intl.NumberFormat('ko-KR', {
+			    style: 'currency',
+			    currency: 'KRW',
+			    currencyDisplay: 'code' // 통화 기호 제거
+			  	}).format(numericPrice);
+				
+				const priceWithoutCurrency = formattedPrice.replace('KRW', '').trim()
+				originPrice.innerText = priceWithoutCurrency;
+			}
+			
+			//합계금액 금액 형태로 변환 
+			const transSum = document.getElementsByClassName('sum');
+			for(sum of transSum) {
+				const detailSum = sum.innerText;
+				const numericPrice = parseFloat(detailSum);// 숫자로 변환
+	
+				// 금액 형식으로 변환
+				const formattedPrice = new Intl.NumberFormat('ko-KR', {
+			    style: 'currency',
+			    currency: 'KRW',
+			    currencyDisplay: 'code' // 통화 기호 제거
+			  	}).format(numericPrice);
+				
+				const priceWithoutCurrency = formattedPrice.replace('KRW', '').trim()
+				sum.innerText = priceWithoutCurrency;
+			}
+			
+			const parentPnos = document.getElementsByClassName('imgTab');
+			for(let p of parentPnos) {
+				let pNos = p.children[0].value; 
+				let size = parseInt(document.getElementById('size-'+ pNos).innerText);
+				
+				
+				
+				
+				const shippingPrice = document.getElementById('shippingPrice-' + pNos);
+				const originPriceString = document.getElementById('pp-'+pNos).innerText;
+				const price = parseInt(originPriceString.replace(/[,원]/g, ""));
+				let totalPrice = 0;
+				let trTotalPrice = 0;
+				//1. 수량 증가 시 
+				const clickPlus = document.getElementById('plus-' + pNos);
+				clickPlus.addEventListener('click', function() {
+					size++;
+					document.getElementById('size-'+ pNos).innerText = size;
+					console.log('price : ' + price);
+					$.ajax({
+						url:'${contextPath}/plusCount.ma',
+						data:{
+							productNo:pNos,
+							price:price
+						},
+						success: data => {
+							trTotalPrice = totalPrice + data;
+							console.log('tp : ' + trTotalPrice);
+							//플러스 버튼 누를 때마다 합계 금액 금액화 
+							const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
+							const sum = formattedPrice.replace(/[₩]/g, "");
+							document.getElementById('sum-'+pNos).innerText = sum;
+							
+							
+							
+							
+						},
+						error: data => {}
+					})
+				})
+				
+				//2.수량 감소 시 
+				const clickMinus = document.getElementById('minus-' + pNos);
+				clickMinus.addEventListener('click', function() {
+					const minSize = parseInt(document.getElementById('size-'+ pNos).innerText);
+					if(minSize != 1) {
+						size--;
+						document.getElementById('size-'+ pNos).innerText = size; //감소 수량 삽입 
+						
+						$.ajax({
+							url:'${contextPath}/minusCount.ma',
+							data:{
+								productNo:pNos,
+								price:price
+							},
+							success: data => {
+								
+								totalPrice += data;
+								//minus 버튼 누를 때마다 변동된 합계금액 금액화 
+								const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
+								const sum = formattedPrice.replace(/[₩]/g, "");
+								
+								console.log('tp : ' + totalPrice);
+								document.getElementById('sum-'+pNos).innerText = sum;
+								
+								
+								
+								
+					
+								
+								
+								
+							},
+							error: (data) => {}
+						})
+					} else {
+						alert('1개 이상 선택') //이거 빼버릴까 ?
+						return;
+					}
+				})
+			}
+			
+			//마우스 올렸을 때 글자 변화 
+			document.getElementById('payWrite').addEventListener('mouseover', function() {
+				this.innerHTML = '02 주문서작성/결제';
+			})
+			document.getElementById('payWrite').addEventListener('mouseleave', function() {
+				this.innerHTML = '02 ㅈㅁㅅㅈㅅ/ㄱㅈ';
+			})
+			document.getElementById('paySuccess').addEventListener('mouseover', function() {
+				this.innerHTML = '> 03 주문완료 &nbsp;';
+			})
+			document.getElementById('paySuccess').addEventListener('mouseleave', function() {
+				this.innerHTML = '> 03 ㅈㅁㅇㄹ &nbsp;';
+			})
+			
+		}
 	
 	//전체 선택 체크 
 	const selAllChec = document.getElementById('selectAllCheckBox');
@@ -309,7 +460,7 @@ input[type="text"] {
 		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 		checkboxes.forEach(function(checkbox) { //모든 checkbox를 순회 
 		      checkbox.checked = selAllChec.checked; //selAllChec의 체크 속성을 대입 (항상 같이 움직이게)
-		    });
+		});
 		
 	})
 	
@@ -339,7 +490,10 @@ input[type="text"] {
 		}
 	}
 	
-	//
+	
+	
+	
+	//장바구니 내 상품 한 개 이상 클릭 시 구매 버튼 실행 
 	document.getElementById('goPay').addEventListener('click', function() {
 		const products = document.getElementById('products');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
@@ -353,7 +507,6 @@ input[type="text"] {
 			location.href ='${contextPath}/payDetail.ma'
 		}
 	})
-	
 	
 </script>
 

@@ -30,7 +30,7 @@
 	
 /* 	레시피 설명 */
 	.recipeInformationBox{width: 1000px; padding: 0 5px;}
-	#recipeInformation{width: 1000px; height: 100px; resize: none; border-radius: 5px;}
+	.recipeInformation{width: 1000px; height: 100px; resize: none; border-radius: 5px;}
 	.recipeBox{width: 1000px; height: 200px; border-radius: 5px; border: 1px solid black; margin-bottom: 5px; position: relative;}
 	.recipeNo{width: 100px; height: 20px; text-align: center; position: absolute; padding-top: 90px;}
 	.recipeContent{width: 700px; height: 200px; border-radius: 10px;}
@@ -44,7 +44,8 @@
 	.imgInsert{margin-top: 60px; border:1px solid #B0DAFF;}
 	
 /* 	사진 추가 버튼 */
-	#plusBtn{width: 200px; margin-left: 400px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
+	#plusBtn{width: 200px; margin-left: 300px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
+	#minusBtn{width: 200px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
 	
 /* 	완성된 요리 추가 */
 	.completeImg{width: 1000px; background-color: #B0DAFF;}
@@ -69,6 +70,7 @@
 		<h1>레시피 등록</h1>
 	</div>
 	<br><br>
+<form action="writeRecipe.rc" method="post" enctype="multipart/form-data">
 	<div id="mainBox">
 		<div id="contentBox">
 			<div id="thumImg" class="d-inline-block">
@@ -80,7 +82,7 @@
 					레시피 대표 이미지 첨부<br>[필수 사항]
 				</span>
 				<img id="preview">		
-				<input type="file" accept="image/*" class="form-control form-control-lg" name="file" id="insertBtn" onchange="setThumbnail(event);">
+				<input type="file" accept="image/*" class="form-control form-control-lg" name="thum" id="insertBtn" onchange="setThumbnail(event);">
 			</div>
 			
 			<div id="place"></div>
@@ -88,38 +90,38 @@
 			
 <!-- 			레시피 명, 카테고리 등등 -->
 			<div class="d-inline-block insertInfo">
-				<div class="d-inline-block beforeInput">레시피 명</div><input type="text" id="title" placeholder=" 제목을 입력해주세요.">
+				<div class="d-inline-block beforeInput">레시피 명</div><input type="text" id="title" placeholder=" 제목을 입력해주세요." name="recipeName" maxlength="30">
 				<div class="term"></div>
 				<div class="d-inline-block beforeInput">카테고리</div>
 				<div class="d-inline-block" id="category">
-					<select class="categoryItem">
-						<option>재료 별</option>
-						<option>고기</option>
-						<option>해물</option>
-						<option>과일</option>
-						<option>채소</option>
+					<select class="categoryItem" name="categoryIngredient">
+						<option selected disabled value="">재료 별</option>
+						<option value="고기">고기</option>
+						<option value="해물">해물</option>
+						<option value="과일">과일</option>
+						<option value="채소">채소</option>
 					</select>
-					<select class="categoryItem">
-						<option>상황 별</option>
-						<option>다이어트</option>
-						<option>술안주</option>
-						<option>도시락</option>
-						<option>아침식사</option>
-						<option>비건</option>
+					<select class="categoryItem" name="categorySituation">
+						<option selected disabled value="">상황 별</option>
+						<option value="다이어트">다이어트</option>
+						<option value="술안주">술안주</option>
+						<option value="도시락">도시락</option>
+						<option value="아침식사">아침식사</option>
+						<option value="비건">비건</option>
 					</select>
-					<select class="categoryItem">
-						<option>종류 별</option>
-						<option>메인반찬</option>
-						<option>반찬</option>
-						<option>간식</option>
-						<option>면</option>
-						<option>국</option>
+					<select class="categoryItem" name="categoryType">
+						<option selected disabled value="">종류 별</option>
+						<option value="메인반찬">메인반찬</option>
+						<option value="반찬">반찬</option>
+						<option value="간식">간식</option>
+						<option value="면">면</option>
+						<option value="국">국</option>
 					</select>
 				</div>
 				<div class="term"></div>
-				<div class="d-inline-block beforeInput">난이도</div><input type="range" min="1" max="5" id="grade"><span>(난이도는 1~5, 기본 3)</span>
+				<div class="d-inline-block beforeInput">난이도</div><input type="range" min="1" max="5" id="grade" name="difficult"><span>(난이도는 1~5, 기본 3)</span>
 				<div class="term"></div>
-				<div class="d-inline-block beforeInput">조리시간</div><input type="number" min="5" max="120" step="5" id="time" value="30">
+				<div class="d-inline-block beforeInput">조리시간</div><input type="number" min="5" max="120" step="5" id="time" value="30" name="recipeTime">
 			</div>
 			
 			<br><br>
@@ -127,7 +129,7 @@
 <!-- 			레시피 설명 -->
 			<div class="recipeInformationBox">
 				<div class="beforeInput">레시피 설명</div>
-				<textarea id="recipeInformation" placeholder=" 간단한 요리 설명을 적어주세요."></textarea>
+				<textarea class="recipeInformation" placeholder=" 간단한 요리 설명을 적어주세요." name="recipeContent"></textarea>
 			</div>
 			
 			<br><br>
@@ -135,18 +137,19 @@
 <!-- 			재료 -->
 			<div class="recipeInformationBox">
 				<div class="beforeInput">재료</div>
-				<textarea id="recipeInformation" placeholder=" 재료를 적어주세요."></textarea>
+				<textarea class="recipeInformation" placeholder=" 재료를 적어주세요." name="recipeIngredient"></textarea>
 			</div>
 			
 			<br><br>
 			
 <!-- 			레시피 순서 -->
 			<div class="recipeInformationBox" id="recipeOrderBox">
-				<div class="d-inline-block beforeInput">조리 순서 |</div><div class="d-inline-block">조리 순서를 추가하려면 +버튼을 눌러주세요.</div>
+				<div class="d-inline-block beforeInput">조리 순서 |</div><div class="d-inline-block">조리 순서를 추가하려면 +버튼을 눌러주세요.(조리순서는 최대 10개)</div>
 				<div class="recipeBox">
 					<div class="d-inline-block recipeNo">1</div>
 					<div class="d-inline-block recipeContent">
-						<input type="text" class="content">
+						<input type="text" class="content" name="recipeOrder">
+						<input type="hidden" value="abc123abc" name="recipeOrder">
 					</div>
 					<div class="d-inline-block recipeImage">
 						<div class="d-inline-block recipeImg">
@@ -157,6 +160,8 @@
 			</div>
 			
 			<button type="button" id="plusBtn">+ 조리 순서 추가하기</button>
+			<span> / </span>
+			<button type="button" id="minusBtn">- 조리 순서 삭제하기</button>
 			
 			<br><br><br>
 			
@@ -177,6 +182,7 @@
 		<button type="button" id="can">취소</button> <!-- 뒤로 가기 추가 -->
 		<button type="submit" id="sub">등록</button>
 	</div>
+</form>
 
 <br>
 <%@ include file="../common/footer.jsp" %>
@@ -209,45 +215,65 @@ function setThumbnail(event){
 
 window.onload=()=>{
 	const orderBox = document.getElementById('recipeOrderBox');
+	var count = 1;
 	document.getElementById('plusBtn').addEventListener('click', ()=>{
-		
-		const recipeBox = document.createElement('div');
-		recipeBox.classList.add("recipeBox");
-		
-		const recipeNo = document.createElement('div');
-		recipeNo.classList.add("d-inline-block");
-		recipeNo.classList.add("recipeNo");
-		recipeNo.innerText = "1";
-		
-		const content = document.createElement('div');
-		content.classList.add("d-inline-block");
-		content.classList.add("recipeContent")
-		
-		const input = document.createElement('input');
-		input.setAttribute("type", "text");
-		input.classList.add('content');
-		
-		const imgBox = document.createElement('div');
-		imgBox.classList.add('d-inline-block');
-		imgBox.classList.add('recipeImage');
-		
-		const img = document.createElement('div');
-		img.classList.add('d-inline-block');
-		img.classList.add('recipeImg');
-		
-		content.append(input);
-		
-		img.innerHTML = '<input type="file" accept="image/*" class="form-control form-control-lg imgInsert" name="orderFile">';
-		
-		imgBox.append(img);
-		console.log(recipeNo);
-		
-		recipeBox.append(recipeNo);
-		recipeBox.append(content);
-		recipeBox.append(imgBox);
-		
-		orderBox.append(recipeBox);
+		if(count < 10){
+			count++;
+			const recipeBox = document.createElement('div');
+			recipeBox.classList.add("recipeBox");
+			
+			const recipeNo = document.createElement('div');
+			recipeNo.classList.add("d-inline-block");
+			recipeNo.classList.add("recipeNo");
+			recipeNo.innerText = count;
+			
+			const content = document.createElement('div');
+			content.classList.add("d-inline-block");
+			content.classList.add("recipeContent")
+			
+			const input = document.createElement('input');
+			input.setAttribute("type", "text");
+			input.setAttribute("name", "recipeOrder")
+			input.classList.add('content');
+			
+			const hidden = document.createElement('input');
+			hidden.setAttribute("type", "hidden");
+			input.setAttribute("name", "recipeOrder")
+			hidden.value = "abc123abc";
+			
+			
+			const imgBox = document.createElement('div');
+			imgBox.classList.add('d-inline-block');
+			imgBox.classList.add('recipeImage');
+			
+			const img = document.createElement('div');
+			img.classList.add('d-inline-block');
+			img.classList.add('recipeImg');
+			
+			content.append(input);
+			
+			img.innerHTML = '<input type="file" accept="image/*" class="form-control form-control-lg imgInsert" name="orderFile">';
+			
+			imgBox.append(img);
+			console.log(recipeNo);
+			
+			recipeBox.append(recipeNo);
+			recipeBox.append(content);
+			recipeBox.append(imgBox);
+			
+			orderBox.append(recipeBox);
+			
+			
+		}
 	})
+	document.getElementById('minusBtn').addEventListener('click', ()=>{
+		const recBox = document.querySelectorAll(".recipeBox");
+		if(count > 1){
+			recBox[ recBox.length-1].remove();
+			count--;
+		}
+	})
+	
 	
 	const plusComBtn = document.getElementById('plusComBtn');
 	const com = document.getElementById('completePic');

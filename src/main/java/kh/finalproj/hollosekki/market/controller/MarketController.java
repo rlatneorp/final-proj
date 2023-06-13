@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,6 +27,7 @@ import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
+import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
@@ -48,15 +48,39 @@ public class MarketController {
 		ArrayList<Tool> toolsList = new ArrayList<>();
 		ArrayList<Ingredient> igsList = new ArrayList<>();
 		
+		ArrayList<Product> foodInfo = new ArrayList<>();
+		ArrayList<Integer> productPrices = new ArrayList<>();
+		ArrayList<Integer> sumList = new ArrayList<>();
+		
 		Food foods = null; Tool tools = null; Ingredient igs = null;
 		for(Cart cart : cartList) {
 			int productNo = cart.getProductNo();
 			
+			//카트에 담긴 productNo의 가격도 알아야 함 
 			foods = mkService.selectFood(productNo);
 			tools = mkService.selectTool(productNo);
 			igs = mkService.selectIngrdient(productNo);
 			
+			int price = 0;
+			int sum = 0;
 			if (foods != null) {
+				foodInfo = mkService.selectFoodInfo(productNo);
+				
+				for (Product product : foodInfo) {
+				    price = product.getProductPrice();
+//				    productPrices.add(price);
+				    cart.setProductPrice(price); //근데 이거 마지막 값으로 저장될 거 아니야... 
+				}
+				
+				System.out.println("foodInfo : " + foodInfo);
+				int size = mkService.plusResultCount(productNo);
+				sum = size * price;
+				cart.setSum(sum);
+				if(sum >= 30000) {
+					cart.setShippingPrice("무료배송");
+				} else {
+					cart.setShippingPrice("30,000");
+				}
 		        foodsList.add(foods);
 		    }
 		    if (tools != null) {
@@ -66,7 +90,9 @@ public class MarketController {
 		        igsList.add(igs);
 		    }
 		}
+		
 		if(foods != null) {
+			model.addAttribute("price", productPrices);
 			model.addAttribute("productList", foodsList);
 		} else if (tools != null) {
 			model.addAttribute("productList", toolsList);
@@ -189,7 +215,38 @@ public class MarketController {
 		return "basket";
 	}
 	
+	//
+	@RequestMapping(value="plusCount.ma", produces="application/json; charset=UTF-8")
+	public void plusCount(@RequestParam("productNo") int productNo, @RequestParam("price") int price, HttpServletResponse response) {
+		mkService.plusCount(productNo);
+		
+		int size = mkService.plusResultCount(productNo);
+		int sum = size * price;
+		System.out.println("sum : " + sum);
+		response.setContentType("application/json; charset=UTF-8");
+        GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd"); 
+        Gson gson = gb.create();
+		try {
+            gson.toJson(sum, response.getWriter()); 
+         } catch (JsonIOException | IOException e) {
+            e.printStackTrace();
+         }
+	}
 	
+	@RequestMapping(value="minusCount.ma", produces="application/json; charset=UTF-8")
+	public void minusCount(@RequestParam("productNo") int productNo, @RequestParam("price") int price, HttpServletResponse response) {
+		mkService.minusCount(productNo);
+		int size = mkService.plusResultCount(productNo);
+		int sum = size * price;
+		response.setContentType("application/json; charset=UTF-8");
+        GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd"); 
+        Gson gson = gb.create();
+		try {
+            gson.toJson(sum, response.getWriter()); 
+         } catch (JsonIOException | IOException e) {
+            e.printStackTrace();
+         }
+	}
 	
 	
 }

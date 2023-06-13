@@ -90,6 +90,22 @@ public class MarketDAO {
 		sqlSession.delete("marketMapper.delBasket", productNo);
 	}
 
+	public ArrayList<Product> selectFoodInfo(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectFoodInfo", productNo);
+	}
+
+	public int plusCount(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.update("marketMapper.plusCount", productNo);
+	}
+
+	public int plusResultCount(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.plusResultCount", productNo);
+	}
+
+	public void minusCount(SqlSessionTemplate sqlSession, int productNo) {
+		sqlSession.update("marketMapper.minusCount", productNo);
+	}
+
 	
 
 

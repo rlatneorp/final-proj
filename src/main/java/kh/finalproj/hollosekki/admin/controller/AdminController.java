@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -91,7 +93,31 @@ public class AdminController {
 	
 //	Menu-식단 관리
 	@GetMapping("adminMenuManage.ad")
-	public String adminMenuManage() {
+	public String adminMenuManage(@ModelAttribute AdminBasic ab,
+								  HttpSession session,
+							 	  Model model) {
+		int currentPage = 1;
+		if(ab.getPage() == null) {
+			ab.setPage(currentPage);
+		}
+		int pageCount = 10;
+//		세션에 값 X ab에 값 X	-> 초기값 동일 설정
+		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
+			ab.setPageCount(pageCount);
+			session.setAttribute("pageCount", pageCount);
+//		세션에 값 X ab에 값 O	(불가능)
+//		세션에 값 O ab에 값 X	-> 세션값 ab에 입력
+		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
+			ab.setPageCount((int)session.getAttribute("pageCount"));
+//		세션에 값 O ab에 값 O	-> ab값 세션에 입력
+		}else {
+			session.setAttribute("pageCount", ab.getPageCount());
+		}
+		
+//		int listCount = aService.getMenuCount(ab);
+//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		
+		
 		return "adminMenuManage";
 	}
 	@GetMapping("adminMenuDetail.ad")
@@ -115,14 +141,24 @@ public class AdminController {
 //	Ingredient-식재료 관리
 	@GetMapping("adminIngredientManage.ad")
 	public String adminIngredientManage(@ModelAttribute AdminBasic ab,
+										HttpSession session,
 									 	Model model) {
 		int currentPage = 1;
 		if(ab.getPage() == null) {
 			ab.setPage(currentPage);
 		}
 		int pageCount = 10;
-		if(ab.getPageCount() == null) {
+//		세션에 값 X ab에 값 X	-> 초기값 동일 설정
+		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
 			ab.setPageCount(pageCount);
+			session.setAttribute("pageCount", pageCount);
+//		세션에 값 X ab에 값 O	(불가능)
+//		세션에 값 O ab에 값 X	-> 세션값 ab에 입력
+		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
+			ab.setPageCount((int)session.getAttribute("pageCount"));
+//		세션에 값 O ab에 값 O	-> ab값 세션에 입력
+		}else {
+			session.setAttribute("pageCount", ab.getPageCount());
 		}
 		
 		int listCount = aService.getIngredientCount(ab);
@@ -144,9 +180,10 @@ public class AdminController {
 					igd.setProductCount(p.getProductCount());
 					igd.setProductStatus(p.getProductStatus());
 				}
+			}else {
+				igd.setProductStatus("N");
 			}
 		}
-		
 		if(igdList != null) {
 			model.addAttribute("pi", pi);
 			model.addAttribute("ab", ab);
@@ -155,7 +192,6 @@ public class AdminController {
 		}else {
 			throw new AdminException("식재료 조회를 실패하였습니다.");
 		}
-		
 	}
 	@GetMapping("adminIngredientDetail.ad")
 	public String adminIngredientDetail(@ModelAttribute AdminBasic ab,
@@ -199,16 +235,19 @@ public class AdminController {
 		int result2 = 1;
 		int result3 = 1;
 		int result4 = 1;
-		
 			
-//		상품등록한 적이 없고(productNo == 0) && productStatus가 Y라면 
-//		== 새로 등록하는 경우
-		if(igd.getProductNo() == 0 && igd.getProductStatus().equals("Y")){
+//		상품등록한 적이 있다면(productNo != 0) (status 무관)
+		if(igd.getProductNo() != 0) {
+			result1 = aService.updateProduct(pd);
+//		상품등록한 적이 없지만(productNo == 0) Status가 Y일때
+//		(새로 상품등록)
+		}else if(igd.getProductNo() == 0 && igd.getProductStatus().equals("Y")) {
+			pd.setProductType(3);
+			pd.setProductOption("N");
 			result1 = aService.insertProduct(pd);
 			igd.setProductNo(aService.getNowProductNo());
-		}else {
-			result1 = aService.updateProduct(pd);
 		}
+		
 		result2 = aService.updateIngredient(igd);
 			
 		System.out.println(pd);
@@ -301,25 +340,54 @@ public class AdminController {
 		}
 		
 	}
-	@GetMapping("adminIngredientWrite.ad")
-	public String adminIngredientWrite(@RequestParam(value="page", required=false) Integer page,
-									   @RequestParam(value="pageCount", required=false) Integer wantPageCount,
-									   @RequestParam(value="searchType", required=false) String searchType,
-									   @RequestParam(value="searchText", required=false) String searchText,
-									   Model model) {
+	@PostMapping("adminIngredientDeletes.ad")
+	public String adminIngredientDeletes(@RequestParam("selectDelete") String[] selDeletes,
+										 HttpServletRequest request) {
 		
-		model.addAttribute("page", page);
-		model.addAttribute("pageCount", wantPageCount);
-		model.addAttribute("searchType", searchType);
-		model.addAttribute("searchText", searchText);
+		String[] igdDeletes = new String[selDeletes.length];
+		String[] pDeletes = new String[selDeletes.length];
+		int pCount = 0;
+		
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
+		for(int i = 0; i < selDeletes.length; i++) {
+			String[] deletes = selDeletes[i].split(",");
+			
+			igdDeletes[i] = deletes[0];
+			
+			if(deletes.length != 1 && !deletes[1].equals("0")) {
+				pDeletes[pCount] = deletes[1];
+				pCount++;
+			}
+			
+//			데이터 서버 이미지 삭제
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", Integer.parseInt(deletes[0]));
+			map.put("imageType", 5);
+			Image img = aService.selectImage(map);
+			deleteFile(img.getImageRenameName(), request);
+			
+//			DB서버 이미지 삭제
+			result3 += aService.deleteImage(img);
+		}
+		
+		result1 = aService.deletesProduct(pDeletes);
+		result2 = aService.deletesIngredient(igdDeletes);
+		
+		if(result1 == pCount) {
+			if(result2+result3 == igdDeletes.length*2) {
+				return "redirect:adminIngredientManage.ad";
+			}
+		}
+		throw new AdminException("식재료 삭제 실패");
+	}
+	@GetMapping("adminIngredientWrite.ad")
+	public String adminIngredientWrite() {
 		return "adminIngredientWrite";
 	}
 	@PostMapping("adminIngredientInsert.ad")
-	public String adminIngredientInsert(@RequestParam(value="page", required=false) Integer page,
-									    @RequestParam(value="pageCount", required=false) Integer wantPageCount,
-									    @RequestParam(value="searchType", required=false) String searchType,
-									    @RequestParam(value="searchText", required=false) String searchText,
-									    @ModelAttribute Ingredient igd,
+	public String adminIngredientInsert(@ModelAttribute Ingredient igd,
 									    @ModelAttribute Product pd,
 										@RequestParam("imageFile") MultipartFile imageFile, 
 										HttpServletRequest request,
@@ -333,8 +401,8 @@ public class AdminController {
 		int result3 = 0;
 		
 		if(igd.getProductStatus().equals("Y")) {
-			igd.setProductType(3);
-			igd.setProductOption("N");
+			pd.setProductType(3);
+			pd.setProductOption("N");
 			result2 = aService.insertProduct(pd);
 		}
 		
@@ -354,11 +422,6 @@ public class AdminController {
 		}
 		result3 = aService.insertImage(image);
 		
-		model.addAttribute("page", page);
-		model.addAttribute("pageCount", wantPageCount);
-		model.addAttribute("searchType", searchType);
-		model.addAttribute("searchText", searchText);
-		
 		if(result1 + result3 == 2) {
 			if(igd.getProductStatus().equals("Y")) {
 				if(result2 > 0) {
@@ -372,16 +435,40 @@ public class AdminController {
 		}else {
 			throw new AdminException("식재료 등록에 실패하였습니다.");
 		}
-		
-		
-
 	}
 	
 	
 	
 //	Food-식품 관리
+
+	
+//	Food-식품 관리
 	@GetMapping("adminFoodManage.ad")
-	public String adminFoodManage() {
+	public String adminFoodManage(@ModelAttribute AdminBasic ab,
+								  HttpSession session,
+								  Model model) {
+		
+		int currentPage = 1;
+		if(ab.getPage() == null) {
+			ab.setPage(currentPage);
+		}
+		int pageCount = 10;
+//		세션에 값 X ab에 값 X	-> 초기값 동일 설정
+		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
+			ab.setPageCount(pageCount);
+			session.setAttribute("pageCount", pageCount);
+//		세션에 값 X ab에 값 O	(불가능)
+//		세션에 값 O ab에 값 X	-> 세션값 ab에 입력
+		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
+			ab.setPageCount((int)session.getAttribute("pageCount"));
+//		세션에 값 O ab에 값 O	-> ab값 세션에 입력
+		}else {
+			session.setAttribute("pageCount", ab.getPageCount());
+		}
+		
+//		int listCount = aService.getFoodCount(ab);
+//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		
 		return "adminFoodManage";
 	}
 	@GetMapping("adminFoodDetail.ad")
@@ -403,8 +490,36 @@ public class AdminController {
 	
 	
 //	Product-상품 관리
+
+	
+//	Product-상품 관리
 	@GetMapping("adminProductManage.ad")
-	public String adminProductManage() {
+	public String adminProductManage(@ModelAttribute AdminBasic ab,
+			  						 HttpSession session,
+			  						 Model model) {
+		
+		int currentPage = 1;
+		if(ab.getPage() == null) {
+			ab.setPage(currentPage);
+		}
+		int pageCount = 10;
+//		세션에 값 X ab에 값 X	-> 초기값 동일 설정
+		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
+			ab.setPageCount(pageCount);
+			session.setAttribute("pageCount", pageCount);
+//		세션에 값 X ab에 값 O	(불가능)
+//		세션에 값 O ab에 값 X	-> 세션값 ab에 입력
+		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
+			ab.setPageCount((int)session.getAttribute("pageCount"));
+//		세션에 값 O ab에 값 O	-> ab값 세션에 입력
+		}else {
+			session.setAttribute("pageCount", ab.getPageCount());
+		}
+		
+//		int listCount = aService.getProductCount(ab);
+//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+
+		
 		return "adminProductManage";
 	}
 	@GetMapping("adminProductDetail.ad")
@@ -423,6 +538,9 @@ public class AdminController {
 	public String adminProductInsert() {
 		return "redirect:adminProductManage.ad";
 	}
+	
+	
+//	Recipe-레시피관리	
 	
 	
 //	Recipe-레시피 관리
@@ -449,6 +567,9 @@ public class AdminController {
 	
 	
 //	RecipeReview-레시피 후기 관리
+
+
+//	RecipeReview-레시피후기 관리
 	@GetMapping("adminRecipeReviewManage.ad")
 	public String adminRecipeReviewManage() {
 		return "adminRecipeReviewManage";
@@ -464,6 +585,9 @@ public class AdminController {
 	
 	
 //	MenuReview-식단구독 후기 관리
+
+	
+//	MenuReview-메뉴후기 관리
 	@GetMapping("adminMenuReviewManage.ad")
 	public String adminMenuReviewManage() {
 		return "adminMenuReviewManage";
@@ -479,6 +603,9 @@ public class AdminController {
 	
 	
 //	Product-상품 관리
+
+	
+//	ProductReview-상품후기 관리
 	@GetMapping("adminProductReviewManage.ad")
 	public String adminProductReviewManage() {
 		return "adminProductReviewManage";
@@ -491,6 +618,9 @@ public class AdminController {
 	public String adminProductReviewUpdate() {
 		return "redirect:adminProductReviewManage.ad";
 	}
+	
+	
+//	FAQ-자주묻는질문 관리
 	
 	
 //	FAQ-자주묻는질문 관리
@@ -517,6 +647,9 @@ public class AdminController {
 	
 	
 //	QNA-1:1문의 관리
+
+	
+//	QNA-1:1문의 관리	
 	@GetMapping("adminQNAManage.ad")
 	public String adminQNAManage() {
 		return "adminQNAManage";
@@ -530,6 +663,7 @@ public class AdminController {
 		return "redirect:adminQNAManage.ad";
 	}
 	
+
 	
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
 //		파일 저장소 지정

@@ -34,8 +34,8 @@
 					<input type="text" name="ingredientType" class="col-9 pb-1 mb-2 rounded" placeholder="재료 종류를 선택해주세요." value="${igd.ingredientType}">
 					<span class="col-3">재고</span>
 					<input type="number" name="productStock" class="col-9 pb-1 mb-2 rounded" placeholder="재고를 입력해주세요." value="${igd.productStock}">
-
-					<div class="col-12 row priceBox" <c:if test="${igd.productStatus eq 'N'}">style="opacity: 0.3"</c:if>>
+	
+					<div class="col-12 row priceBox" <c:if test="${igd.productStatus eq null || igd.productStatus eq 'N'}">style="opacity: 0.3"</c:if>>
 						<span class="col-4">가격</span>
 						<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="${igd.productPrice}">
 						<span class="col-2">원</span>
@@ -56,11 +56,11 @@
 					<button type="button" class="col-2 isAccept" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
 					<span class="col-5"></span>
 					
-					<span class="col-3 mb-3">공개상태</span>
-					<input type="hidden" name="ingredientStatus" value="${igd.ingredientStatus}">
-					<button type="button" class="col-2 igdStatus" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
-					<button type="button" class="col-2 igdStatus" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
-					<span class="col-5"></span>
+<!-- 					<span class="col-3 mb-3">공개상태</span> -->
+<%-- 					<input type="hidden" name="ingredientStatus" value="${igd.ingredientStatus}"> --%>
+<!-- 					<button type="button" class="col-2 igdStatus" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button> -->
+<!-- 					<button type="button" class="col-2 igdStatus" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button> -->
+<!-- 					<span class="col-5"></span> -->
 					
 					<span class="col-3">상품등록</span>
 					<input type="hidden" name="productStatus" value="${igd.productStatus}">
@@ -85,7 +85,7 @@
 				<div class="d-flex justify-content-center mb-5">
 					<div class="d-flex">
 						<button type="button" onclick="check()" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
-						<button type="button" onclick="location.href='${contextPath}/adminIngredientManage.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+						<button type="button" onclick="history.back()" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 					</div>
 				</div>
 			</div>
@@ -139,13 +139,13 @@
 				acBtns[0].style.background = "gray";
 				acBtns[1].style.background = "#19A7CE";
 			}
-			if(igdStatus.value == "Y"){
-				igdStBtns[0].style.background = "#19A7CE";
-				igdStBtns[1].style.background = "gray";
-			}else{
-				igdStBtns[0].style.background = "gray";
-				igdStBtns[1].style.background = "#19A7CE";
-			}
+// 			if(igdStatus.value == "Y"){
+// 				igdStBtns[0].style.background = "#19A7CE";
+// 				igdStBtns[1].style.background = "gray";
+// 			}else{
+// 				igdStBtns[0].style.background = "gray";
+// 				igdStBtns[1].style.background = "#19A7CE";
+// 			}
 			
 // 				이벤트 추가
 			acBtns[0].addEventListener('click', () => {
@@ -159,16 +159,16 @@
 				acBtns[0].style.background = "gray";
 			});
 			
-			igdStBtns[0].addEventListener('click', () => {
-				igdStatus.value = igdStBtns[0].innerText;
-				igdStBtns[0].style.background = "#19A7CE";
-				igdStBtns[1].style.background = "gray";
-			});
-			igdStBtns[1].addEventListener('click', () => {
-				igdStatus.value = igdStBtns[1].innerText;
-				igdStBtns[1].style.background = "#19A7CE";
-				igdStBtns[0].style.background = "gray";
-			});
+// 			igdStBtns[0].addEventListener('click', () => {
+// 				igdStatus.value = igdStBtns[0].innerText;
+// 				igdStBtns[0].style.background = "#19A7CE";
+// 				igdStBtns[1].style.background = "gray";
+// 			});
+// 			igdStBtns[1].addEventListener('click', () => {
+// 				igdStatus.value = igdStBtns[1].innerText;
+// 				igdStBtns[1].style.background = "#19A7CE";
+// 				igdStBtns[0].style.background = "gray";
+// 			});
 
 // 			상품등록 버튼 - 기존 값 입력, 이벤트
 			const priceBox = document.getElementsByClassName('priceBox')[0];

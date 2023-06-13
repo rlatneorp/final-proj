@@ -83,6 +83,15 @@ public class AdminService {
 		return aDAO.updateStatus(sqlSession, map);
 	}
 
+	public int deletesProduct(String[] pDeletes) {
+		return aDAO.deletesProduct(sqlSession, pDeletes);
+	}
+	
+	public int deletesIngredient(String[] igdDeletes) {
+		return aDAO.deletesIngredient(sqlSession, igdDeletes);
+	}
+
+
 
 
 

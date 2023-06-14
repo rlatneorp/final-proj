@@ -196,23 +196,11 @@ input[type="text"] {
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-						<input type="checkbox" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
+						<input type="checkbox" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">
-						<c:forEach items="${ productList }" var="p">
-							<c:if test="${cl.productNo eq p.productNo }">
-									<c:if test="${p['class'].simpleName eq 'Food'}">
-								    	<b>${p.foodName}</b><br><br>
-								  	</c:if>
-									<c:if test="${p['class'].simpleName eq 'Tool'}">
-								    	<b>${p.ToolName}</b><br><br>
-								  	</c:if>
-									<c:if test="${p['class'].simpleName eq 'Ingredient'}">
-								    	<b>${p.ingredientName}</b><br><br>
-								  	</c:if>
-							</c:if>
-						</c:forEach>
+						<b>${cl.productName}</b><br><br>
 						옵션 : 
 						<select>
 							<c:forEach var="option" items="${fn:split(cl.productOption, ',')}">
@@ -225,13 +213,13 @@ input[type="text"] {
 						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp;
 						<i class="bi bi-plus-square-fill" id="plus-${cl.productNo }" style="color: #00AAFF; font-size: 15px"></i>
 					</td>
-					<td style="border-right: 2px solid #dee2e6;">
+					<td style="border-right: 2px solid #dee2e6; width:150px " >
 						<span id="pp-${cl.productNo }" class="price">
 						${cl.productPrice}
 						</span>원
 					</td>
-					<td style="border-right: 2px solid #dee2e6;">
-						<span>2,325</span>P적립
+					<td style="border-right: 2px solid #dee2e6; width:130px">
+						<span class="point" id="point-${cl.productNo }"></span>P 적립
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:160px">
 						<span class="sum" id="sum-${cl.productNo }">
@@ -245,7 +233,7 @@ input[type="text"] {
 	</table><br><br>
 	<div style="width: 1200px; margin: 0 auto; font-align: right">
 		<i class="bi bi-caret-left-fill"></i><i class="bi bi-caret-left-fill"></i>
-		<i class="bi bi-caret-left-fill"><b>쇼핑 계속하기</b></i><br>
+		<b>쇼핑 계속하기</b><br>
 	</div><br>
 	
 	<!-- 금액 -->
@@ -341,10 +329,11 @@ input[type="text"] {
 			
 			//합계금액 금액 형태로 변환 
 			const transSum = document.getElementsByClassName('sum');
+			const numericPrice = 0;
 			for(sum of transSum) {
 				const detailSum = sum.innerText;
 				const numericPrice = parseFloat(detailSum);// 숫자로 변환
-	
+				
 				// 금액 형식으로 변환
 				const formattedPrice = new Intl.NumberFormat('ko-KR', {
 			    style: 'currency',
@@ -356,13 +345,19 @@ input[type="text"] {
 				sum.innerText = priceWithoutCurrency;
 			}
 			
+				
+				
+		}
+			
 			const parentPnos = document.getElementsByClassName('imgTab');
 			for(let p of parentPnos) {
 				let pNos = p.children[0].value; 
 				let size = parseInt(document.getElementById('size-'+ pNos).innerText);
 				
-				
-				
+				//적립금(POINT)
+				const sum = parseFloat(document.getElementById('sum-' + pNos).innerText.replace(/,/g, ''));
+				let pointRate = sum*0.005
+				document.getElementById('point-' + pNos).innerText = pointRate; 
 				
 				const shippingPrice = document.getElementById('shippingPrice-' + pNos);
 				const originPriceString = document.getElementById('pp-'+pNos).innerText;
@@ -371,10 +366,15 @@ input[type="text"] {
 				let trTotalPrice = 0;
 				//1. 수량 증가 시 
 				const clickPlus = document.getElementById('plus-' + pNos);
+				const cartCount = document.getElementsByClassName('cartCount');
 				clickPlus.addEventListener('click', function() {
 					size++;
 					document.getElementById('size-'+ pNos).innerText = size;
-					console.log('price : ' + price);
+					
+					//요약 숫자 변화 
+					let intOrderSize = parseInt(document.getElementById('orderSize').innerText);
+					intOrderSize++;
+					document.getElementById('orderSize').innerText = intOrderSize;
 					$.ajax({
 						url:'${contextPath}/plusCount.ma',
 						data:{
@@ -382,15 +382,38 @@ input[type="text"] {
 							price:price
 						},
 						success: data => {
+							//포인트
+							pointRate = data*0.005;
+							document.getElementById('point-' + pNos).innerText = pointRate;
+							
+							//금액 요약 : cartCount ++ 
 							trTotalPrice = totalPrice + data;
 							console.log('tp : ' + trTotalPrice);
 							//플러스 버튼 누를 때마다 합계 금액 금액화 
 							const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
 							const sum = formattedPrice.replace(/[₩]/g, "");
 							document.getElementById('sum-'+pNos).innerText = sum;
-							
-							
-							
+							//하단 총 금액 요약 
+							let price = 0;
+							const sumPrice = document.getElementsByClassName('sum');
+							for(const sum of sumPrice) {
+								const intSum = parseInt(sum.innerText.replace(/,/g, ''));
+								price += intSum;
+							}
+							document.getElementById('trTotalSum').innerText = price;
+							//배송비
+							if(price >= 30000) {
+								document.getElementById('shipPrice').innerText = '0';
+							} else {
+								document.getElementById('shipPrice').innerText = '3,000';
+							}
+							//하단 총 합계 금액 
+							if(document.getElementById('shipPrice').innerText == '3,000') {
+								const ship = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
+								document.getElementById('shipSum').innerText = (price + ship)
+							} else {
+								document.getElementById('shipSum').innerText = document.getElementById('trTotalSum').innerText;
+							}
 							
 						},
 						error: data => {}
@@ -412,21 +435,42 @@ input[type="text"] {
 								price:price
 							},
 							success: data => {
+								//포인트 
+								pointRate = data*0.005;
+								document.getElementById('point-' + pNos).innerText = pointRate;
 								
 								totalPrice += data;
-								//minus 버튼 누를 때마다 변동된 합계금액 금액화 
+								//minus 버튼 클릭 시 변동된 합계금액 금액화 
 								const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
 								const sum = formattedPrice.replace(/[₩]/g, "");
-								
-								console.log('tp : ' + totalPrice);
 								document.getElementById('sum-'+pNos).innerText = sum;
+								//minus 버튼 클릭 시 
 								
+								//요약 숫자 변화 
+								let intOrderSize = parseInt(document.getElementById('orderSize').innerText);
+								intOrderSize--;
+								document.getElementById('orderSize').innerText = intOrderSize;
+								let price = 0;
+								const sumPrice = document.getElementsByClassName('sum');
+								for(const sum of sumPrice) {
+									const intSum = parseInt(sum.innerText.replace(/,/g, ''));
+									price += intSum;
+								}
+								document.getElementById('trTotalSum').innerText = price;
 								
-								
-								
-					
-								
-								
+								//배송비
+								if(price >= 30000) {
+									document.getElementById('shipPrice').innerText = '0';
+								} else {
+									document.getElementById('shipPrice').innerText = '3,000';
+								}
+								//하단 총 합계 금액 
+								if(document.getElementById('shipPrice').innerText == '3,000') {
+									const ship = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
+									document.getElementById('shipSum').innerText = (price + ship)
+								} else {
+									document.getElementById('shipSum').innerText = document.getElementById('trTotalSum').innerText;
+								}
 								
 							},
 							error: (data) => {}
@@ -452,7 +496,7 @@ input[type="text"] {
 				this.innerHTML = '> 03 ㅈㅁㅇㄹ &nbsp;';
 			})
 			
-		}
+// 		}
 	
 	//전체 선택 체크 
 	const selAllChec = document.getElementById('selectAllCheckBox');
@@ -461,7 +505,6 @@ input[type="text"] {
 		checkboxes.forEach(function(checkbox) { //모든 checkbox를 순회 
 		      checkbox.checked = selAllChec.checked; //selAllChec의 체크 속성을 대입 (항상 같이 움직이게)
 		});
-		
 	})
 	
 	//선택 삭제 버튼 클릭 시 선택 된 리스트 삭제 
@@ -481,6 +524,38 @@ input[type="text"] {
 						for(const checkProduct of checkProducts) {
 							let list = checkProduct.parentNode.parentNode;
 							list.remove(); 
+							
+							const table = document.getElementsByClassName('productInfos');
+							for(trs of table) {
+								console.log(trs);
+								
+// 								요약 숫자 변화 
+	 							let intOrderSize = parseInt(document.getElementById('orderSize').innerText);
+	 							intOrderSize--;
+	 							document.getElementById('orderSize').innerText = intOrderSize;
+	 							let price = 0;
+	 							const sumPrice = document.getElementsByClassName('sum');
+	 							for(const sum of sumPrice) {
+	 								const intSum = parseInt(sum.innerText.replace(/,/g, ''));
+	 								price += intSum;
+	 							}
+	 							document.getElementById('trTotalSum').innerText = price;
+								
+	 							//배송비
+	 							if(price >= 30000) {
+	 								document.getElementById('shipPrice').innerText = '0';
+	 							} else {
+	 								document.getElementById('shipPrice').innerText = '3,000';
+	 							}
+	 							//하단 총 합계 금액 
+	 							if(document.getElementById('shipPrice').innerText == '3,000') {
+	 								const ship = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
+	 								document.getElementById('shipSum').innerText = (price + ship)
+	 							} else {
+	 								document.getElementById('shipSum').innerText = document.getElementById('trTotalSum').innerText;
+	 							}
+							}
+							
 						}
 					},
 					error: (data) => {
@@ -504,6 +579,10 @@ input[type="text"] {
 				 button: "확인",
 				});
 		} else {
+			
+			
+			
+			
 			location.href ='${contextPath}/payDetail.ma'
 		}
 	})

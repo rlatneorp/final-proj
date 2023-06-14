@@ -44,61 +44,44 @@ public class MarketController {
 		int userNo = users.getUsersNo();
 		
 		ArrayList<Cart> cartList = mkService.selectCartList(userNo);
-		ArrayList<Food> foodsList = new ArrayList<>();
-		ArrayList<Tool> toolsList = new ArrayList<>();
-		ArrayList<Ingredient> igsList = new ArrayList<>();
-		
-		ArrayList<Product> foodInfo = new ArrayList<>();
-		ArrayList<Integer> productPrices = new ArrayList<>();
-		ArrayList<Integer> sumList = new ArrayList<>();
-		
+		ArrayList<Food> foodsList = new ArrayList<>(); ArrayList<Tool> toolsList = new ArrayList<>(); ArrayList<Ingredient> igsList = new ArrayList<>();
+		ArrayList<Product> foodInfo = new ArrayList<>(); 
 		Food foods = null; Tool tools = null; Ingredient igs = null;
 		for(Cart cart : cartList) {
 			int productNo = cart.getProductNo();
 			
-			//카트에 담긴 productNo의 가격도 알아야 함 
 			foods = mkService.selectFood(productNo);
 			tools = mkService.selectTool(productNo);
 			igs = mkService.selectIngrdient(productNo);
 			
-			int price = 0;
-			int sum = 0;
+			int price = 0; int sum = 0;
+			foodInfo = mkService.selectFoodInfo(productNo);
+			
+			for (Product product : foodInfo) {
+			    price = product.getProductPrice();
+			    cart.setProductPrice(price); 
+			}
+			int size = mkService.plusResultCount(productNo);
+			sum = size * price;
+			cart.setSum(sum);
+			
+			if(sum >= 30000) {
+				cart.setShippingPrice("무료배송");
+			} else {
+				cart.setShippingPrice("30,000");
+			}
+			
 			if (foods != null) {
-				foodInfo = mkService.selectFoodInfo(productNo);
-				
-				for (Product product : foodInfo) {
-				    price = product.getProductPrice();
-//				    productPrices.add(price);
-				    cart.setProductPrice(price); //근데 이거 마지막 값으로 저장될 거 아니야... 
-				}
-				
-				System.out.println("foodInfo : " + foodInfo);
-				int size = mkService.plusResultCount(productNo);
-				sum = size * price;
-				cart.setSum(sum);
-				if(sum >= 30000) {
-					cart.setShippingPrice("무료배송");
-				} else {
-					cart.setShippingPrice("30,000");
-				}
-		        foodsList.add(foods);
+				cart.setProductName(foods.getFoodName());
 		    }
 		    if (tools != null) {
-		        toolsList.add(tools);
+		    	cart.setProductName(tools.getToolName());
 		    }
 		    if (igs != null) {
-		        igsList.add(igs);
+		    	cart.setProductName(igs.getIngredientName());
 		    }
 		}
-		
-		if(foods != null) {
-			model.addAttribute("price", productPrices);
-			model.addAttribute("productList", foodsList);
-		} else if (tools != null) {
-			model.addAttribute("productList", toolsList);
-		} else if (igs != null) {
-			model.addAttribute("productList", igsList);
-		}
+		System.out.println("cartList : " + cartList);
 		model.addAttribute("cartList", cartList);
 		return "basket";
 	}

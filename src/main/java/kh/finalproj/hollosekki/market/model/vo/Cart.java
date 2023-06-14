@@ -12,6 +12,7 @@ public class Cart {
 	private int sum;
 	private String shippingPrice;
 	private int productPrice;
+	private String productName;
 	
 	
 	
@@ -23,7 +24,7 @@ public class Cart {
 
 
 	public Cart(int cartNo, int usersNo, int productNo, String productOption, int cartCount, int sum,
-			String shippingPrice, int productPrice) {
+			String shippingPrice, int productPrice, String productName) {
 		super();
 		this.cartNo = cartNo;
 		this.usersNo = usersNo;
@@ -33,6 +34,7 @@ public class Cart {
 		this.sum = sum;
 		this.shippingPrice = shippingPrice;
 		this.productPrice = productPrice;
+		this.productName = productName;
 	}
 
 
@@ -133,13 +135,24 @@ public class Cart {
 
 
 
+	public String getProductName() {
+		return productName;
+	}
+
+
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Cart [cartNo=" + cartNo + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productOption="
 				+ productOption + ", cartCount=" + cartCount + ", sum=" + sum + ", shippingPrice=" + shippingPrice
-				+ ", productPrice=" + productPrice + "]";
+				+ ", productPrice=" + productPrice + ", productName=" + productName + "]";
 	}
-
 
 
 

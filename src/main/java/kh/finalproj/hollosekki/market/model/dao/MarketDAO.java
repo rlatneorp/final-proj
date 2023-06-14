@@ -107,8 +107,8 @@ public class MarketDAO {
 		sqlSession.delete("marketMapper.delBasket", productNo);
 	}
 
-	public ArrayList<Product> selectFoodInfo(SqlSessionTemplate sqlSession, int productNo) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectFoodInfo", productNo);
+	public ArrayList<Product> selectProductInfo(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectProductInfo", productNo);
 	}
 
 	public int plusCount(SqlSessionTemplate sqlSession, int productNo) {
@@ -121,6 +121,13 @@ public class MarketDAO {
 
 	public void minusCount(SqlSessionTemplate sqlSession, int productNo) {
 		sqlSession.update("marketMapper.minusCount", productNo);
+	}
+
+	public Cart checkCartList(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("usersNo", usersNo);
+		map.put("productNo", productNo);
+		return sqlSession.selectOne("marketMapper.checkCartList", map);
 	}
 
 	

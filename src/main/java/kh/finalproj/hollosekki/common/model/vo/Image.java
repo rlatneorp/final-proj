@@ -71,14 +71,7 @@ public class Image {
 		this.imagePath = imagePath;
 	}
 
-	public int getImageLevel() {
-		return imageLevel;
-	}
-
-	public void setImageLevel(int imageLevel) {
-		this.imageLevel = imageLevel;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "Image [imageNo=" + imageNo + ", imageDivideNo=" + imageDivideNo + ", imageType=" + imageType

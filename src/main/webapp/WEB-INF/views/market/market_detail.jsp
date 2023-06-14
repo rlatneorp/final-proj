@@ -782,7 +782,7 @@ p b {
 					</select>
 
 
-<!-- 					<div id="productResult" class="productResultSet"> -->
+					<div id="productResult" class="productResultSet">
 <!-- 						사이즈 선택시 내려오는 창 -->
 <!-- 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
 <!-- 							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span> -->
@@ -808,7 +808,7 @@ p b {
 <!-- 						 <br> -->
 <!-- 					</div> -->
 					
-<!-- 				</div> -->
+				</div>
 					
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 							<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
@@ -1137,15 +1137,10 @@ p b {
    const productOption = document.querySelector(".productOption"); //사이즈 선택 창
    const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
    const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
-   
-    // 상품 수량 
-    // 상품 수량 감소 버튼
-  // 상품 수량 증가 버튼
-   
    const buyBtn = document.getElementById("buyBtn");
    const result = document.getElementById("productResult");
    const like = document.querySelector(".like");
-   
+   let count = 0;
    
       like.addEventListener("click", function() {
 	    if(like.innerText === '♡') {
@@ -1184,7 +1179,6 @@ p b {
         
         
         productOption2.addEventListener("change", function(){
-        	
              const select =  $('.productOption option:selected');
              const select2 = $('.productOption2 option:selected');
 
@@ -1203,6 +1197,8 @@ p b {
       		}
       		
       		if(YN == "Y"){
+      			count++;
+      			console.log("1. count: "+ count);
       			$(".productSet").append('<div  class="productResultSet" style="display:block">'
 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 //      							+'캠핑용 후라이팬 <span class="op1">'+select.val()+'</span>'+" "+'<span class="op2">'+select2.val()+'</span>'
@@ -1226,57 +1222,32 @@ p b {
 						+'</div>'
 						 +'<br>'
 					+'</div>')
-					
+      			
+      			for(let i=1; i<count.length; i++){
+      				
+					console.log("2. count: "+ count.length);
 					const opop2 = document.getElementsByClassName('opSearch');
-      				console.log(document.querySelectorAll(".increase")[opop2.length-1]);
-      				console.log("0번째");
-      				console.log(document.querySelectorAll(".increase")[0]);
-      				console.log("1번째");
-      				console.log(document.querySelectorAll(".increase")[1]);
-      				console.log(opop);
-	  				document.querySelectorAll(".increase")[opop2.length-1].addEventListener('click', function(){
-  					document.querySelectorAll(".cartCount")[opop2.length-1].value++;
-//  			    productPrice[k].innerText = priceToString(cartCount[k].value*450000);
-  			      
+	      			console.log(document.querySelectorAll(".increase")[count]);
+	  				document.querySelectorAll(".increase")[count].addEventListener('click', function(){
+  					document.querySelectorAll(".cartCount")[count].value++;
   			      
   			   })
-  			  		document.querySelectorAll(".decrease")[opop2.length-1].addEventListener("click", function(){
-  			  		document.querySelectorAll(".cartCount")[opop2.length-1].value--;
+  			  		document.querySelectorAll(".decrease")[i].addEventListener("click", function(){
+  			  		document.querySelectorAll(".cartCount")[i].value--;
 //   			    document.querySelectorAll(".productPrice")[k].innerText = priceToString(cartCount[k].value*450000);
   			      
-  			      if(cartCount[opop2.length-1].value < 1){
-  			         cartCount[opop2.length-1].value = 1
+  			      if(cartCount[i].value < 1){
+  			         cartCount[i].value = 1
 //   			      productPrice.innerText = priceToString(cartCount[opop.length].value*450000);
   			         
   			      }
-  			   })
+					
+					
+				})	
+
+			   }
       		
       	}
-      		
-      		
-      	
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				
-
-            
              
             })
         		

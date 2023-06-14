@@ -19,6 +19,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Options" alias="Options"/>
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Products" alias="Products"/>
 		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.Recipe" alias="Recipe"/>
+		<typeAlias type="kh.finalproj.hollosekki.customer.model.vo.Customer" alias="Customer"/>
 		
 	</typeAliases>
 	
@@ -30,6 +31,7 @@
 		<mapper resource="mappers/enroll-mapper.xml"/>
 		<mapper resource="mappers/users-mapper.xml"/>
 		<mapper resource="mappers/recipe-mapper.xml"/>
+		<mapper resource="mappers/customer-mapper.xml"/>
 	</mappers>
 	
 </configuration>

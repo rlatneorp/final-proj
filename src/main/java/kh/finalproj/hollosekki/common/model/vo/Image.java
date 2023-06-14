@@ -70,14 +70,6 @@ public class Image {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-	
-	public int getImageLevel() {
-		return imageLevel;
-	}
-	
-	public void setImageLevel(int imageLevel) {
-		this.imageLevel = imageLevel;
-	}
 
 	public int getImageLevel() {
 		return imageLevel;
@@ -93,5 +85,5 @@ public class Image {
 				+ ", imageOriginalName=" + imageOriginalName + ", imageRenameName=" + imageRenameName + ", imagePath="
 				+ imagePath + ", imageLevel=" + imageLevel + "]";
 	}
-	
+
 }

@@ -164,21 +164,11 @@ public class AdminController {
 		
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Ingredient> igdList = aService.selectIngredientList(pi, ab);
+//		product에 등록된 Ingredient에 한해 product정보 입력 메소드 실행
 		for(int i = 0; i < igdList.size(); i++) {
 			Ingredient igd = igdList.get(i);
 			if( igd.getProductNo() > 0) {
-				Product p = aService.selectProduct(igd.getProductNo());
-				if(p != null) {
-					igd.setProductType(p.getProductType());
-					igd.setProductPrice(p.getProductPrice());
-					igd.setProductOption(p.getProductOption());
-					igd.setProductStock(p.getProductStock());
-					igd.setProductCreateDate(p.getProductCreateDate());
-					igd.setProductModifyDate(p.getProductModifyDate());
-					igd.setProductSale(p.getProductSale());
-					igd.setProductCount(p.getProductCount());
-					igd.setProductStatus(p.getProductStatus());
-				}
+				igd = (Ingredient)selectProduct(igd);
 			}else {
 				igd.setProductStatus("N");
 			}
@@ -196,21 +186,14 @@ public class AdminController {
 	public String adminIngredientDetail(@ModelAttribute AdminBasic ab,
 									 	@RequestParam("ingredientNo") int igdNo,
 									 	Model model) {
-
 		Ingredient igd = aService.selectIngredient(igdNo);
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("imageDivideNo", igdNo);
 		map.put("imageType", 5);
-		Image img = aService.selectImage(map);
+		Image img = aService.selectAllImageList(map).get(0);
 
 		if(igd.getProductNo() != 0) {
-			int pNo = igd.getProductNo();
-			Product p = aService.selectProduct(pNo);
-			igd.setProductOption(p.getProductOption());
-			igd.setProductStock(p.getProductStock());
-			igd.setProductPrice(p.getProductPrice());
-			igd.setProductSale(p.getProductSale());
-			igd.setProductStatus(p.getProductStatus());
+			igd = (Ingredient)selectProduct(igd);
 		}
 		if(igd != null) {
 			model.addAttribute("ab", ab);
@@ -230,39 +213,35 @@ public class AdminController {
 									 	@RequestParam("imageFile") MultipartFile imageFile,
 										HttpServletRequest request,
 									 	Model model) {
-		int result1 = 1;
-		int result2 = 1;
-		int result3 = 1;
-		int result4 = 1;
-			
+		int resultPd = -1;		// 선택사항이면서, ProductNo이 1일 수 있으므로 -1
+		int resultIgd = 0;		// 필수사항이므로 0
+		int resultImgDel = 1;	// 선택사항이므로 1
+		int resultImgSave = 1;	// 선택사항이므로 1
 //		상품등록한 적이 있다면(productNo != 0) (status 무관)
 		if(igd.getProductNo() != 0) {
-			result1 = aService.updateProduct(pd);
+			resultPd = aService.updateProduct(pd);
 //		상품등록한 적이 없지만(productNo == 0) Status가 Y일때
 //		(새로 상품등록)
 		}else if(igd.getProductNo() == 0 && igd.getProductStatus().equals("Y")) {
 			pd.setProductType(3);
 			pd.setProductOption("N");
-			result1 = aService.insertProduct(pd);
-			igd.setProductNo(aService.getNowProductNo());
+			resultPd = aService.insertProduct(pd);
+			igd.setProductNo(resultPd);
 		}
 		
-		result2 = aService.updateIngredient(igd);
+		resultIgd = aService.updateIngredient(igd);
 			
-		System.out.println(pd);
-		System.out.println(igd);
-		
-		if(imageChange.equals("Y")) {
+		if(resultPd != 0 && resultIgd != 0 && imageChange.equals("Y")) {
 			
 //			데이터 서버 이미지 삭제
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
 			map.put("imageDivideNo", igd.getIngredientNo());
 			map.put("imageType", 5);
-			Image img = aService.selectImage(map);
+			Image img = aService.selectAllImageList(map).get(0);
 			deleteFile(img.getImageRenameName(), request);
 			
 //			DB서버 이미지 삭제
-			result3 = aService.deleteImage(img);
+			resultImgDel = aService.deleteImage(img);
 			
 //			이미지 저장
 			Image image = new Image();
@@ -277,10 +256,10 @@ public class AdminController {
 					image.setImageLevel(0);
 				}
 			}
-			result4 = aService.insertImage(image);
+			resultImgSave = aService.insertImage(image);
 			
 		}
-		if(result1+result2+result3+result4 == 4) {
+		if(resultPd != 0 && resultIgd != 0 && resultImgDel != 0 && resultImgSave != 0) {
 			model.addAttribute("ab", ab);
 			return "redirect:adminIngredientManage.ad";
 		}else {
@@ -291,34 +270,6 @@ public class AdminController {
 	public void adminIngredientUpdateIsAccept(@ModelAttribute Ingredient igd,
 											  HttpServletResponse response) {
 		int result = aService.ingredientUpdateIsAccept(igd);
-		String msg = "msg";
-		if(result > 0) {
-			msg = "success";
-		}else {
-			msg = "fail";
-		}
-		response.setContentType("application/json; charset=UTF-8");
-		
-		GsonBuilder gb = new GsonBuilder();
-		Gson gson = gb.create();
-		try {
-			gson.toJson(msg, response.getWriter());
-		} catch (JsonIOException | IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	@GetMapping("adminUpdateStatus.ad")
-	public void adminUpdateStatus(@RequestParam("dataNo") String dataNo,
-								  @RequestParam("dataStatus") String dataStatus,
-								  @RequestParam("dataType") String dataType,
-								  HttpServletResponse response) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("dataNo", dataNo);
-		map.put("dataStatus", dataStatus);
-		map.put("dataType", dataType);
-		
-		int result = aService.updateStatus(map);
 		String msg = "msg";
 		if(result > 0) {
 			msg = "success";
@@ -361,7 +312,7 @@ public class AdminController {
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
 			map.put("imageDivideNo", Integer.parseInt(deletes[0]));
 			map.put("imageType", 5);
-			Image img = aService.selectImage(map);
+			Image img = aService.selectAllImageList(map).get(0);
 			deleteFile(img.getImageRenameName(), request);
 			
 //			DB서버 이미지 삭제
@@ -392,52 +343,44 @@ public class AdminController {
 //		Users user = (Users)session.getAttribute("loginUser");
 		igd.setUsersNo(1);
 		
-		int result1 = 0;
-		int result2 = 0;
-		int result3 = 0;
+		int resultPd = -1;
+		int resultIgd = 0;
+		int resultImg = 0;
 		
 		if(igd.getProductStatus().equals("Y")) {
 			pd.setProductType(3);
 			pd.setProductOption("N");
-			result2 = aService.insertProduct(pd);
+			resultPd = aService.insertProduct(pd);
 		}
-		
-		result1 = aService.insertIngredient(igd);
-		
-//		이미지 저장
-		Image image = new Image();
-		if(imageFile != null && !imageFile.isEmpty()) {
-			String[] returnArr = saveFile(imageFile, request);
-			if(returnArr[1] != null) {
-				image.setImageDivideNo(aService.getNowIngredientNo());
-				image.setImageType(5);
-				image.setImagePath(returnArr[0]);
-				image.setImageOriginalName(imageFile.getOriginalFilename());
-				image.setImageRenameName(returnArr[1]);
-				image.setImageLevel(0);
-			}
+//		insertProduct가 실패하지 않은 경우 (!= 0)
+		if(resultPd != 0) {
+			resultIgd = aService.insertIngredient(igd);
 		}
-		result3 = aService.insertImage(image);
-		
-		if(result1 + result3 == 2) {
-			if(igd.getProductStatus().equals("Y")) {
-				if(result2 > 0) {
-					return "redirect:adminIngredientManage.ad";
-				}else {
-					throw new AdminException("식재료 상품 등록에 실패하였습니다.");
+//		insertIngredient가 실패하지 않은 경우(!= 0)
+		if(resultIgd != 0) {
+//			이미지 저장
+			Image image = new Image();
+			if(imageFile != null && !imageFile.isEmpty()) {
+				String[] returnArr = saveFile(imageFile, request);
+				if(returnArr[1] != null) {
+					image.setImageDivideNo(resultIgd);
+					image.setImageType(5);
+					image.setImagePath(returnArr[0]);
+					image.setImageOriginalName(imageFile.getOriginalFilename());
+					image.setImageRenameName(returnArr[1]);
+					image.setImageLevel(0);
 				}
-			}else {
-				return "redirect:adminIngredientManage.ad";
 			}
+			resultImg = aService.insertImage(image);
+		}
+		
+		if(resultPd != 0 && resultIgd != 0 && resultImg != 0) {
+			return "redirect:adminIngredientManage.ad";
 		}else {
 			throw new AdminException("식재료 등록에 실패하였습니다.");
 		}
 	}
 	
-	
-	
-//	Food-식품 관리
-
 	
 //	Food-식품 관리
 	@GetMapping("adminFoodManage.ad")
@@ -463,18 +406,87 @@ public class AdminController {
 			session.setAttribute("pageCount", ab.getPageCount());
 		}
 		
-//		int listCount = aService.getFoodCount(ab);
-//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		int listCount = aService.getFoodCount(ab);
 		
-		return "adminFoodManage";
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Food> fList = aService.selectFoodList(pi, ab);
+//		product정보 입력 메소드
+		for(Food f: fList) {
+			f = (Food)selectProduct(f);
+		}
+		if(fList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("ab", ab);
+			model.addAttribute("fList", fList);
+			return "adminFoodManage";
+		}else{
+			throw new AdminException("식품 조회를 실패하였습니다.");
+		}
 	}
 	@GetMapping("adminFoodDetail.ad")
-	public String adminFoodDetail() {
-		return "adminFoodDetail";
+	public String adminFoodDetail(@ModelAttribute AdminBasic ab,
+								  @RequestParam("productNo") int foodNo,
+								  Model model) {
+		Food f = aService.selectFood(foodNo);
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", foodNo);
+		map.put("imageType", 3);
+		ArrayList<Image> imgList = aService.selectAllImageList(map);
+		
+		Image thumbnail = null;
+		for(int i = 0; i<imgList.size(); i++) {
+			if(imgList.get(i).getImageLevel()==1) {
+				thumbnail = imgList.get(i);
+				imgList.remove(i);
+				break;
+			}
+		}
+		
+		f = (Food)selectProduct(f);
+		if(f != null) {
+			model.addAttribute("ab", ab);
+			model.addAttribute("f", f);
+			model.addAttribute("thumbnail", thumbnail);
+			model.addAttribute("imgList", imgList);
+			return "adminFoodDetail";
+		}else {
+			throw new AdminException("식품 상세보기를 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminFoodUpdate.ad")
 	public String adminFoodUpdate() {
 		return "redirect:adminFoodManage.ad";
+	}
+	@PostMapping("adminFoodDeletes.ad")
+	public String adminFoodDeletes(@RequestParam("selectDelete") String[] selDeletes,
+								   HttpServletRequest request) {
+		
+		int resultImg = 0;
+		int resultFood = 0;
+		int resultPd = 0;
+		
+		ArrayList<Image> imgList = null;
+		for(int i = 0; i < selDeletes.length; i++) {
+//			데이터 서버 이미지 삭제
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", Integer.parseInt(selDeletes[i]));
+			map.put("imageType", 3);
+			imgList = aService.selectAllImageList(map);
+			for(Image img:imgList) {
+				deleteFile(img.getImageRenameName(), request);
+//				DB서버 이미지 삭제
+				resultImg += aService.deleteImage(img);
+			}
+		}
+		
+		resultFood = aService.deletesFood(selDeletes);
+		resultPd = aService.deletesProduct(selDeletes);
+		
+		if(resultImg == imgList.size() && resultFood == selDeletes.length && resultPd == selDeletes.length) {
+			return "redirect:adminFoodManage.ad";
+		}else {
+			throw new AdminException("식재료 삭제 실패");
+		}
 	}
 	@GetMapping("adminFoodWrite.ad")
 	public String adminFoodWrite() {
@@ -490,7 +502,7 @@ public class AdminController {
 								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
 
 //		foodContent값 합치기
-		f.setFoodContent(f.getFoodContent()+f.getFoodTarget()+f.getFoodTable());
+		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
 
 //		food 기본값 설정
 		f.setFoodType(0);
@@ -498,14 +510,17 @@ public class AdminController {
 		p.setProductOption("N");
 		p.setProductStatus("Y");
 		
-		int result1 = aService.insertProduct(p);
-		f.setProductNo(aService.getNowProductNo());
+		int resultPd = 0;
+		int resultF = 0;
+		int resultImg = 0;
 		
-		int result2 = aService.insertFood(f);
-		int nowFoodNo = aService.getNowFoodNo();
+		resultPd = aService.insertProduct(p);
+		f.setProductNo(resultPd);
 		
-		int result3 = 0;
-		if(result1+result2 == 2) {
+		resultF = aService.insertFood(f);
+		int nowFoodNo = resultPd;
+		
+		if(resultPd != 0 && resultF != 0) {
 			
 //			이미지 저장
 			int i = 0;
@@ -523,12 +538,12 @@ public class AdminController {
 						if(i==0) {
 							image.setImageLevel(1);
 						}
-						result3 += aService.insertImage(image);
+						resultImg += aService.insertImage(image);
 						i++;
 					}
 				}
 			}
-			if(result3 == i ) {
+			if(resultImg == i ) {
 				return "redirect:adminFoodManage.ad";
 			}
 		}
@@ -689,7 +704,36 @@ public class AdminController {
 		return "redirect:adminQNAManage.ad";
 	}
 	
-
+	
+//	공용
+	@GetMapping("adminUpdateStatus.ad")
+	public void adminUpdateStatus(@RequestParam("dataNo") String dataNo,
+								  @RequestParam("dataStatus") String dataStatus,
+								  @RequestParam("dataType") String dataType,
+								  HttpServletResponse response) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("dataNo", dataNo);
+		map.put("dataStatus", dataStatus);
+		map.put("dataType", dataType);
+		
+		int result = aService.updateStatus(map);
+		String msg = "msg";
+		if(result > 0) {
+			msg = "success";
+		}else {
+			msg = "fail";
+		}
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(msg, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
 //		파일 저장소 지정
@@ -732,5 +776,21 @@ public class AdminController {
 		if(f.exists()) {
 			f.delete();
 		}
+	}
+	
+	private Product selectProduct(Product p) {
+		Product pd = aService.selectProduct(p.getProductNo());
+		if(pd != null) {
+			p.setProductType(pd.getProductType());
+			p.setProductPrice(pd.getProductPrice());
+			p.setProductOption(pd.getProductOption());
+			p.setProductStock(pd.getProductStock());
+			p.setProductCreateDate(pd.getProductCreateDate());
+			p.setProductModifyDate(pd.getProductModifyDate());
+			p.setProductSale(pd.getProductSale());
+			p.setProductCount(pd.getProductCount());
+			p.setProductStatus(pd.getProductStatus());
+		}
+		return p;
 	}
 }

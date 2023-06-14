@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>admin</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
+<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
 	.btns{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;}
 </style>
@@ -56,34 +57,48 @@
 					</th>
 				</tr>
 				
-				<c:forEach begin="1" end="10" varStatus="vs">
+				<c:forEach items="${fList}" var="f" varStatus="vs">
 					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
-						<td>${11-vs.index}
-							<input type="hidden" name="productNo" value="${m.productNo}">
+						<td>${f.productNo}
+							<input type="hidden" name="productNo" value="${f.productNo}">
 						</td>
 						<td>
-							<a href="${contextPath}/adminFoodDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&ingredientNo=${m.productNo}">
-								치즈돈까스와 카레${11-vs.index}</a>
+							<a href="${contextPath}/adminFoodDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&productNo=${f.productNo}">
+								${f.foodName }</a>
 						</td>
-						<td>메인</td>
-						<td>밀키트</td>
 						<td>
-							<fmt:formatNumber pattern="###,###,###" value="9000"/>원
+							<c:if test="${f.foodKind eq 1}">
+								메인
+							</c:if>
+							<c:if test="${f.foodKind eq 2}">
+								서브
+							</c:if>
 						</td>
-						<td>15%</td>
-						<td>${(11-vs.index)*15}</td>
-						<td>${(11-vs.index)*9}</td>
-						<td>${(11-vs.index)*8}</td>
-						<td>${(11-vs.index)*32}</td>
+						<td>
+							<c:if test="${f.foodType eq 1}">
+								식재료
+							</c:if>
+							<c:if test="${f.foodType eq 2}">
+								밀키트
+							</c:if>
+						</td>
+						<td>
+							<fmt:formatNumber pattern="###,###,###" value="${f.productPrice}"/>원
+						</td>
+						<td>${f.productSale}%</td>
+						<td>${f.productStock}</td>
+						<td>${f.orderCount}</td>
+						<td>${f.viewCount}</td>
+						<td>${f.likeCount}</td>
 						<td>
 							<c:if test="${f.productStatus eq 'Y'}">
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">Y</button>
 								<button type="button" class="btns statusBtn" style="background-color: gray;">N</button>
 							</c:if>
-<%-- 							<c:if test="${f.productStatus eq 'N'}"> --%>
+							<c:if test="${f.productStatus eq 'N'}">
 								<button type="button" class="btns statusBtn" style="background-color: gray;">Y</button>
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">N</button>
-<%-- 							</c:if> --%>
+							</c:if>
 						</td>
 						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;" value="${f.productNo}"></td>
 					</tr>
@@ -160,7 +175,7 @@
 								url: '${contextPath}/adminUpdateStatus.ad',
 								data: {dataNo:pNos[j].value,
 									   dataStatus:statusBtns[i].innerText,
-									   dataType:2},
+									   dataType:1},
 								success: data =>{
 									let price = "";
 									let sale = "";
@@ -168,16 +183,9 @@
 										if(i%2 == 0){
 											statusBtns[i].style.background = "#19A7CE";
 											statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
-// 											document.getElementsByClassName('priceBox')[j].style.display="block";
-// 											document.getElementsByClassName('saleBox')[j].style.display="block";
 										}else if(i%2 == 1){
 											statusBtns[i].style.background = "#19A7CE";
 											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-											
-											price = document.getElementsByClassName('priceBox')[j].innerText;
-											sale = document.getElementsByClassName('saleBox')[j].innerText;
-// 											document.getElementsByClassName('priceBox')[j].style.display="none";
-// 											document.getElementsByClassName('saleBox')[j].style.display="none";
 										}
 									}else{
 										alert("상태 변경에 실패하였습니다.");

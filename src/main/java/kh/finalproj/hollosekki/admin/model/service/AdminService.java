@@ -24,24 +24,14 @@ public class AdminService {
 	@Autowired
 	private AdminDAO aDAO;
 	
-	public int getIngredientCount(AdminBasic ab) {
-		return aDAO.getIngredientCount(sqlSession, ab);
+//	Common-공용
+	public int updateStatus(HashMap<String, String> map) {
+		return aDAO.updateStatus(sqlSession, map);
 	}
 	
-	public ArrayList<Ingredient> selectIngredientList(PageInfo pi, AdminBasic ab) {
-		return aDAO.selectIngredientList(sqlSession, pi, ab);
-	}
-	
+//	Product-상품
 	public Product selectProduct(int pNo) {
 		return aDAO.selectProduct(sqlSession, pNo);
-	}
-	
-	public Ingredient selectIngredient(int igdNo) {
-		return aDAO.selectIngredient(sqlSession, igdNo);
-	}
-	
-	public int updateIngredient(Ingredient igd) {
-		return aDAO.updateIngredient(sqlSession, igd);
 	}
 
 	public int updateProduct(Product pd) {
@@ -51,54 +41,82 @@ public class AdminService {
 	public int insertProduct(Product pd) {
 		return aDAO.insertProduct(sqlSession, pd);
 	}
+
+	public int deletesProduct(String[] pDeletes) {
+		return aDAO.deletesProduct(sqlSession, pDeletes);
+	}
 	
-	public int insertIngredient(Ingredient igd) {
-		return aDAO.insertIngredient(sqlSession, igd);
+	
+//	Image-사진
+	public ArrayList<Image> selectAllImageList(HashMap<String, Integer> map) {
+		return aDAO.selectAllImageList(sqlSession, map);
 	}
-
-	public int getNowIngredientNo() {
-		return aDAO.getNowIngredientNo(sqlSession);
-	}
-
+	
 	public int insertImage(Image image) {
 		return aDAO.insertImage(sqlSession, image);
-	}
-
-	public Image selectImage(HashMap<String, Integer> map) {
-		return aDAO.selectImage(sqlSession, map);
 	}
 
 	public int deleteImage(Image img) {
 		return aDAO.deleteImage(sqlSession, img);
 	}
 
-	public int getNowProductNo() {
-		return aDAO.getNowProductNo(sqlSession);
-	}
 
+	
+//	Ingredient-식재료
+	public int getIngredientCount(AdminBasic ab) {
+		return aDAO.getIngredientCount(sqlSession, ab);
+	}
+	
+	public ArrayList<Ingredient> selectIngredientList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectIngredientList(sqlSession, pi, ab);
+	}
+	
+	public Ingredient selectIngredient(int igdNo) {
+		return aDAO.selectIngredient(sqlSession, igdNo);
+	}
+	
+	public int updateIngredient(Ingredient igd) {
+		return aDAO.updateIngredient(sqlSession, igd);
+	}
+	
+	public int insertIngredient(Ingredient igd) {
+		return aDAO.insertIngredient(sqlSession, igd);
+	}
+	
 	public int ingredientUpdateIsAccept(Ingredient igd) {
 		return aDAO.ingredientUpdateIsAccept(sqlSession, igd);
-	}
-
-	public int updateStatus(HashMap<String, String> map) {
-		return aDAO.updateStatus(sqlSession, map);
-	}
-
-	public int deletesProduct(String[] pDeletes) {
-		return aDAO.deletesProduct(sqlSession, pDeletes);
 	}
 	
 	public int deletesIngredient(String[] igdDeletes) {
 		return aDAO.deletesIngredient(sqlSession, igdDeletes);
 	}
 
+	
+//	Food-식품
 	public int insertFood(Food f) {
 		return aDAO.insertFood(sqlSession, f);
 	}
 
-	public int getNowFoodNo() {
-		return aDAO.getNowFoodNo(sqlSession);
+	public int getFoodCount(AdminBasic ab) {
+		return aDAO.getFoodCount(sqlSession, ab);
 	}
+	
+	public Food selectFood(int foodNo) {
+		return aDAO.selectFood(sqlSession, foodNo);
+	}
+
+	public ArrayList<Food> selectFoodList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectFoodList(sqlSession, pi, ab);
+	}
+
+	public int deletesFood(String[] foodDeletes) {
+		return aDAO.deletesFood(sqlSession, foodDeletes);
+	}
+
+	
+
+	
+
 
 
 

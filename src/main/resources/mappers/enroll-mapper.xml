@@ -66,4 +66,25 @@
 		update users set users_pw = #{usersPwd} where users_id=#{id}
 	</update>
 	
+	<select id="socialLogin" resultMap="socialResultSet">
+		select *
+		from social_login
+		where social_id=#{id}
+	</select>
+	
+	<resultMap type="kh.finalproj.hollosekki.enroll.model.vo.SocialLogin" id="socialResultSet">
+		<id column="SOCIAL_ID" property="socialId"/>
+		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
+	</resultMap>
+	
+	<insert id="socialInsertUser">
+		insert into social_login
+		values(#{socialId}, #{socialProfileImg})
+	</insert>
+	
+	<select id="socialLoginUpdate" resultMap="usersResultSet">
+		select *
+		from users
+		where users_id = #{id} and status = 'Y'
+	</select>
 </mapper>

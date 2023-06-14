@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
 @Repository
@@ -52,6 +53,18 @@ public class EnrollDAO {
 
 	public int checkEmail(SqlSessionTemplate sqlSession, String email) {
 		return sqlSession.selectOne("enrollMapper.checkEmail", email);
+	}
+
+	public SocialLogin socialLogin(SqlSessionTemplate sqlSession, String id) {
+		return sqlSession.selectOne("enrollMapper.socialLogin", id);
+	}
+
+	public int socialInsertUser(SqlSessionTemplate sqlSession, SocialLogin sl2) {
+		return sqlSession.insert("enrollMapper.socialInsertUser", sl2);
+	}
+
+	public Users socialLoginUpdate(SqlSessionTemplate sqlSession, String id) {
+		return sqlSession.selectOne("enrollMapper.socialLoginUpdate", id);
 	}
 
 }

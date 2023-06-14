@@ -18,7 +18,7 @@
 	.title{font-weight: bold;}
 	.group-button1, .group-button2, .group-button3{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
 	
-	#side{width: 250px; height: 100px; margin-top: 25px; margin-left: 1150px;}
+	#side{width: 250px; height: 100px; margin-top: 25px; margin-left: 1300px;}
 	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; margin-left: 100px; cursor: pointer;}
 	.group-button{padding: 10px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
 	
@@ -105,8 +105,9 @@
 </div>
 
 <div id="side">
-	<button type="button" id="recipeWrite" onclick="location.href='recipeWrite.rc'">레시피 등록</button>
-	
+	<c:if test="${loginUser != null }">
+		<button type="button" id="recipeWrite" onclick="location.href='recipeWrite.rc'">레시피 등록</button>
+	</c:if>
 	<br><br>
 	
 	<div id="align">

@@ -34,7 +34,7 @@
 	.recipeBox{width: 1000px; height: 200px; border-radius: 5px; border: 1px solid black; margin-bottom: 5px; position: relative;}
 	.recipeNo{width: 100px; height: 20px; text-align: center; position: absolute; padding-top: 90px;}
 	.recipeContent{width: 700px; height: 200px; border-radius: 10px;}
-	.content{width: 680px; height: 180px; border: none; position: absolute; left: 110px; top: 10px; border-radius: 10px;}
+	.content{width: 680px; height: 180px; border: none; position: absolute; left: 110px; top: 10px; border-radius: 10px; resize:none; white-space: pre-wrap;}
 	.recipeImage{width: 200px; height: 200px; position: absolute; left: 800px;}
 
 /* 	레시피 사진 추가 */
@@ -58,6 +58,7 @@
 	#can{width: 130px; height: 50px; border-radius: 10px; border: 1px solid lightgray; background-color: lightgray; box-shadow: 0px 5px 0px 0px black; margin-right: 5px;}
 	#sub{width: 130px; height: 50px; border-radius: 10px; border: 1px solid #B0DAFF; background-color: #B0DAFF; box-shadow: 0px 5px 0px 0px black; margin-left: 5px;}
 
+	textarea{white-space: pre-wrap;}
 </style>
 
 </head>
@@ -129,7 +130,7 @@
 <!-- 			레시피 설명 -->
 			<div class="recipeInformationBox">
 				<div class="beforeInput">레시피 설명</div>
-				<textarea class="recipeInformation" placeholder=" 간단한 요리 설명을 적어주세요." name="recipeContent"></textarea>
+				<textarea class="recipeInformation" placeholder=" 간단한 요리 설명을 적어주세요." name="recipeContent" maxlength=100;></textarea>
 			</div>
 			
 			<br><br>
@@ -137,7 +138,7 @@
 <!-- 			재료 -->
 			<div class="recipeInformationBox">
 				<div class="beforeInput">재료</div>
-				<textarea class="recipeInformation" placeholder=" 재료를 적어주세요." name="recipeIngredient"></textarea>
+				<textarea class="recipeInformation" placeholder=" 재료를 적어주세요." name="recipeIngredient" maxlength=300;></textarea>
 			</div>
 			
 			<br><br>
@@ -148,7 +149,7 @@
 				<div class="recipeBox">
 					<div class="d-inline-block recipeNo">1</div>
 					<div class="d-inline-block recipeContent">
-						<input type="text" class="content" name="recipeOrder">
+						<textarea class="content" name="recipeOrder" maxlength=100;></textarea>
 						<input type="hidden" value="abc123abc" name="recipeOrder">
 					</div>
 					<div class="d-inline-block recipeImage">
@@ -229,16 +230,16 @@ window.onload=()=>{
 			
 			const content = document.createElement('div');
 			content.classList.add("d-inline-block");
-			content.classList.add("recipeContent")
+			content.classList.add("recipeContent");
 			
-			const input = document.createElement('input');
-			input.setAttribute("type", "text");
-			input.setAttribute("name", "recipeOrder")
+			const input = document.createElement('textarea');
+			input.setAttribute("name", "recipeOrder");
+			input.setAttribute("maxlength", 100);
 			input.classList.add('content');
 			
 			const hidden = document.createElement('input');
 			hidden.setAttribute("type", "hidden");
-			input.setAttribute("name", "recipeOrder")
+			hidden.setAttribute("name", "recipeOrder");
 			hidden.value = "abc123abc";
 			
 			
@@ -251,6 +252,7 @@ window.onload=()=>{
 			img.classList.add('recipeImg');
 			
 			content.append(input);
+			content.append(hidden);
 			
 			img.innerHTML = '<input type="file" accept="image/*" class="form-control form-control-lg imgInsert" name="orderFile">';
 			

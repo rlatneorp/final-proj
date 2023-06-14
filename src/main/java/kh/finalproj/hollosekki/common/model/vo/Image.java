@@ -74,14 +74,6 @@ public class Image {
 	public int getImageLevel() {
 		return imageLevel;
 	}
-	
-	public void setImageLevel(int imageLevel) {
-		this.imageLevel = imageLevel;
-	}
-
-	public int getImageLevel() {
-		return imageLevel;
-	}
 
 	public void setImageLevel(int imageLevel) {
 		this.imageLevel = imageLevel;

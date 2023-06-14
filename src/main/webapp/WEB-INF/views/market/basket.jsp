@@ -196,15 +196,15 @@ input[type="text"] {
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-						<input type="checkbox" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
+						<input type="checkbox" value="${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">
 						<b>${cl.productName}</b><br><br>
 						옵션 : 
 						<select>
-							<c:forEach var="option" items="${fn:split(cl.productOption, ',')}">
-								<option value="${option}">${option}</option>
+							<c:forEach var="option" items="${cl.optionValue }">
+								<option value="${option}.optionValue">${option.optionValue}</option>
 							</c:forEach>
 						</select>
 					</td>
@@ -579,11 +579,28 @@ input[type="text"] {
 				 button: "확인",
 				});
 		} else {
+			let values = [];
+			for(cp of checkProducts) {
+				console.log(cp.value);
+				values.push(cp.value);
+			}console.log(values);
+			console.log(values.toString());
+			const prNo = values.toString();
+			console.log('prNo : ' + prNo);
 			
+			const form = document.createElement('form');
+			form.method = 'POST';
+			form.action = '${contextPath}/payDetail.ma'
 			
+			const valuesInput = document.createElement('input');
+			valuesInput.type = 'hidden';
+			valuesInput.name = 'prNo';
+			valuesInput.value = prNo;
+			form.appendChild(valuesInput);
 			
+			document.body.appendChild(form);
+			form.submit();
 			
-			location.href ='${contextPath}/payDetail.ma'
 		}
 	})
 	

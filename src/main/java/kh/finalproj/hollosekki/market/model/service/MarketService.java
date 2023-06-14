@@ -93,8 +93,8 @@ public class MarketService {
 		mkDAO.delBasket(sqlSession, productNo);
 	}
 
-	public ArrayList<Product> selectFoodInfo(int productNo) {
-		return mkDAO.selectFoodInfo(sqlSession, productNo);
+	public ArrayList<Product> selectProductInfo(int productNo) {
+		return mkDAO.selectProductInfo(sqlSession, productNo);
 	}
 
 	public int plusCount(int productNo) {
@@ -108,6 +108,12 @@ public class MarketService {
 	public void minusCount(int productNo) {
 		mkDAO.minusCount(sqlSession, productNo);
 	}
+
+	public Cart checkCartList(int usersNo, int productNo) {
+		return mkDAO.checkCartList(sqlSession, usersNo, productNo );
+	}
+
+	
 
 	
 	

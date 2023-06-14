@@ -27,6 +27,7 @@ import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
+import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
@@ -44,20 +45,45 @@ public class MarketController {
 		int userNo = users.getUsersNo();
 		
 		ArrayList<Cart> cartList = mkService.selectCartList(userNo);
+		
+		System.out.println("엥? : " + cartList);
 		ArrayList<Food> foodsList = new ArrayList<>(); ArrayList<Tool> toolsList = new ArrayList<>(); ArrayList<Ingredient> igsList = new ArrayList<>();
-		ArrayList<Product> foodInfo = new ArrayList<>(); 
+		ArrayList<Product> selectProductInfo = new ArrayList<>(); 
 		Food foods = null; Tool tools = null; Ingredient igs = null;
+		ArrayList<Object> productOpt = new ArrayList<>();
+		
 		for(Cart cart : cartList) {
 			int productNo = cart.getProductNo();
+			
+			ArrayList<Options> options = mkService.selectOptions(productNo);
+//			productOpt.add(options);
+			cart.setOptionValue(options);
+			
+			System.out.println("options : " + options);
 			
 			foods = mkService.selectFood(productNo);
 			tools = mkService.selectTool(productNo);
 			igs = mkService.selectIngrdient(productNo);
 			
-			int price = 0; int sum = 0;
-			foodInfo = mkService.selectFoodInfo(productNo);
 			
-			for (Product product : foodInfo) {
+//			for(Options opt : options) {
+//				
+//				 if (opt.getProductNo() == productNo) {  // productNo가 일치하는 경우에만 실행
+//			            String optValue = opt.getOptionValue();
+//			            System.out.println("optValue : " + optValue);
+//			            productOpt.add(optValue);
+//			            cart.setOptionValue(productOpt);
+//			        }
+				
+//				cart.setOptionValue(optValue);
+				
+				
+			System.out.println("productOpt : " + productOpt);
+			
+			
+			selectProductInfo = mkService.selectProductInfo(productNo);
+			int price = 0; int sum = 0;
+			for (Product product : selectProductInfo) {
 			    price = product.getProductPrice();
 			    cart.setProductPrice(price); 
 			}
@@ -72,25 +98,76 @@ public class MarketController {
 			}
 			
 			if (foods != null) {
+				System.out.println("foods : " + foods);
 				cart.setProductName(foods.getFoodName());
 		    }
 		    if (tools != null) {
+		    	System.out.println("tools : " + tools);
 		    	cart.setProductName(tools.getToolName());
 		    }
 		    if (igs != null) {
+		    	System.out.println("igs : " + igs);
 		    	cart.setProductName(igs.getIngredientName());
 		    }
 		}
+		
+		System.out.println("================productOpt : " + productOpt);
 		System.out.println("cartList : " + cartList);
 		model.addAttribute("cartList", cartList);
 		return "basket";
 	}
 
 	@RequestMapping("payDetail.ma")
-	public String payDetail(HttpSession session, Model model) {
+	public String payDetail(HttpSession session, Model model, @RequestParam("prNo") String[] productNos) {
 		
+		Food foods = null; Tool tools = null; Ingredient igs = null;
 		Users users = (Users)session.getAttribute("loginUser");
 		ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
+		ArrayList<Cart> checkedCartList = new ArrayList<>();
+		ArrayList<Product> productInfo = new ArrayList<>(); 
+		System.out.println("===============================================================");
+		
+		for (String prNos : productNos) {
+			int productNo = (int)Integer.parseInt(prNos);
+			Cart checkedCart = mkService.checkCartList(users.getUsersNo(), productNo);
+			
+			foods = mkService.selectFood(productNo);
+			tools = mkService.selectTool(productNo);
+			igs = mkService.selectIngrdient(productNo);
+			
+			productInfo = mkService.selectProductInfo(productNo);
+			int price = 0; int sum = 0;
+			
+			for (Product product : productInfo) {
+			    price = product.getProductPrice();
+			    checkedCart.setProductPrice(price); 
+			}
+			int size = mkService.plusResultCount(productNo);
+			sum = size * price;
+			checkedCart.setSum(sum);
+			
+			if(sum >= 30000) {
+				checkedCart.setShippingPrice("무료배송");
+			} else {
+				checkedCart.setShippingPrice("30,000");
+			}
+			
+			if (foods != null) {
+				System.out.println("foods : " + foods);
+				checkedCart.setProductName(foods.getFoodName());
+		    }
+		    if (tools != null) {
+		    	System.out.println("tools : " + tools);
+		    	checkedCart.setProductName(tools.getToolName());
+		    }
+		    if (igs != null) {
+		    	System.out.println("igs : " + igs);
+		    	checkedCart.setProductName(igs.getIngredientName());
+		    }
+			checkedCartList.add(checkedCart);
+		}
+		
+		model.addAttribute("cartList", checkedCartList );
 		model.addAttribute("shipAddress", shipAddress);
 		return "payDetail";
 	}

@@ -1,19 +1,20 @@
 package kh.finalproj.hollosekki.market.model.vo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Cart {
 	private int cartNo;
 	private int usersNo;
 	private int productNo;
-	private String productOption;
+	private int productOption; //수정 
 	private int cartCount;
 	
 	private int sum;
 	private String shippingPrice;
 	private int productPrice;
 	private String productName;
-	
+	private ArrayList<Options> optionValue;
 	
 	
 	public Cart() {
@@ -22,9 +23,8 @@ public class Cart {
 	}
 
 
-
-	public Cart(int cartNo, int usersNo, int productNo, String productOption, int cartCount, int sum,
-			String shippingPrice, int productPrice, String productName) {
+	public Cart(int cartNo, int usersNo, int productNo, int productOption, int cartCount, int sum, String shippingPrice,
+			int productPrice, String productName, ArrayList<Options> optionValue) {
 		super();
 		this.cartNo = cartNo;
 		this.usersNo = usersNo;
@@ -35,8 +35,8 @@ public class Cart {
 		this.shippingPrice = shippingPrice;
 		this.productPrice = productPrice;
 		this.productName = productName;
+		this.optionValue = optionValue;
 	}
-
 
 
 	public int getCartNo() {
@@ -44,11 +44,9 @@ public class Cart {
 	}
 
 
-
 	public void setCartNo(int cartNo) {
 		this.cartNo = cartNo;
 	}
-
 
 
 	public int getUsersNo() {
@@ -56,11 +54,9 @@ public class Cart {
 	}
 
 
-
 	public void setUsersNo(int usersNo) {
 		this.usersNo = usersNo;
 	}
-
 
 
 	public int getProductNo() {
@@ -68,23 +64,19 @@ public class Cart {
 	}
 
 
-
 	public void setProductNo(int productNo) {
 		this.productNo = productNo;
 	}
 
 
-
-	public String getProductOption() {
+	public int getProductOption() {
 		return productOption;
 	}
 
 
-
-	public void setProductOption(String productOption) {
+	public void setProductOption(int productOption) {
 		this.productOption = productOption;
 	}
-
 
 
 	public int getCartCount() {
@@ -92,11 +84,9 @@ public class Cart {
 	}
 
 
-
 	public void setCartCount(int cartCount) {
 		this.cartCount = cartCount;
 	}
-
 
 
 	public int getSum() {
@@ -104,11 +94,9 @@ public class Cart {
 	}
 
 
-
 	public void setSum(int sum) {
 		this.sum = sum;
 	}
-
 
 
 	public String getShippingPrice() {
@@ -116,11 +104,9 @@ public class Cart {
 	}
 
 
-
 	public void setShippingPrice(String shippingPrice) {
 		this.shippingPrice = shippingPrice;
 	}
-
 
 
 	public int getProductPrice() {
@@ -128,11 +114,9 @@ public class Cart {
 	}
 
 
-
 	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
 	}
-
 
 
 	public String getProductName() {
@@ -140,19 +124,33 @@ public class Cart {
 	}
 
 
-
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
 
+
+	public ArrayList<Options> getOptionValue() {
+		return optionValue;
+	}
+
+
+	public void setOptionValue(ArrayList<Options> options) {
+		this.optionValue = options;
+	}
 
 
 	@Override
 	public String toString() {
 		return "Cart [cartNo=" + cartNo + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productOption="
 				+ productOption + ", cartCount=" + cartCount + ", sum=" + sum + ", shippingPrice=" + shippingPrice
-				+ ", productPrice=" + productPrice + ", productName=" + productName + "]";
+				+ ", productPrice=" + productPrice + ", productName=" + productName + ", optionValue=" + optionValue
+				+ "]";
 	}
+
+
+
+
+
 
 
 

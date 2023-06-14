@@ -16,7 +16,7 @@ public class Recipe {
 	private int recipeCount;
 	private Date recipeCreateDate;
 	private Date recipeModifyDate;
-	private int recipeStatus;
+	private String recipeStatus;
 	private String usersId;
 	private String nickName;
 	
@@ -26,7 +26,7 @@ public class Recipe {
 
 	public Recipe(int foodNo, int usersNo, String recipeName, String categoryIngredient, String categorySituation,
 			String categoryType, int recipeDifficulty, int recipeTime, String recipeContent, String recipeOrder,
-			int recipeCount, Date recipeCreateDate, Date recipeModifyDate, int recipeStatus, String usersId, String nickName) {
+			int recipeCount, Date recipeCreateDate, Date recipeModifyDate, String recipeStatus, String usersId, String nickName) {
 		super();
 		this.foodNo = foodNo;
 		this.usersNo = usersNo;
@@ -151,11 +151,11 @@ public class Recipe {
 		this.recipeModifyDate = recipeModifyDate;
 	}
 
-	public int getRecipeStatus() {
+	public String getRecipeStatus() {
 		return recipeStatus;
 	}
 
-	public void setRecipeStatus(int recipeStatus) {
+	public void setRecipeStatus(String recipeStatus) {
 		this.recipeStatus = recipeStatus;
 	}
 	

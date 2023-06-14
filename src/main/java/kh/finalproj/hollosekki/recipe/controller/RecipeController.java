@@ -18,14 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import kh.finalproj.hollosekki.common.model.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
-import kh.finalproj.hollosekki.users.model.vo.Users;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -60,13 +61,40 @@ public class RecipeController {
 	
 //	레시피 상세조회
 	@RequestMapping("recipeDetail.rc")
-	public String recipeDetail() {
-		return "recipeDetail";
-	}
-	
-	@RequestMapping("recipeDetailWriter.rc")
-	public String recipeDetailWriter() {
-		return "recipeDetailWriter";
+	public ModelAndView recipeDetail(@RequestParam("rId") String usersId, @RequestParam("rNo") int foodNo,
+							   @RequestParam("page") int page, HttpSession session, ModelAndView mv) {
+		
+		Users loginUser = (Users)session.getAttribute("loginUser");
+		String loginId = null;
+		if(loginUser != null) {
+			loginId = loginUser.getUsersId();
+		}
+		boolean yn = false;
+		if(!usersId.equals(loginId)) {
+			yn = true;
+		}
+		
+		Recipe recipe = rService.recipeDetail(foodNo, yn);
+		Image thum = rService.recipeDetailThum(foodNo);
+		ArrayList<Image> oList = rService.recipeDetailOrder(foodNo);
+		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
+		
+//		System.out.println(recipe.getRecipeOrder());
+		
+		if(recipe != null) {
+			mv.addObject("recipe", recipe);
+			mv.addObject("thum", thum);
+			mv.addObject("oList", oList);
+			mv.addObject("cList", cList);
+			mv.addObject("page", page);
+			mv.setViewName("recipeDetail");
+			
+			return mv;
+		} else {
+			throw new RecipeException("레시피 상세조회를 실패하였습니다.");
+		}
+		
+		
 	}
 	
 //	레시피 작성 창으로
@@ -102,6 +130,18 @@ public class RecipeController {
 		int result3 = 0;
 		int result4 = 0;
 		
+		System.out.println(r.getRecipeOrder());
+		
+//		레시피 순서 설명
+		String[] orderArr = r.getRecipeOrder().split(",abc123abc,");
+		orderArr[orderArr.length -1] = orderArr[orderArr.length-1].replace(",abc123abc", "");
+		for(int i = 0; i < orderArr.length; i++) {
+			r.setRecipeOrder(orderArr[i]);
+		}
+		
+		System.out.println(r.getRecipeOrder());
+		
+		result1 = rService.insertRecipe(r);
 		
 //		썸네일 이미지
 		String thumImg = thum.getOriginalFilename();
@@ -118,14 +158,7 @@ public class RecipeController {
 			}
 		}
 		
-		result1 = rService.insertAttm(thumImgList);
-		
-//		레시피 순서 설명
-		String[] orderArr = r.getRecipeOrder().split(",abc123abc,");
-		orderArr[orderArr.length -1] = orderArr[orderArr.length-1].replace("abc123abc", "");
-		for(int i = 0; i < orderArr.length; i++) {
-			r.setRecipeOrder(orderArr[i]);
-		}
+		result2 = rService.insertAttm(thumImgList);
 		
 //		레시피 순서 사진
 		ArrayList<Image> orderImgList = new ArrayList<>();
@@ -146,7 +179,7 @@ public class RecipeController {
 			}
 		}
 		
-		result2 = rService.insertAttm(orderImgList);
+		result3 = rService.insertAttm(orderImgList);
 		
 //		완성된 요리 사진
 		ArrayList<Image> comImgList = new ArrayList<>();
@@ -167,8 +200,8 @@ public class RecipeController {
 			}
 		}
 		
-		result3 = rService.insertAttm(comImgList);
-		result4 = rService.insertRecipe(r);
+		result4 = rService.insertAttm(comImgList);
+		
 		
 		if(result1 + result2 + result3 + result4 == thumImgList.size() + orderImgList.size() + comImgList.size() + 1) {
 			return "redirect:recipeList.rc";

@@ -35,4 +35,27 @@ public class RecipeDAO {
 		return (ArrayList)sqlSession.selectList("recipeMapper.selectRecipeImageList");
 	}
 
+	public Recipe recipeDetail(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("recipeMapper.recipeDetail", foodNo);
+	}
+
+	public int addCount(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.update("recipeMapper.addCount", foodNo);
+	}
+
+//	썸네일
+	public Image recipeDetailThum(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("recipeMapper.recipeDetailThum", foodNo);
+	}
+
+//	조리순서
+	public ArrayList<Image> recipeDetailOrder(SqlSessionTemplate sqlSession, int foodNo) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.recipeDetailOrder", foodNo);
+	}
+
+//	완성사진
+	public ArrayList<Image> recipeDetailComp(SqlSessionTemplate sqlSession, int foodNo) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.recipeDetailComp", foodNo);
+	}
+
 }

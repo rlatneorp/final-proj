@@ -2,7 +2,8 @@ package kh.finalproj.hollosekki.market.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
+import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
@@ -42,27 +44,40 @@ public class MarketService {
 		mkDAO.firstAdDay(sqlSession, map);
 	}
 	
-	//배송지 추가
+	//諛곗넚吏� 異붽�
 	public int insertShipping(ShippingAddress sa) {
 		return mkDAO.insertShipping(sqlSession, sa);
 	}
 	
-	//배송지 조회
+	//諛곗넚吏� 議고쉶
 	public ArrayList<ShippingAddress> selectShipping(int usersNo) {
 		return mkDAO.selectShipping(sqlSession, usersNo);
 	}
 
-//	public int aDateCheck(HashMap<String, String> map) {
-//		return mkDAO.aDateCheck(sqlSession, map);
-//	}
+	public int aDateCheck(HashMap<String, Object> map) {
+		return mkDAO.aDateCheck(sqlSession, map);
+	}
 
 	public void checkDay(HashMap<String, String> map) {
 		mkDAO.checkDay(sqlSession, map);
 	
 	}
 
-	public ArrayList<Users> allAt(HashMap<String, String> map) {
-		return mkDAO.allAt(sqlSession, map);
+
+	public ArrayList<Attendance> allAt(Users u) {
+		return mkDAO.allAt(sqlSession, u);
+	}
+
+	public void atInsert(HashMap<String, Object> map) {
+		mkDAO.atInsert(sqlSession, map);
+	}
+
+	public void gettedPoint(HashMap<String, Object> map) {
+		mkDAO.gettedPoint(sqlSession, map);
+	}
+
+	public int atTodayChecked(Users u) {
+		return mkDAO.atTodayChecked(sqlSession, u);
 	}
 
 	public ArrayList<Cart> selectCartList(int userNo) {
@@ -111,6 +126,8 @@ public class MarketService {
 
 	
 	
+
+
 
 
 

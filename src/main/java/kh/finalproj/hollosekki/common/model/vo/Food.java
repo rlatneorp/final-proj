@@ -2,7 +2,7 @@ package kh.finalproj.hollosekki.common.model.vo;
 
 import java.util.Date;
 
-public class Food {
+public class Food extends Product{
 	private int productNo;
 	private String foodName;
 	private int foodKind;
@@ -18,16 +18,20 @@ public class Food {
 	private int productStock;
 	private Date productCreateDate;
 	private Date productModifyDate;
-	private double productSale;
+	private Double productSale;
 	private int productCount;
 	private String productStatus;
+	
+	private int orderCount;
+	private int viewCount;
+	private int likeCount;
 	
 	public Food() {}
 
 	public Food(int productNo, String foodName, int foodKind, int foodType, String foodContent, String foodTarget,
 			String foodTable, String nutrient, int productType, int productPrice, String productOption,
-			int productStock, Date productCreateDate, Date productModifyDate, double productSale, int productCount,
-			String productStatus) {
+			int productStock, Date productCreateDate, Date productModifyDate, Double productSale, int productCount,
+			String productStatus, int orderCount, int viewCount, int likeCount) {
 		super();
 		this.productNo = productNo;
 		this.foodName = foodName;
@@ -46,6 +50,9 @@ public class Food {
 		this.productSale = productSale;
 		this.productCount = productCount;
 		this.productStatus = productStatus;
+		this.orderCount = orderCount;
+		this.viewCount = viewCount;
+		this.likeCount = likeCount;
 	}
 
 	public int getProductNo() {
@@ -160,11 +167,11 @@ public class Food {
 		this.productModifyDate = productModifyDate;
 	}
 
-	public double getProductSale() {
+	public Double getProductSale() {
 		return productSale;
 	}
 
-	public void setProductSale(double productSale) {
+	public void setProductSale(Double productSale) {
 		this.productSale = productSale;
 	}
 
@@ -184,6 +191,30 @@ public class Food {
 		this.productStatus = productStatus;
 	}
 
+	public int getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(int orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Food [productNo=" + productNo + ", foodName=" + foodName + ", foodKind=" + foodKind + ", foodType="
@@ -191,7 +222,8 @@ public class Food {
 				+ ", nutrient=" + nutrient + ", productType=" + productType + ", productPrice=" + productPrice
 				+ ", productOption=" + productOption + ", productStock=" + productStock + ", productCreateDate="
 				+ productCreateDate + ", productModifyDate=" + productModifyDate + ", productSale=" + productSale
-				+ ", productCount=" + productCount + ", productStatus=" + productStatus + "]";
+				+ ", productCount=" + productCount + ", productStatus=" + productStatus + ", orderCount=" + orderCount
+				+ ", viewCount=" + viewCount + ", likeCount=" + likeCount + "]";
 	}
 	
 }

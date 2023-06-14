@@ -9,20 +9,22 @@
 <title>비밀번호찾기</title>
 <style>
 	body{background: #B0DAFF;}	
+	#loading{position: absolute; margin-left: 43%; margin-top: 15%; }
+ 	#mask{width: 100%; height: 100%; position: absolute; z-index:9000; background: rgba(0, 0, 0, 0.5); top: 0;}
 	.form-line{
-		width: 600px; height: 970px;
+		width: 600px; height: 1050px;
 		border: 5px solid white;
 		border-radius: 45px; 
 		margin-left: auto; margin-right: auto; margin-top: 100px; margin-bottom: 100px;
 		}
 	.form-dot{
-		width: 580px; height: 950px;
+		width: 580px; height: 1030px;
 		border: 5px dotted white;
 		border-radius: 40px;
 		margin: 5px;
 		}
 	.join-form{
-		width: 560px; height: 925px;
+		width: 560px; height: 1005px;
 		background: white;
 		border-radius: 30px;
 		margin: 0 auto; margin-top: 12px;
@@ -102,6 +104,12 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
 
+	<div id="mask"></div>
+	<div id="loading">
+        <img src="${ contextPath }/resources/images/Spinner2.gif">    
+    </div>
+
+
 	<div class="outline">
 		<div class="form-line">
 			<div class="form-dot">
@@ -165,6 +173,12 @@
 </body>
 
 <script>
+	$(document).ready(function(){
+		$("#loading").hide();
+		$("#mask").hide();
+	})
+
+
 	const checkBtn = document.getElementById("button2");
 	
 	checkBtn.addEventListener('click', function(){
@@ -235,6 +249,9 @@
 			}
 		}, 1000);
 		
+		$("#loading").show();
+		$("#mask").show();
+		
 		$.ajax({
 			type:"POST",
 			url: "findPwdCheck.en",
@@ -243,6 +260,9 @@
 			success: data=>{
 				console.log(data);
 				if( data == 0 ){
+					$("#loading").hide();
+					$("#mask").hide();
+					
 					swal({
 						 text: "일치하는 정보가 없습니다.",
 						 icon: "error",
@@ -252,6 +272,9 @@
 					time.innerText = '';
 					return false;
 				} else{
+					$("#loading").hide();
+					$("#mask").hide();
+					
 					swal({
 						 text: "인증번호가 전송되었습니다.",
 						 icon: "success",
@@ -262,6 +285,9 @@
 			},
 			error: data =>{
 				console.log(222);
+				$("#loading").hide();
+				$("#mask").hide();
+				
 				swal({
 					 text: "인증번호 전송에 실패했습니다.",
 					 icon: "error",

@@ -6,8 +6,9 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 <style>
-	body{background: #B0DAFF;}	
-/* 	#mask{width: 100%; height: 100%; position: absolute; z-index:9000; display:none; background: red;} */
+	body{background: #B0DAFF;}
+	#loading{position: absolute; margin-left: 43%; margin-top: 15%;}
+ 	#mask{width: 100%; height: 100%; position: absolute; z-index:9000; background: rgba(0, 0, 0, 0.5); top: 0;}
 	.form-line{
 		width: 600px; height: 840px;
 		border: 5px solid white;
@@ -75,7 +76,7 @@
 <body>
 	<div id="mask"></div>
 	<div id="loading">
-        <img src="${ contextPath }/resources/images/Spinner.gif">    
+        <img src="${ contextPath }/resources/images/Spinner2.gif">    
     </div>
 
 	<div class="outline">
@@ -121,10 +122,10 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script> <!-- 카카오 간편로그인 -->
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script> <!-- 네이버 간편로그인 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="${ contextPath }/resources/js/loadingoverlay.min.js"></script>
 <script>
 	$(document).ready(function(){
 		$("#loading").hide();
+		$("#mask").hide();
 	})
 
 	Kakao.init('7bce9522ff9d4cff75ab0ce48d2ba440'); // javascript키를 사용
@@ -145,6 +146,7 @@
 //                   console.log(data.kakao_account.email);			//sk6522@hanmail.net
 //                   console.log(data.properties.profile_image);	//http://k.kakaocdn.net/dn/KMVzH/btrOQyPkSGp/6psjYBhYIgREkghu0yVwK0/img_640x640.jpg
 				$("#loading").show();
+				$("#mask").show();
 	
                   $.ajax({
                     url:"kakaoLogin.en",
@@ -177,32 +179,34 @@
   	naverLogin.init_naver_id_login();
   	
   	$("#loading").show();
+  	$("#mask").show();
   	
 	function naverSignInCallback() {
 		
 		const id = naverLogin.getProfileData('id');
 		const name = naverLogin.getProfileData('name');
-		const nickName = naverLogin.getProfileData('nickname');
-		const email = naverLogin.getProfileData('email');
-		const phone = naverLogin.getProfileData('mobile');
+// 		const nickName = naverLogin.getProfileData('nickname');
+// 		const email = naverLogin.getProfileData('email');
+// 		const phone = naverLogin.getProfileData('mobile');
 		const profileImg = naverLogin.getProfileData('profile_image');
 		
 		console.log(id);
 		console.log(name);
-		console.log(nickName);
-		console.log(email);
-		console.log(phone);
+// 		console.log(nickName);
+// 		console.log(email);
+// 		console.log(phone);
 		console.log(profileImg);
 		
 		$("#loading").show();
+		$("#mask").show();
 		
 		$.ajax({
 			url:"naverLogin.en",
 			data: { "id":id,
 					"name":name,
-					"nickName":nickName,
-					"email":email,
-					"phone":phone,
+// 					"nickName":nickName,
+// 					"email":email,
+// 					"phone":phone,
 					"profileImg":profileImg,
 			},
 			type:"post",

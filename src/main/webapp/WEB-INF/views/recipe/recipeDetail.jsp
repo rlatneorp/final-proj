@@ -165,37 +165,36 @@
 
 	<div id="top">
 		<div id="thumImg">
-			<img src="resources/images/chicken1.png" style="width: 100%; height: 100%; border-radius: 5px;">
+			<img src="${contextPath }/resources/uploadFiles/${thum.imageRenameName}" style="width: 100%; height: 100%; border-radius: 5px;">
 		</div>
 		<div style="width: 50px; height: 500px; display: inline-block; position: absolute; left: 500px;"></div>
 		<div id="imformation">
 			<div id="title">
-				<h2 style="display: inline-block; margin-right: 470px;">치킨치킨</h2>
+				<h2 style="display: inline-block; margin-right: 470px;">${recipe.recipeName }</h2>
 				<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
 			</div>
 			<div id="grade">
 				<div class="d-inline-block" style="width: 50px; font-weight: bold">난이도</div>
-				<div class="d-inline-block" style="width: 210px; text-align: center; font-weight: bolder; font-size: 20px;">* * * * *</div>
+				<div class="d-inline-block" style="width: 210px; text-align: center; font-weight: bolder; font-size: 20px;">${recipe.recipeDifficulty }</div>
 				<div class="d-inline-block" style="width: 30px; font-weight: bold">|</div>
 				<div class="d-inline-block" style="width: 70px; font-weight: bold">조리시간</div>
-				<div class="d-inline-block" style="width: 180px; text-align: center; font-weight: bolder; font-size: 20px;"> 15 분</div>
+				<div class="d-inline-block" style="width: 180px; text-align: center; font-weight: bolder; font-size: 20px;">${recipe.recipeTime } 분</div>
 			</div>
 			
 			<div id="userInfo">
 				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%">
-				<p>닉네임</p>
-				<p>*****</p>
-				<p>레시피에 대한 설명입니다. 이 요리는 어떠어떠한 요리입니다.</p>
+				<p>${recipe.nickName }</p>
+				<p>${recipe.recipeContent }</p>
 			</div>
 			
 			<br><br>
 			
-<%-- 			<c:if test="${loginUser eq recipeWriter }"> --%>
-			<div id="updateBox">
-				<button id="updateBtn">수정</button>
-				<button id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
-			</div>
-<%-- 			</c:if> --%>
+			<c:if test="${loginUser.usersId eq recipe.usersId }">
+				<div id="updateBox">
+					<button id="updateBtn">수정</button>
+					<button id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
+				</div>
+			</c:if>
 		</div>
 	</div>
 	
@@ -228,32 +227,21 @@
 	
 	<br><br>
 	
-	<div id="order">
-		<div id="orderList">
-			<table>
-				<tr>
-					<td class="no">1</td>
-					<td class="content">만드는 순서 1....</td>
-					<td class="image"><img src="#" width="250px" height="250px" alt="조리 순서 사진 1"></td>
-				</tr>
-				<tr>
-					<td class="no">2</td>
-					<td class="content">만드는 순서 2....</td>
-					<td class="image"><img src="#" width="250px" height="250px" alt="조리 순서 사진 2"></td>
-				</tr>
-				<tr>
-					<td class="no">3</td>
-					<td class="content">만드는 순서 3....</td>
-					<td class="image"><img src="#" width="250px" height="250px" alt="조리 순서 사진 3"></td>
-				</tr>
-				<tr>
-					<td class="no">4</td>
-					<td class="content">만드는 순서 4....</td>
-					<td class="image"><img src="#" width="250px" height="250px" alt="조리 순서 사진 4"></td>
-				</tr>
-			</table>
-		</div>
-	</div>
+<!-- 	<div id="order"> -->
+<!-- 		<div id="orderList"> -->
+<!-- 			<table> -->
+<%-- 				<c:forEach items="${recipe}" var="r"> --%>
+<%-- 					<c:forEach items="${oList}" var="oList"> --%>
+<!-- 						<tr> -->
+<!-- 							<td class="no">1</td> -->
+<%-- 							<td class="content">${r.recipeOrder}</td> --%>
+<%-- 							<td class="image"><img src="${contextPath}/resources/uploasdFiles/${oList.renameName}" width="250px" height="250px" alt="조리 순서 사진 1"></td> --%>
+<!-- 						</tr> -->
+<%-- 					</c:forEach> --%>
+<%-- 				</c:forEach> --%>
+<!-- 			</table> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 	
 	<br><br>
 	<br><br>	
@@ -272,15 +260,11 @@
 			<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
 		</div>
 		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img src="#" width= 600px height= 500px class="complPic">
-			</div>
-			<div class="carousel-item">
-				<img src="#" width= 600px height= 500px class="complPic">
-			</div>
-			<div class="carousel-item">
-				<img src="#" width= 600px height= 500px class="complPic">
-			</div>
+			<c:forEach items="${cList }" var="c">
+				<div class="carousel-item active">
+					<img src="${contextPath }/resources/uploadFiles/${c.imageRenameName}" width= 600px height= 500px class="complPic">
+				</div>
+			</c:forEach>
 		</div>
 		<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
 		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -294,12 +278,12 @@
 </div>
 <br>
 
-<%-- <c:if test="${!(loginUser eq recipeWriter) }"> --%>
-<div id="buttonBox">
-	<button class="buy">밀키트 구매</button>
-	<button class="buy">식재료 구매</button>
-</div>
-<%-- </c:if> --%>
+<c:if test="${!(loginUser.usersId eq recipe.usersId) }">
+	<div id="buttonBox">
+		<button id="mealkitBuy" class="buy">밀키트 구매</button>
+		<button id="ingredientBuy" class="buy">식재료 구매</button>
+	</div>
+</c:if>
 
 <br><br>
 
@@ -471,7 +455,12 @@
 
 <%@ include file="../common/footer.jsp" %>
 
-
+<script>
+	const mel = document.getElementById('mealkitBuy');
+	mel.addEventListener('click', function(){
+		console.log(${recipe.recipeOrder});
+	})
+</script>
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	
 </body>

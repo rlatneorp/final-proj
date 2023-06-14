@@ -18,4 +18,12 @@ public interface RecipeService {
 
 	ArrayList<Image> selectRecipeImageList();
 
+	Recipe recipeDetail(int foodNo, boolean yn);
+
+	Image recipeDetailThum(int foodNo);
+
+	ArrayList<Image> recipeDetailOrder(int foodNo);
+
+	ArrayList<Image> recipeDetailComp(int foodNo);
+
 }

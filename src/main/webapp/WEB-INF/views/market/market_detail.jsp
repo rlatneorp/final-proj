@@ -277,7 +277,7 @@ p b {
 	padding: 0px;
 	margin: 0px;
 	border: 1px solid #dfdfdf;
-	width: 35px;
+	width: 50px;
 	text-align: center;
     padding-left: 7px;
 }
@@ -778,7 +778,7 @@ p b {
 					<label for="option2">사이즈</label>
 					<select class='productOption2' name='productOption'  required>
 						<!-- 사이즈 선택 창 -->
-						<option class='productOption2Set' >옵션을 선택해주세요.</option>
+						<option class='productOption2Set' name="productOption2Set">옵션을 선택해주세요.</option>
 					</select>
 
 
@@ -809,11 +809,12 @@ p b {
 <!-- 					</div> -->
 					
 <!-- 				</div> -->
-					
-						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-							<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
-				</div>
+<!-- 					</div> -->
 			</div>
+						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
+				
+
 		</div>
 	</main>
 </form>
@@ -1137,15 +1138,10 @@ p b {
    const productOption = document.querySelector(".productOption"); //사이즈 선택 창
    const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
    const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
-   
-    // 상품 수량 
-    // 상품 수량 감소 버튼
-  // 상품 수량 증가 버튼
-   
    const buyBtn = document.getElementById("buyBtn");
    const result = document.getElementById("productResult");
    const like = document.querySelector(".like");
-   
+   const productSet = document.querySelector(".productSet");
    
       like.addEventListener("click", function() {
 	    if(like.innerText === '♡') {
@@ -1162,20 +1158,32 @@ p b {
     	productOption.addEventListener("change", function(){
     		
     		if(productOp.value != ""){
-    			let b = ["S","M","L", "XL"];
-                let result = $( '.productOption' ).val();
+    			let b = ["옵션을 선택해주세요.","XL","L","M","S"];
+                let result = productOption.value;
                 let o;
-                console.log(" 0. result : "+ result);
+                console.log(b[0]);
+                
+                
                 if ( productOp.indexOf(result) > 0  == true && result != "") {
-                  o = b;
+                  
+                	if(productOp.indexOf(b[0]) < 0){
+                		console.log("안돼")
+                		o = b;
+                	}else{
+                		alert("필수 옵션을 선택해주세요");
+                	}
+                  
                 } else if ( productOp.indexOf(o) > 0 != true && result != "") {
                   o = b;
                 } else {
               	o = ["색상 옵션을 선택해주세요"];
                 }
-                $( '.productOption2' ).empty();
+               if((productOption2==="") == false){
+            	   productOption2.options.length=0; 
+               }
+              
                 for ( let i = 0; i < o.length; i++ ) {
-                  $( '.productOption2' ).append( '<option class="productOption2Set">'+ o[ i ] + '</option>' );
+                	productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set">'+ o[ i ] + '</option>' );
                      
                   }
     		}
@@ -1184,12 +1192,12 @@ p b {
         
         
         productOption2.addEventListener("change", function(){
-        	
+        	 const increase = document.querySelectorAll(".increase");	
+        	 
+        	 console.log(increase);
              const select =  $('.productOption option:selected');
              const select2 = $('.productOption2 option:selected');
-
-
-
+             
       		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
       		const opop = document.getElementsByClassName('opSearch');
 //             			console.log(opop[0]);
@@ -1199,86 +1207,42 @@ p b {
       				let cartCount = document.querySelectorAll(".cartCount");
       				cartCount[k].value++;
       				YN = "N";
+      				
       			}
       		}
+	      			if(YN == "Y"){
+						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+								 							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
+								 							+'<input type="hidden" name="productNo" value="134">'
+								 							+'<input type="hidden" name="productName" value="캠핑용 후라이팬">'
+								 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+								 						+'</h4>'
+								 						+'<div>'
+								 							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+								 							+'<button class="decrease" type="button">-</button>'
+								 							+'<input type="number" class="cartCount"'
+								 							+'	value="1" name="cartCount" min="1" readonly>'
+								 							+'<button class="increase" type="button">+</button>'
+								 								+'<button class="removeProudct" type="button" style="float: right;">'
+								 								+'<img src="resources/images/close.png" style="width: 10px;">'
+								 								+'<span>'
+								 							+'</button>'
+								 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
+								 						+'<input type="hidden" name="discountRate" value="${p.discountRate}">'
+								 						+'</div>'
+								 						 +'<br>'
+								 					+'</div>');
+							increase.forEach(function(e){
+								e.addEventListener('click', function(){
+									console.log(asd);
+								})
+							})
+			
+		  			 }
+		  					
       		
-      		if(YN == "Y"){
-      			$(".productSet").append('<div  class="productResultSet" style="display:block">'
-						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-//      							+'캠핑용 후라이팬 <span class="op1">'+select.val()+'</span>'+" "+'<span class="op2">'+select2.val()+'</span>'
-							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
-							+'<input type="hidden" name="productNo" value="134">'
-							+'<input type="hidden" name="productName" value="캠핑용 후라이팬">'
-							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-						+'</h4>'
-						+'<div>'
-							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-							+'<button class="decrease" type="button">-</button>'
-							+'<input type="number" class="cartCount"'
-							+'	value="1" name="cartCount" min="1" readonly>'
-							+'<button class="increase" type="button">+</button>'
-								+'<button class="removeProudct" type="button" style="float: right;">'
-								+'<img src="resources/images/close.png" style="width: 10px;">'
-								+'<span>'
-							+'</button>'
-							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-						+'<input type="hidden" name="discountRate" value="${p.discountRate}">'
-						+'</div>'
-						 +'<br>'
-					+'</div>')
-					
-					const opop2 = document.getElementsByClassName('opSearch');
-      				console.log(document.querySelectorAll(".increase")[opop2.length-1]);
-      				console.log("0번째");
-      				console.log(document.querySelectorAll(".increase")[0]);
-      				console.log("1번째");
-      				console.log(document.querySelectorAll(".increase")[1]);
-      				console.log(opop);
-	  				document.querySelectorAll(".increase")[opop2.length-1].addEventListener('click', function(){
-  					document.querySelectorAll(".cartCount")[opop2.length-1].value++;
-//  			    productPrice[k].innerText = priceToString(cartCount[k].value*450000);
-  			      
-  			      
-  			   })
-  			  		document.querySelectorAll(".decrease")[opop2.length-1].addEventListener("click", function(){
-  			  		document.querySelectorAll(".cartCount")[opop2.length-1].value--;
-//   			    document.querySelectorAll(".productPrice")[k].innerText = priceToString(cartCount[k].value*450000);
-  			      
-  			      if(cartCount[opop2.length-1].value < 1){
-  			         cartCount[opop2.length-1].value = 1
-//   			      productPrice.innerText = priceToString(cartCount[opop.length].value*450000);
-  			         
-  			      }
-  			   })
-      		
-      	}
-      		
-      		
-      	
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				
-
-            
-             
-            })
+      	})
         		
                
         

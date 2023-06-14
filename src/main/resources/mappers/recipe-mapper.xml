@@ -2,25 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="recipeMapper">
 
+	<insert id="insertRecipe">
+		insert into recipe values(seq_recipe_no.nextval, #{usersNo}, #{recipeName}, #{categoryIngredient},
+								  #{categorySituation}, #{categoryType}, #{recipeDifficulty}, #{recipeTime},
+								  #{recipeContent}, #{recipeOrder}, default, default, default, default)
+	</insert>
+	
 	<insert id="insertAttm">
 		insert all
 		<foreach collection="list" item="item"> 
-		into image values(seq_image_no.nextval,
-		<if test="item.imageDivideNo == 0">
-		seq_recipe_no.currval,
-		</if>
-		<if test="item.imageDivideNo != 0">
-		#{item.imageDivideNo},
-		</if>
-		 2, #{item.imageOriginalName}, #{item.imageRenameName}, #{item.imagePath}, ${item.imageLevel})
+			into image values(new_image_no,
+			<if test="item.imageDivideNo == 0">
+			SEQ_RECIPE_NO.currval,
+			</if>
+			<if test="item.imageDivideNo != 0">
+			#{item.imageDivideNo},
+			</if>
+			 2, #{item.imageOriginalName}, #{item.imageRenameName}, #{item.imagePath}, ${item.imageLevel})
 		</foreach>
 		select * from dual
-	</insert>
-	
-	<insert id="insertRecipe">
-		insert into recipe values(seq_recipe_no.nextval, #{userNo}, #{recipeName}, #{categoryIngredient},
-								  #{categorySituation}, #{categoryType}, #{recipeDifficulty}, #{recipeTime},
-								  #{recipeContent}, #{recipeOrder}, default, default, default, default)
 	</insert>
 	
 	<select id="getListCount" resultType="_int">
@@ -32,6 +32,7 @@
 		select *
 		from recipe
 			 join users using(users_no)
+		where recipe_status = 'Y'
 		order by food_no desc
 	</select>
 	
@@ -42,6 +43,37 @@
 		order by image_no desc
 	</select>
 	
+	<select id="recipeDetail" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 join users using(users_no)
+		where food_no = #{foodNo} and recipe_status='Y'
+	</select>
+	
+	<update id="addCount">
+		update recipe set recipe_count = recipe_count + 1
+		where food_no=#{foodNo}
+	</update>
+	
+	<select id="recipeDetailThum" resultMap="imageResultSet">
+		select *
+		from image
+		where image_Divide_No = #{foodNo} and image_Level=0
+	</select>
+	
+	<select id="recipeDetailOrder" resultMap="imageResultSet">
+		select *
+		from image
+		where image_Divide_No = #{foodNo} and image_Level=1
+	</select>
+	
+	<select id="recipeDetailComp" resultMap="imageResultSet">
+		select *
+		from image
+		where image_Divide_No = #{foodNo} and image_Level=2	
+	</select>
+	
+		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

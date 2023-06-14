@@ -230,8 +230,8 @@
 											statusBtns[i].style.background = "#19A7CE";
 											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
 											
-											price = document.getElementsByClassName('priceBox')[j].innerText;
-											sale = document.getElementsByClassName('saleBox')[j].innerText;
+// 											price = document.getElementsByClassName('priceBox')[j].innerText;
+// 											sale = document.getElementsByClassName('saleBox')[j].innerText;
 // 											document.getElementsByClassName('priceBox')[j].style.display="none";
 // 											document.getElementsByClassName('saleBox')[j].style.display="none";
 										}

@@ -185,6 +185,7 @@ input[type="text"] {
 	<div id="allChec"></div><br><br>
 
 
+
 	<!-- 장바구니 테이블 -->
 	<table>
 		<tr style="border: 2px solid #dee2e6; background-color: #B0DAFF;">
@@ -193,66 +194,147 @@ input[type="text"] {
 			<th class="tableBorder1"><b>상품가격</b></th>
 			<th class="tableBorder1"><b>적립/할인</b></th>
 			<th class="tableBorder1"><b>합계금액</b></th>
-			<th style="border-bottom: 2px solid #dee2e6">배송비</th>
+<!-- 			<th style="border-bottom: 2px solid #dee2e6">배송비</th> -->
 		</tr>
-		<tbody>
-			<tr style="border-top: 2px solid #dee2e6;">
-				<td class="imgTab">
-					<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
-				</td>
-				<td style="border-right: 2px solid #dee2e6; text-align: left">접이식밥상<br><br>옵션 : 
-				<select>
-						<option>Brown</option>
-						<option>Pink</option>
-						<option>Yellow</option>
-						<option>Black</option>
-				</select>
-				</td>
-				<td style="border-right: 2px solid #dee2e6; width:130px">
-					<i class="bi bi-dash-square-fill" id="minus" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
-					<span id="size">1</span>개&nbsp;
-					<i class="bi bi-plus-square-fill" id="plus" style="color: #00AAFF; font-size: 15px"></i>
-				</td>
-				<td style="border-right: 2px solid #dee2e6;"><span id="price">46,500</span>원</td>
-				<td style="border-right: 2px solid #dee2e6;"><span>2,325</span>P적립</td>
-				<td style="border-right: 2px solid #dee2e6; width:160px"><span id="sum">46,500</span>원</td>
-				<td>무료배송</td>
-			</tr>
-
+		<tbody id="products">
+			<c:forEach items="${ cartList}" var="cl" >
+				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
+					<td class="imgTab">
+						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
+						<input type="checkbox" value="${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
+						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
+					</td>
+					<td style="border-right: 2px solid #dee2e6; text-align: left">
+						<b>${cl.productName}</b><br><br>
+						옵션 : 
+						<select>
+							<c:forEach var="option" items="${fn:split(cl.productOption, ',')}">
+								<option value="${option}">${option}</option>
+							</c:forEach>
+						</select>
+					</td>
+					<td style="border-right: 2px solid #dee2e6; width:130px">
+<%-- 						<i class="bi bi-dash-square-fill" id="minus-${cl.productNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp; --%>
+						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp;
+<%-- 						<i class="bi bi-plus-square-fill" id="plus-${cl.productNo }" style="color: #00AAFF; font-size: 15px"></i> --%>
+					</td>
+					<td style="border-right: 2px solid #dee2e6; width:150px " >
+						<span id="pp-${cl.productNo }" class="price">
+						${cl.productPrice}
+						</span>원
+					</td>
+					<td style="border-right: 2px solid #dee2e6; width:130px">
+						<span class="point" id="point-${cl.productNo }"></span>P 적립
+					</td>
+					<td style="border-right: 2px solid #dee2e6; width:160px">
+						<span class="sum" id="sum-${cl.productNo }">
+						${cl.sum }
+						</span>원
+					</td>
+<%-- 					<td id="shippingPrice-${cl.productNo }">${cl.shippingPrice }</td> --%>
+				</tr>
+				</c:forEach>
 		</tbody>
-	</table>
-	<br>
-	<br>
+	</table><br><br>
 	<div style="width: 1200px; margin: 0 auto; font-align: right">
-		<i class="bi bi-caret-left-fill"></i><i class="bi bi-caret-left-fill"></i><i
-			class="bi bi-caret-left-fill"><b>쇼핑 계속하기</b></i>
-	</div>
-	<br>
-
-
+		<i class="bi bi-caret-left-fill"></i><i class="bi bi-caret-left-fill"></i>
+		<b>쇼핑 계속하기</b><br>
+	</div><br>
+	
+	<!-- 금액 -->
 	<table>
 		<tbody>
 			<tr style="height: 130px; font-size: 20px;">
-				<td style="width: 800px; text-align: right"><b>총 <span id="total">1</span>개의 상품 금액<br>
-					<br>
-					<span style="color: #00AAFF" id="sumTotal">46,500</span>원
-				</b></td>
-				<td>&nbsp;&nbsp;&nbsp;<i class="bi bi-plus-circle-fill"
-					style="color: #00AAFF; font-size: 30px"></i></td>
-				<td style=""><b>배송비<br>
-					<br>
-					<span style="color: #00AAFF">0</span>원
-				</b></td>
-				<td><span class="material-symbols-outlined"
-					style="color: #00AAFF">equal</span></td>
-				<td style=""><b>합계<br>
-					<br>
-					<span style="color: #00AAFF" id="realTotal">46,500</span>원
-				</b></td>
+				<td style="width: 800px; text-align: right">
+					<b>총 <span id="orderSize">1</span>개의 상품 금액<br><br>
+					<span style="color: #00AAFF" id="trTotalSum">46,500</span>원</b>
+				</td>
+				<td>
+					&nbsp;&nbsp;&nbsp;<i class="bi bi-plus-circle-fill" style="color: #00AAFF; font-size: 30px"></i>
+				</td>
+				<td>
+					<b>배송비<br><br><span style="color: #00AAFF" id="shipPrice">0</span>원</b>
+				</td>
+				<td>
+					<span class="material-symbols-outlined" style="color: #00AAFF">equal</span>
+				</td>
+				<td>
+					<b>합계<br><br><span style="color: #00AAFF" id="shipSum">46,500</span>원</b>
+				</td>
+			</tr>
+			<tr>
+				
 			</tr>
 		</tbody>
-	</table>
-	<br>
+	</table><br>
+<!-- 	<!-- 장바구니 테이블 --> -->
+<!-- 	<table> -->
+<!-- 		<tr style="border: 2px solid #dee2e6; background-color: #B0DAFF;"> -->
+<!-- 			<th class="tableBorder1" colspan="2" style="height: 40px"><b>상품/옵션정보</b></th> -->
+<!-- 			<th class="tableBorder1"><b>수량</b></th> -->
+<!-- 			<th class="tableBorder1"><b>상품가격</b></th> -->
+<!-- 			<th class="tableBorder1"><b>적립/할인</b></th> -->
+<!-- 			<th class="tableBorder1"><b>합계금액</b></th> -->
+<!-- 			<th style="border-bottom: 2px solid #dee2e6">배송비</th> -->
+<!-- 		</tr> -->
+<!-- 		<tbody> -->
+<!-- 			<tr style="border-top: 2px solid #dee2e6;"> -->
+<!-- 				<td class="imgTab"> -->
+<!-- 					<img src="" style="border: 1px solid black; width: 200px; height: 200px;"> -->
+<!-- 				</td> -->
+<!-- 				<td style="border-right: 2px solid #dee2e6; text-align: left">접이식밥상<br><br>옵션 :  -->
+<!-- 				<select> -->
+<!-- 						<option>Brown</option> -->
+<!-- 						<option>Pink</option> -->
+<!-- 						<option>Yellow</option> -->
+<!-- 						<option>Black</option> -->
+<!-- 				</select> -->
+<!-- 				</td> -->
+<!-- 				<td style="border-right: 2px solid #dee2e6; width:130px"> -->
+<!-- 					<i class="bi bi-dash-square-fill" id="minus" style="color: #00AAFF; font-size: 15px;"></i>&nbsp; -->
+<!-- 					<span id="size">1</span>개&nbsp; -->
+<!-- 					<i class="bi bi-plus-square-fill" id="plus" style="color: #00AAFF; font-size: 15px"></i> -->
+<!-- 				</td> -->
+<!-- 				<td style="border-right: 2px solid #dee2e6;"><span id="price">46,500</span>원</td> -->
+<!-- 				<td style="border-right: 2px solid #dee2e6;"><span>2,325</span>P적립</td> -->
+<!-- 				<td style="border-right: 2px solid #dee2e6; width:160px"><span id="sum">46,500</span>원</td> -->
+<!-- 				<td>무료배송</td> -->
+<!-- 			</tr> -->
+
+<!-- 		</tbody> -->
+<!-- 	</table> -->
+<!-- 	<br> -->
+<!-- 	<br> -->
+<!-- 	<div style="width: 1200px; margin: 0 auto; font-align: right"> -->
+<!-- 		<i class="bi bi-caret-left-fill"></i><i class="bi bi-caret-left-fill"></i><i -->
+<!-- 			class="bi bi-caret-left-fill"><b>쇼핑 계속하기</b></i> -->
+<!-- 	</div> -->
+<!-- 	<br> -->
+
+
+<!-- 	<table> -->
+<!-- 		<tbody> -->
+<!-- 			<tr style="height: 130px; font-size: 20px;"> -->
+<!-- 				<td style="width: 800px; text-align: right"><b>총 <span id="total">1</span>개의 상품 금액<br> -->
+<!-- 					<br> -->
+<!-- 					<span style="color: #00AAFF" id="sumTotal">46,500</span>원 -->
+<!-- 				</b></td> -->
+<!-- 				<td>&nbsp;&nbsp;&nbsp;<i class="bi bi-plus-circle-fill" -->
+<!-- 					style="color: #00AAFF; font-size: 30px"></i></td> -->
+<!-- 				<td style=""><b>배송비<br> -->
+<!-- 					<br> -->
+<!-- 					<span style="color: #00AAFF">0</span>원 -->
+<!-- 				</b></td> -->
+<!-- 				<td><span class="material-symbols-outlined" -->
+<!-- 					style="color: #00AAFF">equal</span></td> -->
+<!-- 				<td style=""><b>합계<br> -->
+<!-- 					<br> -->
+<!-- 					<span style="color: #00AAFF" id="realTotal">46,500</span>원 -->
+<!-- 				</b></td> -->
+<!-- 			</tr> -->
+<!-- 		</tbody> -->
+<!-- 	</table> -->
+<!-- 	<br> -->
 
 	<!-- 배송 정보 -->
 	<div

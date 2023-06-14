@@ -17,6 +17,46 @@ import kh.finalproj.hollosekki.common.model.vo.Product;
 @Repository
 public class AdminDAO {
 	
+//	Common-공용
+	public int updateStatus(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.update("adminMapper.updateStatus", map);
+	}
+	
+//	Product-상품
+	public Product selectProduct(SqlSessionTemplate sqlSession, int pNo) {
+		return sqlSession.selectOne("adminMapper.selectProduct", pNo);
+	}
+
+	public int updateProduct(SqlSessionTemplate sqlSession, Product pd) {
+		return sqlSession.update("adminMapper.updateProduct", pd);
+	}
+
+	public int insertProduct(SqlSessionTemplate sqlSession, Product pd) {
+		sqlSession.insert("adminMapper.insertProduct", pd);
+		//insertProduct 의 selectKey를 이용하여 insert된 Product의 productNo을 가져왔음 
+		return pd.getProductNo();
+	}
+	
+	public int deletesProduct(SqlSessionTemplate sqlSession, String[] pDeletes) {
+		return sqlSession.delete("adminMapper.deletesProduct", pDeletes);
+	}	
+	
+	
+//	Image-사진
+	public ArrayList<Image> selectAllImageList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectAllImageList", map);
+	}
+
+	public int insertImage(SqlSessionTemplate sqlSession, Image image) {
+		return sqlSession.insert("adminMapper.insertImage", image);
+	}
+	
+	public int deleteImage(SqlSessionTemplate sqlSession, Image img) {
+		return sqlSession.delete("adminMapper.deleteImage", img);
+	}
+	
+	
+//	Ingredient-식재료
 	public int getIngredientCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
 		return sqlSession.selectOne("adminMapper.getIngredientCount", ab);
 	}
@@ -26,10 +66,7 @@ public class AdminDAO {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("adminMapper.selectIngredientList", ab, rowBounds);
 	}
-
-	public Product selectProduct(SqlSessionTemplate sqlSession, int pNo) {
-		return sqlSession.selectOne("adminMapper.selectProduct", pNo);
-	}
+	
 	public Ingredient selectIngredient(SqlSessionTemplate sqlSession, int igdNo) {
 		return sqlSession.selectOne("adminMapper.selectIngredient", igdNo);
 	}
@@ -37,61 +74,43 @@ public class AdminDAO {
 	public int updateIngredient(SqlSessionTemplate sqlSession, Ingredient igd) {
 		return sqlSession.update("adminMapper.updateIngredient", igd);
 	}
-
-	public int updateProduct(SqlSessionTemplate sqlSession, Product pd) {
-		return sqlSession.update("adminMapper.updateProduct", pd);
-	}
-
-	public int insertProduct(SqlSessionTemplate sqlSession, Product pd) {
-		return sqlSession.insert("adminMapper.insertProduct", pd);
-	}
 	
 	public int insertIngredient(SqlSessionTemplate sqlSession, Ingredient igd) {
-		return sqlSession.insert("adminMapper.insertIngredient", igd);
-	}
-
-	public int getNowIngredientNo(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("adminMapper.getNowIngredientNo");
-	}
-
-	public int insertImage(SqlSessionTemplate sqlSession, Image image) {
-		return sqlSession.insert("adminMapper.insertImage", image);
-	}
-
-	public Image selectImage(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
-		return sqlSession.selectOne("adminMapper.selectImage", map);
-	}
-
-	public int deleteImage(SqlSessionTemplate sqlSession, Image img) {
-		return sqlSession.delete("adminMapper.deleteImage", img);
-	}
-
-	public int getNowProductNo(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("adminMapper.getNowProductNo");
+		sqlSession.insert("adminMapper.insertIngredient", igd);
+		//insertIngredient 의 selectKey를 이용하여 insert된 Ingredient의 ingredientNo을 가져왔음 
+		return igd.getIngredientNo();
 	}
 
 	public int ingredientUpdateIsAccept(SqlSessionTemplate sqlSession, Ingredient igd) {
 		return sqlSession.update("adminMapper.ingredientUpdateIsAccept", igd);
 	}
 
-	public int updateStatus(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
-		return sqlSession.update("adminMapper.updateStatus", map);
-	}
-	
-	public int deletesProduct(SqlSessionTemplate sqlSession, String[] pDeletes) {
-		return sqlSession.delete("adminMapper.deletesProduct", pDeletes);
-	}
-
 	public int deletesIngredient(SqlSessionTemplate sqlSession, String[] igdDeletes) {
 		return sqlSession.delete("adminMapper.deletesIngredient", igdDeletes);
 	}
 
+	
+//	Food-식품
 	public int insertFood(SqlSessionTemplate sqlSession, Food f) {
 		return sqlSession.insert("adminMapper.insertFood", f);
 	}
 
-	public int getNowFoodNo(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("adminMapper.getNowFoodNo");
+	public int getFoodCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getFoodCount", ab);
+	}
+	
+	public Food selectFood(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("adminMapper.selectFood", foodNo);
+	}
+
+	public ArrayList<Food> selectFoodList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectFoodList", ab, rowBounds);
+	}
+
+	public int deletesFood(SqlSessionTemplate sqlSession, String[] foodDeletes) {
+		return sqlSession.delete("adminMapper.deletesFood", foodDeletes);
 	}
 
 

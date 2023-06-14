@@ -70,21 +70,13 @@ public class Image {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-	
-	public int getImageLevel() {
-		return imageLevel;
-	}
-	
-	public void setImageLevel(int imageLevel) {
-		this.imageLevel = imageLevel;
-	}
 
-
+	
 	@Override
 	public String toString() {
 		return "Image [imageNo=" + imageNo + ", imageDivideNo=" + imageDivideNo + ", imageType=" + imageType
 				+ ", imageOriginalName=" + imageOriginalName + ", imageRenameName=" + imageRenameName + ", imagePath="
 				+ imagePath + ", imageLevel=" + imageLevel + "]";
 	}
-	
+
 }

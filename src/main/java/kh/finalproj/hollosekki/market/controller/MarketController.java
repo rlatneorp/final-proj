@@ -2,14 +2,27 @@ package kh.finalproj.hollosekki.market.controller;
 
 
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -127,40 +140,7 @@ public class MarketController {
 		return "paySuccess";
 	}
 	
-	@GetMapping("attendance_Check.ma")
-	public String attendanceCheck(HttpSession session, Model model,
-			@RequestParam(value="start",required=false) String start,@RequestParam(value="end",required=false) String end
-			) {
-	    
-		Users u = (Users)session.getAttribute("loginUser");
-		String uId = null;
-		
-		System.out.println(u);
-		if(u != null) {
-			uId = u.getUsersId();
-			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("attendanceDate", start);
-			map.put("attendanceDay", start);
-			map.put("uId", uId);
-			
-			 
-			 
-			mkService.attendanceCheck(map);
-			mkService.attendanceDay(map);
-			mkService.firstAdDay(map);
-			mkService.checkDay(map);
-			ArrayList<Users> list = mkService.allAt(map);
-			
-//			model.addAttribute("firstAdDay", firstAdDay);
-			model.addAttribute("attendanceDate", u.getAttendanceDate());
-			model.addAttribute("attendanceDay", u.getAttendanceDay());
-			model.addAttribute("list", list);
-			
-			return "attendance_Check";
-		}else {
-			return "attendance_Check";
-		}
-	}
+
 		
 	
 	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙 獄쏉옙 鈺곌퀬�돳

@@ -5,6 +5,8 @@ import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,10 +22,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
+import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser", "socialUser"})
 @Controller
 public class EnrollController {
 		
@@ -42,42 +45,37 @@ public class EnrollController {
 			return "join";
 		}
 		
-		@RequestMapping("insertUser.en")
-		public String insertUser(@ModelAttribute Users u) {
-			
-			String userPwd = bcrypt.encode(u.getUsersPw());
-			u.setUsersPw(userPwd);
-			
-			int result = eService.insertUser(u);
-			if(result > 0) {
-				return "redirect:login.en";
-			} else {
-				return "회원가입실패...페이지 만드나? 아님 exception?";
-			}
-		}
-		
 //		@RequestMapping("insertUser.en")
-//		@ResponseBody
-//		public void insertUser(@ModelAttribute Users u, PrintWriter out) {
+//		public String insertUser(@ModelAttribute Users u) {
 //			
 //			String userPwd = bcrypt.encode(u.getUsersPw());
 //			u.setUsersPw(userPwd);
 //			
-//			System.out.println(u);
-//			
-//			int count = eService.insertUser(u);
-//			String result = count > 0 ? "yse" : "no";
-//			System.out.println("result : "+ result);
-//			
-//			out.print(result);
+//			int result = eService.insertUser(u);
+//			if(result > 0) {
+//				return "redirect:login.en";
+//			} else {
+//				return "회원가입실패...페이지 만드나? 아님 exception?";
+//			}
 //		}
+		
+		@RequestMapping("insertUser.en")
+		@ResponseBody
+		public void insertUser(@ModelAttribute Users u, PrintWriter out) {
+			
+			String userPwd = bcrypt.encode(u.getUsersPw());
+			u.setUsersPw(userPwd);
+			
+			int count = eService.insertUser(u);
+			String result = count > 0 ? "yes" : "no";
+			out.print(result);
+		}
 		
 		@RequestMapping("login.en")
 		public String login() {
 			return "login";
 		}
 		
-
 		@RequestMapping("loginCheck.en")
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
@@ -185,7 +183,6 @@ public class EnrollController {
 			} else {
 				return "0";
 			}
-			
 		}
 		
 		@RequestMapping("updatePwd.en")
@@ -199,9 +196,6 @@ public class EnrollController {
 		public String updatePwdResult(@RequestParam("id") String id, @RequestParam("pwd") String pwd) {
 			
 			String usersPwd = bcrypt.encode(pwd);
-//			System.out.println(id);
-//			System.out.println(pwd);
-//			System.out.println(usersPwd);
 			
 			int result = eService.updatePwdResult(id, usersPwd);
 			
@@ -210,8 +204,104 @@ public class EnrollController {
 			} else {
 				return "";
 			}
-			
 		}
 		
+		@RequestMapping("kakaoLogin.en")
+		public void kakaoLogin(HttpServletRequest request, HttpServletResponse response, Model model){
+			String id = request.getParameter("id");					// 2827339121
+			String name = request.getParameter("name");				// 정흠
+			String email = request.getParameter("email");			// sk6522@hanmail.net
+			String profileImg = request.getParameter("profileImg");	// http://k.kakaocdn.net/dn/KMVzH/btrOQyPkSGp/6psjYBhYIgREkghu0yVwK0/img_640x640.jpg
+		        
+			SocialLogin sl = eService.SocialLogin(id);
+		        
+			if(sl == null) { // 회원 아닐경우 회원 새로 등록
+				SocialLogin sl2 = new SocialLogin(); // kakaoLogin 테이블에 저장 -> 안해도되나? 이미지주소만 저장하면 될듯
+				sl2.setSocialId(id);
+				sl2.setSocialProfileImg(profileImg);
+		        	
+				eService.socialInsertUser(sl2); // 카톡프사이미지 가져올때 쓸 것
+				
+	        	Users u = new Users();
+	        	u.setUsersId(id);
+	        	u.setUsersPw("카카오로그인 회원입니다");
+	        	u.setUsersName(name);
+	        	u.setNickName(name);
+	        	if(email != null) {
+	        		u.setEmail(email);
+	        	} else {
+	        		u.setEmail("데이터가 없습니다");
+	        	}
+	        	u.setPhone("데이터가 없습니다");
+		        
+		        int result = eService.insertUser(u); 
+		        	
+	        	if(result > 0) { // 회원정보 저장했을때 (데이터 저장했는데 usersId, enrollDate못불러옴 => 새로 불러와야함)
+	        		Users u2 = eService.socialLoginUpdate(id);
+	        		
+		        	model.addAttribute("socialUser", sl2);
+	        		model.addAttribute("loginUser", u2);
+	        	} else { // 회원정보 저장 실패
+	        	}
+	        } else { // 기존 회원일 경우 불러오기
+	        	Users u2 = eService.socialLoginUpdate(id);
+
+	        	model.addAttribute("socialUser", sl);
+	        	model.addAttribute("loginUser", u2);
+	        }
+		}
 		
+		@RequestMapping("naverLogin.en")
+		public String naverLogin(HttpServletRequest request, Model model) {
+			String id = request.getParameter("id");
+			String name = request.getParameter("name");
+			String nickName = request.getParameter("nickName");
+			String email = request.getParameter("email");
+			String phone = request.getParameter("phone");
+			String profileImg = request.getParameter("profileImg");
+			
+			SocialLogin sl = eService.SocialLogin(id);
+			
+			if(sl == null) { // 회원 아닐경우 새로 등록
+				SocialLogin sl2 = new SocialLogin();
+				sl2.setSocialId(id);
+				sl2.setSocialProfileImg(profileImg);
+				
+				eService.socialInsertUser(sl2);
+				
+				Users u = new Users();
+				u.setUsersId(id);
+				u.setUsersPw("네이버로그인 회원입니다");
+				u.setUsersName(name);
+				u.setNickName(nickName);
+				u.setEmail(email);
+				if(phone != null) {
+					u.setPhone(phone);
+				} else {
+					u.setPhone("데이터가 없습니다");
+				}
+				
+				int result = eService.insertUser(u);
+				
+				if(result > 0) { // 등록 잘 된 경우
+					Users u2 = eService.socialLoginUpdate(id);
+					
+					model.addAttribute("socialUser", sl2);
+					model.addAttribute("loginUser", u2);
+					
+					return "redirect:home.do";
+				} else { // 등록 안된경우
+					return "등록실패~~";
+				}
+			} else { // 기존 회원일경우 불러오기
+				Users u2 = eService.socialLoginUpdate(id);
+				
+//				System.out.println(sl);
+//				System.out.println(u2);
+				model.addAttribute("socialUser", sl);
+	        	model.addAttribute("loginUser", u2);
+	        	
+	        	return "redirect:home.do";
+			}
+		}
 }

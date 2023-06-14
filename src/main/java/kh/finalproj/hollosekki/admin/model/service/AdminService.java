@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.admin.model.dao.AdminDAO;
 import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
@@ -43,8 +44,12 @@ public class AdminService {
 		return aDAO.updateIngredient(sqlSession, igd);
 	}
 
-	public int insertProduct(Ingredient igd) {
-		return aDAO.insertProduct(sqlSession, igd);
+	public int updateProduct(Product pd) {
+		return aDAO.updateProduct(sqlSession, pd);
+	}
+	
+	public int insertProduct(Product pd) {
+		return aDAO.insertProduct(sqlSession, pd);
 	}
 	
 	public int insertIngredient(Ingredient igd) {
@@ -62,6 +67,41 @@ public class AdminService {
 	public Image selectImage(HashMap<String, Integer> map) {
 		return aDAO.selectImage(sqlSession, map);
 	}
+
+	public int deleteImage(Image img) {
+		return aDAO.deleteImage(sqlSession, img);
+	}
+
+	public int getNowProductNo() {
+		return aDAO.getNowProductNo(sqlSession);
+	}
+
+	public int ingredientUpdateIsAccept(Ingredient igd) {
+		return aDAO.ingredientUpdateIsAccept(sqlSession, igd);
+	}
+
+	public int updateStatus(HashMap<String, String> map) {
+		return aDAO.updateStatus(sqlSession, map);
+	}
+
+	public int deletesProduct(String[] pDeletes) {
+		return aDAO.deletesProduct(sqlSession, pDeletes);
+	}
+	
+	public int deletesIngredient(String[] igdDeletes) {
+		return aDAO.deletesIngredient(sqlSession, igdDeletes);
+	}
+
+	public int insertFood(Food f) {
+		return aDAO.insertFood(sqlSession, f);
+	}
+
+	public int getNowFoodNo() {
+		return aDAO.getNowFoodNo(sqlSession);
+	}
+
+
+
 
 
 

@@ -9,10 +9,16 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
+import kh.finalproj.hollosekki.market.model.vo.Food;
+import kh.finalproj.hollosekki.market.model.vo.Options;
+import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
+import kh.finalproj.hollosekki.market.model.vo.Tool;
 
 @Service("mkService")
 public class MarketService {
@@ -73,6 +79,53 @@ public class MarketService {
 	public int atTodayChecked(Users u) {
 		return mkDAO.atTodayChecked(sqlSession, u);
 	}
+
+	public ArrayList<Cart> selectCartList(int userNo) {
+		return mkDAO.selectCartList(sqlSession, userNo);
+	}
+
+	public ArrayList<Options> selectOptions(int productNo) {
+		return mkDAO.selectOptions(sqlSession, productNo);
+	}
+
+	public ArrayList<Product> selectProductList(int productNo) {
+		return mkDAO.selectProductList(sqlSession, productNo);
+	}
+
+	public Food selectFood(int productNo) {
+		return mkDAO.selectFood(sqlSession, productNo);
+	}
+
+	public Tool selectTool(int productNo) {
+		return mkDAO.selectTool(sqlSession, productNo);
+	}
+
+	public Ingredient selectIngrdient(int productNo) {
+		return mkDAO.selectIngrdient(sqlSession, productNo);
+	}
+
+	public void delBasket(int productNo) {
+		mkDAO.delBasket(sqlSession, productNo);
+	}
+
+	public ArrayList<Product> selectFoodInfo(int productNo) {
+		return mkDAO.selectFoodInfo(sqlSession, productNo);
+	}
+
+	public int plusCount(int productNo) {
+		return mkDAO.plusCount(sqlSession, productNo);
+	}
+
+	public int plusResultCount(int productNo) {
+		return mkDAO.plusResultCount(sqlSession, productNo);
+	}
+
+	public void minusCount(int productNo) {
+		mkDAO.minusCount(sqlSession, productNo);
+	}
+
+	
+	
 
 
 

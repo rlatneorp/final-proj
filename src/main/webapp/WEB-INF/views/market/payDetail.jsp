@@ -562,7 +562,7 @@ input[type="text"] {
 		    let formattedTotal = total.toLocaleString();
 		    document.getElementById('sum').innerText = formattedTotal;
 		    document.getElementById('sumTotal').innerText = formattedTotal;
-		    document.getElementById('realTotal').innerText = formattedTotal; /* 이건 배송지까지 총합이어야 함 */ 
+		    document.getElementById('realTotal').innerText = formattedTotal; /* 이건 배송지까지 총합이어야 함*/ 
 			 
 		})
 		

@@ -40,13 +40,37 @@
 		set ingredient_name = #{ingredientName},
 			ingredient_type = #{ingredientType},
 			ingredient_content = #{ingredientContent},
+			<if test="productNo != 0">
+				product_no = #{productNo},
+			</if>
 			is_accept = #{isAccept}
 		where ingredient_no = #{ingredientNo}
 	</update>
+	
+	<update id="updateProduct">
+		update product
+		set product_price = #{productPrice},
+		<if test="productOption != '' ">
+			product_option = #{productOption},
+		</if>
+			product_stock = #{productStock},
+			product_modify_date = sysdate,
+			product_sale = #{productSale},
+			product_status = #{productStatus}
+		where product_no = #{productNo} 
+	</update>
 
 	<insert id="insertProduct">
-		insert into product
-		values(seq_product_no.nextval, #{productType}, #{productPrice}, #{productOption}, #{productStock}, sysdate, sysdate, #{productSale}, default, default)
+		insert into product(product_no, product_type, product_price, product_option, product_stock, 
+			product_create_date, product_modify_date, product_sale, product_count, product_status)
+		values(seq_product_no.nextval, #{productType}, #{productPrice},
+<!-- 		<if test="productOption != null "> -->
+		#{productOption}, 
+<!-- 		</if>  -->
+<!-- 		<if test="productOption == null "> -->
+<!-- 		default, -->
+<!-- 		</if>  -->
+		#{productStock}, sysdate, sysdate, #{productSale}, default, default)
 	</insert>
 	
 	<insert id="insertIngredient">
@@ -68,9 +92,28 @@
 		from dual
 	</select>
 	
+	<select id="getNowProductNo" resultType="_int">
+		select seq_product_no.currval
+		from dual
+	</select>
+	
+	<update id="ingredientUpdateIsAccept">
+		update ingredient
+		set is_accept = #{isAccept}
+		where ingredient_no = #{ingredientNo} 
+	</update>
+	
+	<update id="updateStatus">
+		update product
+		set product_status = #{dataStatus}
+		where product_type = #{dataType} 
+			  and product_no = #{dataNo}
+	</update>
+	
+	
 	<insert id="insertImage">
-		insert into image
-		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath})
+		insert into image(image_no, image_divide_no, image_type, image_originalname, image_renamename, image_path, image_level)
+		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, #{imageLevel})
 	</insert>
 	
 	<select id="selectImage" resultMap="imageResultSet">
@@ -79,7 +122,36 @@
 		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
 	</select>
 	
+	<delete id="deleteImage">
+		delete image
+		where image_type = #{imageType} and image_divide_no = ${imageDivideNo} 
+	</delete>
 	
+	<delete id="deletesProduct">
+		delete product
+		where product_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deletesIngredient">
+		delete ingredient
+		where ingredient_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<insert id="insertFood">
+		insert into food(product_no, food_name, food_kind, food_type, food_content)
+		values(#{productNo}, #{foodName}, #{foodKind}, #{foodType}, #{foodContent})
+	</insert>
+	
+	<select id="getNowFoodNo" resultType="_int">
+		select max(product_no)
+		from food
+	</select>
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">
 		<id column="INGREDIENT_NO" property="ingredientNo"/>

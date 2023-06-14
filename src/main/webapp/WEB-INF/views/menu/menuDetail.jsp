@@ -438,10 +438,6 @@ p b {
 						</dl>
 						
 						
-						<label>희망 배송일</label>
-						<input type="date" name="date" id="wantDate" class="inputBox">
-						<br><br>
-						<hr style="margin: 0px;">
 						<br>	
 						
 						<label>[필수] 기간을 선택해주세요.</label><br>

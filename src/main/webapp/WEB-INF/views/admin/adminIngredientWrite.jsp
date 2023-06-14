@@ -52,11 +52,11 @@
 					<button type="button" class="col-2 isAccept" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
 					<span class="col-5"></span>
 					
-					<span class="col-3 mb-3">공개상태</span>
-					<input type="hidden" name="ingredientStatus" value="Y">
-					<button type="button" class="col-2 igdStatus" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
-					<button type="button" class="col-2 igdStatus" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
-					<span class="col-5"></span>
+<!-- 					<span class="col-3 mb-3">공개상태</span> -->
+<!-- 					<input type="hidden" name="ingredientStatus" value="Y"> -->
+<!-- 					<button type="button" class="col-2 igdStatus" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button> -->
+<!-- 					<button type="button" class="col-2 igdStatus" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button> -->
+<!-- 					<span class="col-5"></span> -->
 					
 					<span class="col-3">상품등록</span>
 					<input type="hidden" name="productStatus" value="N">
@@ -80,7 +80,7 @@
 				<div class="d-flex justify-content-center mb-5">
 					<div class="d-flex">
 						<button type="button" onclick="check()" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">등록하기</button>
-						<button type="button" onclick="location.href='${contextPath}/adminIngredientManage.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+						<button type="button" onclick="history.back()" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 					</div>
 				</div>
 			</div>
@@ -90,7 +90,6 @@
 	
 	<script>
 		window.onload = () =>{
-			
 // 			이미지 미리보기 함수, 이벤트
 			const imageFile = document.getElementsByName('imageFile')[0];
 			const previewImage = document.getElementsByClassName('previewImage')[0];
@@ -131,16 +130,16 @@
 				acBtns[0].style.background = "gray";
 			});
 			
-			igdStBtns[0].addEventListener('click', () => {
-				igdStatus.value = igdStBtns[0].innerText;
-				igdStBtns[0].style.background = "#19A7CE";
-				igdStBtns[1].style.background = "gray";
-			});
-			igdStBtns[1].addEventListener('click', () => {
-				igdStatus.value = igdStBtns[1].innerText;
-				igdStBtns[1].style.background = "#19A7CE";
-				igdStBtns[0].style.background = "gray";
-			});
+// 			igdStBtns[0].addEventListener('click', () => {
+// 				igdStatus.value = igdStBtns[0].innerText;
+// 				igdStBtns[0].style.background = "#19A7CE";
+// 				igdStBtns[1].style.background = "gray";
+// 			});
+// 			igdStBtns[1].addEventListener('click', () => {
+// 				igdStatus.value = igdStBtns[1].innerText;
+// 				igdStBtns[1].style.background = "#19A7CE";
+// 				igdStBtns[0].style.background = "gray";
+// 			});
 			
 			
 // 			상품등록 버튼 이벤트
@@ -165,8 +164,6 @@
 				pStBtns[0].style.background = "gray";
 				pPrice.readOnly = true;
 				pSale.readOnly = true;
-// 				pPrice.value = '';
-// 				pSale.value = '';
 				priceBox.style.opacity ='0.3';
 			});
 
@@ -174,7 +171,7 @@
 			pPrice.addEventListener('change', ()=>{
 				if(pPrice.value < 0){
 					pPrice.value = 0;
-				}else if(pPrice.value < 0){
+				}else if(pPrice.value <= 0){
 					pPrice.value = 0;
 				}
 				cal();
@@ -182,7 +179,7 @@
 			pSale.addEventListener('change', ()=>{
 				if(pSale.value > 99.9){
 					pSale.value = 99.9;
-				}else if(pSale.value < 0){
+				}else if(pSale.value <= 0){
 					pSale.value = 0;
 				}
 				cal();
@@ -215,6 +212,9 @@
 			}else if(document.getElementsByName('ingredientContent')[0].value.trim() == ''){
 				alert("재료 내용을 입력해주세요.");
 				document.getElementsByName('ingredientContent')[0].focus();
+			}else if(document.getElementsByName('imageFile')[0].value == false){
+				alert("이미지를 등록해주세요.");
+				document.getElementsByName('imageFile')[0].focus();
 			}else{
 				document.getElementsByTagName('form')[0].submit();
 			}

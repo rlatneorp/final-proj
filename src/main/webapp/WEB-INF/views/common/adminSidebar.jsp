@@ -23,8 +23,8 @@
 
 <body>
 	<c:set value="${pageContext.servletContext.contextPath}" var="contextPath" scope="application"/>
-	<div class="d-flex position-fixed" style="width: 20%; z-index: 2000;">
-		<div class="d-flex flex-column p-3 pt-5 bg-white">
+	<div class="d-flex position-fixed" style="width: 200px; z-index: 2000;">
+		<div class="d-flex flex-column p-3 bg-white">
 			<a href="${contextPath}/adminMain.ad" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
 	<!-- 			<svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg> -->
 				<span class="fs-5 fw-semibold">관리자페이지</span>

@@ -79,13 +79,6 @@ public class Image {
 		this.imageLevel = imageLevel;
 	}
 
-	public int getImageLevel() {
-		return imageLevel;
-	}
-
-	public void setImageLevel(int imageLevel) {
-		this.imageLevel = imageLevel;
-	}
 
 	@Override
 	public String toString() {

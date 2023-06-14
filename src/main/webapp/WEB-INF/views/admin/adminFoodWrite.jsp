@@ -408,7 +408,7 @@ p b {
 			<!-- 구매창 컨테이너 -->
 			<div class="left">
 				<!-- 구매창 왼쪽 사진 넣는 곳 -->
-				<img class="previewImage" src="${contextPath}/resources/images/logo.png">
+				<img class="previewImage" src="${contextPath}/resources/images/logo_360x270.png">
 				<div style="text-align: center; padding-top:10px;">
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 				</div>
@@ -662,14 +662,9 @@ p b {
 <%@ include file="../common/footer.jsp" %>
 
 	<script>
-		function read() {
-			
-		}
 		window.onload =()=>{
 // 			이미지 미리보기 함수, 이벤트
-// 			const imageFile = document.getElementsByName('imageFile')[0];
 			const imageFiles = document.getElementsByName('imageFile');
-// 			const previewImage = document.getElementsByClassName('previewImage')[0];
 			const previewImages = document.getElementsByClassName('previewImage');
 			
 			for(const i in imageFiles){
@@ -733,25 +728,21 @@ p b {
 			
 // 			왼쪽사진내용추가 버튼 이벤트
 			addLeft.addEventListener('click', () => {
-				let detailBox = document.getElementById('detailBox');
-				detailBox.innerHTML += menuTable1;
-				
+				detailBox.insertAdjacentHTML("afterend", menuTable1);
 				numbering();
 			})
 			
 // 			오른쪽사진내용추가 버튼 이벤트
 			addRight.addEventListener('click', () => {
-				let detailBox = document.getElementById('detailBox');
-				detailBox.innerHTML += menuTable2; 
-				
+				detailBox.insertAdjacentHTML("afterend", menuTable2);
 				numbering();
 			})
 			
-			
-// 			상세보기 내용 수정시 이벤트
-			const detailBox = document.getElementById('detailBox');
-			detailBox.addEventListener('change', ()=>{
-			})
+// // 			상세보기 내용 수정시 이벤트
+// 			const detailBox = document.getElementById('detailBox');
+// 			detailBox.addEventListener('change', ()=>{
+				
+// 			})
 
 		}
 		

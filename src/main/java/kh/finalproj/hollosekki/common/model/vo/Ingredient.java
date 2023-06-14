@@ -2,7 +2,7 @@ package kh.finalproj.hollosekki.common.model.vo;
 
 import java.util.Date;
 
-public class Ingredient {
+public class Ingredient extends Product {
 	private int ingredientNo;
 	private String ingredientName; 
 	private String ingredientType;
@@ -18,7 +18,7 @@ public class Ingredient {
 	private int productStock;
 	private Date productCreateDate;
 	private Date productModifyDate;
-	private double productSale;
+	private Double productSale;
 	private int productCount;
 	private String productStatus;
 	
@@ -30,7 +30,7 @@ public class Ingredient {
 
 	public Ingredient(int ingredientNo, String ingredientName, String ingredientType, String ingredientContent,
 			String ingredientStatus, String isAccept, int usersNo, int productNo, int productType, int productPrice,
-			String productOption, int productStock, Date productCreateDate, Date productModifyDate, double productSale,
+			String productOption, int productStock, Date productCreateDate, Date productModifyDate, Double productSale,
 			int productCount, String productStatus, int orderCount, int viewCount, int likeCount) {
 		super();
 		this.ingredientNo = ingredientNo;
@@ -167,11 +167,11 @@ public class Ingredient {
 		this.productModifyDate = productModifyDate;
 	}
 
-	public double getProductSale() {
+	public Double getProductSale() {
 		return productSale;
 	}
 
-	public void setProductSale(double productSale) {
+	public void setProductSale(Double productSale) {
 		this.productSale = productSale;
 	}
 

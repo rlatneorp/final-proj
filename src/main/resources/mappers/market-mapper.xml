@@ -7,19 +7,21 @@
 		where users_id = #{uId}
 	</update>
 	
-	<update id="checkDay">
+	<update id="aDateCheck">
 		update users
-		set check_day = length(attendance_day) * 0.5 
-		where users_id = #{uId}
-
+		set check_day = (select count(dateStr)
+		                from attendance
+		                where users_id = #{u.usersId})
+		where users_id = #{u.usersId}
 	</update>
 	
 	
-<!-- 	<select id="aDateCheck" resultType="_int"> -->
-<!-- 		 select length(attendance_day) * 0.5  -->
-<!-- 		 from users  -->
-<!-- 		 where users_id = #{uId} -->
-<!-- 	</select> -->
+	<select id="atTodayChecked" resultType="_int">
+		 select count(*)
+		 from attendance
+		 where users_id = #{usersId}
+		 	   and dateStr = checked
+	</select>
 	
 	
 	<resultMap type="Users" id="UsersResultSet">
@@ -40,17 +42,10 @@
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 	</resultMap>
 	
-	<select id="firstAdDay" resultMap="UsersResultSet">
-		select lpad(attendance_day, 2)
-		from users
-		where users_id = #{uId}
-	</select>
-	
-	
-	<update id="attendanceDay">
-	    update users set attendance_day = attendance_day || substr(attendance_date, 9, 2)
-	    where users_id = #{uId}
-	</update>
+	<insert id="atInsert">
+	    insert into attendance (USERS_ID, DATE1, DATESTR, CHECKED, TITLE)
+	    values (#{u.usersId}, #{at.date}, #{at.dateStr}, to_char(sysdate, 'YYYY-MM-DD'), #{at.title})
+	</insert>
 	
 	
 	<insert id="insertShipping">
@@ -63,12 +58,46 @@
 		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
 	</insert>
 	
-	<select id="allAt" resultMap="UsersResultSet">
-		select *
-		from users
-		where users_id = #{uId}
+	<select id="allAt" resultMap="AttendanceResultSet">
+		select
+		    *
+		from
+		    attendance
+		where
+		    users_id = #{usersId}
 	</select>
 	
+	<resultMap type="Attendance" id="AttendanceResultSet">
+		<id column="USERS_ID" property="usersId"/>
+		<result column="DATE1" property="date"/>
+		<result column="DATESTR" property="dateStr"/>
+		<result column="CHECKED" property="checked"/>
+		<result column="TITLE" property="title"/>
+		<result column="POINT" property="point"/>
+	</resultMap>
+	
+	<update id="gettedPoint">
+		update users
+		set point = #{u.point} + 10
+		where users_id = #{u.usersId}
+	</update>
+	
+<!-- 	<select id="selectShipping" resultMap="shipAddress"> -->
+<!-- 		select * -->
+<!-- 		from shipping_address -->
+<!-- 		where users_no = #{usersNo} -->
+<!-- 	</select> -->
+	
+<!-- 	<resultMap type="ShippingAddress" id="shipAddress"> -->
+<!-- 		<result column="USERS_NO" property="usersNo"/> -->
+<!-- 		<result column="RECIPIENT" property="recipient"/> -->
+<!-- 		<result column="ADDRESS" property="address"/> -->
+<!-- 		<result column="HOME_PHONE" property="homePhone"/> -->
+<!-- 		<result column="PHONE" property="phone"/> -->
+<!-- 		<result column="SHIPPING_NO" property="shippingNo"/> -->
+<!-- 		<result column="SHIPPING_NAME" property="shippingName"/> -->
+		
+<!-- 	</resultMap> -->
 	
 	<select id="selectShipping" resultMap="shipAddress">
 		select *

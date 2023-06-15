@@ -15,27 +15,11 @@ public class Cart {
 	private int productPrice;
 	private String productName;
 	private ArrayList<Options> optionValue;
+	private ArrayList<Cart> cartValue;
 	
 	
 	public Cart() {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-
-
-	public Cart(int cartNo, int usersNo, int productNo, int productOption, int cartCount, int sum, String shippingPrice,
-			int productPrice, String productName, ArrayList<Options> optionValue) {
-		super();
-		this.cartNo = cartNo;
-		this.usersNo = usersNo;
-		this.productNo = productNo;
-		this.productOption = productOption;
-		this.cartCount = cartCount;
-		this.sum = sum;
-		this.shippingPrice = shippingPrice;
-		this.productPrice = productPrice;
-		this.productName = productName;
-		this.optionValue = optionValue;
 	}
 
 
@@ -134,8 +118,35 @@ public class Cart {
 	}
 
 
-	public void setOptionValue(ArrayList<Options> options) {
-		this.optionValue = options;
+	public void setOptionValue(ArrayList<Options> optionValue) {
+		this.optionValue = optionValue;
+	}
+
+
+	public ArrayList<Cart> getCartValue() {
+		return cartValue;
+	}
+
+
+	public void setCartValue(ArrayList<Cart> cartValue) {
+		this.cartValue = cartValue;
+	}
+
+
+	public Cart(int cartNo, int usersNo, int productNo, int productOption, int cartCount, int sum, String shippingPrice,
+			int productPrice, String productName, ArrayList<Options> optionValue, ArrayList<Cart> cartValue) {
+		super();
+		this.cartNo = cartNo;
+		this.usersNo = usersNo;
+		this.productNo = productNo;
+		this.productOption = productOption;
+		this.cartCount = cartCount;
+		this.sum = sum;
+		this.shippingPrice = shippingPrice;
+		this.productPrice = productPrice;
+		this.productName = productName;
+		this.optionValue = optionValue;
+		this.cartValue = cartValue;
 	}
 
 
@@ -144,19 +155,8 @@ public class Cart {
 		return "Cart [cartNo=" + cartNo + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productOption="
 				+ productOption + ", cartCount=" + cartCount + ", sum=" + sum + ", shippingPrice=" + shippingPrice
 				+ ", productPrice=" + productPrice + ", productName=" + productName + ", optionValue=" + optionValue
-				+ "]";
+				+ ", cartValue=" + cartValue + "]";
 	}
 
-
-
-
-
-
-
-
-	
-	
-	
-	
 	
 }

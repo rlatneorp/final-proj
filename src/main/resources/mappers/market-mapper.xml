@@ -55,7 +55,7 @@
 	
 	<insert id="insertCart">
 		INSERT INTO CART
-		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
+		VALUES (SEQ_CART_NO.NEXTVAL, ${usersNo}, #{productNo}, #{productOption}, #{cartCount} )
 	</insert>
 	
 	<select id="allAt" resultMap="AttendanceResultSet">

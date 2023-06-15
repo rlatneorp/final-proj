@@ -227,6 +227,18 @@
 		</header>
 	</div>
 	<br>
+	
+<script>
+$.ajax({
+	url: 'point.ma',
+	success: function(info){
+		console.log(info);
+		let point = document.querySelector('#p');
+		point.innerHTML = info.point;
+	}
+	
+});
+</script>
 
 
 

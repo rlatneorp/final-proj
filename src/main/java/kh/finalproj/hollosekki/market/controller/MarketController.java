@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -276,9 +277,16 @@ public class MarketController {
 
 	@ResponseBody
 	@PostMapping("insertCart.ma")
-	public int insertCart(@ModelAttribute Cart c) {
-	
+	public int insertCart(@RequestBody Cart c /*@RequestParam("productNo")ArrayList<Cart> productNo,
+						  @RequestParam("cartCount")ArrayList<Cart>cartCount,
+						  @RequestParam("productOption")ArrayList<Cart>productOption,
+						  @RequestParam("UserNo")ArrayList<Cart>UserNo*/) {
+
+		
 		int result = mkService.insertCart(c);
+		
+		System.out.println(c);
+		
 		return result;
 	}
 	

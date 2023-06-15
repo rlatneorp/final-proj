@@ -120,7 +120,7 @@
 					</select>
 				</div>
 				<div class="term"></div>
-				<div class="d-inline-block beforeInput">난이도</div><input type="range" min="1" max="5" id="grade" name="difficult"><span>(난이도는 1~5, 기본 3)</span>
+				<div class="d-inline-block beforeInput">난이도</div><input type="range" min="1" max="5" id="grade" name="recipeDifficulty"><span>(난이도는 1~5, 기본 3)</span>
 				<div class="term"></div>
 				<div class="d-inline-block beforeInput">조리시간</div><input type="number" min="5" max="120" step="5" id="time" value="30" name="recipeTime">
 			</div>

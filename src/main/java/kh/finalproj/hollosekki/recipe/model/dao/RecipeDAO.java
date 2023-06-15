@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 @Repository
 public class RecipeDAO {
@@ -19,6 +20,10 @@ public class RecipeDAO {
 
 	public int insertRecipe(SqlSessionTemplate sqlSession, Recipe r) {
 		return sqlSession.insert("recipeMapper.insertRecipe", r);
+	}
+	
+	public int insertOrder(SqlSessionTemplate sqlSession, ArrayList<RecipeOrder> orc) {
+		return sqlSession.insert("recipeMapper.insertOrder", orc);
 	}
 
 	public int getListCount(SqlSessionTemplate sqlSession) {
@@ -56,6 +61,10 @@ public class RecipeDAO {
 //	완성사진
 	public ArrayList<Image> recipeDetailComp(SqlSessionTemplate sqlSession, int foodNo) {
 		return (ArrayList)sqlSession.selectList("recipeMapper.recipeDetailComp", foodNo);
+	}
+
+	public ArrayList<RecipeOrder> recipeDetailOrderText(SqlSessionTemplate sqlSession, int foodNo) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.recipeDetailOrderText", foodNo);
 	}
 
 }

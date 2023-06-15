@@ -208,7 +208,12 @@
 											</c:if>
 										</c:if>
 										<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-											<img src="${ socialUser.socialProfileImg }" class="profile-img">
+											<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+												<img src="${ socialUser.socialProfileImg }" class="profile-img">
+											</c:if>
+											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img"/>
+											</c:if>
 										</c:if>
 									</div>
 						  			<div class="userName">

@@ -108,6 +108,7 @@
   		height: 150px;
         border-radius: 50%;
         cursor: pointer;
+        object-fit: cover; object-position: center;
     }
     #base{
     	border: none; border-radius: 5px;
@@ -186,7 +187,12 @@
 				<i class="bi bi-gear-fill" style="margin-left: 580px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#profileModal"></i>
 				<br>
 				<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-					<img src="${ socialUser.socialProfileImg }" id="pImg">
+					<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+						<img src="${ socialUser.socialProfileImg }" id="pImg">
+					</c:if>
+					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="pImg"/>
+					</c:if>
 				</c:if>
 				<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
 					<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
@@ -294,7 +300,12 @@
 				<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
 					<form action="myPage_InsertProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
-						<img id="modalP" src="https://botsitivity.org/static/media/noprofile.c3f94521.png"/>
+						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
+							<img src="${ socialUser.socialProfileImg }" id="modalP">
+						</c:if>
+						<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
+							<img id="modalP" src="https://botsitivity.org/static/media/noprofile.c3f94521.png"/>
+						</c:if>
 						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
 						<br>
 						<button id="base" type="button">기본 이미지</button>

@@ -128,14 +128,67 @@ public class AdminController {
 		return "redirect:adminMenuManage.ad";
 	}
 	@GetMapping("adminMenuWrite.ad")
-	public String adminMenuWrite() {
-		return "adminMenuWrite";
+	public String adminMenuWrite(Model model) {
+		PageInfo pi = new PageInfo();
+		AdminBasic ab1 = new AdminBasic();
+		AdminBasic ab2 = new AdminBasic();
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(100000);
+		ab1.setKind(1);
+		ArrayList<Food> fList1 = aService.selectFoodList(pi, ab1); 
+		ab2.setKind(2);
+		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
+		if(fList1 != null && fList2 != null) {
+			model.addAttribute("fList1", fList1);
+			model.addAttribute("fList2", fList2);
+			return "adminMenuWrite";
+		}else {
+			throw new AdminException("식단 등록 페이지 접속에 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminMenuInsert.ad")
 	public String adminMenuInsert() {
 		return "redirect:adminMenuManage.ad";
 	}
-	
+	@GetMapping("adminFoodSelector.ad")
+	public void adminFoodSelector(@RequestParam("pNo") int pNo,
+				  				  HttpServletResponse response) {
+		Food food = null;
+		if(pNo != 0) {
+			food = aService.selectFood(pNo);
+			food = (Food)selectProduct(food);
+		}
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(food, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	@GetMapping("adminFoodImageSelector.ad")
+	public void adminFoodImageSelector(@RequestParam("pNo") int pNo,
+									   HttpServletResponse response) {
+		Image img = null; 
+		if(pNo != 0) {
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", pNo);
+			map.put("imageType", 3);
+			map.put("imageLevel", 1);
+			img = aService.selectAllImageList(map).get(0);
+		}
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(img, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 //	Ingredient-식재료 관리
 	@GetMapping("adminIngredientManage.ad")
@@ -387,7 +440,6 @@ public class AdminController {
 	public String adminFoodManage(@ModelAttribute AdminBasic ab,
 								  HttpSession session,
 								  Model model) {
-		
 		int currentPage = 1;
 		if(ab.getPage() == null) {
 			ab.setPage(currentPage);
@@ -454,8 +506,25 @@ public class AdminController {
 		}
 	}
 	@PostMapping("adminFoodUpdate.ad")
-	public String adminFoodUpdate() {
-		return "redirect:adminFoodManage.ad";
+	public String adminFoodUpdate(@ModelAttribute AdminBasic ab,
+								  HttpServletRequest request,
+								  HttpSession session,
+								  Model model,
+								  @ModelAttribute Food f,
+								  @ModelAttribute Product p
+//								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles
+								  ) {
+		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
+		
+		int resultF = aService.updateFood(f);
+		int resultPd = aService.updateProduct(p);
+		
+		if(resultF+resultPd == 2) {
+			model.addAttribute("ab", ab);
+			return "redirect:adminFoodManage.ad";
+		}else {
+			throw new AdminException("식품 수정에 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminFoodDeletes.ad")
 	public String adminFoodDeletes(@RequestParam("selectDelete") String[] selDeletes,

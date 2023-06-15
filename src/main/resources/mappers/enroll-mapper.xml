@@ -13,7 +13,7 @@
 		where users_id = #{usersId} and status = 'Y'
 	</select>
 	
-	<resultMap type="Users" id="usersResultSet">
+	<resultMap type="kh.finalproj.hollosekki.enroll.model.vo.Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>
 		<result column="USERS_PW" property="usersPw"/>

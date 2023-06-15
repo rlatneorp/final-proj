@@ -7,18 +7,16 @@ public class Attendance {
 	private String dateStr;
 	private String checked;
 	private String title;
-	private int point;
 	
 	public Attendance() {}
 
-	public Attendance(String usersId, String date, String dateStr, String checked, String title, int point) {
+	public Attendance(String usersId, String date, String dateStr, String checked, String title) {
 		super();
 		this.usersId = usersId;
 		this.date = date;
 		this.dateStr = dateStr;
 		this.checked = checked;
 		this.title = title;
-		this.point = point;
 	}
 
 	public String getUsersId() {
@@ -61,18 +59,10 @@ public class Attendance {
 		this.title = title;
 	}
 
-	public int getPoint() {
-		return point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
-	}
-
 	@Override
 	public String toString() {
 		return "Attendance [usersId=" + usersId + ", date=" + date + ", dateStr=" + dateStr + ", checked=" + checked
-				+ ", title=" + title + ", point=" + point + "]";
+				+ ", title=" + title + "]";
 	}
 
 

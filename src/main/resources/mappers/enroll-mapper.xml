@@ -4,7 +4,7 @@
 	<insert id="insertUser">
 		insert into users
 		values(SEQ_USERS_NO.nextval, #{usersId}, #{usersPw}, #{usersName}, #{nickName}, #{email}, #{phone}, 
-				sysdate, default, default, default, default, default, default, default, default)
+				sysdate, default, default, default, default, default, default, default, default, default)
 	</insert>
 	
 	<select id="login" resultMap="usersResultSet">
@@ -30,6 +30,7 @@
 		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 		<result column="USERS_ADDRESS" property="usersAddress"/>
+		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
 	</resultMap>
 	
 	<select id="checkId" resultType="_int">

@@ -123,6 +123,14 @@ public class MarketDAO {
 		sqlSession.update("marketMapper.minusCount", productNo);
 	}
 
+	public void getMonthPoint(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		sqlSession.update("marketMapper.getMonthPoint", map);
+	}
+
+	public Users sendPoint(SqlSessionTemplate sqlSession, Users u) {
+		return sqlSession.selectOne("marketMapper.sendPoint", u);
+	}
+
 	
 
 

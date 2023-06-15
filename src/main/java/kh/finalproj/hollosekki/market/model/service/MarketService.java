@@ -124,6 +124,14 @@ public class MarketService {
 		mkDAO.minusCount(sqlSession, productNo);
 	}
 
+	public void getMonthPoint(HashMap<String, Object> map) {
+		mkDAO.getMonthPoint(sqlSession, map);
+	}
+
+	public Users sendPoint(Users u) {
+		return mkDAO.sendPoint(sqlSession, u);
+	}
+
 	
 	
 

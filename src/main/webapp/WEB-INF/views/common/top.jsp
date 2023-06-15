@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
 <title>Insert title here</title>
-<!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
 	.top-top{
 		width: 100%; height: 40px; 
@@ -209,7 +209,7 @@
 						  			<div class="userName">
 						  				${ loginUser.usersName } 님
 						  			</div>
-						  			<div class="point"><i class="bi bi-coin drop-ic"></i>${ loginUser.point } P</div>
+						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="p">P</p></div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
 						  			<div class="dropdown-item" onclick="location.href='${ contextPath }/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
@@ -242,6 +242,19 @@
 // 			$(this).toggleClass('menu-hover');
 // 		});
 // 	})
+	
+		$.ajax({
+			url: 'point.ma',
+			success: function(info){
+				console.log(info);
+				let point = document.querySelector('#p');
+				point.innerHTML = info.point;
+			}
+			
+		});
+		
+
+	
 </script>
 
 

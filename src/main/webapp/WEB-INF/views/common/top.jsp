@@ -165,7 +165,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/Logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
@@ -200,7 +200,12 @@
 								<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 									<div class="profile-img-div">
 										<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-											<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img">
+											<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+												<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img"/>
+											</c:if>
+											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img"/>
+											</c:if>
 										</c:if>
 										<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
 											<img src="${ socialUser.socialProfileImg }" class="profile-img">

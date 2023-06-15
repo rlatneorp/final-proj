@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,12 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.users.model.exception.UsersException;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser", "image"})
 @Controller
 public class UsersController {
 	
@@ -38,15 +41,170 @@ public class UsersController {
 	private BCryptPasswordEncoder bcrypt;
 	
 	@RequestMapping("myPage_Main.me")
-	public String myPage_Main(Model model, Users u) {
-		Users loginUser = eService.login(u);
-		model.addAttribute("loginUser", loginUser);
+	public String myPage_Main(Model model) {
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		Image image = uService.selectImage(usersNo);
+		System.out.println(image);
+		model.addAttribute("image", image);
 		return "myPage_Main";
 	}
 	
 	@RequestMapping("myPage_Profile.me")
 	public String myPage_Profile() {
 		return "myPage_Profile";
+	}
+	
+	// 파일 저장
+	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
+		// 파일 저장소 지정
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		File folder = new File(savePath);
+		
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		// 파일 이름 변경 형식 지정
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		int ranNum = (int)(Math.random()*100000);
+		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
+										   + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		
+		String renamePath = folder + "\\" + renameFileName;
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		String[] returnArr = new String[2];
+		returnArr[0] = savePath;
+		returnArr[1] = renameFileName;
+		
+		return returnArr;
+	}
+	
+	// 파일 삭제
+	public void deleteFile(String fileName, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		
+		File f = new File(savePath + "\\" + fileName);
+		if(f.exists()) {
+			f.delete();
+		}
+	}
+	
+	@RequestMapping("myPage_InsertProfile.me")
+	public String myPage_InsertProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
+									   Model model, HttpServletRequest request) {
+		int result = uService.updateProfile(u);
+		
+		Image image = null;
+		
+		if(file != null && !file.isEmpty()) {
+			String[] returnArr = saveFile(file, request);
+			
+			if(returnArr[1] != null) {
+				image = new Image();
+				image.setImagePath(returnArr[0]);
+				image.setImageOriginalName(file.getOriginalFilename());
+				image.setImageRenameName(returnArr[1]);
+				image.setImageType(1);
+				image.setImageDivideNo(u.getUsersNo());
+				
+				int result2 = uService.insertImage(image);
+				
+				if(result2 > 0) {
+					model.addAttribute("image", image);
+				} else {
+					throw new UsersException("사진 실패");
+				}
+			}
+		}
+		
+		if(result > 0) {
+	        model.addAttribute("loginUser", eService.login(u));
+			return "redirect:myPage_Main.me";
+		} else {
+			throw new UsersException("프로필 수정 실패");
+		}
+	}
+	
+	@RequestMapping("myPage_UpdateProfile.me")
+	public String myPage_UpdateProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
+			   						   Model model, HttpServletRequest request) {
+		int result = uService.updateProfile(u);
+		
+		Image image = null;
+		
+		if(file != null && !file.isEmpty()) { // 새파일 들어옴
+			String[] returnArr = saveFile(file, request);
+			
+			if(returnArr[1] != null) {
+				image = new Image();
+				image.setImagePath(returnArr[0]);
+				image.setImageOriginalName(file.getOriginalFilename());
+				image.setImageRenameName(returnArr[1]);
+				image.setImageType(1);
+				image.setImageDivideNo(u.getUsersNo());
+				
+				Image existingImage = uService.selectImage(u.getUsersNo());
+				if(existingImage == null) { // 기존 파일이 없을 때
+					int insertImage = uService.insertImage(image);
+					
+					if(insertImage > 0) {
+						model.addAttribute("image", image);
+					} else {
+						throw new UsersException("사진 수정 실패");
+					}
+				} else {
+					int deleteImage = uService.deleteImage(existingImage);
+					
+					String rename = existingImage.getImageRenameName();
+					deleteFile(rename, request);
+					if(deleteImage > 0) {
+						int insertImage = uService.insertImage(image);
+						
+						if(insertImage > 0) {
+							model.addAttribute("image", image);
+						} else {
+							throw new UsersException("사진 수정 실패");
+						}
+					} else {
+						throw new UsersException("사진 삭제 실패");
+					}
+				}
+			}
+		}
+		
+		if(result > 0) {
+	        model.addAttribute("loginUser", eService.login(u));
+			return "redirect:myPage_Main.me";
+		} else {
+			throw new UsersException("프로필 수정 실패");
+		}
+	}
+	
+	@RequestMapping("myPage_DeleteImage.me")
+	@ResponseBody
+	public String myPage_DeleteImage(@RequestParam("usersNo") int usersNo, Model model,
+									 HttpServletRequest request) {
+		Image existingImage = uService.selectImage(usersNo);
+		int deleteImage = 0;
+		if(existingImage != null) { // 기존 파일이 있을 때
+			deleteImage = uService.deleteImage(existingImage);
+		}
+		
+		if(deleteImage > 0) {
+			String rename = existingImage.getImageRenameName();
+			deleteFile(rename, request);
+			model.addAttribute("image", null);
+			return "yes";
+		} else {
+			return "no";
+		}
 	}
 	
 	@RequestMapping("myPage_Intro.me")
@@ -104,7 +262,7 @@ public class UsersController {
 		return "myPage_checkPwd";
 	}
 	
-	// ȸ������ ���� �� ��й�ȣ Ȯ��
+	// 회원 정보 수정 전 비밀번호 체크
 	@RequestMapping("myPage_checkPwd.me")
 	@ResponseBody
 	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
@@ -150,49 +308,7 @@ public class UsersController {
 			model.addAttribute("loginUser", eService.login(u));
 			return "yes";
 		} else {
-			return "no";
-		}
-	}
-	
-	// ���� ����
-	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
-		// ���� ����� ����
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "\\uploadFiles";
-		File folder = new File(savePath);
-		
-		if(!folder.exists()) {
-			folder.mkdirs();
-		}
-		
-		// ���� �̸� ���� ���� ����
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-		int ranNum = (int)(Math.random()*100000);
-		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
-										   + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-		
-		String renamePath = folder + "\\" + renameFileName;
-		try {
-			file.transferTo(new File(renamePath));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
-		
-		String[] returnArr = new String[2];
-		returnArr[0] = savePath;
-		returnArr[1] = renameFileName;
-		
-		return returnArr;
-	}
-	
-	// ���� ����
-	public void deleteFile(String fileName, HttpServletRequest request) {
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "\\uploadFiles";
-		
-		File f = new File(savePath + "\\" + fileName);
-		if(f.exists()) {
-			f.delete();
+			throw new UsersException("회원 정보 수정 실패");
 		}
 	}
 	

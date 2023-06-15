@@ -86,14 +86,4 @@ public class Image {
 				+ imagePath + ", imageLevel=" + imageLevel + "]";
 	}
 
-	public void setImageLevel(int i) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public int getImageLevel() {
-		// TODO Auto-generated method stub
-		return imageLevel;
-	}
-
 }

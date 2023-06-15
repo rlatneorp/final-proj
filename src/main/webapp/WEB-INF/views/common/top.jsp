@@ -165,7 +165,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/Logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
@@ -219,43 +219,14 @@
 						</div>
 					</div>
 					<div style="width:80px"></div>
-					<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
+					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div></c:if>
+					
 				</div>
 			</div>
 		</header>
 	</div>
 	<br>
-	
-<script>
-// 	document.getElementById('menu3').addEventListener('mouseover', function(){
-// 		 document.getElementById('menu-list').style.display = 'block';
-// 	})
-	
-// 	document.getElementById('menu3').addEventListener('mouseout', function(){
-// 		 document.getElementById('menu-list').style.display = 'none';
-// 	})
-
-// 	$(()=>{
-// 		$('#menu3').hover(function(){
-// 			$(this).toggleClass('menu-hover');
-// 		}, function(){
-// 			$(this).toggleClass('menu-hover');
-// 		});
-// 	})
-	
-		$.ajax({
-			url: 'point.ma',
-			success: function(info){
-				console.log(info);
-				let point = document.querySelector('#p');
-				point.innerHTML = info.point;
-			}
-			
-		});
-		
-
-	
-</script>
 
 
 

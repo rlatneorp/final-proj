@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 public interface RecipeService {
 
 	int insertAttm(ArrayList<Image> thumImgList);
 
 	int insertRecipe(Recipe r);
+
+	int insertOrder(ArrayList<RecipeOrder> orc);
 
 	int getListCount();
 
@@ -25,5 +28,7 @@ public interface RecipeService {
 	ArrayList<Image> recipeDetailOrder(int foodNo);
 
 	ArrayList<Image> recipeDetailComp(int foodNo);
+
+	ArrayList<RecipeOrder> recipeDetailOrderText(int foodNo);
 
 }

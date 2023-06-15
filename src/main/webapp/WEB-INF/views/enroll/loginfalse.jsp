@@ -34,7 +34,7 @@
 		margin-top: 30px; margin-bottom: 20px;
 		text-align: center;
 		}
-	
+	.fa-face-grimace{font-size: 100px;}
 	.join{
 		font-size: 25px; font-weight: bold;
 		margin: 10px; margin-top: 100px; 
@@ -74,31 +74,30 @@
 						<div class="join">로그인 실패</div>
 						<div class="join-line"></div>
 					</div>
-					<div class="mid33">
+					<br><br>
+					<div class="mid">
+						<i class="fa-regular fa-face-grimace"></i>
+					</div>
+					<br><br>
+					<div class="mid">
 						로그인에 실패했습니다.<br>
 						다시 로그인 해주세요.
 					</div>
-					<br>
-					<div class="mid33">
-						
+					<div class="mid">
+						<div><button class="button" onclick="location.href='login.en'">로그인</button></div>
+						<div><button class="button" onclick="location.href='home.do'">메인</button></div>
 					</div>
 					<div class="mid33">
-						<div class="mid">
-							<div><button class="button" onclick="location.href='login.en'">로그인</button></div>
-							<div><button class="button" onclick="location.href='home.do'">메인</button></div>
-							
-						</div>
-						<div class="mid33">
-							<div class="line"></div>
-							<div class="find">
-								<div class="find2" onclick="location.href='findId.en'">아이디를 잊어버리셨나요?</div>
-								<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div>
-							</div>
+						<div class="line"></div>
+						<div class="find">
+							<div class="find2" onclick="location.href='findId.en'">아이디를 잊어버리셨나요?</div>
+							<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+<script src="https://kit.fontawesome.com/243bcd4d8b.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -195,7 +195,7 @@
 		select * from food where product_no = #{productNo}
 	</select>
 	
-	<select id="selectFoodInfo" resultMap="productList">
+	<select id="selectProductInfo" resultMap="productList">
 		select * from product where product_no = #{productNo}
 	</select>
 	
@@ -224,6 +224,14 @@
 		update cart set cart_count = cart_count - 1 
 		where product_no = #{productNo}
 	</update>
+	
+	<select id="checkCartList" resultMap="cartList">
+		select * from cart where users_no = #{usersNo} and product_no = #{productNo}
+	</select>
+	
+	<select id="selectOptions" resultMap="optionsList">
+		select * from options where product_no = #{productNo}
+	</select>
 	
 	
 </mapper>

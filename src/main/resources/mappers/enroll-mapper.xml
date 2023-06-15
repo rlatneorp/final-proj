@@ -30,6 +30,7 @@
 		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 		<result column="USERS_ADDRESS" property="usersAddress"/>
+		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
 	</resultMap>
 	
 	<select id="checkId" resultType="_int">

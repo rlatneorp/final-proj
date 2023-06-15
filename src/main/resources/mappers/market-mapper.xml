@@ -15,12 +15,18 @@
 		where users_id = #{u.usersId}
 	</update>
 	
+	<select id="sendPoint" resultMap="UsersResultSet">
+		select point
+		from users
+		where users_id = #{usersId}
+	</select>
 	
 	<select id="atTodayChecked" resultType="_int">
 		 select count(*)
 		 from attendance
 		 where users_id = #{usersId}
 		 	   and dateStr = checked
+		 	   and dateStr = to_char(sysdate, 'YYYY-MM-DD')
 	</select>
 	
 	
@@ -80,6 +86,19 @@
 		update users
 		set point = #{u.point} + 10
 		where users_id = #{u.usersId}
+	</update>
+	
+	<update id="getMonthPoint">
+		update users
+		set point = #{u.point} + 1000
+		where users_id in (select users_id
+                          from attendance
+                          		join users using(users_id)
+                          where dateStr = to_char(sysdate, 'YYYY-MM-DD')
+                              and users_id = #{u.usersId}
+                              and check_day = to_char(last_day(sysdate),'dd')
+	         				  and sysdate = last_day(sysdate))
+	           
 	</update>
 	
 <!-- 	<select id="selectShipping" resultMap="shipAddress"> -->
@@ -213,7 +232,6 @@
 	<select id="selectOptions" resultMap="optionsList">
 		select * from options where product_no = #{productNo}
 	</select>
-	
 	
 	
 </mapper>

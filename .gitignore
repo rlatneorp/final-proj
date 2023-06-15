@@ -10,3 +10,5 @@
 .target/*
 *.prefs
 .settings/org.eclipse.jdt.core.prefs
+.settings
+*.classpath

@@ -11,6 +11,7 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.recipe.model.dao.RecipeDAO;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 @Service
 public class RecipeServiceImpl implements RecipeService{
@@ -29,6 +30,11 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public int insertRecipe(Recipe r) {
 		return rDAO.insertRecipe(sqlSession, r);
+	}
+	
+	@Override
+	public int insertOrder(ArrayList<RecipeOrder> orc) {
+		return rDAO.insertOrder(sqlSession, orc);
 	}
 	
 	@Override
@@ -72,5 +78,10 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public ArrayList<Image> recipeDetailComp(int foodNo) {
 		return rDAO.recipeDetailComp(sqlSession, foodNo);
+	}
+	
+	@Override
+	public ArrayList<RecipeOrder> recipeDetailOrderText(int foodNo) {
+		return rDAO.recipeDetailOrderText(sqlSession, foodNo);
 	}
 }

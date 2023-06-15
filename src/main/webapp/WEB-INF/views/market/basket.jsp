@@ -115,9 +115,9 @@ input[type="text"] {
 /* 3D Button */
 .btn-3d {
 	text-decoration: none;
-	width: 100px;
+ 	width: 100px; 
 	height: 35px;
-	position: relative;
+/* 	position: absolute; */
 	display: inline-block;
 	font-weight: bold;
 	font-size: 15px;
@@ -164,7 +164,7 @@ input[type="text"] {
 <br><br><br><br><br><br>
 
 
-
+	<div>
 	<!-- 장바구니 상단 부분 -->
 	<div class="carrier" style="margin-bottom: 10px;">
 		<span style="font-size: 30px;"><b>장바구니</b></span> 
@@ -204,7 +204,7 @@ input[type="text"] {
 						옵션 : 
 						<select>
 							<c:forEach var="option" items="${cl.optionValue }">
-								<option value="${option}.optionValue">${option.optionValue}</option>
+								<option value="${option.optionNo}">${option.optionValue}</option>
 							</c:forEach>
 						</select>
 					</td>
@@ -258,16 +258,23 @@ input[type="text"] {
 				</td>
 			</tr>
 			<tr>
-				
 			</tr>
 		</tbody>
+		
 	</table><br>
+	<table style="border:none">
+		<tbody>
+			<tr>
+				<td><a id="goPay" class="btn-3d blue" style="margin-left:92%" >구매</a></td>
+			</tr>
+		</tbody>
+	</table>
 	<!-- 작성 버튼 -->
-	<div style="width:1370px; text-align: right; margin-left: 190px;">
-		<a id="goPay" class="btn-3d blue">구매</a>
-	</div>
+<!-- 	<div style="position:absolute; margin-left:85%;"> -->
+		
+<!-- 	</div> -->
 	<br><br><br><br><br><br><br><br><br><br><br><br>
-	
+	</div>
 
 
 	   
@@ -296,10 +303,12 @@ input[type="text"] {
 			let trTotalSum = 0;
 			const trSum = document.getElementsByClassName('sum');
 			for(const sum of trSum) {
+				console.log('sum : ' + sum);
 				const intSum = parseInt(sum.innerText);
 				trTotalSum += intSum;
 			}
 			document.getElementById('trTotalSum').innerText = trTotalSum;
+			
 			//배송비
 			if(trTotalSum <= 30000) {
 				document.getElementById('shipPrice').innerText = '3,000';
@@ -579,27 +588,50 @@ input[type="text"] {
 				 button: "확인",
 				});
 		} else {
-			let values = [];
-			for(cp of checkProducts) {
-				console.log(cp.value);
-				values.push(cp.value);
-			}console.log(values);
-			console.log(values.toString());
-			const prNo = values.toString();
-			console.log('prNo : ' + prNo);
+// 			let values = []; //productNo 담을 배열 
+// 			let optionValues = []; //select 된 option 담을 배열 
+			let pairs = [];
+// 			console.log(checkProducts);
+			for(cp of checkProducts) { //체크 된 input type checkbox 
+				const selectTag = cp.parentElement.nextSibling.nextElementSibling.childNodes[5];
+// 				console.log('selectTag : ' + selectTag);
+// 				values.push(cp.value); //체크 된 productNo
+				const productNo = cp.value;
+				const optionNo = selectTag.value;
+				
+				const pair = [productNo, optionNo];
+				pairs.push(pair);
+// 				optionValues.push(selectTag.value);//선택 된 옵션 값 
+			}
+			console.log('pairs : ', pairs);
+// 			const strPairs = pairs.map(pair => pair.join(',')).join(';');
+// 			console.log(strPairs);
 			
+			
+			
+// 			const prNo = values.toString(); //배열 문자화
+// 			const options = optionValues.toString(); 
+// 			console.log('options : ' + options);
+// 			console.log('prNo : ' + prNo);
 			const form = document.createElement('form');
 			form.method = 'POST';
 			form.action = '${contextPath}/payDetail.ma'
 			
-			const valuesInput = document.createElement('input');
-			valuesInput.type = 'hidden';
-			valuesInput.name = 'prNo';
-			valuesInput.value = prNo;
-			form.appendChild(valuesInput);
+			const prNoInput = document.createElement('input');
+			prNoInput.type = 'hidden';
+			prNoInput.name = 'pairs';
+			prNoInput.value = pairs;
+			
+// 			const optionsInput = document.createElement('input');
+// 			optionsInput.type = 'hidden';
+// 			optionsInput.name = 'options';
+// 			optionsInput.value = options;
+			form.appendChild(prNoInput);
+// 			form.appendChild(optionsInput);
 			
 			document.body.appendChild(form);
 			form.submit();
+			
 			
 		}
 	})

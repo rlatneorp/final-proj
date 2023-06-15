@@ -161,11 +161,15 @@ public class EnrollController {
 				String toMail = email;
 				String title = "본인인증 이메일 입니다.";
 		        String content = 
+		        		"<br>" + 
 		                "홀로세끼를 방문해주셔서 감사합니다." +
+		                "<br>" + 
+		                "본인인증 이후 비밀번호를 재설정 합니다." +
 		                "<br><br>" + 
 		                "인증 번호는 " + checkNum + " 입니다." + 
 		                "<br>" + 
-		                "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+		                "해당 인증번호를 인증번호 확인란에 기입하여 주세요." +
+		                "<br>";
 		       
 		        try {
 		        	MimeMessage message = mailSender.createMimeMessage();
@@ -230,9 +234,9 @@ public class EnrollController {
 	        	if(email != null) {
 	        		u.setEmail(email);
 	        	} else {
-	        		u.setEmail("데이터가 없습니다");
+	        		u.setEmail("카카오로그인 회원입니다");
 	        	}
-	        	u.setPhone("데이터가 없습니다");
+	        	u.setPhone("카카오로그인 회원입니다");
 		        
 		        int result = eService.insertUser(u); 
 		        	
@@ -255,9 +259,6 @@ public class EnrollController {
 		public String naverLogin(HttpServletRequest request, Model model) {
 			String id = request.getParameter("id");
 			String name = request.getParameter("name");
-			String nickName = request.getParameter("nickName");
-			String email = request.getParameter("email");
-			String phone = request.getParameter("phone");
 			String profileImg = request.getParameter("profileImg");
 			
 			SocialLogin sl = eService.SocialLogin(id);
@@ -273,13 +274,9 @@ public class EnrollController {
 				u.setUsersId(id);
 				u.setUsersPw("네이버로그인 회원입니다");
 				u.setUsersName(name);
-				u.setNickName(nickName);
-				u.setEmail(email);
-				if(phone != null) {
-					u.setPhone(phone);
-				} else {
-					u.setPhone("데이터가 없습니다");
-				}
+				u.setNickName("네이버로그인 회원입니다");
+				u.setEmail("네이버로그인 회원입니다");
+				u.setPhone("네이버로그인 회원입니다");
 				
 				int result = eService.insertUser(u);
 				
@@ -295,8 +292,7 @@ public class EnrollController {
 				}
 			} else { // 기존 회원일경우 불러오기
 				Users u2 = eService.socialLoginUpdate(id);
-				
-//				System.out.println(sl);
+//				System.out.println(id);
 //				System.out.println(u2);
 				model.addAttribute("socialUser", sl);
 	        	model.addAttribute("loginUser", u2);

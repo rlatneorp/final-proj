@@ -20,6 +20,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Products" alias="Products"/>
 		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.Recipe" alias="Recipe"/>
 		<typeAlias type="kh.finalproj.hollosekki.customer.model.vo.Customer" alias="Customer"/>
+		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder" alias="RecipeOrder"/>
 		
 	</typeAliases>
 	

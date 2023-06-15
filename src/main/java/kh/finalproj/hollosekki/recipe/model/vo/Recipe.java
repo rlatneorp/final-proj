@@ -12,7 +12,6 @@ public class Recipe {
 	private int recipeDifficulty;
 	private int recipeTime;
 	private String recipeContent;
-	private String recipeOrder;
 	private int recipeCount;
 	private Date recipeCreateDate;
 	private Date recipeModifyDate;
@@ -25,7 +24,7 @@ public class Recipe {
 	}
 
 	public Recipe(int foodNo, int usersNo, String recipeName, String categoryIngredient, String categorySituation,
-			String categoryType, int recipeDifficulty, int recipeTime, String recipeContent, String recipeOrder,
+			String categoryType, int recipeDifficulty, int recipeTime, String recipeContent,
 			int recipeCount, Date recipeCreateDate, Date recipeModifyDate, String recipeStatus, String usersId, String nickName) {
 		super();
 		this.foodNo = foodNo;
@@ -37,7 +36,6 @@ public class Recipe {
 		this.recipeDifficulty = recipeDifficulty;
 		this.recipeTime = recipeTime;
 		this.recipeContent = recipeContent;
-		this.recipeOrder = recipeOrder;
 		this.recipeCount = recipeCount;
 		this.recipeCreateDate = recipeCreateDate;
 		this.recipeModifyDate = recipeModifyDate;
@@ -119,14 +117,6 @@ public class Recipe {
 		this.recipeContent = recipeContent;
 	}
 
-	public String getRecipeOrder() {
-		return recipeOrder;
-	}
-
-	public void setRecipeOrder(String recipeOrder) {
-		this.recipeOrder = recipeOrder;
-	}
-
 	public int getRecipeCount() {
 		return recipeCount;
 	}
@@ -180,7 +170,7 @@ public class Recipe {
 		return "Recipe [foodNo=" + foodNo + ", usersNo=" + usersNo + ", recipeName=" + recipeName
 				+ ", categoryIngredient=" + categoryIngredient + ", categorySituation=" + categorySituation
 				+ ", categoryType=" + categoryType + ", recipeDifficulty=" + recipeDifficulty + ", recipeTime="
-				+ recipeTime + ", recipeContent=" + recipeContent + ", recipeOrder=" + recipeOrder + ", recipeCount="
+				+ recipeTime + ", recipeContent=" + recipeContent + ", recipeCount="
 				+ recipeCount + ", recipeCreateDate=" + recipeCreateDate + ", recipeModifyDate=" + recipeModifyDate
 				+ ", recipeStatus=" + recipeStatus + ", usersId=" + usersId + ", nickName=" + nickName +"]";
 	}

@@ -15,16 +15,17 @@ public class Cart {
 	private int productPrice;
 	private String productName;
 	private ArrayList<Options> optionValue;
-	
+	private String selectedOpt;
 	
 	public Cart() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	
 
 	public Cart(int cartNo, int usersNo, int productNo, int productOption, int cartCount, int sum, String shippingPrice,
-			int productPrice, String productName, ArrayList<Options> optionValue) {
+			int productPrice, String productName, ArrayList<Options> optionValue, String selectedOpt) {
 		super();
 		this.cartNo = cartNo;
 		this.usersNo = usersNo;
@@ -36,7 +37,11 @@ public class Cart {
 		this.productPrice = productPrice;
 		this.productName = productName;
 		this.optionValue = optionValue;
+		this.selectedOpt = selectedOpt;
 	}
+	
+	
+
 
 
 	public int getCartNo() {
@@ -44,9 +49,11 @@ public class Cart {
 	}
 
 
+
 	public void setCartNo(int cartNo) {
 		this.cartNo = cartNo;
 	}
+
 
 
 	public int getUsersNo() {
@@ -54,9 +61,11 @@ public class Cart {
 	}
 
 
+
 	public void setUsersNo(int usersNo) {
 		this.usersNo = usersNo;
 	}
+
 
 
 	public int getProductNo() {
@@ -64,9 +73,11 @@ public class Cart {
 	}
 
 
+
 	public void setProductNo(int productNo) {
 		this.productNo = productNo;
 	}
+
 
 
 	public int getProductOption() {
@@ -74,9 +85,11 @@ public class Cart {
 	}
 
 
+
 	public void setProductOption(int productOption) {
 		this.productOption = productOption;
 	}
+
 
 
 	public int getCartCount() {
@@ -84,9 +97,11 @@ public class Cart {
 	}
 
 
+
 	public void setCartCount(int cartCount) {
 		this.cartCount = cartCount;
 	}
+
 
 
 	public int getSum() {
@@ -94,9 +109,11 @@ public class Cart {
 	}
 
 
+
 	public void setSum(int sum) {
 		this.sum = sum;
 	}
+
 
 
 	public String getShippingPrice() {
@@ -104,9 +121,11 @@ public class Cart {
 	}
 
 
+
 	public void setShippingPrice(String shippingPrice) {
 		this.shippingPrice = shippingPrice;
 	}
+
 
 
 	public int getProductPrice() {
@@ -114,9 +133,11 @@ public class Cart {
 	}
 
 
+
 	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
 	}
+
 
 
 	public String getProductName() {
@@ -124,9 +145,11 @@ public class Cart {
 	}
 
 
+
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
+
 
 
 	public ArrayList<Options> getOptionValue() {
@@ -134,9 +157,23 @@ public class Cart {
 	}
 
 
-	public void setOptionValue(ArrayList<Options> options) {
-		this.optionValue = options;
+
+	public void setOptionValue(ArrayList<Options> optionValue) {
+		this.optionValue = optionValue;
 	}
+
+
+
+	public String getSelectedOpt() {
+		return selectedOpt;
+	}
+
+
+
+	public void setSelectedOpt(String selectedOpt) {
+		this.selectedOpt = selectedOpt;
+	}
+
 
 
 	@Override
@@ -144,9 +181,8 @@ public class Cart {
 		return "Cart [cartNo=" + cartNo + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productOption="
 				+ productOption + ", cartCount=" + cartCount + ", sum=" + sum + ", shippingPrice=" + shippingPrice
 				+ ", productPrice=" + productPrice + ", productName=" + productName + ", optionValue=" + optionValue
-				+ "]";
+				+ ", selectedOpt=" + selectedOpt + "]";
 	}
-
 
 
 

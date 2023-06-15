@@ -130,6 +130,14 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.checkCartList", map);
 	}
 
+	public void updateOptionNo(SqlSessionTemplate sqlSession, Cart cart) {
+		sqlSession.update("marketMapper.updateOptionNo", cart);
+	}
+
+	public String selectOptionValue(SqlSessionTemplate sqlSession, int optionNo) {
+		return sqlSession.selectOne("marketMapper.selectOptionValue", optionNo);
+	}
+
 	
 
 

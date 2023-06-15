@@ -122,6 +122,10 @@
 		where cart.users_no = #{usersNo} and product.PRODUCT_STATUS = 'Y'
 	</select>
 	
+<!-- 	<select id="selectCartList" resultMap="cartList"> -->
+<!-- 		select * from cart where users_no = #{usersNo} -->
+<!-- 	</select> -->
+	
 	<resultMap type="Cart" id="cartList">
 		<id column="CART_NO" property="cartNo"/>
 		<result column="USERS_NO" property="usersNo"/>
@@ -214,6 +218,12 @@
 		select * from options where product_no = #{productNo}
 	</select>
 	
+	<select id="updateOptionNo" resultType="_int">
+		update cart set product_option = #{productOption} where product_no = #{productNo}
+	</select>
 	
+	<select id="selectOptionValue" resultType="String">
+		select option_value from options where option_no = #{optionNo}
+	</select>
 	
 </mapper>

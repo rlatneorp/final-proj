@@ -128,6 +128,14 @@ public class MarketService {
 		return mkDAO.checkCartList(sqlSession, usersNo, productNo );
 	}
 
+	public void updateOptionNo(Cart cart) {
+		mkDAO.updateOptionNo(sqlSession, cart);
+	}
+
+	public String selectOptionValue(int optionNo) {
+		return mkDAO.selectOptionValue(sqlSession, optionNo);
+	}
+
 	
 
 	

@@ -21,9 +21,9 @@
 	<update id="updateProduct">
 		update product
 		set product_price = #{productPrice},
-		<if test='productOption == "Y" '>
+<!-- 		<if test='productOption == "Y" '> -->
 			product_option = #{productOption},
-		</if>
+<!-- 		</if> -->
 			product_stock = #{productStock},
 			product_modify_date = sysdate,
 			product_sale = #{productSale},
@@ -57,6 +57,9 @@
 			  from image
 			  order by image_no asc)	
 		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != null">
+			and image_level = #{imageLevel}
+		</if>
 	</select>
 	
 	<insert id="insertImage">
@@ -144,11 +147,6 @@
 	
 	
 <!--Food-식품 -->
-	<insert id="insertFood">
-		insert into food(product_no, food_name, food_kind, food_type, food_content)
-		values(#{productNo}, #{foodName}, #{foodKind}, #{foodType}, #{foodContent})
-	</insert>
-	
 	<select id="getFoodCount" resultType="_int">
 		select count(*)
 		from food
@@ -157,12 +155,6 @@
 				where food_name like '%${searchText}%'
 			</if>
 		</if>
-	</select>
-	
-	<select id="selectFood" resultMap="foodResultSet">
-		select * 
-		from food
-		where product_no = #{productNo}
 	</select>
 	
 	<select id="selectFoodList" resultMap="foodResultSet">
@@ -175,7 +167,43 @@
 				where food_name like '%${searchText}%'
 			</if>
 		</if>
+		<if test="type != 0">
+			where food_type = ${type}
+			<if test="kind != 0">
+				and food_kind = ${kind}
+				order by food_name
+			</if>
+			<if test="kind == 0">
+				order by food_name
+			</if>
+		</if>
+		<if test="type == 0">
+			<if test="kind != 0">
+				where food_kind = ${kind}
+				order by food_name
+			</if>
+		</if>
 	</select>
+	
+	<select id="selectFood" resultMap="foodResultSet">
+		select * 
+		from food
+		where product_no = #{productNo}
+	</select>
+	
+	<update id="updateFood">
+		update food
+		set food_name = #{foodName},
+			food_kind = #{foodKind},
+			food_type = #{foodType},
+			food_content = #{foodContent}
+		where product_no = #{productNo}
+	</update>
+	
+	<insert id="insertFood">
+		insert into food(product_no, food_name, food_kind, food_type, food_content)
+		values(#{productNo}, #{foodName}, #{foodKind}, #{foodType}, #{foodContent})
+	</insert>
 	
 	<delete id="deletesFood">
 		delete food
@@ -188,7 +216,7 @@
 	
 	
 <!--ResultSet -->
-	<resultMap type="Product" id="productResultSet">
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">
 		<id column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_TYPE" property="productType"/>
 		<result column="PRODUCT_PRICE" property="productPrice"/>

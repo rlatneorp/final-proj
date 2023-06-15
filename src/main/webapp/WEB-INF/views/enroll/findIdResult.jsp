@@ -122,7 +122,7 @@
 						</div>
 						<div class="mid">
 							<div class="mid22">
-								<div><button class="button">로그인</button></div>
+								<div><button class="button" onclick="location.href='login.en'">로그인</button></div>
 								<div class="line"></div>
 								<div class="find">
 									<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div>

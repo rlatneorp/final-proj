@@ -10,19 +10,19 @@
 <style>
 	body{background: #B0DAFF;}
 	.form-line{
-		width: 600px; height: 750px;
+		width: 600px; height: 800px;
 		border: 5px solid white;;
 		border-radius: 45px; 
 		margin-left: auto; margin-right: auto; margin-top: 100px; margin-bottom: 100px;
 		}
 	.form-dot{
-		width: 580px; height: 730px;
+		width: 580px; height: 780px;
 		border: 5px dotted white;
 		border-radius: 40px;
 		margin: 5px;
 		}
 	.join-form{
-		width: 560px; height: 705px;
+		width: 560px; height: 755px;
 		background: white;
 		border-radius: 30px;
 		margin: 0 auto; margin-top: 12px;

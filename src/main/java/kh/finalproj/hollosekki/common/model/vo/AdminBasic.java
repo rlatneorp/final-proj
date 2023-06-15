@@ -5,15 +5,19 @@ public class AdminBasic {
 	private Integer pageCount;
 	private String searchType;
 	private String searchText;
+	private int type;
+	private int kind;
 	
 	public AdminBasic() {}
 
-	public AdminBasic(Integer page, Integer pageCount, String searchType, String searchText) {
+	public AdminBasic(Integer page, Integer pageCount, String searchType, String searchText, int type, int kind) {
 		super();
 		this.page = page;
 		this.pageCount = pageCount;
 		this.searchType = searchType;
 		this.searchText = searchText;
+		this.type = type;
+		this.kind = kind;
 	}
 
 	public Integer getPage() {
@@ -48,10 +52,26 @@ public class AdminBasic {
 		this.searchText = searchText;
 	}
 
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getKind() {
+		return kind;
+	}
+
+	public void setKind(int kind) {
+		this.kind = kind;
+	}
+
 	@Override
 	public String toString() {
 		return "AdminBasic [page=" + page + ", pageCount=" + pageCount + ", searchType=" + searchType + ", searchText="
-				+ searchText + "]";
+				+ searchText + ", type=" + type + ", kind=" + kind + "]";
 	}
 	
 }

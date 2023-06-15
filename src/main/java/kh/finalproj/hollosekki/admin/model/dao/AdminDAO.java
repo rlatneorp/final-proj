@@ -91,27 +91,32 @@ public class AdminDAO {
 
 	
 //	Food-식품
-	public int insertFood(SqlSessionTemplate sqlSession, Food f) {
-		return sqlSession.insert("adminMapper.insertFood", f);
-	}
-
 	public int getFoodCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
 		return sqlSession.selectOne("adminMapper.getFoodCount", ab);
 	}
 	
-	public Food selectFood(SqlSessionTemplate sqlSession, int foodNo) {
-		return sqlSession.selectOne("adminMapper.selectFood", foodNo);
-	}
-
 	public ArrayList<Food> selectFoodList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("adminMapper.selectFoodList", ab, rowBounds);
 	}
+	
+	public Food selectFood(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("adminMapper.selectFood", foodNo);
+	}
+	
+	public int updateFood(SqlSessionTemplate sqlSession, Food f) {
+		return sqlSession.update("adminMapper.updateFood", f);
+	}
+
+	public int insertFood(SqlSessionTemplate sqlSession, Food f) {
+		return sqlSession.insert("adminMapper.insertFood", f);
+	}
 
 	public int deletesFood(SqlSessionTemplate sqlSession, String[] foodDeletes) {
 		return sqlSession.delete("adminMapper.deletesFood", foodDeletes);
 	}
+
 
 
 

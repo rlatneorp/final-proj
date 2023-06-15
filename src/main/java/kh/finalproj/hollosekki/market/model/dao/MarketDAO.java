@@ -128,6 +128,21 @@ public class MarketDAO {
 		map.put("usersNo", usersNo);
 		map.put("productNo", productNo);
 		return sqlSession.selectOne("marketMapper.checkCartList", map);
+	}	
+	public void getMonthPoint(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		sqlSession.update("marketMapper.getMonthPoint", map);
+	}
+
+	public Users sendPoint(SqlSessionTemplate sqlSession, Users u) {
+		return sqlSession.selectOne("marketMapper.sendPoint", u);
+	}
+
+	public void updateOptionNo(SqlSessionTemplate sqlSession, Cart cart) {
+		sqlSession.update("marketMapper.updateOptionNo", cart);
+	}
+
+	public String selectOptionValue(SqlSessionTemplate sqlSession, int optionNo) {
+		return sqlSession.selectOne("marketMapper.selectOptionValue", optionNo);
 	}
 
 	

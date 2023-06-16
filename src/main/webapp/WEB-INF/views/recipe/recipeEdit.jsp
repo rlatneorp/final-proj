@@ -171,9 +171,11 @@
 			
 			<div class="recipeInformationBox" id="completePic">
 				<div class="d-inline-block beforeInput">완성된 요리 |</div><div class="d-inline-block">완성된 요리 이미지를 올려주세요. 이미지를 추가하려면 +버튼을 눌러주세요.</div>
-				<div class="comPicBox">
-					<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic">
-				</div>
+				<c:forEach items="${cList}" var="c">
+					<div class="comPicBox">
+						<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic" title="${c.imageRenameName }">
+					</div>
+				</c:forEach>
 			</div>
 			
 			<button type="button" id="plusComBtn">+ 이미지 추가하기</button>
@@ -182,8 +184,8 @@
 	</div>
 	
 	<div id="buttonBox">
-		<button type="button" id="can">취소</button> <!-- 뒤로 가기 추가 -->
-		<button type="submit" id="sub">등록</button>
+		<button type="button" id="can" onclick="javascript:history.back();">취소</button> <!-- 뒤로 가기 추가 -->
+		<button type="submit" id="sub">수정</button>
 	</div>
 </form>
 

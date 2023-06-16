@@ -31,4 +31,10 @@ public interface RecipeService {
 
 	ArrayList<RecipeOrder> recipeDetailOrderText(int foodNo);
 
+	int deleteRecipe(int foodNo);
+
+	int deleteOrder(int foodNo);
+
+	int deleteImage(int foodNo);
+
 }

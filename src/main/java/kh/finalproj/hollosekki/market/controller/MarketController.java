@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -53,22 +54,39 @@ public class MarketController {
 		ArrayList<Food> foodsList = new ArrayList<>(); ArrayList<Tool> toolsList = new ArrayList<>(); ArrayList<Ingredient> igsList = new ArrayList<>();
 		ArrayList<Product> selectProductInfo = new ArrayList<>(); 
 		Food foods = null; Tool tools = null; Ingredient igs = null;
-		ArrayList<Object> productOpt = new ArrayList<>();
+//		ArrayList<Object> optName = new ArrayList<>();
+		
 		
 		for(Cart cart : cartList) {
 			int productNo = cart.getProductNo();
 			
+			//예를들어 11번일 때 
 			ArrayList<Options> options = mkService.selectOptions(productNo);
+			//11번에 해당 되는 옵션들이 모두 조회 
+			System.out.println("options : " + options);
 			cart.setOptionValue(options);
 			
-			System.out.println("options : " + options);
+			//옵션이 여러개일 때 
+			Map<String, List<String>> optionMap = new HashMap<>();
+			for (Options option : options) {
+			    String optionName = option.getOptionName();
+			    String optionValue = option.getOptionValue();
+			    
+			    List<String> optionValues = optionMap.computeIfAbsent(optionName, k -> new ArrayList<>());
+			    optionValues.add(optionValue);
+			} cart.setOptionName(optionMap);
+			
+			//끝 
+			
+//				
+			
+			
+			
 			
 			foods = mkService.selectFood(productNo);
 			tools = mkService.selectTool(productNo);
 			igs = mkService.selectIngrdient(productNo);
 				
-			System.out.println("productOpt : " + productOpt);
-			
 			
 			selectProductInfo = mkService.selectProductInfo(productNo);
 			int price = 0; int sum = 0;
@@ -80,11 +98,11 @@ public class MarketController {
 			sum = size * price;
 			cart.setSum(sum);
 			
-			if(sum >= 30000) {
-				cart.setShippingPrice("무료배송");
-			} else {
-				cart.setShippingPrice("30,000");
-			}
+//			if(sum >= 30000) {
+//				cart.setShippingPrice("무료배송");
+//			} else {
+//				cart.setShippingPrice("30,000");
+//			}
 			
 			if (foods != null) {
 				System.out.println("foods : " + foods);
@@ -99,6 +117,8 @@ public class MarketController {
 		    	cart.setProductName(igs.getIngredientName());
 		    }
 		}
+		
+		System.out.println("cartList" + cartList);
 		model.addAttribute("cartList", cartList);
 		return "basket";
 	}

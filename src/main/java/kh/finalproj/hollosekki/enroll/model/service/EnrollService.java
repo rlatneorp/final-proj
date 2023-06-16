@@ -26,4 +26,10 @@ public interface EnrollService {
 
 	Users socialLoginUpdate(String id);
 
+	void socialInfoUpdate(String id, String profileImg);
+
+	void socialInfoUpdate2(String id, String name);
+
+
+
 }

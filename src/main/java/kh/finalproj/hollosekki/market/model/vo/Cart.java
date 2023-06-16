@@ -16,15 +16,11 @@ public class Cart {
 	private String productName;
 	private ArrayList<Options> optionValue;
 	private ArrayList<Cart> cartValue;
-	
-	
-	public Cart() {
-		super();
 	private String selectedOpt;
 	
+	
 	public Cart() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	

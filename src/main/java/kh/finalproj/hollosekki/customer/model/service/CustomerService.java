@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.customer.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +19,14 @@ public class CustomerService {
 	@Autowired
 	private CustomerDAO csDAO;
 	
-	public int getListCount(int i) {
-		return csDAO.getListCount(sqlSession, i);
+	public int getListCount(HashMap<String, Object> map) {
+		return csDAO.getListCount(sqlSession, map);
 	}
 
-	public ArrayList<Customer> noticeBoardList(PageInfo pi) {
-		return csDAO.noticeBoardList(sqlSession, pi);
+	public ArrayList<Customer> faqBoardList(PageInfo pi, HashMap<String, Object> map) {
+		return csDAO.faqBoardList(sqlSession, pi, map);
 	}
 
-	public ArrayList<Customer> personalQuestion(PageInfo pi) {
-		return csDAO.personalQuestion(sqlSession, pi);
-	}
 
-	public ArrayList<Customer> faqBoardList(PageInfo api) {
-		return null;
-	}
 
 }

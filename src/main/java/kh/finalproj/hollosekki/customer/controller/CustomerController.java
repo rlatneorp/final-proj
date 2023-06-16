@@ -1,10 +1,14 @@
 package kh.finalproj.hollosekki.customer.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,6 +17,7 @@ import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.customer.exception.CustomerException;
 import kh.finalproj.hollosekki.customer.model.service.CustomerService;
 import kh.finalproj.hollosekki.customer.model.vo.Customer;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
 @Controller
 public class CustomerController {
@@ -21,49 +26,34 @@ public class CustomerController {
 	private CustomerService csService;
 	
 	@RequestMapping("askBoard.cs")
-	public String noticeBoardList(@RequestParam(value="page", required=false) Integer currentPage, Model model) {
+	public String askBoard(HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
+			@RequestParam(value="uNo", required=false) Integer uNo,
+			@RequestParam(value="bType", required=false) Integer bType, Model model, @ModelAttribute Customer customer) {
+		Users u = (Users)session.getAttribute("loginUser");
+		System.out.println(bType);
+		
 		if(currentPage == null) {
 			currentPage = 1;
 		}
-		
-		int nlistCount = csService.getListCount(0);
-		int alistCount = csService.getListCount(1);
-		PageInfo npi = Pagination.getPageInfo(currentPage, nlistCount, 5);
-		PageInfo api = Pagination.getPageInfo(currentPage, alistCount, 5);
-		ArrayList<Customer> nlist = csService.noticeBoardList(npi);
-		ArrayList<Customer> alist = csService.faqBoardList(api);
-		
-		
-		if(nlist != null) {
-			model.addAttribute("nlist", nlist);
-			model.addAttribute("alist", alist);
-			model.addAttribute("npi", npi);
-			model.addAttribute("api", api);
-			return "askBoard";
-		} else {
-			throw new CustomerException("게시글 조회에 실패하였습니다.");
-		}
-		
-	}
-	
-	@RequestMapping("personalQuestion.cs")
-	public String personalQuestion(@RequestParam(value="page", required=false) Integer currentPage, Model model) {
-		if(currentPage == null) {
-			currentPage = 1;
-		}
-		
-		int listCount = csService.getListCount(2);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("bType", bType);
+		map.put("uNo", uNo);
+		map.put("u", u);
+		int listCount = csService.getListCount(map);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-		ArrayList<Customer> flist = csService.personalQuestion(pi);
-		
-		if(flist != null) {
-			model.addAttribute("flist", flist);
+		map.put("pi", pi);
+		ArrayList<Customer> list = csService.faqBoardList(pi, map);
+		System.out.println(list);
+		if(list != null) {
+			model.addAttribute("list", list);
 			model.addAttribute("pi", pi);
+			model.addAttribute("bType", bType);
 			return "askBoard";
 		} else {
 			throw new CustomerException("게시글 조회에 실패하였습니다.");
 		}
+		
 	}
-	
+
 	
 }

@@ -153,6 +153,26 @@
 				}
 			})
 			
+// 			삭제 체크박스 선택 이벤트 (식단에 포함된 식품은 삭제 불가능)
+			selectDeletes = document.getElementsByName('selectDelete');
+			for(const sDel of selectDeletes){
+				sDel.addEventListener('change', function(){
+					$.ajax({
+						url: '${contextPath}/adminFoodDeleteable.ad',
+						data: {pNo: this.value},
+						success: data => {
+							if(this.checked && data.length != 0){
+								alert(data+" 식단에 포함되어 있어 삭제할 수 없습니다.");
+								this.checked = false;
+							}
+						},
+						error: data => {
+							console.log(data);
+						}
+					})
+				})
+			}
+			
 // 			삭제버튼 클릭 이벤트 (confirm 띄우기)
 			const deleteBtn = document.getElementsByClassName('deleteBtn')[0];
 			deleteBtn.addEventListener('click', ()=>{

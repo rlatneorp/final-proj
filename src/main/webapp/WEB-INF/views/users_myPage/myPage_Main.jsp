@@ -177,7 +177,7 @@
 						<td>
 						<i class="bi bi-currency-dollar dollars"></i>
 						</td>
-						<td style="font-size: 18px; color: rgb(52, 152, 219);"><b>${ loginUser.point } 포인트</b></td>
+						<td style="font-size: 18px; color: rgb(52, 152, 219);"><p class="d-inline" id="myP">P</p></td>
 						</tr>
 						</table>
 						<p style="font-size: 13px;">소멸 예정 포인트 0원</p>
@@ -430,6 +430,19 @@
 			fileInput.value = null;
 			profileImg();
 		});
+		
+		var loginUser = '${loginUser}';
+		if(loginUser != ''){
+			$.ajax({
+				url: 'point.ma',
+				success: function(info){
+					console.log(info);
+					let myP = document.querySelector('#myP');
+					myP.innerHTML = info.point;
+				}
+				
+			});
+		}
 	</script>
 </body>
 </html> 

@@ -2,6 +2,8 @@ package kh.finalproj.hollosekki.market.model.vo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class Cart {
 	private int cartNo;
@@ -15,17 +17,21 @@ public class Cart {
 	private int productPrice;
 	private String productName;
 	private ArrayList<Options> optionValue;
+	private Map<String, List<String>> optionName;
 	private ArrayList<Cart> cartValue;
-	
-	
 	private String selectedOpt;
 	
-	public Cart() {}
+	
+	public Cart() {
+		super();
+	}
+
 	
 	
 
 	public Cart(int cartNo, int usersNo, int productNo, int productOption, int cartCount, int sum, String shippingPrice,
-			int productPrice, String productName, ArrayList<Options> optionValue, String selectedOpt) {
+			int productPrice, String productName, ArrayList<Options> optionValue, Map<String, List<String>> optionName,
+			ArrayList<Cart> cartValue, String selectedOpt) {
 		super();
 		this.cartNo = cartNo;
 		this.usersNo = usersNo;
@@ -37,10 +43,11 @@ public class Cart {
 		this.productPrice = productPrice;
 		this.productName = productName;
 		this.optionValue = optionValue;
+		this.optionName = optionName;
+		this.cartValue = cartValue;
 		this.selectedOpt = selectedOpt;
 	}
-	
-	
+
 
 
 
@@ -50,9 +57,11 @@ public class Cart {
 
 
 
+
 	public void setCartNo(int cartNo) {
 		this.cartNo = cartNo;
 	}
+
 
 
 
@@ -62,9 +71,11 @@ public class Cart {
 
 
 
+
 	public void setUsersNo(int usersNo) {
 		this.usersNo = usersNo;
 	}
+
 
 
 
@@ -74,9 +85,11 @@ public class Cart {
 
 
 
+
 	public void setProductNo(int productNo) {
 		this.productNo = productNo;
 	}
+
 
 
 
@@ -86,9 +99,11 @@ public class Cart {
 
 
 
+
 	public void setProductOption(int productOption) {
 		this.productOption = productOption;
 	}
+
 
 
 
@@ -98,9 +113,11 @@ public class Cart {
 
 
 
+
 	public void setCartCount(int cartCount) {
 		this.cartCount = cartCount;
 	}
+
 
 
 
@@ -110,9 +127,11 @@ public class Cart {
 
 
 
+
 	public void setSum(int sum) {
 		this.sum = sum;
 	}
+
 
 
 
@@ -122,9 +141,11 @@ public class Cart {
 
 
 
+
 	public void setShippingPrice(String shippingPrice) {
 		this.shippingPrice = shippingPrice;
 	}
+
 
 
 
@@ -134,9 +155,11 @@ public class Cart {
 
 
 
+
 	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
 	}
+
 
 
 
@@ -146,9 +169,11 @@ public class Cart {
 
 
 
+
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
+
 
 
 
@@ -157,9 +182,27 @@ public class Cart {
 	}
 
 
+
+
 	public void setOptionValue(ArrayList<Options> optionValue) {
 		this.optionValue = optionValue;
 	}
+
+
+
+
+	public Map<String, List<String>> getOptionName() {
+		return optionName;
+	}
+
+
+
+
+	public void setOptionName(Map<String, List<String>> optionName) {
+		this.optionName = optionName;
+	}
+
+
 
 
 	public ArrayList<Cart> getCartValue() {
@@ -167,26 +210,12 @@ public class Cart {
 	}
 
 
+
+
 	public void setCartValue(ArrayList<Cart> cartValue) {
 		this.cartValue = cartValue;
 	}
 
-
-	public Cart(int cartNo, int usersNo, int productNo, int productOption, int cartCount, int sum, String shippingPrice,
-			int productPrice, String productName, ArrayList<Options> optionValue, ArrayList<Cart> cartValue) {
-		super();
-		this.cartNo = cartNo;
-		this.usersNo = usersNo;
-		this.productNo = productNo;
-		this.productOption = productOption;
-		this.cartCount = cartCount;
-		this.sum = sum;
-		this.shippingPrice = shippingPrice;
-		this.productPrice = productPrice;
-		this.productName = productName;
-		this.optionValue = optionValue;
-		this.cartValue = cartValue;
-	}
 
 
 
@@ -196,9 +225,11 @@ public class Cart {
 
 
 
+
 	public void setSelectedOpt(String selectedOpt) {
 		this.selectedOpt = selectedOpt;
 	}
+
 
 
 
@@ -207,11 +238,8 @@ public class Cart {
 		return "Cart [cartNo=" + cartNo + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productOption="
 				+ productOption + ", cartCount=" + cartCount + ", sum=" + sum + ", shippingPrice=" + shippingPrice
 				+ ", productPrice=" + productPrice + ", productName=" + productName + ", optionValue=" + optionValue
-				+ ", cartValue=" + cartValue + ", selectedOpt=" + selectedOpt + "]";
+				+ ", optionName=" + optionName + ", cartValue=" + cartValue + ", selectedOpt=" + selectedOpt + "]";
 	}
-
-
-
 
 
 

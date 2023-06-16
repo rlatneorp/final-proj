@@ -113,6 +113,7 @@
 	    background: #B0DAFF;
 	    width: 37px; height: 35px;
 	    cursor: pointer;}
+	.cart:hover{background: #1f8acb; color: white;  transition: all 0.3s ease 0s;}
 	.menu-list{display: none; width: 90px; background: rgba(176, 218, 255, 0.4); margin: 5px;}
 	.menu-div:hover .menu-list{display: block;} 
 </style>
@@ -165,7 +166,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/Logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
@@ -219,7 +220,7 @@
 						  			<div class="userName">
 						  				${ loginUser.usersName } 님
 						  			</div>
-						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="p">P</p></div>
+						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="topP">P</p></div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
 						  			<div class="dropdown-item" onclick="location.href='${ contextPath }/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
@@ -239,15 +240,18 @@
 	<br>
 	
 <script>
-$.ajax({
-	url: 'point.ma',
-	success: function(info){
-		console.log(info);
-		let point = document.querySelector('#p');
-		point.innerHTML = info.point;
-	}
-	
-});
+var loginUser = '${loginUser}';
+if(loginUser != ''){
+	$.ajax({
+		url: 'point.ma',
+		success: function(info){
+			console.log(info);
+			let topP = document.querySelector('#topP');
+			topP.innerHTML = info.point;
+		}
+		
+	});
+}
 </script>
 
 

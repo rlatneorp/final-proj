@@ -78,16 +78,13 @@ public class RecipeController {
 		Recipe recipe = rService.recipeDetail(foodNo, yn);
 		ArrayList<RecipeOrder> orderList = rService.recipeDetailOrderText(foodNo);
 		Image thum = rService.recipeDetailThum(foodNo);
-//		ArrayList<Image> oList = rService.recipeDetailOrder(foodNo);
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
 		
-//		System.out.println(recipe.getRecipeOrder());
 		
 		if(recipe != null) {
 			mv.addObject("recipe", recipe);
 			mv.addObject("orderList", orderList);
 			mv.addObject("thum", thum);
-//			mv.addObject("oList", oList);
 			mv.addObject("cList", cList);
 			mv.addObject("page", page);
 			mv.setViewName("recipeDetail");
@@ -297,5 +294,37 @@ public class RecipeController {
 		if(f.exists()) {
 			f.delete();
 		}
+	}
+	
+	@PostMapping("deleteRecipe.rc")
+	public String deleteRecipe(@RequestParam("foodNo") int foodNo) {
+		
+		int result1 = rService.deleteRecipe(foodNo);
+		int result2 = rService.deleteOrder(foodNo);
+		int result3 = rService.deleteImage(foodNo);
+		
+		if(result1 > 0 && result2 > 0 && result3 > 0) {
+			return "redirect:recipeList.rc";
+		}else {
+			throw new RecipeException("레시피 삭제를 실패하였습니다.");
+		}
+	}
+	
+	@PostMapping("updateForm.rc")
+	public ModelAndView updateForm(@RequestParam("foodNo") int foodNo, @RequestParam("page") int page, ModelAndView mv) {
+		
+		Recipe recipe = rService.recipeDetail(foodNo, false);
+		ArrayList<RecipeOrder> orderList = rService.recipeDetailOrderText(foodNo);
+		Image thum = rService.recipeDetailThum(foodNo);
+		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
+		
+		mv.addObject("recipe", recipe);
+		mv.addObject("orderList", orderList);
+		mv.addObject("thum", thum);
+		mv.addObject("cList", cList);
+		mv.addObject("page", page);
+		mv.setViewName("recipeEdit");
+		
+		return mv;
 	}
 }

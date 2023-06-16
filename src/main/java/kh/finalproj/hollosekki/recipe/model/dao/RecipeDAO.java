@@ -67,4 +67,16 @@ public class RecipeDAO {
 		return (ArrayList)sqlSession.selectList("recipeMapper.recipeDetailOrderText", foodNo);
 	}
 
+	public int deleteRecipe(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.delete("recipeMapper.deleteRecipe", foodNo);
+	}
+
+	public int deleteOrder(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.delete("recipeMapper.deleteOrder", foodNo);
+	}
+
+	public int deleteImage(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.delete("recipeMapper.deleteImage", foodNo);
+	}
+
 }

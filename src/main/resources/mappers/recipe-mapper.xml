@@ -97,6 +97,20 @@
 		order by recipe_procedure asc
 	</select>
 	
+	<delete id="deleteRecipe">
+		delete from recipe
+		where food_no=#{foodNo}
+	</delete>
+	
+	<delete id="deleteOrder">
+		delete from recipe_order
+		where food_no=#{foodNo}
+	</delete>
+	
+	<delete id="deleteImage">
+		delete from image
+		where image_type=2 and image_divide_no=#{foodNo}
+	</delete>
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>

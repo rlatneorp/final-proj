@@ -4,7 +4,7 @@
 	<insert id="insertUser">
 		insert into users
 		values(SEQ_USERS_NO.nextval, #{usersId}, #{usersPw}, #{usersName}, #{nickName}, #{email}, #{phone}, 
-				sysdate, default, default, default, default, default, default, default, default)
+				sysdate, default, default, default, default, default, default, default, default, default)
 	</insert>
 	
 	<select id="login" resultMap="usersResultSet">
@@ -88,4 +88,15 @@
 		from users
 		where users_id = #{id} and status = 'Y'
 	</select>
+	
+	<update id="socialInfoUpdate">
+		update social_login set social_profile_img = #{profileImg}
+		where social_id=#{id}
+	</update>
+	
+	<update id="socialInfoUpdate2">
+		update users set users_name = #{name}, nickname = #{name}
+		where users_id = #{id}
+	</update>
+	
 </mapper>

@@ -36,8 +36,7 @@ public class AttendanceController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("at", at);
 		map.put("u", u);
-		System.out.println(at);
-		System.out.println(u);
+	
 		int result = mkService.atTodayChecked(u);
 		if(result < 1) {
 			mkService.atInsert(map);
@@ -81,8 +80,10 @@ public class AttendanceController {
 	@RequestMapping("point.ma")
 	public void sendPoint(HttpSession session, HttpServletResponse response) {
 		Users u = (Users) session.getAttribute("loginUser");
-		Users list = mkService.sendPoint(u);
-		System.out.println(u);
+		Users list = null;
+		if(u != null) {
+			list = mkService.sendPoint(u);
+		}
 		response.setContentType("application/json; charset=UTF-8"); 
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
 		Gson gson = gb.create();

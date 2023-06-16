@@ -9,7 +9,9 @@ public class Food extends Product{
 	private String foodTable;
 	private String nutrient;
 	
-	public Food() {}
+	public Food() {
+		super();
+	}
 
 	public Food(String foodName, int foodKind, int foodType, String foodContent, String foodTarget, String foodTable,
 			String nutrient) {
@@ -85,5 +87,5 @@ public class Food extends Product{
 				+ foodContent + ", foodTarget=" + foodTarget + ", foodTable=" + foodTable + ", nutrient=" + nutrient
 				+ "]";
 	}
-	
+
 }

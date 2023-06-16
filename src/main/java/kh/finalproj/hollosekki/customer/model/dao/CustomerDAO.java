@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.customer.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -12,23 +13,17 @@ import kh.finalproj.hollosekki.customer.model.vo.Customer;
 @Repository
 public class CustomerDAO {
 
-	public int getListCount(SqlSessionTemplate sqlSession, int i) {
-		return sqlSession.selectOne("customerMapper.getListCount", i);
+	public int getListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("customerMapper.getListCount", map);
 	}
 
-	public ArrayList<Customer> noticeBoardList(SqlSessionTemplate sqlSession, PageInfo pi) {
-		int offset = (pi.getCurrentPage() -1 ) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+	public ArrayList<Customer> faqBoardList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(),pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("customerMapper.noticeBoardList", pi, rowBounds);
-
+		return (ArrayList)sqlSession.selectList("customerMapper.faqBoardList", map, rowBounds);
 	}
 
-	public ArrayList<Customer> personalQuestion(SqlSessionTemplate sqlSession, PageInfo pi) {
-		int offset = (pi.getCurrentPage() -1 ) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSession.selectList("customerMapper.personalQuestion", pi, rowBounds);
-	}
+
+
 
 }

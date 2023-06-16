@@ -162,8 +162,10 @@
 
 <%@ include file="../common/top.jsp" %>
 <br><br>
-
+<form method="POST" id="detailForm">
 	<div id="top">
+	<input type="hidden" value="${recipe.foodNo}" name="foodNo">
+	<input type="hidden" value="${page}" name="page">
 		<div id="thumImg">
 			<img src="${contextPath }/resources/uploadFiles/${thum.imageRenameName}" style="width: 100%; height: 100%; border-radius: 5px;">
 		</div>
@@ -191,8 +193,8 @@
 			
 			<c:if test="${loginUser.usersId eq recipe.usersId }">
 				<div id="updateBox">
-					<button id="updateBtn">수정</button>
-					<button id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
+					<button type="button" id="updateBtn">수정</button>
+					<button type="button" id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
 				</div>
 			</c:if>
 		</div>
@@ -280,11 +282,12 @@
 
 <c:if test="${!(loginUser.usersId eq recipe.usersId) }">
 	<div id="buttonBox">
-		<button id="mealkitBuy" class="buy">밀키트 구매</button>
-		<button id="ingredientBuy" class="buy">식재료 구매</button>
+		<button type="button" id="mealkitBuy" class="buy">밀키트 구매</button>
+		<button type="button" id="ingredientBuy" class="buy">식재료 구매</button>
 	</div>
 </c:if>
 
+</form>
 <br><br>
 
 <p class="mid">문의</p>
@@ -456,6 +459,19 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
+const detailForm = document.getElementById('detailForm');
+const deleteRecBtn = document.getElementById('deleteBoard');
+const updateBtn = document.getElementById('updateBtn');
+
+deleteRecBtn.addEventListener('click', function(){
+	detailForm.action="${contextPath}/deleteRecipe.rc";
+	detailForm.submit();
+})
+
+updateBtn.addEventListener('click',function(){
+	detailForm.action="${contextPath}/updateForm.rc";
+	detailForm.submit();
+})
 </script>
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	

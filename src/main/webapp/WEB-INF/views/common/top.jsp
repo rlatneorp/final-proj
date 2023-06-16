@@ -165,7 +165,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/Logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
@@ -239,15 +239,14 @@
 	<br>
 	
 <script>
-$.ajax({
-	url: 'point.ma',
-	success: function(info){
-		console.log(info);
-		let point = document.querySelector('#p');
-		point.innerHTML = info.point;
-	}
-	
-});
+// $.ajax({
+// 	url: 'point.ma',
+// 	success: function(info){
+// 		console.log(info);
+// 		let point = document.querySelector('#p');
+// 		point.innerHTML = info.point;
+// 	}
+// });
 </script>
 
 

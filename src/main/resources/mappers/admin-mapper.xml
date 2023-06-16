@@ -33,9 +33,9 @@
 	
 	<insert id="insertProduct">
 		insert into product(product_no, product_type, product_price, product_option, product_stock, 
-			product_create_date, product_modify_date, product_sale, product_count, product_status)
+			product_create_date, product_modify_date, product_sale, product_count, product_status, users_no)
 		values(seq_product_no.nextval, #{productType}, #{productPrice},
-			#{productOption}, #{productStock}, sysdate, sysdate, #{productSale}, default, default)
+			#{productOption}, #{productStock}, sysdate, sysdate, #{productSale}, default, default, #{usersNo})
 		<selectKey keyProperty="productNo" resultType="int" order="AFTER">
     		SELECT seq_product_no.currval from dual
     	</selectKey>
@@ -72,6 +72,39 @@
 		where image_type = #{imageType} and image_divide_no = ${imageDivideNo} 
 	</delete>
 
+
+<!--Menu-메뉴 -->
+	<select id="getMenuCount" resultType="_int">
+		select count(*)
+		from menu
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where menu_name like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+		
+	<select id="selectMenuList" resultMap="menuResultSet">
+		select *
+		from (select * 
+			  from menu
+			  order by product_no desc) 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where menu_name like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+
+	<insert id="insertMenu">
+		insert into menu(product_no, menu_name, menu_type, menu_content)
+		values(#{productNo}, #{menuName}, #{menuType}, #{menuContent})
+	</insert>
+	
+	<insert id="insertMenuList">
+		insert into menu_list(menu_list_no, product_no, food_product_no)
+		 values(seq_menu_list_no.nextval, #{productNo}, #{foodProductNo})
+	</insert>
 
 <!--Ingredient-식재료-->
 	<select id="getIngredientCount" resultType="_int">
@@ -205,6 +238,13 @@
 		values(#{productNo}, #{foodName}, #{foodKind}, #{foodType}, #{foodContent})
 	</insert>
 	
+	<select id="deleteableFood" resultType="string">
+		select menu_name||'('||product_no||')'
+		from menu_list 
+			 join menu using(product_no)
+		where food_product_no = #{pNo}
+	</select>
+	
 	<delete id="deletesFood">
 		delete food
 		where product_no in
@@ -227,6 +267,13 @@
 		<result column="PRODUCT_SALE" property="productSale"/>
 		<result column="PRODUCT_COUNT" property="productCount"/>
 		<result column="PRODUCT_STATUS" property="productStatus"/>
+	</resultMap>
+	
+	<resultMap type="Menu" id="menuResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="MENU_TYPE" property="menuType"/>
+		<result column="MENU_CONTENT" property="menuContent"/>
 	</resultMap>
 	
 	<resultMap type="Image" id="imageResultSet">
@@ -257,15 +304,6 @@
 		<result column="FOOD_TYPE" property="foodType"/>
 		<result column="FOOD_CONTENT" property="foodContent"/>
 	</resultMap>
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 </mapper>

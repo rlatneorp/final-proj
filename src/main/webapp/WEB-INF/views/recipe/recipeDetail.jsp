@@ -170,7 +170,7 @@
 		<div style="width: 50px; height: 500px; display: inline-block; position: absolute; left: 500px;"></div>
 		<div id="imformation">
 			<div id="title">
-				<h2 style="display: inline-block; margin-right: 470px;">${recipe.recipeName }</h2>
+				<h2 style="display: inline-block; margin-right: 250px;">${recipe.recipeName }</h2>
 				<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
 			</div>
 			<div id="grade">
@@ -227,21 +227,21 @@
 	
 	<br><br>
 	
-<!-- 	<div id="order"> -->
-<!-- 		<div id="orderList"> -->
-<!-- 			<table> -->
-<%-- 				<c:forEach items="${recipe}" var="r"> --%>
-<%-- 					<c:forEach items="${oList}" var="oList"> --%>
-<!-- 						<tr> -->
-<!-- 							<td class="no">1</td> -->
-<%-- 							<td class="content">${r.recipeOrder}</td> --%>
-<%-- 							<td class="image"><img src="${contextPath}/resources/uploasdFiles/${oList.renameName}" width="250px" height="250px" alt="조리 순서 사진 1"></td> --%>
-<!-- 						</tr> -->
+	<div id="order">
+		<div id="orderList">
+			<table>
+				<c:forEach items="${orderList}" var="orderList">
+<%-- 					<c:forEach items="${oList}" var="o"> --%>
+						<tr>
+							<td class="no">${orderList.recipeProcedure}</td>
+							<td class="content">${orderList.recipeOrder}</td>
+							<td class="image"><img src="${contextPath}/resources/uploadFiles/${orderList.recipeRenameName}" width="100%" height="100%" alt="조리 순서 사진 1"></td>
+						</tr>
 <%-- 					</c:forEach> --%>
-<%-- 				</c:forEach> --%>
-<!-- 			</table> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+				</c:forEach>
+			</table>
+		</div>
+	</div>
 	
 	<br><br>
 	<br><br>	
@@ -456,10 +456,6 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
-	const mel = document.getElementById('mealkitBuy');
-	mel.addEventListener('click', function(){
-		console.log(${recipe.recipeOrder});
-	})
 </script>
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	

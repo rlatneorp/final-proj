@@ -196,7 +196,7 @@ input[type="text"] {
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-						<input type="checkbox" value="${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
+						<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">
@@ -288,26 +288,100 @@ input[type="text"] {
 </body>
 
 <script>
+	//체크 된 상품 요약 금 
+// 	const trSum = document.getElementsByClassName('sum');
+	
+// 	let trTotalSum = 0;
+// 	let totalCount = 0;
+// 	changeCheckBox = (checkbox) => {
+// 		const checkSum = checkbox.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText.replace(/,/g, ''); // 합계금액이 표시된 요소
+// 		const checkCount = checkbox.parentElement.nextElementSibling.nextElementSibling.innerText.replace(/,/g, ''); // 체크된 카운트 수
+		
+// 		const intCheckSum = parseInt(checkSum);
+// 		const intCheckCount = parseInt(checkCount);
+// 		if (checkbox.checked) {
+// 			trTotalSum += intCheckSum;
+// 			totalCount += intCheckCount;
+// 		}else {
+// 			trTotalSum -= intCheckSum;
+// 			totalCount -= intCheckCount;
+// 		}
+		
+// 		document.getElementById('orderSize').innerText = totalCount;
+// 		document.getElementById('trTotalSum').innerText = trTotalSum;
+		
+// 		let shipping = parseInt(document.getElementById('shipSum').innerText); //배송비 
+// 		if(trTotalSum >= 30000) { //합계금액 
+// 			document.getElementById('shipPrice').innerText = '0';
+// 			document.getElementById('shipSum').innerText = trTotalSum;
+// 		} else {
+// 			document.getElementById('shipPrice').innerText = '3,000';
+// 			const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
+// 			document.getElementById('shipSum').innerText = trTotalSum+shipPrice;
+// 		}
+// 	}
+</script>
+
+
+<script>
+	
+	
 	
 	window.onload = () => {
-			//총 주문 개수
-			let totalCount = 0;
-			const cartCount = document.getElementsByClassName('cartCount');
-			for(const cc of cartCount) {
-				const intCount = parseInt(cc.innerText);
-				totalCount += intCount;
-			}			
-			document.getElementById('orderSize').innerText = totalCount;
+		document.getElementById('trTotalSum').innerText = '0';	
+		document.getElementById('orderSize').innerText = '0';
+		
+		const trSum = document.getElementsByClassName('sum');
+		
+		let trTotalSum = 0;
+		let totalCount = 0;
+		changeCheckBox = (checkbox) => {
+			const checkSum = checkbox.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText.replace(/,/g, ''); // 합계금액이 표시된 요소
+			const checkCount = checkbox.parentElement.nextElementSibling.nextElementSibling.innerText.replace(/,/g, ''); // 체크된 카운트 수
 			
-			//총 합계 금액 
-			let trTotalSum = 0;
-			const trSum = document.getElementsByClassName('sum');
-			for(const sum of trSum) {
-				console.log('sum : ' + sum);
-				const intSum = parseInt(sum.innerText);
-				trTotalSum += intSum;
+			console.log('checkSum!! : ' + checkSum)
+			const intCheckSum = parseInt(checkSum);
+			const intCheckCount = parseInt(checkCount);
+			if (checkbox.checked) {
+				trTotalSum += intCheckSum;
+				totalCount += intCheckCount;
+			}else if (trTotalSum != '0') {
+				trTotalSum -= intCheckSum;
+				totalCount -= intCheckCount;
 			}
+			
+			document.getElementById('orderSize').innerText = totalCount;
 			document.getElementById('trTotalSum').innerText = trTotalSum;
+			
+			let shipping = parseInt(document.getElementById('shipSum').innerText); //배송비 
+			if(trTotalSum >= 30000) { //합계금액 
+				document.getElementById('shipPrice').innerText = '0';
+				document.getElementById('shipSum').innerText = trTotalSum;
+			} else {
+				document.getElementById('shipPrice').innerText = '3,000';
+				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
+				document.getElementById('shipSum').innerText = trTotalSum+shipPrice;
+			}
+		}
+		
+			//총 주문 개수
+// 			let totalCount = 0;
+// 			const cartCount = document.getElementsByClassName('cartCount');
+// 			for(const cc of cartCount) {
+// 				const intCount = parseInt(cc.innerText);
+// 				totalCount += intCount;
+// 			}			
+// 			document.getElementById('orderSize').innerText = totalCount;
+			
+// 			//체크된 상품의 총 합계 금액 
+// 			let trTotalSum = 0;
+// 			const trSum = document.getElementsByClassName('sum');
+// 			for(const sum of trSum) {
+// 				console.log('sum : ' + sum);
+// 				const intSum = parseInt(sum.innerText);
+// 				trTotalSum += intSum;
+// 			}
+// 			document.getElementById('trTotalSum').innerText = trTotalSum;
 			
 			//배송비
 			if(trTotalSum <= 30000) {
@@ -354,9 +428,10 @@ input[type="text"] {
 				sum.innerText = priceWithoutCurrency;
 			}
 			
+			
 				
 				
-		}
+		} //window.onload 
 			
 			const parentPnos = document.getElementsByClassName('imgTab');
 			for(let p of parentPnos) {
@@ -372,7 +447,7 @@ input[type="text"] {
 				const originPriceString = document.getElementById('pp-'+pNos).innerText;
 				const price = parseInt(originPriceString.replace(/[,원]/g, ""));
 				let totalPrice = 0;
-				let trTotalPrice = 0;
+				
 				//1. 수량 증가 시 
 				const clickPlus = document.getElementById('plus-' + pNos);
 				const cartCount = document.getElementsByClassName('cartCount');
@@ -380,10 +455,14 @@ input[type="text"] {
 					size++;
 					document.getElementById('size-'+ pNos).innerText = size;
 					
-					//요약 숫자 변화 
-					let intOrderSize = parseInt(document.getElementById('orderSize').innerText);
-					intOrderSize++;
-					document.getElementById('orderSize').innerText = intOrderSize;
+// 					//요약 숫자 변화!
+					console.log('this : ' + document.getElementById('sum-'+pNos).innerText);
+					
+					
+// 					//요약 숫자 변화 
+// 					let intOrderSize = parseInt(document.getElementById('orderSize').innerText);
+// 					intOrderSize++;
+// 					document.getElementById('orderSize').innerText = intOrderSize;
 					$.ajax({
 						url:'${contextPath}/plusCount.ma',
 						data:{
@@ -395,34 +474,78 @@ input[type="text"] {
 							pointRate = data*0.005;
 							document.getElementById('point-' + pNos).innerText = pointRate;
 							
-							//금액 요약 : cartCount ++ 
-							trTotalPrice = totalPrice + data;
-							console.log('tp : ' + trTotalPrice);
-							//플러스 버튼 누를 때마다 합계 금액 금액화 
+							//개당 합계 금액 요약 
+// 							trTotalPrice = totalPrice + data;
+							
+							//플러스 버튼 누를 때마다 개당 합계 금액 금액화 
 							const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
 							const sum = formattedPrice.replace(/[₩]/g, "");
 							document.getElementById('sum-'+pNos).innerText = sum;
-							//하단 총 금액 요약 
-							let price = 0;
-							const sumPrice = document.getElementsByClassName('sum');
-							for(const sum of sumPrice) {
-								const intSum = parseInt(sum.innerText.replace(/,/g, ''));
-								price += intSum;
+							let trTotalPrice = 0;
+							let clickPlusSum= parseInt(sum.replace(/,/g, '')); //플러스 눌렀을 때 금액 
+							
+							// 상품 수량 증가 후, 선택된 상품의 금액 합계 계산
+// 							console.log(document.getElementsByClassName('productInfos').length)
+							//change 함수로 체크가 들어왔는데....
+							//1. 체크박스가 되어 있다면 -> 총금액에서 +하기 
+							//2. 만약 해제 되면 -> 총금액에서 -하기 
+							changeCheckBox = (checkbox) => {
+								//if checked : + 해서 반영 else 
+								console.log('하이');	
+								trTotalPrice = clickPlusSum;
+								console.log('clickPlusSum' + clickPlusSum)
 							}
-							document.getElementById('trTotalSum').innerText = price;
-							//배송비
-							if(price >= 30000) {
-								document.getElementById('shipPrice').innerText = '0';
-							} else {
-								document.getElementById('shipPrice').innerText = '3,000';
-							}
-							//하단 총 합계 금액 
-							if(document.getElementById('shipPrice').innerText == '3,000') {
-								const ship = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
-								document.getElementById('shipSum').innerText = (price + ship)
-							} else {
-								document.getElementById('shipSum').innerText = document.getElementById('trTotalSum').innerText;
-							}
+							
+							
+							
+// 							for(let i=0; i<document.getElementsByClassName('productInfos').length; i++) {
+								
+// 								if(document.getElementsByClassName('productInfos')[i].querySelector('input[type="checkbox"]').checked) {
+//  									console.log('ddddddd');
+// 									if(i===0) {
+// 										trTotalPrice += data; //29,400원이야 
+// 									} else {
+// 										trTotalPrice += price;
+// 									}
+									
+// 								}
+// 							}console.log('trTotalPrice : ' + trTotalPrice);
+// 							console.log('img길이 : ' + parentPnos.length);
+// 							  var total_price = 0;
+// 							  for (var i = 0; i < cart.length; i++) {
+// 							    var item = cart[i];
+// 							    if (item.선택) {
+// 							      total_price += item.가격 * item.수량;
+// 							    }
+// 							  }
+							
+							
+							
+// 							changeCheckBox
+							
+// 							//하단 총 금액 요약 
+// 							let price = 0;
+// 							const sumPrice = document.getElementsByClassName('sum');
+// 							for(const sum of sumPrice) {
+// 								const intSum = parseInt(sum.innerText.replace(/,/g, ''));
+// 								price += intSum;
+// 							}
+// 							document.getElementById('trTotalSum').innerText = price;
+// 							//배송비
+// 							if(price >= 30000) {
+// 								document.getElementById('shipPrice').innerText = '0';
+// 							} else {
+// 								document.getElementById('shipPrice').innerText = '3,000';
+// 							}
+// 							//하단 총 합계 금액 
+// 							if(document.getElementById('shipPrice').innerText == '3,000') {
+// 								const ship = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
+// 								document.getElementById('shipSum').innerText = (price + ship)
+// 							} else {
+// 								document.getElementById('shipSum').innerText = document.getElementById('trTotalSum').innerText;
+// 							}
+							
+							
 							
 						},
 						error: data => {}

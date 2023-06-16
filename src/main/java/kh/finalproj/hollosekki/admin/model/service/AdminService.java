@@ -93,20 +93,24 @@ public class AdminService {
 
 	
 //	Food-식품
-	public int insertFood(Food f) {
-		return aDAO.insertFood(sqlSession, f);
-	}
-
 	public int getFoodCount(AdminBasic ab) {
 		return aDAO.getFoodCount(sqlSession, ab);
+	}
+	
+	public ArrayList<Food> selectFoodList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectFoodList(sqlSession, pi, ab);
 	}
 	
 	public Food selectFood(int foodNo) {
 		return aDAO.selectFood(sqlSession, foodNo);
 	}
-
-	public ArrayList<Food> selectFoodList(PageInfo pi, AdminBasic ab) {
-		return aDAO.selectFoodList(sqlSession, pi, ab);
+	
+	public int updateFood(Food f) {
+		return aDAO.updateFood(sqlSession, f);
+	}
+	
+	public int insertFood(Food f) {
+		return aDAO.insertFood(sqlSession, f);
 	}
 
 	public int deletesFood(String[] foodDeletes) {

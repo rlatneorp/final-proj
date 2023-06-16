@@ -84,4 +84,19 @@ public class RecipeServiceImpl implements RecipeService{
 	public ArrayList<RecipeOrder> recipeDetailOrderText(int foodNo) {
 		return rDAO.recipeDetailOrderText(sqlSession, foodNo);
 	}
+	
+	@Override
+	public int deleteRecipe(int foodNo) {
+		return rDAO.deleteRecipe(sqlSession, foodNo);
+	}
+	
+	@Override
+	public int deleteOrder(int foodNo) {
+		return rDAO.deleteOrder(sqlSession, foodNo);
+	}
+	
+	@Override
+	public int deleteImage(int foodNo) {
+		return rDAO.deleteImage(sqlSession, foodNo);
+	}
 }

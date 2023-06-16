@@ -21,7 +21,7 @@
 		}
 	.out33{padding-top: 50px; padding-left: 20px; padding-right: 20px;}
 	.large{font-size: 20px; color: white; font-weight: bold;}
-	.img-center{text-align: center;}
+	.img-center{text-align: center; margin-bottom: 5px;}
 	.kakao-img{border-radius: 50%; width: 35px;}
 </style>
 </head>
@@ -38,13 +38,15 @@
 				<div>점심시간 12:00 ~ 13:00</div>
 			</div>
 			<div class="out33">
-				<div>(주) ㅎㄹㅆㄲ | 대표 : 박신우</div>
+				<div>(주)홀로세끼 | 대표 : 박신우</div>
 				<div>사업자등록번호 : 123-15-342-7892</div>
 				<div>통신판매업신고 : 제 - 2023 - 서울 -121</div>
 				<div>본사 | 서울 중구 남대문로1 KH정보교육</div>
 			</div>
 			<div class="out33">
-				<div class="img-center"><img class="kakao-img" src="resources/images/kakao.png"></div>
+			
+				<div class="img-center" id="add-channel-button" onclick="location.href='javascript:addChannel()'"><img class="kakao-img" src="resources/images/kakao.png" ></div>
+				
 				<div>카카오톡 채널 문의</div>
 			</div>
 		</div>
@@ -68,5 +70,21 @@
 		};
 		upToTop();
 </script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
+  integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC" crossorigin="anonymous"></script>
+<script>
+  Kakao.init('7bce9522ff9d4cff75ab0ce48d2ba440'); // 사용하려는 앱의 JavaScript 키 입력
+
+  function addChannel() {
+    Kakao.Channel.chat({
+  	  channelPublicId: '_DeFxoxj' // 카카오톡 채널 홈 URL에 명시된 id로 설정합니다.
+  	});
+    
+//     Kakao.Channel.addChannel({
+//         channelPublicId: '_DeFxoxj',
+// 	});
+  }
+</script>
+
 </body>
 </html>

@@ -17,9 +17,6 @@ public class Cart {
 	private ArrayList<Options> optionValue;
 	private ArrayList<Cart> cartValue;
 	
-	
-	public Cart() {
-		super();
 	private String selectedOpt;
 	
 	public Cart() {

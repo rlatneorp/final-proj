@@ -18,14 +18,9 @@ public class Cart {
 	private ArrayList<Cart> cartValue;
 	
 	
-	public Cart() {
-		super();
 	private String selectedOpt;
 	
-	public Cart() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public Cart() {}
 	
 	
 

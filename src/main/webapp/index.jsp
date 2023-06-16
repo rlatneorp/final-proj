@@ -25,7 +25,7 @@
 		<a href="recipeList.rc"><span>레시피 메인</span></a>
 		<a href="freeBoard.bo"><span>freeBoard</span></a>
 		<a href="attendance_Check.ma"><span>출석확인</span></a>
-		
+		<a href="others_profile.en"><span>타인프로필 조회</span></a>
 		
 	</div>
 <%@ include file="WEB-INF/views/home.jsp" %>

@@ -88,4 +88,15 @@
 		from users
 		where users_id = #{id} and status = 'Y'
 	</select>
+	
+	<update id="socialInfoUpdate">
+		update social_login set social_profile_img = #{profileImg}
+		where social_id=#{id}
+	</update>
+	
+	<update id="socialInfoUpdate2">
+		update users set users_name = #{name}, nickname = #{name}
+		where users_id = #{id}
+	</update>
+	
 </mapper>

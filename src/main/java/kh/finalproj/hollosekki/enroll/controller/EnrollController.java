@@ -219,7 +219,7 @@ public class EnrollController {
 		        
 			SocialLogin sl = eService.SocialLogin(id);
 		        
-			if(sl == null) { // 회원 아닐경우 회원 새로 등록
+			if(sl == null) { // 회원 아닐경우 -> 새로 등록
 				SocialLogin sl2 = new SocialLogin(); // kakaoLogin 테이블에 저장 -> 안해도되나? 이미지주소만 저장하면 될듯
 				sl2.setSocialId(id);
 				sl2.setSocialProfileImg(profileImg);
@@ -231,6 +231,7 @@ public class EnrollController {
 	        	u.setUsersPw("카카오로그인 회원입니다");
 	        	u.setUsersName(name);
 	        	u.setNickName(name);
+	        	
 	        	if(email != null) {
 	        		u.setEmail(email);
 	        	} else {
@@ -240,17 +241,23 @@ public class EnrollController {
 		        
 		        int result = eService.insertUser(u); 
 		        	
-	        	if(result > 0) { // 회원정보 저장했을때 (데이터 저장했는데 usersId, enrollDate못불러옴 => 새로 불러와야함)
+	        	if(result > 0) { // 회원정보 저장했을때 
+	        		
 	        		Users u2 = eService.socialLoginUpdate(id);
 	        		
 		        	model.addAttribute("socialUser", sl2);
 	        		model.addAttribute("loginUser", u2);
 	        	} else { // 회원정보 저장 실패
 	        	}
-	        } else { // 기존 회원일 경우 불러오기
-	        	Users u2 = eService.socialLoginUpdate(id);
-
-	        	model.addAttribute("socialUser", sl);
+	        } else { // 기존 회원일 경우 -> 불러오기 (프사랑 닉넴 업뎃해서 가져와야함)
+	        	
+				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
+				eService.socialInfoUpdate2(id, name); // 이름, 닉넴 업데이트
+				
+				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
+	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
+	        	
+	        	model.addAttribute("socialUser", sl2);
 	        	model.addAttribute("loginUser", u2);
 	        }
 		}
@@ -263,7 +270,7 @@ public class EnrollController {
 			
 			SocialLogin sl = eService.SocialLogin(id);
 			
-			if(sl == null) { // 회원 아닐경우 새로 등록
+			if(sl == null) { // 회원 아닐경우 -> 새로 등록
 				SocialLogin sl2 = new SocialLogin();
 				sl2.setSocialId(id);
 				sl2.setSocialProfileImg(profileImg);
@@ -290,14 +297,23 @@ public class EnrollController {
 				} else { // 등록 안된경우
 					return "등록실패~~";
 				}
-			} else { // 기존 회원일경우 불러오기
-				Users u2 = eService.socialLoginUpdate(id);
-//				System.out.println(id);
-//				System.out.println(u2);
-				model.addAttribute("socialUser", sl);
+			} else { // 기존 회원일경우 -> 불러오기
+				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
+				eService.socialInfoUpdate2(id, name); // 이름, 닉넴 업데이트
+				
+				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
+	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
+	        	
+	        	model.addAttribute("socialUser", sl2);
 	        	model.addAttribute("loginUser", u2);
 	        	
 	        	return "redirect:home.do";
 			}
 		}
+		
+		@RequestMapping("others_profile.en")
+		public String others_profile() {
+			return "others_Profile";
+		}
+		
 }

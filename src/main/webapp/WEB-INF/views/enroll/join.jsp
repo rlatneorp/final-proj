@@ -90,7 +90,7 @@
 	.swal-overlay {background-color: rgba(0, 0, 0, 0.5);}
 	
 	/*꽃가루 관련*/
-	canvas{z-index:10; pointer-events: none; position: fixed; top: 0; transform: scale(1.1);}
+	canvas{z-index:10000; pointer-events: none; position: fixed; top: 0; transform: scale(1.1);}
 	
 </style>
 </head>
@@ -166,7 +166,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<pre>제1조(목적) 이 약관은 OO 회사(전자상거래 사업자)가 운영하는 OO 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
+					<pre>제1조(목적) 이 약관은 홀로세끼(전자상거래 사업자)가 운영하는 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
   ※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다.」
 
 제2조(정의)
@@ -329,7 +329,6 @@
 				</div>
 				<div class="modal-footer">
 					<div data-bs-dismiss="modal"><input type="checkbox" class="checkbox" id="check1-1"><label for="check1-1">이용약관에 동의합니다.</label></div>
-<!-- 					<div><button type="button" class="button button2" data-bs-dismiss="modal">확인</button></div> -->
 				</div>
 			</div>
 		</div>
@@ -459,7 +458,6 @@
 				</div>
 				<div class="modal-footer">
 					<div data-bs-dismiss="modal"><input type="checkbox" class="checkbox" id="check2-1"><label for="check2-1">개인정보 처리방침에 동의합니다.</label></div>
-<!-- 					<div><button type="button" class="button button2" data-bs-dismiss="modal">확인</button></div> -->
 				</div>
 			</div>
 		</div>
@@ -567,7 +565,7 @@
 	});
 	
 
-	// 비번 유효성검사 (영어, 숫자 포함 8자리 이상)
+	// 비번 유효성검사 (영어, 숫자 포함 8자리 이상) - 지금은 번거로우니까 임시로 영+숫자 4자리이상..
 	pwd.onkeyup = () => {
 	  const checkEng = /[a-zA-Z]/;
 	  const checkNum = /[0-9]/;
@@ -791,6 +789,7 @@
 		            				break;
 	            			}
 	            		});
+	            		
 	            		return true;
 	            		
 	            	} else if(data=='no'){

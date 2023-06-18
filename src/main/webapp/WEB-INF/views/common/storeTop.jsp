@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,8 +111,9 @@
 	    padding-top: 4px;
 	    border-radius: 50%;
 	    background: #B0DAFF;
-	    width: 37px;
-	    height: 35px;}
+	    width: 37px; height: 35px;
+	    cursor: pointer;}
+	.cart:hover{background: #1f8acb; color: white;  transition: all 0.3s ease 0s;}
 	.menu-list{display: none; width: 90px; background: rgba(176, 218, 255, 0.4); margin: 5px;}
 	.menu-div:hover .menu-list{display: block;} 
 </style>
@@ -171,7 +173,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div id="menu-div">
-							<div class="menu3" id="menu3" onclick="location.href='#'">쇼 핑</div>
+							<div class="menu3" id="menu3" onclick="location.href='${contextPath}/kitchenToolMain.ma'">쇼 핑</div>
 							<div class="menu4"></div>
 								<div class="menu-list">
 									<div>list1</div>
@@ -183,7 +185,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='#'">게시판</div>
+							<div class="menu3" onclick="location.href='${contextPath}/freeBoard.bo'">게시판</div>
 							<div class="menu4"></div>
 						</div>
 						
@@ -197,11 +199,18 @@
 							<c:if test="${ loginUser != null }">
 								<div class="menu3" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">MY</div>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-									<div class="profile-img-div"><img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img"></div>
+									<div class="profile-img-div">
+										<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
+											<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img">
+										</c:if>
+										<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
+											<img src="${ socialUser.socialProfileImg }" class="profile-img">
+										</c:if>
+									</div>
 						  			<div class="userName">
 						  				${ loginUser.usersName } 님
 						  			</div>
-						  			<div class="point"><i class="bi bi-coin drop-ic"></i>${ loginUser.point } P</div>
+						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="storeP"></p> P</div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
 						  			<div class="dropdown-item"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
@@ -211,7 +220,9 @@
 						</div>
 					</div>
 					<div style="width:80px"></div>
-					<div class="cart"><i class="fa-solid fa-cart-shopping"></i></div>
+					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
+					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div></c:if>
+					
 				</div>
 			</div>
 		</header>
@@ -234,6 +245,19 @@
 // 			$(this).toggleClass('menu-hover');
 // 		});
 // 	})
+
+		var loginUser = '${loginUser}';
+		if(loginUser != ''){
+			$.ajax({
+				url: 'point.ma',
+				success: function(info){
+					console.log(info);
+					let storeP = document.querySelector('#storeP');
+					storeP.innerHTML = info.point;
+				}
+				
+			});
+		}
 </script>
 
 

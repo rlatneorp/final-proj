@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
@@ -32,16 +33,15 @@ public class AttendanceController {
 	@RequestMapping("attendance_Checking.ma")
 	public void attendanceCheck(HttpSession session, HttpServletResponse response, @ModelAttribute Attendance at, Model model) {
 		Users u = (Users) session.getAttribute("loginUser");
-		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("at", at);
 		map.put("u", u);
-
+	
 		int result = mkService.atTodayChecked(u);
-		System.out.println(result);
 		if(result < 1) {
 			mkService.atInsert(map);
 			mkService.gettedPoint(map);
+			mkService.getMonthPoint(map);
 			mkService.aDateCheck(map);
 		}
 				
@@ -77,5 +77,22 @@ public class AttendanceController {
 		return mv;
 	}	    
 	    	
-	
+	@RequestMapping("point.ma")
+	public void sendPoint(HttpSession session, HttpServletResponse response) {
+		Users u = (Users) session.getAttribute("loginUser");
+		Users list = null;
+		if(u != null) {
+			list = mkService.sendPoint(u);
+		}
+		response.setContentType("application/json; charset=UTF-8"); 
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+		Gson gson = gb.create();
+		try {
+			gson.toJson(list, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
+
+	}
 }

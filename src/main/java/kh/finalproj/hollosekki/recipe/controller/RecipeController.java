@@ -27,6 +27,7 @@ import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -75,16 +76,15 @@ public class RecipeController {
 		}
 		
 		Recipe recipe = rService.recipeDetail(foodNo, yn);
+		ArrayList<RecipeOrder> orderList = rService.recipeDetailOrderText(foodNo);
 		Image thum = rService.recipeDetailThum(foodNo);
-		ArrayList<Image> oList = rService.recipeDetailOrder(foodNo);
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
 		
-//		System.out.println(recipe.getRecipeOrder());
 		
 		if(recipe != null) {
 			mv.addObject("recipe", recipe);
+			mv.addObject("orderList", orderList);
 			mv.addObject("thum", thum);
-			mv.addObject("oList", oList);
 			mv.addObject("cList", cList);
 			mv.addObject("page", page);
 			mv.setViewName("recipeDetail");
@@ -115,7 +115,8 @@ public class RecipeController {
 	public String writeRecipe(@ModelAttribute Recipe r, HttpServletRequest request,
 							  @RequestParam("thum") MultipartFile thum,
 							  @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
-							  @RequestParam("comPic") ArrayList<MultipartFile> comFiles) {
+							  @RequestParam("comPic") ArrayList<MultipartFile> comFiles,
+							  @ModelAttribute RecipeOrder rc) {
 		
 		Users user =(Users)request.getSession().getAttribute("loginUser");
 		int userNo = user.getUsersNo();
@@ -123,27 +124,17 @@ public class RecipeController {
 		
 		String id = user.getUsersId();
 		
-		ArrayList<Image> thumImgList = new ArrayList<>();
 		
 		int result1 = 0;
 		int result2 = 0;
 		int result3 = 0;
 		int result4 = 0;
 		
-		System.out.println(r.getRecipeOrder());
+		result1 =rService.insertRecipe(r);
 		
-//		레시피 순서 설명
-		String[] orderArr = r.getRecipeOrder().split(",abc123abc,");
-		orderArr[orderArr.length -1] = orderArr[orderArr.length-1].replace(",abc123abc", "");
-		for(int i = 0; i < orderArr.length; i++) {
-			r.setRecipeOrder(orderArr[i]);
-		}
-		
-		System.out.println(r.getRecipeOrder());
-		
-		result1 = rService.insertRecipe(r);
 		
 //		썸네일 이미지
+		ArrayList<Image> thumImgList = new ArrayList<>();
 		String thumImg = thum.getOriginalFilename();
 		if(!thumImg.equals("")) {
 			String[] thumImgArr = saveFile(thum, request);
@@ -160,26 +151,70 @@ public class RecipeController {
 		
 		result2 = rService.insertAttm(thumImgList);
 		
+//		레시피 순서 설명
+		
+		ArrayList<RecipeOrder> orc = new ArrayList<>();
+		String[] orderArr = rc.getRecipeOrder().split(",abc123abc,");
+		orderArr[orderArr.length - 1] = orderArr[orderArr.length - 1].replace(",abc123abc", "");
+		
 //		레시피 순서 사진
-		ArrayList<Image> orderImgList = new ArrayList<>();
 		for(int i = 0; i < orderFiles.size(); i++) {
-			MultipartFile orderFile = orderFiles.get(i);
-			if(orderFile != null && !orderFile.isEmpty()) {
-				String[] orderFileArr = saveFile(orderFile, request);
-				if(orderFileArr[1] != null) {
-					Image img = new Image();
+			String recOriginal = orderFiles.get(i).getOriginalFilename();
+			String recRename = "";
+			String renamePath = "";
+			if(!recOriginal.equals("")) {
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				String savePath = root + "\\uploadFiles";
+				File file = new File(savePath);
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+				int ranNum = (int) (Math.random() * 100000);
+				recRename = sdf.format(new Date(System.currentTimeMillis())) + ranNum
+						+ recOriginal.substring(recOriginal.lastIndexOf("."));
+				
+				if (!file.exists()) {
+					file.mkdirs();
+				}
+				
+				renamePath = file + "\\" + recRename;
+				try {
+					orderFiles.get(i).transferTo(new File(renamePath));
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}	
+				
+			if(i < orderArr.length) {
+				if(!orderArr[i].equals("")) {
+					RecipeOrder recOrd = new RecipeOrder();
+					recOrd.setRecipeOrder(orderArr[i]);
+					recOrd.setRecipeProcedure(i+1);
+					recOrd.setRecipeOriginalName(recOriginal);
+					recOrd.setRecipeRenameName(recRename);
+					recOrd.setRecipeImagePath(renamePath);
 					
-					img.setImagePath(orderFileArr[0]);
-					img.setImageOriginalName(orderFile.getOriginalFilename());
-					img.setImageRenameName(orderFileArr[1]);
-					img.setImageLevel(1);
-					
-					orderImgList.add(img);
+					orc.add(recOrd);
 				}
 			}
-		}
+		}		
+		int resultOrder = rService.insertOrder(orc);
+				
 		
-		result3 = rService.insertAttm(orderImgList);
+//				String[] orderFileArr = saveFile(orderFile, request);
+//				if(orderFileArr[1] != null) {
+//					Image img = new Image();
+//					
+//					img.setImagePath(orderFileArr[0]);
+//					img.setImageOriginalName(orderFile.getOriginalFilename());
+//					img.setImageRenameName(orderFileArr[1]);
+//					img.setImageLevel(1);
+//					
+//					orderImgList.add(img);
+//				}
+		
+//		result3 = rService.insertAttm(orderImgList);
 		
 //		완성된 요리 사진
 		ArrayList<Image> comImgList = new ArrayList<>();
@@ -203,14 +238,14 @@ public class RecipeController {
 		result4 = rService.insertAttm(comImgList);
 		
 		
-		if(result1 + result2 + result3 + result4 == thumImgList.size() + orderImgList.size() + comImgList.size() + 1) {
+		if(result1 + result2 + resultOrder + result4 == thumImgList.size() + resultOrder + comImgList.size() + 1) {
 			return "redirect:recipeList.rc";
 		} else {
 			for(Image thi : thumImgList) {
 				deleteFile(thi.getImageRenameName(), request);
 			}
-			for(Image ori : orderImgList) {
-				deleteFile(ori.getImageRenameName(), request);
+			for(RecipeOrder ori : orc) {
+				deleteFile(ori.getRecipeRenameName(), request);
 			}
 			for(Image comi : comImgList) {
 				deleteFile(comi.getImageRenameName(), request);
@@ -259,5 +294,37 @@ public class RecipeController {
 		if(f.exists()) {
 			f.delete();
 		}
+	}
+	
+	@PostMapping("deleteRecipe.rc")
+	public String deleteRecipe(@RequestParam("foodNo") int foodNo) {
+		
+		int result1 = rService.deleteRecipe(foodNo);
+		int result2 = rService.deleteOrder(foodNo);
+		int result3 = rService.deleteImage(foodNo);
+		
+		if(result1 > 0 && result2 > 0 && result3 > 0) {
+			return "redirect:recipeList.rc";
+		}else {
+			throw new RecipeException("레시피 삭제를 실패하였습니다.");
+		}
+	}
+	
+	@PostMapping("updateForm.rc")
+	public ModelAndView updateForm(@RequestParam("foodNo") int foodNo, @RequestParam("page") int page, ModelAndView mv) {
+		
+		Recipe recipe = rService.recipeDetail(foodNo, false);
+		ArrayList<RecipeOrder> orderList = rService.recipeDetailOrderText(foodNo);
+		Image thum = rService.recipeDetailThum(foodNo);
+		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
+		
+		mv.addObject("recipe", recipe);
+		mv.addObject("orderList", orderList);
+		mv.addObject("thum", thum);
+		mv.addObject("cList", cList);
+		mv.addObject("page", page);
+		mv.setViewName("recipeEdit");
+		
+		return mv;
 	}
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -31,6 +32,7 @@ import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 
@@ -113,11 +115,22 @@ public class AdminController {
 			session.setAttribute("pageCount", ab.getPageCount());
 		}
 		
-//		int listCount = aService.getMenuCount(ab);
-//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		int listCount = aService.getMenuCount(ab);
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Menu> mList = aService.selectMenuList(pi, ab);
+		for(int i = 0; i < mList.size(); i++) {
+			Menu m = mList.get(i);
+			m = (Menu)selectProduct(m);
+		}
+		if(mList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("ab", ab);
+			model.addAttribute("mList", mList);
+			return "adminMenuManage";
+		}else {
+			throw new AdminException("식재료 조회를 실패하였습니다.");
+		}
 		
-		
-		return "adminMenuManage";
 	}
 	@GetMapping("adminMenuDetail.ad")
 	public String adminMenuDetail() {
@@ -127,15 +140,142 @@ public class AdminController {
 	public String adminMenuUpdate() {
 		return "redirect:adminMenuManage.ad";
 	}
+	@PostMapping("adminMenuDeletes.ad")
+	public String adminMenuDeletes(@RequestParam("selectDelete") String[] selDeletes,
+										 HttpServletRequest request) {
+		
+		int resultImg = 0;
+		int resultM = 0;
+		int resultPd = 0;
+		
+		ArrayList<Image> imgList = null;
+		for(int i = 0; i < selDeletes.length; i++) {
+//			데이터 서버 이미지 삭제
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", Integer.parseInt(selDeletes[i]));
+			map.put("imageType", 4);
+			imgList = aService.selectAllImageList(map);
+			for(Image img:imgList) {
+				deleteFile(img.getImageRenameName(), request);
+//				DB서버 이미지 삭제
+				resultImg += aService.deleteImage(img);
+			}
+		}
+		
+//		resultM = aService.deletesMenu(selDeletes);
+		resultPd = aService.deletesProduct(selDeletes);
+		
+		if(resultImg == imgList.size() && resultM == selDeletes.length && resultPd == selDeletes.length) {
+			return "redirect:adminFoodManage.ad";
+		}else {
+			throw new AdminException("식재료 삭제 실패");
+		}
+	}
 	@GetMapping("adminMenuWrite.ad")
-	public String adminMenuWrite() {
-		return "adminMenuWrite";
+	public String adminMenuWrite(Model model) {
+		PageInfo pi = new PageInfo();
+		AdminBasic ab1 = new AdminBasic();
+		AdminBasic ab2 = new AdminBasic();
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(100000);
+		ab1.setKind(1);
+		ArrayList<Food> fList1 = aService.selectFoodList(pi, ab1); 
+		ab2.setKind(2);
+		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
+		if(fList1 != null && fList2 != null) {
+			model.addAttribute("fList1", fList1);
+			model.addAttribute("fList2", fList2);
+			return "adminMenuWrite";
+		}else {
+			throw new AdminException("식단 등록 페이지 접속에 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminMenuInsert.ad")
-	public String adminMenuInsert() {
-		return "redirect:adminMenuManage.ad";
+	public String adminMenuInsert(@ModelAttribute Menu m,
+								  @RequestParam("foodProductNo") String[] fPNo,
+								  @RequestParam("imageFile") MultipartFile imageFile,
+								  HttpServletRequest request,
+								  HttpSession session) {
+		
+		m.setUsersNo(1);
+		
+		int resultPd = -1;
+		int resultM = 0;
+		int resultMl = 0;
+		int resultImg = 0;
+		
+		m.setProductType(2);
+		m.setProductOption("N");
+//		return "redirect:adminMenuManage.ad";
+		resultPd = aService.insertProduct(m);
+		if(resultPd != 0) {
+			resultM = aService.insertMenu(m);
+			resultMl = aService.insertMenuList(m);
+		}
+		
+//		insertMenu가 실패하지 않은 경우(!= 0)
+		if(resultM != 0) {
+//			이미지 저장
+			Image image = new Image();
+			if(imageFile != null && !imageFile.isEmpty()) {
+				String[] returnArr = saveFile(imageFile, request);
+				if(returnArr[1] != null) {
+					image.setImageDivideNo(resultPd);
+					image.setImageType(4);
+					image.setImagePath(returnArr[0]);
+					image.setImageOriginalName(imageFile.getOriginalFilename());
+					image.setImageRenameName(returnArr[1]);
+					image.setImageLevel(1);
+				}
+			}
+			resultImg = aService.insertImage(image);
+		}
+		
+		if(resultPd != 0 && resultM != 0 && resultImg != 0) {
+			return "redirect:adminMenuManage.ad";
+		}else {
+			throw new AdminException("메뉴 등록에 실패하였습니다.");
+		}
 	}
-	
+	@GetMapping("adminFoodSelector.ad")
+	public void adminFoodSelector(@RequestParam("pNo") int pNo,
+				  				  HttpServletResponse response) {
+		Food food = null;
+		if(pNo != 0) {
+			food = aService.selectFood(pNo);
+			food = (Food)selectProduct(food);
+		}
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(food, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	@GetMapping("adminFoodImageSelector.ad")
+	public void adminFoodImageSelector(@RequestParam("pNo") int pNo,
+									   HttpServletResponse response) {
+		Image img = null; 
+		if(pNo != 0) {
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", pNo);
+			map.put("imageType", 3);
+			map.put("imageLevel", 1);
+			img = aService.selectAllImageList(map).get(0);
+		}
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(img, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 //	Ingredient-식재료 관리
 	@GetMapping("adminIngredientManage.ad")
@@ -295,11 +435,11 @@ public class AdminController {
 		String[] pDeletes = new String[selDeletes.length];
 		int pCount = 0;
 		
-		int result1 = 0;
-		int result2 = 0;
-		int result3 = 0;
+		int resultPd = 0;
+		int resultIgd = 0;
+		int resultImg = 0;
 		for(int i = 0; i < selDeletes.length; i++) {
-			String[] deletes = selDeletes[i].split(",");
+			String[] deletes = selDeletes[i].split("-");
 			
 			igdDeletes[i] = deletes[0];
 			
@@ -312,18 +452,20 @@ public class AdminController {
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
 			map.put("imageDivideNo", Integer.parseInt(deletes[0]));
 			map.put("imageType", 5);
-			Image img = aService.selectAllImageList(map).get(0);
-			deleteFile(img.getImageRenameName(), request);
-			
-//			DB서버 이미지 삭제
-			result3 += aService.deleteImage(img);
+			ArrayList<Image> iList = aService.selectAllImageList(map);
+			if(!iList.isEmpty()) {
+				Image img = aService.selectAllImageList(map).get(0);
+				deleteFile(img.getImageRenameName(), request);
+//				DB서버 이미지 삭제
+				resultImg += aService.deleteImage(img);
+			}
 		}
 		
-		result1 = aService.deletesProduct(pDeletes);
-		result2 = aService.deletesIngredient(igdDeletes);
+		resultPd = aService.deletesProduct(pDeletes);
+		resultIgd = aService.deletesIngredient(igdDeletes);
 		
-		if(result1 == pCount) {
-			if(result2+result3 == igdDeletes.length*2) {
+		if(resultPd == pCount) {
+			if(resultIgd+resultImg == igdDeletes.length*2) {
 				return "redirect:adminIngredientManage.ad";
 			}
 		}
@@ -348,9 +490,9 @@ public class AdminController {
 		int resultImg = 0;
 		
 		if(igd.getProductStatus().equals("Y")) {
-			pd.setProductType(3);
-			pd.setProductOption("N");
-			resultPd = aService.insertProduct(pd);
+			igd.setProductType(3);
+			igd.setProductOption("N");
+			resultPd = aService.insertProduct(igd);
 		}
 //		insertProduct가 실패하지 않은 경우 (!= 0)
 		if(resultPd != 0) {
@@ -387,7 +529,6 @@ public class AdminController {
 	public String adminFoodManage(@ModelAttribute AdminBasic ab,
 								  HttpSession session,
 								  Model model) {
-		
 		int currentPage = 1;
 		if(ab.getPage() == null) {
 			ab.setPage(currentPage);
@@ -454,13 +595,30 @@ public class AdminController {
 		}
 	}
 	@PostMapping("adminFoodUpdate.ad")
-	public String adminFoodUpdate() {
-		return "redirect:adminFoodManage.ad";
+	public String adminFoodUpdate(@ModelAttribute AdminBasic ab,
+								  HttpServletRequest request,
+								  HttpSession session,
+								  Model model,
+								  @ModelAttribute Food f,
+								  @ModelAttribute Product p
+//								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles
+								  ) {
+		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
+		
+		int resultF = aService.updateFood(f);
+		int resultPd = aService.updateProduct(p);
+		
+		if(resultF+resultPd == 2) {
+			model.addAttribute("ab", ab);
+			return "redirect:adminFoodManage.ad";
+		}else {
+			throw new AdminException("식품 수정에 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminFoodDeletes.ad")
 	public String adminFoodDeletes(@RequestParam("selectDelete") String[] selDeletes,
 								   HttpServletRequest request) {
-		
+
 		int resultImg = 0;
 		int resultFood = 0;
 		int resultPd = 0;
@@ -488,6 +646,22 @@ public class AdminController {
 			throw new AdminException("식재료 삭제 실패");
 		}
 	}
+	@GetMapping("adminFoodDeleteable.ad")
+	public void adminFoodDeleteable(@RequestParam("pNo") int pNo,
+				  				    HttpServletResponse response) {
+
+		ArrayList<String> mList = aService.deleteableFood(pNo);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(mList, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 	@GetMapping("adminFoodWrite.ad")
 	public String adminFoodWrite() {
 		return "adminFoodWrite";
@@ -501,20 +675,22 @@ public class AdminController {
 								  @ModelAttribute Product p,
 								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
 
+		f.setUsersNo(1);
+		
 //		foodContent값 합치기
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
 
 //		food 기본값 설정
 		f.setFoodType(0);
-		p.setProductType(1);
-		p.setProductOption("N");
-		p.setProductStatus("Y");
+		f.setProductType(1);
+		f.setProductOption("N");
+		f.setProductStatus("Y");
 		
 		int resultPd = 0;
 		int resultF = 0;
 		int resultImg = 0;
 		
-		resultPd = aService.insertProduct(p);
+		resultPd = aService.insertProduct(f);
 		f.setProductNo(resultPd);
 		
 		resultF = aService.insertFood(f);

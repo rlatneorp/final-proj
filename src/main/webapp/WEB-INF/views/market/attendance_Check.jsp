@@ -217,15 +217,15 @@ font-family: 'Noto Sans KR', sans-serif;
 			<br><br>
 				<h1 class="eventTitle">출 석 체 크 이 벤 트</h1><br>
 				<span class="material-symbols-outlined">done</span><p class="event1 d-inline">매일 1회 출석체크 시</p><p class="event1 d-inline"> 포인트 10 지급 </p><br>
-				<span class="material-symbols-outlined">done</span><p class="event1 d-inline">총 30일 연속 출석체크 시</p><p class="event1 d-inline"> 추가 포인트 1,000 지급 </p>
+				<span class="material-symbols-outlined">done</span><p class="event1 d-inline">한 달 간 연속 출석체크 시</p><p class="event1 d-inline"> 추가 포인트 1,000 지급 </p>
 				<br>
 				<br><br> 
 			<div  class="customCheck" id='calendar'><br><br><br><br></div>
 			<div>
-			<h3 class="d-inline">출석 방법 : 달력에서 오늘날짜를 클릭해주세요! </h3>
-			<c:set var="today" value="<%=new java.util.Date()%>" />
-			<button id="checkAttendanceBtn"><c:set var="date"><fmt:formatDate value="${today}" pattern="오늘: MM월 dd일" /></c:set><c:out value="${date}" /></button>
-			<br><br><br>
+				<h3 class="d-inline">출석 방법 : 달력에서 오늘날짜를 클릭해주세요! </h3>
+				<c:set var="today" value="<%=new java.util.Date()%>" />
+				<button id="checkAttendanceBtn"><c:set var="date"><fmt:formatDate value="${today}" pattern="오늘: MM월 dd일" /></c:set><c:out value="${date}" /></button>
+				<br><br><br>
 			</div>
 			<input id="hiddenResult" type="hidden" value="${result}"/>
 <%-- 			<c:if test="${ result >= 1 }"> --%>

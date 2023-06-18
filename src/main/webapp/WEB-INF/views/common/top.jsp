@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
 <title>Insert title here</title>
-<!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
 	.top-top{
 		width: 100%; height: 40px; 
@@ -113,6 +113,7 @@
 	    background: #B0DAFF;
 	    width: 37px; height: 35px;
 	    cursor: pointer;}
+	.cart:hover{background: #1f8acb; color: white;  transition: all 0.3s ease 0s;}
 	.menu-list{display: none; width: 90px; background: rgba(176, 218, 255, 0.4); margin: 5px;}
 	.menu-div:hover .menu-list{display: block;} 
 </style>
@@ -165,7 +166,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/Logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
@@ -200,16 +201,26 @@
 								<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 									<div class="profile-img-div">
 										<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-											<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img">
+											<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+												<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img"/>
+											</c:if>
+											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img"/>
+											</c:if>
 										</c:if>
 										<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-											<img src="${ socialUser.socialProfileImg }" class="profile-img">
+											<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+												<img src="${ socialUser.socialProfileImg }" class="profile-img">
+											</c:if>
+											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img"/>
+											</c:if>
 										</c:if>
 									</div>
 						  			<div class="userName">
 						  				${ loginUser.usersName } 님
 						  			</div>
-						  			<div class="point"><i class="bi bi-coin drop-ic"></i>${ loginUser.point } P</div>
+						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="topP">P</p></div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
 						  			<div class="dropdown-item" onclick="location.href='${ contextPath }/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
@@ -219,7 +230,9 @@
 						</div>
 					</div>
 					<div style="width:80px"></div>
-					<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
+					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div></c:if>
+					
 				</div>
 			</div>
 		</header>
@@ -227,21 +240,18 @@
 	<br>
 	
 <script>
-// 	document.getElementById('menu3').addEventListener('mouseover', function(){
-// 		 document.getElementById('menu-list').style.display = 'block';
-// 	})
-	
-// 	document.getElementById('menu3').addEventListener('mouseout', function(){
-// 		 document.getElementById('menu-list').style.display = 'none';
-// 	})
-
-// 	$(()=>{
-// 		$('#menu3').hover(function(){
-// 			$(this).toggleClass('menu-hover');
-// 		}, function(){
-// 			$(this).toggleClass('menu-hover');
-// 		});
-// 	})
+var loginUser = '${loginUser}';
+if(loginUser != ''){
+	$.ajax({
+		url: 'point.ma',
+		success: function(info){
+			console.log(info);
+			let topP = document.querySelector('#topP');
+			topP.innerHTML = info.point;
+		}
+		
+	});
+}
 </script>
 
 

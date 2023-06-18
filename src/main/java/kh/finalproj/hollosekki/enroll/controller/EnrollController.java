@@ -161,11 +161,15 @@ public class EnrollController {
 				String toMail = email;
 				String title = "본인인증 이메일 입니다.";
 		        String content = 
+		        		"<br>" + 
 		                "홀로세끼를 방문해주셔서 감사합니다." +
+		                "<br>" + 
+		                "본인인증 이후 비밀번호를 재설정 합니다." +
 		                "<br><br>" + 
 		                "인증 번호는 " + checkNum + " 입니다." + 
 		                "<br>" + 
-		                "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+		                "해당 인증번호를 인증번호 확인란에 기입하여 주세요." +
+		                "<br>";
 		       
 		        try {
 		        	MimeMessage message = mailSender.createMimeMessage();
@@ -215,7 +219,7 @@ public class EnrollController {
 		        
 			SocialLogin sl = eService.SocialLogin(id);
 		        
-			if(sl == null) { // 회원 아닐경우 회원 새로 등록
+			if(sl == null) { // 회원 아닐경우 -> 새로 등록
 				SocialLogin sl2 = new SocialLogin(); // kakaoLogin 테이블에 저장 -> 안해도되나? 이미지주소만 저장하면 될듯
 				sl2.setSocialId(id);
 				sl2.setSocialProfileImg(profileImg);
@@ -227,26 +231,33 @@ public class EnrollController {
 	        	u.setUsersPw("카카오로그인 회원입니다");
 	        	u.setUsersName(name);
 	        	u.setNickName(name);
+	        	
 	        	if(email != null) {
 	        		u.setEmail(email);
 	        	} else {
-	        		u.setEmail("데이터가 없습니다");
+	        		u.setEmail("카카오로그인 회원입니다");
 	        	}
-	        	u.setPhone("데이터가 없습니다");
+	        	u.setPhone("카카오로그인 회원입니다");
 		        
 		        int result = eService.insertUser(u); 
 		        	
-	        	if(result > 0) { // 회원정보 저장했을때 (데이터 저장했는데 usersId, enrollDate못불러옴 => 새로 불러와야함)
+	        	if(result > 0) { // 회원정보 저장했을때 
+	        		
 	        		Users u2 = eService.socialLoginUpdate(id);
 	        		
 		        	model.addAttribute("socialUser", sl2);
 	        		model.addAttribute("loginUser", u2);
 	        	} else { // 회원정보 저장 실패
 	        	}
-	        } else { // 기존 회원일 경우 불러오기
-	        	Users u2 = eService.socialLoginUpdate(id);
-
-	        	model.addAttribute("socialUser", sl);
+	        } else { // 기존 회원일 경우 -> 불러오기 (프사랑 닉넴 업뎃해서 가져와야함)
+	        	
+				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
+				eService.socialInfoUpdate2(id, name); // 이름, 닉넴 업데이트
+				
+				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
+	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
+	        	
+	        	model.addAttribute("socialUser", sl2);
 	        	model.addAttribute("loginUser", u2);
 	        }
 		}
@@ -255,14 +266,11 @@ public class EnrollController {
 		public String naverLogin(HttpServletRequest request, Model model) {
 			String id = request.getParameter("id");
 			String name = request.getParameter("name");
-			String nickName = request.getParameter("nickName");
-			String email = request.getParameter("email");
-			String phone = request.getParameter("phone");
 			String profileImg = request.getParameter("profileImg");
 			
 			SocialLogin sl = eService.SocialLogin(id);
 			
-			if(sl == null) { // 회원 아닐경우 새로 등록
+			if(sl == null) { // 회원 아닐경우 -> 새로 등록
 				SocialLogin sl2 = new SocialLogin();
 				sl2.setSocialId(id);
 				sl2.setSocialProfileImg(profileImg);
@@ -273,13 +281,9 @@ public class EnrollController {
 				u.setUsersId(id);
 				u.setUsersPw("네이버로그인 회원입니다");
 				u.setUsersName(name);
-				u.setNickName(nickName);
-				u.setEmail(email);
-				if(phone != null) {
-					u.setPhone(phone);
-				} else {
-					u.setPhone("데이터가 없습니다");
-				}
+				u.setNickName("네이버로그인 회원입니다");
+				u.setEmail("네이버로그인 회원입니다");
+				u.setPhone("네이버로그인 회원입니다");
 				
 				int result = eService.insertUser(u);
 				
@@ -293,15 +297,23 @@ public class EnrollController {
 				} else { // 등록 안된경우
 					return "등록실패~~";
 				}
-			} else { // 기존 회원일경우 불러오기
-				Users u2 = eService.socialLoginUpdate(id);
+			} else { // 기존 회원일경우 -> 불러오기
+				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
+				eService.socialInfoUpdate2(id, name); // 이름, 닉넴 업데이트
 				
-//				System.out.println(sl);
-//				System.out.println(u2);
-				model.addAttribute("socialUser", sl);
+				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
+	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
+	        	
+	        	model.addAttribute("socialUser", sl2);
 	        	model.addAttribute("loginUser", u2);
 	        	
 	        	return "redirect:home.do";
 			}
 		}
+		
+		@RequestMapping("others_profile.en")
+		public String others_profile() {
+			return "others_Profile";
+		}
+		
 }

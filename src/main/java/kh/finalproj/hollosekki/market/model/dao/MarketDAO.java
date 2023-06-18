@@ -107,8 +107,8 @@ public class MarketDAO {
 		sqlSession.delete("marketMapper.delBasket", productNo);
 	}
 
-	public ArrayList<Product> selectFoodInfo(SqlSessionTemplate sqlSession, int productNo) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectFoodInfo", productNo);
+	public ArrayList<Product> selectProductInfo(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectProductInfo", productNo);
 	}
 
 	public int plusCount(SqlSessionTemplate sqlSession, int productNo) {
@@ -121,6 +121,28 @@ public class MarketDAO {
 
 	public void minusCount(SqlSessionTemplate sqlSession, int productNo) {
 		sqlSession.update("marketMapper.minusCount", productNo);
+	}
+
+	public Cart checkCartList(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("usersNo", usersNo);
+		map.put("productNo", productNo);
+		return sqlSession.selectOne("marketMapper.checkCartList", map);
+	}	
+	public void getMonthPoint(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		sqlSession.update("marketMapper.getMonthPoint", map);
+	}
+
+	public Users sendPoint(SqlSessionTemplate sqlSession, Users u) {
+		return sqlSession.selectOne("marketMapper.sendPoint", u);
+	}
+
+	public void updateOptionNo(SqlSessionTemplate sqlSession, Cart cart) {
+		sqlSession.update("marketMapper.updateOptionNo", cart);
+	}
+
+	public String selectOptionValue(SqlSessionTemplate sqlSession, int optionNo) {
+		return sqlSession.selectOne("marketMapper.selectOptionValue", optionNo);
 	}
 
 	

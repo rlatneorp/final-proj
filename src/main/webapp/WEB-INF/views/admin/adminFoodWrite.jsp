@@ -391,7 +391,7 @@ p b {
 		box-shadow: 1px 1px 1px 1px gray;
 	}
 	
-	.infoContent td input{width:100px;}
+	.infoContent td input{width:80px;}
 	
   	.priceBox tr th{border: none;}
    	.priceBox tr td{border: none;}
@@ -607,10 +607,11 @@ p b {
 				</div>
 				
 				<br><br>
-				<table id="infoTable" style="width:1000px; margin:auto; margin-bottom: 100px; text-align: center;">	
+				<table id="infoTable" style="width:1100px; margin:auto; margin-bottom: 100px; text-align: center;">	
 					<tr id="infoTop">
 						<th>칼로리</th>
 						<th>탄수화물</th>
+						<th>단백질</th>
 						<th>지방</th>
 						<th>트랜스지방</th>
 						<th>포화지방</th>
@@ -619,30 +620,15 @@ p b {
 						<th>콜레스테롤</th>
 					</tr>
 					<tr class="infoContent">
-						<td>
-							<input type="number" name="nutrient" min="0" value="0">kcal
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="0">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="0">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="0">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="0">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="0">mg
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="0">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="0">mg
-						</td>
+						<td><input type="number" name="nutrient" min="0" value="0">kcal</td>
+						<td><input type="number" name="nutrient" min="0" value="0">g</td>
+						<td><input type="number" name="nutrient" min="0" value="0">g</td>
+						<td><input type="number" name="nutrient" min="0" value="0">g</td>
+						<td><input type="number" name="nutrient" min="0" value="0">g</td>
+						<td><input type="number" name="nutrient" min="0" value="0">g</td>
+						<td><input type="number" name="nutrient" min="0" value="0">mg</td>
+						<td><input type="number" name="nutrient" min="0" value="0">g</td>
+						<td><input type="number" name="nutrient" min="0" value="0">mg</td>
 					</tr>
 				</table>
 			
@@ -728,22 +714,17 @@ p b {
 			
 // 			왼쪽사진내용추가 버튼 이벤트
 			addLeft.addEventListener('click', () => {
-				detailBox.insertAdjacentHTML("afterend", menuTable1);
+				detailBox.insertAdjacentHTML("beforeend", menuTable1);
+				imageLoad()
 				numbering();
 			})
 			
 // 			오른쪽사진내용추가 버튼 이벤트
 			addRight.addEventListener('click', () => {
-				detailBox.insertAdjacentHTML("afterend", menuTable2);
+				detailBox.insertAdjacentHTML("beforeend", menuTable2);
+				imageLoad()
 				numbering();
 			})
-			
-// // 			상세보기 내용 수정시 이벤트
-// 			const detailBox = document.getElementById('detailBox');
-// 			detailBox.addEventListener('change', ()=>{
-				
-// 			})
-
 		}
 		
 // 		가격 계산 함수
@@ -767,6 +748,23 @@ p b {
 			for(const i in numbers){
 				numbers[i].innerText = i*1+1; 
 			}
+		}
+		
+// 		이미지 로드 이벤트 추가 함수
+		function imageLoad(){
+			const imageFiles = document.getElementsByName('imageFile');
+			const previewImages = document.getElementsByClassName('previewImage');
+			const i = imageFiles.length-1;
+			
+			imageFiles[i].addEventListener("change", e =>{
+				if(imageFiles[i].files && imageFiles[i].files[0]){
+					const reader = new FileReader();
+					reader.onload = e =>{
+						previewImages[i].src = e.target.result;
+					}
+					reader.readAsDataURL(imageFiles[i].files[0]);
+				}
+			})
 		}
 		
 // 		가격 계산 함수

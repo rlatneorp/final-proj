@@ -71,4 +71,16 @@ public class EnrollServiceImpl implements EnrollService{
 	public Users socialLoginUpdate(String id) {
 		return eDAO.socialLoginUpdate(sqlSession, id);
 	}
+
+	@Override
+	public void socialInfoUpdate(String id, String profileImg) {
+		eDAO.socialInfoUpdate(sqlSession, id, profileImg);
+	}
+
+	@Override
+	public void socialInfoUpdate2(String id, String name) {
+		eDAO.socialInfoUpdate2(sqlSession, id, name);
+	}
+
+	
 }

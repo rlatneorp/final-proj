@@ -15,12 +15,18 @@
 		where users_id = #{u.usersId}
 	</update>
 	
+	<select id="sendPoint" resultMap="UsersResultSet">
+		select point
+		from users
+		where users_id = #{usersId}
+	</select>
 	
 	<select id="atTodayChecked" resultType="_int">
 		 select count(*)
 		 from attendance
 		 where users_id = #{usersId}
 		 	   and dateStr = checked
+		 	   and dateStr = to_char(sysdate, 'YYYY-MM-DD')
 	</select>
 	
 	
@@ -55,7 +61,7 @@
 	
 	<insert id="insertCart">
 		INSERT INTO CART
-		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
+		VALUES (SEQ_CART_NO.NEXTVAL, ${usersNo}, #{productNo}, #{productOption}, #{cartCount} )
 	</insert>
 	
 	<select id="allAt" resultMap="AttendanceResultSet">
@@ -80,6 +86,19 @@
 		update users
 		set point = #{u.point} + 10
 		where users_id = #{u.usersId}
+	</update>
+	
+	<update id="getMonthPoint">
+		update users
+		set point = #{u.point} + 1000
+		where users_id in (select users_id
+                          from attendance
+                          		join users using(users_id)
+                          where dateStr = to_char(sysdate, 'YYYY-MM-DD')
+                              and users_id = #{u.usersId}
+                              and check_day = to_char(last_day(sysdate),'dd')
+	         				  and sysdate = last_day(sysdate))
+	           
 	</update>
 	
 <!-- 	<select id="selectShipping" resultMap="shipAddress"> -->
@@ -121,6 +140,10 @@
 		left join product using(product_no)
 		where cart.users_no = #{usersNo} and product.PRODUCT_STATUS = 'Y'
 	</select>
+	
+<!-- 	<select id="selectCartList" resultMap="cartList"> -->
+<!-- 		select * from cart where users_no = #{usersNo} -->
+<!-- 	</select> -->
 	
 	<resultMap type="Cart" id="cartList">
 		<id column="CART_NO" property="cartNo"/>
@@ -176,7 +199,7 @@
 		select * from food where product_no = #{productNo}
 	</select>
 	
-	<select id="selectFoodInfo" resultMap="productList">
+	<select id="selectProductInfo" resultMap="productList">
 		select * from product where product_no = #{productNo}
 	</select>
 	
@@ -206,6 +229,20 @@
 		where product_no = #{productNo}
 	</update>
 	
+	<select id="checkCartList" resultMap="cartList">
+		select * from cart where users_no = #{usersNo} and product_no = #{productNo}
+	</select>
 	
+	<select id="selectOptions" resultMap="optionsList">
+		select * from options where product_no = #{productNo}
+	</select>
+	
+	<select id="updateOptionNo" resultType="_int">
+		update cart set product_option = #{productOption} where product_no = #{productNo}
+	</select>
+	
+	<select id="selectOptionValue" resultType="String">
+		select option_value from options where option_no = #{optionNo}
+	</select>
 	
 </mapper>

@@ -5,7 +5,22 @@
 	<insert id="insertRecipe">
 		insert into recipe values(seq_recipe_no.nextval, #{usersNo}, #{recipeName}, #{categoryIngredient},
 								  #{categorySituation}, #{categoryType}, #{recipeDifficulty}, #{recipeTime},
-								  #{recipeContent}, #{recipeOrder}, default, default, default, default)
+								  #{recipeContent}, default, default, default, default)
+	</insert>
+	
+	<insert id="insertOrder">
+		insert all
+		<foreach collection="list" item="item">
+			into recipe_order values(new_order_no,
+			<if test="item.foodNo == 0">
+			seq_recipe_no.currval,
+			</if>
+			<if test="item.foodNo != 0">
+			#{item.foodNo},
+			</if>
+			#{item.recipeOrder}, default, #{item.recipeProcedure}, #{item.recipeOriginalName}, #{item.recipeRenameName}, #{item.recipeImagePath}) 
+		</foreach>
+		select * from dual
 	</insert>
 	
 	<insert id="insertAttm">
@@ -65,14 +80,37 @@
 		select *
 		from image
 		where image_Divide_No = #{foodNo} and image_Level=1
+		order by image_no asc
 	</select>
 	
 	<select id="recipeDetailComp" resultMap="imageResultSet">
 		select *
 		from image
-		where image_Divide_No = #{foodNo} and image_Level=2	
+		where image_Divide_No = #{foodNo} and image_Level=2
+		order by image_no desc	
 	</select>
 	
+	<select id="recipeDetailOrderText" resultMap="orderResultSet">
+		select *
+		from recipe_order
+		where food_no=#{foodNo}
+		order by recipe_procedure asc
+	</select>
+	
+	<delete id="deleteRecipe">
+		delete from recipe
+		where food_no=#{foodNo}
+	</delete>
+	
+	<delete id="deleteOrder">
+		delete from recipe_order
+		where food_no=#{foodNo}
+	</delete>
+	
+	<delete id="deleteImage">
+		delete from image
+		where image_type=2 and image_divide_no=#{foodNo}
+	</delete>
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
@@ -84,7 +122,6 @@
 		<result column="RECIPE_DIFFICULTY" property="recipeDifficulty"/>
 		<result column="RECIPE_TIME" property="recipeTime"/>
 		<result column="RECIPE_CONTENT" property="recipeContent"/>
-		<result column="RECIPE_ORDER" property="recipeOrder"/>
 		<result column="RECIPE_COUNT" property="recipeCount"/>
 		<result column="RECIPE_CREATE_DATE" property="recipeCreateDate"/>
 		<result column="RECIPE_MODIFY_DATE" property="recipeModifyDate"/>
@@ -101,5 +138,16 @@
 		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
 		<result column="IMAGE_PATH" property="imagePath"/>
 		<result column="IMAGE_LEVEL" property="imageLevel"/>
+	</resultMap>
+	
+	<resultMap type="RecipeOrder" id="orderResultSet">
+		<id column="order_no" property="orderNo"/>
+		<result column="food_no" property="foodNo"/>
+		<result column="recipe_order" property="recipeOrder"/>
+		<result column="order_status" property="orderStatus"/>
+		<result column="recipe_procedure" property="recipeProcedure"/>
+		<result column="RECIPE_ORIGINALNAME" property="recipeOriginalName"/>
+		<result column="RECIPE_RENAMENAME" property="recipeRenameName"/>
+		<result column="RECIPE_IMAGEPATH" property="recipeImagePath"/>
 	</resultMap>
 </mapper>

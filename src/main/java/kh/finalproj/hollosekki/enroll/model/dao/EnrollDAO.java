@@ -67,4 +67,21 @@ public class EnrollDAO {
 		return sqlSession.selectOne("enrollMapper.socialLoginUpdate", id);
 	}
 
+	public void socialInfoUpdate(SqlSessionTemplate sqlSession, String id, String profileImg) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("profileImg", profileImg);
+		sqlSession.update("enrollMapper.socialInfoUpdate", map);
+		
+	}
+
+	public void socialInfoUpdate2(SqlSessionTemplate sqlSession, String id, String name) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("name", name);
+		sqlSession.update("enrollMapper.socialInfoUpdate2", map);
+	}
+
+
+
 }

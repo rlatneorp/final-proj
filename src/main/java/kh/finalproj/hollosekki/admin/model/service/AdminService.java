@@ -12,6 +12,7 @@ import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 
@@ -61,6 +62,23 @@ public class AdminService {
 	}
 
 
+//	Menu-메뉴
+	public int getMenuCount(AdminBasic ab) {
+		return aDAO.getMenuCount(sqlSession, ab);
+	}
+
+	public ArrayList<Menu> selectMenuList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectMenuList(sqlSession, pi, ab);
+	}
+	
+	public int insertMenu(Menu m) {
+		return aDAO.insertMenu(sqlSession, m);
+	}
+	
+	public int insertMenuList(Menu m) {
+		return aDAO.insertMenuList(sqlSession, m);
+	}
+
 	
 //	Ingredient-식재료
 	public int getIngredientCount(AdminBasic ab) {
@@ -93,25 +111,36 @@ public class AdminService {
 
 	
 //	Food-식품
-	public int insertFood(Food f) {
-		return aDAO.insertFood(sqlSession, f);
-	}
-
 	public int getFoodCount(AdminBasic ab) {
 		return aDAO.getFoodCount(sqlSession, ab);
+	}
+	
+	public ArrayList<Food> selectFoodList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectFoodList(sqlSession, pi, ab);
 	}
 	
 	public Food selectFood(int foodNo) {
 		return aDAO.selectFood(sqlSession, foodNo);
 	}
-
-	public ArrayList<Food> selectFoodList(PageInfo pi, AdminBasic ab) {
-		return aDAO.selectFoodList(sqlSession, pi, ab);
+	
+	public int updateFood(Food f) {
+		return aDAO.updateFood(sqlSession, f);
+	}
+	
+	public int insertFood(Food f) {
+		return aDAO.insertFood(sqlSession, f);
+	}
+	
+	public ArrayList<String> deleteableFood(int pNo) {
+		return aDAO.deleteableFood(sqlSession, pNo);
 	}
 
 	public int deletesFood(String[] foodDeletes) {
 		return aDAO.deletesFood(sqlSession, foodDeletes);
 	}
+
+
+
 
 	
 

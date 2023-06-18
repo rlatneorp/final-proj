@@ -768,7 +768,7 @@ p b {
 					<label for="option1">색상</label>
 					<select class='productOption' name='productOption' required>
 						<!-- 사이즈 선택 창 --> 
-						<option value="">옵션을 선택해주세요</option>
+						<option value="" selected disabled>옵션을 선택해주세요</option>
 						<option value="black">black</option>
 						<option value="silver">silver</option>
 						<option value="gray">gray</option>
@@ -776,40 +776,40 @@ p b {
 					</select>
 					
 					<label for="option2">사이즈</label>
-					<select class='productOption2' name='productOption'  required>
+					<select  id="optionsSet" class='productOption2' name='productOption' required>
 						<!-- 사이즈 선택 창 -->
-						<option class='productOption2Set' name="productOption2Set">옵션을 선택해주세요.</option>
+						<option  class='productOption2Set' value="" selected disabled>옵션을 선택해주세요.</option>
 					</select>
 
 
-<!-- 					<div id="productResult" class="productResultSet"> -->
-<!-- 						사이즈 선택시 내려오는 창 -->
-<!-- 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
-<!-- 							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span> -->
-<!-- 							<input type="hidden" name="productNo" value="134"> -->
-<!-- 							<input type="hidden" name="productName" value="캠핑용 후라이팬"> -->
-<%-- 							<input type="hidden" name="productPrice" value="${p.productPrice}"> --%>
-<!-- 						</h4> -->
-<!-- 						<div style=""> -->
-<!-- 							<span class="btnbox" style=" margin: 0 0 0 -1px;"> -->
-<!-- 								<button class="decrease" type="button">-</button> -->
-<!-- 								<input type="number" class="cartCount" -->
-<!-- 									 value="1" name="cartCount" min="1" readonly> -->
+					<div id="productResult" class="productResultSet">
+						사이즈 선택시 내려오는 창
+						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
+							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span>
+							<input type="hidden" name="productNo" value="134">
+							<input type="hidden" name="productName" value="캠핑용 후라이팬">
+							<input type="hidden" name="productPrice" value="${p.productPrice}">
+						</h4>
+						<div>
+							<span class="btnbox" style="margin: 0 0 0 -1px;">
+								<button class="decrease" type="button">-</button>
+								<input type="number" class="cartCount"
+									 value="1" name="cartCount" min="1" readonly>
 									
-<!-- 								<button class="increase" type="button">+</button> -->
+								<button class="increase" type="button">+</button>
 								
-<!-- 							</span> -->
-<!-- 							<button class="removeProudct" type="button" style="float: right;"> -->
-<!-- 								<img src="resources/images/close.png" style="width: 10px;"> -->
-<!-- 							</button> -->
-<!-- 							<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
-<%-- 						<input type="hidden" name="discountRate" value="${p.discountRate}"> --%>
-<!-- 						</div> -->
-<!-- 						 <br> -->
-<!-- 					</div> -->
+							</span>
+							<button class="removeProudct" type="button" style="float: right;">
+								<img src="resources/images/close.png" style="width: 10px;">
+							</button>
+							<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>
+						<input type="hidden" name="discountRate" value="${p.discountRate}">
+						</div>
+						 <br>
+					</div>
 					
-<!-- 				</div> -->
-<!-- 					</div> -->
+				</div>
+					</div>
 			</div>
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" > 장바구니</button>
@@ -821,7 +821,7 @@ p b {
 <br>
 		
 	
-<div class ="productInfoMain" st>
+<div class ="productInfoMain" >
 	<div class="reviewbox">
 		<ul>
 			<li>상세정보</li>
@@ -843,7 +843,7 @@ p b {
 <!-- 		</div> -->
 	</div>
 		<br>
-	
+	</div>
 	
 	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
 	
@@ -1137,11 +1137,13 @@ p b {
    
    const productOption = document.querySelector(".productOption"); //사이즈 선택 창
    const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
-   const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
+   const productOption2Set = document.getElementsByClassName(".productOption2Set"); //사이즈 선택 창
    const buyBtn = document.getElementById("buyBtn");
    const result = document.getElementById("productResult");
    const like = document.querySelector(".like");
    const productSet = document.querySelector(".productSet");
+   const btnbox = document.querySelector(".btnbox");
+   
    
       like.addEventListener("click", function() {
 	    if(like.innerText === '♡') {
@@ -1158,30 +1160,18 @@ p b {
     	productOption.addEventListener("change", function(){
     		
     		if(productOp.value != ""){
-    			let b = ["옵션을 선택해주세요.","XL","L","M","S"];
+    			let b = ["XL","L","M","S"];
                 let result = productOption.value;
                 let o;
-                console.log(b[0]);
                 
-                
-                if ( productOp.indexOf(result) > 0  == true && result != "") {
-                  
-                	if(productOp.indexOf(b[0]) < 0){
-                		console.log("안돼")
-                		o = b;
-                	}else{
-                		alert("필수 옵션을 선택해주세요");
-                	}
-                  
-                } else if ( productOp.indexOf(o) > 0 != true && result != "") {
+                if ( productOp.indexOf(result) > 0) {
+                  o = b; 
+                } else if ( productOp.indexOf(o) > 0) {
                   o = b;
                 } else {
               	o = ["색상 옵션을 선택해주세요"];
                 }
-               if((productOption2==="") == false){
-            	   productOption2.options.length=0; 
-               }
-              
+            	productOption2.options.length=0; 
                 for ( let i = 0; i < o.length; i++ ) {
                 	productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set">'+ o[ i ] + '</option>' );
                      
@@ -1191,23 +1181,21 @@ p b {
     	})
         
         
-        productOption2.addEventListener("change", function(){
+        productOption2.addEventListener("change", function(e){
         	 const increase = document.querySelectorAll(".increase");	
-        	 
-        	 console.log(increase);
              const select =  $('.productOption option:selected');
              const select2 = $('.productOption2 option:selected');
-             
       		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
       		const opop = document.getElementsByClassName('opSearch');
-//             			console.log(opop[0]);
+      		
+            	
       		let YN = "Y";
       		for(let k=0; k<opop.length; k++){
       			if(opop[k].innerText == optionName){
-      				let cartCount = document.querySelectorAll(".cartCount");
-      				cartCount[k].value++;
+      				alert("이미 선택한 옵션입니다.");
       				YN = "N";
       				
+
       			}
       		}
 	      			if(YN == "Y"){
@@ -1223,7 +1211,7 @@ p b {
 								 							+'<button class="decrease" type="button">-</button>'
 								 							+'<input type="number" class="cartCount"'
 								 							+'	value="1" name="cartCount" min="1" readonly>'
-								 							+'<button class="increase" type="button">+</button>'
+								 							+'<button class="increase"  type="button">+</button>'
 								 								+'<button class="removeProudct" type="button" style="float: right;">'
 								 								+'<img src="resources/images/close.png" style="width: 10px;">'
 								 								+'<span>'
@@ -1233,19 +1221,17 @@ p b {
 								 						+'</div>'
 								 						 +'<br>'
 								 					+'</div>');
-							increase.forEach(function(e){
-								e.addEventListener('click', function(){
-									console.log(asd);
-								})
-							})
-			
+	      				function clickHandler(e){
+	      					console.log(e.target);
+	      				}
+	      				
+	      				btnbox.addEventListener('click',clickHandler);
+							
+						
 		  			 }
-		  					
-      		
+
       	})
-        		
                
-        
         
       
    function priceToString(productPrice) {

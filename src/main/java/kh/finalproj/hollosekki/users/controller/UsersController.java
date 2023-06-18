@@ -42,10 +42,6 @@ public class UsersController {
 	
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
-		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
-		Image image = uService.selectImage(usersNo);
-		System.out.println(image);
-		model.addAttribute("image", image);
 		return "myPage_Main";
 	}
 	

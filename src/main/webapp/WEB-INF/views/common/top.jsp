@@ -166,7 +166,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/Logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
@@ -205,7 +205,7 @@
 												<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img"/>
 											</c:if>
 											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
-												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img"/>
+												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="profile-img"/>
 											</c:if>
 										</c:if>
 										<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
@@ -213,14 +213,14 @@
 												<img src="${ socialUser.socialProfileImg }" class="profile-img">
 											</c:if>
 											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
-												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img"/>
+												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img" onerror="this.src='${ socialUser.socialProfileImg }';"/>
 											</c:if>
 										</c:if>
 									</div>
 						  			<div class="userName">
 						  				${ loginUser.usersName } 님
 						  			</div>
-						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="p">P</p></div>
+						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="topP">P</p></div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
 						  			<div class="dropdown-item" onclick="location.href='${ contextPath }/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
@@ -240,15 +240,18 @@
 	<br>
 	
 <script>
-$.ajax({
-	url: 'point.ma',
-	success: function(info){
-		console.log(info);
-		let point = document.querySelector('#p');
-		point.innerHTML = info.point;
-	}
-	
-});
+var loginUser = '${loginUser}';
+if(loginUser != ''){
+	$.ajax({
+		url: 'point.ma',
+		success: function(info){
+			console.log(info);
+			let topP = document.querySelector('#topP');
+			topP.innerHTML = info.point;
+		}
+		
+	});
+}
 </script>
 
 

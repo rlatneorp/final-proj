@@ -741,63 +741,72 @@ p b {
 			<div>
 					<div class="productSet">
                         <dl class="info_delivery">
-                            <dt style="font-size: 20px; padding:5px; height:45px">
+                            <dt style="font-size: 20px; padding: 5px;">
                             	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;배송
                             </dt>
                                 </dl>
-                         		<hr style="margin: 0px;">
-                                <dl class="info_point" style="margin: 0px;">
-                            <dt style="font-size: 20px; padding: 5px; height:45px"">
+                                <hr style="margin: 0px;">
+                                <dl class="info_point">
+                            <dt style="font-size: 20px; padding: 5px;">
                             	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
                             </dt>
                                 </dl>
-								<hr style="margin: 0px;">
-						
+                                
+						<hr style="margin: 0px;">
+				
+<!-- 					<select class='productOption' name='productOption' required> -->
+<!-- 						사이즈 선택 창 -->
+<!-- 						<option value='' style="font-size: 15px;">[필수] 옵션을 선택해주세요</option> -->
+<!-- 						<option value='옵션1'>옵션1</option> -->
+<!-- 						<option value='옵션2'>옵션2</option> -->
+<!-- 						<option value='옵션3'>옵션3</option> -->
+<!-- 						<option value='옵션4'>옵션4</option> -->
+<!-- 					</select> -->
 					
-					<label for="productOption">색상</label>
-					<select class='productOption'  required>
+					<label for="option1">색상</label>
+					<select class='productOption' name='productOption' required>
 						<!-- 사이즈 선택 창 --> 
-						<option value="">옵션을 선택해주세요</option>
+						<option value="" selected disabled>옵션을 선택해주세요</option>
 						<option value="black">black</option>
 						<option value="silver">silver</option>
 						<option value="gray">gray</option>
 						<option value="light-gray">light-gray</option>
 					</select>
 					
-					<label for="productOption2">사이즈</label>
-					<select class='productOption2' required>
+					<label for="option2">사이즈</label>
+					<select  id="optionsSet" class='productOption2' name='productOption' required>
 						<!-- 사이즈 선택 창 -->
-						<option class='productOption2Set' >옵션을 선택해주세요.</option>
+						<option  class='productOption2Set' value="" selected disabled>옵션을 선택해주세요.</option>
 					</select>
 
 
-<!-- 					<div id="productResult" class="productResultSet"> -->
-<!-- 						사이즈 선택시 내려오는 창 -->
-<!-- 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
-<!-- 							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span> -->
-<!-- 							<input type="hidden" name="productNo" value="134"> -->
-<!-- 							<input type="hidden" name="productName" value="캠핑용 후라이팬"> -->
-<%-- 							<input type="hidden" name="productPrice" value="${p.productPrice}"> --%>
-<!-- 						</h4> -->
-<!-- 						<div style=""> -->
-<!-- 							<span class="btnbox" style=" margin: 0 0 0 -1px;"> -->
-<!-- 								<button class="decrease" type="button">-</button> -->
-<!-- 								<input type="number" class="cartCount" -->
-<!-- 									 value="1" name="cartCount" min="1" readonly> -->
+					<div id="productResult" class="productResultSet">
+						사이즈 선택시 내려오는 창
+						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
+							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span>
+							<input type="hidden" name="productNo" value="134">
+							<input type="hidden" name="productName" value="캠핑용 후라이팬">
+							<input type="hidden" name="productPrice" value="${p.productPrice}">
+						</h4>
+						<div>
+							<span class="btnbox" style="margin: 0 0 0 -1px;">
+								<button class="decrease" type="button">-</button>
+								<input type="number" class="cartCount"
+									 value="1" name="cartCount" min="1" readonly>
 									
-<!-- 								<button class="increase" type="button">+</button> -->
+								<button class="increase" type="button">+</button>
 								
-<!-- 							</span> -->
-<!-- 							<button class="removeProudct" type="button" style="float: right;"> -->
-<!-- 								<img src="resources/images/close.png" style="width: 10px;"> -->
-<!-- 							</button> -->
-<!-- 							<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
-<%-- 						<input type="hidden" name="discountRate" value="${p.discountRate}"> --%>
-<!-- 						</div> -->
-<!-- 						 <br> -->
-<!-- 					</div> -->
+							</span>
+							<button class="removeProudct" type="button" style="float: right;">
+								<img src="resources/images/close.png" style="width: 10px;">
+							</button>
+							<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>
+						<input type="hidden" name="discountRate" value="${p.discountRate}">
+						</div>
+						 <br>
+					</div>
 					
 				</div>
 					</div>
@@ -812,7 +821,7 @@ p b {
 <br>
 		
 	
-<div class ="productInfoMain" st>
+<div class ="productInfoMain" >
 	<div class="reviewbox">
 		<ul>
 			<li>상세정보</li>
@@ -834,7 +843,7 @@ p b {
 <!-- 		</div> -->
 	</div>
 		<br>
-	
+	</div>
 	
 	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
 	
@@ -1128,37 +1137,13 @@ p b {
    
    const productOption = document.querySelector(".productOption"); //사이즈 선택 창
    const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
-   const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
+   const productOption2Set = document.getElementsByClassName(".productOption2Set"); //사이즈 선택 창
    const buyBtn = document.getElementById("buyBtn");
    const result = document.getElementById("productResult");
    const like = document.querySelector(".like");
    const productSet = document.querySelector(".productSet");
-   const increase = document.querySelectorAll(".increase");	
+   const btnbox = document.querySelector(".btnbox");
    
-	
-		$(document).on("click",".btnbox",function(e){
-			const increBtn = this.childNodes[2]; //증가버튼
-			const decreBtn = this.childNodes[0]; //감소버튼
-			const cartNum = this.childNodes[1];  //카트수량 
-			
-			e.stopPropagation();    //이벤트 버블링 막기
-		
-			if(e.target == increBtn){
-				this.childNodes[1].value++;
-			} 
-			if(e.target == decreBtn){
-				cartNum.value--;
-				if(cartNum.value < 1){
-					cartNum.value=1;
-				}
-			}
-			
-			if(e.target == this.childNodes[3] || e.target ==this.childNodes[3].childNodes[0]){ //x버튼을 클릭하거나 x이미지를 클릭하거나 상품옵션창을 삭제한다.
-				this.parentNode.parentNode.remove();
-			}
-	
-		})
-	
    
       like.addEventListener("click", function() {
 	    if(like.innerText === '♡') {
@@ -1175,73 +1160,58 @@ p b {
     	productOption.addEventListener("change", function(){
     		
     		if(productOp.value != ""){
-    			let b = ["옵션을 선택해주세요.", "XL","L","M","S"];  //옵션을 담아둘 배열
-                let result = productOption.value;              //상품 1의 옵션값을 담은 배열
-                let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
+    			let b = ["XL","L","M","S"];
+                let result = productOption.value;
+                let o;
                 
-                if ( productOp.indexOf(result) > 0  == true && result != "") {  //상품 1옵션에 선택한 상품옵션 값이 존재하거나 옵션을 선택해주세요 선택창이 아닐경우 실행
-                	if(productOp.indexOf(b[0]) < 0){
-                		o = b;
-                	}else{
-                		alert("필수 옵션을 선택해주세요");
-                	}
-                  
-                } else if ( productOp.indexOf(o) > 0 != true && result != "") {
+                if ( productOp.indexOf(result) > 0) {
+                  o = b; 
+                } else if ( productOp.indexOf(o) > 0) {
                   o = b;
                 } else {
               	o = ["색상 옵션을 선택해주세요"];
                 }
-               if((productOption2==="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
-            	   productOption2.options.length=0;
-               }
-              
+            	productOption2.options.length=0; 
                 for ( let i = 0; i < o.length; i++ ) {
-                	if( i == 0){
-                		productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
-                	}else{
-                		productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
-                	}
-                			
+                	productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set">'+ o[ i ] + '</option>' );
+                     
                   }
     		}
     		  
     	})
         
         
-        productOption2.addEventListener("change", function(){
+        productOption2.addEventListener("change", function(e){
+        	 const increase = document.querySelectorAll(".increase");	
              const select =  $('.productOption option:selected');
              const select2 = $('.productOption2 option:selected');
-             
       		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
-      		const opSearch = document.getElementsByClassName('opSearch');
-
+      		const opop = document.getElementsByClassName('opSearch');
+      		
+            	
       		let YN = "Y";
-      		for(let k=0; k<opSearch.length; k++){
-      			if(opSearch[k].innerText == optionName){
-      				let cartCount = document.querySelectorAll(".cartCount");
+      		for(let k=0; k<opop.length; k++){
+      			if(opop[k].innerText == optionName){
       				alert("이미 선택한 옵션입니다.");
       				YN = "N";
       				
+
       			}
-      			
       		}
-	      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
+	      			if(YN == "Y"){
 						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 								 							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
 								 							+'<input type="hidden" name="productNo" value="134">'
 								 							+'<input type="hidden" name="productName" value="캠핑용 후라이팬">'
 								 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-								 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
-								 							+'<input type="hidden" name="productOption2" value='+select2.val()+'>'
-								 							+'<input type="hidden" name="userNo" value="45">'
 								 						+'</h4>'
 								 						+'<div>'
 								 							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
 								 							+'<button class="decrease" type="button">-</button>'
 								 							+'<input type="number" class="cartCount"'
 								 							+'	value="1" name="cartCount" min="1" readonly>'
-								 							+'<button class="increase" type="button">+</button>'
+								 							+'<button class="increase"  type="button">+</button>'
 								 								+'<button class="removeProudct" type="button" style="float: right;">'
 								 								+'<img src="resources/images/close.png" style="width: 10px;">'
 								 								+'<span>'
@@ -1251,15 +1221,17 @@ p b {
 								 						+'</div>'
 								 						 +'<br>'
 								 					+'</div>');
+	      				function clickHandler(e){
+	      					console.log(e.target);
+	      				}
+	      				
+	      				btnbox.addEventListener('click',clickHandler);
 							
-		  				console.log(select.val());
-		  				console.log(select2.val());
-	      			}
-		  					
+						
+		  			 }
+
       	})
-        		
                
-        
         
       
    function priceToString(productPrice) {
@@ -1293,60 +1265,28 @@ $(function(){
         var productNo = $("input[name='productNo']").val();
         var cartCount = $(".cartCount").val();
         var productOption = $(".productOption").val();
-        var productOption2 = $(".productOption2").val();
+        
+        console.log(productNo);
+        console.log(cartCount);
+        console.log(productOption);
         
         
-        
-     console.log($("input[name='productNo']").val());
-        
-        var productNoValues=[];
-        var cartCountValues=[];
-        var productOptionValues=[];
-        var productOption2Values=[];
-        var userNoValues=[];
-        
-        var allData ={
-        		"productNo":productNoValues, 
-	        	"cartCount":cartCountValues,
-	        	"productOption":productOptionValues, 
-	        	"productOption2":productOption2Values,
-	        	"userNo":userNoValues};
-        
-        $("input[name='productNo']").each(function(){
-        	productNoValues.push($(this).val());
-        })
-        
-        $(".cartCount").each(function(){
-        	cartCountValues.push($(this).val());
-        })
-        
-        $("input[name='productOption']").each(function(){
-        	productOptionValues.push($(this).val());
-        })
-        
-        $("input[name='productOption2']").each(function(){
-        	productOption2Values.push($(this).val());
-        })
-        
-        $("input[name='userNo']").each(function(){
-        	userNoValues.push($(this).val());
-        })
-        
-        
-        
-        console.log(allData);
+        var data = {
+            productNo: productNo,
+            cartCount: cartCount,
+            productOption: productOption
+        };
         
         $.ajax({
             url: "insertCart.ma",
             type: "post",
-            data: JSON.stringify(allData),
-            contentType: "application/json; charset=utf-8",
-            success: function(allData) {
-            	if(allData > 0) {
+            data: data,
+            success: function(data) {
+            	if(data > 0) {
                 alert("상품이 장바구니에 담겼습니다.");
             	}
             },
-            error: function(allData) {
+            error: function(data) {
                 alert("상품이 장바구니에 담기지 못했습니다.");
             }
         })

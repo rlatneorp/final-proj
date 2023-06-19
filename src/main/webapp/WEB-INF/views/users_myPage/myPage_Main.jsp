@@ -110,7 +110,7 @@
         cursor: pointer;
         object-fit: cover; object-position: center;
     }
-    #base{
+    .base{
     	border: none; border-radius: 5px;
 		font-weight: bold; font-size: 12px;
 		width: 80px; height: 40px;
@@ -177,7 +177,7 @@
 						<td>
 						<i class="bi bi-currency-dollar dollars"></i>
 						</td>
-						<td style="font-size: 18px; color: rgb(52, 152, 219);"><b>${ loginUser.point } 포인트</b></td>
+						<td style="font-size: 18px; color: rgb(52, 152, 219);"><p class="d-inline" id="myP">P</p></td>
 						</tr>
 						</table>
 						<p style="font-size: 13px;">소멸 예정 포인트 0원</p>
@@ -191,7 +191,7 @@
 						<img src="${ socialUser.socialProfileImg }" id="pImg">
 					</c:if>
 					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
-						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="pImg"/>
+						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="pImg" onerror="this.src='${ socialUser.socialProfileImg }';"/>
 					</c:if>
 				</c:if>
 				<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
@@ -199,7 +199,7 @@
 						<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" id="pImg"/>
 					</c:if>
 					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
-						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="pImg"/>
+						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" id="pImg"/>
 					</c:if>
 				</c:if>
 				<p style="font-size: 20px; font-weight: bold; margin-left: 440px;">${ loginUser.usersName }</p>
@@ -301,14 +301,14 @@
 					<form action="myPage_InsertProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-							<img src="${ socialUser.socialProfileImg }" id="modalP">
+							<img src="${ socialUser.socialProfileImg }" id="modalP" onerror="this.src='${ socialUser.socialProfileImg }';">
 						</c:if>
 						<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
 							<img id="modalP" src="https://botsitivity.org/static/media/noprofile.c3f94521.png"/>
 						</c:if>
 						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
 						<br>
-						<button id="base" type="button">기본 이미지</button>
+						<button class="base" type="button">기본 이미지</button>
 						<br><br><hr><br>
 						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
@@ -322,10 +322,15 @@
 				<c:if test="${ image.imageDivideNo == loginUser.usersNo }">
 					<form action="myPage_UpdateProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
-						<img id="modalP" src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }"/>
+						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
+							<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="modalP" onerror="this.src='${ socialUser.socialProfileImg }';">
+						</c:if>
+						<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
+							<img id="modalP" src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"/>
+						</c:if>
 						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
 						<br>
-						<button id="base" type="button">기본 이미지</button>
+						<button class="base" type="button">기본 이미지</button>
 						<br><br><hr><br>
 						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
@@ -424,12 +429,64 @@
 			  }
 		}
 		
-		const baseBtn = document.getElementById('base');
+		const baseBtn = document.getElementsByClassName('base')[1];
+		const kakaoBtn = document.getElementsByClassName('base')[0];
 		
-		baseBtn.addEventListener('click', () => {
-			fileInput.value = null;
-			profileImg();
-		});
+		if(baseBtn){
+			baseBtn.addEventListener('click', () => {
+				fileInput.value = null;
+				profileImg();
+			});
+		}
+		
+		if(kakaoBtn){
+			kakaoBtn.addEventListener('click', () => {
+				fileInput.value = null;
+				
+				const file = fileInput.files[0];
+	
+				  if (file) {
+				    const reader = new FileReader();
+	
+				    reader.onload = function(e) {
+				      profile.src = e.target.result;
+				    };
+	
+				    reader.readAsDataURL(file);
+				  } else {
+					  $.ajax({
+						type : 'POST',
+						url : '${contextPath}/myPage_DeleteImage.me',
+						data : {usersNo : ${loginUser.usersNo}},
+						success : data => {
+							console.log(data);
+							if(data == 'yes'){
+								profile.src = "${ socialUser.socialProfileImg }";
+							} else {
+								console.log('nop');
+							}
+						},
+						error : data => {
+							console.log("실패");
+						}
+					});
+				    
+				  }
+			});
+		}
+		
+		var loginUser = '${loginUser}';
+		if(loginUser != ''){
+			$.ajax({
+				url: 'point.ma',
+				success: function(info){
+					console.log(info);
+					let myP = document.querySelector('#myP');
+					myP.innerHTML = info.point;
+				}
+				
+			});
+		}
 	</script>
 </body>
 </html> 

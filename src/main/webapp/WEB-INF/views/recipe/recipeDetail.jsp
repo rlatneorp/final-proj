@@ -233,13 +233,14 @@
 		<div id="orderList">
 			<table>
 				<c:forEach items="${orderList}" var="orderList">
-<%-- 					<c:forEach items="${oList}" var="o"> --%>
-						<tr>
-							<td class="no">${orderList.recipeProcedure}</td>
-							<td class="content">${orderList.recipeOrder}</td>
-							<td class="image"><img src="${contextPath}/resources/uploadFiles/${orderList.recipeRenameName}" width="100%" height="100%" alt="조리 순서 사진 1"></td>
-						</tr>
-<%-- 					</c:forEach> --%>
+					<tr>
+						<td class="no">${orderList.recipeProcedure}</td>
+						<td class="content">${orderList.recipeOrder}</td>
+						<td class="image"><img src="${contextPath}/resources/uploadFiles/${orderList.recipeRenameName}" width="100%" height="100%" alt="조리 순서 사진 1"></td>
+					</tr>
+					<tr>
+						<td style="height: 10px;"></td>
+					</tr>
 				</c:forEach>
 			</table>
 		</div>

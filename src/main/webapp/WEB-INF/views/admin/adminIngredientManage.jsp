@@ -106,7 +106,7 @@
 								<button type="button" class="btns statusBtn" style="background-color: gray;">N</button>
 							</c:if>
 						</td>
-						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;" value="${igd.ingredientNo},${igd.productNo}"></td>
+						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;" value="${igd.ingredientNo}-${igd.productNo}"></td>
 					</tr>
 				</c:forEach>
 			</table>

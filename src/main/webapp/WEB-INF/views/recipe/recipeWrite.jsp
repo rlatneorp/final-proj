@@ -50,13 +50,16 @@
 	
 /* 	완성된 요리 추가 */
 	#completePic{height: 330px;}
-	.insertCompletePic{font-weight:bold; text-align:center; font-size:15px; height:200px; width:200px; display:inline-block; position: relative; z-index: 1;}
+	.insertCompletePic{font-weight:bold; text-align:center; font-size:15px; height:200px; width:200px; display:inline-block; position: relative; z-index: 1; padding-top: 50px;}
 	.completeImg{width: 200px; background-color: #B0DAFF;}
-	.comPicBox{width: 1000px; margin-bottom: 5px;}
-	.completeImgPreview{position: relative; top: -180px; height:200px; width: 200px; border-radius: 10px;}
+	.comPicBox{width: 1000px; height: 280px; margin-bottom: 5px;}
+	.completeImgPreview{position: relative; top: -248px; height:200px; width: 205px; border-radius: 10px;}
 	.comImgBox{width: 210px; height: 250px; border-radius: 10px; border: 1px solid black; position: absolute;}
 	
-	#plusComBtn{width: 200px; margin-left: 400px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
+	#plusComBtn{width: 200px; margin-left: 300px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
+	#minusComBtn{width: 200px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
+	
+	#comAddPlace{width: 400px; height: 200px;}
 	
 /* 	완료 */
 	#buttonBox{width: 300px; margin: auto; padding: 30px 0; }
@@ -188,21 +191,26 @@
 			<div class="recipeInformationBox" id="completePic">
 				<div class="d-inline-block beforeInput">완성된 요리 |</div><div class="d-inline-block">완성된 요리 이미지를 올려주세요. 이미지를 추가하려면 +버튼을 눌러주세요.</div>
 				<div class="comPicBox">
-					<div class="comImgBox">
-						<span class="insertCompletePic">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-							<path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
-							<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-							</svg><br><br>
-							레시피 완성 이미지 첨부<br>[필수 사항]
-						</span>
-						<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic" onchange="comImageIns()">
-						<img class="completeImgPreview">
+					<div id="comCopy" class="comCopyC">
+						<div class="comImgBox">
+							<span class="insertCompletePic">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+									<path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
+									<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+								</svg><br><br>
+								레시피 완성 이미지 첨부<br>[필수 사항]
+							</span>
+							<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic" onchange="comImageIns(this)">
+							<img class="completeImgPreview">
+						</div>
 					</div>
+					<div id="comAddPlace"></div>
 				</div>
 			</div>
 			
-			<button type="button" id="plusComBtn">+ 이미지 추가하기</button>
+			<button type="button" id="plusComBtn" onclick="comPlus()">+ 이미지 추가하기</button>
+			<span> / </span>
+			<button type="button" id="minusComBtn" onclick="comRemove()">- 이미지 삭제하기</button>
 		</div>
 	
 	</div>
@@ -215,15 +223,6 @@
 
 <br>
 <%@ include file="../common/footer.jsp" %>
-
-
-
-
-
-
-
-
-
 
 <script>
 // 레시피 썸네일
@@ -248,6 +247,7 @@ function setThumbnail(event){
 	console.log(document.getElementById('insertBtn').value);
 }
 
+// 레시피 순서
 function orderImage(obj){
 	var imgid = obj.nextElementSibling;
 	imgid.src = URL.createObjectURL(event.target.files[0]);
@@ -257,8 +257,8 @@ function orderImage(obj){
 		obj.previousElementSibling.style.zIndex = 0;
 	}
 }
-// 순서추가 버튼 클릭 시
 
+// 순서추가 버튼 클릭 시
 const addplace = document.querySelector('#addplace');
 const copy = document.querySelector('#copy');
 var count = 1;
@@ -281,6 +281,31 @@ function orderRemove(){
 		count--;
 	}
 }
+
+// 완성된 이미지
+function comImageIns(obj){
+	var imgid = obj.nextElementSibling;
+	imgid.src = URL.createObjectURL(event.target.files[0]);
+	imgid.onload = function(){
+		URL.revokeObjectURL(imgid.src)
+		obj.nextElementSibling.style.display="inline";
+		obj.previousElementSibling.style.zIndex = 0;
+	}
+}
+
+// 완성 사진 추가
+const comCopy = document.querySelector("#comCopy");
+const comAddPlace = document.querySelector("#comAddPlace");
+var comCount = 1;
+function comPlus(){
+	if(comCount < 3){
+		comAddPlace.appendChild(comCopy.cloneNode(true));
+		document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
+// 		console.log(document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5]);
+	}
+}
+
+// 완성 사진 삭제
 
 
 // window.onload=()=>{

@@ -249,16 +249,21 @@ public class MarketController {
 //	
 	
 	@RequestMapping("insertCart.ma")
-	public void insertReply(@ModelAttribute Cart c, HttpServletResponse response) {
-		mkService.insertCart(c);
-		ArrayList<Cart> list  = mkService.insertCart(c.getCartNo());
+	public void insertCart(
+//			@ModelAttribute Cart c,
+			@RequestParam("productNo") String pNo,
+			HttpServletResponse response) {
+//		mkService.insertCart(c);
+		System.out.println(pNo);
+//		System.out.println(c);
+//		ArrayList<Cart> list  = mkService.insertCart(c.getCartNo());
 		
 		response.setContentType("application/json; charset=utf-8");
 //		Gson gson = new Gson();//json객체로 보내고 싶은것
 		GsonBuilder gb = new GsonBuilder();
 		Gson gson = gb.create();
 		try {
-			gson.toJson(list, response.getWriter());
+			gson.toJson("", response.getWriter());
 		} catch (JsonIOException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

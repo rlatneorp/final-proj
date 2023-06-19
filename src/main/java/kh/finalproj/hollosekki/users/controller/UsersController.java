@@ -310,5 +310,17 @@ public class UsersController {
 		}
 	}
 	
+	// 회원탈퇴
+	@RequestMapping("myPage_deleteInfo.me")
+	public String myPage_deleteInfo(@RequestParam("usersNo") int usersNo) {
+		int result = uService.deleteInfo(usersNo);
+		
+		if(result > 0) {
+			return "redirect:logout.en";
+		} else {
+			throw new UsersException("회원 탈퇴 실패");
+		}
+	}
+	
 	
 }

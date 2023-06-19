@@ -139,7 +139,7 @@
 		FROM cart
 		LEFT JOIN product on (cart.product_no = product.product_no)
 		WHERE cart.users_no = #{usersNo} AND product.PRODUCT_STATUS = 'Y'
-		ORDER BY cart.pre_order_no
+		ORDER BY cart.product_no
 	</select>
 	
 <!-- 	<select id="selectCartList" resultMap="cartList"> -->
@@ -240,23 +240,27 @@
 	</update>
 	
 	<select id="checkCartList" resultMap="cartList">
-		select * from cart where users_no = #{usersNo} and product_no = #{productNo}
+		select * from cart where users_no = #{usersNo} and pre_order_no = #{preorderNo}
 	</select>
 	
 	<select id="selectOptions" resultMap="optionsList">
-		select * from options where product_no = #{productNo}
+		select * from options where option_no = #{optionNo} and product_no = #{productNo}
 	</select>
 	
 	<select id="updateOptionNo" resultType="_int">
 		update cart set product_option = #{productOption} where product_no = #{productNo}
 	</select>
 	
-	<select id="selectOptionValue" resultType="String">
-		select option_value from options where option_no = #{optionNo}
-	</select>
+<!-- 	<select id="selectOptionVal" resultType="String"> -->
+<!-- 		select option_value from options where pre_order_no = #{preorderNo} -->
+<!-- 	</select> -->
 	
 	<select id="selectOptionNo" resultMap="cartList">
-		select * from cart where product_no = #{productNo} and users_no = #{usersNo}
+		select * from cart where product_no = #{productNo} and users_no = #{usersNo} and pre_order_no = #{preorderNo}
+	</select>
+	
+	<select id="selectOptionInfo" resultMap="optionsList">
+		select * from options where option_no = #{productOption} and product_no = #{productNo}
 	</select>
 	
 </mapper>

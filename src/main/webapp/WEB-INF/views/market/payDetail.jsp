@@ -197,19 +197,31 @@ input[type="text"] {
 <!-- 			<th style="border-bottom: 2px solid #dee2e6">배송비</th> -->
 		</tr>
 		<tbody id="products">
-			<c:forEach items="${ cartList}" var="cl" >
+			<c:forEach items="${ checkedCartList}" var="cl" varStatus="status" >
+				<c:if test="${cl.preorderNo != checkedCartList[status.index - 1].preorderNo}">
+				
+<%-- 				<c:set var="prevPreorderNo" value="${cl.preorderNo}"/> --%>
+<%-- 				<c:if test="${cl.preorderNo eq prevPreorderNo }"> --%>
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-<%-- 						<input type="checkbox" value="${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;"> --%>
+<%-- 						<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;"> --%>
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
+						<input type="hidden" value="${cl.preorderNo }">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">
 						<b>${cl.productName}</b><br><br>
-						옵션 : ${cl.selectedOpt }
+						<c:forEach items="${optValues }" var="opt">
+							<c:if test="${ opt.productNo eq cl.productNo }">
+<%-- 								<input type="text" value="${opt.optionNo }"> --%>
+								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
+							</c:if>
+						</c:forEach>
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:130px">
+<%-- 						<i class="bi bi-dash-square-fill" id="minus-${cl.productNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp; --%>
 						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp;
+<%-- 						<i class="bi bi-plus-square-fill" id="plus-${cl.productNo }" style="color: #00AAFF; font-size: 15px"></i> --%>
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:150px " >
 						<span id="pp-${cl.productNo }" class="price">
@@ -224,8 +236,39 @@ input[type="text"] {
 						${cl.sum }
 						</span>원
 					</td>
+<%-- 					<td id="shippingPrice-${cl.productNo }">${cl.shippingPrice }</td> --%>
 				</tr>
-				</c:forEach>
+				</c:if>
+			</c:forEach>
+<%-- 			<c:forEach items="${ cartList}" var="cl" > --%>
+<!-- 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;"> -->
+<!-- 					<td class="imgTab"> -->
+<%-- 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }"> --%>
+<%-- <%-- 						<input type="checkbox" value="${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;"> --%> --%>
+<!-- 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;"> -->
+<!-- 					</td> -->
+<!-- 					<td style="border-right: 2px solid #dee2e6; text-align: left"> -->
+<%-- 						<b>${cl.productName}</b><br><br> --%>
+<%-- 						옵션 : ${cl.selectedOpt } --%>
+<!-- 					</td> -->
+<!-- 					<td style="border-right: 2px solid #dee2e6; width:130px"> -->
+<%-- 						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp; --%>
+<!-- 					</td> -->
+<!-- 					<td style="border-right: 2px solid #dee2e6; width:150px " > -->
+<%-- 						<span id="pp-${cl.productNo }" class="price"> --%>
+<%-- 						${cl.productPrice} --%>
+<!-- 						</span>원 -->
+<!-- 					</td> -->
+<!-- 					<td style="border-right: 2px solid #dee2e6; width:130px"> -->
+<%-- 						<span class="point" id="point-${cl.productNo }"></span>P 적립 --%>
+<!-- 					</td> -->
+<!-- 					<td style="border-right: 2px solid #dee2e6; width:160px"> -->
+<%-- 						<span class="sum" id="sum-${cl.productNo }"> --%>
+<%-- 						${cl.sum } --%>
+<!-- 						</span>원 -->
+<!-- 					</td> -->
+<!-- 				</tr> -->
+<%-- 				</c:forEach> --%>
 		</tbody>
 	</table><br><br>
 	<div style="width: 1200px; margin: 0 auto; font-align: right">

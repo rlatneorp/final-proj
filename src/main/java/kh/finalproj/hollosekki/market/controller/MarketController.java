@@ -59,11 +59,49 @@ public class MarketController {
 //		ArrayList<Object> optName = new ArrayList<>();
 		
 		ArrayList<Cart> optionNos = new ArrayList<>();
-		
+		ArrayList<Options> optValues = new ArrayList<>();
 		for(Cart cart : cartList) {
 			int productNo = cart.getProductNo();
 			System.out.println("cart : " + cart);
-//			optionNos = mkService.selectOptionNo(cart);
+			
+			//preorderNo 하나하나 
+			//optionNo하나하나ㅏ......
+			//에 해당 되는 value 가져오기 
+			//그럼 얘네는 겹칠 수가 없음 
+			
+//			System.out.println("cart.getProductOption : " + cart.getProductOption(), car);
+			Options opt = mkService.selectOptionInfo(cart.getProductNo(), cart.getProductOption()); //옵션 넘버 보내서 조회
+			System.out.println("cart.get~" + cart.getProductNo());
+			System.out.println("cart.get~" + cart.getProductOption());
+			
+			System.out.println("opt : " + opt);
+			optValues.add(opt);
+			
+			
+			
+//			System.out.println("opttttttt : " + opt.getOptionValue());
+			
+			
+//			cart.setOptionValue(opt.getOptionValue());
+			
+			
+			
+			
+			
+			
+			
+//			optionNos = mkService.selectOptionNo(cart); //주문번호에 해당 되는 옵션 번호 조회 
+//			System.out.println("optionNos : " + optionNos);
+//			for(Cart optNos : optionNos) {
+//				System.out.println("optNos : " + optNos);
+////				cart.setProductOption(optNos);
+////				Options optionValue = mkService.selectOptionInfo(optNos);
+////				optValues.add(optionInfos);
+//			}
+			
+			
+//			System.out.println("optionValues : " + optionValues);
+//			cart.setOptionValue(optionValues);
 //			System.out.println("optionsNos = " + optionNos);
 			
 			//예를들어 11번일 때 
@@ -83,14 +121,11 @@ public class MarketController {
 			
 			selectProductInfo = mkService.selectProductInfo(productNo);
 			int price = 0; int sum = 0;
-			System.out.println("price진입직전");
 			for (Product product : selectProductInfo) {
 			    price = product.getProductPrice();
 			    cart.setProductPrice(price); 
 			}
-			System.out.println("진입후");
 			int size = mkService.plusResultCount(productNo);
-			System.out.println("사이즈?");
 			sum = size * price;
 			cart.setSum(sum);
 			
@@ -99,7 +134,6 @@ public class MarketController {
 //			} else {
 //				cart.setShippingPrice("30,000");
 //			}
-			System.out.println("========여기까지는 와????");
 			if (foods != null) {
 				System.out.println("foods : " + foods);
 				cart.setProductName(foods.getFoodName());
@@ -113,73 +147,238 @@ public class MarketController {
 		    	cart.setProductName(igs.getIngredientName());
 		    }
 		}
-		
+		System.out.println("optValues : " + optValues);
 		System.out.println("cartList" + cartList);
+		
+		
+		model.addAttribute("optValues", optValues);
 		model.addAttribute("cartList", cartList);
 		return "basket";
 	}
 
 	@RequestMapping("payDetail.ma")
-	public String payDetail(HttpSession session, Model model, @RequestParam("pairs") String[] pairs) {
+	public String payDetail(HttpSession session, Model model, @RequestParam("optNos") String optNos) {
 		
-		Food foods = null; Tool tools = null; Ingredient igs = null;
+		
 		Users users = (Users)session.getAttribute("loginUser");
+		Food foods = null; Tool tools = null; Ingredient igs = null;
 		ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
+		ArrayList<Product> productInfo = new ArrayList<>();
+		ArrayList<Cart> checkedCart = new ArrayList<>();
 		ArrayList<Cart> checkedCartList = new ArrayList<>();
-		ArrayList<Product> productInfo = new ArrayList<>(); 
 		
-		Cart cart = null;
-		System.out.println("pairs.length : " + pairs.length);
-		for(int i=0; i <= pairs.length-2; i+=2) {
+		//옵션 
+		ArrayList<Cart> optionNos = new ArrayList<>();
+		ArrayList<Options> optValues = new ArrayList<>();
+		
+		
+		String[] optNo = optNos.split(",");
+		int[] intOptionNo = new int[optNo.length];
+		System.out.println("optNos.lenght : " + optNo.length ); //3 
+		
+		
+		
+		for(int i=0; i<optNo.length; i++) {
+			intOptionNo[i] = Integer.parseInt(optNo[i]);
+			System.out.println("intOptionNo : " + intOptionNo[i]);
+			int preorderNo = intOptionNo[i];
 			
-			int productNo = Integer.parseInt(pairs[i]);
-			System.out.println("productNo!!!!!!!!!!!!!: " + productNo);
-			int optionNo = Integer.parseInt(pairs[i+1]);
+			//주문번호로 cartList 조회 
+			checkedCart = mkService.checkCartList(users.getUsersNo(),preorderNo);
 			
-			Cart checkedCart = mkService.checkCartList(users.getUsersNo(), productNo);
-			//보낸 option 넘버로 cart 업데이트 
-			checkedCart.setProductNo(productNo);
-			checkedCart.setProductOption(optionNo);
-			mkService.updateOptionNo(cart); // cart 테이블 OptionNo 업데이트 
-			String optionVal = mkService.selectOptionValue(optionNo);
-			checkedCart.setSelectedOpt(optionVal);
+			for(Cart checCart : checkedCart) { 
+				int productNo = checCart.getProductNo();
+				System.out.println("getProductNo : " + checCart.getProductNo());
+				
+				Options opt = mkService.selectOptionInfo(checCart.getProductNo(), checCart.getProductOption()); //옵션 넘버 보내서 조회
+				System.out.println("cart.get~" + checCart.getProductNo());
+				System.out.println("cart.get~" + checCart.getProductOption());
+				
+				System.out.println("opt인데 여기는 어디냐면 payDetail!!!!!!!! : " + opt);
+				optValues.add(opt);
+				
+				foods = mkService.selectFood(productNo);
+				tools = mkService.selectTool(productNo);
+				igs = mkService.selectIngrdient(productNo);
+				
+				productInfo = mkService.selectProductInfo(productNo);
+				int price = 0; int sum = 0;
+				for (Product product : productInfo) {
+				    price = product.getProductPrice();
+				    checCart.setProductPrice(price); 
+				}
+				int size = mkService.plusResultCount(productNo);
+				sum = size * price;
+				checCart.setSum(sum);
+				
+				if (foods != null) {
+					checCart.setProductName(foods.getFoodName());
+			    }
+			    if (tools != null) {
+			    	checCart.setProductName(tools.getToolName());
+			    }
+			    if (igs != null) {
+			    	checCart.setProductName(igs.getIngredientName());
+			    }
+			    checkedCartList.add(checCart);
+			}System.out.println("checkedCartList : " + checkedCartList);
 			
-			foods = mkService.selectFood(productNo);
-			tools = mkService.selectTool(productNo);
-			igs = mkService.selectIngrdient(productNo);
 			
-			productInfo = mkService.selectProductInfo(productNo);
-			int price = 0; int sum = 0;
 			
-			for (Product product : productInfo) {
-			    price = product.getProductPrice();
-			    checkedCart.setProductPrice(price); 
-			}
 			
-			int size = mkService.plusResultCount(productNo);
-			sum = size * price;
-			checkedCart.setSum(sum);
+//			System.out.println("checkedCart111111111111111111111111111 : " + checkedCart);
 			
-			if(sum >= 30000) {
-				checkedCart.setShippingPrice("무료배송");
-			} else {
-				checkedCart.setShippingPrice("30,000");
-			}
+			//productNo, productName, optionNo, cartCount, price
+		}
+		
+//		System.out.println("checkedCart112222222222222222222222222222222222222 : " + checkedCart);
+		
+		
+//		for(Cart checCart : checkedCart) { 
+//			int productNo = checCart.getProductNo();
+//			System.out.println("getProductNo : " + checCart.getProductNo());
+//			
+//			foods = mkService.selectFood(productNo);
+//			tools = mkService.selectTool(productNo);
+//			igs = mkService.selectIngrdient(productNo);
+//			
+//			productInfo = mkService.selectProductInfo(productNo);
+//			int price = 0; int sum = 0;
+//			for (Product product : productInfo) {
+//			    price = product.getProductPrice();
+//			    checCart.setProductPrice(price); 
+//			}
+//			int size = mkService.plusResultCount(productNo);
+//			sum = size * price;
+//			checCart.setSum(sum);
+//			
+//			if (foods != null) {
+//				checCart.setProductName(foods.getFoodName());
+//		    }
+//		    if (tools != null) {
+//		    	checCart.setProductName(tools.getToolName());
+//		    }
+//		    if (igs != null) {
+//		    	checCart.setProductName(igs.getIngredientName());
+//		    }
+//		    checkedCart.add(checCart);
+//		}System.out.println("checkedCart : " + checkedCart);
+//		
 			
-			if (foods != null) {
-				checkedCart.setProductName(foods.getFoodName());
-		    }
-		    if (tools != null) {
-		    	checkedCart.setProductName(tools.getToolName());
-		    }
-		    if (igs != null) {
-		    	checkedCart.setProductName(igs.getIngredientName());
-		    }
-			checkedCartList.add(checkedCart);
-		} //첫 번째 for문 끝 
+//			foods = mkService.selectFood(productNo);
+//			tools = mkService.selectTool(productNo);
+//			igs = mkService.selectIngrdient(productNo);
+//			
+//			productInfo = mkService.selectProductInfo(productNo);
+//			int price = 0; int sum = 0;
+//			
+//			for (Product product : productInfo) {
+//			    price = product.getProductPrice();
+//			    checkedCart.setProductPrice(price); 
+//			}
+//			
+//			int size = mkService.plusResultCount(productNo);
+//			sum = size * price;
+//			checkedCart.setSum(sum);
+//			
+//			if(sum >= 30000) {
+//				checkedCart.setShippingPrice("무료배송");
+//			} else {
+//				checkedCart.setShippingPrice("30,000");
+//			}
+//			
+//			if (foods != null) {
+//				checkedCart.setProductName(foods.getFoodName());
+//		    }
+//		    if (tools != null) {
+//		    	checkedCart.setProductName(tools.getToolName());
+//		    }
+//		    if (igs != null) {
+//		    	checkedCart.setProductName(igs.getIngredientName());
+//		    }
+//			checkedCartList.add(checkedCart);
 			
-		System.out.println("checkCartList : " + checkedCartList);
-		model.addAttribute("cartList", checkedCartList );
+			
+			
+			
+			
+			
+//		}
+		
+		
+		
+		
+//		Food foods = null; Tool tools = null; Ingredient igs = null;
+//		Users users = (Users)session.getAttribute("loginUser");
+		
+		
+		
+//		ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
+//		ArrayList<Cart> checkedCartList = new ArrayList<>();
+//		ArrayList<Product> productInfo = new ArrayList<>(); 
+//		
+//		Cart cart = null;
+//		System.out.println("pairs.length : " + pairs.length);
+//		System.out.println("pairs : " + pairs);
+//		for(int i=0; i <= pairs.length-2; i+=2) {
+//			
+//			int productNo = Integer.parseInt(pairs[i]);
+//			System.out.println("productNo!!!!!!!!!!!!!: " + productNo);
+//			int optionNo = Integer.parseInt(pairs[i+1]);
+//			System.out.println("optionNo : " + optionNo);
+//			System.out.println("----------헨젤과그레텔 과자 1 ");
+//			Cart checkedCart = mkService.checkCartList(users.getUsersNo(), productNo);
+//			System.out.println("----------헨젤과그레텔 과자 2 ");
+//			//보낸 option 넘버로 cart 업데이트 
+//			checkedCart.setProductNo(productNo);
+//			checkedCart.setProductOption(optionNo);
+//			mkService.updateOptionNo(cart); // cart 테이블 OptionNo 업데이트 
+//			System.out.println("----------헨젤과그레텔 과자 3 ");
+//			String optionVal = mkService.selectOptionValue(optionNo);
+//			System.out.println("----------헨젤과그레텔 과자 4 ");
+//			checkedCart.setSelectedOpt(optionVal);
+//			System.out.println("----------헨젤과그레텔 과자 5 ");
+//			
+//			foods = mkService.selectFood(productNo);
+//			tools = mkService.selectTool(productNo);
+//			igs = mkService.selectIngrdient(productNo);
+//			
+//			productInfo = mkService.selectProductInfo(productNo);
+//			int price = 0; int sum = 0;
+//			
+//			for (Product product : productInfo) {
+//			    price = product.getProductPrice();
+//			    checkedCart.setProductPrice(price); 
+//			}
+//			
+//			int size = mkService.plusResultCount(productNo);
+//			sum = size * price;
+//			checkedCart.setSum(sum);
+//			
+//			if(sum >= 30000) {
+//				checkedCart.setShippingPrice("무료배송");
+//			} else {
+//				checkedCart.setShippingPrice("30,000");
+//			}
+//			
+//			if (foods != null) {
+//				checkedCart.setProductName(foods.getFoodName());
+//		    }
+//		    if (tools != null) {
+//		    	checkedCart.setProductName(tools.getToolName());
+//		    }
+//		    if (igs != null) {
+//		    	checkedCart.setProductName(igs.getIngredientName());
+//		    }
+//			checkedCartList.add(checkedCart);
+//		} //첫 번째 for문 끝 
+//			
+//		System.out.println("checkCartList : " + checkedCartList);
+//		model.addAttribute("cartList", checkedCartList );
+		
+		model.addAttribute("checkedCartList", checkedCartList );
+		model.addAttribute("optValues", optValues);
+		
 		return "payDetail";
 	}
 			

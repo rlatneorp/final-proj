@@ -1,11 +1,14 @@
 package kh.finalproj.hollosekki.users.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.SqlSessionManager;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.users.model.dao.UsersDAO;
@@ -62,6 +65,26 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public int deleteInfo(int usersNo) {
 		return uDAO.deleteInfo(sqlSession, usersNo);
+	}
+	
+	@Override
+	public ArrayList<Follow> selectFollowing(int usersNo) {
+		return uDAO.selectFollowing(sqlSession, usersNo);
+	}
+	
+	@Override
+	public ArrayList<Follow> selectFollower(int usersNo) {
+		return uDAO.selectFollower(sqlSession, usersNo);
+	}
+
+	@Override
+	public Users selectFollowInfo(int followingNo) {
+		return uDAO.selectFollowInfo(sqlSession, followingNo);
+	}
+
+	@Override
+	public Image selectFollowImage(int followingNo) {
+		return uDAO.selectFollowImage(sqlSession, followingNo);
 	}
 	
 	

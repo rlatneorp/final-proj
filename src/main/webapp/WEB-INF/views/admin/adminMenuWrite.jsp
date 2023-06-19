@@ -334,6 +334,7 @@
 								tr.querySelector('.content').querySelectorAll('p')[1].innerText = data.foodContent.split("@")[0];
 								tr.querySelectorAll('.priceBox')[0].value = data.productPrice;
 								tr.querySelector('.nutrient').value = data.foodContent.split("@")[3];
+								console.log(tr.querySelector('.nutrient').value);
 								tr.querySelector('.imageTd').children[0].value = this.value;
 								
 								dayNutrient(tr.querySelector('.index').value);
@@ -397,7 +398,7 @@
 			const infoContentDay = document.getElementsByClassName('infoContentDay')[i];
 			const inputs = infoContentDay.querySelectorAll('.dayNutrient');
 			const nutrients = infoContentDay.parentElement.parentElement.parentElement.querySelectorAll('.nutrient');
-
+			console.log(nutrients)
 			for(const input of inputs){
 				input.value = 0;
 			}

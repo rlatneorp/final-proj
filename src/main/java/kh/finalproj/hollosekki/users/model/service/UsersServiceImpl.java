@@ -53,6 +53,11 @@ public class UsersServiceImpl implements UsersService {
 	public int deleteImage(int usersNo) {
 		return uDAO.deleteImage(sqlSession, usersNo);
 	}
+
+	@Override
+	public Users selectInfo(Users u) {
+		return uDAO.selectInfo(sqlSession, u);
+	}
 	
 	
 }

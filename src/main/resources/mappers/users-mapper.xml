@@ -49,4 +49,30 @@
 		delete from image
 		where IMAGE_DIVIDE_NO = #{usersNo} and image_type = '1'
 	</delete>
+	
+	<select id="selectInfo" resultMap="usersResultSet">
+		select *
+		from users
+		where users_no = #{usersNo}
+	</select>
+	
+	<resultMap type="Users" id="usersResultSet">
+		<id column="USERS_NO" property="usersNo"/>
+		<result column="USERS_ID" property="usersId"/>
+		<result column="USERS_PW" property="usersPw"/>
+		<result column="USERS_NAME" property="usersName"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="EMAIL" property="email"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="EXIT_DATE" property="eixtDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="CHECK_DAY" property="checkDay"/>
+		<result column="POINT" property="point"/>
+		<result column="IS_ADMIN" property="isAdmin"/>
+		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
+		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
+		<result column="USERS_ADDRESS" property="usersAddress"/>
+		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
+	</resultMap>
 </mapper>

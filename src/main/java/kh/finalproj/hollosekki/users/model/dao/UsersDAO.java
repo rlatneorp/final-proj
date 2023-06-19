@@ -39,4 +39,8 @@ public class UsersDAO {
 		return sqlSession.delete("usersMapper.deleteImagebase", usersNo);
 	}
 
+	public Users selectInfo(SqlSessionTemplate sqlSession, Users u) {
+		return sqlSession.selectOne("usersMapper.selectInfo", u);
+	}
+
 }

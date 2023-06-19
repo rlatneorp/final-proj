@@ -21,5 +21,7 @@ public interface UsersService {
 
 	int deleteImage(int usersNo);
 
+	Users selectInfo(Users u);
+
 
 }

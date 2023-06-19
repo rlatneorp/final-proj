@@ -59,5 +59,10 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.selectInfo(sqlSession, u);
 	}
 	
+	@Override
+	public int deleteInfo(int usersNo) {
+		return uDAO.deleteInfo(sqlSession, usersNo);
+	}
+	
 	
 }

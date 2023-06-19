@@ -709,7 +709,6 @@ p b {
 <%@include file="../common/storeTop.jsp" %>
 <br>
 </span>
-
 	<form action="${contextPath}/insertCart.ma" method="post">
 	<main id="order-wrap">
 		<!-- 구매창 컨테이너 -->
@@ -755,12 +754,36 @@ p b {
                                 </dl>
 								<hr style="margin: 0px;">
 						
-					
+					<c:forEach items="${options}" var="op" varStatus="vs">
+						<c:if test="${vs.index == 0}">
+							<label for="productOption">${op.optionName}</label>
+							<select class='productOption'  required>
+								<option value="">옵션을 선택해주세요</option>
+								<option value="${op.optionValue}">${op.optionValue}</option>
+						</c:if>
+						<c:if test="${op.optionName eq options[vs.index-1].optionName}">
+							<option value="${op.optionValue}">${op.optionValue}</option>
+						</c:if>
+						<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
+							</select>
+							
+							<label for="productOption2">${op.optionName}</label>
+							<select class='productOption'  required>
+								<option class='productOption2Set' >옵션을 선택해주세요.</option>
+								<option value="${op.optionValue}">${op.optionValue}</option>
+						</c:if>
+						<c:if test="${vs.last}">
+							</select>
+						</c:if>
+					</c:forEach>
+						
+				
+
 					<label for="productOption">색상</label>
 					<select class='productOption'  required>
 						<!-- 사이즈 선택 창 --> 
 						<option value="">옵션을 선택해주세요</option>
-						<option value="black">black</option>
+						<option value="Black">black</option>
 						<option value="silver">silver</option>
 						<option value="gray">gray</option>
 						<option value="light-gray">light-gray</option>
@@ -1338,6 +1361,7 @@ $(function(){
         
         const count=0;
         console.log(allData);
+        const count = 0;
         
 	        for(i=0; i<productNoValues.length; i++){
 		        $.ajax({

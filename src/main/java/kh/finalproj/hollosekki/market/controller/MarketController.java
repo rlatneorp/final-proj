@@ -46,6 +46,8 @@ public class MarketController {
 	@RequestMapping("basket.ma")
 	public String pay(HttpSession session, Model model) {
 		
+		
+		
 		Users users = (Users)session.getAttribute("loginUser");
 		int userNo = users.getUsersNo();
 		
@@ -56,45 +58,39 @@ public class MarketController {
 		Food foods = null; Tool tools = null; Ingredient igs = null;
 //		ArrayList<Object> optName = new ArrayList<>();
 		
+		ArrayList<Cart> optionNos = new ArrayList<>();
 		
 		for(Cart cart : cartList) {
 			int productNo = cart.getProductNo();
+			System.out.println("cart : " + cart);
+//			optionNos = mkService.selectOptionNo(cart);
+//			System.out.println("optionsNos = " + optionNos);
 			
 			//예를들어 11번일 때 
-			ArrayList<Options> options = mkService.selectOptions(productNo);
+//			ArrayList<Options> options = mkService.selectOptions(productNo);
 			//11번에 해당 되는 옵션들이 모두 조회 
-			System.out.println("options : " + options);
-			cart.setOptionValue(options);
-			
-			//옵션이 여러개일 때 
-			Map<String, List<String>> optionMap = new HashMap<>();
-			for (Options option : options) {
-			    String optionName = option.getOptionName();
-			    String optionValue = option.getOptionValue();
-			    
-			    List<String> optionValues = optionMap.computeIfAbsent(optionName, k -> new ArrayList<>());
-			    optionValues.add(optionValue);
-			} cart.setOptionName(optionMap);
-			
-			//끝 
-			
-//				
-			
+//			System.out.println("options : " + options);
+//			cart.setOptionValue(options);
 			
 			
 			
 			foods = mkService.selectFood(productNo);
+			System.out.println("foods : " + foods);
 			tools = mkService.selectTool(productNo);
+			System.out.println("tools : " + tools);
 			igs = mkService.selectIngrdient(productNo);
-				
+			System.out.println("igs : " + igs);
 			
 			selectProductInfo = mkService.selectProductInfo(productNo);
 			int price = 0; int sum = 0;
+			System.out.println("price진입직전");
 			for (Product product : selectProductInfo) {
 			    price = product.getProductPrice();
 			    cart.setProductPrice(price); 
 			}
+			System.out.println("진입후");
 			int size = mkService.plusResultCount(productNo);
+			System.out.println("사이즈?");
 			sum = size * price;
 			cart.setSum(sum);
 			
@@ -103,7 +99,7 @@ public class MarketController {
 //			} else {
 //				cart.setShippingPrice("30,000");
 //			}
-			
+			System.out.println("========여기까지는 와????");
 			if (foods != null) {
 				System.out.println("foods : " + foods);
 				cart.setProductName(foods.getFoodName());

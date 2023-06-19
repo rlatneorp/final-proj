@@ -61,7 +61,7 @@
 	
 	<insert id="insertCart">
 		INSERT INTO CART
-		VALUES (SEQ_CART_NO.NEXTVAL, ${usersNo}, #{productNo}, #{productOption}, #{cartCount} )
+		VALUES (SEQ_CART_NO.NEXTVAL, ${usersNo}, ${pNo}, ${pOption}, ${cartCount}, null )
 	</insert>
 	
 	<select id="allAt" resultMap="AttendanceResultSet">
@@ -135,10 +135,11 @@
 	</resultMap>
 	
 	<select id="selectCartList" resultMap="cartList">
-		select *
-		from cart
-		left join product using(product_no)
-		where cart.users_no = #{usersNo} and product.PRODUCT_STATUS = 'Y'
+		SELECT *
+		FROM cart
+		LEFT JOIN product on (cart.product_no = product.product_no)
+		WHERE cart.users_no = #{usersNo} AND product.PRODUCT_STATUS = 'Y'
+		ORDER BY cart.product_no
 	</select>
 	
 <!-- 	<select id="selectCartList" resultMap="cartList"> -->
@@ -151,6 +152,7 @@
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_OPTION" property="productOption"/>
 		<result column="CART_COUNT" property="cartCount"/>
+		<result column="PRE_ORDER_NO" property="preorderNo"/>
 	</resultMap>
 	
 	<resultMap type="Options" id="optionsList">
@@ -221,7 +223,15 @@
 	</update>
 	
 	<select id="plusResultCount" resultType="_int">
-		select cart_count from cart where product_no = #{productNo}
+		<![CDATA[
+		SELECT cart_count
+		FROM (
+		    SELECT cart_count
+		    FROM cart
+		    WHERE product_no = #{productNo}
+		)
+		WHERE ROWNUM = 1
+		 ]]>
 	</select>
 	
 	<update id="minusCount">
@@ -230,19 +240,27 @@
 	</update>
 	
 	<select id="checkCartList" resultMap="cartList">
-		select * from cart where users_no = #{usersNo} and product_no = #{productNo}
+		select * from cart where users_no = #{usersNo} and pre_order_no = #{preorderNo}
 	</select>
 	
 	<select id="selectOptions" resultMap="optionsList">
-		select * from options where product_no = #{productNo}
+		select * from options where option_no = #{optionNo} and product_no = #{productNo}
 	</select>
 	
 	<select id="updateOptionNo" resultType="_int">
 		update cart set product_option = #{productOption} where product_no = #{productNo}
 	</select>
 	
-	<select id="selectOptionValue" resultType="String">
-		select option_value from options where option_no = #{optionNo}
+<!-- 	<select id="selectOptionVal" resultType="String"> -->
+<!-- 		select option_value from options where pre_order_no = #{preorderNo} -->
+<!-- 	</select> -->
+	
+	<select id="selectOptionNo" resultMap="cartList">
+		select * from cart where product_no = #{productNo} and users_no = #{usersNo} and pre_order_no = #{preorderNo}
+	</select>
+	
+	<select id="selectOptionInfo" resultMap="optionsList">
+		select * from options where option_no = #{productOption} and product_no = #{productNo}
 	</select>
 	
 </mapper>

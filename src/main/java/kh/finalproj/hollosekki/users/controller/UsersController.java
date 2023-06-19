@@ -96,6 +96,7 @@ public class UsersController {
 	public String myPage_InsertProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 									   Model model, HttpServletRequest request) {
 		int result = uService.updateProfile(u);
+		Users user = uService.selectInfo(u);
 		
 		Image image = null;
 		
@@ -121,7 +122,7 @@ public class UsersController {
 		}
 		
 		if(result > 0) {
-	        model.addAttribute("loginUser", eService.login(u));
+	        model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
 			throw new UsersException("프로필 수정 실패");
@@ -132,6 +133,7 @@ public class UsersController {
 	public String myPage_UpdateProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 			   						   Model model, HttpServletRequest request) {
 		int result = uService.updateProfile(u);
+		Users user = uService.selectInfo(u);
 		
 		Image image = null;
 		
@@ -176,7 +178,7 @@ public class UsersController {
 		}
 		
 		if(result > 0) {
-	        model.addAttribute("loginUser", eService.login(u));
+	        model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
 			throw new UsersException("프로필 수정 실패");
@@ -305,6 +307,18 @@ public class UsersController {
 			return "yes";
 		} else {
 			throw new UsersException("회원 정보 수정 실패");
+		}
+	}
+	
+	// 회원탈퇴
+	@RequestMapping("myPage_deleteInfo.me")
+	public String myPage_deleteInfo(@RequestParam("usersNo") int usersNo) {
+		int result = uService.deleteInfo(usersNo);
+		
+		if(result > 0) {
+			return "redirect:logout.en";
+		} else {
+			throw new UsersException("회원 탈퇴 실패");
 		}
 	}
 	

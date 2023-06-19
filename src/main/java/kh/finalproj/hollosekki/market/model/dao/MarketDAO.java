@@ -28,8 +28,8 @@ import kh.finalproj.hollosekki.market.model.vo.Tool;
 @Repository
 public class MarketDAO {
 
-	public int insertCart(SqlSessionTemplate sqlSession, Cart c) {
-		return sqlSession.insert("marketMapper.insertCart",c);
+	public int insertCart(SqlSessionTemplate sqlSession, HashMap<String, String> result) {
+		return sqlSession.insert("marketMapper.insertCart",result);
 	}
 
 	public void attendanceCheck(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
@@ -123,12 +123,13 @@ public class MarketDAO {
 		sqlSession.update("marketMapper.minusCount", productNo);
 	}
 
-	public Cart checkCartList(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
+	public ArrayList<Cart> checkCartList(SqlSessionTemplate sqlSession, int usersNo, int preorderNo) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("usersNo", usersNo);
-		map.put("productNo", productNo);
-		return sqlSession.selectOne("marketMapper.checkCartList", map);
+		map.put("preorderNo", preorderNo);
+		return (ArrayList)sqlSession.selectList("marketMapper.checkCartList", map);
 	}	
+	
 	public void getMonthPoint(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		sqlSession.update("marketMapper.getMonthPoint", map);
 	}
@@ -145,8 +146,36 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectOptionValue", optionNo);
 	}
 
+//	public ArrayList<Cart> selectOptionNo(SqlSessionTemplate sqlSession, int i) {
+//		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionNo", i);
+//	}
+
+//	public ArrayList<Cart> selectOptionVal(SqlSessionTemplate sqlSession, int preorderNo) {
+//		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionVal", preorderNo);
+//	}
+
+	
 	public ArrayList<Cart> selectOptionNo(SqlSessionTemplate sqlSession, Cart cart) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionNo", cart);
+	}
+
+	public Options selectOptionInfo(SqlSessionTemplate sqlSession, Cart cart) {
+		return sqlSession.selectOne("marketMapper.selectOptionInfo", cart);
+	}
+
+	public Options selectOptions(SqlSessionTemplate sqlSession, Cart cart) {
+		return sqlSession.selectOne("marketMapper.selectOptions", cart);
+	}
+
+//	public Options selectOptionInfo(SqlSessionTemplate sqlSession, int productOption) {
+//		return sqlSession.selectOne("marketMapper.selectOptionInfo", productOption);
+//	}
+
+	public Options selectOptionInfo(SqlSessionTemplate sqlSession, int productNo, int productOption) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("productNo", productNo);
+		map.put("productOption", productOption);
+		return sqlSession.selectOne("marketMapper.selectOptionInfo", map);
 	}
 
 	

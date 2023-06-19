@@ -767,8 +767,8 @@ p b {
 						<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
 							</select>
 							
-							<label for="productOption2">${op.optionName}</label>
-							<select class='productOption'  required>
+							<label for="productOption2Set">${op.optionName}</label>
+							<select class='productOption2Set'  required>
 								<option class='productOption2Set' >옵션을 선택해주세요.</option>
 								<option value="${op.optionValue}">${op.optionValue}</option>
 						</c:if>
@@ -779,21 +779,21 @@ p b {
 						
 				
 
-					<label for="productOption">색상</label>
-					<select class='productOption'  required>
-						<!-- 사이즈 선택 창 --> 
-						<option value="">옵션을 선택해주세요</option>
-						<option value="Black">black</option>
-						<option value="silver">silver</option>
-						<option value="gray">gray</option>
-						<option value="light-gray">light-gray</option>
-					</select>
+<!-- 					<label for="productOption">색상</label> -->
+<!-- 					<select class='productOption'  required> -->
+<!-- 						사이즈 선택 창  -->
+<!-- 						<option value="">옵션을 선택해주세요</option> -->
+<!-- 						<option value="Black">black</option> -->
+<!-- 						<option value="silver">silver</option> -->
+<!-- 						<option value="gray">gray</option> -->
+<!-- 						<option value="light-gray">light-gray</option> -->
+<!-- 					</select> -->
 					
-					<label for="productOption2">사이즈</label>
-					<select class='productOption2' required>
-						<!-- 사이즈 선택 창 -->
-						<option class='productOption2Set' >옵션을 선택해주세요.</option>
-					</select>
+<!-- 					<label for="productOption2">사이즈</label> -->
+<!-- 					<select class='productOption2' required> -->
+<!-- 						사이즈 선택 창 -->
+<!-- 						<option class='productOption2Set' >옵션을 선택해주세요.</option> -->
+<!-- 					</select> -->
 
 
 <!-- 					<div id="productResult" class="productResultSet"> -->
@@ -1195,34 +1195,43 @@ p b {
    		 productOp.push(prOp.value);
    	 }
       
+    	let b = ["옵션을 선택해주세요."]; 
     	productOption.addEventListener("change", function(){
-    		
     		if(productOp.value != ""){
-    			let b = ["옵션을 선택해주세요.", "XL","L","M","S"];  //옵션을 담아둘 배열
-                let result = productOption.value;              //상품 1의 옵션값을 담은 배열
+    			
+    			for(i=1; i<productOption2Set.length; i++){
+    				//옵션을 담아둘 배열
+//     				b.push(productOption2Set[i].value);
+    				b.push(productOption2Set[i].value);
+    				
+    			}
+    			
+                let result = productOption.value;              //상품 1의 옵션이 선택된 값
                 let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-                
-                if ( productOp.indexOf(result) > 0  == true && result != "") {  //상품 1옵션에 선택한 상품옵션 값이 존재하거나 옵션을 선택해주세요 선택창이 아닐경우 실행
-                	if(productOp.indexOf(b[0]) < 0){
+                console.log(b)
+                if ( productOp.indexOf(result) > 0  && result != "") {  //상품 1옵션에 선택한 상품옵션 값이 존재하거나 옵션을 선택해주세요 선택창이 아닐경우 실행
+                	if(productOp.indexOf(b[0]) < 0 ){
                 		o = b;
-                	}else{
+                	}else {
                 		alert("필수 옵션을 선택해주세요");
                 	}
                   
-                } else if ( productOp.indexOf(o) > 0 != true && result != "") {
+                } else if ( productOp.indexOf(o[0]) > 0 &&  result != '') {
                   o = b;
-                } else {
+                } else if(productOp.indexOf(o[0]) < 0 ){
               	o = ["색상 옵션을 선택해주세요"];
                 }
-               if((productOption2==="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
-            	   productOption2.options.length=0;
+               if((productOption2==='') == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+            	   productOption2.options.length = 0;
                }
               
+              
                 for ( let i = 0; i < o.length; i++ ) {
+                	console.log(o[i]);
                 	if( i == 0){
-                		productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
+                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
                 	}else{
-                		productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
+                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
                 	}
                 			
                   }
@@ -1230,10 +1239,10 @@ p b {
     		  
     	})
         
-        
-        productOption2.addEventListener("change", function(){
+        console.log(productOption2Set);
+        productOption2Set.addEventListener("change", function(){
              const select =  $('.productOption option:selected');
-             const select2 = $('.productOption2 option:selected');
+             const select2 = $('.productOption2Set option:selected');
              
       		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
       		const opSearch = document.getElementsByClassName('opSearch');
@@ -1252,7 +1261,7 @@ p b {
 						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 								 							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
-								 							+'<input type="hidden" name="productNo" value="134">'
+								 							+'<input type="hidden" name="productNo" value="1000">'
 								 							+'<input type="hidden" name="productName" value="캠핑용 후라이팬">'
 								 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
 								 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
@@ -1275,8 +1284,6 @@ p b {
 								 						 +'<br>'
 								 					+'</div>');
 							
-		  				console.log(select.val());
-		  				console.log(select2.val());
 	      			}
 		  					
       	})
@@ -1359,33 +1366,35 @@ $(function(){
         })
         
         
-        
         console.log(allData);
         const count = 0;
         
-        for(i=0; i<productNoValues.length; i++){
-	        $.ajax({
-	            url: "insertCart.ma",
-// 	            type: "post",
-	            data: {
-	        		"productNo":productNoValues[i], 
-		        	"cartCount":cartCountValues[i],
-		        	"productOption":productOptionValues[i], 
-		        	"productOption2":productOption2Values[i],
-		        	"usersNo":usersNoValues[i]
-	        	},
-// 	            contentType: "application/json; charset=utf-8",
-	            success: allData =>{
-	            	count++;
-	            	if(allData == "success") {
-	                alert("상품이 장바구니에 담겼습니다.");
-	            	}
-	            },
-	            error: allData => {
-	                alert("상품이 장바구니에 담기지 못했습니다.");
-	            }
-	        })
-        }
+	        for(i=0; i<productNoValues.length; i++){
+		        $.ajax({
+		            url: "insertCart.ma",
+	// 	            type: "post",
+		            data: {
+		        		"productNo":productNoValues[i], 
+			        	"cartCount":cartCountValues[i],
+			        	"productOption":productOptionValues[i], 
+			        	"productOption2":productOption2Values[i],
+			        	"usersNo":usersNoValues[i]},
+	// 	            contentType: "application/json; charset=utf-8",
+		            success: allData =>{
+		            	if(allData == "success") {
+		                count++;
+		            	}
+		            },
+		            error: allData => {
+		            	console.log("error");
+		            }
+		        })
+	        }
+        if(count == productNoValues.length) {
+            alert("상품이 장바구니에 담겼습니다.");
+        	}else{
+        		alert("상품이 장바구니에 담기지 못했습니다.");
+        	}
     })
 })
 	

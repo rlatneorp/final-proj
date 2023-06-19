@@ -28,8 +28,8 @@ public class MarketService {
 	@Autowired
 	private MarketDAO mkDAO;
 
-	public int insertCart(Cart c) {
-		return mkDAO.insertCart(sqlSession,c);
+	public int insertCart(HashMap<String, String> result) {
+		return mkDAO.insertCart(sqlSession,result);
 	}
 
 	public void attendanceCheck(HashMap<String, String> map) {
@@ -124,8 +124,8 @@ public class MarketService {
 		mkDAO.minusCount(sqlSession, productNo);
 	}
 
-	public Cart checkCartList(int usersNo, int productNo) {
-		return mkDAO.checkCartList(sqlSession, usersNo, productNo );
+	public ArrayList<Cart> checkCartList(int usersNo, int preorderNo) {
+		return mkDAO.checkCartList(sqlSession, usersNo, preorderNo);
 	}
 
 	public ArrayList<Cart> insertCart(int cartNo) {
@@ -149,10 +149,34 @@ public class MarketService {
 		return mkDAO.sendPoint(sqlSession, u);
 	}
 
+//
+//	public ArrayList<Cart> selectOptionNo(int i) {
+//		// TODO Auto-generated method stub
+//		return mkDAO.selectOptionNo(sqlSession, i);
+//	}
+//
+//	public ArrayList<Cart> selectOptionVal(int preorderNo) {
+//		return mkDAO.selectOptionVal(sqlSession, preorderNo);
+//	}
 
 	public ArrayList<Cart> selectOptionNo(Cart cart) {
-		// TODO Auto-generated method stub
 		return mkDAO.selectOptionNo(sqlSession, cart);
+	}
+
+	public Options selectOptionInfo(Cart cart) {
+		return mkDAO.selectOptionInfo(sqlSession, cart);
+	}
+
+	public Options selectOptions(Cart cart) {
+		return mkDAO.selectOptions(sqlSession, cart);
+	}
+
+//	public Options selectOptionInfo(int productOption) {
+//		return mkDAO.selectOptionInfo(sqlSession, productOption);
+//	}
+
+	public Options selectOptionInfo(int productNo, int productOption) {
+		return mkDAO.selectOptionInfo(sqlSession, productNo, productOption);
 	}
 
 	

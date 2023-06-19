@@ -23,5 +23,7 @@ public interface UsersService {
 
 	Users selectInfo(Users u);
 
+	int deleteInfo(int usersNo);
+
 
 }

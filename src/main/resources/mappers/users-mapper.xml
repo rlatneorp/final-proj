@@ -53,7 +53,7 @@
 	<select id="selectInfo" resultMap="usersResultSet">
 		select *
 		from users
-		where users_no = #{usersNo}
+		where users_no = #{usersNo} and status = 'Y'
 	</select>
 	
 	<resultMap type="Users" id="usersResultSet">
@@ -75,4 +75,10 @@
 		<result column="USERS_ADDRESS" property="usersAddress"/>
 		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
 	</resultMap>
+	
+	<update id="deleteInfo">
+		update users
+		set status = 'N'
+		where users_no = #{usersNo} and status = 'Y'
+	</update>
 </mapper>

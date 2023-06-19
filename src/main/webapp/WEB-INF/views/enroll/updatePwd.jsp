@@ -131,9 +131,9 @@
 								<div class="pwd-ck">
 									<div class="pwd-ck2" id="eng"><i class="bi bi-circle"></i> 영어</div>
 									<div class="pwd-ck2" id="num"><i class="bi bi-circle"></i> 숫자</div>
-<!-- 									<div class="pwd-ck2" id="special"><i class="bi bi-circle"></i> 특수문자</div> -->
-<!-- 									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 8자 이상</div> -->
-									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 4자 이상</div>
+									<div class="pwd-ck2" id="special"><i class="bi bi-circle"></i> 특수문자</div>
+									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 8자 이상</div>
+<!-- 									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 4자 이상</div> -->
 								</div>
 								<label class="label">비밀번호 확인</label><br>
 								<input type="password" name="checkPwd" id="checkPwd" class="input input2" placeholder="비밀번호를 다시 입력하세요" required><br>
@@ -189,19 +189,19 @@
 	  num.style.color = checkNum.test(pwd.value) ? '#8bb572' : '';
 	  num.innerHTML = checkNum.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 숫자' : '<i class="bi bi-circle"></i> 숫자';
 	  
-// 	  more8.style.color = pwd.value.length >= 8 ? '#8bb572' : '';
-// 	  more8.innerHTML = pwd.value.length >= 8 ? '<i class="bi bi-check-circle"></i> 8자 이상' : '<i class="bi bi-circle"></i> 8자 이상';
+	  more8.style.color = pwd.value.length >= 8 ? '#8bb572' : '';
+	  more8.innerHTML = pwd.value.length >= 8 ? '<i class="bi bi-check-circle"></i> 8자 이상' : '<i class="bi bi-circle"></i> 8자 이상';
 	  
-	  more8.style.color = pwd.value.length >= 4 ? '#8bb572' : '';
-	  more8.innerHTML = pwd.value.length >= 4 ? '<i class="bi bi-check-circle"></i> 4자 이상' : '<i class="bi bi-circle"></i> 4자 이상';
+// 	  more8.style.color = pwd.value.length >= 4 ? '#8bb572' : '';
+// 	  more8.innerHTML = pwd.value.length >= 4 ? '<i class="bi bi-check-circle"></i> 4자 이상' : '<i class="bi bi-circle"></i> 4자 이상';
 	  
-// 	  special.style.color = checkSpecial.test(pwd.value) ? '#8bb572' : '';
-// 	  special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
+	  special.style.color = checkSpecial.test(pwd.value) ? '#8bb572' : '';
+	  special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
 	};
 
 	document.getElementById('pwd').addEventListener('focusout', ()=>{
-// 		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?^=+`~&])[A-Za-z\d@$!%*#?^=+`~&]{8,}$/;
-		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/;
+		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?^=+`~&])[A-Za-z\d@$!%*#?^=+`~&]{8,}$/;
+// 		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/;
 		const pwd = document.getElementById('pwd').value;
 		
 		if(pwd.length > 0){

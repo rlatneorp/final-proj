@@ -1229,7 +1229,7 @@ p b {
 						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 								 							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
-								 							+'<input type="hidden" name="productNo" value="134">'
+								 							+'<input type="hidden" name="productNo" value="1000">'
 								 							+'<input type="hidden" name="productName" value="캠핑용 후라이팬">'
 								 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
 								 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
@@ -1336,30 +1336,35 @@ $(function(){
         })
         
         
-        
+        const count=0;
         console.log(allData);
         
-        for(i=0; i<productNoValues.length; i++){
-	        $.ajax({
-	            url: "insertCart.ma",
-// 	            type: "post",
-	            data: {
-	        		"productNo":productNoValues[i], 
-		        	"cartCount":cartCountValues[i],
-		        	"productOption":productOptionValues[i], 
-		        	"productOption2":productOption2Values[i],
-		        	"usersNo":usersNoValues[i]},
-// 	            contentType: "application/json; charset=utf-8",
-	            success: allData =>{
-	            	if(allData == "success") {
-	                alert("상품이 장바구니에 담겼습니다.");
-	            	}
-	            },
-	            error: allData => {
-	                alert("상품이 장바구니에 담기지 못했습니다.");
-	            }
-	        })
-        }
+	        for(i=0; i<productNoValues.length; i++){
+		        $.ajax({
+		            url: "insertCart.ma",
+	// 	            type: "post",
+		            data: {
+		        		"productNo":productNoValues[i], 
+			        	"cartCount":cartCountValues[i],
+			        	"productOption":productOptionValues[i], 
+			        	"productOption2":productOption2Values[i],
+			        	"usersNo":usersNoValues[i]},
+	// 	            contentType: "application/json; charset=utf-8",
+		            success: allData =>{
+		            	if(allData == "success") {
+		                count++;
+		            	}
+		            },
+		            error: allData => {
+		            	console.log("error");
+		            }
+		        })
+	        }
+        if(count == productNoValues.length) {
+            alert("상품이 장바구니에 담겼습니다.");
+        	}else{
+        		alert("상품이 장바구니에 담기지 못했습니다.");
+        	}
     })
 })
 	

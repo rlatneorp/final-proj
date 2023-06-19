@@ -250,10 +250,20 @@ public class MarketController {
 	
 	@RequestMapping("insertCart.ma")
 	public void insertCart(
-//			@ModelAttribute Cart c,
-			@RequestParam("productNo") String pNo,
-			HttpServletResponse response) {
-//		mkService.insertCart(c);
+				//			@ModelAttribute Cart c,
+							@RequestParam("productNo") String pNo,@RequestParam("cartCount") String cartCount,
+							@RequestParam("productOption") String pOption,@RequestParam("productOption2") String pOption2,
+							@RequestParam("usersNo") String usersNo,
+							HttpServletResponse response) {
+		HashMap<String, String> result = new HashMap<String, String>();
+		
+		result.put("pNo", pNo);
+		result.put("cartCount", cartCount);
+		result.put("pOption", pOption);
+		result.put("pOption2", pOption2);
+		result.put("usersNo", usersNo);
+
+		mkService.insertCart(result);
 		System.out.println(pNo);
 //		System.out.println(c);
 //		ArrayList<Cart> list  = mkService.insertCart(c.getCartNo());

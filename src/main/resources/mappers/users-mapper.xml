@@ -4,12 +4,49 @@
 	<update id="updatePwd">
 		update users
 		set users_pw = #{newPw}
-		where users_id = #{usersId}
+		where users_id = #{usersId} and status = 'Y'
 	</update>
 	
 	<update id="updateInfo">
 		update users
 		set nickname = #{nickName}, email = #{email}, phone = #{phone}
-		where users_id = #{usersId}
+		where users_id = #{usersId} and status = 'Y'
 	</update>
+	
+	<insert id="insertImage">
+		insert into image
+		values (seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, 0)
+	</insert>
+	
+	<update id="updateProfile">
+		update users
+		set users_selfintro = #{usersSelfIntro}
+		where users_no = #{usersNo} and status = 'Y'
+	</update>
+	
+	<select id="selectImage" resultMap="imageResultSet">
+		select *
+		from image
+		where IMAGE_DIVIDE_NO = #{usersNo} and IMAGE_TYPE = '1'
+	</select>
+	
+	<resultMap type="Image" id="imageResultSet">
+		<id column="IMAGE_NO" property="imageNo"/>
+		<result column="IMAGE_DIVIDE_NO" property="imageDivideNo"/>
+		<result column="IMAGE_TYPE" property="imageType"/>
+		<result column="IMAGE_ORIGINALNAME" property="imageOriginalName"/>
+		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
+		<result column="IMAGE_PATH" property="imagePath"/>
+		<result column="IMAGE_LEVEL" property="imageLevel"/>
+	</resultMap>
+	
+	<delete id="deleteImage">
+		delete from image
+		where IMAGE_DIVIDE_NO = #{imageDivideNo} and image_type = '1'
+	</delete>
+	
+	<delete id="deleteImagebase">
+		delete from image
+		where IMAGE_DIVIDE_NO = #{usersNo} and image_type = '1'
+	</delete>
 </mapper>

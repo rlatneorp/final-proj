@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
 @Repository
@@ -53,5 +54,34 @@ public class EnrollDAO {
 	public int checkEmail(SqlSessionTemplate sqlSession, String email) {
 		return sqlSession.selectOne("enrollMapper.checkEmail", email);
 	}
+
+	public SocialLogin socialLogin(SqlSessionTemplate sqlSession, String id) {
+		return sqlSession.selectOne("enrollMapper.socialLogin", id);
+	}
+
+	public int socialInsertUser(SqlSessionTemplate sqlSession, SocialLogin sl2) {
+		return sqlSession.insert("enrollMapper.socialInsertUser", sl2);
+	}
+
+	public Users socialLoginUpdate(SqlSessionTemplate sqlSession, String id) {
+		return sqlSession.selectOne("enrollMapper.socialLoginUpdate", id);
+	}
+
+	public void socialInfoUpdate(SqlSessionTemplate sqlSession, String id, String profileImg) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("profileImg", profileImg);
+		sqlSession.update("enrollMapper.socialInfoUpdate", map);
+		
+	}
+
+	public void socialInfoUpdate2(SqlSessionTemplate sqlSession, String id, String name) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("name", name);
+		sqlSession.update("enrollMapper.socialInfoUpdate2", map);
+	}
+
+
 
 }

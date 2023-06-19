@@ -19,6 +19,7 @@ public class Users {
 	private String attendanceDate;
 	private String attendanceDay;
 	private String usersAddress;
+	private String usersSelfIntro;
 	
 	public Users() {}
 	
@@ -27,7 +28,7 @@ public class Users {
 
 	public Users(int usersNo, String usersId, String usersPw, String usersName, String nickName, String email,
 			String phone, Date enrollDate, Date eixtDate, String status, int checkDay, int point, String isAdmin,
-			String attendanceDate, String attendanceDay, String usersAddress) {
+			String attendanceDate, String attendanceDay, String usersAddress, String usersSelfIntro) {
 		super();
 		this.usersNo = usersNo;
 		this.usersId = usersId;
@@ -45,6 +46,7 @@ public class Users {
 		this.attendanceDate = attendanceDate;
 		this.attendanceDay = attendanceDay;
 		this.usersAddress = usersAddress;
+		this.usersSelfIntro = usersSelfIntro;
 	}
 
 
@@ -182,7 +184,13 @@ public class Users {
 		this.attendanceDay = attendanceDay;
 	}
 
+	public String getUsersSelfIntro() {
+		return usersSelfIntro;
+	}
 
+	public void setUsersSelfIntro(String usersSelfIntro) {
+		this.usersSelfIntro = usersSelfIntro;
+	}
 
 	@Override
 	public String toString() {
@@ -190,14 +198,8 @@ public class Users {
 				+ usersName + ", nickName=" + nickName + ", email=" + email + ", phone=" + phone + ", enrollDate="
 				+ enrollDate + ", eixtDate=" + eixtDate + ", status=" + status + ", checkDay=" + checkDay + ", point="
 				+ point + ", isAdmin=" + isAdmin + ", attendanceDate=" + attendanceDate + ", attendanceDay="
-				+ attendanceDay + ", usersAddress=" + usersAddress + "]";
+				+ attendanceDay + ", usersAddress=" + usersAddress + ", usersSelfIntro=" + usersSelfIntro + "]";
 	}
+	
 
-
-
-	
-	
-	
-	
-	
 }

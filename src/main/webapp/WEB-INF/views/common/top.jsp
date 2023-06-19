@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
 <title>Insert title here</title>
-<!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
 	.top-top{
 		width: 100%; height: 40px; 
@@ -110,8 +111,9 @@
 	    padding-top: 4px;
 	    border-radius: 50%;
 	    background: #B0DAFF;
-	    width: 37px;
-	    height: 35px;}
+	    width: 37px; height: 35px;
+	    cursor: pointer;}
+	.cart:hover{background: #1f8acb; color: white;  transition: all 0.3s ease 0s;}
 	.menu-list{display: none; width: 90px; background: rgba(176, 218, 255, 0.4); margin: 5px;}
 	.menu-div:hover .menu-list{display: block;} 
 </style>
@@ -141,7 +143,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='#'">공 지</div>
+							<div class="menu3" onclick="location.href='${contextPath}/askBoard.cs'">공 지</div>
 							<div class="menu4"></div>
 						</div>
 						
@@ -164,14 +166,14 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/Logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div id="menu-div">
-							<div class="menu3" id="menu3" onclick="location.href='#'">쇼 핑</div>
+							<div class="menu3" id="menu3" onclick="location.href='${contextPath}/kitchenToolMain.ma'">쇼 핑</div>
 							<div class="menu4"></div>
 								<div class="menu-list">
 									<div>list1</div>
@@ -183,7 +185,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='#'">게시판</div>
+							<div class="menu3" onclick="location.href='${contextPath}/freeBoard.bo'">게시판</div>
 							<div class="menu4"></div>
 						</div>
 						
@@ -197,11 +199,28 @@
 							<c:if test="${ loginUser != null }">
 								<div class="menu3" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">MY</div>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-									<div class="profile-img-div"><img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img"></div>
+									<div class="profile-img-div">
+										<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
+											<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+												<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img"/>
+											</c:if>
+											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="profile-img"/>
+											</c:if>
+										</c:if>
+										<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
+											<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+												<img src="${ socialUser.socialProfileImg }" class="profile-img">
+											</c:if>
+											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img" onerror="this.src='${ socialUser.socialProfileImg }';"/>
+											</c:if>
+										</c:if>
+									</div>
 						  			<div class="userName">
 						  				${ loginUser.usersName } 님
 						  			</div>
-						  			<div class="point"><i class="bi bi-coin drop-ic"></i>${ loginUser.point } P</div>
+						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="topP">P</p></div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
 						  			<div class="dropdown-item" onclick="location.href='${ contextPath }/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
@@ -211,7 +230,9 @@
 						</div>
 					</div>
 					<div style="width:80px"></div>
-					<div class="cart"onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
+					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div></c:if>
+					
 				</div>
 			</div>
 		</header>
@@ -219,21 +240,18 @@
 	<br>
 	
 <script>
-// 	document.getElementById('menu3').addEventListener('mouseover', function(){
-// 		 document.getElementById('menu-list').style.display = 'block';
-// 	})
-	
-// 	document.getElementById('menu3').addEventListener('mouseout', function(){
-// 		 document.getElementById('menu-list').style.display = 'none';
-// 	})
-
-// 	$(()=>{
-// 		$('#menu3').hover(function(){
-// 			$(this).toggleClass('menu-hover');
-// 		}, function(){
-// 			$(this).toggleClass('menu-hover');
-// 		});
-// 	})
+var loginUser = '${loginUser}';
+if(loginUser != ''){
+	$.ajax({
+		url: 'point.ma',
+		success: function(info){
+			console.log(info);
+			let topP = document.querySelector('#topP');
+			topP.innerHTML = info.point;
+		}
+		
+	});
+}
 </script>
 
 

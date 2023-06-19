@@ -19,10 +19,12 @@
 		<form action="${contextPath}/adminIngredientUpdate.ad" method="post" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-6 row">
+					<input type="hidden" name="productNo" value="${igd.productNo}">
+					<input type="hidden" name="productOption" value="${igd.productOption}">
 					<input type="hidden" name="productType" value="3">
 					<h5 class="mt-3 mb-5">- 식재료수정 -</h5>
 					<span class="col-3">재료번호</span>
-					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="${igd.ingredientNo}" readonly>
+					<input type="text" name="ingredientNo" class="col-9 pb-1 mb-2 rounded border" value="${igd.ingredientNo}" readonly>
 					<input type="hidden" name="usersNo" value="1">
 					<span class="col-3">등록자</span>
 					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="${igd.usersNo}" readonly>
@@ -32,13 +34,13 @@
 					<input type="text" name="ingredientType" class="col-9 pb-1 mb-2 rounded" placeholder="재료 종류를 선택해주세요." value="${igd.ingredientType}">
 					<span class="col-3">재고</span>
 					<input type="number" name="productStock" class="col-9 pb-1 mb-2 rounded" placeholder="재고를 입력해주세요." value="${igd.productStock}">
-
-					<div class="col-12 row priceBox" <c:if test="${igd.productStatus eq 'N'}">style="opacity: 0.3"</c:if>>
+	
+					<div class="col-12 row priceBox" <c:if test="${igd.productStatus eq null || igd.productStatus eq 'N'}">style="opacity: 0.3"</c:if>>
 						<span class="col-4">가격</span>
-						<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="${igd.productPrice}" readonly>
+						<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="${igd.productPrice}">
 						<span class="col-2">원</span>
 						<span class="col-4">할인율</span>
-						<input type="number" name="productSale" class="col-6 pb-1 mb-2 rounded" min="0" max="99.9" placeholder="할인율을 입력해주세요." value="${igd.productSale}" readonly>
+						<input type="number" name="productSale" class="col-6 pb-1 mb-2 rounded" min="0" max="99.9" placeholder="할인율을 입력해주세요." value="${igd.productSale}">
 						<span class="col-2">%</span>
 						<span class="col-5 text-end">=</span>
 						<input type="number" class="totalPrice col-5 pb-1 mb-2 rounded border" value="0" readonly>
@@ -54,11 +56,11 @@
 					<button type="button" class="col-2 isAccept" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
 					<span class="col-5"></span>
 					
-					<span class="col-3 mb-3">공개상태</span>
-					<input type="hidden" name="ingredientStatus" value="${igd.ingredientStatus}">
-					<button type="button" class="col-2 igdStatus" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
-					<button type="button" class="col-2 igdStatus" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
-					<span class="col-5"></span>
+<!-- 					<span class="col-3 mb-3">공개상태</span> -->
+<%-- 					<input type="hidden" name="ingredientStatus" value="${igd.ingredientStatus}"> --%>
+<!-- 					<button type="button" class="col-2 igdStatus" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button> -->
+<!-- 					<button type="button" class="col-2 igdStatus" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button> -->
+<!-- 					<span class="col-5"></span> -->
 					
 					<span class="col-3">상품등록</span>
 					<input type="hidden" name="productStatus" value="${igd.productStatus}">
@@ -76,13 +78,14 @@
 						<img class="previewImage" width="360px" height="270px" src="${contextPath}/resources/uploadFiles/${img.imageRenameName}">
 					</div>
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
+					<input type="hidden" name="imageChange" value="N">
 					<p style="font-size: 12px; color: gray">최적 이미지 비율은 4:3입니다.</p>
 				</div>
 				
 				<div class="d-flex justify-content-center mb-5">
 					<div class="d-flex">
 						<button type="button" onclick="check()" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
-						<button type="button" onclick="location.href='${contextPath}/adminIngredientManage.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+						<button type="button" onclick="history.back()" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 					</div>
 				</div>
 			</div>
@@ -115,6 +118,13 @@
 			    readImage(e.target);
 			})
 			
+// 			이미지 변경 시 상태변경
+			const imageChange = document.getElementsByName('imageChange')[0];
+			imageFile.addEventListener('change', ()=>{
+				imageChange.value = "Y";
+				console.log(imageChange);
+			})
+			
 // 			공식등록 / 공개상태 버튼 - 기존 값 입력, 이벤트
 			const acBtns = document.getElementsByClassName('isAccept');
 			const isAccept = document.getElementsByName('isAccept')[0];
@@ -129,13 +139,13 @@
 				acBtns[0].style.background = "gray";
 				acBtns[1].style.background = "#19A7CE";
 			}
-			if(igdStatus.value == "Y"){
-				igdStBtns[0].style.background = "#19A7CE";
-				igdStBtns[1].style.background = "gray";
-			}else{
-				igdStBtns[0].style.background = "gray";
-				igdStBtns[1].style.background = "#19A7CE";
-			}
+// 			if(igdStatus.value == "Y"){
+// 				igdStBtns[0].style.background = "#19A7CE";
+// 				igdStBtns[1].style.background = "gray";
+// 			}else{
+// 				igdStBtns[0].style.background = "gray";
+// 				igdStBtns[1].style.background = "#19A7CE";
+// 			}
 			
 // 				이벤트 추가
 			acBtns[0].addEventListener('click', () => {
@@ -149,16 +159,16 @@
 				acBtns[0].style.background = "gray";
 			});
 			
-			igdStBtns[0].addEventListener('click', () => {
-				igdStatus.value = igdStBtns[0].innerText;
-				igdStBtns[0].style.background = "#19A7CE";
-				igdStBtns[1].style.background = "gray";
-			});
-			igdStBtns[1].addEventListener('click', () => {
-				igdStatus.value = igdStBtns[1].innerText;
-				igdStBtns[1].style.background = "#19A7CE";
-				igdStBtns[0].style.background = "gray";
-			});
+// 			igdStBtns[0].addEventListener('click', () => {
+// 				igdStatus.value = igdStBtns[0].innerText;
+// 				igdStBtns[0].style.background = "#19A7CE";
+// 				igdStBtns[1].style.background = "gray";
+// 			});
+// 			igdStBtns[1].addEventListener('click', () => {
+// 				igdStatus.value = igdStBtns[1].innerText;
+// 				igdStBtns[1].style.background = "#19A7CE";
+// 				igdStBtns[0].style.background = "gray";
+// 			});
 
 // 			상품등록 버튼 - 기존 값 입력, 이벤트
 			const priceBox = document.getElementsByClassName('priceBox')[0];

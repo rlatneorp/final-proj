@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 자기소개 등록</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- 서머노트를 위해 추가해야할 부분 -->
@@ -43,7 +43,7 @@
 	
 	<div id="Div">
 		<div class="myPageDiv">
-		<%@ include file="../common/usersSideBar.jsp" %>
+		<%@ include file="../common/memberSideBar.jsp" %>
 			<div class="content">
 				<p id="pmyPage">마이페이지</p>
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>

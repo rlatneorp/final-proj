@@ -5,6 +5,8 @@ import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,10 +22,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
+import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser", "socialUser"})
 @Controller
 public class EnrollController {
 		
@@ -42,42 +45,37 @@ public class EnrollController {
 			return "join";
 		}
 		
-		@RequestMapping("insertUser.en")
-		public String insertUser(@ModelAttribute Users u) {
-			
-			String userPwd = bcrypt.encode(u.getUsersPw());
-			u.setUsersPw(userPwd);
-			
-			int result = eService.insertUser(u);
-			if(result > 0) {
-				return "redirect:login.en";
-			} else {
-				return "회원가입실패...페이지 만드나? 아님 exception?";
-			}
-		}
-		
 //		@RequestMapping("insertUser.en")
-//		@ResponseBody
-//		public void insertUser(@ModelAttribute Users u, PrintWriter out) {
+//		public String insertUser(@ModelAttribute Users u) {
 //			
 //			String userPwd = bcrypt.encode(u.getUsersPw());
 //			u.setUsersPw(userPwd);
 //			
-//			System.out.println(u);
-//			
-//			int count = eService.insertUser(u);
-//			String result = count > 0 ? "yse" : "no";
-//			System.out.println("result : "+ result);
-//			
-//			out.print(result);
+//			int result = eService.insertUser(u);
+//			if(result > 0) {
+//				return "redirect:login.en";
+//			} else {
+//				return "회원가입실패...페이지 만드나? 아님 exception?";
+//			}
 //		}
+		
+		@RequestMapping("insertUser.en")
+		@ResponseBody
+		public void insertUser(@ModelAttribute Users u, PrintWriter out) {
+			
+			String userPwd = bcrypt.encode(u.getUsersPw());
+			u.setUsersPw(userPwd);
+			
+			int count = eService.insertUser(u);
+			String result = count > 0 ? "yes" : "no";
+			out.print(result);
+		}
 		
 		@RequestMapping("login.en")
 		public String login() {
 			return "login";
 		}
 		
-
 		@RequestMapping("loginCheck.en")
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
@@ -163,11 +161,15 @@ public class EnrollController {
 				String toMail = email;
 				String title = "본인인증 이메일 입니다.";
 		        String content = 
+		        		"<br>" + 
 		                "홀로세끼를 방문해주셔서 감사합니다." +
+		                "<br>" + 
+		                "본인인증 이후 비밀번호를 재설정 합니다." +
 		                "<br><br>" + 
 		                "인증 번호는 " + checkNum + " 입니다." + 
 		                "<br>" + 
-		                "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+		                "해당 인증번호를 인증번호 확인란에 기입하여 주세요." +
+		                "<br>";
 		       
 		        try {
 		        	MimeMessage message = mailSender.createMimeMessage();
@@ -185,7 +187,6 @@ public class EnrollController {
 			} else {
 				return "0";
 			}
-			
 		}
 		
 		@RequestMapping("updatePwd.en")
@@ -199,9 +200,6 @@ public class EnrollController {
 		public String updatePwdResult(@RequestParam("id") String id, @RequestParam("pwd") String pwd) {
 			
 			String usersPwd = bcrypt.encode(pwd);
-//			System.out.println(id);
-//			System.out.println(pwd);
-//			System.out.println(usersPwd);
 			
 			int result = eService.updatePwdResult(id, usersPwd);
 			
@@ -210,8 +208,112 @@ public class EnrollController {
 			} else {
 				return "";
 			}
-			
 		}
 		
+		@RequestMapping("kakaoLogin.en")
+		public void kakaoLogin(HttpServletRequest request, HttpServletResponse response, Model model){
+			String id = request.getParameter("id");					// 2827339121
+			String name = request.getParameter("name");				// 정흠
+			String email = request.getParameter("email");			// sk6522@hanmail.net
+			String profileImg = request.getParameter("profileImg");	// http://k.kakaocdn.net/dn/KMVzH/btrOQyPkSGp/6psjYBhYIgREkghu0yVwK0/img_640x640.jpg
+		        
+			SocialLogin sl = eService.SocialLogin(id);
+		        
+			if(sl == null) { // 회원 아닐경우 -> 새로 등록
+				SocialLogin sl2 = new SocialLogin(); // kakaoLogin 테이블에 저장 -> 안해도되나? 이미지주소만 저장하면 될듯
+				sl2.setSocialId(id);
+				sl2.setSocialProfileImg(profileImg);
+		        	
+				eService.socialInsertUser(sl2); // 카톡프사이미지 가져올때 쓸 것
+				
+	        	Users u = new Users();
+	        	u.setUsersId(id);
+	        	u.setUsersPw("카카오로그인 회원입니다");
+	        	u.setUsersName(name);
+	        	u.setNickName(name);
+	        	
+	        	if(email != null) {
+	        		u.setEmail(email);
+	        	} else {
+	        		u.setEmail("카카오로그인 회원입니다");
+	        	}
+	        	u.setPhone("카카오로그인 회원입니다");
+		        
+		        int result = eService.insertUser(u); 
+		        	
+	        	if(result > 0) { // 회원정보 저장했을때 
+	        		
+	        		Users u2 = eService.socialLoginUpdate(id);
+	        		
+		        	model.addAttribute("socialUser", sl2);
+	        		model.addAttribute("loginUser", u2);
+	        	} else { // 회원정보 저장 실패
+	        	}
+	        } else { // 기존 회원일 경우 -> 불러오기 (프사랑 닉넴 업뎃해서 가져와야함)
+	        	
+				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
+				eService.socialInfoUpdate2(id, name); // 이름, 닉넴 업데이트
+				
+				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
+	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
+	        	
+	        	model.addAttribute("socialUser", sl2);
+	        	model.addAttribute("loginUser", u2);
+	        }
+		}
+		
+		@RequestMapping("naverLogin.en")
+		public String naverLogin(HttpServletRequest request, Model model) {
+			String id = request.getParameter("id");
+			String name = request.getParameter("name");
+			String profileImg = request.getParameter("profileImg");
+			
+			SocialLogin sl = eService.SocialLogin(id);
+			
+			if(sl == null) { // 회원 아닐경우 -> 새로 등록
+				SocialLogin sl2 = new SocialLogin();
+				sl2.setSocialId(id);
+				sl2.setSocialProfileImg(profileImg);
+				
+				eService.socialInsertUser(sl2);
+				
+				Users u = new Users();
+				u.setUsersId(id);
+				u.setUsersPw("네이버로그인 회원입니다");
+				u.setUsersName(name);
+				u.setNickName("네이버로그인 회원입니다");
+				u.setEmail("네이버로그인 회원입니다");
+				u.setPhone("네이버로그인 회원입니다");
+				
+				int result = eService.insertUser(u);
+				
+				if(result > 0) { // 등록 잘 된 경우
+					Users u2 = eService.socialLoginUpdate(id);
+					
+					model.addAttribute("socialUser", sl2);
+					model.addAttribute("loginUser", u2);
+					
+					return "redirect:home.do";
+				} else { // 등록 안된경우
+					return "등록실패~~";
+				}
+			} else { // 기존 회원일경우 -> 불러오기
+				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
+				eService.socialInfoUpdate2(id, name); // 이름, 닉넴 업데이트
+				
+				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
+	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
+	        	
+	        	model.addAttribute("socialUser", sl2);
+	        	model.addAttribute("loginUser", u2);
+	        	
+	        	return "redirect:home.do";
+			}
+		}
+		
+		@RequestMapping("others_profile.en")
+		public String others_profile() {
+			return "others_Profile";
+		}
 		
 }

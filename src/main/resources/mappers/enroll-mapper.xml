@@ -4,7 +4,7 @@
 	<insert id="insertUser">
 		insert into users
 		values(SEQ_USERS_NO.nextval, #{usersId}, #{usersPw}, #{usersName}, #{nickName}, #{email}, #{phone}, 
-				sysdate, default, default, default, default, default, default, default, default)
+				sysdate, default, default, default, default, default, default, default, default, default)
 	</insert>
 	
 	<select id="login" resultMap="usersResultSet">
@@ -13,7 +13,7 @@
 		where users_id = #{usersId} and status = 'Y'
 	</select>
 	
-	<resultMap type="Users" id="usersResultSet">
+	<resultMap type="kh.finalproj.hollosekki.enroll.model.vo.Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>
 		<result column="USERS_PW" property="usersPw"/>
@@ -30,6 +30,7 @@
 		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 		<result column="USERS_ADDRESS" property="usersAddress"/>
+		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
 	</resultMap>
 	
 	<select id="checkId" resultType="_int">
@@ -64,6 +65,38 @@
 	
 	<update id="updatePwdResult">
 		update users set users_pw = #{usersPwd} where users_id=#{id}
+	</update>
+	
+	<select id="socialLogin" resultMap="socialResultSet">
+		select *
+		from social_login
+		where social_id=#{id}
+	</select>
+	
+	<resultMap type="kh.finalproj.hollosekki.enroll.model.vo.SocialLogin" id="socialResultSet">
+		<id column="SOCIAL_ID" property="socialId"/>
+		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
+	</resultMap>
+	
+	<insert id="socialInsertUser">
+		insert into social_login
+		values(#{socialId}, #{socialProfileImg})
+	</insert>
+	
+	<select id="socialLoginUpdate" resultMap="usersResultSet">
+		select *
+		from users
+		where users_id = #{id} and status = 'Y'
+	</select>
+	
+	<update id="socialInfoUpdate">
+		update social_login set social_profile_img = #{profileImg}
+		where social_id=#{id}
+	</update>
+	
+	<update id="socialInfoUpdate2">
+		update users set users_name = #{name}, nickname = #{name}
+		where users_id = #{id}
 	</update>
 	
 </mapper>

@@ -18,7 +18,7 @@
 	.title{font-weight: bold;}
 	.group-button1, .group-button2, .group-button3{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
 	
-	#side{width: 250px; height: 100px; margin-top: 25px; margin-left: 1150px;}
+	#side{width: 250px; height: 100px; margin-top: 25px; margin-left: 1300px;}
 	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; margin-left: 100px; cursor: pointer;}
 	.group-button{padding: 10px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
 	
@@ -105,8 +105,9 @@
 </div>
 
 <div id="side">
-	<button type="button" id="recipeWrite" onclick="location.href='recipeWrite.rc'">레시피 등록</button>
-	
+	<c:if test="${loginUser != null }">
+		<button type="button" id="recipeWrite" onclick="location.href='recipeWrite.rc'">레시피 등록</button>
+	</c:if>
 	<br><br>
 	
 	<div id="align">
@@ -121,39 +122,89 @@
 	
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-5 g-2">
 			
-			<c:forEach begin="1" end="10">
-				<div class="col">
-					<div class="card shadow-sm">
-					<a href="recipeDetail.rc">
-						<img src="resources/images/chicken1.png" style="width: 100%; height: 100%;">
-					</a>
-						<div class="card-body">
-							<h5>치킨</h5>
-							<p class="card-text">사용자</p>
-							<p>별점</p>
+			<c:forEach items="${ rList }" var="r">
+				<c:forEach items="${ iList }" var="i">
+					<c:if test="${ r.foodNo eq i.imageDivideNo }">
+<%-- 					<c:forEach begin="1" end="10"> --%>
+						<div class="col">
+							<div class="card shadow-sm">
+								<img src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }" style="width: 100%; height: 100%;">
+								<div class="card-body">
+									<h5>${ r.recipeName }</h5>
+									<p class="card-text">${ r.nickName }</p>
+								</div>
+								<input type="hidden" value="${ r.usersId }">
+								<input type="hidden" value="${ r.foodNo }">
+							</div>
 						</div>
-					</div>
-				</div>
+<%-- 						</c:forEach> --%>
+					</c:if>
+				</c:forEach>
 			</c:forEach>
 		</div>
 	</div>
 </div>
 
 <div class="page_wrap">
-   <div class="page_nation">
-      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-      <a href="#" class="active">1</a>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">4</a>
-      <a href="#">5</a>
-      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
-   </div>
+	<div class="page_nation">
+	
+<!-- 		이전 페이지로	 -->
+		<c:url var="goBack" value="${loc }">
+			<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+		</c:url>
+		<c:if test="${pi.currentPage > 1 }">
+			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
+		</c:if>
+<%-- 		<c:if test="${pi.currentPage <= 1 }"> --%>
+<!-- 			<a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a> -->
+<%-- 		</c:if> --%>
+		
+<!-- 		페이지 -->
+		<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+			<c:url var="goNum" value="${loc }">
+				<c:param name="page" value="${p }"></c:param>
+			</c:url>
+			<c:if test="${ pi.currentPage eq p }">
+				<a class="active">${p }</a>
+			</c:if>
+			<c:if test="${ !(pi.currentPage eq p) }">
+				<a href="${goNum }">${p }</a>
+			</c:if>
+<!-- 		<a href="#" class="active">1</a> -->
+<!-- 		<a href="#">2</a> -->
+<!-- 		<a href="#">3</a> -->
+<!-- 		<a href="#">4</a> -->
+<!-- 		<a href="#">5</a> -->
+		</c:forEach>
+		
+		<c:url var="goNext" value="${loc }">
+			<c:param name="page" value="${pi.currentPage + 1 }"></c:param>
+		</c:url>
+		<c:if test="${pi.currentPage < pi.endPage }">
+			<a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+		</c:if>
+	</div>
 </div>
 
 <br>
 <%@ include file="../common/footer.jsp" %>
 
+<script>
+	window.onload = () =>{
+		const recipes = document.getElementsByClassName('card');
+		for(const recipe of recipes){
+			recipe.addEventListener('click', function(){
+				const chi = this.children;
+				const rId = chi[2].value;
+				const rNo = chi[3].value;
+				console.log("rId : " + rId); 
+				console.log("rNo : " + rNo); 
+				location.href="${contextPath}/recipeDetail.rc?rId=" + rId + "&rNo=" + rNo + "&page=" + ${pi.currentPage}; 
+			})
+		}
+		
+	}
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>

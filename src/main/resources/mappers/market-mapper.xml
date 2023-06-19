@@ -7,18 +7,27 @@
 		where users_id = #{uId}
 	</update>
 	
-	<update id="checkDay">
+	<update id="aDateCheck">
 		update users
-		set check_day = (select length(attendance_day) * 0.5 
-								 from users 
-								 where users_id = #{uId})
+		set check_day = (select count(dateStr)
+		                from attendance
+		                where users_id = #{u.usersId})
+		where users_id = #{u.usersId}
 	</update>
 	
-<!-- 	<select id="aDateCheck" resultType="_int"> -->
-<!-- 		 select length(attendance_day) * 0.5  -->
-<!-- 		 from users  -->
-<!-- 		 where users_no = 1 -->
-<!-- 	</select> -->
+	<select id="sendPoint" resultMap="UsersResultSet">
+		select point
+		from users
+		where users_id = #{usersId}
+	</select>
+	
+	<select id="atTodayChecked" resultType="_int">
+		 select count(*)
+		 from attendance
+		 where users_id = #{usersId}
+		 	   and dateStr = checked
+		 	   and dateStr = to_char(sysdate, 'YYYY-MM-DD')
+	</select>
 	
 	
 	<resultMap type="Users" id="UsersResultSet">
@@ -39,17 +48,11 @@
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 	</resultMap>
 	
-	<select id="firstAdDay" resultMap="UsersResultSet">
-		select lpad(attendance_day, 2)
-		from users
-		where users_id = #{uId}
-	</select>
+	<insert id="atInsert">
+	    insert into attendance (USERS_ID, DATE1, DATESTR, CHECKED, TITLE)
+	    values (#{u.usersId}, #{at.date}, #{at.dateStr}, to_char(sysdate, 'YYYY-MM-DD'), #{at.title})
+	</insert>
 	
-	
-	<update id="attendanceDay">
-	    update users set attendance_day = attendance_day || substr(attendance_date, 9, 2)
-	    where users_id = #{uId}
-	</update>
 	
 	<insert id="insertShipping">
   		insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
@@ -58,8 +61,62 @@
 	
 	<insert id="insertCart">
 		INSERT INTO CART
-		VALUES (SEQ_CART_NO.NEXTVAL, ${1}, #{productNo}, #{productOption}, #{cartCount} )
+		VALUES (SEQ_CART_NO.NEXTVAL, ${usersNo}, #{productNo}, #{productOption}, #{cartCount} )
 	</insert>
+	
+	<select id="allAt" resultMap="AttendanceResultSet">
+		select
+		    *
+		from
+		    attendance
+		where
+		    users_id = #{usersId}
+	</select>
+	
+	<resultMap type="Attendance" id="AttendanceResultSet">
+		<id column="USERS_ID" property="usersId"/>
+		<result column="DATE1" property="date"/>
+		<result column="DATESTR" property="dateStr"/>
+		<result column="CHECKED" property="checked"/>
+		<result column="TITLE" property="title"/>
+		<result column="POINT" property="point"/>
+	</resultMap>
+	
+	<update id="gettedPoint">
+		update users
+		set point = #{u.point} + 10
+		where users_id = #{u.usersId}
+	</update>
+	
+	<update id="getMonthPoint">
+		update users
+		set point = #{u.point} + 1000
+		where users_id in (select users_id
+                          from attendance
+                          		join users using(users_id)
+                          where dateStr = to_char(sysdate, 'YYYY-MM-DD')
+                              and users_id = #{u.usersId}
+                              and check_day = to_char(last_day(sysdate),'dd')
+	         				  and sysdate = last_day(sysdate))
+	           
+	</update>
+	
+<!-- 	<select id="selectShipping" resultMap="shipAddress"> -->
+<!-- 		select * -->
+<!-- 		from shipping_address -->
+<!-- 		where users_no = #{usersNo} -->
+<!-- 	</select> -->
+	
+<!-- 	<resultMap type="ShippingAddress" id="shipAddress"> -->
+<!-- 		<result column="USERS_NO" property="usersNo"/> -->
+<!-- 		<result column="RECIPIENT" property="recipient"/> -->
+<!-- 		<result column="ADDRESS" property="address"/> -->
+<!-- 		<result column="HOME_PHONE" property="homePhone"/> -->
+<!-- 		<result column="PHONE" property="phone"/> -->
+<!-- 		<result column="SHIPPING_NO" property="shippingNo"/> -->
+<!-- 		<result column="SHIPPING_NAME" property="shippingName"/> -->
+		
+<!-- 	</resultMap> -->
 	
 	<select id="selectShipping" resultMap="shipAddress">
 		select *
@@ -75,6 +132,117 @@
 		<result column="PHONE" property="phone"/>
 		<result column="SHIPPING_NO" property="shippingNo"/>
 		<result column="SHIPPING_NAME" property="shippingName"/>
-		
 	</resultMap>
+	
+	<select id="selectCartList" resultMap="cartList">
+		select *
+		from cart
+		left join product using(product_no)
+		where cart.users_no = #{usersNo} and product.PRODUCT_STATUS = 'Y'
+	</select>
+	
+<!-- 	<select id="selectCartList" resultMap="cartList"> -->
+<!-- 		select * from cart where users_no = #{usersNo} -->
+<!-- 	</select> -->
+	
+	<resultMap type="Cart" id="cartList">
+		<id column="CART_NO" property="cartNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_OPTION" property="productOption"/>
+		<result column="CART_COUNT" property="cartCount"/>
+	</resultMap>
+	
+	<resultMap type="Options" id="optionsList">
+		<id column="OPTION_NO" property="optionNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="OPTION_NAME" property="optionName"/>
+		<result column="OPTION_VALUE" property="optionValue"/>
+	</resultMap>
+	
+	<resultMap type="MarketProduct" id="productList">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="PRODUCT_PRICE" property="productPrice"/>
+		<result column="PRODUCT_OPTION" property="productOption"/>
+		<result column="PRODUCT_STOCK" property="productStock"/>
+		<result column="PRODUCT_CREATE_DATE" property="productCreateDate"/>
+		<result column="PRODUCT_MODIFY_DATE" property="productModifyDate"/>
+		<result column="PRODUCT_SALE" property="productSale"/>
+		<result column="PRODUCT_COUNT" property="productCount"/>
+		<result column="PRODUCT_STATUS" property="productStatus"/>
+	</resultMap>
+	
+	<resultMap type="Food" id="foodInfo">
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="FOOD_NAME" property="foodName"/>
+		<result column="FOOD_KIND" property="foodKind"/>
+		<result column="FOOD_TYPE" property="foodType"/>
+	</resultMap>
+	
+	<resultMap type="Tool" id="toolInfo">
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="TOOL_NAME" property="toolName"/>
+		<result column="TOOL_TYPE" property="toolType"/>
+		<result column="TOOL_CONTENT" property="toolContent"/>
+	</resultMap>
+	
+	<resultMap type="Ingredient" id="ingredientInfo">
+		<result column="INGREDIENT_NO" property="ingredientNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="INGREDIENT_NAME" property="ingredientName"/>
+		<result column="INGREDIENT_TYPE" property="ingredientType"/>
+		<result column="INGREDIENT_STATUS" property="ingredientStatus"/>
+	</resultMap>
+	
+	<select id="selectFood" resultMap="foodInfo">
+		select * from food where product_no = #{productNo}
+	</select>
+	
+	<select id="selectProductInfo" resultMap="productList">
+		select * from product where product_no = #{productNo}
+	</select>
+	
+	<select id="selectTool" resultMap="toolInfo">
+		select * from tool where product_no = #{productNo}
+	</select>
+	
+	<select id="selectIngrdient" resultMap="ingredientInfo">
+		select * from ingredient where product_no = #{productNo}
+	</select>
+	
+	<delete id="delBasket">
+		delete from cart where product_no = #{productNo}
+	</delete>
+	
+	<update id="plusCount">
+		update cart set cart_count = cart_count + 1 
+		where product_no = #{productNo}
+	</update>
+	
+	<select id="plusResultCount" resultType="_int">
+		select cart_count from cart where product_no = #{productNo}
+	</select>
+	
+	<update id="minusCount">
+		update cart set cart_count = cart_count - 1 
+		where product_no = #{productNo}
+	</update>
+	
+	<select id="checkCartList" resultMap="cartList">
+		select * from cart where users_no = #{usersNo} and product_no = #{productNo}
+	</select>
+	
+	<select id="selectOptions" resultMap="optionsList">
+		select * from options where product_no = #{productNo}
+	</select>
+	
+	<select id="updateOptionNo" resultType="_int">
+		update cart set product_option = #{productOption} where product_no = #{productNo}
+	</select>
+	
+	<select id="selectOptionValue" resultType="String">
+		select option_value from options where option_no = #{optionNo}
+	</select>
+	
 </mapper>

@@ -1,6 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="adminMapper"> 
+
+<!--Common-공용 -->
+	<update id="updateStatus">
+		update product
+		set product_status = #{dataStatus}
+		where product_type = #{dataType} 
+			  and product_no = #{dataNo}
+	</update>
+
+
+<!--Product-상품 -->
+	<select id="selectProduct" resultMap="productResultSet">
+		select *
+		from product
+		where product_no = #{pNo} 
+	</select>
+	
+	<update id="updateProduct">
+		update product
+		set product_price = #{productPrice},
+<!-- 		<if test='productOption == "Y" '> -->
+			product_option = #{productOption},
+<!-- 		</if> -->
+			product_stock = #{productStock},
+			product_modify_date = sysdate,
+			product_sale = #{productSale},
+			product_status = #{productStatus}
+		where product_no = #{productNo} 
+	</update>
+	
+	<insert id="insertProduct">
+		insert into product(product_no, product_type, product_price, product_option, product_stock, 
+			product_create_date, product_modify_date, product_sale, product_count, product_status, users_no)
+		values(seq_product_no.nextval, #{productType}, #{productPrice},
+			#{productOption}, #{productStock}, sysdate, sysdate, #{productSale}, default, default, #{usersNo})
+		<selectKey keyProperty="productNo" resultType="int" order="AFTER">
+    		SELECT seq_product_no.currval from dual
+    	</selectKey>
+	</insert>
+	
+	<delete id="deletesProduct">
+		delete product
+		where product_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+
+<!--Image-사진 -->
+	<select id="selectAllImageList" resultMap="imageResultSet">
+		select *
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != null">
+			and image_level = #{imageLevel}
+		</if>
+	</select>
+	
+	<insert id="insertImage">
+		insert into image(image_no, image_divide_no, image_type, image_originalname, image_renamename, image_path, image_level)
+		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, #{imageLevel})
+	</insert>
+	
+	<delete id="deleteImage">
+		delete image
+		where image_type = #{imageType} and image_divide_no = ${imageDivideNo} 
+	</delete>
+
+
+<!--Menu-메뉴 -->
+	<select id="getMenuCount" resultType="_int">
+		select count(*)
+		from menu
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where menu_name like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+		
+	<select id="selectMenuList" resultMap="menuResultSet">
+		select *
+		from (select * 
+			  from menu
+			  order by product_no desc) 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where menu_name like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+
+	<insert id="insertMenu">
+		insert into menu(product_no, menu_name, menu_type, menu_content)
+		values(#{productNo}, #{menuName}, #{menuType}, #{menuContent})
+	</insert>
+	
+	<insert id="insertMenuList">
+		insert into menu_list(menu_list_no, product_no, food_product_no)
+		 values(seq_menu_list_no.nextval, #{productNo}, #{foodProductNo})
+	</insert>
+
+<!--Ingredient-식재료-->
 	<select id="getIngredientCount" resultType="_int">
 		select count(*)
 		from ingredient
@@ -22,12 +128,6 @@
 			</if>
 		</if>
 	</select>
-	
-	<select id="selectProduct" resultMap="productResultSet">
-		select *
-		from product
-		where product_no = #{pNo} 
-	</select>
 
 	<select id="selectIngredient" resultMap="ingredientResultSet">
 		select *
@@ -40,14 +140,12 @@
 		set ingredient_name = #{ingredientName},
 			ingredient_type = #{ingredientType},
 			ingredient_content = #{ingredientContent},
+			<if test="productNo != 0">
+				product_no = #{productNo},
+			</if>
 			is_accept = #{isAccept}
 		where ingredient_no = #{ingredientNo}
 	</update>
-
-	<insert id="insertProduct">
-		insert into product
-		values(seq_product_no.nextval, #{productType}, #{productPrice}, #{productOption}, #{productStock}, sysdate, sysdate, #{productSale}, default, default)
-	</insert>
 	
 	<insert id="insertIngredient">
 		insert into ingredient
@@ -61,38 +159,104 @@
 			0,
 		</if>
 		#{ingredientName}, #{ingredientType}, #{ingredientContent}, #{isAccept}, #{usersNo}, #{ingredientStatus})   
+		<selectKey keyProperty="ingredientNo" resultType="int" order="AFTER">
+    		SELECT seq_ingredient_no.currval from dual
+    	</selectKey>
 	</insert>	
 	
-	<select id="getNowIngredientNo" resultType="_int">
-		select seq_ingredient_no.currval
-		from dual
+	<update id="ingredientUpdateIsAccept">
+		update ingredient
+		set is_accept = #{isAccept}
+		where ingredient_no = #{ingredientNo} 
+	</update>
+	
+	<delete id="deletesIngredient">
+		delete ingredient
+		where ingredient_no in
+		<foreach collection="array" item="item" index="i" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+<!--Food-식품 -->
+	<select id="getFoodCount" resultType="_int">
+		select count(*)
+		from food
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where food_name like '%${searchText}%'
+			</if>
+		</if>
 	</select>
 	
-	<insert id="insertImage">
-		insert into image
-		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath})
+	<select id="selectFoodList" resultMap="foodResultSet">
+		select *
+		from (select * 
+			  from food
+			  order by product_no desc) 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where food_name like '%${searchText}%'
+			</if>
+		</if>
+		<if test="type != 0">
+			where food_type = ${type}
+			<if test="kind != 0">
+				and food_kind = ${kind}
+				order by food_name
+			</if>
+			<if test="kind == 0">
+				order by food_name
+			</if>
+		</if>
+		<if test="type == 0">
+			<if test="kind != 0">
+				where food_kind = ${kind}
+				order by food_name
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectFood" resultMap="foodResultSet">
+		select * 
+		from food
+		where product_no = #{productNo}
+	</select>
+	
+	<update id="updateFood">
+		update food
+		set food_name = #{foodName},
+			food_kind = #{foodKind},
+			food_type = #{foodType},
+			food_content = #{foodContent}
+		where product_no = #{productNo}
+	</update>
+	
+	<insert id="insertFood">
+		insert into food(product_no, food_name, food_kind, food_type, food_content)
+		values(#{productNo}, #{foodName}, #{foodKind}, #{foodType}, #{foodContent})
 	</insert>
 	
-	<select id="selectImage" resultMap="imageResultSet">
-		select *
-		from image
-		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+	<select id="deleteableFood" resultType="string">
+		select menu_name||'('||product_no||')'
+		from menu_list 
+			 join menu using(product_no)
+		where food_product_no = #{pNo}
 	</select>
 	
+	<delete id="deletesFood">
+		delete food
+		where product_no in
+		<foreach collection="array" item="item" index="i" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 	
 	
-	<resultMap type="Ingredient" id="ingredientResultSet">
-		<id column="INGREDIENT_NO" property="ingredientNo"/>
-		<result column="PRODUCT_NO" property="productNo"/>
-		<result column="INGREDIENT_NAME" property="ingredientName"/>
-		<result column="INGREDIENT_TYPE" property="ingredientType"/>
-		<result column="INGREDIENT_CONTENT" property="ingredientContent"/>
-		<result column="IS_ACCEPT" property="isAccept"/>
-		<result column="USERS_NO" property="usersNo"/>
-		<result column="INGREDIENT_STATUS" property="ingredientStatus"/>
-	</resultMap>
 	
-	<resultMap type="Product" id="productResultSet">
+<!--ResultSet -->
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">
 		<id column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_TYPE" property="productType"/>
 		<result column="PRODUCT_PRICE" property="productPrice"/>
@@ -105,16 +269,41 @@
 		<result column="PRODUCT_STATUS" property="productStatus"/>
 	</resultMap>
 	
+	<resultMap type="Menu" id="menuResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="MENU_TYPE" property="menuType"/>
+		<result column="MENU_CONTENT" property="menuContent"/>
+	</resultMap>
+	
 	<resultMap type="Image" id="imageResultSet">
 		<id column="image_no" property="imageNo"/>
 		<result column="image_divide_no" property="imageDivideNo"/>
 		<result column="image_type" property="imageType"/>
 		<result column="image_originalname" property="imageOriginalName"/>
 		<result column="image_renamename" property="imageRenameName"/>
-		<result column="imgae_path" property="imagePath"/>
+		<result column="image_path" property="imagePath"/>
+		<result column="image_level" property="imageLevel"/>
 	</resultMap>
 	
+	<resultMap type="Ingredient" id="ingredientResultSet">
+		<id column="INGREDIENT_NO" property="ingredientNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="INGREDIENT_NAME" property="ingredientName"/>
+		<result column="INGREDIENT_TYPE" property="ingredientType"/>
+		<result column="INGREDIENT_CONTENT" property="ingredientContent"/>
+		<result column="IS_ACCEPT" property="isAccept"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="INGREDIENT_STATUS" property="ingredientStatus"/>
+	</resultMap>
 	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Food" id="foodResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="FOOD_NAME" property="foodName"/>
+		<result column="FOOD_KIND" property="foodKind"/>
+		<result column="FOOD_TYPE" property="foodType"/>
+		<result column="FOOD_CONTENT" property="foodContent"/>
+	</resultMap>
 	
 	
 </mapper>

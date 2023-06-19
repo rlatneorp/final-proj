@@ -1,5 +1,6 @@
 package kh.finalproj.hollosekki.enroll.model.service;
 
+import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
 public interface EnrollService {
@@ -18,5 +19,17 @@ public interface EnrollService {
 	int findPwdCheck(String id, String email);
 
 	int updatePwdResult(String id, String usersPwd);
+
+	SocialLogin SocialLogin(String id);
+
+	int socialInsertUser(SocialLogin sl2);
+
+	Users socialLoginUpdate(String id);
+
+	void socialInfoUpdate(String id, String profileImg);
+
+	void socialInfoUpdate2(String id, String name);
+
+
 
 }

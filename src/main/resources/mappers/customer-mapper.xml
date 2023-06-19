@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="customerMapper">
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from faq
+		where faq_status= 'Y'
+		<if test="bType == null">
+			and faq_type = 1
+		</if>
+		<if test="bType != null">
+			and faq_type = #{bType}
+		</if>
+		<if test="u != null">
+			and users_no = #{uNo}
+		</if>
+	</select>
+	
+	<select id="faqBoardList" resultMap="CustomerResultSet">
+		select *
+		from faq
+		where faq_status = 'Y'
+		<if test="bType == null">
+			and faq_type = 1
+		</if>
+		<if test="bType != null">
+			and faq_type = #{bType}
+		</if>
+		<if test="u != null">
+			and users_no = #{uNo}
+		</if>
+		order by faq_no
+	</select>
+	
+
+	<resultMap type="Customer" id="CustomerResultSet">
+		<id column="FAQ_NO" property="faqNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="FAQ_TITLE" property="faqTitle"/>
+		<result column="FAQ_CONTENT" property="faqContent"/>
+		<result column="FAQ_DATE" property="faqDate"/>
+		<result column="FAQ_STATUS" property="faqStatus"/>
+		<result column="FAQ_TYPE" property="faqType"/>
+	</resultMap>
+
+</mapper>

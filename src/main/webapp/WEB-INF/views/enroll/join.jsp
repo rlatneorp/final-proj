@@ -73,8 +73,6 @@
 		}
 	.button:active{box-shadow: 0px 1px 0px black; transform: translateY(5px); background: #b0daff;}
 	
-	.swal-overlay {background-color: rgba(0, 0, 0, 0.5);}
-		
 	.pwd-ck{display: flex; justify-content: center;}
 	.pwd-ck2{
 		margin-right: 10px; margin-top: -20px; margin-bottom: 20px;
@@ -87,8 +85,12 @@
 	pre{white-space: pre-wrap; word-wrap: break-word; padding: 15px;}
 	.modal-footer{justify-content: center; padding: 30px;}
 	
+	/*알럿창 관련*/
+	.swal-button{text-align: center;}
+	.swal-overlay {background-color: rgba(0, 0, 0, 0.5);}
+	
 	/*꽃가루 관련*/
-	canvas{z-index:10; pointer-events: none; position: fixed; top: 0; transform: scale(1.1);}
+	canvas{z-index:10000; pointer-events: none; position: fixed; top: 0; transform: scale(1.1);}
 	
 </style>
 </head>
@@ -110,8 +112,7 @@
 					<br>
 					<div class="mid">
 						<div class="mid22">
-							<form class="form" action="insertUser.en" method="post" onsubmit="return ">
-<!-- 							<form class="form" id="form" name="form"> -->
+							<form class="form" id="form" name="form">
 								<label class="label">아이디 <span class="text">| 3~15자의 영어, 숫자</span></label><br>
 								<input type="text" name="usersId" id="id" class="input input2" placeholder="아이디를 입력하세요" required><br>
 								<p class="check" id="idCheckMsg">&nbsp;</p>
@@ -125,7 +126,7 @@
 									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 4자 이상</div>
 								</div>
 								<label class="label">비밀번호 확인</label><br>
-								<input type="password" name="checkPwd" id="checkPwd"  class="input input2" placeholder="비밀번호를 다시 입력하세요" required><br>
+								<input type="password" name="checkPwd" id="checkPwd" class="input input2" placeholder="비밀번호를 다시 입력하세요" required><br>
 								<p class="check" id="pwdCheckMsg">&nbsp;</p>
 								<label class="label">이름</label><br>
 								<input type="text" name="usersName" id="name" class="input" placeholder="이름을 입력하세요" required><br>
@@ -133,9 +134,9 @@
 								<input type="text" name="nickName" id="nickName" class="input input2" placeholder="닉네임을 입력하세요" required><br>
 								<p class="check" id="nickNameCheckMsg">&nbsp;</p>
 								<label class="label">핸드폰 번호</label><br>
-								<input type="tel" name="phone" class="input" placeholder="핸드폰 번호를 입력하세요" required><br>
+								<input type="tel" name="phone" id="phone" class="input" placeholder="핸드폰 번호를 입력하세요" required><br>
 								<label class="label">이메일</label><br>
-								<input type="email" name="email" class="input" placeholder="메일주소를 입력하세요" required><br>
+								<input type="email" name="email" id="email" class="input" placeholder="메일주소를 입력하세요" required><br>
 								<div class="line"></div>
 								<div class="checkboxs">
 									<input type="checkbox" class="checkbox" id="check1" name="check1" required><label for="check1">이용약관 동의</label>
@@ -145,8 +146,7 @@
 										<span class="required">(필수)</span>
 										<a class="more2" data-bs-toggle="modal" data-bs-target="#exampleModal2">약관보기</a><br>
 								</div>
-								<div><button class="button" id="submit">가입하기</button></div>
-<!-- 								<div><button class="button" id="submit" data-bs-toggle="modal" data-bs-target="#exampleModal3">가입하기</button></div> -->
+								<div><button class="button" id="submit" type="button">가입하기</button></div>
 								<div class="line"></div>
 								<div class="logincheck" onclick="location.href='login.en'">이미 홀로세끼의 회원이신가요? LOG IN</div>
 							</form>
@@ -166,7 +166,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<pre>제1조(목적) 이 약관은 OO 회사(전자상거래 사업자)가 운영하는 OO 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
+					<pre>제1조(목적) 이 약관은 홀로세끼(전자상거래 사업자)가 운영하는 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
   ※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다.」
 
 제2조(정의)
@@ -329,7 +329,6 @@
 				</div>
 				<div class="modal-footer">
 					<div data-bs-dismiss="modal"><input type="checkbox" class="checkbox" id="check1-1"><label for="check1-1">이용약관에 동의합니다.</label></div>
-<!-- 					<div><button type="button" class="button button2" data-bs-dismiss="modal">확인</button></div> -->
 				</div>
 			</div>
 		</div>
@@ -459,26 +458,15 @@
 				</div>
 				<div class="modal-footer">
 					<div data-bs-dismiss="modal"><input type="checkbox" class="checkbox" id="check2-1"><label for="check2-1">개인정보 처리방침에 동의합니다.</label></div>
-<!-- 					<div><button type="button" class="button button2" data-bs-dismiss="modal">확인</button></div> -->
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<!-- 회원가입 완료 모달 -->
-	<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div>최정흠님! 홀로세끼의 회원이 되신걸 환영합니다!</div>			
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="button button2" data-bs-dismiss="modal" onclick="location.href='login.en'">로그인</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
+	<!-- 꽃가루 -->
+	<button hidden="" class="canvasBtn" id="stopButton">Stop Confetti</button>
+	<button hidden="" class="canvasBtn" id="startButton">Drop Confetti</button>	
+	<canvas id="canvas"></canvas>
 
 <script>
 	// 체크박스끼리 연결
@@ -503,51 +491,71 @@
 	})
 	
 
+	const id = document.getElementById("id");
+	const pwd = document.getElementById('pwd');
+	const checkPwd = document.getElementById('checkPwd');
+	const name = document.getElementById('name');
+	const nickName = document.getElementById('nickName');
+	const phone = document.getElementById('phone');
+	const emeil = document.getElementById('email');
+	
+	// 중복확인 메세지
+	const idCheckMsg = document.getElementById("idCheckMsg");
+	const nickCheckMsg = document.getElementById("nickNameCheckMsg");
+	const pwdCheckMsg = document.getElementById('pwdCheckMsg');
+	
+	
 	// 아이디 유효성검사 (영어, 숫자 3~15자리)
-	document.getElementById("id").addEventListener('focusout', ()=>{
+	id.addEventListener('focusout', ()=>{
 		 const regId = /^[a-zA-Z0-9]+$/;
-		 const id = document.getElementById('id').value;
 		 
-		 if(id.length > 0 ){
-			 if(!regId.test(id)){
+		 if(id.value.length > 0 ){ // id가 0글자 이상이면
+			 if(!regId.test(id.value)){
 				swal({
 					 text: "아이디는 알파벳 대/소문자와 숫자만 사용 가능합니다.",
 					 icon: "error",
 					 button: "확인",
 					});
-				document.getElementById('id').value = '';
-				document.getElementById('id').focus();
-			 } else if(id.length > 15 || id.length < 3){
+				id.value = '';
+				id.focus();
+			 } else if(id.value.length > 15 || id.value.length < 3){
 				swal({
-					 text: "아이디는 3~15글자만 사용 가능합니다.",
+					 text: "아이디는 3~15자만 사용 가능합니다.",
 					 icon: "error",
 					 button: "확인",
 					});
-				document.getElementById('id').value = '';
-				document.getElementById('id').focus();
-			 } 
+				id.value = '';
+				id.focus();
+			 }
+			 return false;
 		 }
 	})
 	
 	
 	// 아이디 중복확인
-	const id = document.getElementById("id");
-	const idCheckMsg = document.getElementById("idCheckMsg");
-	
-	id.addEventListener('keyup', function(){
+	id.addEventListener('keyup', ()=>{
 		
-		if(this.value.trim() != ''){
+		if(id.value.trim() != ''){
 			$.ajax({
 				url: 'checkId.en',
-				data: {id: this.value.trim()},
+				data: {id: id.value.trim()},
 				success: data =>{
-					if(data == 'yes'){
-						idCheckMsg.innerText = '사용 할 수 있는 아이디 입니다.';
-						idCheckMsg.style.color = '#8bb572';
-					} else if(data == 'no'){
+					if(data == 'no'){
 						idCheckMsg.innerText = '이미 사용중인 아이디 입니다.';
 						idCheckMsg.style.color = 'red';
-					}
+						
+						id.addEventListener('focusout', ()=>{
+							if(idCheckMsg.innerHTML === '이미 사용중인 아이디 입니다.'){
+								id.value='';
+								idCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 아이디를 다시 입력해주세요.';
+							}
+						});
+						return false;
+					} else if(data == 'yes'){
+						idCheckMsg.innerText = '사용 할 수 있는 아이디 입니다.';
+						idCheckMsg.style.color = '#8bb572';
+						return true;
+					} 
 				},
 				error: data =>{
 					console.log('error');
@@ -556,17 +564,8 @@
 		}
 	});
 	
-	id.addEventListener('focusout', ()=>{
-		if(idCheckMsg.innerHTML === '이미 사용중인 아이디 입니다.'){
-			id.value='';
-			idCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 아이디를 다시 입력해주세요.';
-		}
-	});
 
-
-	// 비번 유효성검사 (영어, 숫자 포함 8자리 이상)
-	const pwd = document.getElementById('pwd');
-	
+	// 비번 유효성검사 (영어, 숫자 포함 8자리 이상) - 지금은 번거로우니까 임시로 영+숫자 4자리이상..
 	pwd.onkeyup = () => {
 	  const checkEng = /[a-zA-Z]/;
 	  const checkNum = /[0-9]/;
@@ -593,57 +592,51 @@
 // 	  special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
 	};
 
-	document.getElementById('pwd').addEventListener('focusout', ()=>{
+	pwd.addEventListener('focusout', ()=>{
 // 		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?^=+`~&])[A-Za-z\d@$!%*#?^=+`~&]{8,}$/;
 		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/;
-		const pwd = document.getElementById('pwd').value;
 		
-		if(pwd.length > 0){
-			if(!regPwd.test(pwd)){
+		if(pwd.value.length > 0){
+			if(!regPwd.test(pwd.value)){
 				swal({
 					 text: "비밀번호는 영어와 숫자, 특수문자를 포함해 8자리 이상이어야 합니다.",
 					 icon: "error",
 					 button: "확인",
 					});
-				document.getElementById('pwd').value = '';
-				document.getElementById('pwd').focus();
-				document.getElementById('eng').style.color = '';
-				document.getElementById('eng').innerHTML = "<i class='bi bi-circle'></i> 영어";
-				document.getElementById('num').style.color = '';
-				document.getElementById('num').innerHTML = "<i class='bi bi-circle'></i> 숫자";
-				document.getElementById('more8').style.color = '';
-				document.getElementById('more8').innerHTML = "<i class='bi bi-circle'></i> 8자 이상";
-				document.getElementById('special').style.color = '';
-				document.getElementById('special').innerHTML = "<i class='bi bi-circle'></i> 특수문자";
+				pwd.value = '';
+				pwd.focus();
+				eng.style.color = '';
+				eng.innerHTML = "<i class='bi bi-circle'></i> 영어";
+				num.style.color = '';
+				num.innerHTML = "<i class='bi bi-circle'></i> 숫자";
+				more8.style.color = '';
+				more8.innerHTML = "<i class='bi bi-circle'></i> 8자 이상";
+				special.style.color = '';
+				special.innerHTML = "<i class='bi bi-circle'></i> 특수문자";
+				return false;
 			}
 		}
 	})
 	
 	
 	// 비번-비번확인 같은지 체크
-	document.getElementById('checkPwd').addEventListener('change', ()=>{
-		const pwd = document.getElementById('pwd').value;
-		const checkPwd = document.getElementById('checkPwd').value;
-		const pwdCheckMsg = document.getElementById('pwdCheckMsg');
+	checkPwd.addEventListener('focusout', ()=>{
 		
-		if(pwd != checkPwd){
-// 			swal({
-// 				 text: "비밀번호를 다시 확인해주세요.",
-// 				 icon: "error",
-// 				 button: "확인",
-// 				});
+		if(pwd.value != checkPwd.value){
 			pwdCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 비밀번호확인을 정확하게 입력해주세요.';
 			pwdCheckMsg.style.color = 'red';
-			document.getElementById('checkPwd').value = '';
-			document.getElementById('checkPwd').focus();
+			checkPwd.value = '';
+			return false;
+			
+		} else if(pwd.value == checkPwd.value){
+			pwdCheckMsg.innerText = ' ';
+			return true;
 		}
 	})
 	
 	
 	// 닉네임 유효성검사 (20자 이하) + 닉네임 중복확인
-	document.getElementById('nickName').addEventListener('keyup', ()=>{
-		const nickName = document.getElementById('nickName');
-		const nickCheckMsg = document.getElementById("nickNameCheckMsg");
+	nickName.addEventListener('keyup', ()=>{
 		
 		if(nickName.value.length > 20){
 			swal({
@@ -653,22 +646,31 @@
 				});
 			nickName.value = '';
 			nickName.focus();
+			return false;
 		}
 		
-		nickName.addEventListener('keyup', function(){
+		nickName.addEventListener('keyup', ()=>{
 			
-			if(this.value.trim() != ''){
+			if(nickName.value.trim() != ''){
 				$.ajax({
 					url: "checkNickName.en",
-					data: {nickName: this.value.trim()},
+					data: {nickName: nickName.value.trim()},
 					success: data =>{
-						if(data == 'yes'){
+						if(data == 'no'){
+							nickCheckMsg.innerText = '이미 사용중인 닉네임 입니다.';
+							nickCheckMsg.style.color =  'red';
+							nickName.addEventListener('focusout', ()=>{
+								if(nickCheckMsg.innerText == '이미 사용중인 닉네임 입니다.'){
+									nickName.value='';
+									nickCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 닉네임을 다시 입력해주세요.';
+								}
+							});
+							return false;
+							
+						} else if(data == 'yes'){
 							nickCheckMsg.innerText = '사용 가능한 닉네임 입니다.';
 							nickCheckMsg.style.color =  '#8bb572';
 							return true;
-						} else if(data == 'no'){
-							nickCheckMsg.innerText = '이미 사용중인 닉네임 입니다.';
-							nickCheckMsg.style.color =  'red';
 						}
 					},
 					error: data =>{
@@ -677,72 +679,141 @@
 				});
 			}
 		});
-		
-		nickName.addEventListener('focusout', ()=>{
-			if(nickCheckMsg.innerText == '이미 사용중인 닉네임 입니다.'){
-				nickName.value='';
-				nickCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 닉네임을 다시 입력해주세요.';
-			}
-		});
 	})
 	
-	
-</script>
 
-<!-- 꽃가루 -->
-	<button hidden="" class="canvasBtn" id="stopButton">Stop Confetti</button>
-	<button hidden="" class="canvasBtn" id="startButton">Drop Confetti</button>	
-	<canvas id="canvas"></canvas>
-<script>
-	$(document).ready(function(){
-		function reAction(){
-  			$("#startButton").trigger("click");
-  			setTimeout(function(){
-  				$("#stopButton").trigger("click");
-  			}, 10000);
+	// 버튼 눌렀을때 
+	document.getElementById('submit').addEventListener('click', function(){
+		
+		if(id.value ==''){
+			swal({
+				 text: "아이디를 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			id.focus();
+			return false;
+		} else if(pwd.value ==''){
+			swal({
+				 text: "비밀번호를 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			pwd.focus();
+			return false;
+		} else if(checkPwd.value ==''){
+			swal({
+				 text: "비밀번호를 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			checkPwd.focus();
+			return false;
+		}else if(name.value ==''){
+			swal({
+				 text: "이름을 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			name.focus();
+			return false;
+		} else if(nickName.value ==''){
+			swal({
+				 text: "닉네임을 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			nickName.focus();
+			return false;
+		} else if(phone.value ==''){
+			swal({
+				 text: "핸드폰번호를 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			phone.focus();
+			return false;
+		} else if(email.value ==''){
+			swal({
+				 text: "메일주소를 입력해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			email.focus();
+			return false;
+		} else if(!document.getElementById('check1').checked){
+			swal({
+				 text: "약관에 동의해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			return false;
+		} else if(!document.getElementById('check2').checked){
+			swal({
+				 text: "개인정보 수집에 동의해주세요",
+				 icon: "error",
+				 button: "확인",
+				});
+			return false;
+		} else{
+			var formData = $("#form").serialize();
+			
+			$.ajax({
+				url: "insertUser.en",
+				data: formData,
+				type: "POST",
+				dataType: "Text",
+	            success: data=>{
+	            	if(data == 'yes'){
+	            		console.log(11);
+	            		reAction(); // 꽃가루
+		       				  
+	            		swal({
+	            			title: "회원가입이 완료되었습니다.",
+	            			text: "홀로세끼의 회원이 되신걸 환영합니다^^",
+	            			icon: "success",
+	            			buttons: {
+	            				login: {text:"로그인", value:"login"},
+	            				main: {text:"메인", value:"main"},
+	            			},
+	            			 closeOnClickOutside: false,
+	            			 closeOnEsc: false,
+	            		})
+	            		.then((value) => {
+	            			switch (value) {
+		            		    case "login":
+		            		    	window.location.href="${contextPath}/login.en";
+		            		   		break;
+		            		    case "main":
+		            		    	window.location.href="${contextPath}";
+		            				break;
+	            			}
+	            		});
+	            		
+	            		return true;
+	            		
+	            	} else if(data=='no'){
+	            		console.log(22);
+	            	}
+	            },
+	            error: data =>{
+	            	console.log(33);
+	            	swal({
+	       				 text: "회원가입에 실패했습니다",
+	       				 icon: "error",
+	       				 button: "확인",
+					});
+	            }
+			});
+		
+			function reAction() {
+			    $("#startButton").trigger("click");
+			    setTimeout(function() {
+			        $("#stopButton").trigger("click");
+			    }, 10000);
+			}
 		}
-// 		$("#submit").on('click', function(){
-// 		    reAction();
-// 		}); 
 	});
-	
-// 	document.getElementById('submit').addEventListener('click', function(){
-// 		var formData = $("#form").serialize();
-		
-// 		console.log(formData);
-		
-// 		$.ajax({
-// 			url: "insertUser.en",
-// 			data: formData,
-// 			type: "POST",
-// 			dataType: "text",
-//          contentType: "application/json; charset=UTF-8",
-//          success: data=>{
-//          	console.log(1);
-//             	if(data == 'yes'){
-//             		$(document).ready(function(){
-//                 		function reAction(){
-//                   			$("#startButton").trigger("click");
-//                   			setTimeout(function(){
-//                   				$("#stopButton").trigger("click");
-//                   			}, 10000);
-//                 		}
-//                 		$("#submit").on('click', function(){
-//                 		    reAction();
-//                 		}); 
-//                 	});
-//             	} else if(data=='no'){
-//             		console.log(3);
-//             	}
-            	
-//             },
-//          error: data =>{
-//             	console.log(2);
-//             }
-// 		});
-// 	})
 </script>
-
-
 </body>
 </html>

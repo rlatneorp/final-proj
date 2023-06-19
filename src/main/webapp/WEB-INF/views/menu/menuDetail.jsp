@@ -402,7 +402,7 @@ p b {
 			<br>
 			<br>
 			<div id="userInfo">
-				<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
 				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
 			</div>
 		</div>
@@ -424,24 +424,20 @@ p b {
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/image/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
+                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;배송 | 3,000원 
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
 						<dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
-                            	<img src="resources/image/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
+                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립) | 0,000원</p>
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
 						
 						
-						<label>희망 배송일</label>
-						<input type="date" name="date" id="wantDate" class="inputBox">
-						<br><br>
-						<hr style="margin: 0px;">
 						<br>	
 						
 						<label>[필수] 기간을 선택해주세요.</label><br>
@@ -637,7 +633,7 @@ p b {
 		<div style="margin: 0 40px;">
 			<c:forEach begin="1" end="7">
 				<div class="menuMiniPic">
-					<img src="resources/image/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/images/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
 				</div>
 			</c:forEach>
 		</div>
@@ -648,7 +644,7 @@ p b {
 		<div style="margin: 0 40px;">
 			<c:forEach begin="1" end="7">
 				<div class="menuMiniPic">
-					<img src="resources/image/chicken2.jpg" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/images/chicken2.jpg" width=100%; height=100%; style="border-radius: 5px;">
 				</div>
 			</c:forEach>
 		</div>
@@ -659,7 +655,7 @@ p b {
 		<div style="margin: 0 40px;">
 			<c:forEach begin="1" end="7">
 				<div class="menuMiniPic">
-					<img src="resources/image/pork.JPG" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/images/pork.JPG" width=100%; height=100%; style="border-radius: 5px;">
 				</div>
 			</c:forEach>
 		</div>
@@ -670,7 +666,7 @@ p b {
 		<div style="margin: 0 40px;">
 			<c:forEach begin="1" end="7">
 				<div class="menuMiniPic">
-					<img src="resources/image/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/images/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
 				</div>
 			</c:forEach>
 		</div>
@@ -740,7 +736,7 @@ p b {
 	
 	<div class="inputTextBox">
 		<div class="profilePic d-inline-block">
-			<img src="resources/image/mudo.png" class="profileImg">
+			<img src="resources/images/mudo.png" class="profileImg">
 		</div>
 		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuQnaInput">&nbsp;<button class="enter">등록</button>
 	</div>
@@ -811,7 +807,7 @@ p b {
 	<br>
 	<div class="inputTextBox">
 		<div class="profilePic d-inline-block">
-			<img src="resources/image/mudo.png" class="profileImg">
+			<img src="resources/images/mudo.png" class="profileImg">
 		</div>
 		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuReviewInput">&nbsp;<button class="enter">등록</button>
 	</div>
@@ -827,7 +823,7 @@ p b {
 			</div>
 			<div class="modal-body">
 				<div id="modalNick">
-					<img src="resources/image/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
 					<p style="font-weight: bold;">닉네임</p>
 				</div>
 				<div id="modalInfo">
@@ -843,7 +839,6 @@ p b {
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray">
 											<h6 style="font-weight: bold;"><a href="menuDetail.mn" style="text-decoration: none; color: black;">식단 명 / 카테고리</a></h6>
-											<p>별점</p>
 										</div>
 									</div>
 								</div>

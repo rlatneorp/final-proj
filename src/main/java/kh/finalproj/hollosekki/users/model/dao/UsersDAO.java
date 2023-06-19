@@ -43,4 +43,8 @@ public class UsersDAO {
 		return sqlSession.selectOne("usersMapper.selectInfo", u);
 	}
 
+	public int deleteInfo(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.update("usersMapper.deleteInfo", usersNo);
+	}
+
 }

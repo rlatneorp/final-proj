@@ -128,6 +128,10 @@ public class MarketService {
 		return mkDAO.checkCartList(sqlSession, usersNo, productNo );
 	}
 
+	public ArrayList<Cart> insertCart(int cartNo) {
+		return null;
+	}
+
 	
 
 	

@@ -1197,7 +1197,7 @@ p b {
               
                 for ( let i = 0; i < o.length; i++ ) {
                 	if( i == 0){
-                		productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
+                		productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted required>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
                 	}else{
                 		productOption2.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
                 	}
@@ -1306,11 +1306,11 @@ $(function(){
         var userNoValues=[];
         
         var allData ={
-        		"productNo":[productNoValues], 
-	        	"cartCount":[cartCountValues],
-	        	"productOption":[productOptionValues], 
-	        	"productOption2":[productOption2Values],
-	        	"userNo":[userNoValues]};
+        		"productNo":productNoValues, 
+	        	"cartCount":cartCountValues,
+	        	"productOption":productOptionValues, 
+	        	"productOption2":productOption2Values,
+	        	"userNo":userNoValues};
         
         $("input[name='productNo']").each(function(){
         	productNoValues.push($(this).val());
@@ -1331,7 +1331,6 @@ $(function(){
         $("input[name='userNo']").each(function(){
         	userNoValues.push($(this).val());
         })
-        
         
         
         console.log(allData);

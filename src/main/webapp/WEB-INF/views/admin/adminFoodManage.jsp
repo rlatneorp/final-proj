@@ -53,7 +53,7 @@
 					<th style="width: 7%">좋아요</th>
 					<th style="width: 9%">상태</th>
 					<th style="width: 6%">
-						<button type="button" class="allSelect" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 45px; height: 25px; font-size: 12px; font-weight: bold;">전체</button>
+<!-- 						<button type="button" class="allSelect" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 45px; height: 25px; font-size: 12px; font-weight: bold;">전체</button> -->
 					</th>
 				</tr>
 				
@@ -132,26 +132,27 @@
 
 	<script>
 		window.onload = () =>{
+//		식단에 포함된 식품은 지우면 안되기 때문에, 전체삭제 보류함
 // 			삭제 체크박스 전체선택 이벤트
-			const allSelect = document.getElementsByClassName('allSelect')[0];
-			allSelect.addEventListener('click', ()=>{
-				selectDeletes = document.getElementsByName('selectDelete');
-				let count = 0;
-				for(const sDel of selectDeletes){
-					if(sDel.checked == true){
-						count += 1;
-					}
-				}
-				if(count == selectDeletes.length){
-					for(const sDel of selectDeletes){
-						sDel.checked = false;
-					}
-				}else{
-					for(const sDel of selectDeletes){
-						sDel.checked = true;
-					}
-				}
-			})
+// 			const allSelect = document.getElementsByClassName('allSelect')[0];
+// 			allSelect.addEventListener('click', ()=>{
+// 				selectDeletes = document.getElementsByName('selectDelete');
+// 				let count = 0;
+// 				for(const sDel of selectDeletes){
+// 					if(sDel.checked == true){
+// 						count += 1;
+// 					}
+// 				}
+// 				if(count == selectDeletes.length){
+// 					for(const sDel of selectDeletes){
+// 						sDel.checked = false;
+// 					}
+// 				}else{
+// 					for(const sDel of selectDeletes){
+// 						sDel.checked = true;
+// 					}
+// 				}
+// 			})
 			
 // 			삭제 체크박스 선택 이벤트 (식단에 포함된 식품은 삭제 불가능)
 			selectDeletes = document.getElementsByName('selectDelete');
@@ -161,8 +162,19 @@
 						url: '${contextPath}/adminFoodDeleteable.ad',
 						data: {pNo: this.value},
 						success: data => {
+							console.log(data);
 							if(this.checked && data.length != 0){
-								alert(data+" 식단에 포함되어 있어 삭제할 수 없습니다.");
+								let menuName = "";
+								for(const i in data){
+									if(i == 0){
+										menuName = data[i];
+									}else{
+										if(data[i] != data[i-1]){
+											menuName += ", " + data[i];
+										}
+									}
+								}
+								alert(menuName+" 식단에 포함되어 있어 삭제할 수 없습니다.");
 								this.checked = false;
 							}
 						},
@@ -176,9 +188,20 @@
 // 			삭제버튼 클릭 이벤트 (confirm 띄우기)
 			const deleteBtn = document.getElementsByClassName('deleteBtn')[0];
 			deleteBtn.addEventListener('click', ()=>{
-				const result = confirm("정말 삭제하시겠습니까?");
-				if(result){
-					document.getElementById('deleteForm').submit();
+				let count = 0;
+				selectDeletes = document.getElementsByName('selectDelete');
+				for(const sDel of selectDeletes){
+					if(sDel.checked == true){
+						count++;
+					}
+				}
+				if(count > 0){
+					const result = confirm("정말 삭제하시겠습니까?");
+					if(result){
+						document.getElementById('deleteForm').submit();
+					}
+				}else{
+					alert("삭제할 식품을 선택해주세요.");
 				}
 			})
 			

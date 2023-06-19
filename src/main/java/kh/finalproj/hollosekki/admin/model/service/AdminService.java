@@ -70,7 +70,23 @@ public class AdminService {
 	public ArrayList<Menu> selectMenuList(PageInfo pi, AdminBasic ab) {
 		return aDAO.selectMenuList(sqlSession, pi, ab);
 	}
+
+	public Menu selectMenu(int pNo) {
+		return aDAO.selectMenu(sqlSession, pNo);
+	}
+
+	public ArrayList<String> selectFoodProductNo(int pNo) {
+		return aDAO.selectFoodProductNo(sqlSession, pNo);
+	}
 	
+	public int updateMenu(Menu m) {
+		return aDAO.updateMenu(sqlSession, m);
+	}
+
+	public int deleteMenuList(Menu m) {
+		return aDAO.deleteMenuList(sqlSession, m);
+	}
+
 	public int insertMenu(Menu m) {
 		return aDAO.insertMenu(sqlSession, m);
 	}
@@ -138,6 +154,8 @@ public class AdminService {
 	public int deletesFood(String[] foodDeletes) {
 		return aDAO.deletesFood(sqlSession, foodDeletes);
 	}
+
+	
 
 
 

@@ -67,7 +67,23 @@ public class AdminDAO {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("adminMapper.selectMenuList", ab, rowBounds);
 	}
+
+	public Menu selectMenu(SqlSessionTemplate sqlSession, int pNo) {
+		return sqlSession.selectOne("adminMapper.selectMenu", pNo);
+	}
+
+	public ArrayList<String> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectFoodProductNo", pNo);
+	}
 	
+	public int updateMenu(SqlSessionTemplate sqlSession, Menu m) {
+		return sqlSession.update("adminMapper.updateMenu", m);
+	}
+
+	public int deleteMenuList(SqlSessionTemplate sqlSession, Menu m) {
+		return sqlSession.delete("adminMapper.deleteMenuList", m);
+	}
+
 	public int insertMenu(SqlSessionTemplate sqlSession, Menu m) {
 		return sqlSession.insert("adminMapper.insertMenu", m);
 	}
@@ -148,6 +164,8 @@ public class AdminDAO {
 	public int deletesFood(SqlSessionTemplate sqlSession, String[] foodDeletes) {
 		return sqlSession.delete("adminMapper.deletesFood", foodDeletes);
 	}
+
+
 
 
 

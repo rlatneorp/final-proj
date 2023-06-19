@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -132,12 +133,113 @@ public class AdminController {
 		
 	}
 	@GetMapping("adminMenuDetail.ad")
-	public String adminMenuDetail() {
-		return "adminMenuDetail";
+	public String adminMenuDetail(@ModelAttribute AdminBasic ab,
+								  @RequestParam("productNo") int pNo,
+							 	  Model model) {
+		PageInfo pi = new PageInfo();
+		AdminBasic ab1 = new AdminBasic();
+		AdminBasic ab2 = new AdminBasic();
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(100000);
+		ab1.setKind(1);
+		ArrayList<Food> fList1 = aService.selectFoodList(pi, ab1); 
+		ab2.setKind(2);
+		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
+		
+		ab.setKind(0);
+		Menu m = aService.selectMenu(pNo);
+		ArrayList<String> fNoArr = aService.selectFoodProductNo(pNo);
+		String str = "";
+		for(int i = 0; i<fNoArr.size(); i++) {
+			str += fNoArr.get(i);
+			if(i < fNoArr.size()-1) {
+				str += ",";
+			}
+		}
+		m.setFoodProductNo(str);
+		
+		m = (Menu)selectProduct(m);
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", pNo);
+		map.put("imageType", 4);
+		Image img = aService.selectAllImageList(map).get(0);
+		
+		if(m != null) {
+			System.out.println(m);
+			System.out.println(img);
+			model.addAttribute("fList1", fList1);
+			model.addAttribute("fList2", fList2);
+			model.addAttribute("m", m);
+			model.addAttribute("img", img);
+			return "adminMenuDetail";
+		}else {
+			throw new AdminException("메뉴 조회를 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminMenuUpdate.ad")
-	public String adminMenuUpdate() {
-		return "redirect:adminMenuManage.ad";
+	public String adminMenuUpdate(@ModelAttribute AdminBasic ab,
+								  @ModelAttribute Menu m,
+								  @ModelAttribute Product pd,
+								  @RequestParam("imageFile") MultipartFile imageFile,
+								  HttpServletRequest request,
+							 	  Model model) {
+		System.out.println(ab);
+		System.out.println(m);
+		System.out.println(pd);
+		System.out.println(imageFile);
+		System.out.println(imageFile == null);
+		System.out.println(imageFile.isEmpty());
+		
+		int resultM1 = 0;
+		int resultM2 = 0;
+		int resultM3 = 0;
+		int resultPd = 0;
+		int resultImg = 1;
+		int resultImgDel = 1;
+		
+		m.setProductOption("N");
+		resultM1 = aService.updateMenu(m);
+		resultM2 = aService.deleteMenuList(m);
+		resultM3 = aService.insertMenuList(m);
+		resultPd = aService.updateProduct(m);
+		
+		if(resultM1 + resultM2 + resultM3 + resultPd == (1+28+28+1) && imageFile != null && !imageFile.isEmpty()) {
+//			데이터 서버 이미지 삭제
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", m.getProductNo());
+			map.put("imageType", 4);
+			Image img = aService.selectAllImageList(map).get(0);
+			deleteFile(img.getImageRenameName(), request);
+			
+//			DB서버 이미지 삭제
+			resultImgDel = aService.deleteImage(img);
+			
+//			이미지 저장
+			Image image = new Image();
+			if(imageFile != null && !imageFile.isEmpty()) {
+				String[] returnArr = saveFile(imageFile, request);
+				if(returnArr[1] != null) {
+					image.setImageDivideNo(m.getProductNo());
+					image.setImageType(4);
+					image.setImagePath(returnArr[0]);
+					image.setImageOriginalName(imageFile.getOriginalFilename());
+					image.setImageRenameName(returnArr[1]);
+					image.setImageLevel(1);
+				}
+			}
+			resultImg = aService.insertImage(image);
+		}
+		System.out.println(resultM1);
+		System.out.println(resultM2);
+		System.out.println(resultM3);
+		System.out.println(resultPd);
+		if(resultM1 + resultM2 + resultM3  + resultPd + resultImg + resultImgDel == (1+28+28+1+1+1)) {
+			model.addAttribute("ab", ab);
+			return "redirect:adminMenuManage.ad";
+		}else {
+			throw new AdminException("메뉴 수정에 실패하였습니다.");
+		}
+		
 	}
 	@PostMapping("adminMenuDeletes.ad")
 	public String adminMenuDeletes(@RequestParam("selectDelete") String[] selDeletes,
@@ -205,7 +307,6 @@ public class AdminController {
 		
 		m.setProductType(2);
 		m.setProductOption("N");
-//		return "redirect:adminMenuManage.ad";
 		resultPd = aService.insertProduct(m);
 		if(resultPd != 0) {
 			resultM = aService.insertMenu(m);
@@ -967,5 +1068,27 @@ public class AdminController {
 			p.setProductStatus(pd.getProductStatus());
 		}
 		return p;
+	}
+	
+	private AdminBasic adminBasic(AdminBasic ab, HttpSession session) {
+		int currentPage = 1;
+		if(ab.getPage() == null) {
+			ab.setPage(currentPage);
+		}
+		int pageCount = 10;
+	//	세션에 값 X ab에 값 X	-> 초기값 동일 설정
+		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
+			ab.setPageCount(pageCount);
+			session.setAttribute("pageCount", pageCount);
+	//	세션에 값 X ab에 값 O	(불가능)
+	//	세션에 값 O ab에 값 X	-> 세션값 ab에 입력
+		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
+			ab.setPageCount((int)session.getAttribute("pageCount"));
+	//	세션에 값 O ab에 값 O	-> ab값 세션에 입력
+		}else {
+			session.setAttribute("pageCount", ab.getPageCount());
+		}
+		
+		return ab;
 	}
 }

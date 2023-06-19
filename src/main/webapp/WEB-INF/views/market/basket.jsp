@@ -163,7 +163,6 @@ input[type="text"] {
 <%@include file="../common/top.jsp" %>
 <br><br><br><br><br><br>
 
-
 	<div>
 	<!-- 장바구니 상단 부분 -->
 	<div class="carrier" style="margin-bottom: 10px;">
@@ -192,47 +191,21 @@ input[type="text"] {
 <!-- 			<th style="border-bottom: 2px solid #dee2e6">배송비</th> -->
 		</tr>
 		<tbody id="products">
-			<c:forEach items="${ cartList}" var="cl" >
+			<c:forEach items="${ cartList}" var="cl" varStatus="status" >
+				<c:if test="${cl.preorderNo != cartList[status.index - 1].preorderNo}">
+				
+<%-- 				<c:set var="prevPreorderNo" value="${cl.preorderNo}"/> --%>
+<%-- 				<c:if test="${cl.preorderNo eq prevPreorderNo }"> --%>
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
+						<input type="text" value="${cl.preorderNo }">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
 						<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">
 						<b>${cl.productName}</b><br><br>
-							<c:forEach var="option" items="${cl.optionValue}">
-								${option.optionName }<br>
-<%-- 								${option.optionName eq option.optionName }<br> --%>
-								${ optName }<br>
-								${option.optionValue }<br>
-							
-							
-							
-							</c:forEach>
-<%-- 						<c:forEach var="g" items="${ optName }"> --%>
-<%-- 							${ g } --%>
-<!-- 							<select> -->
-<%-- 								<c:forEach var="option" items="${cl.optionValue }"> <!-- 개수만큼 돌아  --> --%>
-<%-- 									<c:if test="${option.optionName  eq  g }">  --%>
-<%-- 										<option value="${option.optionNo}">${option.optionValue}</option> --%>
-<%-- 									</c:if> --%>
-<%-- 								</c:forEach> --%>
-<!-- 							</select> -->
-							
-<%-- 						</c:forEach> --%>
-<%-- 						<c:if test="${cl.optionVal }" --%>
-<%-- 						${cl } --%>
-							<select>
-							<!-- 만약에 optionName이 같다면  -->
-							
-<%-- 								<c:forEach var="option" items="${cl.optionValue }"> <!-- 개수만큼 돌아  --> --%>
-<%-- <%-- 								 --%>
-<%-- <%-- 									<c:if test="${ optName }"> --%> --%>
-<%-- 										<option value="${option.optionNo}">${option.optionValue}</option> --%>
-<%-- <%-- 									</c:if> --%> --%>
-<%-- 								</c:forEach> --%>
-							</select>
+						
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:130px">
 						<i class="bi bi-dash-square-fill" id="minus-${cl.productNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
@@ -254,6 +227,7 @@ input[type="text"] {
 					</td>
 <%-- 					<td id="shippingPrice-${cl.productNo }">${cl.shippingPrice }</td> --%>
 				</tr>
+				</c:if>
 				</c:forEach>
 		</tbody>
 	</table><br><br>
@@ -314,10 +288,12 @@ input[type="text"] {
 </body>
 
 <script>
-	
+console.log('response : ' + response);
 	
 	
 	window.onload = () => {
+		
+		
 		document.getElementById('trTotalSum').innerText = '0';	
 		document.getElementById('orderSize').innerText = '0';
 		document.getElementById('shipSum').innerText = '0';

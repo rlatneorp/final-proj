@@ -4,23 +4,35 @@
 	<select id="getListCount" resultType="_int">
 		select count(*)
 		from faq
-		where faq_status='Y' and faq_type = #{i}
+		where faq_status= 'Y'
+		<if test="bType == null">
+			and faq_type = 1
+		</if>
+		<if test="bType != null">
+			and faq_type = #{bType}
+		</if>
+		<if test="u != null">
+			and users_no = #{uNo}
+		</if>
 	</select>
 	
-	<select id="noticeBoardList" resultMap="CustomerResultSet">
+	<select id="faqBoardList" resultMap="CustomerResultSet">
 		select *
 		from faq
-			join users using(users_no)
-		where is_admin = 'Y' and faq_type = #{i}	
+		where faq_status = 'Y'
+		<if test="bType == null">
+			and faq_type = 1
+		</if>
+		<if test="bType != null">
+			and faq_type = #{bType}
+		</if>
+		<if test="u != null">
+			and users_no = #{uNo}
+		</if>
+		order by faq_no
 	</select>
-	<select id="personalQuestion" resultMap="CustomerResultSet">
-		select *
-		from faq
-			join users using(users_no)
-		where is_admin = 'Y' and faq_type = #{i}	
 	
-	</select>
-	
+
 	<resultMap type="Customer" id="CustomerResultSet">
 		<id column="FAQ_NO" property="faqNo"/>
 		<result column="USERS_NO" property="usersNo"/>

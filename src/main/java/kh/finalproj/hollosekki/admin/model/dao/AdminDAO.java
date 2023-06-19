@@ -11,6 +11,7 @@ import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 
@@ -55,6 +56,33 @@ public class AdminDAO {
 		return sqlSession.delete("adminMapper.deleteImage", img);
 	}
 	
+	
+//	Menu-메뉴
+	public int getMenuCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getMenuCount", ab);
+	}
+
+	public ArrayList<Menu> selectMenuList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectMenuList", ab, rowBounds);
+	}
+	
+	public int insertMenu(SqlSessionTemplate sqlSession, Menu m) {
+		return sqlSession.insert("adminMapper.insertMenu", m);
+	}
+	
+	public int insertMenuList(SqlSessionTemplate sqlSession, Menu m) {
+		int result = 0; 
+		for(String i:m.getFoodProductNo().split(",")) {
+			Menu menu = new Menu();
+			menu.setProductNo(m.getProductNo());
+			menu.setFoodProductNo(i);
+			result += sqlSession.insert("adminMapper.insertMenuList", menu);
+		}
+		return result;
+	}
+
 	
 //	Ingredient-식재료
 	public int getIngredientCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
@@ -113,9 +141,17 @@ public class AdminDAO {
 		return sqlSession.insert("adminMapper.insertFood", f);
 	}
 
+	public ArrayList<String> deleteableFood(SqlSessionTemplate sqlSession, int pNo) {
+		return (ArrayList)sqlSession.selectList("adminMapper.deleteableFood", pNo);
+	}
+	
 	public int deletesFood(SqlSessionTemplate sqlSession, String[] foodDeletes) {
 		return sqlSession.delete("adminMapper.deletesFood", foodDeletes);
 	}
+
+
+
+	
 
 
 

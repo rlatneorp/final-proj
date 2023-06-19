@@ -145,6 +145,12 @@ public class MarketService {
 		return mkDAO.sendPoint(sqlSession, u);
 	}
 
+
+	public ArrayList<Cart> selectOptionNo(Cart cart) {
+		// TODO Auto-generated method stub
+		return mkDAO.selectOptionNo(sqlSession, cart);
+	}
+
 	
 	
 

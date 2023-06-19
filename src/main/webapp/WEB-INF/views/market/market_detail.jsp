@@ -1306,11 +1306,11 @@ $(function(){
         var userNoValues=[];
         
         var allData ={
-        		"productNo":productNoValues, 
-	        	"cartCount":cartCountValues,
-	        	"productOption":productOptionValues, 
-	        	"productOption2":productOption2Values,
-	        	"userNo":userNoValues};
+        		"productNo":[productNoValues], 
+	        	"cartCount":[cartCountValues],
+	        	"productOption":[productOptionValues], 
+	        	"productOption2":[productOption2Values],
+	        	"userNo":[userNoValues]};
         
         $("input[name='productNo']").each(function(){
         	productNoValues.push($(this).val());

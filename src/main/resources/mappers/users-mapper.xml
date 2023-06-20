@@ -101,7 +101,19 @@
 		<result column="USERS_NO" property="usersNo"/>
 	</resultMap>
 	
-<!-- 	<select id="selectFollowInfo"> -->
-<!-- 		현지야 너꺼 사진 안 된다. -->
+	<select id="selectFollowInfo" resultMap="usersResultSet">
+		select *
+		from users
+		where users_no = #{followNo} and status = 'Y'
+	</select>
+	
+	<select id="selectFollowImage" resultMap="imageResultSet">
+		select *
+		from image
+		where IMAGE_DIVIDE_NO = #{followNo} and image_type = 1
+	</select>
+	
+<!-- 	<select id="selectFollow"> -->
+		
 <!-- 	</select> -->
 </mapper>

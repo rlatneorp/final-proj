@@ -57,12 +57,16 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.selectFollower", usersNo);
 	}
 
-	public Users selectFollowInfo(SqlSessionTemplate sqlSession, int followingNo) {
-		return sqlSession.selectOne("usersMapper.selectFollowInfo", followingNo);
+	public Users selectFollowInfo(SqlSessionTemplate sqlSession, int followNo) {
+		return sqlSession.selectOne("usersMapper.selectFollowInfo", followNo);
 	}
 
-	public Image selectFollowImage(SqlSessionTemplate sqlSession, int followingNo) {
-		return null;
+	public Image selectFollowImage(SqlSessionTemplate sqlSession, int followNo) {
+		return sqlSession.selectOne("usersMapper.selectFollowImage", followNo);
+	}
+
+	public ArrayList<Follow> selectFollow(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("usersMapper.selectFollow", usersNo);
 	}
 
 }

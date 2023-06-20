@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,51 +45,46 @@ public class UsersController {
 	public String myPage_Main(Model model) {
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		Image image = uService.selectImage(usersNo);
-		System.out.println(image);
 		if(image != null) {
 			model.addAttribute("image", image);
 		}
-//		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
-//		System.out.println(usersNo);
-//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
-//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
-//		System.out.println(followingList);
-//		System.out.println(followerList);
-//		
-//		Users u = null;
-//		Image image = null;
-//		if(!followingList.isEmpty()) {
-//			for(Follow following : followingList) {
-//				int followingNo = following.getFollowingUsersNo();
-//				System.out.println(followingNo);
-//				u = uService.selectFollowInfo(followingNo);
-//				image = uService.selectFollowImage(followingNo);
-//				
-//				System.out.println(u);
-//				System.out.println(image);
-//			}
-//			System.out.println(u);
-//			System.out.println(image);
-//			model.addAttribute("followingUsers", u);
-//			model.addAttribute("followingImage", image);
-//		}
-//		
-//		if(!followerList.isEmpty()) {
-//			for(Follow follower : followerList) {
-//				int followerNo = follower.getFollowingUsersNo();
-//				System.out.println(followerNo);
-//				u = uService.selectFollowInfo(followerNo);
-//				image = uService.selectFollowImage(followerNo);
-//				
-//				System.out.println(u);
-//				System.out.println(image);
-//			}
-//			System.out.println(u);
-//			System.out.println(image);
-//			model.addAttribute("followerUsers", u);
-//			model.addAttribute("followerImage", image);
-//		}
-//		
+		
+		ArrayList<Follow> followList = uService.selectFollow(usersNo);
+		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
+		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+		
+		Users followU = null;
+		Image followImage = null;
+		if(!followingList.isEmpty()) {
+			List<Users> followingUList = new ArrayList<>();
+			List<Image> followingImageList = new ArrayList<>();
+			for(Follow following : followingList) {
+				int followNo = following.getFollowingUsersNo();
+				followU = uService.selectFollowInfo(followNo);
+				followImage = uService.selectFollowImage(followNo);
+				
+				followingUList.add(followU);
+			    followingImageList.add(followImage);
+			}
+			model.addAttribute("followingUsers", followingUList);
+			model.addAttribute("followingImage", followingImageList);
+		}
+		
+		if(!followerList.isEmpty()) {
+			List<Users> followerUList = new ArrayList<>();
+			List<Image> followerImageList = new ArrayList<>();
+			for(Follow follower : followerList) {
+				int followNo = follower.getUsersNo();
+				followU = uService.selectFollowInfo(followNo);
+				followImage = uService.selectFollowImage(followNo);
+				
+				followerUList.add(followU);
+				followerImageList.add(followImage);
+			}
+			model.addAttribute("followerUsers", followerUList);
+			model.addAttribute("followerImage", followerImageList);
+		}
+		
 		return "myPage_Main";
 	}
 	

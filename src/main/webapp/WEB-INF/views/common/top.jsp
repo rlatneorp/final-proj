@@ -201,18 +201,18 @@
 								<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 									<div class="profile-img-div">
 										<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-											<c:if test="${ image == null }">
+											<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
 												<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img"/>
 											</c:if>
-											<c:if test="${ image != null and image.imageType == '1' }">
+											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
 												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="profile-img"/>
 											</c:if>
 										</c:if>
 										<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-											<c:if test="${ image == null }">
+											<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
 												<img src="${ socialUser.socialProfileImg }" class="profile-img">
 											</c:if>
-											<c:if test="${ image != null and image.imageType == '1' }">
+											<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
 												<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" class="profile-img" onerror="this.src='${ socialUser.socialProfileImg }';"/>
 											</c:if>
 										</c:if>

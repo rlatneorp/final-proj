@@ -247,13 +247,13 @@
 		select * from options where option_no = #{optionNo} and product_no = #{productNo}
 	</select>
 	
+	<select id="selectOptionsSet" resultMap="optionsList">
+		select * from options where product_no = #{productNo}
+	</select>
+	
 	<select id="updateOptionNo" resultType="_int">
 		update cart set product_option = #{productOption} where product_no = #{productNo}
 	</select>
-	
-<!-- 	<select id="selectOptionVal" resultType="String"> -->
-<!-- 		select option_value from options where pre_order_no = #{preorderNo} -->
-<!-- 	</select> -->
 	
 	<select id="selectOptionNo" resultMap="cartList">
 		select * from cart where product_no = #{productNo} and users_no = #{usersNo} and pre_order_no = #{preorderNo}

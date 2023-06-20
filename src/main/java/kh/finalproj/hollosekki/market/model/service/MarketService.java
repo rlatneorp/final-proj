@@ -179,6 +179,10 @@ public class MarketService {
 		return mkDAO.selectOptionInfo(sqlSession, productNo, productOption);
 	}
 
+	public ArrayList<Options> selectOptionsSet(int productNo) {
+		return mkDAO.selectOptionSet(sqlSession, productNo);
+	}
+
 	
 	
 

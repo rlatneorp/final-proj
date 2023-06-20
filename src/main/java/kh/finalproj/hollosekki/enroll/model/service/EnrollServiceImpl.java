@@ -1,12 +1,18 @@
 package kh.finalproj.hollosekki.enroll.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.dao.EnrollDAO;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Service
 public class EnrollServiceImpl implements EnrollService{
@@ -80,6 +86,26 @@ public class EnrollServiceImpl implements EnrollService{
 	@Override
 	public void socialInfoUpdate2(String id, String name) {
 		eDAO.socialInfoUpdate2(sqlSession, id, name);
+	}
+
+	@Override
+	public ArrayList<Recipe> recipeList(int usersNo) {
+		return eDAO.recipeList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Image> recipeImageList(int foodNo) {
+		return eDAO.recipeImageList(sqlSession, foodNo);
+	}
+
+	@Override
+	public ArrayList<BookMark> bookMarkList(int usersNo) {
+		return eDAO.bookMarkList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Menu> menuList(int usersNo) {
+		return eDAO.menuList(sqlSession, usersNo);
 	}
 
 	

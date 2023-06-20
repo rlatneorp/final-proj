@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>admin</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
+<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
 	.btns{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;}
 </style>
@@ -22,7 +23,7 @@
 		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
 		<div style="width: 100%; margin-bottom:3px; height:35px;" class="d-flex justify-content-between">
 			<div class="d-flex">
-				<form id="pageCountForm" action="adminProductManage.ad">
+				<form id="pageCountForm" action="adminToolManage.ad">
 					<input type="hidden" name="page" value="${ab.page}">
 					<input type="hidden" name="searchType" value="${ab.searchType}">
 					<input type="hidden" name="searchText" value="${ab.searchText}">
@@ -37,7 +38,7 @@
 			<span class="material-symbols-outlined me-2 deleteBtn" style="font-size: 36px; color: black; text-shadow: 1px 1px 2px gray; cursor:pointer;">delete</span>
 		</div>
 			
-		<form id="deleteForm" action="${contextPath}/adminProductDeletes.ad" method="post">
+		<form id="deleteForm" action="${contextPath}/adminToolDeletes.ad" method="post">
 			<table class="w-100 text-center mb-3">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>
@@ -55,42 +56,47 @@
 					</th>
 				</tr>
 				
-				<c:forEach begin="1" end="10" varStatus="vs">
+				<c:forEach items="${tList}" var="t" varStatus="vs">
 					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
-						<td>${11-vs.index}
-							<input type="hidden" name="productNo" value="${m.productNo}">
+						<td>${t.productNo}
+							<input type="hidden" name="productNo" value="${t.productNo}">
 						</td>
 						<td>
-							<a href="${contextPath}/adminProductDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&ingredientNo=${m.productNo}">
-								국자(100g)${11-vs.index}</a>
+							<a href="${contextPath}/adminToolDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&productNo=${t.productNo}">
+								${t.toolName}
+							</a>
 						</td>
-						<td>채소</td>
 						<td>
-							<fmt:formatNumber pattern="###,###,###" value="5000"/>원
+							<c:if test="${t.toolType eq 1}">조리도구</c:if>
+							<c:if test="${t.toolType eq 2}">보관용품</c:if>
+							<c:if test="${t.toolType ne 1 && t.toolType ne 2}">기타</c:if>
 						</td>
-						<td>35%</td>
-						<td>${(11-vs.index)*27}</td>
-						<td>${(11-vs.index)*7}</td>
-						<td>${(11-vs.index)*11}</td>
-						<td>${(11-vs.index)*19}</td>
 						<td>
-							<c:if test="${p.productStatus eq 'Y'}">
+							<fmt:formatNumber pattern="###,###,###" value="${t.productPrice}"/>원
+						</td>
+						<td>${t.productSale}%</td>
+						<td>${t.productStock}</td>
+						<td>${t.orderCount}</td>
+						<td>${t.viewCount}</td>
+						<td>${t.likeCount}</td>
+						<td>
+							<c:if test="${t.productStatus eq 'Y'}">
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">Y</button>
 								<button type="button" class="btns statusBtn" style="background-color: gray;">N</button>
 							</c:if>
-<%-- 							<c:if test="${p.productStatus eq 'N'}"> --%>
+							<c:if test="${t.productStatus eq 'N'}">
 								<button type="button" class="btns statusBtn" style="background-color: gray;">Y</button>
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">N</button>
-<%-- 							</c:if> --%>
+							</c:if>
 						</td>
-						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;" value="${p.productNo}"></td>
+						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;" value="${t.productNo}"></td>
 					</tr>
 				</c:forEach>
 			</table>
 		</form>
 		<div class="d-flex justify-content-end mb-5">
 			<div class="d-flex">
-				<button onclick="location.href='${contextPath}/adminProductWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">상품등록</button>
+				<button onclick="location.href='${contextPath}/adminToolWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">상품등록</button>
 			</div>
 		</div>
 		<form id="searchForm">
@@ -157,10 +163,8 @@
 								url: '${contextPath}/adminUpdateStatus.ad',
 								data: {dataNo:pNos[j].value,
 									   dataStatus:statusBtns[i].innerText,
-									   dataType:2},
+									   dataType:4},
 								success: data =>{
-									let price = "";
-									let sale = "";
 									if(data == "success"){
 										if(i%2 == 0){
 											statusBtns[i].style.background = "#19A7CE";
@@ -168,9 +172,6 @@
 										}else if(i%2 == 1){
 											statusBtns[i].style.background = "#19A7CE";
 											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-											
-											price = document.getElementsByClassName('priceBox')[j].innerText;
-											sale = document.getElementsByClassName('saleBox')[j].innerText;
 										}
 									}else{
 										alert("상태 변경에 실패하였습니다.");

@@ -1,13 +1,18 @@
 package kh.finalproj.hollosekki.enroll.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
 public class EnrollDAO {
@@ -80,6 +85,22 @@ public class EnrollDAO {
 		map.put("id", id);
 		map.put("name", name);
 		sqlSession.update("enrollMapper.socialInfoUpdate2", map);
+	}
+
+	public ArrayList<Recipe> recipeList(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.recipeList", usersNo);
+	}
+
+	public ArrayList<Image> recipeImageList(SqlSessionTemplate sqlSession, int foodNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.recipeImageList", foodNo);
+	}
+
+	public ArrayList<BookMark> bookMarkList(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.bookMarkList", usersNo);
+	}
+
+	public ArrayList<Menu> menuList(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.menuList", usersNo);
 	}
 
 

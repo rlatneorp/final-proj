@@ -671,6 +671,7 @@ p b {
 // 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
+			const pStock = document.getElementsByName('productStock')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
 			pPrice.addEventListener('change', ()=>{
 				if(pPrice.value < 0){
@@ -688,6 +689,12 @@ p b {
 				}
 				cal();
 			});
+			pStock.addEventListener('change', ()=>{
+				if(pStock.value <= 0){
+					pStock.value = 0;
+				}
+			})
+			
 			
 // 			메뉴 종류 버튼 이벤트
 			const foodKind = document.getElementsByName('foodKind')[0];

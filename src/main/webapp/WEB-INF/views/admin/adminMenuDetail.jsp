@@ -88,7 +88,7 @@
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	<div class="mainBox">
-		<form action="${contextPath}/adminMenuUpdate.ad" method="post" enctype="multipart/form-data">
+		<form id="menuUpdateForm" action="${contextPath}/adminMenuUpdate.ad" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="productNo" value="${m.productNo}">
 			<input type="hidden" name="foodPNoAll" value="${m.foodProductNo}">
 			<input type="hidden" name="productStatus" value="${m.productStatus}">
@@ -283,6 +283,12 @@
 								</td>
 								<td style="width: 30px; font-size: 16px; font-weight: bold; text-align: left;">원</td>
 							</tr>
+							<tr>
+								<td colspan="2">재고</td>
+								<td colspan="4">
+									<input type="number" class="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productStock}" min="0">
+								</td>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -330,7 +336,7 @@
 			
 			<div class="d-flex justify-content-center mb-5">
 				<div class="d-flex">
-					<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
+					<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
 					<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 				</div>
 			</div>
@@ -360,7 +366,7 @@
 				}
 			}
 			
-// 			메뉴 정보 불러오기 이벤트(ajax)
+// 			메뉴 정보 불러오기 이벤트 추가(ajax)
 			const selectors = document.getElementsByClassName('foodSelector');
 			for(const sel of selectors){
 				sel.addEventListener('change',function(){
@@ -373,6 +379,7 @@
 			const selectors2 = document.getElementsByClassName('foodSelector');
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
+			const pStock = document.getElementsByName('productStock')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
 
 // 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
@@ -391,6 +398,11 @@
 					pSale.value = 0;
 				}
 				cal();
+			});
+			pStock.addEventListener('change', ()=>{
+				if(pStock.value <= 0){
+					pStock.value = 0;
+				}
 			});
 			
 // 			기존 foodProductNo값 세팅
@@ -504,6 +516,23 @@
 			}
 		}
 		
+		function checkSubmit(){
+			if(document.getElementsByName('imageFile').value == false){
+				alert("이미지를 등록해주세요.");
+				document.getElementsByName('imageFile')[0].focus();
+			}else if(document.getElementsByName('menuName')[0].value.trim() == ''){
+				alert("메뉴이름을 입력해주세요.");
+				document.getElementsByName('menuName')[0].focus();
+			}else if(document.getElementsByName('menuContent')[0].value.trim() == ''){
+				alert("메뉴 내용을 입력해주세요.");
+				document.getElementsByName('menuContent')[0].focus();
+			}else if(document.getElementsByName('productStock')[0].value.trim() == ''){
+				alert("재고를 입력해주세요.");
+				document.getElementsByName('productStock')[0].focus();
+			}else{
+				document.getElementById('menuUpdateForm').submit();
+			}
+		}
 	</script>
 	
 </body>

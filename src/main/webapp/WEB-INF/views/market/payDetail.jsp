@@ -163,7 +163,7 @@ input[type="text"] {
 }
 
 .shippingList{border-bottom:2px solid lightgray; height:45px;}
-
+.shippingList2{border-bottom:2px solid lightgray; height:45px;}
 </style>
 </head>
 <body>
@@ -457,14 +457,14 @@ input[type="text"] {
 	    <h3>나의 배송지 목록</h3><br>
 	    <button id="openSecondButton" style="margin-left:600x;">+ 새 배송지 추가</button><br><br>
 	    <table style=" height:35px; width:100%; border-left:none; border-right:none;">
-	    	<tr class="shippingList">
+	    	<tr class="shippingList2">
 	    		<th>선택</th>
 	    		<th style="width:150px">받으실 분</th>
 	    		<th>배송지 명</th>
 	    		<th style="width:300px">배송지</th>
 	    		<th>전화번호</th>
 	    		<th>휴대폰 번호</th>
-	    		<th>수정/삭제</th>
+<!-- 	    		<th>수정/삭제</th> -->
 	    	</tr>
 	    		<tbody id="tbody">
 		    		<c:forEach items="${shipAddress}" var="sa" >
@@ -475,18 +475,20 @@ input[type="text"] {
 					        <td>${sa.address}</td>
 					        <td>${sa.homePhone}</td>
 					        <td>${sa.phone}</td>
-					        <td><button>수정</button><button>삭제</button></td>
+<%-- 					        <td><button class='editShip'>수정</button><input type="text" value="${sa.shippingNo }"><button>삭제</button></td> --%>
 					    </tr>
 				    </c:forEach>
 				</tbody>
-			
+				
 	    </table>
+	    <br><br><button id="editShipping">수정</button>&nbsp;<button>삭제</button>
 	  </div>
 	</div>
 
 	<!-- 배송지 추가 시 입력 창 -->
 	<div id="secondPopup" class="popup">
   <div class="popup-content">
+  	<span class="close" id="closeButton2">&times;</span><br><br><br>
     <table style="width:800px; margin-top:20px">
 		<tr>
 			<td class="address"><b>받으실 분</b></td>
@@ -588,6 +590,8 @@ input[type="text"] {
 
 <script>
 	window.onload = () => {
+		
+		
 		//총 주문 개수
 		let totalCount = 0;
 		const cartCount = document.getElementsByClassName('cartCount');
@@ -601,10 +605,20 @@ input[type="text"] {
 		let trTotalSum = 0;
 		const trSum = document.getElementsByClassName('sum');
 		for(const sum of trSum) {
+			
 			const intSum = parseInt(sum.innerText);
 			trTotalSum += intSum;
+		}document.getElementById('trTotalSum').innerText = trTotalSum;
+		
+		//포인트
+		const parentPnos = document.getElementsByClassName('imgTab');
+		for(let p of parentPnos) { 
+			let pNos = p.children[0].value;
+			let sumPrice = parseInt(document.getElementById('sum-' + pNos).innerText);
+			document.getElementById('point-' + pNos).innerText = (sumPrice*0.005) 
 		}
-		document.getElementById('trTotalSum').innerText = trTotalSum;
+		
+		
 		//배송비
 		if(trTotalSum <= 30000) {
 			document.getElementById('shipPrice').innerText = '3,000';
@@ -635,6 +649,7 @@ input[type="text"] {
 		//배송지 관리 - 추가 
 		const openButton = document.getElementById("openButton");
 		const closeButton = document.getElementById("closeButton");
+		const closeButton2 = document.getElementById("closeButton2");
 		const openSecondButton = document.getElementById("openSecondButton");
 		const closeSecondButton = document.getElementById("closeSecondButton");
 		const confirmButton = document.getElementById("confirmButton");
@@ -642,9 +657,124 @@ input[type="text"] {
 		const popup = document.getElementById("popup");
 		const secondPopup = document.getElementById("secondPopup");
 
-		// 버튼 클릭 이벤트 처리
+		// 배송지 관리 이벤트 처리
 		openButton.addEventListener("click", function() {
 		  popup.style.display = "block";
+		  
+		  //배송지 조회 
+		  $.ajax({
+			  url:'${contextPath}/selectShipping.ma',
+			  data: {
+				  usersNo:${loginUser.usersNo}
+			  },
+			  success: data => {
+				  const tbody = document.getElementById('tbody');
+				  document.getElementById('tbody').innerHTML = '';
+				 
+				  for(datas of data) {
+					  const shippingNo = datas.shippingNo;
+					  console.log(shippingNo);
+					  var row = document.createElement("tr");
+					  row.classList.add('shippingList');
+// 					  row.children.classList.add('shippingList');
+					  row.innerHTML = 
+						"<td><input type='radio' name='ship' value='" + shippingNo + "'></td>" +
+					    "<td>" + datas.recipient + "</td>" +
+					    "<td>" + datas.shippingName + "</td>" +
+					    "<td>" + datas.address + "</td>" +
+					    "<td>" + datas.homePhone + "</td>" +
+					    "<td>" + datas.phone + "</td>";
+// 					    "<td><button class='editShip'>수정</button><input type='text' value='" + shippingNo + "'><button>삭제</button></td>";
+					    
+					    
+					  tbody.append(row);
+					  
+					  
+					 
+				  }
+				  
+				  //수정 버튼 클릭 시 
+				  document.getElementById('editShipping').addEventListener('click',() => {
+// 					  console.log('-----------')
+// 					  let checkedShipCount = 0;
+// 					  console.log('첫 번째 : ' + checkedShipCount)
+// 					  const shipList = document.getElementsByClassName('shippingList');
+					  //체크 된 게 없으면 return 
+					  const ship = document.getElementsByName('ship');
+					  console.log(ship);
+					  for(list of ship) {
+// 						  let checShip = list.querySelector('input[type="radio"]');
+						  console.log('list : ' + list.checked)
+						  if(list.checked) {
+							  console.log('체크 됨 ')
+						  } else {
+							  alert('수정 후 해라');
+							  return;
+						  }
+					  }
+					  
+					  
+					  
+					  
+// 					  for(list of shipList) {
+// 						  let checShip = list.querySelector('input[type="radio"]');
+// 						  let checkedShipCount = 0;
+// 						  checShip.addEventListener('change', () => {
+// 							  if(checShip.checked) {
+								  
+// // 					  			  checkedShipCount++; //+1
+// 					  			  console.log('두 번째 : ' + checkedShipCount)
+// 							  } 
+// 						  })
+						  
+// 				  		 if(checkedShipCount == 0) {
+// 				  			alert('dddd');
+// 				  			console.log('세 번째 : ' + checkedShipCount)
+// 				  			return;
+// 				  		  }
+// 					  } 
+					  
+					  
+					  
+// 					  console.log('this : ' + this);
+					  
+					  
+					  
+					  
+				  })
+// 				  const edit = document.getElementsByClassName('editShip');
+// 				  for(let e of edit) {
+// 					  console.log(e);
+// 					  e.addEventListener('click', () => {
+// 						 let editNo = e.nextSibling.value;
+						 
+// 						 $.ajax({
+// 							url:'${contextPath}/updateShipping.ma',
+// 							data:{shippingNo:editNo},
+// 							success: data => {
+// 								console.log(data);	
+// 							},
+// 							error: data => {
+// 								console.log(data);
+// 							}
+// 						 })
+						 
+						 
+						 
+						 
+						 
+						 
+// 					  })
+// 				  }
+				  
+// 				  const edit = row.querySelector('.editShip');
+// 				  console.log('edit : ' + editShip);
+				  
+			  }, 
+			  error: data => {
+				  console.log(data);
+			  }
+		  })
 		});
 
 		// "x" 버튼 클릭 이벤트 처리
@@ -653,7 +783,7 @@ input[type="text"] {
 		});
 
 		
-		// 두 번째 창 열기 버튼 클릭 이벤트 처리
+		// 배송지 추가 창 열기 버튼 클릭 이벤트 처리
 		openSecondButton.addEventListener("click", function() {
 			if(document.getElementById('tbody').children.length >= 5) {
 				  alert('배송지는 최대 5개만 등록 가능합니다.');
@@ -662,10 +792,13 @@ input[type="text"] {
 				  popup.style.display = "none";
 				  secondPopup.style.display = "block";
 			  }
-		  
-		  
-		  
 		});
+		
+		//배송지 추가 창 닫기 버튼 클릭 이벤트 처리 
+		closeButton2.addEventListener('click', () => {
+			secondPopup.style.display = "none";
+			popup.style.display = "block";
+		})
 		
 		// 확인 버튼 클릭 이벤트 처리 - 배송지 등록 및 조회 
 		confirmButton.addEventListener("click", function() { 
@@ -689,7 +822,7 @@ input[type="text"] {
 		      tbody.innerHTML = '';
 			  $.ajax({
 				  url:'${contextPath}/insertShipping.ma',
-				  data:{usersNo:loginUserNo,
+				  data:{usersNo:${loginUser.usersNo},
 					  shippingName:shippingName,
 					  recipient:orderName,
 					  postcode:postcode,
@@ -703,6 +836,8 @@ input[type="text"] {
 					  document.getElementById('tbody').innerHTML = '';
 					  
 					  for(datas of data) {
+						  
+						  console.log('datas : ' + datas);
 						  var row = document.createElement("tr");
 						  row.classList.add('shippingList');
 						  row.innerHTML = "<td><input type='radio' name='ship'></td>" +
@@ -710,8 +845,8 @@ input[type="text"] {
 						    "<td>" + datas.shippingName + "</td>" +
 						    "<td>" + datas.address + "</td>" +
 						    "<td>" + datas.homePhone + "</td>" +
-						    "<td>" + datas.phone + "</td>" +
-						    "<td><button>수정</button><button>삭제</button></td>";
+						    "<td>" + datas.phone + "</td>";
+// 						    "<td><button class='editShip'>수정</button><button>삭제</button></td>";
 						    
 						  tbody.append(row);
 					  }
@@ -726,8 +861,6 @@ input[type="text"] {
 
 		});
 		
-		
-	
 		
 		
 	}

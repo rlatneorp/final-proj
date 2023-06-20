@@ -13,8 +13,10 @@ import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Tool;
 
 @Service
 public class AdminService {
@@ -28,6 +30,10 @@ public class AdminService {
 //	Common-공용
 	public int updateStatus(HashMap<String, String> map) {
 		return aDAO.updateStatus(sqlSession, map);
+	}
+
+	public int deletesOptions(String[] selDeletes) {
+		return aDAO.deletesOptions(sqlSession, selDeletes);
 	}
 	
 //	Product-상품
@@ -154,6 +160,29 @@ public class AdminService {
 	public int deletesFood(String[] foodDeletes) {
 		return aDAO.deletesFood(sqlSession, foodDeletes);
 	}
+
+	
+//	Tool-도구상품
+	public int getToolCount(AdminBasic ab) {
+		return aDAO.getToolCount(sqlSession, ab);
+	}
+
+	public ArrayList<Tool> selectToolList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectToolList(sqlSession, pi, ab);
+	}
+
+	public int insertTool(Tool t) {
+		return aDAO.insertTool(sqlSession, t);
+	}
+
+	public int insertOptions(ArrayList<Options> oList) {
+		return aDAO.insertOptions(sqlSession, oList);
+	}
+
+	public int deletesTool(String[] toolDeletes) {
+		return aDAO.deletesTool(sqlSession, toolDeletes);
+	}
+
 
 	
 

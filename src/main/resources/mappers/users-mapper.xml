@@ -27,7 +27,7 @@
 	<select id="selectImage" resultMap="imageResultSet">
 		select *
 		from image
-		where IMAGE_DIVIDE_NO = #{usersNo} and IMAGE_TYPE = '1'
+		where IMAGE_DIVIDE_NO = #{usersNo} and IMAGE_TYPE = 1
 	</select>
 	
 	<resultMap type="Image" id="imageResultSet">
@@ -100,4 +100,20 @@
 		<result column="FOLLOW_CREATE_DATE" property="followCreateDate"/>
 		<result column="USERS_NO" property="usersNo"/>
 	</resultMap>
+	
+	<select id="selectFollowInfo" resultMap="usersResultSet">
+		select *
+		from users
+		where users_no = #{followNo} and status = 'Y'
+	</select>
+	
+	<select id="selectFollowImage" resultMap="imageResultSet">
+		select *
+		from image
+		where IMAGE_DIVIDE_NO = #{followNo} and image_type = 1
+	</select>
+	
+<!-- 	<select id="selectFollow"> -->
+		
+<!-- 	</select> -->
 </mapper>

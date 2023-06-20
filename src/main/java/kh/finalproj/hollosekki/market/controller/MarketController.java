@@ -106,7 +106,7 @@ public class MarketController {
 			
 			ArrayList<Options> options = mkService.selectOptions(productNo);
 //			productOpt.add(options);
-			cart.setOptionValue(options);
+//			cart.setOptionValue(options);
 			
 			System.out.println("options : " + options);
 			
@@ -127,7 +127,7 @@ public class MarketController {
 //				cart.setOptionValue(optValue);
 				
 				
-			System.out.println("productOpt : " + productOpt);
+//			System.out.println("productOpt : " + productOpt);
 			
 			
 			selectProductInfo = mkService.selectProductInfo(productNo);
@@ -477,15 +477,15 @@ public class MarketController {
 							@RequestParam("productOption") String pOption,@RequestParam("productOption2") String pOption2,
 							@RequestParam("usersNo") String usersNo,
 							HttpServletResponse response) {
-		HashMap<String, String> result = new HashMap<String, String>();
+//		HashMap<String, String> result = new HashMap<String, String>();
 		
-		result.put("pNo", pNo);
-		result.put("cartCount", cartCount);
-		result.put("pOption", pOption);
-		result.put("pOption2", pOption2);
-		result.put("usersNo", usersNo);
-
-		mkService.insertCart(result);
+//		result.put("pNo", pNo);
+//		result.put("cartCount", cartCount);
+//		result.put("pOption", pOption);
+//		result.put("pOption2", pOption2);
+//		result.put("usersNo", usersNo);
+//
+//		mkService.insertCart(result);
 		System.out.println(pNo);
 //		System.out.println(c);
 //		ArrayList<Cart> list  = mkService.insertCart(c.getCartNo());

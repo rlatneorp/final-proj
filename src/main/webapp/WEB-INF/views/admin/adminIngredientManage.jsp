@@ -162,11 +162,23 @@
 // 			삭제버튼 클릭 이벤트 (confirm 띄우기)
 			const deleteBtn = document.getElementsByClassName('deleteBtn')[0];
 			deleteBtn.addEventListener('click', ()=>{
-				const result = confirm("정말 삭제하시겠습니까?");
-				if(result){
-					document.getElementById('deleteForm').submit();
+				let count = 0;
+				selectDeletes = document.getElementsByName('selectDelete');
+				for(const sDel of selectDeletes){
+					if(sDel.checked == true){
+						count++;
+					}
+				}
+				if(count > 0){
+					const result = confirm("정말 삭제하시겠습니까?");
+					if(result){
+						document.getElementById('deleteForm').submit();
+					}
+				}else{
+					alert("삭제할 식재료를 선택해주세요.");
 				}
 			})
+			
 			
 // 			공식등록 버튼 이벤트
 			const acceptBtns = document.getElementsByClassName('acceptBtn');

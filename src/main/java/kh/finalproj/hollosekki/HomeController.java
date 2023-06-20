@@ -41,14 +41,17 @@ public class HomeController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
-		
-		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
-		Image image = uService.selectImage(usersNo);
-		
-		model.addAttribute("image", image);
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
+		Users loginUser = (Users)model.getAttribute("loginUser");
+		if(loginUser != null) {
+			int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+			Image image = uService.selectImage(usersNo);
+			model.addAttribute("image", image);
+			
+			return "home";
+		} else {
+			model.addAttribute("serverTime", formattedDate );
+			return "home";
+		}
 	}
 	
 }

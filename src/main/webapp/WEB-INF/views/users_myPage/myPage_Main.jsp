@@ -187,18 +187,18 @@
 				<i class="bi bi-gear-fill" style="margin-left: 580px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#profileModal"></i>
 				<br>
 				<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-					<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+					<c:if test="${ image == null }">
 						<img src="${ socialUser.socialProfileImg }" id="pImg">
 					</c:if>
-					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+					<c:if test="${ image != null and image.imageType == '1' }">
 						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="pImg" onerror="this.src='${ socialUser.socialProfileImg }';"/>
 					</c:if>
 				</c:if>
 				<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-					<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+					<c:if test="${ image == null }">
 						<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" id="pImg"/>
 					</c:if>
-					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+					<c:if test="${ image != null and image.imageType == '1' }">
 						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" id="pImg"/>
 					</c:if>
 				</c:if>
@@ -297,7 +297,7 @@
 					<h1 class="modal-title fs-5" id="followingLabel">프로필 수정</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+				<c:if test="${ image == null }">
 					<form action="myPage_InsertProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
@@ -319,7 +319,7 @@
 					</div>
 					</form>
 				</c:if>
-				<c:if test="${ image.imageDivideNo == loginUser.usersNo }">
+				<c:if test="${ image != null and image.imageType == '1' }">
 					<form action="myPage_UpdateProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">

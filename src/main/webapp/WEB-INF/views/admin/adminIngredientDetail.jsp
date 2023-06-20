@@ -176,6 +176,7 @@
 			const pStatus = document.getElementsByName('productStatus')[0];
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
+			const pStock = document.getElementsByName('productStock')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
 // 				기존 값 입력
 			if(pStatus.value == "Y"){
@@ -222,6 +223,11 @@
 				}
 				cal();
 			});
+			pStock.addEventListener('change', ()=>{
+				if(pStock.value <= 0){
+					pStock.value = 0;
+				}
+			})
 			
 			cal();
 		}

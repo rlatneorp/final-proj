@@ -394,13 +394,14 @@ public class MarketController {
 	}
 
 	@GetMapping("market_detail.ma")
-	public String marketdetail(@RequestParam("productNo") int productNo,
+//	public String marketdetail(@RequestParam("productNo") int productNo,
+	public String marketdetail(
 							   Model model) {
-		Tool tool = mkService.selectTool(productNo);
-		ArrayList<Options> options = mkService.selectOptions(productNo);
+//		Tool tool = mkService.selectTool(productNo);
+//		ArrayList<Options> options = mkService.selectOptions(productNo);
 		
-		model.addAttribute("tool", tool);
-		model.addAttribute("options", options);
+//		model.addAttribute("tool", tool);
+//		model.addAttribute("options", options);
 		return "market_detail";
 	}
 	

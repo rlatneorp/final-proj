@@ -13,6 +13,12 @@
 		<property name="username" value="HOLLOSEKKI"/>
 		<property name="password" value="HOLLOSEKKI"/>
 	</bean>
+<!-- 	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> -->
+<!-- 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/> -->
+<!-- 		<property name="username" value="LOCAL_HOLLOSEKKI"/> -->
+<!-- 		<property name="password" value="LOCAL_HOLLOSEKKI"/> -->
+<!-- 	</bean> -->
 	
 	<!-- SqlSession 빈 등록 -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">

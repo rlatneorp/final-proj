@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,19 +44,45 @@ public class UsersController {
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
-		System.out.println(usersNo);
+		Image image = uService.selectImage(usersNo);
+		if(image != null) {
+			model.addAttribute("image", image);
+		}
+		
+		ArrayList<Follow> followList = uService.selectFollow(usersNo);
 		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
 		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
-		System.out.println(followingList);
-		System.out.println(followerList);
 		
+		Users followU = null;
+		Image followImage = null;
 		if(!followingList.isEmpty()) {
+			List<Users> followingUList = new ArrayList<>();
+			List<Image> followingImageList = new ArrayList<>();
 			for(Follow following : followingList) {
-				int followingNo = following.getFollowingUsersNo();
-				System.out.println(followingNo);
-				Users u = uService.selectFollowInfo(followingNo);
-				Image image = uService.selectFollowImage(followingNo);
+				int followNo = following.getFollowingUsersNo();
+				followU = uService.selectFollowInfo(followNo);
+				followImage = uService.selectFollowImage(followNo);
+				
+				followingUList.add(followU);
+			    followingImageList.add(followImage);
 			}
+			model.addAttribute("followingUsers", followingUList);
+			model.addAttribute("followingImage", followingImageList);
+		}
+		
+		if(!followerList.isEmpty()) {
+			List<Users> followerUList = new ArrayList<>();
+			List<Image> followerImageList = new ArrayList<>();
+			for(Follow follower : followerList) {
+				int followNo = follower.getUsersNo();
+				followU = uService.selectFollowInfo(followNo);
+				followImage = uService.selectFollowImage(followNo);
+				
+				followerUList.add(followU);
+				followerImageList.add(followImage);
+			}
+			model.addAttribute("followerUsers", followerUList);
+			model.addAttribute("followerImage", followerImageList);
 		}
 		
 		return "myPage_Main";

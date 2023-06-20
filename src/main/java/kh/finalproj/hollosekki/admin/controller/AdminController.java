@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -33,8 +32,10 @@ import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Tool;
 
 @Controller
 public class AdminController {
@@ -827,9 +828,9 @@ public class AdminController {
 	}
 	
 	
-//	Product-상품 관리
-	@GetMapping("adminProductManage.ad")
-	public String adminProductManage(@ModelAttribute AdminBasic ab,
+//	Tool-상품 관리
+	@GetMapping("adminToolManage.ad")
+	public String adminToolManage(@ModelAttribute AdminBasic ab,
 			  						 HttpSession session,
 			  						 Model model) {
 		
@@ -850,28 +851,135 @@ public class AdminController {
 		}else {
 			session.setAttribute("pageCount", ab.getPageCount());
 		}
-		
-//		int listCount = aService.getProductCount(ab);
-//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 
+		int listCount = aService.getToolCount(ab);
 		
-		return "adminProductManage";
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Tool> tList = aService.selectToolList(pi, ab);
+//		product정보 입력 메소드
+		for(Tool t: tList) {
+			t = (Tool)selectProduct(t);
+		}
+		if(tList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("ab", ab);
+			model.addAttribute("tList", tList);
+			return "adminToolManage";
+		}else{
+			throw new AdminException("상품 조회를 실패하였습니다.");
+		}
+		
 	}
-	@GetMapping("adminProductDetail.ad")
-	public String adminProductDetail() {
-		return "adminProductDetail";
+	@GetMapping("adminToolDetail.ad")
+	public String adminToolDetail() {
+		return "adminToolDetail";
 	}
-	@PostMapping("adminProductUpdate.ad")
-	public String adminProductUpdate() {
-		return "redirect:adminProductManage.ad";
+	@PostMapping("adminToolUpdate.ad")
+	public String adminToolUpdate() {
+		return "redirect:adminToolManage.ad";
 	}
-	@GetMapping("adminProductWrite.ad")
-	public String adminProductWrite() {
-		return "adminProductWrite";
+	@PostMapping("adminToolDeletes.ad")
+	public String adminTooldDeletes(@RequestParam("selectDelete") String[] selDeletes,
+									HttpServletRequest request) {
+		
+		int resultImg = 0;
+		int resultOp = 0;
+		int resultTool = 0;
+		int resultPd = 0;
+		
+		ArrayList<Image> imgList = null;
+		for(int i = 0; i < selDeletes.length; i++) {
+//			데이터 서버 이미지 삭제
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", Integer.parseInt(selDeletes[i]));
+			map.put("imageType", 6);
+			imgList = aService.selectAllImageList(map);
+			for(Image img:imgList) {
+				deleteFile(img.getImageRenameName(), request);
+//				DB서버 이미지 삭제
+				resultImg += aService.deleteImage(img);
+			}
+		}
+		resultOp = aService.deletesOptions(selDeletes);
+		resultTool = aService.deletesTool(selDeletes);
+		resultPd = aService.deletesProduct(selDeletes);
+		
+		if(resultImg == imgList.size() && resultOp != 0 && resultTool == selDeletes.length && resultPd == selDeletes.length) {
+			return "redirect:adminToolManage.ad";
+		}else {
+			throw new AdminException("식재료 삭제 실패");
+		}
 	}
-	@PostMapping("adminProductInsert.ad")
-	public String adminProductInsert() {
-		return "redirect:adminProductManage.ad";
+	@GetMapping("adminToolWrite.ad")
+	public String adminToolWrite() {
+		return "adminToolWrite";
+	}
+	@PostMapping("adminToolInsert.ad")
+	public String adminToolInsert(@ModelAttribute AdminBasic ab,
+								  HttpServletRequest request,
+								  HttpSession session,
+								  Model model,
+								  @ModelAttribute Tool t,
+								  @ModelAttribute Product p,
+								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
+		t.setUsersNo(1);
+
+//		food 기본값 설정
+		t.setProductType(4);
+		t.setProductStatus("Y");
+		
+		int resultPd = 0;
+		int resultT = 0;
+		int resultOp = 0;
+		int resultImg = 0;
+		
+		resultPd = aService.insertProduct(t);
+		t.setProductNo(resultPd);
+		
+		resultT = aService.insertTool(t);
+		int nowToolNo = resultPd;
+		
+		ArrayList<Options> oList = new ArrayList<Options>();
+		for(String op:t.getOptionTotal()) {
+			for(int i = 1; i<op.split(",").length; i++) {
+				Options option = new Options();
+				
+				option.setProductNo(nowToolNo);
+				option.setOptionName(op.split(",")[0]);
+				option.setOptionValue(op.split(",")[i]);
+				oList.add(option);
+			}
+		}
+		resultOp = aService.insertOptions(oList);
+		
+		if(resultPd != 0 && resultT != 0 && resultOp == oList.size()) {
+			
+//			이미지 저장
+			int i = 0;
+			for(MultipartFile imageFile: imageFiles) {
+				Image image = new Image();
+				if(imageFile != null && !imageFile.isEmpty()) {
+					String[] returnArr = saveFile(imageFile, request);
+					if(returnArr[1] != null) {
+						image.setImageDivideNo(nowToolNo);
+						image.setImageType(6);
+						image.setImagePath(returnArr[0]);
+						image.setImageOriginalName(imageFile.getOriginalFilename());
+						image.setImageRenameName(returnArr[1]);
+						image.setImageLevel(0);
+						if(i==0) {
+							image.setImageLevel(1);
+						}
+						resultImg += aService.insertImage(image);
+						i++;
+					}
+				}
+			}
+			if(resultImg == i) {
+				return "redirect:adminToolManage.ad";
+			}
+		}
+		throw new AdminException("식품 등록에 실패하였습니다.");
 	}
 	
 	

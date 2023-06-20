@@ -78,13 +78,18 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Users selectFollowInfo(int followingNo) {
-		return uDAO.selectFollowInfo(sqlSession, followingNo);
+	public Users selectFollowInfo(int followNo) {
+		return uDAO.selectFollowInfo(sqlSession, followNo);
 	}
 
 	@Override
-	public Image selectFollowImage(int followingNo) {
-		return uDAO.selectFollowImage(sqlSession, followingNo);
+	public Image selectFollowImage(int followNo) {
+		return uDAO.selectFollowImage(sqlSession, followNo);
+	}
+	
+	@Override
+	public ArrayList<Follow> selectFollow(int usersNo) {
+		return uDAO.selectFollow(sqlSession, usersNo);
 	}
 	
 	

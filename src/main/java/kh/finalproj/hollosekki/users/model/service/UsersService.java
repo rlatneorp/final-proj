@@ -31,9 +31,11 @@ public interface UsersService {
 
 	ArrayList<Follow> selectFollower(int usersNo);
 
-	Users selectFollowInfo(int followingNo);
+	Users selectFollowInfo(int followNo);
 
-	Image selectFollowImage(int followingNo);
+	Image selectFollowImage(int followNo);
+
+	ArrayList<Follow> selectFollow(int usersNo);
 
 
 }

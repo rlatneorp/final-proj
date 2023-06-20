@@ -73,7 +73,7 @@
 	}
 	.followName{
 		font-size: 17px; font-weight: bold;
-		margin-right: 200px;
+		margin-right: 270px;
 	}
 	.modalFollow{
 		border: none; border-radius: 5px;
@@ -81,12 +81,14 @@
 		width: 60px; height: 30px;
 		background: rgba(224, 224, 224, 0.29);
 		color: rgba(231, 76, 60, 0.86);
+		transform: scale(1.15);
 	}
 	.modalFollower{
 		border: none; border-radius: 5px;
 		font-weight: bold; font-size: 12px;
 		width: 60px; height: 30px;
 		background: #B0DAFF;
+		transform: scale(1.15);
 	}
 	#follower{
 		width: 500px; height: 600px;
@@ -109,6 +111,7 @@
         border-radius: 50%;
         cursor: pointer;
         object-fit: cover; object-position: center;
+        border: 2px solid gray;
     }
     .base{
     	border: none; border-radius: 5px;
@@ -123,11 +126,17 @@
     	margin-left: 395px;
     	margin-bottom: 10px;
     	object-fit: cover; object-position: center;
+    	border: 2px solid gray;
     }
     #editB{
     	width: 80px; height: 40px;
     	border: 1px solid gray; background: white;
     	border-radius: 5px;
+    }
+    .followImage{
+    	width: 50px; height: 50px;
+    	border-radius: 50%;
+    	border: 2px solid gray;
     }
 </style>
 </head>
@@ -220,32 +229,11 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
+					<c:forEach items="${followingImage}" var="i" varStatus="status">
+					    <img src="${contextPath}/resources/uploadFiles/${i.imageRenameName}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+					    &nbsp;&nbsp;<label class="followName">${followingUsers[status.index].usersName}</label>
+					    <button class="modalFollow">언팔로우</button><br><br>
+					</c:forEach>
 				</div>
 			</div>
 		</div>
@@ -259,32 +247,17 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
+					<c:forEach items="${followerImage}" var="i" varStatus="status">
+					    <img src="${contextPath}/resources/uploadFiles/${i.imageRenameName}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+					    &nbsp;&nbsp;<label class="followName">${followerUsers[status.index].usersName}</label>
+<%-- 					    <c:forEach items="${ followerUsers }" var="f" varStatus="status"> --%>
+<%-- 					    ${ f.usersNo } ${ followingUsers[status.index].usersNo } --%>
+					    	<c:if test="${ followerUsers[status.index].usersNo eq followingUsers[status.index].usersNo }">
+					    		<button class="modalFollower">팔로우</button>
+					    	</c:if>
+<%-- 					    </c:forEach> --%>
+					    <br><br>
+					</c:forEach>
 				</div>
 			</div>
 		</div>
@@ -319,7 +292,7 @@
 					</div>
 					</form>
 				</c:if>
-				<c:if test="${ image.imageDivideNo == loginUser.usersNo }">
+				<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
 					<form action="myPage_UpdateProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">

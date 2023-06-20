@@ -247,6 +247,10 @@
 		select * from options where option_no = #{optionNo} and product_no = #{productNo}
 	</select>
 	
+	<select id="selectOptionsSet" resultMap="optionsList">
+		select * from options where product_no = #{productNo}
+	</select>
+	
 	<select id="updateOptionNo" resultType="_int">
 		update cart set product_option = #{productOption} where product_no = #{productNo}
 	</select>

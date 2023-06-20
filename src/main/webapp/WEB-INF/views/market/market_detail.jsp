@@ -1207,19 +1207,10 @@ p b {
 	                }else if(result == ""){
 	                	o = ["옵션을 선택해주세요."];
 		             }
-
                 		
-                		
-// 	               		if(productOptionSet.options[productOptionSet.selectedIndex].value == ""){
-// 	               			o = b;
-// 		                 }else{
-// 		                	alert("필수 옵션을 선택해주세요");
-// 		                 }
-		                
 	                if((productOption2Set.value==='') == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
 	             	   productOption2Set.options.length=0;
 	                }
-	                
                 
                 for ( let i = 0; i < o.length; i++) {
                 	if( i == 0){
@@ -1233,15 +1224,6 @@ p b {
     		
     	
     	})
-        
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
     	
         productOption2Set.addEventListener("change", function(){
              const select =  $('.productOptionSet option:selected');
@@ -1298,14 +1280,6 @@ p b {
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
-   
-   
-
-
-   
-   
-   
-
    
 	
 $(function(){

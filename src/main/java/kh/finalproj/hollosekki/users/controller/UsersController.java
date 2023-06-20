@@ -4,12 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -42,6 +42,22 @@ public class UsersController {
 	
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		System.out.println(usersNo);
+		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
+		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+		System.out.println(followingList);
+		System.out.println(followerList);
+		
+		if(!followingList.isEmpty()) {
+			for(Follow following : followingList) {
+				int followingNo = following.getFollowingUsersNo();
+				System.out.println(followingNo);
+				Users u = uService.selectFollowInfo(followingNo);
+				Image image = uService.selectFollowImage(followingNo);
+			}
+		}
+		
 		return "myPage_Main";
 	}
 	
@@ -307,6 +323,18 @@ public class UsersController {
 			return "yes";
 		} else {
 			throw new UsersException("회원 정보 수정 실패");
+		}
+	}
+	
+	// 회원탈퇴
+	@RequestMapping("myPage_deleteInfo.me")
+	public String myPage_deleteInfo(@RequestParam("usersNo") int usersNo) {
+		int result = uService.deleteInfo(usersNo);
+		
+		if(result > 0) {
+			return "redirect:logout.en";
+		} else {
+			throw new UsersException("회원 탈퇴 실패");
 		}
 	}
 	

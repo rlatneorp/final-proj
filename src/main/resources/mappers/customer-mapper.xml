@@ -4,34 +4,31 @@
 	<select id="getListCount" resultType="_int">
 		select count(*)
 		from faq
-		where faq_status= 'Y'
-		<if test="bType == null">
-			and faq_type = 1
-		</if>
-		<if test="bType != null">
-			and faq_type = #{bType}
-		</if>
-		<if test="u != null">
-			and users_no = #{uNo}
-		</if>
+		where faq_status= 'Y' 
+			and faq_type = #{faqType} or users_no = #{usersNo}
 	</select>
 	
-	<select id="faqBoardList" resultMap="CustomerResultSet">
+	<select id="nBoardList" resultMap="CustomerResultSet">
 		select *
 		from faq
 		where faq_status = 'Y'
-		<if test="bType == null">
-			and faq_type = 1
-		</if>
-		<if test="bType != null">
-			and faq_type = #{bType}
-		</if>
-		<if test="u != null">
-			and users_no = #{uNo}
-		</if>
+			and faq_type = #{faqType} or users_no = #{usersNo}
 		order by faq_no
 	</select>
-	
+<!-- 	<select id="fBoardList" resultMap="CustomerResultSet"> -->
+<!-- 		select * -->
+<!-- 		from faq -->
+<!-- 		where faq_status = 'Y' -->
+<!-- 			and faq_type = #{faqType} -->
+<!-- 		order by faq_no -->
+<!-- 	</select> -->
+<!-- 	<select id="pBoardList" resultMap="CustomerResultSet"> -->
+<!-- 		select * -->
+<!-- 		from faq -->
+<!-- 		where faq_status = 'Y' -->
+<!-- 			and faq_type = #{faqType} and users_no = #{usersNo} -->
+<!-- 		order by faq_no -->
+<!-- 	</select> -->
 
 	<resultMap type="Customer" id="CustomerResultSet">
 		<id column="FAQ_NO" property="faqNo"/>

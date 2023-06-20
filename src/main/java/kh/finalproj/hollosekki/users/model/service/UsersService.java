@@ -1,7 +1,9 @@
 package kh.finalproj.hollosekki.users.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
@@ -22,6 +24,16 @@ public interface UsersService {
 	int deleteImage(int usersNo);
 
 	Users selectInfo(Users u);
+
+	int deleteInfo(int usersNo);
+
+	ArrayList<Follow> selectFollowing(int usersNo);
+
+	ArrayList<Follow> selectFollower(int usersNo);
+
+	Users selectFollowInfo(int followingNo);
+
+	Image selectFollowImage(int followingNo);
 
 
 }

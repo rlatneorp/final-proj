@@ -476,7 +476,7 @@ p b {
 <!-- 								<td colspan="6"> -->
 <!-- 									<div class="row pe-4"> -->
 <!-- 										<div class="col-6"> -->
-<!-- 											<input type="hidden" name="foodKind" value="1"> -->
+<!-- 											<input type="hidden" name="foodType" value="1"> -->
 <!-- 										</div> -->
 <!-- 										<div class="col-3"> -->
 <!-- 											<button type="button" class="foodKindBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button> -->
@@ -488,6 +488,7 @@ p b {
 <!-- 								</td> -->
 <!-- 							</tr> -->
 						</table>
+						<input type="hidden" name="foodType" value="1">
 					</div>
 				</div>
 			</div>

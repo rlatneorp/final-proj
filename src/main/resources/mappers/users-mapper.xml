@@ -53,7 +53,7 @@
 	<select id="selectInfo" resultMap="usersResultSet">
 		select *
 		from users
-		where users_no = #{usersNo}
+		where users_no = #{usersNo} and status = 'Y'
 	</select>
 	
 	<resultMap type="Users" id="usersResultSet">
@@ -74,5 +74,30 @@
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 		<result column="USERS_ADDRESS" property="usersAddress"/>
 		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
+	</resultMap>
+	
+	<update id="deleteInfo">
+		update users
+		set status = 'N'
+		where users_no = #{usersNo} and status = 'Y'
+	</update>
+	
+	<select id="selectFollowing" resultMap="followResultSet">
+		select *
+		from follow
+		where users_no = #{usersNo}
+	</select>
+	
+	<select id="selectFollower" resultMap="followResultSet">
+		select *
+		from follow
+		where FOLLOWING_USER_NO = #{usersNo}
+	</select>
+	
+	<resultMap type="Follow" id="followResultSet">
+		<id column="FOLLOW_NO" property="followNo"/>
+		<result column="FOLLOWING_USER_NO" property="followingUsersNo"/>
+		<result column="FOLLOW_CREATE_DATE" property="followCreateDate"/>
+		<result column="USERS_NO" property="usersNo"/>
 	</resultMap>
 </mapper>

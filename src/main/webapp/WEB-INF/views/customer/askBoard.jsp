@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Customer Center AskBoard</title>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -197,9 +198,9 @@ font-family: 'Noto Sans KR', sans-serif;
 			<div class="customer d-flex align-items-start">
 				<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 					<div class="csTitle" onclick="location.href='${contextPath }/askBoard.cs'">고객센터</div><br>
-				    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">공지사항<span class="material-symbols-outlined" style="margin-left: 60px; vertical-align: middle;">chevron_right</span></button><br>
-				    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">자주 묻는 질문<span class="material-symbols-outlined" style="margin-left: 12px; vertical-align: middle;">chevron_right</span></button><br>
-				    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">1:1 문의<span class="material-symbols-outlined" style="margin-left: 62px; vertical-align: middle;">chevron_right</span></button><br>
+					    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home"  role="tab" aria-controls="v-pills-home" aria-selected="true">공지사항<span class="material-symbols-outlined" style="margin-left: 60px; vertical-align: middle;">chevron_right</span></button><br>
+					    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile"  role="tab" aria-controls="v-pills-profile" aria-selected="false">자주 묻는 질문<span class="material-symbols-outlined" style="margin-left: 12px; vertical-align: middle;">chevron_right</span></button><br>
+					    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages"  role="tab" aria-controls="v-pills-messages" aria-selected="false">1:1 문의<span class="material-symbols-outlined" style="margin-left: 62px; vertical-align: middle;">chevron_right</span></button><br>
 			   		<br><br>
 			   		<button class="btn btn-light" id="11Btn" onclick="location.href='${contextPath}/personalQuestion.cs'">바로 1:1 문의하기</button>			   
 			    </div>
@@ -216,15 +217,15 @@ font-family: 'Noto Sans KR', sans-serif;
 					        <th class="col-9">제목</th>
 					        <th class="col-2">작성날짜</th>
 				    	</tr>
-				    	<c:if test="${ faqType eq 1 || faqType eq null}">
-				    	<c:forEach items="${ list }" var="i">
+				    	<c:forEach items="${ nlist }" var="i">
+				    	<c:if test="${ empty i.faqType || i.faqType == 1 }">
 					    <tr>
 					        <th class="col-1">${i.faqNo }</th>
 					        <td class="col-9 text-start">${i.faqTitle }</td>
 					        <td class="col-2">${i.faqDate }</td>
 					    </tr>
-					    </c:forEach>
 					    </c:if>
+					    </c:forEach>
 					</table>
 					<br><br>
 					<div class="pageCustomers" > 
@@ -278,25 +279,25 @@ font-family: 'Noto Sans KR', sans-serif;
 						<button id="serachBtn" type="button" class="col-1 btn btn-outline-secondary">검색</button>
 					</div>	
 					<br>
-					<div class="accordion acCustomer" id="accordionFlush1">
-						<c:if test="${ faqType eq 2 }" var="a">
-						<c:forEach items="${ a.list }" var="a1" varStatus="st"> 
-						<div class="accordion-item ${st.index }">
-							<h2 class="accordion-header ${st.index }" id="flush-headingOne-${st.index }">
-							<button class="accordion-button collapsed ${st.index }" type="button" data-bs-toggle="collapse ${st.index }" data-bs-target="#flush-collapseOne-${st.index }" aria-expanded="false" aria-controls="flush-collapseOne-${st.index }">
-							        글번호 : ${st.index +1 } 제목 : ${a1.faqTitle } 
+					<div class="accordion acCustomer" id="accordionFlush">
+						<c:if test="${ type eq 2 }">
+						<c:forEach items="${ nlist }" var="a" varStatus="st"> 
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="flush-headingOne-${st.index +1 }">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${st.index +1 }" aria-expanded="false" aria-controls="flush-collapseOne-${st.index +1 }">
+							        글번호: ${st.index +1 } 제목: ${a.faqTitle } 
 							</button>
 							</h2>
-							<div id="flush-collapseOne-${st.index }" class="accordion-collapse collapse ${st.index }" aria-labelledby="flush-headingOne-${st.index }">
-								<div class="accordion-body ${st.index }">
+							<div id="flush-collapseOne-${st.index +1 }" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${st.index +1 }">
+								<div class="accordion-body">
 									<div>
 										<h4>Q. 질문한 내용</h4>
-										<span class="question-${st.index }">${a1.faqTitle }</span>
+										<span class="question">${a.faqTitle }</span>
 									</div>
 									<hr>
 									<div> 
 										<h4>A. 답변한 내용</h4>
-										<span class="answer-${st.index }">${a1.faqContent }</span>
+										<span class="answer">${a.faqContent }</span>
 									</div>
 								</div>
 							</div>
@@ -426,8 +427,8 @@ const boradTypeNo3 = document.querySelector('#v-pills-messages-tab');
 
 boradTypeNo1.addEventListener('click', ()=>{
 	$.ajax({
-		url:'${contextPath}/askBoard.cs',
-		data:{bType:1},
+		url:'${contextPath}/nBoard.cs',
+		data:{faqType: 1},
 		success: function(info){
 		}
 	});	
@@ -435,8 +436,8 @@ boradTypeNo1.addEventListener('click', ()=>{
 
 boradTypeNo2.addEventListener('click', ()=>{
 	$.ajax({
-		url:'${contextPath}/askBoard.cs',
-		data:{bType:2},
+		url:'${contextPath}/nBoard.cs',
+		data:{faqType: 2},
 		success: function(info){
 		}
 	});	
@@ -444,10 +445,9 @@ boradTypeNo2.addEventListener('click', ()=>{
 
 boradTypeNo3.addEventListener('click', ()=>{
 	$.ajax({
-		url:'${contextPath}/askBoard.cs',
+		url:'${contextPath}/nBoard.cs',
 		data:{
-			bType:3,
-			uNo:'${loginUser.usersNo}'
+			faqType: 3
 		},
 		success: function(info){
 		}

@@ -135,8 +135,8 @@
 										${vs.index}일차
 										</td>
 									<td class="imageTd" style="width:20%; text-align: center;">
-<!-- 										<input type="hidden" name="productNo" value="0"> -->
-										<input type="hidden" class="nutrient" value="">
+										<input type="hidden" name="productNo" value="">
+										<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0">
 										<input type="hidden" class="index" value="${vs.index-1}">
 										<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="메인메뉴사진">
 									</td>
@@ -160,8 +160,8 @@
 								<c:forEach begin="1" end="3">
 									<tr>
 										<td class="imageTd" style="width:20%; text-align: center;">
-<!-- 											<input type="hidden" name="productNo" value="0"> -->
-											<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0">
+											<input type="hidden" name="productNo" value="">
+											<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0">
 											<input type="hidden" class="index" value="${vs.index-1}">
 											<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="서브메뉴사진">
 										</td>
@@ -312,7 +312,7 @@
 				}
 			}
 			
-// 			메인메뉴 정보 불러오기 이벤트(ajax)
+// 			메뉴 정보 불러오기 이벤트(ajax)
 			const selectors = document.getElementsByClassName('foodSelector');
 			for(const sel of selectors){
 				sel.addEventListener('change',function(){
@@ -323,6 +323,9 @@
 						tr.querySelectorAll('.priceBox')[0].value = 0;
 						tr.querySelector('.previewImage').src = '${contextPath}/resources/images/Logo.png';
 						tr.querySelector('.imageTd').children[0].value = this.value;
+						tr.querySelector('.nutrient').value = "0,0,0,0,0,0,0,0,0,0";
+						dayNutrient(tr.querySelector('.index').value);
+
 						cal1();
 					}else{
 						$.ajax({
@@ -335,7 +338,6 @@
 								tr.querySelectorAll('.priceBox')[0].value = data.productPrice;
 								tr.querySelector('.nutrient').value = data.foodContent.split("@")[3];
 								tr.querySelector('.imageTd').children[0].value = this.value;
-								
 								dayNutrient(tr.querySelector('.index').value);
 								
 								$.ajax({
@@ -362,12 +364,23 @@
 			const pSale = document.getElementsByName('productSale')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
 
+// 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
 			pPrice.addEventListener('change', ()=>{
+				if(pPrice.value < 0){
+					pPrice.value = 0;
+				}else if(pPrice.value <= 0){
+					pPrice.value = 0;
+				}
 				cal();
-			})
+			});
 			pSale.addEventListener('change', ()=>{
+				if(pSale.value > 99.9){
+					pSale.value = 99.9;
+				}else if(pSale.value <= 0){
+					pSale.value = 0;
+				}
 				cal();
-			})
+			});
 		}
 	
 // 		총 가격 계산 함수
@@ -397,22 +410,26 @@
 			const infoContentDay = document.getElementsByClassName('infoContentDay')[i];
 			const inputs = infoContentDay.querySelectorAll('.dayNutrient');
 			const nutrients = infoContentDay.parentElement.parentElement.parentElement.querySelectorAll('.nutrient');
-
+			
 			for(const input of inputs){
 				input.value = 0;
 			}
 			let arr = [0,0,0,0,0,0,0,0,0];
-			for(const n of nutrients){
-				const nut = n.value.split(',');
-				for(const j in inputs){
-					if(j < nut.length){
-						arr[j] += nut[j]*1;
-					}
+			for(let j = 0; j < nutrients.length; j++){
+				for(let i = 0; i < 9; i++){
+					const nut = nutrients[j].value.split(',')[i];
+					console.log(nut);
+					arr[i] += Number(nut);
 				}
 			}
-			for(const j in inputs){
-				inputs[j].value = Math.floor(arr[j]*100)/100;
+			for(let k = 0; k < inputs.length; k++){
+				if(arr[k] != 0){
+					inputs[k].value = Math.floor(arr[k]*100)/100;
+				}else{
+					inputs[k].value = Number(arr[k]);
+				}
 			}
+			
 			totalNutrient(i);
 		}
 		

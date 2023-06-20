@@ -23,9 +23,17 @@ public class CustomerService {
 		return csDAO.getListCount(sqlSession, map);
 	}
 
-	public ArrayList<Customer> faqBoardList(PageInfo pi, HashMap<String, Object> map) {
-		return csDAO.faqBoardList(sqlSession, pi, map);
+	public ArrayList<Customer> nBoardList(PageInfo pi, HashMap<String, Object> map) {
+		return csDAO.nBoardList(sqlSession, pi, map);
 	}
+
+//	public ArrayList<Customer> fBoardList(PageInfo pi, HashMap<String, Object> map) {
+//		return csDAO.fBoardList(sqlSession, pi, map);
+//	}
+//
+//	public ArrayList<Customer> pBoardList(PageInfo pi, HashMap<String, Object> map) {
+//		return csDAO.pBoardList(sqlSession, pi, map);
+//	}
 
 
 

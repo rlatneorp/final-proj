@@ -198,14 +198,19 @@ input[type="text"] {
 <%-- 				<c:if test="${cl.preorderNo eq prevPreorderNo }"> --%>
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
-						<input type="text" value="${cl.preorderNo }">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
 						<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
+						<input type="hidden" value="${cl.preorderNo }">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">
 						<b>${cl.productName}</b><br><br>
-						
+						<c:forEach items="${optValues }" var="opt">
+							<c:if test="${ opt.productNo eq cl.productNo }">
+								<input type="text" value="${opt.optionNo }">
+								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
+							</c:if>
+						</c:forEach>
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:130px">
 						<i class="bi bi-dash-square-fill" id="minus-${cl.productNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
@@ -288,7 +293,6 @@ input[type="text"] {
 </body>
 
 <script>
-console.log('response : ' + response);
 	
 	
 	window.onload = () => {
@@ -306,6 +310,8 @@ console.log('response : ' + response);
 			const checkCount = checkbox.parentElement.nextElementSibling.nextElementSibling.innerText.replace(/,/g, ''); // 체크된 카운트 수
 			const intCheckSum = parseInt(checkSum);
 			const intCheckCount = parseInt(checkCount);
+			
+			console.log("너는 누구냐 : " + checkCount);
 			
 			const count = parseInt(document.getElementById('orderSize').innerText);
 			if (checkbox.checked) {
@@ -387,8 +393,11 @@ console.log('response : ' + response);
 	} //window.onload 
 			
 		const parentPnos = document.getElementsByClassName('imgTab');
-		for(let p of parentPnos) {
-			let pNos = p.children[0].value; 
+		for(let p of parentPnos) { 
+			let pNos = p.children[1].value;
+			
+			
+			console.log('parentPnos : ' + p.nextSibling.nextSibling.children);
 			let size = parseInt(document.getElementById('size-'+ pNos).innerText);
 				
 			//적립금(POINT)
@@ -665,20 +674,28 @@ console.log('response : ' + response);
 		} else {
 // 			let values = []; //productNo 담을 배열 
 // 			let optionValues = []; //select 된 option 담을 배열 
-			let pairs = [];
+			let optNos = [];
 // 			console.log(checkProducts);
 			for(cp of checkProducts) { //체크 된 input type checkbox 
-				const selectTag = cp.parentElement.nextSibling.nextElementSibling.childNodes[5];
-// 				console.log('selectTag : ' + selectTag);
-// 				values.push(cp.value); //체크 된 productNo
-				const productNo = cp.value;
-				const optionNo = selectTag.value;
 				
-				const pair = [productNo, optionNo];
-				pairs.push(pair);
+				const preorderNo = cp.parentElement.lastElementChild.value;
+				optNos.push(preorderNo);
+				
+// 				const selectTag = cp.parentElement.nextSibling.nextElementSibling.childNodes[5];
+				
+// 				values.push(cp.value); //체크 된 productNo
+// 				const productNo = cp.value;
+				
+// 				const optionNo = selectTag.value;
+				
+				
+				
+// 				const pair = [productNo, optionNo];
+// 				pairs.push(pair);
 // 				optionValues.push(selectTag.value);//선택 된 옵션 값 
 			}
-			console.log('pairs : ', pairs);
+			console.log('optNos : ' + optNos);
+// 			console.log('pairs : ', pairs);
 // 			const strPairs = pairs.map(pair => pair.join(',')).join(';');
 // 			console.log(strPairs);
 			
@@ -694,8 +711,8 @@ console.log('response : ' + response);
 			
 			const prNoInput = document.createElement('input');
 			prNoInput.type = 'hidden';
-			prNoInput.name = 'pairs';
-			prNoInput.value = pairs;
+			prNoInput.name = 'optNos';
+			prNoInput.value = optNos;
 			
 // 			const optionsInput = document.createElement('input');
 // 			optionsInput.type = 'hidden';

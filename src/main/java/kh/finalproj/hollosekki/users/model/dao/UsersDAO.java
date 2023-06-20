@@ -1,10 +1,12 @@
 package kh.finalproj.hollosekki.users.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
@@ -41,6 +43,26 @@ public class UsersDAO {
 
 	public Users selectInfo(SqlSessionTemplate sqlSession, Users u) {
 		return sqlSession.selectOne("usersMapper.selectInfo", u);
+	}
+
+	public int deleteInfo(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.update("usersMapper.deleteInfo", usersNo);
+	}
+
+	public ArrayList<Follow> selectFollowing(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("usersMapper.selectFollowing", usersNo);
+	}
+
+	public ArrayList<Follow> selectFollower(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("usersMapper.selectFollower", usersNo);
+	}
+
+	public Users selectFollowInfo(SqlSessionTemplate sqlSession, int followingNo) {
+		return sqlSession.selectOne("usersMapper.selectFollowInfo", followingNo);
+	}
+
+	public Image selectFollowImage(SqlSessionTemplate sqlSession, int followingNo) {
+		return null;
 	}
 
 }

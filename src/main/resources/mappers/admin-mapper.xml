@@ -96,6 +96,32 @@
 		</if>
 	</select>
 
+	<select id="selectMenu" resultMap="menuResultSet">
+		select *
+		from menu
+		where product_no = #{pNo}
+	</select>
+
+	<select id="selectFoodProductNo" resultType="string">
+		select food_product_no
+		from menu_list
+		where product_no = #{pNo}
+		order by menu_list_no asc
+	</select>
+
+	<update id="updateMenu">
+		update menu
+		set menu_name = #{menuName},
+			menu_type = #{menuType},
+			menu_content = #{menuContent}
+		where product_no = #{productNo}
+	</update>
+
+	<delete id="deleteMenuList">
+		delete menu_list
+		where product_no = #{productNo}
+	</delete>
+
 	<insert id="insertMenu">
 		insert into menu(product_no, menu_name, menu_type, menu_content)
 		values(#{productNo}, #{menuName}, #{menuType}, #{menuContent})

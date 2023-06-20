@@ -6,18 +6,29 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.users.model.service.UsersService;
 
 /**
  * Handles requests for the application home page.
  */
+@SessionAttributes({"loginUser", "image"})
 @Controller
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	private UsersService uService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -31,6 +42,10 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 		
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		Image image = uService.selectImage(usersNo);
+		
+		model.addAttribute("image", image);
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "home";

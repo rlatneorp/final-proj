@@ -161,18 +161,18 @@ public class MarketController {
 		return "payDetail";
 	}
 
-	@GetMapping("market_detail.ma")
+//	@GetMapping("market_detail.ma")
 //	public String marketdetail(@RequestParam("productNo") int productNo,
-	public String marketdetail(
-							   Model model) {
-		Tool tool = mkService.selectTool(productNo);
-		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
-		
-		System.out.println(options);
-		model.addAttribute("tool", tool);
-		model.addAttribute("options", options);
-		return "market_detail";
-	}
+//	public String marketdetail(
+//							   Model model) {
+//		Tool tool = mkService.selectTool(productNo);
+//		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
+//		
+//		System.out.println(options);
+//		model.addAttribute("tool", tool);
+//		model.addAttribute("options", options);
+//		return "market_detail";
+//	}
 	
 	@GetMapping("createqna.ma")
 	public String createqna() {
@@ -341,8 +341,19 @@ public class MarketController {
 	}
 	
 	@RequestMapping(value="updateShipping.ma", produces="application/json; charset=UTF-8")
-	public void updateShipping(@RequestParam("shippingNo") int shippingNo) {
+	public void updateShipping(@RequestParam("shippingNo") int shippingNo, HttpServletResponse response) {
 		System.out.println("shippingNo : " + shippingNo);
+		
+		ShippingAddress sa = mkService.selectShippingForUpdate(shippingNo);
+		System.out.println("sa : " + sa);
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+		Gson gson = gb.create();
+		try {
+			gson.toJson(sa, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

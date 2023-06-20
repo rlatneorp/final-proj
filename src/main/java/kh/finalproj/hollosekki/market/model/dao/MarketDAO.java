@@ -182,6 +182,10 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionsSet", productNo);
 	}
 
+	public ShippingAddress selectShippingForUpdate(SqlSessionTemplate sqlSession, int shippingNo) {
+		return sqlSession.selectOne("marketMapper.selectShippingForUpdate", shippingNo);
+	}
+
 	
 
 

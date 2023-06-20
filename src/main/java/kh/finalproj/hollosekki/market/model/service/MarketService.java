@@ -183,6 +183,10 @@ public class MarketService {
 		return mkDAO.selectOptionSet(sqlSession, productNo);
 	}
 
+	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+		return mkDAO.selectShippingForUpdate(sqlSession, shippingNo);
+	}
+
 	
 	
 

@@ -436,6 +436,7 @@
 				 text: "* 회원 탈퇴 시 보유하신 적립금과 포인트는 소멸합니다.",
 				 icon: "warning",
 				 closeOnClickOutside: false,
+				 closeOnEsc : false,
 				 buttons : {
 					 cancle : {
 						 text : '나중에 하기',
@@ -451,13 +452,11 @@
 				if(result){
 					swal('잘 생각하셨습니다!', '', 'success', {
 						closeOnClickOutside : false,
-						closeOnEsc : false,
 						button : '확인'
 					});
 				} else {
 					swal('탈퇴를 진행합니다', '안녕히가세요', 'warning', {
 						closeOnClickOutside : false,
-						closeOnEsc : false,
 						button : '확인'
 					}).then((result) => {
 						if(result){

@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Customer Center AskBoard</title>
+<title>고객센터</title>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -185,6 +186,19 @@ font-family: 'Noto Sans KR', sans-serif;
 	background-color: #B0DAFF;
 	color:black;
 }
+
+#goToLogin{
+	width: 200px; height: 46px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	margin: 10px;
+	font-size: 24px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 5px; 
+}
+
 </style>
 </head>
 <body>
@@ -197,9 +211,9 @@ font-family: 'Noto Sans KR', sans-serif;
 			<div class="customer d-flex align-items-start">
 				<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 					<div class="csTitle" onclick="location.href='${contextPath }/askBoard.cs'">고객센터</div><br>
-				    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">공지사항<span class="material-symbols-outlined" style="margin-left: 60px; vertical-align: middle;">chevron_right</span></button><br>
-				    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">자주 묻는 질문<span class="material-symbols-outlined" style="margin-left: 12px; vertical-align: middle;">chevron_right</span></button><br>
-				    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">1:1 문의<span class="material-symbols-outlined" style="margin-left: 62px; vertical-align: middle;">chevron_right</span></button><br>
+					    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home"  role="tab" aria-controls="v-pills-home" aria-selected="true">공지사항<span class="material-symbols-outlined" style="margin-left: 60px; vertical-align: middle;">chevron_right</span></button><br>
+					    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile"  role="tab" aria-controls="v-pills-profile" aria-selected="false">자주 묻는 질문<span class="material-symbols-outlined" style="margin-left: 12px; vertical-align: middle;">chevron_right</span></button><br>
+					    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages"  role="tab" aria-controls="v-pills-messages" aria-selected="false">1:1 문의<span class="material-symbols-outlined" style="margin-left: 62px; vertical-align: middle;">chevron_right</span></button><br>
 			   		<br><br>
 			   		<button class="btn btn-light" id="11Btn" onclick="location.href='${contextPath}/personalQuestion.cs'">바로 1:1 문의하기</button>			   
 			    </div>
@@ -216,8 +230,8 @@ font-family: 'Noto Sans KR', sans-serif;
 					        <th class="col-9">제목</th>
 					        <th class="col-2">작성날짜</th>
 				    	</tr>
-				    	<c:if test="${ faqType eq 1 || faqType eq null}">
-				    	<c:forEach items="${ list }" var="i">
+				    	<c:if test="${ empty faqType || faqType == 1 }">
+				    	<c:forEach items="${ nlist }" var="i">
 					    <tr>
 					        <th class="col-1">${i.faqNo }</th>
 					        <td class="col-9 text-start">${i.faqTitle }</td>
@@ -278,47 +292,58 @@ font-family: 'Noto Sans KR', sans-serif;
 						<button id="serachBtn" type="button" class="col-1 btn btn-outline-secondary">검색</button>
 					</div>	
 					<br>
-					<div class="accordion acCustomer" id="accordionFlush1">
-						<c:if test="${ faqType eq 2 }" var="a">
-						<c:forEach items="${ a.list }" var="a1" varStatus="st"> 
-						<div class="accordion-item ${st.index }">
-							<h2 class="accordion-header ${st.index }" id="flush-headingOne-${st.index }">
-							<button class="accordion-button collapsed ${st.index }" type="button" data-bs-toggle="collapse ${st.index }" data-bs-target="#flush-collapseOne-${st.index }" aria-expanded="false" aria-controls="flush-collapseOne-${st.index }">
-							        글번호 : ${st.index +1 } 제목 : ${a1.faqTitle } 
+					<div class="accordion acCustomer" id="accordionFlush">
+<%-- 						<c:if test="${ faqType == 2 }"> --%>
+						<c:forEach items="${ flist }" var="i" varStatus="st"> 
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="flush-headingOne-${st.index +1 }">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${st.index +1 }" aria-expanded="false" aria-controls="flush-collapseOne-${st.index +1 }">
+							        Q. ${i.faqTitle } 
 							</button>
 							</h2>
-							<div id="flush-collapseOne-${st.index }" class="accordion-collapse collapse ${st.index }" aria-labelledby="flush-headingOne-${st.index }">
-								<div class="accordion-body ${st.index }">
+							<div id="flush-collapseOne-${st.index +1 }" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${st.index +1 }">
+								<div class="accordion-body">
 									<div>
 										<h4>Q. 질문한 내용</h4>
-										<span class="question-${st.index }">${a1.faqTitle }</span>
+										<span class="question">${i.faqTitle }</span>
 									</div>
 									<hr>
 									<div> 
 										<h4>A. 답변한 내용</h4>
-										<span class="answer-${st.index }">${a1.faqContent }</span>
+										<span class="answer">${i.faqContent }</span>
 									</div>
 								</div>
 							</div>
 						</div>
 						</c:forEach>
-						</c:if>
+<%-- 						</c:if> --%>
 					</div>
 					<br><br><br>
 					<div class="pageCustomers" > 
 						<nav aria-label="Page navigation example">
 							<ul class="pageCustomer pagination justify-content-center">
 							    <li class="page-item disabled">
-								    <a class="page-link">이전</a>
+							    	<c:url var="goBack" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goBack }" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
 								</li>
-							    <li class="page-item"><a class="page-link" href="#">1</a></li>
-							    <li class="page-item"><a class="page-link" href="#">2</a></li>
-							    <li class="page-item"><a class="page-link" href="#">3</a></li>
-							    <li class="page-item"><a class="page-link" href="#">4</a></li>
-							    <li class="page-item"><a class="page-link" href="#">5</a></li>
+								<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+								   	<c:url var="goNum" value="${ loc }">
+										<c:param name="page" value="${ p }"></c:param>
+									</c:url>
+								  	<li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
+								</c:forEach>
 								<li class="page-item">
-								    <a class="page-link" href="#">다음</a>
-							    </li>
+									<c:url var="goNext" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goNext }" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</li>
 							</ul>
 						</nav>	
 					</div>
@@ -329,88 +354,69 @@ font-family: 'Noto Sans KR', sans-serif;
 					<br>
 					<hr style="width: 1050px;">
 					<br>
-					<div class="accordion acCustomer" id="accordionFlushExample">
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="flush-headingOne">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-							        Accordion Item #1
-							</button>
-							</h2>
-							<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne">
-								<div class="accordion-body">
-									<div>
-										<h4>Q. 질문한 내용</h4>
-										<span class="11question"></span>
-									</div>
-									<hr>
-									<div> 
-										<h4>A. 답변한 내용</h4>
-										<span class="11answer"></span>
+					<c:if test="${loginUser eq null }">
+					<h1>로그인 후 문의 하실 수 있습니다.</h1>
+					<button id="goToLogin">로그인 하러 가기</button>
+					</c:if>
+					<c:if test="${loginUser ne null}">
+						<div class="accordion acCustomer" id="accordionFlushExample">
+							<c:forEach items="${ plist }" var="c" varStatus="stc"> 
+<%-- 							<c:if test="${ faqType == 3}"> --%>
+							<div class="accordion-item">
+								<h2 class="accordion-header" id="flush-headingOne-${stc.index +1 }c">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${stc.index +1 }c" aria-expanded="false" aria-controls="flush-collapseOne-${stc.index +1 }c">
+								        글번호: ${stc.index +1 } 제목: ${c.faqTitle } 
+								</button>
+								</h2>
+								<div id="flush-collapseOne-${stc.index +1 }c" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${stc.index +1 }c">
+									<div class="accordion-body">
+										<div>
+											<h4>Q. 질문한 내용</h4>
+											<span class="11question">${c.faqTitle }</span>
+										</div>
+										<hr>
+										<div> 
+											<h4>A. 답변한 내용</h4>
+											<span class="11answer">${c.faqContent }</span>
+										</div>
 									</div>
 								</div>
 							</div>
+<%-- 							</c:if> --%>
+							</c:forEach>
 						</div>
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="flush-headingTwo">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-							        Accordion Item #2
-							</button>
-							</h2>
-							<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" >
-								<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
-							</div>
+						<div style="text-align: right;">
+							<button class="askBtn" onclick="location.href='${contextPath}/personalQuestion.cs'">문의하기</button>
 						</div>
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="flush-headingThree">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-							        Accordion Item #3
-							</button>
-							</h2>
-							<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" >
-								<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-							</div>
+						<div class="pageCustomers" > 
+							<nav aria-label="Page navigation example">
+								<ul class="pageCustomer pagination justify-content-center">
+								    <li class="page-item disabled">
+								    	<c:url var="goBack" value="${ loc }">
+											<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+										</c:url>
+										<a class="page-link" href="${ goBack }" aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+									</li>
+									<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+									   	<c:url var="goNum" value="${ loc }">
+											<c:param name="page" value="${ p }"></c:param>
+										</c:url>
+									  	<li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
+									</c:forEach>
+									<li class="page-item">
+										<c:url var="goNext" value="${ loc }">
+											<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+										</c:url>
+										<a class="page-link" href="${ goNext }" aria-label="Next">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
+								</ul>
+							</nav>	
 						</div>
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="flush-headingFour">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-							        Accordion Item #3
-							</button>
-							</h2>
-							<div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour">
-								<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-							</div>
-						</div>
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="flush-headingFive">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-							        Accordion Item #3
-							</button>
-							</h2>
-							<div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive">
-								<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-							</div>
-						</div>
-					</div>
-					<div style="text-align: right;">
-						<button class="askBtn" onclick="location.href='${contextPath}/personalQuestion.cs'">문의하기</button>
-					</div>
-					<div class="pageCustomers"> 
-						<nav aria-label="Page navigation example">
-							<ul class="pageCustomer pagination justify-content-center">
-							    <li class="page-item disabled">
-								    <a class="page-link">이전</a>
-								</li>
-							    <li class="page-item"><a class="page-link" href="#">1</a></li>
-							    <li class="page-item"><a class="page-link" href="#">2</a></li>
-							    <li class="page-item"><a class="page-link" href="#">3</a></li>
-							    <li class="page-item"><a class="page-link" href="#">4</a></li>
-							    <li class="page-item"><a class="page-link" href="#">5</a></li>
-								<li class="page-item">
-								    <a class="page-link" href="#">다음</a>
-							    </li>
-							</ul>
-						</nav>
-					</div>	
+					</c:if>
 				</div>
 		    </div>
 		</div> 
@@ -427,8 +433,9 @@ const boradTypeNo3 = document.querySelector('#v-pills-messages-tab');
 boradTypeNo1.addEventListener('click', ()=>{
 	$.ajax({
 		url:'${contextPath}/askBoard.cs',
-		data:{bType:1},
+		data:{faqType: 1},
 		success: function(info){
+			console.log(info);
 		}
 	});	
 })
@@ -436,8 +443,9 @@ boradTypeNo1.addEventListener('click', ()=>{
 boradTypeNo2.addEventListener('click', ()=>{
 	$.ajax({
 		url:'${contextPath}/askBoard.cs',
-		data:{bType:2},
-		success: function(info){
+		data:{faqType: 2},
+		success: function(info2){
+			console.log(info2);
 		}
 	});	
 })
@@ -446,10 +454,10 @@ boradTypeNo3.addEventListener('click', ()=>{
 	$.ajax({
 		url:'${contextPath}/askBoard.cs',
 		data:{
-			bType:3,
-			uNo:'${loginUser.usersNo}'
+			faqType: 3
 		},
-		success: function(info){
+		success: function(info3){
+			console.log(info3);
 		}
 	});	
 })
@@ -457,10 +465,5 @@ boradTypeNo3.addEventListener('click', ()=>{
 
 
 </script>
-
-
-
-			
-		
 </body>
 </html>

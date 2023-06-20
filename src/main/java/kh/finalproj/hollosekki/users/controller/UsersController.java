@@ -43,21 +43,52 @@ public class UsersController {
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
-		System.out.println(usersNo);
-		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
-		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
-		System.out.println(followingList);
-		System.out.println(followerList);
-		
-		if(!followingList.isEmpty()) {
-			for(Follow following : followingList) {
-				int followingNo = following.getFollowingUsersNo();
-				System.out.println(followingNo);
-				Users u = uService.selectFollowInfo(followingNo);
-				Image image = uService.selectFollowImage(followingNo);
-			}
+		Image image = uService.selectImage(usersNo);
+		System.out.println(image);
+		if(image != null) {
+			model.addAttribute("image", image);
 		}
-		
+//		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+//		System.out.println(usersNo);
+//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
+//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+//		System.out.println(followingList);
+//		System.out.println(followerList);
+//		
+//		Users u = null;
+//		Image image = null;
+//		if(!followingList.isEmpty()) {
+//			for(Follow following : followingList) {
+//				int followingNo = following.getFollowingUsersNo();
+//				System.out.println(followingNo);
+//				u = uService.selectFollowInfo(followingNo);
+//				image = uService.selectFollowImage(followingNo);
+//				
+//				System.out.println(u);
+//				System.out.println(image);
+//			}
+//			System.out.println(u);
+//			System.out.println(image);
+//			model.addAttribute("followingUsers", u);
+//			model.addAttribute("followingImage", image);
+//		}
+//		
+//		if(!followerList.isEmpty()) {
+//			for(Follow follower : followerList) {
+//				int followerNo = follower.getFollowingUsersNo();
+//				System.out.println(followerNo);
+//				u = uService.selectFollowInfo(followerNo);
+//				image = uService.selectFollowImage(followerNo);
+//				
+//				System.out.println(u);
+//				System.out.println(image);
+//			}
+//			System.out.println(u);
+//			System.out.println(image);
+//			model.addAttribute("followerUsers", u);
+//			model.addAttribute("followerImage", image);
+//		}
+//		
 		return "myPage_Main";
 	}
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -132,11 +133,29 @@
 	<div class="out-div">
 		<div class="users-info">
 			<div class="users-profile-img-out">
-				<div class="users-profile-img"><img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" ></div>
+				<div class="users-profile-img">
+					<c:if test="${ social == null }"> <!-- 일반유저일때 -->
+						<c:if test="${ image == null }"> <!-- 일반유저-프사없을때 -->
+							<img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" >
+						</c:if>
+						<c:if test="${ image != null }"> <!-- 일반유저-프사있을때 -->
+							<img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" >
+						</c:if>
+					</c:if>
+					<c:if test="${ social != null }"> <!-- 소셜유저일때 -->
+						<img class="profile-img" src="${ social.social_profile_img }" >
+					</c:if>
+					
+				</div>
 			</div>
-			<div class="users-nickname">닉네임</div>
-			<div class="users-id">(아이디)</div><br>
-			<div class="users-intro">요리에살고 요리에죽는 장현지입니다 ^^7</div><br>
+			<div class="users-nickname">${ user.nickName }</div>
+			<div class="users-id">(${ user.usersId })</div><br>
+			<c:if test="${ user.usersSelfIntro == null }">
+				<div class="users-intro" style="color:gray;">자기소개글이 없습니다.</div><br>
+			</c:if>
+			<c:if test="${ user.usersSelfIntro != null }">
+				<div class="users-intro">${ user.usersSelfIntro }</div><br>
+			</c:if>
 			<div class="follow-info">
 				<a>팔로워 200 </a><i class="bi bi-dot lightgray"></i><a>팔로잉 100</a>
 			</div>
@@ -153,56 +172,31 @@
 				<div class="list-menu" id=bookmark><i class="fa-solid fa-bookmark"></i> 스크랩</div>
 			</div>
 			<div class="contents">
+			
+				<!-- 메뉴1. 레시피목록 -->
 				<div class="recipe-contents flex">
-					<div class="recipe-content">
-						<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food1.jpg"></div>
-						<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-						<div>
-							채소<i class="bi bi-dot lightgray"></i>비건<i class="bi bi-dot lightgray"></i>국
-						</div>
-						<div class="recipe-date">2023-06-16</div>
-					</div>
-					<div class="recipe-content">
-						<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food2.jpg"></div>
-						<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-						<div>
-							채소<i class="bi bi-dot lightgray"></i>비건<i class="bi bi-dot lightgray"></i>국
-						</div>
-						<div class="recipe-date">2023-06-16</div>
-					</div>
-					<div class="recipe-content" >
-						<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food3.jpg"></div>
-						<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-						<div>
-							채소<i class="bi bi-dot lightgray"></i>비건<i class="bi bi-dot lightgray"></i>국
-						</div>
-						<div class="recipe-date">2023-06-16</div>
-					</div>
-					<div class="recipe-content">
-						<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food4.jpg"></div>
-						<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-						<div>
-							채소<i class="bi bi-dot lightgray"></i>비건<i class="bi bi-dot lightgray"></i>국
-						</div>
-						<div class="recipe-date">2023-06-16</div>
-					</div>
-					<div class="recipe-content">
-						<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food5.jpeg"></div>
-						<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-						<div>
-							채소<i class="bi bi-dot lightgray"></i>비건<i class="bi bi-dot lightgray"></i>국
-						</div>
-						<div class="recipe-date">2023-06-16</div>
-					</div>
-					<div class="recipe-content">
-						<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food6.jpeg"></div>
-						<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-						<div>
-							채소<i class="bi bi-dot lightgray"></i>비건<i class="bi bi-dot lightgray"></i>국
-						</div>
-						<div class="recipe-date">2023-06-16</div>
-					</div>
+					<c:if test="${ rList == null }">
+						<div style="text-align: center; font-size: 20px;">등록한 레시피가 없습니다.</div>
+					</c:if>
+					<c:if test="${ rList !=null }">
+						<c:forEach items="${ rList }" var="r">
+							<c:forEach items="${ iList }" var="i">
+								<c:if test="${ r.foodNo eq i.imageDivideNo }">
+									<div class="recipe-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ r.foodNo }' + '&page=' + '${ page }'">
+										<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }"></div>
+										<div class="recipe-name">${ r.recipeName }</div>
+										<div>
+											${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ r.categorySituation }<i class="bi bi-dot lightgray"></i>${ r.categoryType }
+										</div>
+										<div class="recipe-date">${ r.recipeCreateDate }</div>
+									</div>
+								</c:if>
+							</c:forEach>
+						</c:forEach>
+					</c:if>
 				</div>
+				
+				<!-- 메뉴2. 작성글 목록 -->
 				<div class="write-list-contents flex">
 					<div class="write-list-content">
 						<table>
@@ -245,6 +239,8 @@
 						</table>
 					</div>
 				</div>
+				
+				<!-- 메뉴3. 작성댓글 목록 -->
 				<div class="write-reply-contents flex">
 					<div class="write-replt-content">
 						<table>
@@ -292,6 +288,8 @@
 						</table>
 					</div>
 				</div>
+				
+				<!-- 메뉴4. 작성 레시피 후기글 목록 -->
 				<div class="recipe-review-contents">
 					<div class="recipe-review-content">
 						<div class="recipe-review-img-div"><img class="recipe-review-img" src="resources/images/food5.jpeg"></div>
@@ -321,6 +319,8 @@
 						</div>
 					</div>
 				</div>
+				
+				<!-- 메뉴5. 북마크 목록 -->
 				<div class="bookmark-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
 					<div style="display: flex;">

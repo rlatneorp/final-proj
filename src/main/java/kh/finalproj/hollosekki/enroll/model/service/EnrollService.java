@@ -1,7 +1,13 @@
 package kh.finalproj.hollosekki.enroll.model.service;
 
+import java.util.ArrayList;
+
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 public interface EnrollService {
 
@@ -29,6 +35,15 @@ public interface EnrollService {
 	void socialInfoUpdate(String id, String profileImg);
 
 	void socialInfoUpdate2(String id, String name);
+
+	ArrayList<Recipe> recipeList(int usersNo);
+
+	ArrayList<Image> recipeImageList(int foodNo);
+
+	ArrayList<BookMark> bookMarkList(int usersNo);
+
+	ArrayList<Menu> menuList(int usersNo);
+
 
 
 

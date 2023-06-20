@@ -709,7 +709,7 @@ p b {
 <%@include file="../common/storeTop.jsp" %>
 <br>
 </span>
-	<form action="${contextPath}/insertCart.ma" method="post">
+	<form /*action="${contextPath}/insertCart.ma" method="post"*/>
 	<main id="order-wrap">
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
@@ -1149,7 +1149,7 @@ p b {
 
    const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
    
-   const productOption = document.querySelector(".productOption"); //사이즈 선택 창
+   const productOption = document.getElementsByClassName(".productOption"); //사이즈 선택 창
    const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
    const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
    const buyBtn = document.getElementById("buyBtn");
@@ -1190,25 +1190,28 @@ p b {
 	});
    
       
+		console.log(productOption);
+		
       let productOp = []; 
     	for( prOp  of productOption){ 
    		 productOp.push(prOp.value);
    	 }
       
-    	let b = ["옵션을 선택해주세요."]; 
+    	let b = []; 
     	productOption.addEventListener("change", function(){
     		if(productOp.value != ""){
     			
-    			for(i=1; i<productOption2Set.length; i++){
+    			for(i=0; i<productOption2Set.length; i++){
     				//옵션을 담아둘 배열
-//     				b.push(productOption2Set[i].value);
+    				
+    				b.push(productOption2Set[0].value = "옵션을 선택해주세요.");
     				b.push(productOption2Set[i].value);
     				
     			}
     			
                 let result = productOption.value;              //상품 1의 옵션이 선택된 값
                 let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-                console.log(b)
+                console.log(b[0])
                 if ( productOp.indexOf(result) > 0  && result != "") {  //상품 1옵션에 선택한 상품옵션 값이 존재하거나 옵션을 선택해주세요 선택창이 아닐경우 실행
                 	if(productOp.indexOf(b[0]) < 0 ){
                 		o = b;

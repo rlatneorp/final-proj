@@ -13,27 +13,35 @@ import kh.finalproj.hollosekki.customer.model.vo.Customer;
 @Repository
 public class CustomerDAO {
 
-	public int getListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
-		return sqlSession.selectOne("customerMapper.getListCount", map);
+	public int getNListCount(SqlSessionTemplate sqlSession, int i) {
+		return sqlSession.selectOne("customerMapper.getNListCount", i);
+	}
+	
+	public int getFListCount(SqlSessionTemplate sqlSession, int i) {
+		return sqlSession.selectOne("customerMapper.getFListCount", i);
+	}
+	
+	public int getPListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("customerMapper.getPListCount", map);
 	}
 
-	public ArrayList<Customer> nBoardList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
+	public ArrayList<Customer> nBoardList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(),pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("customerMapper.nBoardList", map, rowBounds);
+		return (ArrayList)sqlSession.selectList("customerMapper.nBoardList", rowBounds);
 	}
 
-//	public ArrayList<Customer> fBoardList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
-//		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(),pi.getBoardLimit());
-//		
-//		return (ArrayList)sqlSession.selectList("customerMapper.fBoardList", map, rowBounds);
-//	}
-//
-//	public ArrayList<Customer> pBoardList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
-//		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(),pi.getBoardLimit());
-//		
-//		return (ArrayList)sqlSession.selectList("customerMapper.pBoardList", map, rowBounds);
-//	}
+	public ArrayList<Customer> fBoardList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(),pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("customerMapper.fBoardList",rowBounds);
+	}
+
+	public ArrayList<Customer> pBoardList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(),pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("customerMapper.pBoardList", map, rowBounds);
+	}
 
 
 

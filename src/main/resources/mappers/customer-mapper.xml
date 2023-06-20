@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="customerMapper">
-	<select id="getListCount" resultType="_int">
+	<select id="getNListCount" resultType="_int">
 		select count(*)
 		from faq
-		where faq_status= 'Y' 
-			and faq_type = #{faqType} or users_no = #{usersNo}
+		where faq_status= 'Y' and faq_type in(1,null) 
+	</select>
+	
+	<select id="getFListCount" resultType="_int">
+		select count(*)
+		from faq
+		where faq_status= 'Y' and faq_type = 2
+	</select>
+	
+	<select id="getPListCount" resultType="_int">
+		select count(*)
+		from faq
+		where faq_status= 'Y' and faq_type = 3 and users_no = #{usersNo}
 	</select>
 	
 	<select id="nBoardList" resultMap="CustomerResultSet">
 		select *
 		from faq
-		where faq_status = 'Y'
-			and faq_type = #{faqType} or users_no = #{usersNo}
+		where faq_status = 'Y' and faq_type in (1,null)  
 		order by faq_no
 	</select>
-<!-- 	<select id="fBoardList" resultMap="CustomerResultSet"> -->
-<!-- 		select * -->
-<!-- 		from faq -->
-<!-- 		where faq_status = 'Y' -->
-<!-- 			and faq_type = #{faqType} -->
-<!-- 		order by faq_no -->
-<!-- 	</select> -->
-<!-- 	<select id="pBoardList" resultMap="CustomerResultSet"> -->
-<!-- 		select * -->
-<!-- 		from faq -->
-<!-- 		where faq_status = 'Y' -->
-<!-- 			and faq_type = #{faqType} and users_no = #{usersNo} -->
-<!-- 		order by faq_no -->
-<!-- 	</select> -->
+	<select id="fBoardList" resultMap="CustomerResultSet">
+		select *
+		from faq
+		where faq_status = 'Y' and faq_type = 2  
+		order by faq_no
+	</select>
+	<select id="pBoardList" resultMap="CustomerResultSet">
+		select *
+		from faq
+		where faq_status = 'Y' and faq_type = 3 and users_no = #{usersNo} 
+		order by faq_no
+	</select>
 
 	<resultMap type="Customer" id="CustomerResultSet">
 		<id column="FAQ_NO" property="faqNo"/>

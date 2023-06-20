@@ -725,16 +725,17 @@ p b {
 				<div style="margin: auto; text-align: center;">
 				<br>
 					<h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
-						${ p.discountRate }20<span>%</span>
+						${ p.productSale }<span>%</span>
 						<!-- 할인율 -->
 					</h2>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						450,000원
+					<c:set var="total" value="${ p.productPrice - (p.productPrice * (p.productSale *0.01))}" />
+					<fmt:formatNumber value="${ total }" groupingUsed="true"/>
 					</h2>
 					&nbsp;&nbsp;
 					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-						540,000원
+					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>
 					</h2>
 				</div>
 			<div>
@@ -827,7 +828,6 @@ p b {
 			</div>
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button>
-				
 
 		</div>
 	</main>
@@ -1132,10 +1132,10 @@ p b {
 </div><!-- 전체를 감싸는 박스 -->
 
 
-
 	<script>
 	
 	window.onload = function(){
+		
 	
 	$('.accordion_i_tit').click(function(){
 		$('.accordion_i_cont').toggle(400);
@@ -1242,13 +1242,14 @@ p b {
       			}
       			
       		}
+      		
 	      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
 						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 								 							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
-								 							+'<input type="hidden" name="productNo" value="1000">'
-								 							+'<input type="hidden" name="productName" value="캠핑용 후라이팬">'
-								 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+								 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
+								 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
+								 							+'<input type="hidden" name="productPrice" value="${total}">'
 								 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
 								 							+'<input type="hidden" name="productOption2" value='+select2.val()+'>'
 								 							+'<input type="hidden" name="usersNo" value="45">'
@@ -1264,10 +1265,11 @@ p b {
 								 								+'<span>'
 								 							+'</button>'
 								 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-								 						+'<input type="hidden" name="discountRate" value="${p.discountRate}">'
+								 						+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
 								 						+'</div>'
 								 						 +'<br>'
 								 					+'</div>');
+						
 							
 	      			}
 		  					
@@ -1276,7 +1278,7 @@ p b {
                
         
         
-      
+    	
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
@@ -1301,8 +1303,6 @@ $(function(){
         var cartCount = $(".cartCount").val();
         var productOption = $(".productOption").val();
         var productOption2 = $(".productOption2").val();
-        
-        
         
      console.log($("input[name='productNo']").val());
         

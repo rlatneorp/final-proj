@@ -145,7 +145,7 @@ public class MarketController {
 				checCart.setSum(sum);
 				
 				if (foods != null) {
-					checCart.setProductName(foods.getFoodName());
+					checCart.setProductName(foods.getFoodName()); 
 			    }
 			    if (tools != null) {
 			    	checCart.setProductName(tools.getToolName());
@@ -162,14 +162,19 @@ public class MarketController {
 	}
 
 	@GetMapping("market_detail.ma")
-//	public String marketdetail(@RequestParam("productNo") int productNo,
-	public String marketdetail(
+	public String marketdetail(@RequestParam("productNo") int productNo,
 							   Model model) {
 		Tool tool = mkService.selectTool(productNo);
 		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
+		Product p = mkService.selectProductSet(productNo);
+	
+		
 		
 		System.out.println(options);
+		System.out.println(tool);
+		System.out.println(p);
 		model.addAttribute("tool", tool);
+		model.addAttribute("p", p);
 		model.addAttribute("options", options);
 		return "market_detail";
 	}
@@ -247,21 +252,13 @@ public class MarketController {
 							@RequestParam("productOption") String pOption,@RequestParam("productOption2") String pOption2,
 							@RequestParam("usersNo") String usersNo,
 							HttpServletResponse response) {
-//		HashMap<String, String> result = new HashMap<String, String>();
-		
-//		result.put("pNo", pNo);
-//		result.put("cartCount", cartCount);
-//		result.put("pOption", pOption);
-//		result.put("pOption2", pOption2);
-//		result.put("usersNo", usersNo);
-//
-//		mkService.insertCart(result);
 		System.out.println(pNo);
-//		System.out.println(c);
-//		ArrayList<Cart> list  = mkService.insertCart(c.getCartNo());
+		System.out.println(cartCount);
+		System.out.println(pOption);
+		System.out.println(pOption2);
+		System.out.println(usersNo);
 		
 		response.setContentType("application/json; charset=utf-8");
-//		Gson gson = new Gson();//json객체로 보내고 싶은것
 		GsonBuilder gb = new GsonBuilder();
 		Gson gson = gb.create();
 		try {

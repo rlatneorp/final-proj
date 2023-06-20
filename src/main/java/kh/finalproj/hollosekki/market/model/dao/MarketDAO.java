@@ -178,9 +178,19 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectOptionInfo", map);
 	}
 
+//	public ArrayList<Options> selectOptionSet(SqlSessionTemplate sqlSession, int productNo) {
+//		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionsSet", productNo);
+//	}
+
 	public ArrayList<Options> selectOptionSet(SqlSessionTemplate sqlSession, int productNo) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionsSet", productNo);
+	 return (ArrayList)sqlSession.selectList("marketMapper.selectOptionsSet", productNo);
 	}
+
+
+	public Product selectProductSet(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectProductSet",productNo);
+	}
+
 
 	
 

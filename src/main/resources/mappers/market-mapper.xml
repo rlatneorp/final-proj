@@ -263,4 +263,8 @@
 		select * from options where option_no = #{productOption} and product_no = #{productNo}
 	</select>
 	
+	<select id="selectProductSet" resultMap="productList">
+		select * from product where product_no = #{productNo}
+	</select>
+	
 </mapper>

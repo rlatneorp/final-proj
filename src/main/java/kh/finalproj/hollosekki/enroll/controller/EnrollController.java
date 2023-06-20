@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.enroll.controller;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -14,6 +15,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,9 +23,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.enroll.model.exception.EnrollException;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.users.model.service.UsersService;
 
 
 @SessionAttributes({"loginUser", "socialUser"})
@@ -36,6 +44,9 @@ public class EnrollController {
 		
 		@Autowired
 		private EnrollService eService;
+		
+		@Autowired
+		private UsersService uService;
 		
 		@Autowired
 		private JavaMailSender mailSender;
@@ -84,7 +95,7 @@ public class EnrollController {
 				model.addAttribute("loginUser", loginUser);
 				return "redirect:home.do";
 			} else {
-				return "loginfalse";
+				throw new EnrollException("로그인에 실패했습니다.");
 			}
 		}
 		
@@ -130,15 +141,14 @@ public class EnrollController {
 			
 			Users result = eService.findIdResult(name, email);
 			
-//			if(result != null) {
-//				String usersId = result.getUsersId();
+			if(result != null) {
 				
 				model.addAttribute("usersInfo", result);
 				
 				return "findIdResult";
-//			} else {
-//				return "findIdResultFalse";
-//			}
+			} else {
+				throw new EnrollException("아이디찾기에 실패했습니다.");
+			}
 		}
 		
 		@RequestMapping("findPwd.en")
@@ -206,7 +216,7 @@ public class EnrollController {
 			if(result > 0) {
 				return "updatePwdFinish";
 			} else {
-				return "";
+				throw new EnrollException("비밀번호 재설정에 실패했습니다.");
 			}
 		}
 		
@@ -295,7 +305,7 @@ public class EnrollController {
 					
 					return "redirect:home.do";
 				} else { // 등록 안된경우
-					return "등록실패~~";
+					throw new EnrollException("네이버 간편로그인 사용자 등록에 실패했습니다.");
 				}
 			} else { // 기존 회원일경우 -> 불러오기
 				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
@@ -314,6 +324,49 @@ public class EnrollController {
 		@RequestMapping("others_profile.en")
 		public String others_profile() {
 			return "others_Profile";
+		}
+		
+
+		@RequestMapping("otherUsersProfile.en")
+		public String otherUsersProfile(@RequestParam("uId") String id, @RequestParam("uNo") int usersNo, @RequestParam(value = "page", required = false) Integer page, Model model) {
+			// 유저정보
+			Users user = eService.socialLoginUpdate(id);
+			model.addAttribute("user", user);
+			
+			// 프사정보
+			SocialLogin social = eService.SocialLogin(id);
+			model.addAttribute("social", social);
+			Image image = uService.selectImage(usersNo);
+			model.addAttribute("image", image);
+				
+			// 레시피 목록 + image
+			ArrayList<Recipe> recipe = eService.recipeList(usersNo);
+			model.addAttribute("rList", recipe);
+			
+			int foodNo = recipe.get(0).getFoodNo();
+			
+			ArrayList<Image> recipeImage = eService.recipeImageList(foodNo);
+			model.addAttribute("iList", recipeImage);
+			model.addAttribute("page", page);
+			
+			// 작성 글 목록
+			
+			// 작성 댓글 목록
+			
+			// 작성 레시피후기 목록
+
+			
+			// 북마크 목록
+			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo);
+			model.addAttribute("bList", bookMarkList);
+			
+//			// 북마크 - 레시피목록 => recipe (위에 가져온거 있음)
+			
+//			// 북마크 - 식단목록
+			ArrayList<Menu> menuList = eService.menuList(usersNo);
+			model.addAttribute("mList", menuList);
+			
+			return "othersProfile";
 		}
 		
 }

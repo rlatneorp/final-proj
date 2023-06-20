@@ -397,8 +397,9 @@ public class MarketController {
 	public String marketdetail(@RequestParam("productNo") int productNo,
 							   Model model) {
 		Tool tool = mkService.selectTool(productNo);
-		ArrayList<Options> options = mkService.selectOptions(productNo);
+		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
 		
+		System.out.println(options);
 		model.addAttribute("tool", tool);
 		model.addAttribute("options", options);
 		return "market_detail";

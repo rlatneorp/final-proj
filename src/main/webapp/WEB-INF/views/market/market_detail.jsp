@@ -756,8 +756,8 @@ p b {
 						
 					<c:forEach items="${options}" var="op" varStatus="vs">
 						<c:if test="${vs.index == 0}">
-							<label for="productOption">${op.optionName}</label>
-							<select class='productOption'  required>
+							<label for="productOptionSet">${op.optionName}</label>
+							<select class='productOptionSet'  required>
 								<option value="">옵션을 선택해주세요</option>
 								<option value="${op.optionValue}">${op.optionValue}</option>
 						</c:if>
@@ -1149,7 +1149,7 @@ p b {
 
    const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
    
-   const productOption = document.querySelector(".productOption"); //사이즈 선택 창
+   const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
    const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
    const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
    const buyBtn = document.getElementById("buyBtn");
@@ -1191,57 +1191,60 @@ p b {
    
       
       let productOp = []; 
-    	for( prOp  of productOption){ 
-   		 productOp.push(prOp.value);
+    	for( prOp  of productOption2Set){ 
+   		 productOp.unshift(prOp.value);
+   		 if(prOp.value == ""){
+   			productOp.pop();
+   		 }
    	 }
-      
-    	let b = ["옵션을 선택해주세요."]; 
-    	productOption.addEventListener("change", function(){
-    		if(productOp.value != ""){
-    			
-    			for(i=1; i<productOption2Set.length; i++){
-    				//옵션을 담아둘 배열
-//     				b.push(productOption2Set[i].value);
-    				b.push(productOption2Set[i].value);
-    				
-    			}
-    			
-                let result = productOption.value;              //상품 1의 옵션이 선택된 값
+
+    	productOptionSet.addEventListener("change", function(e){
+                let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
                 let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-                console.log(b)
-                if ( productOp.indexOf(result) > 0  && result != "") {  //상품 1옵션에 선택한 상품옵션 값이 존재하거나 옵션을 선택해주세요 선택창이 아닐경우 실행
-                	if(productOp.indexOf(b[0]) < 0 ){
-                		o = b;
-                	}else {
-                		alert("필수 옵션을 선택해주세요");
-                	}
-                  
-                } else if ( productOp.indexOf(o[0]) > 0 &&  result != '') {
-                  o = b;
-                } else if(productOp.indexOf(o[0]) < 0 ){
-              	o = ["색상 옵션을 선택해주세요"];
-                }
-               if((productOption2==='') == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
-            	   productOption2.options.length = 0;
-               }
-              
-              
-                for ( let i = 0; i < o.length; i++ ) {
-                	console.log(o[i]);
+                console.log(result);
+                if ( result != "") { 
+					o = productOp;                	
+	                }else if(result == ""){
+	                	o = ["옵션을 선택해주세요."];
+		             }
+
+                		
+                		
+// 	               		if(productOptionSet.options[productOptionSet.selectedIndex].value == ""){
+// 	               			o = b;
+// 		                 }else{
+// 		                	alert("필수 옵션을 선택해주세요");
+// 		                 }
+		                
+	                if((productOption2Set.value==='') == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+	             	   productOption2Set.options.length=0;
+	                }
+	                
+                
+                for ( let i = 0; i < o.length; i++) {
                 	if( i == 0){
                 		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
                 	}else{
-                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
+                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
                 	}
                 			
                   }
-    		}
-    		  
+                
+    		
+    	
     	})
         
-        console.log(productOption2Set);
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
         productOption2Set.addEventListener("change", function(){
-             const select =  $('.productOption option:selected');
+             const select =  $('.productOptionSet option:selected');
              const select2 = $('.productOption2Set option:selected');
              
       		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
@@ -1392,6 +1395,7 @@ $(function(){
 	        }
         if(count == productNoValues.length) {
             alert("상품이 장바구니에 담겼습니다.");
+            
         	}else{
         		alert("상품이 장바구니에 담기지 못했습니다.");
         	}

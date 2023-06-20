@@ -9,6 +9,19 @@
 		where product_type = #{dataType} 
 			  and product_no = #{dataNo}
 	</update>
+	
+	<insert id="insertOptions">
+		insert into options(option_no, product_no, option_name, option_value)
+		values(seq_option_no.nextval, #{productNo}, #{optionName}, #{optionValue})
+	</insert>
+	
+	<delete id="deletesOptions">
+		delete options
+		where product_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 
 
 <!--Product-상품 -->
@@ -226,6 +239,7 @@
 				where food_name like '%${searchText}%'
 			</if>
 		</if>
+<!-- 		여기 문제생길 각인데?  'where' 이 두번 반복될수도-->
 		<if test="type != 0">
 			where food_type = ${type}
 			<if test="kind != 0">
@@ -279,8 +293,58 @@
 		</foreach>
 	</delete>
 	
+<!--Tool-도구상품 -->
+	<select id="getToolCount" resultType="_int">
+		select count(*)
+		from tool 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where tool_name like '%${searchText}%'
+				<if test="type != 0">
+					and tool_type = ${type}
+				</if>
+			</if>
+		</if>
+		<if test="searchText == null">
+			<if test="type != 0">
+				where tool_type = ${type}
+			</if>
+		</if>
+	</select>
 	
+	<select id="selectToolList" resultMap="toolResultSet">
+		select *
+		from (select * 
+			  from tool
+			  order by product_no desc) 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where tool_name like '%${searchText}%'
+				<if test="type != 0">
+					and tool_type = ${type}
+				</if>
+			</if>
+		</if>
+		<if test="searchText == null">
+			<if test="type != 0">
+				where tool_type = ${type}
+			</if>
+		</if>
+	</select>
 	
+	<insert id="insertTool">
+		insert into tool(product_no, tool_name, tool_type, tool_content)
+		values(#{productNo}, #{toolName}, #{toolType}, #{toolContent})
+	</insert>
+
+	<delete id="deletesTool">
+		delete tool
+		where product_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
 <!--ResultSet -->
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">
 		<id column="PRODUCT_NO" property="productNo"/>
@@ -331,5 +395,11 @@
 		<result column="FOOD_CONTENT" property="foodContent"/>
 	</resultMap>
 	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Tool" id="toolResultSet">
+		<id column="PRODUCT_NO"	property="productNo"/>
+		<result column="TOOL_NAME" property="toolName"/>
+		<result column="TOOL_TYPE" property="toolType"/>
+		<result column="TOOL_CONTENT" property="toolContent"/>
+	</resultMap>
 	
 </mapper>

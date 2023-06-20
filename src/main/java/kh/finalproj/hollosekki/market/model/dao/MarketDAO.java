@@ -178,6 +178,10 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectOptionInfo", map);
 	}
 
+	public ArrayList<Options> selectOptionSet(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionsSet", productNo);
+	}
+
 	
 
 

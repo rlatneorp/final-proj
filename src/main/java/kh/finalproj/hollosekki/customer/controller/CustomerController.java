@@ -1,10 +1,8 @@
 package kh.finalproj.hollosekki.customer.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import kh.finalproj.hollosekki.common.model.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
@@ -28,48 +23,65 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService csService;
+//	
+//	@RequestMapping("nBoard.cs")
+//	public String askBoard() {
+//		return "askBoard";
+//	}
 	
 	@RequestMapping("askBoard.cs")
-	public String askBoard() {
-		return "askBoard";
-	}
-	
-	@RequestMapping("nBoard.cs")
-	public void nBoard(HttpSession session, @RequestParam(value="page", required=false) Integer currentPage
-			,@ModelAttribute Customer customer,HttpServletResponse response) {
+	public ModelAndView nBoard(HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
+			 @ModelAttribute Customer customer, ModelAndView mv) {
 		Users u = (Users)session.getAttribute("loginUser");
-		int usersNo = 0;
 		if(currentPage == null) {
 			currentPage = 1;
 		}
 		
+		int usersNo = 0;
 		if(u != null) {
 			usersNo = u.getUsersNo();
 		}
-		int faqType = 0;
-		System.out.println(customer);
+		Integer faqType = 0;
 		if(customer != null) {
 			faqType = customer.getFaqType();
 		}
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("usersNo", usersNo);
 		map.put("faqType", faqType);
-		int listCount = csService.getListCount(map);
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-		map.put("pi", pi);
-		
-		ArrayList<Customer> nlist = csService.nBoardList(pi, map);
-		System.out.println(nlist);
-		response.setContentType("application/json; charset=UTF-8"); 
-		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
-		Gson gson = gb.create();
-		String json = gson.toJson(nlist);
-		try {
-			response.getWriter().write(json);
-		} catch (IOException e) {
-			e.printStackTrace();
+		int listCount = 0;
+		if(faqType == 1 || faqType == null) {
+			listCount = csService.getNListCount(1);
+		} else if(faqType == 2) {
+			listCount = csService.getFListCount(2);
+		} else if(faqType == 3 && usersNo != 0) {
+			listCount = csService.getPListCount(map);
 		}
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+		ArrayList<Customer> nlist = csService.nBoardList(pi);
+		ArrayList<Customer> flist = csService.fBoardList(pi);
+		ArrayList<Customer> plist = csService.pBoardList(pi, map);
+		
+		mv.addObject("nlist", nlist);
+		mv.addObject("flist", flist);
+		mv.addObject("plist", plist);
+		mv.addObject("pi", pi);
+		mv.setViewName("askBoard");
+		System.out.println(pi);
+		return mv;
+		
+//		
+//		response.setContentType("application/json; charset=UTF-8"); 
+//		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+//		Gson gson = gb.create();
+//		String json = gson.toJson(nlist);
+//		try {
+//			response.getWriter().write(json);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		 
     }
 	    

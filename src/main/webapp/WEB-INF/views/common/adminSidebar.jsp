@@ -63,7 +63,7 @@
 							<li><a href="${contextPath}/adminMenuManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">식단관리(일주일단위)</a></li>
 							<li><a href="${contextPath}/adminIngredientManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">식재료관리(소량구매)</a></li>
 							<li><a href="${contextPath}/adminFoodManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">식품관리(식재료,밀키트)</a></li>
-							<li><a href="${contextPath}/adminProductManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">상품관리(주방도구)</a></li>
+							<li><a href="${contextPath}/adminToolManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">상품관리(주방도구)</a></li>
 						</ul>
 					</div>
 				</li>

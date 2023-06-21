@@ -305,60 +305,160 @@ public class RecipeController {
 		return mv;
 	}
 	
-//	@PostMapping("updateReicpe.rc")
-//	public ModelAndView updateRecipe(HttpServletRequest request, ModelAndView mv, @ModelAttribute Recipe r,
-//									 @ModelAttribute RecipeOrder rc, @RequestParam("thum") MultipartFile thum,
-//									 @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
-//									 @RequestParam("comPic") ArrayList<MultipartFile> comFiles,
-//									 @RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
-//									 @RequestParam("delComImg") String[] delComImg) {
-//		
-////		썸네일 변경/삭제
-//		ArrayList<Image> thumImgList = new ArrayList<>();
-//		String thumImg = thum.getOriginalFilename();
-//		if(!thumImg.equals("")) {
-//			String[] thumImgArr = saveFile(thum, request);
-//			if(thumImgArr[1] != null) {
-//				Image img = new Image();
-//				img.setImagePath(thumImgArr[0]);
-//				img.setImageOriginalName(thumImg);
-//				img.setImageRenameName(thumImgArr[1]);
-//				img.setImageLevel(0);
-//				
-//				thumImgList.add(img);
-//			}
-//		}
-//		
-//		String thumDelRename = null;
-//		Integer thumDelLevel = null;
-//		
-//		if(!delThum.equals("none")) {
-//			String[] split = delThum.split("/");
-//			thumDelRename = split[0];
-//			thumDelLevel = Integer.parseInt(split[1]);
-//		}
-//		
-//		int thumDelResult = 0;
-//		int updateRecipeResult = 0;
-//		boolean existBeforeImg = true;
-//		
-//		if(!thumDelRename.isEmpty()) {
-//			thumDelResult = rService.deleteThumImg(thumDelRename);
-//			if(thumDelResult > 0) {
-//				deleteFile(thumDelRename, request);
-//			}
-//		}
-//		
-//		updateRecipeResult = rService.updateRecipe(r);
-//		
-//		int updateThumImg = 0;
-//		if(!thum.isEmpty()) {
-//			updateThumImg = rService.insertAttm(thumImgList);
-//		}
-//		
-////		레시피 순서 변경/삭제
-//		
-//		
-//		return null;
-//	}
+	@PostMapping("updateRecipe.rc")
+	public ModelAndView updateRecipe(HttpServletRequest request, ModelAndView mv, @ModelAttribute Recipe r,
+									 @ModelAttribute RecipeOrder rc, @RequestParam(value= "thum", required = false) MultipartFile thum,
+									 @RequestParam(value = "orderFile", required = false) ArrayList<MultipartFile> orderFiles,
+									 @RequestParam(value = "comPic", required = false) ArrayList<MultipartFile> comFiles,
+									 @RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
+									 @RequestParam("delComImg") String[] delComImg, @RequestParam("page") int page) {
+		
+//		썸네일 변경/삭제
+		ArrayList<Image> thumImgList = new ArrayList<>();
+		String thumImg = thum.getOriginalFilename();  // disabled 에서 display=hidden으로 바꾼다음 해보기
+		if(!thumImg.equals("")) {
+			String[] thumImgArr = saveFile(thum, request);
+			if(thumImgArr[1] != null) {
+				Image img = new Image();
+				img.setImagePath(thumImgArr[0]);
+				img.setImageOriginalName(thumImg);
+				img.setImageRenameName(thumImgArr[1]);
+				img.setImageLevel(0);
+				
+				thumImgList.add(img);
+			}
+		}
+		
+		String thumDelRename = null;
+		
+		if(!delThum.equals("none")) {
+			String[] split = delThum.split("/");
+			thumDelRename = split[0];
+		}
+		
+		int thumDelResult = 0;
+		int updateRecipeResult = 0;
+		
+		if(!thumDelRename.isEmpty()) {
+			thumDelResult = rService.deleteThumImg(thumDelRename);
+			if(thumDelResult > 0) {
+				deleteFile(thumDelRename, request);
+			}
+		}
+		
+		updateRecipeResult = rService.updateRecipe(r);
+		
+		int updateThumImg = 0;
+		if(!thum.isEmpty()) {
+			updateThumImg = rService.insertAttm(thumImgList);
+		}
+		
+//		레시피 순서 변경/삭제
+		ArrayList<RecipeOrder> orc = new ArrayList<>();
+		String[] orderArr = rc.getRecipeOrder().split(",abc123abc,");
+		orderArr[orderArr.length - 1] = orderArr[orderArr.length - 1].replace(",abc123abc", "");
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savedPath = root + "\\uploadFiles";
+		File folder = new File(savedPath);
+		String[] recipeRe = rc.getRecipeRenameName().split(",");
+		
+		for(int i = 0; i < orderArr.length; i++) {
+			String recipeOriginal = orderFiles.get(i).getOriginalFilename();
+			
+			if(orderFiles.get(i) != null && !recipeOriginal.equals("")) {
+				File file = new File(savedPath + "\\" + recipeRe);
+				
+				if(file.exists()) {
+					file.delete();
+				}
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+				int ranNum = (int) (Math.random() * 100000);
+				String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
+						+ recipeOriginal.substring(recipeOriginal.lastIndexOf("."));
+
+				String renamePath = folder + "\\" + recipeRe;
+				
+				try {
+					orderFiles.get(i).transferTo(new File(renamePath));
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
+				
+				RecipeOrder rcc = new RecipeOrder();
+				if(i < orderArr.length) {
+					if(!orderArr[i].equals("")) {
+						rcc.setRecipeOrder(orderArr[i]);
+						rcc.setRecipeOriginalName(recipeOriginal);
+						rcc.setRecipeRenameName(renameFileName);
+						rcc.setRecipeProcedure(i + 1);
+						rcc.setRecipeImagePath(renamePath);
+						
+						orc.add(rcc);
+					}
+				}
+			}
+		}
+		
+		int updateOrderResult = rService.insertOrder(orc);
+		
+//		완성 사진 수정
+		ArrayList<Image> comImgList = new ArrayList<>();
+		for(int i = 0; i < comFiles.size(); i++) {
+			MultipartFile comFile = comFiles.get(i);
+			if(comFile != null && !comFile.isEmpty()) {
+				String[] comFileArr = saveFile(comFile, request);
+				if(comFileArr[1] != null) {
+					Image img = new Image();
+					
+					img.setImagePath(comFileArr[0]);
+					img.setImageOriginalName(comFile.getOriginalFilename());
+					img.setImageRenameName(comFileArr[1]);
+					img.setImageLevel(2);
+					
+					comImgList.add(img);
+				}
+			}
+		}
+		
+		ArrayList<String> comDelRename = new ArrayList<>();
+		
+		for(String rename : delComImg) {
+			if(!rename.equals("none")) {
+				String[] split = rename.split("/");
+				comDelRename.add(split[0]);
+			}
+		}
+		
+		int recipeComResult = 0;
+		if(!comDelRename.isEmpty()) {
+			recipeComResult = rService.deleteComImg(comDelRename);
+			if(recipeComResult > 0) {
+				for(String rename : comDelRename) {
+					deleteFile(rename, request);
+				}
+			}
+		}
+		
+		int updateComImg = 0;
+		if(!comImgList.isEmpty()) {
+			updateComImg = rService.insertAttm(comImgList);
+		}
+		
+		if(updateRecipeResult + updateRecipeResult + updateOrderResult + updateComImg == thumImgList.size() + orc.size() + comImgList.size() + 1) {
+			if(thumDelRename.length() + comDelRename.size() == delThum.length() + delComImg.length && updateComImg + updateOrderResult + updateThumImg == 0) {
+				mv.setViewName("recipeDetail");
+				return mv;
+			} else {
+				mv.addObject("rId", r.getUsersId());
+				mv.addObject("rNo", r.getFoodNo());
+				mv.addObject("page", page);
+				mv.setViewName("recipeDetail");
+				return mv;
+			}
+		} else {
+			throw new RecipeException("레시피 수정에 실패하였습니다.");
+		}
+	}
 }

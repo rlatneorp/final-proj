@@ -73,7 +73,6 @@
 	}
 	.followName{
 		font-size: 17px; font-weight: bold;
-		margin-right: 200px;
 	}
 	.modalFollow{
 		border: none; border-radius: 5px;
@@ -81,12 +80,16 @@
 		width: 60px; height: 30px;
 		background: rgba(224, 224, 224, 0.29);
 		color: rgba(231, 76, 60, 0.86);
+		transform: scale(1.15);
+		margin-left: 200px;
 	}
 	.modalFollower{
 		border: none; border-radius: 5px;
 		font-weight: bold; font-size: 12px;
 		width: 60px; height: 30px;
 		background: #B0DAFF;
+		transform: scale(1.15);
+		margin-left: 250px;
 	}
 	#follower{
 		width: 500px; height: 600px;
@@ -109,6 +112,7 @@
         border-radius: 50%;
         cursor: pointer;
         object-fit: cover; object-position: center;
+        border: 2px solid gray;
     }
     .base{
     	border: none; border-radius: 5px;
@@ -123,11 +127,35 @@
     	margin-left: 395px;
     	margin-bottom: 10px;
     	object-fit: cover; object-position: center;
+    	border: 2px solid gray;
     }
     #editB{
     	width: 80px; height: 40px;
     	border: 1px solid gray; background: white;
     	border-radius: 5px;
+    }
+    .followImage{
+    	width: 50px; height: 50px;
+    	border-radius: 50%;
+    	border: 2px solid gray;
+    }
+    #center{
+    	font-size: 26px; font-weight: bold; 
+    	color: rgb(52, 152, 219); margin-left: 10px;
+    }
+    #center:hover{text-decoration: none;}
+    #point{
+    	font-size: 26px; font-weight: bold; 
+    	color: rgb(52, 152, 219); margin-left: 10px;
+    }
+    #point:hover{text-decoration: none;}
+    .modalFollowing{
+    	border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		background: lightgray;
+		transform: scale(1.15);
+		margin-left: 250px;
     }
 </style>
 </head>
@@ -159,7 +187,7 @@
 					</div>
 					<div class="name">
 						<br>
-						<a style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219); margin-left: 10px;" href="${ contextPath }/askBoard.cs">고객센터
+						<a id="center" href="${ contextPath }/askBoard.cs">고객센터
 						<span class="material-symbols-outlined arrow1">
 						chevron_right
 						</span></a><br><br>
@@ -168,7 +196,7 @@
 					</div>
 					<div class="name">
 						<br>
-						<a style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219); margin-left: 10px;">포인트
+						<a id="point" href="${ contextPath }/myPage_Point.me">포인트
 						<span class="material-symbols-outlined arrow1">
 						chevron_right
 						</span></a><br>
@@ -187,18 +215,18 @@
 				<i class="bi bi-gear-fill" style="margin-left: 580px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#profileModal"></i>
 				<br>
 				<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-					<c:if test="${ image == null }">
+					<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
 						<img src="${ socialUser.socialProfileImg }" id="pImg">
 					</c:if>
-					<c:if test="${ image != null and image.imageType == '1' }">
+					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
 						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="pImg" onerror="this.src='${ socialUser.socialProfileImg }';"/>
 					</c:if>
 				</c:if>
 				<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-					<c:if test="${ image == null }">
+					<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
 						<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" id="pImg"/>
 					</c:if>
-					<c:if test="${ image != null and image.imageType == '1' }">
+					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
 						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" id="pImg"/>
 					</c:if>
 				</c:if>
@@ -220,32 +248,11 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">강건강</label>
-					<button class="modalFollow">언팔로우</button>
+					<c:forEach items="${followingList}" var="f">
+					    <img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+					    &nbsp;&nbsp;<label class="followName">${f.NICKNAME}</label>
+					    <button class="modalFollow">언팔로우</button><br><br>
+					</c:forEach>
 				</div>
 			</div>
 		</div>
@@ -259,32 +266,23 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
-					<img src="resources/images/persons.png"/><label class="followName">남나눔</label>
-					<button class="modalFollower">팔로우</button>
+					<c:forEach items="${followerList}" var="f">
+					    <img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+					    &nbsp;&nbsp;<label class="followName">${f.NICKNAME}</label>
+					    <c:set var="following" value="false"/>
+					    <c:forEach items="${followingList}" var="fl">
+					        <c:choose>
+					            <c:when test="${fl.NICKNAME eq f.NICKNAME}">
+					                <c:set var="following" value="true"/>
+					                <button class="modalFollowing">팔로잉</button>
+					            </c:when>
+					        </c:choose>
+					    </c:forEach>
+					    <c:if test="${not following}">
+					        <button class="modalFollower">팔로워</button>
+					    </c:if>
+					    <br><br>
+					</c:forEach>
 				</div>
 			</div>
 		</div>
@@ -297,7 +295,7 @@
 					<h1 class="modal-title fs-5" id="followingLabel">프로필 수정</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<c:if test="${ image == null }">
+				<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
 					<form action="myPage_InsertProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
@@ -319,7 +317,7 @@
 					</div>
 					</form>
 				</c:if>
-				<c:if test="${ image != null and image.imageType == '1' }">
+				<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
 					<form action="myPage_UpdateProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
@@ -487,6 +485,60 @@
 				
 			});
 		}
+		
+		// 맞팔 조회 - ajax
+		const followerBtn = document.getElementsByClassName('follow')[1];
+		const followersNo = document.getElementsByClassName('followersNo');
+		const followingsNo = document.getElementsByClassName('followingsNo');
+		const btnSpan = document.getElementById('btnSpan');
+		const usersNo = '${loginUser.usersNo}';
+		
+		let followers = [];
+		
+		for(fn of followersNo){
+			const followerNo = fn.value;
+			followers.push(followerNo);
+		}
+		
+		let followings = [];
+		
+		for(fin of followingsNo){
+			const followingNo = fin.value;
+			followers.push(followingNo);
+		}
+		console.log(followings);
+		
+// 		followerBtn.addEventListener('click', () => {
+// 			$.ajax({
+// 				type : 'GET',
+// 				url : '${contextPath}/myPage_mutualFollow.me',
+// 				data : {followerNos : followers},
+// 				success : data => {
+// 					console.log(data);
+// 					if(data == 'yes'){
+// 						const followingNos = [followings];
+// 		                console.log(followingNos);
+// 		                if (followingNos.includes(usersNo)) {
+// 		                    btnSpan.innerHTML = '<button class="modalFollower">팔로잉</button>';
+// 		                } else {
+// 		                    btnSpan.innerHTML = '<button class="modalFollower">팔로우</button>';
+// 		                }
+// // 						btnSpan.innerHTML = '<button class="modalFollower">팔로잉</button>'
+// 					} else if (data == 'no') {
+// 		                const followingNos = [followings];
+// 		                console.log(followingNos);
+// 		                if (followingNos.includes(usersNo)) {
+// 		                    btnSpan.innerHTML = '<button class="modalFollower">팔로잉</button>';
+// 		                } else {
+// 		                    btnSpan.innerHTML = '<button class="modalFollower">팔로우</button>';
+// 		                }
+// 		            }
+// 				},
+// 				error : data => {
+// 					console.log('에ㄹ에러에ㅓㄹ');
+// 				}
+// 			});
+// 		});
 	</script>
 </body>
 </html> 

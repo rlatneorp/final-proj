@@ -12,8 +12,10 @@ import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Tool;
 
 @Repository
 public class AdminDAO {
@@ -22,7 +24,23 @@ public class AdminDAO {
 	public int updateStatus(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.update("adminMapper.updateStatus", map);
 	}
+
+	public int insertOptions(SqlSessionTemplate sqlSession, ArrayList<Options> oList) {
+		int result = 0;
+		for(Options op: oList) {
+			result += sqlSession.insert("adminMapper.insertOptions", op);
+		}
+		return result; 
+	}
 	
+	public int deletesOptions(SqlSessionTemplate sqlSession, String[] selDeletes) {
+		return sqlSession.delete("adminMapper.deletesOptions", selDeletes);
+	}
+
+	public ArrayList<Options> selectOptions(SqlSessionTemplate sqlSession, int pNo) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectOptions", pNo);
+	}
+
 //	Product-상품
 	public Product selectProduct(SqlSessionTemplate sqlSession, int pNo) {
 		return sqlSession.selectOne("adminMapper.selectProduct", pNo);
@@ -165,14 +183,36 @@ public class AdminDAO {
 		return sqlSession.delete("adminMapper.deletesFood", foodDeletes);
 	}
 
+	
+//	Tool-도구상품
+	public int getToolCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getToolCount", ab);
+	}
 
+	public ArrayList<Tool> selectToolList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectToolList", ab, rowBounds);
+	}
 
+	public Tool selectTool(SqlSessionTemplate sqlSession, int toolNo) {
+		return sqlSession.selectOne("adminMapper.selectTool", toolNo);
+	}
 
+	public int updateTool(SqlSessionTemplate sqlSession, Tool t) {
+		return sqlSession.update("adminMapper.updateTool", t);
+	}
+
+	public int insertTool(SqlSessionTemplate sqlSession, Tool t) {
+		return sqlSession.insert("adminMapper.insertTool", t);
+	}
+
+	public int deletesTool(SqlSessionTemplate sqlSession, String[] toolDeletes) {
+		return sqlSession.delete("adminMapper.deletesTool", toolDeletes);
+	}
 
 	
-
-
-
+	
 
 
 

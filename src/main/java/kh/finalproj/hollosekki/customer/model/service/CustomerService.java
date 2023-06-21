@@ -19,21 +19,30 @@ public class CustomerService {
 	@Autowired
 	private CustomerDAO csDAO;
 	
-	public int getListCount(HashMap<String, Object> map) {
-		return csDAO.getListCount(sqlSession, map);
+	public int getNListCount(int i) {
+		return csDAO.getNListCount(sqlSession, i);
+	}
+	
+	public int getFListCount(int i) {
+		return csDAO.getFListCount(sqlSession, i);
+	}
+	
+	public int getPListCount(int i, HashMap<String, Object> map) {
+		return csDAO.getPListCount(sqlSession, i, map);
 	}
 
-	public ArrayList<Customer> nBoardList(PageInfo pi, HashMap<String, Object> map) {
-		return csDAO.nBoardList(sqlSession, pi, map);
+	public ArrayList<Customer> nBoardList(PageInfo pi) {
+		return csDAO.nBoardList(sqlSession, pi);
 	}
 
-//	public ArrayList<Customer> fBoardList(PageInfo pi, HashMap<String, Object> map) {
-//		return csDAO.fBoardList(sqlSession, pi, map);
-//	}
-//
-//	public ArrayList<Customer> pBoardList(PageInfo pi, HashMap<String, Object> map) {
-//		return csDAO.pBoardList(sqlSession, pi, map);
-//	}
+	public ArrayList<Customer> fBoardList(PageInfo pi) {
+		return csDAO.fBoardList(sqlSession, pi);
+	}
+
+	public ArrayList<Customer> pBoardList(PageInfo pi, HashMap<String, Object> map) {
+		return csDAO.pBoardList(sqlSession, pi, map);
+	}
+
 
 
 

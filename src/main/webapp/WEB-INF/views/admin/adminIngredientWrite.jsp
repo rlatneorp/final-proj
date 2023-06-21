@@ -148,6 +148,7 @@
 			const pStatus = document.getElementsByName('productStatus')[0];
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
+			const pStock = document.getElementsByName('productStock')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
 
 			pStBtns[0].addEventListener('click', ()=>{
@@ -184,6 +185,11 @@
 				}
 				cal();
 			});
+			pStock.addEventListener('change', ()=>{
+				if(pStock.value <= 0){
+					pStock.value = 0;
+				}
+			})
 			
 			cal();
 		}

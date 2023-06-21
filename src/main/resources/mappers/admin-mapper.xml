@@ -9,6 +9,27 @@
 		where product_type = #{dataType} 
 			  and product_no = #{dataNo}
 	</update>
+	
+	<insert id="insertOptions">
+		insert into options(option_no, product_no, option_name, option_value)
+		values(seq_option_no.nextval, #{productNo}, #{optionName}, #{optionValue})
+	</insert>
+	
+	<delete id="deletesOptions">
+		delete options
+		where product_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<select id="selectOptions" resultMap="optionsResultSet">
+		select *
+		from (select *
+			  from options
+			  order by option_no)
+		where product_no = #{pNo}
+	</select>
 
 
 <!--Product-상품 -->
@@ -95,6 +116,32 @@
 			</if>
 		</if>
 	</select>
+
+	<select id="selectMenu" resultMap="menuResultSet">
+		select *
+		from menu
+		where product_no = #{pNo}
+	</select>
+
+	<select id="selectFoodProductNo" resultType="string">
+		select food_product_no
+		from menu_list
+		where product_no = #{pNo}
+		order by menu_list_no asc
+	</select>
+
+	<update id="updateMenu">
+		update menu
+		set menu_name = #{menuName},
+			menu_type = #{menuType},
+			menu_content = #{menuContent}
+		where product_no = #{productNo}
+	</update>
+
+	<delete id="deleteMenuList">
+		delete menu_list
+		where product_no = #{productNo}
+	</delete>
 
 	<insert id="insertMenu">
 		insert into menu(product_no, menu_name, menu_type, menu_content)
@@ -200,6 +247,7 @@
 				where food_name like '%${searchText}%'
 			</if>
 		</if>
+<!-- 		여기 문제생길 각인데?  'where' 이 두번 반복될수도-->
 		<if test="type != 0">
 			where food_type = ${type}
 			<if test="kind != 0">
@@ -253,8 +301,72 @@
 		</foreach>
 	</delete>
 	
+<!--Tool-도구상품 -->
+	<select id="getToolCount" resultType="_int">
+		select count(*)
+		from tool 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where tool_name like '%${searchText}%'
+				<if test="type != 0">
+					and tool_type = ${type}
+				</if>
+			</if>
+		</if>
+		<if test="searchText == null">
+			<if test="type != 0">
+				where tool_type = ${type}
+			</if>
+		</if>
+	</select>
 	
+	<select id="selectToolList" resultMap="toolResultSet">
+		select *
+		from (select * 
+			  from tool
+			  order by product_no desc) 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where tool_name like '%${searchText}%'
+				<if test="type != 0">
+					and tool_type = ${type}
+				</if>
+			</if>
+		</if>
+		<if test="searchText == null">
+			<if test="type != 0">
+				where tool_type = ${type}
+			</if>
+		</if>
+	</select>
 	
+	<select id="selectTool" resultMap="toolResultSet">
+		select *
+		from tool
+		where product_no = #{toolNo}
+	</select>
+	
+	<update id="updateTool">
+		update tool
+		set tool_name = #{toolName},
+			tool_type = #{toolType},
+			tool_content = #{toolContent}
+		where product_no = #{productNo}
+	</update>
+	
+	<insert id="insertTool">
+		insert into tool(product_no, tool_name, tool_type, tool_content)
+		values(#{productNo}, #{toolName}, #{toolType}, #{toolContent})
+	</insert>
+
+	<delete id="deletesTool">
+		delete tool
+		where product_no in
+		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
 <!--ResultSet -->
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">
 		<id column="PRODUCT_NO" property="productNo"/>
@@ -269,13 +381,6 @@
 		<result column="PRODUCT_STATUS" property="productStatus"/>
 	</resultMap>
 	
-	<resultMap type="Menu" id="menuResultSet">
-		<id column="PRODUCT_NO" property="productNo"/>
-		<result column="MENU_NAME" property="menuName"/>
-		<result column="MENU_TYPE" property="menuType"/>
-		<result column="MENU_CONTENT" property="menuContent"/>
-	</resultMap>
-	
 	<resultMap type="Image" id="imageResultSet">
 		<id column="image_no" property="imageNo"/>
 		<result column="image_divide_no" property="imageDivideNo"/>
@@ -284,6 +389,20 @@
 		<result column="image_renamename" property="imageRenameName"/>
 		<result column="image_path" property="imagePath"/>
 		<result column="image_level" property="imageLevel"/>
+	</resultMap>
+	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Options" id="optionsResultSet">
+		<id column="OPTION_NO" property="optionNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="OPTION_NAME" property="optionName"/>
+		<result column="OPTION_VALUE" property="optionValue"/>
+	</resultMap>
+	
+	<resultMap type="Menu" id="menuResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="MENU_TYPE" property="menuType"/>
+		<result column="MENU_CONTENT" property="menuContent"/>
 	</resultMap>
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">
@@ -305,5 +424,11 @@
 		<result column="FOOD_CONTENT" property="foodContent"/>
 	</resultMap>
 	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Tool" id="toolResultSet">
+		<id column="PRODUCT_NO"	property="productNo"/>
+		<result column="TOOL_NAME" property="toolName"/>
+		<result column="TOOL_TYPE" property="toolType"/>
+		<result column="TOOL_CONTENT" property="toolContent"/>
+	</resultMap>
 	
 </mapper>

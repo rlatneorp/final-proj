@@ -1,10 +1,13 @@
 package kh.finalproj.hollosekki.users.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
@@ -38,5 +41,48 @@ public class UsersDAO {
 	public int deleteImage(SqlSessionTemplate sqlSession, int usersNo) {
 		return sqlSession.delete("usersMapper.deleteImagebase", usersNo);
 	}
+
+	public Users selectInfo(SqlSessionTemplate sqlSession, Users u) {
+		return sqlSession.selectOne("usersMapper.selectInfo", u);
+	}
+
+	public int deleteInfo(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.update("usersMapper.deleteInfo", usersNo);
+	}
+
+//	public ArrayList<Follow> selectFollowing(SqlSessionTemplate sqlSession, int usersNo) {
+//		return (ArrayList)sqlSession.selectList("usersMapper.selectFollowing", usersNo);
+//	}
+//
+//	public ArrayList<Follow> selectFollower(SqlSessionTemplate sqlSession, int usersNo) {
+//		return (ArrayList)sqlSession.selectList("usersMapper.selectFollower", usersNo);
+//	}
+//
+//	public Users selectFollowInfo(SqlSessionTemplate sqlSession, int followNo) {
+//		return sqlSession.selectOne("usersMapper.selectFollowInfo", followNo);
+//	}
+//
+//	public Image selectFollowImage(SqlSessionTemplate sqlSession, int followNo) {
+//		return sqlSession.selectOne("usersMapper.selectFollowImage", followNo);
+//	}
+
+	public ArrayList<HashMap<String, Object>> selectFollowing(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("usersMapper.selectFollowing", usersNo);
+	}
+
+	public ArrayList<HashMap<String, Object>> selectFollower(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("usersMapper.selectFollower", usersNo);
+	}
+
+//	public ArrayList<Follow> selectMutualFollow(SqlSessionTemplate sqlSession, int followingNo) {
+//		return (ArrayList)sqlSession.selectList("usersMapper.selectMutualFollow", followingNo);
+//	}
+
+//	public boolean checkMutualFollow(SqlSessionTemplate sqlSession, int usersNo, String[] followerNos) {
+//		Map<String, Object> map = new HashMap<>();
+//	    map.put("usersNo", usersNo);
+//	    map.put("followerNos", followerNos);
+//		return sqlSession.selectOne("usersMapper.checkMutualFollow", map);
+//	}
 
 }

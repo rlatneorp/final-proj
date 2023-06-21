@@ -11,6 +11,7 @@ public class Customer {
 	private String faqStatus;
 	private int faqType;
 	
+	
 	public Customer() {}
 
 	public Customer(int faqNo, int usersNo, String faqTitle, String faqContent, Date faqDate, String faqStatus,

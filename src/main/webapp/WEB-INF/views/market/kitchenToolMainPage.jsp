@@ -12,7 +12,7 @@
 	rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-	<title>kitchenToolMainPage</title>
+	<title>ToolMainPage</title>
 </head>
 <style>
 
@@ -218,11 +218,39 @@ ul li {
 }
 
 .bannerTitle{
-	margin-left: 325px;
+	position:absolute;
+	left:350px ;
 }
 
 .productName{
 	font-size: 18px;
+}
+
+.cateBtn{
+	border-spacing: 18px;
+	border-collapse: separate;
+}
+
+
+.cateBtn td{
+	text-align: center;
+	width: 120px;
+	height: 40px;
+	color: #4485d7;
+	border: 1px solid #4485d7;
+	border-radius: 20px;
+	font-weight: bold;
+	cursor:pointer;
+}
+
+.cateBtn td:active{
+	background-color: #4485d7;
+	color: white;
+}
+
+.cateBtn td:hover{
+	background-color: #4485d7;
+	color: white;
 }
 
 </style>
@@ -231,23 +259,32 @@ ul li {
 <body>
 <%@include file="../common/storeTop.jsp"%>
 
-
- 
- <div class="bannerTitle"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
- <div class="slick">
-        <div class="list"><img src="resources/images/listProduct.jpg"></div>
-        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></div>
-        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/06/02/c2136bce9904c2d3bf3b3795b69b8c7c.jpg"></div>
-        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/75bcd3ca5e31e19105d9a4a8b16ba1a3.jpg"></div>
- </div>
+<table class="cateBtn" style="margin:auto;">
+<tr>
+	<td>전체보기</td>
+	<td>밀키트</td>
+	<td>주방용품</td>
+	<td>식재료</td>
+</tr>
+</table> 
+	<div style="position:relative;">
+		<div class="bannerTitle"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
+		<br>
+		<br>
+	 	<div class="slick">
+	        <div class="list"><img src="resources/images/listProduct.jpg"></div>
+	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></div>
+	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/06/02/c2136bce9904c2d3bf3b3795b69b8c7c.jpg"></div>
+	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/75bcd3ca5e31e19105d9a4a8b16ba1a3.jpg"></div>
+	 </div>
 <br>
-
+</div>
  <h1 class="sider-title">핫딜존</h1>
 <div class="product-slider">
         <div class="product-wrapper">
         
           <div class="productList">
-			<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>

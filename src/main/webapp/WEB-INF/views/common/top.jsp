@@ -143,7 +143,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='${contextPath}/askBoard.cs'">공 지</div>
+							<div class="menu3" onclick="location.href='${contextPath}/noticeBoard.cs'">공 지</div>
 							<div class="menu4"></div>
 						</div>
 						
@@ -166,7 +166,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/Logo.png"></a>
+				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/logo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">

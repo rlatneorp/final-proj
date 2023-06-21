@@ -78,9 +78,6 @@
 /* 	기타 */
 	.border-none tr th{border:none;}
 	.border-none tr td{border:none;}
-/* 	table tr th{border:none;} */
-/* 	table tr td{border:none;} */
-/* 	table tr{border: 1px solid gray;} */
 	
 </style>
 </head>
@@ -88,7 +85,7 @@
 	
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	<div class="mainBox">
-		<form action="${contextPath}/adminMenuInsert.ad" method="post" enctype="multipart/form-data">
+		<form id="menuInsertForm" action="${contextPath}/adminMenuInsert.ad" method="post" enctype="multipart/form-data">
 			<div id="top">
 				<div id="thumImg">
 					<img class="previewImage" src="${contextPath}/resources/images/Logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
@@ -135,8 +132,8 @@
 										${vs.index}일차
 										</td>
 									<td class="imageTd" style="width:20%; text-align: center;">
-<!-- 										<input type="hidden" name="productNo" value="0"> -->
-										<input type="hidden" class="nutrient" value="">
+										<input type="hidden" name="productNo" value="">
+										<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0">
 										<input type="hidden" class="index" value="${vs.index-1}">
 										<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="메인메뉴사진">
 									</td>
@@ -160,8 +157,8 @@
 								<c:forEach begin="1" end="3">
 									<tr>
 										<td class="imageTd" style="width:20%; text-align: center;">
-<!-- 											<input type="hidden" name="productNo" value="0"> -->
-											<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0">
+											<input type="hidden" name="productNo" value="">
+											<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0">
 											<input type="hidden" class="index" value="${vs.index-1}">
 											<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="서브메뉴사진">
 										</td>
@@ -235,6 +232,12 @@
 								</td>
 								<td style="width: 30px; font-size: 16px; font-weight: bold; text-align: left;">원</td>
 							</tr>
+							<tr>
+								<td colspan="2">재고</td>
+								<td colspan="4">
+									<input type="number" class="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0">
+								</td>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -282,7 +285,7 @@
 			
 			<div class="d-flex justify-content-center mb-5">
 				<div class="d-flex">
-					<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">작성하기</button>
+					<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">작성하기</button>
 					<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 				</div>
 			</div>
@@ -312,7 +315,7 @@
 				}
 			}
 			
-// 			메인메뉴 정보 불러오기 이벤트(ajax)
+// 			메뉴 정보 불러오기 이벤트(ajax)
 			const selectors = document.getElementsByClassName('foodSelector');
 			for(const sel of selectors){
 				sel.addEventListener('change',function(){
@@ -323,6 +326,9 @@
 						tr.querySelectorAll('.priceBox')[0].value = 0;
 						tr.querySelector('.previewImage').src = '${contextPath}/resources/images/Logo.png';
 						tr.querySelector('.imageTd').children[0].value = this.value;
+						tr.querySelector('.nutrient').value = "0,0,0,0,0,0,0,0,0,0";
+						dayNutrient(tr.querySelector('.index').value);
+
 						cal1();
 					}else{
 						$.ajax({
@@ -335,7 +341,6 @@
 								tr.querySelectorAll('.priceBox')[0].value = data.productPrice;
 								tr.querySelector('.nutrient').value = data.foodContent.split("@")[3];
 								tr.querySelector('.imageTd').children[0].value = this.value;
-								
 								dayNutrient(tr.querySelector('.index').value);
 								
 								$.ajax({
@@ -360,14 +365,31 @@
 			const selectors2 = document.getElementsByClassName('foodSelector');
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
+			const pStock = document.getElementsByName('productStock')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
 
+// 			잘못된 값 거르기 / 가격*할인율 계산 이벤트
 			pPrice.addEventListener('change', ()=>{
+				if(pPrice.value < 0){
+					pPrice.value = 0;
+				}else if(pPrice.value <= 0){
+					pPrice.value = 0;
+				}
 				cal();
-			})
+			});
 			pSale.addEventListener('change', ()=>{
+				if(pSale.value > 99.9){
+					pSale.value = 99.9;
+				}else if(pSale.value <= 0){
+					pSale.value = 0;
+				}
 				cal();
-			})
+			});
+			pStock.addEventListener('change', ()=>{
+				if(pStock.value <= 0){
+					pStock.value = 0;
+				}
+			});
 		}
 	
 // 		총 가격 계산 함수
@@ -397,22 +419,26 @@
 			const infoContentDay = document.getElementsByClassName('infoContentDay')[i];
 			const inputs = infoContentDay.querySelectorAll('.dayNutrient');
 			const nutrients = infoContentDay.parentElement.parentElement.parentElement.querySelectorAll('.nutrient');
-
+			
 			for(const input of inputs){
 				input.value = 0;
 			}
 			let arr = [0,0,0,0,0,0,0,0,0];
-			for(const n of nutrients){
-				const nut = n.value.split(',');
-				for(const j in inputs){
-					if(j < nut.length){
-						arr[j] += nut[j]*1;
-					}
+			for(let j = 0; j < nutrients.length; j++){
+				for(let i = 0; i < 9; i++){
+					const nut = nutrients[j].value.split(',')[i];
+					console.log(nut);
+					arr[i] += Number(nut);
 				}
 			}
-			for(const j in inputs){
-				inputs[j].value = Math.floor(arr[j]*100)/100;
+			for(let k = 0; k < inputs.length; k++){
+				if(arr[k] != 0){
+					inputs[k].value = Math.floor(arr[k]*100)/100;
+				}else{
+					inputs[k].value = Number(arr[k]);
+				}
 			}
+			
 			totalNutrient(i);
 		}
 		
@@ -424,6 +450,24 @@
 			const totalInputs = infoContent.querySelectorAll('input');
 			for(let j = 0; j < totalInputs.length; j++){
 				totalInputs[j].value = inputs[j].value;
+			}
+		}
+		
+		function checkSubmit(){
+			if(document.getElementsByName('imageFile').value == false){
+				alert("이미지를 등록해주세요.");
+				document.getElementsByName('imageFile')[0].focus();
+			}else if(document.getElementsByName('menuName')[0].value.trim() == ''){
+				alert("메뉴이름을 입력해주세요.");
+				document.getElementsByName('menuName')[0].focus();
+			}else if(document.getElementsByName('menuContent')[0].value.trim() == ''){
+				alert("메뉴 내용을 입력해주세요.");
+				document.getElementsByName('menuContent')[0].focus();
+			}else if(document.getElementsByName('productStock')[0].value.trim() == ''){
+				alert("재고를 입력해주세요.");
+				document.getElementsByName('productStock')[0].focus();
+			}else{
+				document.getElementById('menuInsertForm').submit();
 			}
 		}
 		

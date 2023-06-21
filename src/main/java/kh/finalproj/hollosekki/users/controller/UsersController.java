@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -42,13 +43,96 @@ public class UsersController {
 	
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		Image image = uService.selectImage(usersNo);
+		if(image != null) {
+			model.addAttribute("image", image);
+		}
+		
+		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
+		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
+		System.out.println(followingList);
+		System.out.println(followerList);
+		model.addAttribute("followingList", followingList);
+		model.addAttribute("followerList", followerList);
+		
+//		ArrayList<Follow> followList = uService.selectFollow(usersNo);
+//		model.addAttribute("follow", followList);
+//		
+//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
+//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+//
+//		Users followU = null;
+//		Image followImage = null;
+//		if(!followingList.isEmpty()) {
+//			List<Users> followingUList = new ArrayList<>();
+//			List<Image> followingImageList = new ArrayList<>();
+//			for(Follow following : followingList) {
+//				int followNo = following.getFollowingUsersNo();
+//				followU = uService.selectFollowInfo(followNo);
+//				followImage = uService.selectFollowImage(followNo);
+//				
+//				followingUList.add(followU);
+//			    followingImageList.add(followImage);
+//			}
+//			model.addAttribute("followingUsers", followingUList);
+//			model.addAttribute("followingImage", followingImageList);
+//		}
+//		
+//		if(!followerList.isEmpty()) {
+//			List<Users> followerUList = new ArrayList<>();
+//			List<Image> followerImageList = new ArrayList<>();
+//			for(Follow follower : followerList) {
+//				int followNo = follower.getUsersNo();
+//				followU = uService.selectFollowInfo(followNo);
+//				followImage = uService.selectFollowImage(followNo);
+//				
+//				followerUList.add(followU);
+//				followerImageList.add(followImage);
+//			}
+//			model.addAttribute("followerUsers", followerUList);
+//			model.addAttribute("followerImage", followerImageList);
+//		}
+		
 		return "myPage_Main";
 	}
 	
-	@RequestMapping("myPage_Profile.me")
-	public String myPage_Profile() {
-		return "myPage_Profile";
-	}
+//	@RequestMapping("myPage_mutualFollow.me")
+//	@ResponseBody
+//	public String myPage_mutualFollow(Model model, @RequestParam("followerNos[]") String[] followerNos) {
+//		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+//		
+//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
+//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+		
+//		boolean hasMutualFollow = false;
+//		
+//		String[] fNo = followerNos.split(",");
+//		int[] followersNo = new int[fNo.length];
+//		
+//		for(int i = 0; i < fNo.length; i++) {
+//			followersNo[i] = Integer.parseInt(fNo[i]);
+//			System.out.println(followersNo[i]);
+//			int followerNo = followersNo[i]; // 나를 팔로하고 있는 회번
+//			
+//			ArrayList<Follow> followerNoList = uService.selectMutualFollow(followerNo);
+//			System.out.println(followerNoList);
+//			for(Follow fn : followerNoList) {
+//				int followingNo = fn.getUsersNo(); // 나를 팔로하고 있는 회원이 팔로하고 있는 회번
+//				
+//				if(followingNo == followerNo) {
+//					hasMutualFollow = true;
+//				}
+//			}
+//		}
+//	    boolean hasMutualFollow = uService.checkMutualFollow(usersNo, followerNos);
+//	    
+//		if(hasMutualFollow) {
+//			return "yes";
+//		} else {
+//			return "no";
+//		}
+//	}
 	
 	// 파일 저장
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
@@ -96,6 +180,7 @@ public class UsersController {
 	public String myPage_InsertProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 									   Model model, HttpServletRequest request) {
 		int result = uService.updateProfile(u);
+		Users user = uService.selectInfo(u);
 		
 		Image image = null;
 		
@@ -121,7 +206,7 @@ public class UsersController {
 		}
 		
 		if(result > 0) {
-	        model.addAttribute("loginUser", eService.login(u));
+	        model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
 			throw new UsersException("프로필 수정 실패");
@@ -132,6 +217,7 @@ public class UsersController {
 	public String myPage_UpdateProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 			   						   Model model, HttpServletRequest request) {
 		int result = uService.updateProfile(u);
+		Users user = uService.selectInfo(u);
 		
 		Image image = null;
 		
@@ -176,7 +262,7 @@ public class UsersController {
 		}
 		
 		if(result > 0) {
-	        model.addAttribute("loginUser", eService.login(u));
+	        model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
 			throw new UsersException("프로필 수정 실패");
@@ -305,6 +391,18 @@ public class UsersController {
 			return "yes";
 		} else {
 			throw new UsersException("회원 정보 수정 실패");
+		}
+	}
+	
+	// 회원탈퇴
+	@RequestMapping("myPage_deleteInfo.me")
+	public String myPage_deleteInfo(@RequestParam("usersNo") int usersNo) {
+		int result = uService.deleteInfo(usersNo);
+		
+		if(result > 0) {
+			return "redirect:logout.en";
+		} else {
+			throw new UsersException("회원 탈퇴 실패");
 		}
 	}
 	

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
@@ -28,8 +29,8 @@ public class MarketService {
 	@Autowired
 	private MarketDAO mkDAO;
 
-	public int insertCart(Cart c) {
-		return mkDAO.insertCart(sqlSession,c);
+	public int insertCart(HashMap<String, String> result) {
+		return mkDAO.insertCart(sqlSession,result);
 	}
 
 	public void attendanceCheck(HashMap<String, String> map) {
@@ -44,12 +45,12 @@ public class MarketService {
 		mkDAO.firstAdDay(sqlSession, map);
 	}
 	
-	//諛곗넚吏� 異붽�
+	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙
 	public int insertShipping(ShippingAddress sa) {
 		return mkDAO.insertShipping(sqlSession, sa);
 	}
 	
-	//諛곗넚吏� 議고쉶
+	//獄쏄퀣�꽊筌욑옙 鈺곌퀬�돳
 	public ArrayList<ShippingAddress> selectShipping(int usersNo) {
 		return mkDAO.selectShipping(sqlSession, usersNo);
 	}
@@ -124,10 +125,11 @@ public class MarketService {
 		mkDAO.minusCount(sqlSession, productNo);
 	}
 
-	public Cart checkCartList(int usersNo, int productNo) {
-		return mkDAO.checkCartList(sqlSession, usersNo, productNo );
+	public ArrayList<Cart> checkCartList(int usersNo, int preorderNo) {
+		return mkDAO.checkCartList(sqlSession, usersNo, preorderNo);
 	}
 
+		
 	public void updateOptionNo(Cart cart) {
 		mkDAO.updateOptionNo(sqlSession, cart);
 	}
@@ -144,6 +146,70 @@ public class MarketService {
 	public Users sendPoint(Users u) {
 		return mkDAO.sendPoint(sqlSession, u);
 	}
+
+//
+//	public ArrayList<Cart> selectOptionNo(int i) {
+//		// TODO Auto-generated method stub
+//		return mkDAO.selectOptionNo(sqlSession, i);
+//	}
+//
+//	public ArrayList<Cart> selectOptionVal(int preorderNo) {
+//		return mkDAO.selectOptionVal(sqlSession, preorderNo);
+//	}
+
+	public ArrayList<Cart> selectOptionNo(Cart cart) {
+		return mkDAO.selectOptionNo(sqlSession, cart);
+	}
+
+	public Options selectOptionInfo(Cart cart) {
+		return mkDAO.selectOptionInfo(sqlSession, cart);
+	}
+
+	public Options selectOptions(Cart cart) {
+		return mkDAO.selectOptions(sqlSession, cart);
+	}
+
+	public Options selectOptionInfo(int productNo, int productOption) {
+		return mkDAO.selectOptionInfo(sqlSession, productNo, productOption);
+	}
+
+	public ArrayList<Options> selectOptionsSet(int productNo) {
+		return mkDAO.selectOptionSet(sqlSession, productNo);
+	}
+
+	public Product selectProductSet(int productNo) {
+		return mkDAO.selectProductSet(sqlSession,productNo);
+	}
+	
+	//수정할 배송지 조회 
+	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+		return mkDAO.selectShippingForUpdate(sqlSession, shippingNo);
+	}
+	
+	//배송지 수정 
+	public void updateConfirmShipping(ShippingAddress sa) {
+		mkDAO.updateConfirmShipping(sqlSession, sa);
+	}
+	
+	//선택한 배송지 조회 
+	public ShippingAddress selectChecShip(int shippingNo) {
+		return mkDAO.selectChecShip(sqlSession, shippingNo);
+	}
+
+	//productNo에 대한 메뉴 조회 
+	public Menu selectMenu(int productNo) {
+		return mkDAO.selectMenu(sqlSession, productNo);
+	}
+
+	public int insertCart(Cart c) {
+		return mkDAO.insertCart(sqlSession, c);
+	}
+
+	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	

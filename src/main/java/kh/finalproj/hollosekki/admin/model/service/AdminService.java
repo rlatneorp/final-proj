@@ -13,8 +13,10 @@ import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Tool;
 
 @Service
 public class AdminService {
@@ -29,7 +31,18 @@ public class AdminService {
 	public int updateStatus(HashMap<String, String> map) {
 		return aDAO.updateStatus(sqlSession, map);
 	}
-	
+
+	public int insertOptions(ArrayList<Options> oList) {
+		return aDAO.insertOptions(sqlSession, oList);
+	}
+
+	public int deletesOptions(String[] selDeletes) {
+		return aDAO.deletesOptions(sqlSession, selDeletes);
+	}
+
+	public ArrayList<Options> selectOptions(int pNo) {
+		return aDAO.selectOptions(sqlSession, pNo);
+	}
 //	Product-상품
 	public Product selectProduct(int pNo) {
 		return aDAO.selectProduct(sqlSession, pNo);
@@ -70,7 +83,23 @@ public class AdminService {
 	public ArrayList<Menu> selectMenuList(PageInfo pi, AdminBasic ab) {
 		return aDAO.selectMenuList(sqlSession, pi, ab);
 	}
+
+	public Menu selectMenu(int pNo) {
+		return aDAO.selectMenu(sqlSession, pNo);
+	}
+
+	public ArrayList<String> selectFoodProductNo(int pNo) {
+		return aDAO.selectFoodProductNo(sqlSession, pNo);
+	}
 	
+	public int updateMenu(Menu m) {
+		return aDAO.updateMenu(sqlSession, m);
+	}
+
+	public int deleteMenuList(Menu m) {
+		return aDAO.deleteMenuList(sqlSession, m);
+	}
+
 	public int insertMenu(Menu m) {
 		return aDAO.insertMenu(sqlSession, m);
 	}
@@ -139,15 +168,31 @@ public class AdminService {
 		return aDAO.deletesFood(sqlSession, foodDeletes);
 	}
 
-
-
-
 	
+//	Tool-도구상품
+	public int getToolCount(AdminBasic ab) {
+		return aDAO.getToolCount(sqlSession, ab);
+	}
 
+	public ArrayList<Tool> selectToolList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectToolList(sqlSession, pi, ab);
+	}
+
+	public Tool selectTool(int toolNo) {
+		return aDAO.selectTool(sqlSession, toolNo);
+	}
 	
+	public int updateTool(Tool t) {
+		return aDAO.updateTool(sqlSession, t);
+	}
+	
+	public int insertTool(Tool t) {
+		return aDAO.insertTool(sqlSession, t);
+	}
 
-
-
+	public int deletesTool(String[] toolDeletes) {
+		return aDAO.deletesTool(sqlSession, toolDeletes);
+	}
 
 
 

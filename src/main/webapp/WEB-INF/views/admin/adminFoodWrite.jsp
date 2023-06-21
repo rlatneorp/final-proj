@@ -476,7 +476,7 @@ p b {
 <!-- 								<td colspan="6"> -->
 <!-- 									<div class="row pe-4"> -->
 <!-- 										<div class="col-6"> -->
-<!-- 											<input type="hidden" name="foodKind" value="1"> -->
+<!-- 											<input type="hidden" name="foodType" value="1"> -->
 <!-- 										</div> -->
 <!-- 										<div class="col-3"> -->
 <!-- 											<button type="button" class="foodKindBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button> -->
@@ -488,6 +488,7 @@ p b {
 <!-- 								</td> -->
 <!-- 							</tr> -->
 						</table>
+						<input type="hidden" name="foodType" value="1">
 					</div>
 				</div>
 			</div>
@@ -670,6 +671,7 @@ p b {
 // 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
+			const pStock = document.getElementsByName('productStock')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
 			pPrice.addEventListener('change', ()=>{
 				if(pPrice.value < 0){
@@ -687,6 +689,12 @@ p b {
 				}
 				cal();
 			});
+			pStock.addEventListener('change', ()=>{
+				if(pStock.value <= 0){
+					pStock.value = 0;
+				}
+			})
+			
 			
 // 			메뉴 종류 버튼 이벤트
 			const foodKind = document.getElementsByName('foodKind')[0];

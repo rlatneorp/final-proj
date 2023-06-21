@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -33,8 +32,10 @@ import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Tool;
 
 @Controller
 public class AdminController {
@@ -97,23 +98,8 @@ public class AdminController {
 	public String adminMenuManage(@ModelAttribute AdminBasic ab,
 								  HttpSession session,
 							 	  Model model) {
-		int currentPage = 1;
-		if(ab.getPage() == null) {
-			ab.setPage(currentPage);
-		}
-		int pageCount = 10;
-//		세션에 값 X ab에 값 X	-> 초기값 동일 설정
-		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
-			ab.setPageCount(pageCount);
-			session.setAttribute("pageCount", pageCount);
-//		세션에 값 X ab에 값 O	(불가능)
-//		세션에 값 O ab에 값 X	-> 세션값 ab에 입력
-		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
-			ab.setPageCount((int)session.getAttribute("pageCount"));
-//		세션에 값 O ab에 값 O	-> ab값 세션에 입력
-		}else {
-			session.setAttribute("pageCount", ab.getPageCount());
-		}
+		
+		ab = adminBasic(ab, session);
 		
 		int listCount = aService.getMenuCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
@@ -133,12 +119,104 @@ public class AdminController {
 		
 	}
 	@GetMapping("adminMenuDetail.ad")
-	public String adminMenuDetail() {
-		return "adminMenuDetail";
+	public String adminMenuDetail(@ModelAttribute AdminBasic ab,
+								  @RequestParam("productNo") int pNo,
+							 	  Model model) {
+		PageInfo pi = new PageInfo();
+		AdminBasic ab1 = new AdminBasic();
+		AdminBasic ab2 = new AdminBasic();
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(100000);
+		ab1.setKind(1);
+		ArrayList<Food> fList1 = aService.selectFoodList(pi, ab1); 
+		ab2.setKind(2);
+		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
+		
+		ab.setKind(0);
+		Menu m = aService.selectMenu(pNo);
+		ArrayList<String> fNoArr = aService.selectFoodProductNo(pNo);
+		String str = "";
+		for(int i = 0; i<fNoArr.size(); i++) {
+			str += fNoArr.get(i);
+			if(i < fNoArr.size()-1) {
+				str += ",";
+			}
+		}
+		m.setFoodProductNo(str);
+		
+		m = (Menu)selectProduct(m);
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", pNo);
+		map.put("imageType", 4);
+		Image img = aService.selectAllImageList(map).get(0);
+		
+		if(m != null) {
+			System.out.println(m);
+			System.out.println(img);
+			model.addAttribute("fList1", fList1);
+			model.addAttribute("fList2", fList2);
+			model.addAttribute("m", m);
+			model.addAttribute("img", img);
+			return "adminMenuDetail";
+		}else {
+			throw new AdminException("메뉴 조회를 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminMenuUpdate.ad")
-	public String adminMenuUpdate() {
-		return "redirect:adminMenuManage.ad";
+	public String adminMenuUpdate(@ModelAttribute AdminBasic ab,
+								  @ModelAttribute Menu m,
+								  @ModelAttribute Product pd,
+								  @RequestParam("imageFile") MultipartFile imageFile,
+								  HttpServletRequest request,
+							 	  Model model) {
+		
+		int resultM1 = 0;
+		int resultM2 = 0;
+		int resultM3 = 0;
+		int resultPd = 0;
+		int resultImg = 1;
+		int resultImgDel = 1;
+		
+		m.setProductOption("N");
+		resultM1 = aService.updateMenu(m);
+		resultM2 = aService.deleteMenuList(m);
+		resultM3 = aService.insertMenuList(m);
+		resultPd = aService.updateProduct(m);
+		
+		if(resultM1 + resultM2 + resultM3 + resultPd == (1+28+28+1) && imageFile != null && !imageFile.isEmpty()) {
+//			데이터 서버 이미지 삭제
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", m.getProductNo());
+			map.put("imageType", 4);
+			Image img = aService.selectAllImageList(map).get(0);
+			deleteFile(img.getImageRenameName(), request);
+			
+//			DB서버 이미지 삭제
+			resultImgDel = aService.deleteImage(img);
+			
+//			이미지 저장
+			Image image = new Image();
+			if(imageFile != null && !imageFile.isEmpty()) {
+				String[] returnArr = saveFile(imageFile, request);
+				if(returnArr[1] != null) {
+					image.setImageDivideNo(m.getProductNo());
+					image.setImageType(4);
+					image.setImagePath(returnArr[0]);
+					image.setImageOriginalName(imageFile.getOriginalFilename());
+					image.setImageRenameName(returnArr[1]);
+					image.setImageLevel(1);
+				}
+			}
+			resultImg = aService.insertImage(image);
+		}
+
+		if(resultM1 + resultM2 + resultM3  + resultPd + resultImg + resultImgDel == (1+28+28+1+1+1)) {
+			model.addAttribute("ab", ab);
+			return "redirect:adminMenuManage.ad";
+		}else {
+			throw new AdminException("메뉴 수정에 실패하였습니다.");
+		}
+		
 	}
 	@PostMapping("adminMenuDeletes.ad")
 	public String adminMenuDeletes(@RequestParam("selectDelete") String[] selDeletes,
@@ -206,7 +284,6 @@ public class AdminController {
 		
 		m.setProductType(2);
 		m.setProductOption("N");
-//		return "redirect:adminMenuManage.ad";
 		resultPd = aService.insertProduct(m);
 		if(resultPd != 0) {
 			resultM = aService.insertMenu(m);
@@ -282,23 +359,7 @@ public class AdminController {
 	public String adminIngredientManage(@ModelAttribute AdminBasic ab,
 										HttpSession session,
 									 	Model model) {
-		int currentPage = 1;
-		if(ab.getPage() == null) {
-			ab.setPage(currentPage);
-		}
-		int pageCount = 10;
-//		세션에 값 X ab에 값 X	-> 초기값 동일 설정
-		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
-			ab.setPageCount(pageCount);
-			session.setAttribute("pageCount", pageCount);
-//		세션에 값 X ab에 값 O	(불가능)
-//		세션에 값 O ab에 값 X	-> 세션값 ab에 입력
-		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
-			ab.setPageCount((int)session.getAttribute("pageCount"));
-//		세션에 값 O ab에 값 O	-> ab값 세션에 입력
-		}else {
-			session.setAttribute("pageCount", ab.getPageCount());
-		}
+		ab = adminBasic(ab, session);
 		
 		int listCount = aService.getIngredientCount(ab);
 		
@@ -529,23 +590,7 @@ public class AdminController {
 	public String adminFoodManage(@ModelAttribute AdminBasic ab,
 								  HttpSession session,
 								  Model model) {
-		int currentPage = 1;
-		if(ab.getPage() == null) {
-			ab.setPage(currentPage);
-		}
-		int pageCount = 10;
-//		세션에 값 X ab에 값 X	-> 초기값 동일 설정
-		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
-			ab.setPageCount(pageCount);
-			session.setAttribute("pageCount", pageCount);
-//		세션에 값 X ab에 값 O	(불가능)
-//		세션에 값 O ab에 값 X	-> 세션값 ab에 입력
-		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
-			ab.setPageCount((int)session.getAttribute("pageCount"));
-//		세션에 값 O ab에 값 O	-> ab값 세션에 입력
-		}else {
-			session.setAttribute("pageCount", ab.getPageCount());
-		}
+		ab = adminBasic(ab, session);
 		
 		int listCount = aService.getFoodCount(ab);
 		
@@ -606,7 +651,8 @@ public class AdminController {
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
 		
 		int resultF = aService.updateFood(f);
-		int resultPd = aService.updateProduct(p);
+//		f = (Food)selectProduct(f);
+		int resultPd = aService.updateProduct(f);
 		
 		if(resultF+resultPd == 2) {
 			model.addAttribute("ab", ab);
@@ -727,51 +773,254 @@ public class AdminController {
 	}
 	
 	
-//	Product-상품 관리
-	@GetMapping("adminProductManage.ad")
-	public String adminProductManage(@ModelAttribute AdminBasic ab,
+//	Tool-상품 관리
+	@GetMapping("adminToolManage.ad")
+	public String adminToolManage(@ModelAttribute AdminBasic ab,
 			  						 HttpSession session,
 			  						 Model model) {
 		
-		int currentPage = 1;
-		if(ab.getPage() == null) {
-			ab.setPage(currentPage);
-		}
-		int pageCount = 10;
-//		세션에 값 X ab에 값 X	-> 초기값 동일 설정
-		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
-			ab.setPageCount(pageCount);
-			session.setAttribute("pageCount", pageCount);
-//		세션에 값 X ab에 값 O	(불가능)
-//		세션에 값 O ab에 값 X	-> 세션값 ab에 입력
-		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
-			ab.setPageCount((int)session.getAttribute("pageCount"));
-//		세션에 값 O ab에 값 O	-> ab값 세션에 입력
-		}else {
-			session.setAttribute("pageCount", ab.getPageCount());
-		}
-		
-//		int listCount = aService.getProductCount(ab);
-//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ab = adminBasic(ab, session);
 
+		int listCount = aService.getToolCount(ab);
 		
-		return "adminProductManage";
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Tool> tList = aService.selectToolList(pi, ab);
+//		product정보 입력 메소드
+		for(Tool t: tList) {
+			t = (Tool)selectProduct(t);
+		}
+		if(tList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("ab", ab);
+			model.addAttribute("tList", tList);
+			return "adminToolManage";
+		}else{
+			throw new AdminException("상품 조회를 실패하였습니다.");
+		}
+		
 	}
-	@GetMapping("adminProductDetail.ad")
-	public String adminProductDetail() {
-		return "adminProductDetail";
+	@GetMapping("adminToolDetail.ad")
+	public String adminToolDetail(@ModelAttribute AdminBasic ab,
+								  @RequestParam("productNo") int toolNo,
+								  Model model) {
+		Tool t = aService.selectTool(toolNo);
+		t = (Tool)selectProduct(t);
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", toolNo);
+		map.put("imageType", 6);
+		ArrayList<Image> imgList = aService.selectAllImageList(map);
+
+//		옵션이 없는 경우(opList == null)를 페이지에서 조건으로 사용함
+		ArrayList<Options> opList = aService.selectOptions(toolNo);
+
+		Image thumbnail = null;
+		for(int i = 0; i<imgList.size(); i++) {
+			if(imgList.get(i).getImageLevel()==1) {
+				thumbnail = imgList.get(i);
+				imgList.remove(i);
+				break;
+			}
+		}
+		
+		if(t != null) {
+			model.addAttribute("ab", ab);
+			model.addAttribute("t", t);
+			model.addAttribute("thumbnail", thumbnail);
+			model.addAttribute("imgList", imgList);
+			model.addAttribute("opList", opList);
+			return "adminToolDetail";
+		}else {
+			throw new AdminException("식품 상세보기를 실패하였습니다.");
+		}
 	}
-	@PostMapping("adminProductUpdate.ad")
-	public String adminProductUpdate() {
-		return "redirect:adminProductManage.ad";
+	@PostMapping("adminToolUpdate.ad")
+	public String adminToolUpdate(@ModelAttribute AdminBasic ab,
+								  HttpServletRequest request,
+								  HttpSession session,
+								  Model model,
+								  @ModelAttribute Tool t,
+								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
+		
+		int resultPd = 0;
+		int resultT = 0;
+		int resultOpDel = 0;
+		int resultOpIn = 0;
+		int resultImgDel = 0;
+		int resultImgIn = 0;
+		int upImageCount = 0;
+		
+		resultPd = aService.updateProduct(t);
+		
+		resultT = aService.updateTool(t);
+		
+		
+		if(t.getProductOption().equals("Y")) {
+			String[] delList = {t.getProductNo()+""};
+			resultOpDel = aService.deletesOptions(delList);
+			
+			ArrayList<Options> oList = new ArrayList<Options>();
+			for(String op:t.getOptionTotal()) {
+				for(int i = 1; i<op.split(",").length; i++) {
+					Options option = new Options();
+					
+					option.setProductNo(t.getProductNo());
+					option.setOptionName(op.split(",")[0]);
+					option.setOptionValue(op.split(",")[i]);
+					oList.add(option);
+				}
+			}
+			resultOpIn = aService.insertOptions(oList);
+		}
+			
+		if(resultPd + resultT + resultOpDel + resultOpIn >= (1+1+0+1)) {
+			
+			for(int i = 0; i < imageFiles.size(); i++) {
+				if(imageFiles.get(i) != null && !imageFiles.get(i).isEmpty()) {
+					upImageCount++;
+//					데이터 서버 이미지 삭제
+					HashMap<String, Integer> map = new HashMap<String, Integer>();
+					map.put("imageDivideNo", t.getProductNo());
+					map.put("imageType", 6);
+					Image img = aService.selectAllImageList(map).get(i);
+					
+					int delImgLevel = img.getImageLevel();
+					
+					deleteFile(img.getImageRenameName(), request);
+							
+//					DB서버 이미지 삭제
+					resultImgDel += aService.deleteImage(img);
+					
+					
+//					이미지 저장
+					Image image = new Image();
+					String[] returnArr = saveFile(imageFiles.get(i), request);
+					if(returnArr[1] != null) {
+						image.setImageDivideNo(t.getProductNo());
+						image.setImageType(6);
+						image.setImagePath(returnArr[0]);
+						image.setImageOriginalName(imageFiles.get(i).getOriginalFilename());
+						image.setImageRenameName(returnArr[1]);
+						image.setImageLevel(delImgLevel);
+					}
+					
+					resultImgIn += aService.insertImage(image);
+			
+				}
+			}
+			if(resultImgDel == resultImgIn && resultImgIn == upImageCount) {
+				model.addAttribute("ab", ab);
+				return "redirect:adminToolManage.ad";
+			}else {
+				throw new AdminException("상품 수정에 실패하였습니다.");
+			}
+		}
+		
+		
+		
+		
+		return "redirect:adminToolManage.ad";
 	}
-	@GetMapping("adminProductWrite.ad")
-	public String adminProductWrite() {
-		return "adminProductWrite";
+	@PostMapping("adminToolDeletes.ad")
+	public String adminTooldDeletes(@RequestParam("selectDelete") String[] selDeletes,
+									HttpServletRequest request) {
+		
+		int resultImg = 0;
+		int resultOp = 0;
+		int resultTool = 0;
+		int resultPd = 0;
+		
+		ArrayList<Image> imgList = null;
+		for(int i = 0; i < selDeletes.length; i++) {
+//			데이터 서버 이미지 삭제
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("imageDivideNo", Integer.parseInt(selDeletes[i]));
+			map.put("imageType", 6);
+			imgList = aService.selectAllImageList(map);
+			for(Image img:imgList) {
+				deleteFile(img.getImageRenameName(), request);
+//				DB서버 이미지 삭제
+				resultImg += aService.deleteImage(img);
+			}
+		}
+		resultOp = aService.deletesOptions(selDeletes);
+		resultTool = aService.deletesTool(selDeletes);
+		resultPd = aService.deletesProduct(selDeletes);
+		
+		if(resultImg == imgList.size() && resultOp != 0 && resultTool == selDeletes.length && resultPd == selDeletes.length) {
+			return "redirect:adminToolManage.ad";
+		}else {
+			throw new AdminException("식재료 삭제 실패");
+		}
 	}
-	@PostMapping("adminProductInsert.ad")
-	public String adminProductInsert() {
-		return "redirect:adminProductManage.ad";
+	@GetMapping("adminToolWrite.ad")
+	public String adminToolWrite() {
+		return "adminToolWrite";
+	}
+	@PostMapping("adminToolInsert.ad")
+	public String adminToolInsert(@ModelAttribute AdminBasic ab,
+								  HttpServletRequest request,
+								  HttpSession session,
+								  Model model,
+								  @ModelAttribute Tool t,
+								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
+		t.setUsersNo(1);
+
+//		Tool 기본값 설정
+		t.setProductType(4);
+		t.setProductStatus("Y");
+		
+		int resultPd = 0;
+		int resultT = 0;
+		int resultOp = 0;
+		int resultImg = 0;
+		
+		resultPd = aService.insertProduct(t);
+		t.setProductNo(resultPd);
+		
+		resultT = aService.insertTool(t);
+		int nowToolNo = resultPd;
+		
+		ArrayList<Options> oList = new ArrayList<Options>();
+		for(String op:t.getOptionTotal()) {
+			for(int i = 1; i<op.split(",").length; i++) {
+				Options option = new Options();
+				
+				option.setProductNo(nowToolNo);
+				option.setOptionName(op.split(",")[0]);
+				option.setOptionValue(op.split(",")[i]);
+				oList.add(option);
+			}
+		}
+		resultOp = aService.insertOptions(oList);
+		
+		if(resultPd != 0 && resultT != 0 && resultOp == oList.size()) {
+			
+//			이미지 저장
+			int i = 0;
+			for(MultipartFile imageFile: imageFiles) {
+				Image image = new Image();
+				if(imageFile != null && !imageFile.isEmpty()) {
+					String[] returnArr = saveFile(imageFile, request);
+					if(returnArr[1] != null) {
+						image.setImageDivideNo(nowToolNo);
+						image.setImageType(6);
+						image.setImagePath(returnArr[0]);
+						image.setImageOriginalName(imageFile.getOriginalFilename());
+						image.setImageRenameName(returnArr[1]);
+						image.setImageLevel(0);
+						if(i==0) {
+							image.setImageLevel(1);
+						}
+						resultImg += aService.insertImage(image);
+						i++;
+					}
+				}
+			}
+			if(resultImg == i) {
+				return "redirect:adminToolManage.ad";
+			}
+		}
+		throw new AdminException("식품 등록에 실패하였습니다.");
 	}
 	
 	
@@ -968,5 +1217,27 @@ public class AdminController {
 			p.setProductStatus(pd.getProductStatus());
 		}
 		return p;
+	}
+	
+	private AdminBasic adminBasic(AdminBasic ab, HttpSession session) {
+		int currentPage = 1;
+		if(ab.getPage() == null) {
+			ab.setPage(currentPage);
+		}
+		int pageCount = 10;
+	//	세션에 값 X ab에 값 X	-> 초기값 동일 설정
+		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
+			ab.setPageCount(pageCount);
+			session.setAttribute("pageCount", pageCount);
+	//	세션에 값 X ab에 값 O	(불가능)
+	//	세션에 값 O ab에 값 X	-> 세션값 ab에 입력
+		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
+			ab.setPageCount((int)session.getAttribute("pageCount"));
+	//	세션에 값 O ab에 값 O	-> ab값 세션에 입력
+		}else {
+			session.setAttribute("pageCount", ab.getPageCount());
+		}
+		
+		return ab;
 	}
 }

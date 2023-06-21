@@ -63,6 +63,13 @@
 		box-shadow: 0px 1px 0px black; transform: translateY(5px);
 		background: #B0DAFF;
 	}
+	#deleteBtn{
+		border: none; border-radius: 5px;
+		font-weight: bold; font-size: 14px;
+		width: 70px; height: 35px;
+		margin-left: 850px;
+	}
+	.deleteB{background: lightgray;}
 </style>
 </head>
 <body>
@@ -112,7 +119,9 @@
 						</td>
 					</tr>
 				</table>
-				<br><br>
+				<br>
+				<button id="deleteBtn">회원탈퇴</button>
+				<br>
 				<button id="btn">수정하기</button>
 				<br><br>
 				<label class="profile">비밀번호 변경</label><br><br><br>
@@ -417,6 +426,45 @@
 					 button: "확인"
 				});
 			}
+		});
+		
+		const deleteBtn = document.getElementById('deleteBtn');
+		
+		deleteBtn.addEventListener('click', () => {
+			swal({
+				 title: "정말 홀로세끼를 떠나시나요?",
+				 text: "* 회원 탈퇴 시 보유하신 적립금과 포인트는 소멸합니다.",
+				 icon: "warning",
+				 closeOnClickOutside: false,
+				 closeOnEsc : false,
+				 buttons : {
+					 cancle : {
+						 text : '나중에 하기',
+						 value : true
+					 },
+					 confirm : {
+						 text : '탈퇴하기',
+						 value : false,
+						 className : 'deleteB'
+					 }
+				 }
+			}).then((result) => {
+				if(result){
+					swal('잘 생각하셨습니다!', '', 'success', {
+						closeOnClickOutside : false,
+						button : '확인'
+					});
+				} else {
+					swal('탈퇴를 진행합니다', '안녕히가세요', 'warning', {
+						closeOnClickOutside : false,
+						button : '확인'
+					}).then((result) => {
+						if(result){
+							location.href = '${contextPath}/myPage_deleteInfo.me?usersNo=${loginUser.usersNo}';
+						}
+					});
+				}
+			});
 		});
 		
 		

@@ -22,7 +22,7 @@
 	.out33{padding-top: 50px; padding-left: 20px; padding-right: 20px;}
 	.large{font-size: 20px; color: white; font-weight: bold;}
 	.img-center{text-align: center; margin-bottom: 5px;}
-	.kakao-img{border-radius: 50%; width: 35px;}
+	.kakao-img{border-radius: 50%; width: 35px; cursor: pointer;}
 </style>
 </head>
 <body>
@@ -46,8 +46,7 @@
 			<div class="out33">
 			
 				<div class="img-center" id="add-channel-button" onclick="location.href='javascript:addChannel()'"><img class="kakao-img" src="resources/images/kakao.png" ></div>
-				
-				<div>카카오톡 채널 문의</div>
+				<div style="font-size: 14px;">카카오톡 채널 문의</div>
 			</div>
 		</div>
 		<br>

@@ -571,7 +571,8 @@ p b {
 												<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요.">${fn:split(fn:split(table,'-')[2],',')[0]}</textarea>
 											</td>
 											<td style="width: 7%; text-align: center">
-												<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>
+<!-- 												삭제버튼 보류 -->
+<!-- 												<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button> -->
 											</td>
 										</tr>
 									</table>
@@ -702,6 +703,7 @@ p b {
 // 			잘못된 값 거르기 / 가격*할인율 계산 이벤트 
 			const pPrice = document.getElementsByName('productPrice')[0];
 			const pSale = document.getElementsByName('productSale')[0];
+			const pStock = document.getElementsByName('productStock')[0];
 			const tPrice = document.getElementsByClassName('totalPrice')[0];
 			cal();
 			pPrice.addEventListener('change', ()=>{
@@ -720,6 +722,11 @@ p b {
 				}
 				cal();
 			});
+			pStock.addEventListener('change', ()=>{
+				if(pStock.value <= 0){
+					pStock.value = 0;
+				}
+			})
 			
 // 			메뉴 종류 버튼 이벤트
 			const foodKind = document.getElementsByName('foodKind')[0];

@@ -122,7 +122,6 @@ font-family: 'Noto Sans KR', sans-serif;
 			</div>
 			<div>
 				<button id="add">작성완료</button>
-			
 			</div>
 		</div>
 	</div>

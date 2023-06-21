@@ -1,11 +1,14 @@
 package kh.finalproj.hollosekki.users.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.SqlSessionManager;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.users.model.dao.UsersDAO;
@@ -53,6 +56,56 @@ public class UsersServiceImpl implements UsersService {
 	public int deleteImage(int usersNo) {
 		return uDAO.deleteImage(sqlSession, usersNo);
 	}
+
+	@Override
+	public Users selectInfo(Users u) {
+		return uDAO.selectInfo(sqlSession, u);
+	}
+	
+	@Override
+	public int deleteInfo(int usersNo) {
+		return uDAO.deleteInfo(sqlSession, usersNo);
+	}
+	
+//	@Override
+//	public ArrayList<Follow> selectFollowing(int usersNo) {
+//		return uDAO.selectFollowing(sqlSession, usersNo);
+//	}
+//	
+//	@Override
+//	public ArrayList<Follow> selectFollower(int usersNo) {
+//		return uDAO.selectFollower(sqlSession, usersNo);
+//	}
+//
+//	@Override
+//	public Users selectFollowInfo(int followNo) {
+//		return uDAO.selectFollowInfo(sqlSession, followNo);
+//	}
+//
+//	@Override
+//	public Image selectFollowImage(int followNo) {
+//		return uDAO.selectFollowImage(sqlSession, followNo);
+//	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> selectFollowing(int usersNo) {
+		return uDAO.selectFollowing(sqlSession, usersNo);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> selectFollower(int usersNo) {
+		return uDAO.selectFollower(sqlSession, usersNo);
+	}
+	
+//	@Override
+//	public ArrayList<Follow> selectMutualFollow(int followingNo) {
+//		return uDAO.selectMutualFollow(sqlSession, followingNo);
+//	}
+//	
+//	@Override
+//	public boolean checkMutualFollow(int usersNo, String[] followerNos) {
+//		return uDAO.checkMutualFollow(sqlSession, usersNo, followerNos);
+//	}
 	
 	
 }

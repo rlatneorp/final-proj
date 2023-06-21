@@ -58,11 +58,7 @@
   		insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
   		values (#{usersNo}, #{recipient}, #{address}, #{homePhone}, #{phone}, SEQ_SHIPPING_ADDRESS.nextval, #{shippingName})
 	</insert>
-	
-	<insert id="insertCart">
-		INSERT INTO CART
-		VALUES (SEQ_CART_NO.NEXTVAL, ${usersNo}, #{productNo}, #{productOption}, #{cartCount} )
-	</insert>
+
 	
 	<select id="allAt" resultMap="AttendanceResultSet">
 		select
@@ -135,10 +131,11 @@
 	</resultMap>
 	
 	<select id="selectCartList" resultMap="cartList">
-		select *
-		from cart
-		left join product using(product_no)
-		where cart.users_no = #{usersNo} and product.PRODUCT_STATUS = 'Y'
+		SELECT *
+		FROM cart
+		LEFT JOIN product on (cart.product_no = product.product_no)
+		WHERE cart.users_no = #{usersNo} AND product.PRODUCT_STATUS = 'Y'
+		ORDER BY cart.product_no
 	</select>
 	
 <!-- 	<select id="selectCartList" resultMap="cartList"> -->
@@ -151,6 +148,7 @@
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_OPTION" property="productOption"/>
 		<result column="CART_COUNT" property="cartCount"/>
+		<result column="PRE_ORDER_NO" property="preorderNo"/>
 	</resultMap>
 	
 	<resultMap type="Options" id="optionsList">
@@ -221,7 +219,15 @@
 	</update>
 	
 	<select id="plusResultCount" resultType="_int">
-		select cart_count from cart where product_no = #{productNo}
+		<![CDATA[
+		SELECT cart_count
+		FROM (
+		    SELECT cart_count
+		    FROM cart
+		    WHERE product_no = #{productNo}
+		)
+		WHERE ROWNUM = 1
+		 ]]>
 	</select>
 	
 	<update id="minusCount">
@@ -230,10 +236,14 @@
 	</update>
 	
 	<select id="checkCartList" resultMap="cartList">
-		select * from cart where users_no = #{usersNo} and product_no = #{productNo}
+		select * from cart where users_no = #{usersNo} and pre_order_no = #{preorderNo}
 	</select>
 	
 	<select id="selectOptions" resultMap="optionsList">
+		select * from options where option_no = #{optionNo} and product_no = #{productNo}
+	</select>
+	
+	<select id="selectOptionsSet" resultMap="optionsList">
 		select * from options where product_no = #{productNo}
 	</select>
 	
@@ -241,8 +251,60 @@
 		update cart set product_option = #{productOption} where product_no = #{productNo}
 	</select>
 	
-	<select id="selectOptionValue" resultType="String">
-		select option_value from options where option_no = #{optionNo}
+	<select id="selectOptionNo" resultMap="cartList">
+		select * from cart where product_no = #{productNo} and users_no = #{usersNo} and pre_order_no = #{preorderNo}
 	</select>
 	
+	<select id="selectOptionInfo" resultMap="optionsList">
+		select * from options where option_no = #{productOption} and product_no = #{productNo}
+	</select>
+	
+	<select id="selectProductSet" resultMap="productList">
+		select * from product where product_no = #{productNo}
+	</select>
+	
+	<insert id="insertCart">
+		<if test="preorderNo == 0">
+			insert all 
+			into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, seq_pre_no.nextval)
+	  		into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, seq_pre_no.currval)
+	  		select * from dual
+		</if>
+		<selectKey keyProperty="preorderNo" resultType="int" order="AFTER" >
+			select seq_pre_no.currval from dual
+		</selectKey>
+  		<if test="preorderNo !=0">
+  			insert all 
+			into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, #{preorderNo})
+	  		into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, #{preorderNo})
+	  		select * from dual
+  		</if>	
+	</insert>
+	
+	
+	<select id="selectShippingForUpdate" resultMap="shipAddress">
+		select * from shipping_address where shipping_no = #{shippingNo}
+	</select>
+	
+	<update id="updateConfirmShipping">
+		update shipping_address set
+		RECIPIENT=#{recipient}, ADDRESS=#{address}, HOME_PHONE=#{homePhone}, PHONE=#{phone}, SHIPPING_NAME=#{shippingName}
+		where SHIPPING_NO = #{shippingNo}
+	</update>
+	
+	<select id="selectChecShip" resultMap="shipAddress">
+		select * from shipping_address where shipping_no = #{shippingNo}
+	</select>
+	
+	<!-- productNo에 대한 menu 조회  -->
+	<select id="selectMenu" resultMap="menuInfo">
+		select * from menu where product_no = #{productNo}
+	</select>
+	
+	<resultMap type="Menu" id="menuInfo">
+		<result column="PRODUCT_NO" property="foodProductNo"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="MENU_TYPE" property="menuType"/>
+		<result column="MENU_CONTENT" property="menuContent"/>
+	</resultMap>
 </mapper>

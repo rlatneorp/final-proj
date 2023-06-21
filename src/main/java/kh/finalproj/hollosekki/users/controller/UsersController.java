@@ -49,49 +49,90 @@ public class UsersController {
 			model.addAttribute("image", image);
 		}
 		
-		ArrayList<Follow> followList = uService.selectFollow(usersNo);
-		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
-		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
+		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
+		System.out.println(followingList);
+		System.out.println(followerList);
+		model.addAttribute("followingList", followingList);
+		model.addAttribute("followerList", followerList);
 		
-		Users followU = null;
-		Image followImage = null;
-		if(!followingList.isEmpty()) {
-			List<Users> followingUList = new ArrayList<>();
-			List<Image> followingImageList = new ArrayList<>();
-			for(Follow following : followingList) {
-				int followNo = following.getFollowingUsersNo();
-				followU = uService.selectFollowInfo(followNo);
-				followImage = uService.selectFollowImage(followNo);
-				
-				followingUList.add(followU);
-			    followingImageList.add(followImage);
-			}
-			model.addAttribute("followingUsers", followingUList);
-			model.addAttribute("followingImage", followingImageList);
-		}
-		
-		if(!followerList.isEmpty()) {
-			List<Users> followerUList = new ArrayList<>();
-			List<Image> followerImageList = new ArrayList<>();
-			for(Follow follower : followerList) {
-				int followNo = follower.getUsersNo();
-				followU = uService.selectFollowInfo(followNo);
-				followImage = uService.selectFollowImage(followNo);
-				
-				followerUList.add(followU);
-				followerImageList.add(followImage);
-			}
-			model.addAttribute("followerUsers", followerUList);
-			model.addAttribute("followerImage", followerImageList);
-		}
+//		ArrayList<Follow> followList = uService.selectFollow(usersNo);
+//		model.addAttribute("follow", followList);
+//		
+//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
+//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+//
+//		Users followU = null;
+//		Image followImage = null;
+//		if(!followingList.isEmpty()) {
+//			List<Users> followingUList = new ArrayList<>();
+//			List<Image> followingImageList = new ArrayList<>();
+//			for(Follow following : followingList) {
+//				int followNo = following.getFollowingUsersNo();
+//				followU = uService.selectFollowInfo(followNo);
+//				followImage = uService.selectFollowImage(followNo);
+//				
+//				followingUList.add(followU);
+//			    followingImageList.add(followImage);
+//			}
+//			model.addAttribute("followingUsers", followingUList);
+//			model.addAttribute("followingImage", followingImageList);
+//		}
+//		
+//		if(!followerList.isEmpty()) {
+//			List<Users> followerUList = new ArrayList<>();
+//			List<Image> followerImageList = new ArrayList<>();
+//			for(Follow follower : followerList) {
+//				int followNo = follower.getUsersNo();
+//				followU = uService.selectFollowInfo(followNo);
+//				followImage = uService.selectFollowImage(followNo);
+//				
+//				followerUList.add(followU);
+//				followerImageList.add(followImage);
+//			}
+//			model.addAttribute("followerUsers", followerUList);
+//			model.addAttribute("followerImage", followerImageList);
+//		}
 		
 		return "myPage_Main";
 	}
 	
-	@RequestMapping("myPage_Profile.me")
-	public String myPage_Profile() {
-		return "myPage_Profile";
-	}
+//	@RequestMapping("myPage_mutualFollow.me")
+//	@ResponseBody
+//	public String myPage_mutualFollow(Model model, @RequestParam("followerNos[]") String[] followerNos) {
+//		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+//		
+//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
+//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+		
+//		boolean hasMutualFollow = false;
+//		
+//		String[] fNo = followerNos.split(",");
+//		int[] followersNo = new int[fNo.length];
+//		
+//		for(int i = 0; i < fNo.length; i++) {
+//			followersNo[i] = Integer.parseInt(fNo[i]);
+//			System.out.println(followersNo[i]);
+//			int followerNo = followersNo[i]; // 나를 팔로하고 있는 회번
+//			
+//			ArrayList<Follow> followerNoList = uService.selectMutualFollow(followerNo);
+//			System.out.println(followerNoList);
+//			for(Follow fn : followerNoList) {
+//				int followingNo = fn.getUsersNo(); // 나를 팔로하고 있는 회원이 팔로하고 있는 회번
+//				
+//				if(followingNo == followerNo) {
+//					hasMutualFollow = true;
+//				}
+//			}
+//		}
+//	    boolean hasMutualFollow = uService.checkMutualFollow(usersNo, followerNos);
+//	    
+//		if(hasMutualFollow) {
+//			return "yes";
+//		} else {
+//			return "no";
+//		}
+//	}
 	
 	// 파일 저장
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {

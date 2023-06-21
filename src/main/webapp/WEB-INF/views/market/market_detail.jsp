@@ -778,7 +778,7 @@ p b {
 						</c:if>
 					</c:forEach>
 						
-				
+				<input type="hidden" value="0" class="preorderNo">
 
 <!-- 					<label for="productOption">색상</label> -->
 <!-- 					<select class='productOption'  required> -->
@@ -1199,31 +1199,26 @@ p b {
    		 for( opText of productOption2Set){
    			opTextBox.unshift(opText.value);
    		 }
-   		 if(prOp.innerText == ""){
+   		 if(prOp.value == "옵션을 선택해주세요."){
    			productOp.pop();
    		 }
    	 }
     	productOptionSet.addEventListener("change", function(){
                 let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
                 let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-                if ( result != "옵션을 선택해주세요.") { 
+                if ( result != "") { 
 					o = productOp;
 					console.log(productOp);
-	                }else if(result == "옵션을 선택해주세요."){
+	                }else if(result == ""){
 	                	o = ["옵션을 선택해주세요."];
 		             }
-                		
-	                if((productOption2Set.innerText==="옵션을 선택해주세요.") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+                	
+	                if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
 	             	   productOption2Set.options.length=0;
 	                }
                 
                 for ( let i = 0; i < o.length; i++) {
-                	if( i == 0){
-                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
-                	}else{
                 		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
-                		
-                	}
                   }
     	})
     	
@@ -1303,7 +1298,7 @@ $(function(){
         var cartCount = $(".cartCount").val();
         var productOption = $(".productOption").val();
         var productOption2 = $(".productOption2").val();
-        
+        var preorderNo = 0;
      console.log($("input[name='productNo']").val());
         
         var productNoValues=[];
@@ -1320,7 +1315,8 @@ $(function(){
 	        	"cartCount":cartCountValues,
 	        	"productOption":productOptionValues, 
 	        	"productOption2":productOption2Values,
-	        	"usersNo":usersNoValues};
+	        	"usersNo":usersNoValues,
+	        	"preorderNo":preorderNo};
         
         $("input[name='productNo']").each(function(){
         	productNoValues.push($(this).val());
@@ -1344,8 +1340,7 @@ $(function(){
         
         
         console.log(allData);
-        const count = 0;
-        
+        let count = 0;
 	        for(i=0; i<productNoValues.length; i++){
 		        $.ajax({
 		            url: "insertCart.ma",
@@ -1355,11 +1350,14 @@ $(function(){
 			        	"cartCount":cartCountValues[i],
 			        	"productOption":productOptionValues[i], 
 			        	"productOption2":productOption2Values[i],
-			        	"usersNo":usersNoValues[i]},
-	// 	            contentType: "application/json; charset=utf-8",
-		            success: allData =>{
-		            	if(allData == "success") {
-		                count++;
+			        	"usersNo":usersNoValues[i],
+			        	"preorderNo":$(".preorderNo").val()},
+		            success: preNo =>{
+		            	$(".preorderNo").val(preNo);
+		            	console.log(preNo);
+		            	console.log($(".preorderNo").val());
+		            	if(preNo != 0) {
+		                	count++;
 		            	}
 		            },
 		            error: allData => {

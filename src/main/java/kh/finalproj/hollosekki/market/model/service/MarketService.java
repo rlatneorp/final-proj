@@ -128,9 +128,6 @@ public class MarketService {
 		return mkDAO.checkCartList(sqlSession, usersNo, preorderNo);
 	}
 
-	public ArrayList<Cart> insertCart(int cartNo) {
-		return null;
-	}
 		
 	public void updateOptionNo(Cart cart) {
 		mkDAO.updateOptionNo(sqlSession, cart);
@@ -191,8 +188,6 @@ public class MarketService {
 		return mkDAO.insertCart(sqlSession, c);
 	}
 
-
-	
 	
 
 

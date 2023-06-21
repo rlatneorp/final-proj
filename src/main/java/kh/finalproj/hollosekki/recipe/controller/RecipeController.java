@@ -305,41 +305,60 @@ public class RecipeController {
 		return mv;
 	}
 	
-	@PostMapping("updateReicpe.rc")
-	public ModelAndView updateRecipe(HttpServletRequest request, ModelAndView mv, @ModelAttribute Recipe r,
-									 @ModelAttribute RecipeOrder rc, @RequestParam("thum") MultipartFile thum,
-									 @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
-									 @RequestParam("comPic") ArrayList<MultipartFile> comFiles,
-									 @RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
-									 @RequestParam("delComImg") String[] delComImg) {
-		
-		ArrayList<Image> thumImgList = new ArrayList<>();
-		String thumImg = thum.getOriginalFilename();
-		if(!thumImg.equals("")) {
-			String[] thumImgArr = saveFile(thum, request);
-			if(thumImgArr[1] != null) {
-				Image img = new Image();
-				img.setImagePath(thumImgArr[0]);
-				img.setImageOriginalName(thumImg);
-				img.setImageRenameName(thumImgArr[1]);
-				img.setImageLevel(0);
-				
-				thumImgList.add(img);
-			}
-		}
-		
-		String thumDelRename = null;
-		Integer thumDelLevel = null;
-		
-		if(!delThum.equals("none")) {
-			String[] split = delThum.split("/");
-			thumDelRename = split[0];
-			thumDelLevel = Integer.parseInt(split[1]);
-		}
-		
-		
-		
-		
-		return null;
-	}
+//	@PostMapping("updateReicpe.rc")
+//	public ModelAndView updateRecipe(HttpServletRequest request, ModelAndView mv, @ModelAttribute Recipe r,
+//									 @ModelAttribute RecipeOrder rc, @RequestParam("thum") MultipartFile thum,
+//									 @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
+//									 @RequestParam("comPic") ArrayList<MultipartFile> comFiles,
+//									 @RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
+//									 @RequestParam("delComImg") String[] delComImg) {
+//		
+////		썸네일 변경/삭제
+//		ArrayList<Image> thumImgList = new ArrayList<>();
+//		String thumImg = thum.getOriginalFilename();
+//		if(!thumImg.equals("")) {
+//			String[] thumImgArr = saveFile(thum, request);
+//			if(thumImgArr[1] != null) {
+//				Image img = new Image();
+//				img.setImagePath(thumImgArr[0]);
+//				img.setImageOriginalName(thumImg);
+//				img.setImageRenameName(thumImgArr[1]);
+//				img.setImageLevel(0);
+//				
+//				thumImgList.add(img);
+//			}
+//		}
+//		
+//		String thumDelRename = null;
+//		Integer thumDelLevel = null;
+//		
+//		if(!delThum.equals("none")) {
+//			String[] split = delThum.split("/");
+//			thumDelRename = split[0];
+//			thumDelLevel = Integer.parseInt(split[1]);
+//		}
+//		
+//		int thumDelResult = 0;
+//		int updateRecipeResult = 0;
+//		boolean existBeforeImg = true;
+//		
+//		if(!thumDelRename.isEmpty()) {
+//			thumDelResult = rService.deleteThumImg(thumDelRename);
+//			if(thumDelResult > 0) {
+//				deleteFile(thumDelRename, request);
+//			}
+//		}
+//		
+//		updateRecipeResult = rService.updateRecipe(r);
+//		
+//		int updateThumImg = 0;
+//		if(!thum.isEmpty()) {
+//			updateThumImg = rService.insertAttm(thumImgList);
+//		}
+//		
+////		레시피 순서 변경/삭제
+//		
+//		
+//		return null;
+//	}
 }

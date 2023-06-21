@@ -111,6 +111,18 @@
 		delete from image
 		where image_type=2 and image_divide_no=#{foodNo}
 	</delete>
+	
+	<delete id="deleteThumImg">
+		delete from image
+		where image_rename=#{thumDelRename}
+	</delete>
+	
+	<update id="updateRecipe">
+		update recipe set recipe_name=#{recipeName}, category_ingredient=#{categoryIngredient}, CATEGORY_SITUATION=#{categorySituation},
+						  CATEGORY_TYPE=#{categoryType}, RECIPE_DIFFICULTY=#{recipeDifficulty}, RECIPE_TIME={recipeTime},
+						  RECIPE_CONTENT=#{recipeContent}, RECIPE_MODIFY_DATE=sysdate
+		where food_no=#{foodNo}
+	</update>
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>

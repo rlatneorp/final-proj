@@ -248,21 +248,12 @@ public class MarketController {
 //	
 	
 	@RequestMapping("insertCart.ma")
-		public void insertCart(@ModelAttribute Cart c,
-				@RequestParam("preorderNo") int pNo
-				/*@RequestParam("productNo")ArrayList<Cart> productNo,
-				@RequestParam("cartCount")String cartCount,
-				@RequestParam("productOption")String productOption,
-				@RequestParam("usersNo")String usersNo*/,HttpServletResponse response) {
+		public void insertCart(
+				@ModelAttribute Cart c,
+				HttpServletResponse response) {
+
 		
-		System.out.println(pNo);
-		System.out.println(c);
 		int result = mkService.insertCart(c);
-//		ArrayList<Cart> list  = mkService.insertCart(c.getProductNo());
-		
-//			System.out.println(c);
-//			System.out.println(c.length);
-//		
 		
 		
 		response.setContentType("application/json; charset=utf-8");

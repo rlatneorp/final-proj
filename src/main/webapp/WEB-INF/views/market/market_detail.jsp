@@ -778,8 +778,6 @@ p b {
 						</c:if>
 					</c:forEach>
 						
-				<input type="hidden" value="0" class="preorderNo">
-
 <!-- 					<label for="productOption">색상</label> -->
 <!-- 					<select class='productOption'  required> -->
 <!-- 						사이즈 선택 창  -->
@@ -835,7 +833,7 @@ p b {
 <br>
 		
 	
-<div class ="productInfoMain" st>
+<div class ="productInfoMain">
 	<div class="reviewbox">
 		<ul>
 			<li>상세정보</li>
@@ -872,7 +870,7 @@ p b {
 				<ul style="padding: 10px;">
 					<li ><img src="img" alt="" /></li>
 					<li><img src="img" alt="" /></li>
-					<li ><img src="img"" alt=""/></li>
+					<li ><img src="img" alt=""/></li>
 				</ul>
 			</div>
 		</div>
@@ -889,7 +887,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -918,7 +916,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -944,7 +942,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -970,7 +968,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -1128,10 +1126,11 @@ p b {
 					</div>
 				</div>
           	</li>
-	</div>
-</div><!-- 전체를 감싸는 박스 -->
+		</div>
+	</div><!-- 전체를 감싸는 박스 -->
+</div>
 
-
+<br><br><br>
 	<script>
 	
 	window.onload = function(){
@@ -1299,7 +1298,6 @@ $(function(){
         var productOption = $(".productOption").val();
         var productOption2 = $(".productOption2").val();
         var preorderNo = 0;
-     console.log($("input[name='productNo']").val());
         
         var productNoValues=[];
         var cartCountValues=[];
@@ -1339,26 +1337,22 @@ $(function(){
         })
         
         
-        console.log(allData);
+        
         let count = 0;
 	        for(i=0; i<productNoValues.length; i++){
+	        	console.log(productNoValues[i]);
 		        $.ajax({
 		            url: "insertCart.ma",
-	// 	            type: "post",
+		            async: false,
 		            data: {
 		        		"productNo":productNoValues[i], 
 			        	"cartCount":cartCountValues[i],
 			        	"productOption":productOptionValues[i], 
 			        	"productOption2":productOption2Values[i],
 			        	"usersNo":usersNoValues[i],
-			        	"preorderNo":$(".preorderNo").val()},
+			        },
 		            success: preNo =>{
-		            	$(".preorderNo").val(preNo);
-		            	console.log(preNo);
-		            	console.log($(".preorderNo").val());
-		            	if(preNo != 0) {
-		                	count++;
-		            	}
+	                	count++;
 		            },
 		            error: allData => {
 		            	console.log("error");

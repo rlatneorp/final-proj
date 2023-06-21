@@ -129,7 +129,7 @@
 		<jsp:include page="../common/adminPaging.jsp"/>
 		
 	</div>
-
+	<%@ include file="../common/footer.jsp" %>
 	<script>
 		window.onload = () =>{
 //		식단에 포함된 식품은 지우면 안되기 때문에, 전체삭제 보류함

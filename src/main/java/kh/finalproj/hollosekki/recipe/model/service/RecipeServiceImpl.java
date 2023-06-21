@@ -99,4 +99,14 @@ public class RecipeServiceImpl implements RecipeService{
 	public int deleteImage(int foodNo) {
 		return rDAO.deleteImage(sqlSession, foodNo);
 	}
+	
+	@Override
+	public int deleteThumImg(String thumDelRename) {
+		return rDAO.deleteThumImg(sqlSession, thumDelRename);
+	}
+	
+	@Override
+	public int updateRecipe(Recipe r) {
+		return rDAO.updateRecipe(sqlSession, r);
+	}
 }

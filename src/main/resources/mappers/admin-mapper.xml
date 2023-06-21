@@ -22,6 +22,14 @@
 			#{item}
 		</foreach>
 	</delete>
+	
+	<select id="selectOptions" resultMap="optionsResultSet">
+		select *
+		from (select *
+			  from options
+			  order by option_no)
+		where product_no = #{pNo}
+	</select>
 
 
 <!--Product-상품 -->
@@ -332,6 +340,20 @@
 		</if>
 	</select>
 	
+	<select id="selectTool" resultMap="toolResultSet">
+		select *
+		from tool
+		where product_no = #{toolNo}
+	</select>
+	
+	<update id="updateTool">
+		update tool
+		set tool_name = #{toolName},
+			tool_type = #{toolType},
+			tool_content = #{toolContent}
+		where product_no = #{productNo}
+	</update>
+	
 	<insert id="insertTool">
 		insert into tool(product_no, tool_name, tool_type, tool_content)
 		values(#{productNo}, #{toolName}, #{toolType}, #{toolContent})
@@ -359,13 +381,6 @@
 		<result column="PRODUCT_STATUS" property="productStatus"/>
 	</resultMap>
 	
-	<resultMap type="Menu" id="menuResultSet">
-		<id column="PRODUCT_NO" property="productNo"/>
-		<result column="MENU_NAME" property="menuName"/>
-		<result column="MENU_TYPE" property="menuType"/>
-		<result column="MENU_CONTENT" property="menuContent"/>
-	</resultMap>
-	
 	<resultMap type="Image" id="imageResultSet">
 		<id column="image_no" property="imageNo"/>
 		<result column="image_divide_no" property="imageDivideNo"/>
@@ -374,6 +389,20 @@
 		<result column="image_renamename" property="imageRenameName"/>
 		<result column="image_path" property="imagePath"/>
 		<result column="image_level" property="imageLevel"/>
+	</resultMap>
+	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Options" id="optionsResultSet">
+		<id column="OPTION_NO" property="optionNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="OPTION_NAME" property="optionName"/>
+		<result column="OPTION_VALUE" property="optionValue"/>
+	</resultMap>
+	
+	<resultMap type="Menu" id="menuResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="MENU_TYPE" property="menuType"/>
+		<result column="MENU_CONTENT" property="menuContent"/>
 	</resultMap>
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">

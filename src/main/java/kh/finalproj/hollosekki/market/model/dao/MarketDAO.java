@@ -10,6 +10,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
@@ -189,6 +190,30 @@ public class MarketDAO {
 
 	public Product selectProductSet(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectProductSet",productNo);
+	}
+	
+	public ShippingAddress selectShippingForUpdate(SqlSessionTemplate sqlSession, int shippingNo) {
+		return sqlSession.selectOne("marketMapper.selectShippingForUpdate", shippingNo);
+	}
+
+	public void updateConfirmShipping(SqlSessionTemplate sqlSession, ShippingAddress sa) {
+		sqlSession.update("marketMapper.updateConfirmShipping", sa);
+	}
+
+	public ShippingAddress selectChecShip(SqlSessionTemplate sqlSession, int shippingNo) {
+		return sqlSession.selectOne("marketMapper.selectChecShip", shippingNo);
+	}
+
+	//productNo에 대한 메뉴 조회 
+	public Menu selectMenu(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectMenu", productNo);
+	}
+
+	
+
+	public int insertCart(SqlSessionTemplate sqlSession, Cart c) {
+		sqlSession.insert("marketMapper.insertCart", c);
+		return c.getPreorderNo();
 	}
 
 

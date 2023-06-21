@@ -37,4 +37,8 @@ public interface RecipeService {
 
 	int deleteImage(int foodNo);
 
+	int deleteThumImg(String thumDelRename);
+
+	int updateRecipe(Recipe r);
+
 }

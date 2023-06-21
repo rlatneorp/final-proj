@@ -79,4 +79,12 @@ public class RecipeDAO {
 		return sqlSession.delete("recipeMapper.deleteImage", foodNo);
 	}
 
+	public int deleteThumImg(SqlSessionTemplate sqlSession, String thumDelRename) {
+		return sqlSession.delete("recipeMapper.deleteThumImg", thumDelRename);
+	}
+
+	public int updateRecipe(SqlSessionTemplate sqlSession, Recipe r) {
+		return sqlSession.update("recipeMapper.updateRecipe", r);
+	}
+
 }

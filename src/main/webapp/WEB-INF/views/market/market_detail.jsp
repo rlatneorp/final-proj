@@ -760,10 +760,10 @@ p b {
 							<label for="productOptionSet">${op.optionName}</label>
 							<select class='productOptionSet'  required>
 								<option value="">옵션을 선택해주세요</option>
-								<option value="${op.optionValue}">${op.optionValue}</option>
+								<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${op.optionName eq options[vs.index-1].optionName}">
-							<option value="${op.optionValue}">${op.optionValue}</option>
+							<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
 							</select>
@@ -771,15 +771,13 @@ p b {
 							<label for="productOption2Set">${op.optionName}</label>
 							<select class='productOption2Set'  required>
 								<option class='productOption2Set' >옵션을 선택해주세요.</option>
-								<option value="${op.optionValue}">${op.optionValue}</option>
+								<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${vs.last}">
 							</select>
 						</c:if>
 					</c:forEach>
 						
-				
-
 <!-- 					<label for="productOption">색상</label> -->
 <!-- 					<select class='productOption'  required> -->
 <!-- 						사이즈 선택 창  -->
@@ -835,7 +833,7 @@ p b {
 <br>
 		
 	
-<div class ="productInfoMain" st>
+<div class ="productInfoMain">
 	<div class="reviewbox">
 		<ul>
 			<li>상세정보</li>
@@ -872,7 +870,7 @@ p b {
 				<ul style="padding: 10px;">
 					<li ><img src="img" alt="" /></li>
 					<li><img src="img" alt="" /></li>
-					<li ><img src="img"" alt=""/></li>
+					<li ><img src="img" alt=""/></li>
 				</ul>
 			</div>
 		</div>
@@ -889,7 +887,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -918,7 +916,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -944,7 +942,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -970,7 +968,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -1128,10 +1126,11 @@ p b {
 					</div>
 				</div>
           	</li>
-	</div>
-</div><!-- 전체를 감싸는 박스 -->
+		</div>
+	</div><!-- 전체를 감싸는 박스 -->
+</div>
 
-
+<br><br><br>
 	<script>
 	
 	window.onload = function(){
@@ -1191,45 +1190,43 @@ p b {
    
       
       let productOp = []; 
+      let opTextBox = []; 
+      
     	for( prOp  of productOption2Set){ 
-   		 productOp.unshift(prOp.value);
-   		 if(prOp.value == ""){
+   		 productOp.unshift(prOp.innerText);
+   		 
+   		 for( opText of productOption2Set){
+   			opTextBox.unshift(opText.value);
+   		 }
+   		 if(prOp.value == "옵션을 선택해주세요."){
    			productOp.pop();
    		 }
    	 }
-
-    	productOptionSet.addEventListener("change", function(e){
+    	productOptionSet.addEventListener("change", function(){
                 let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
                 let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-                console.log(result);
                 if ( result != "") { 
-					o = productOp;                	
+					o = productOp;
+					console.log(productOp);
 	                }else if(result == ""){
 	                	o = ["옵션을 선택해주세요."];
 		             }
-                		
-	                if((productOption2Set.value==='') == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+                	
+	                if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
 	             	   productOption2Set.options.length=0;
 	                }
                 
                 for ( let i = 0; i < o.length; i++) {
-                	if( i == 0){
-                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
-                	}else{
-                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
-                	}
-                			
+                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
                   }
-                
-    		
-    	
     	})
     	
         productOption2Set.addEventListener("change", function(){
              const select =  $('.productOptionSet option:selected');
              const select2 = $('.productOption2Set option:selected');
              
-      		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
+             
+      		let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
       		const opSearch = document.getElementsByClassName('opSearch');
 
       		let YN = "Y";
@@ -1246,7 +1243,7 @@ p b {
 	      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
 						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-								 							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
+								 							+'<span class="opSearch">캠핑용 후라이팬'+select.text()+" "+select2.text()+'</span>'
 								 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
 								 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
 								 							+'<input type="hidden" name="productPrice" value="${total}">'
@@ -1269,15 +1266,12 @@ p b {
 								 						+'</div>'
 								 						 +'<br>'
 								 					+'</div>');
-						
-							
+							console.log(select.val());
+							console.log(select2.val());
 	      			}
 		  					
       	})
         		
-               
-        
-        
     	
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -1303,8 +1297,7 @@ $(function(){
         var cartCount = $(".cartCount").val();
         var productOption = $(".productOption").val();
         var productOption2 = $(".productOption2").val();
-        
-     console.log($("input[name='productNo']").val());
+        var preorderNo = 0;
         
         var productNoValues=[];
         var cartCountValues=[];
@@ -1320,7 +1313,8 @@ $(function(){
 	        	"cartCount":cartCountValues,
 	        	"productOption":productOptionValues, 
 	        	"productOption2":productOption2Values,
-	        	"usersNo":usersNoValues};
+	        	"usersNo":usersNoValues,
+	        	"preorderNo":preorderNo};
         
         $("input[name='productNo']").each(function(){
         	productNoValues.push($(this).val());
@@ -1343,24 +1337,22 @@ $(function(){
         })
         
         
-        console.log(allData);
-        const count = 0;
         
+        let count = 0;
 	        for(i=0; i<productNoValues.length; i++){
+	        	console.log(productNoValues[i]);
 		        $.ajax({
 		            url: "insertCart.ma",
-	// 	            type: "post",
+		            async: false,
 		            data: {
 		        		"productNo":productNoValues[i], 
 			        	"cartCount":cartCountValues[i],
 			        	"productOption":productOptionValues[i], 
 			        	"productOption2":productOption2Values[i],
-			        	"usersNo":usersNoValues[i]},
-	// 	            contentType: "application/json; charset=utf-8",
-		            success: allData =>{
-		            	if(allData == "success") {
-		                count++;
-		            	}
+			        	"usersNo":usersNoValues[i],
+			        },
+		            success: preNo =>{
+	                	count++;
 		            },
 		            error: allData => {
 		            	console.log("error");

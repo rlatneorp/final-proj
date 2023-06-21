@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
@@ -44,12 +45,12 @@ public class MarketService {
 		mkDAO.firstAdDay(sqlSession, map);
 	}
 	
-	//諛곗넚吏� 異붽�
+	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙
 	public int insertShipping(ShippingAddress sa) {
 		return mkDAO.insertShipping(sqlSession, sa);
 	}
 	
-	//諛곗넚吏� 議고쉶
+	//獄쏄퀣�꽊筌욑옙 鈺곌퀬�돳
 	public ArrayList<ShippingAddress> selectShipping(int usersNo) {
 		return mkDAO.selectShipping(sqlSession, usersNo);
 	}
@@ -128,9 +129,6 @@ public class MarketService {
 		return mkDAO.checkCartList(sqlSession, usersNo, preorderNo);
 	}
 
-	public ArrayList<Cart> insertCart(int cartNo) {
-		return null;
-	}
 		
 	public void updateOptionNo(Cart cart) {
 		mkDAO.updateOptionNo(sqlSession, cart);
@@ -171,10 +169,6 @@ public class MarketService {
 		return mkDAO.selectOptions(sqlSession, cart);
 	}
 
-//	public Options selectOptionInfo(int productOption) {
-//		return mkDAO.selectOptionInfo(sqlSession, productOption);
-//	}
-
 	public Options selectOptionInfo(int productNo, int productOption) {
 		return mkDAO.selectOptionInfo(sqlSession, productNo, productOption);
 	}
@@ -186,6 +180,36 @@ public class MarketService {
 	public Product selectProductSet(int productNo) {
 		return mkDAO.selectProductSet(sqlSession,productNo);
 	}
+	
+	//수정할 배송지 조회 
+	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+		return mkDAO.selectShippingForUpdate(sqlSession, shippingNo);
+	}
+	
+	//배송지 수정 
+	public void updateConfirmShipping(ShippingAddress sa) {
+		mkDAO.updateConfirmShipping(sqlSession, sa);
+	}
+	
+	//선택한 배송지 조회 
+	public ShippingAddress selectChecShip(int shippingNo) {
+		return mkDAO.selectChecShip(sqlSession, shippingNo);
+	}
+
+	//productNo에 대한 메뉴 조회 
+	public Menu selectMenu(int productNo) {
+		return mkDAO.selectMenu(sqlSession, productNo);
+	}
+
+	public int insertCart(Cart c) {
+		return mkDAO.insertCart(sqlSession, c);
+	}
+
+	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	

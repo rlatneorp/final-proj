@@ -267,4 +267,29 @@
 		select * from product where product_no = #{productNo}
 	</select>
 	
+	<select id="selectShippingForUpdate" resultMap="shipAddress">
+		select * from shipping_address where shipping_no = #{shippingNo}
+	</select>
+	
+	<update id="updateConfirmShipping">
+		update shipping_address set
+		RECIPIENT=#{recipient}, ADDRESS=#{address}, HOME_PHONE=#{homePhone}, PHONE=#{phone}, SHIPPING_NAME=#{shippingName}
+		where SHIPPING_NO = #{shippingNo}
+	</update>
+	
+	<select id="selectChecShip" resultMap="shipAddress">
+		select * from shipping_address where shipping_no = #{shippingNo}
+	</select>
+	
+	<!-- productNo에 대한 menu 조회  -->
+	<select id="selectMenu" resultMap="menuInfo">
+		select * from menu where product_no = #{productNo}
+	</select>
+	
+	<resultMap type="Menu" id="menuInfo">
+		<result column="PRODUCT_NO" property="foodProductNo"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="MENU_TYPE" property="menuType"/>
+		<result column="MENU_CONTENT" property="menuContent"/>
+	</resultMap>
 </mapper>

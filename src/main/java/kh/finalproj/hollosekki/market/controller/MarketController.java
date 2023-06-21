@@ -5,7 +5,6 @@ package kh.finalproj.hollosekki.market.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
@@ -46,9 +46,9 @@ public class MarketController {
 		
 		ArrayList<Cart> cartList = mkService.selectCartList(userNo);
 		
-		ArrayList<Food> foodsList = new ArrayList<>(); ArrayList<Tool> toolsList = new ArrayList<>(); ArrayList<Ingredient> igsList = new ArrayList<>();
+//		ArrayList<Food> foodsList = new ArrayList<>(); ArrayList<Tool> toolsList = new ArrayList<>(); ArrayList<Ingredient> igsList = new ArrayList<>();
 		ArrayList<Product> selectProductInfo = new ArrayList<>(); 
-		Food foods = null; Tool tools = null; Ingredient igs = null;
+		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		
 		ArrayList<Cart> optionNos = new ArrayList<>();
 		ArrayList<Options> optValues = new ArrayList<>();
@@ -60,13 +60,17 @@ public class MarketController {
 			
 			ArrayList<Options> options = mkService.selectOptions(productNo);
 			
-			
+			//카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
 			foods = mkService.selectFood(productNo);
 			tools = mkService.selectTool(productNo);
 			igs = mkService.selectIngrdient(productNo);
+			menus = mkService.selectMenu(productNo);
 			
+			//productNo에 대한 모든 정보를 하나하나 가져옴 
 			selectProductInfo = mkService.selectProductInfo(productNo);
 			
+			//위에서 조회 된 정보 중 price로 cart 속성값 변경 ( cartList 하나로 보내기 위해 )
+			//합계 계산 
 			int price = 0; int sum = 0;
 			for (Product product : selectProductInfo) {
 			    price = product.getProductPrice();
@@ -76,6 +80,7 @@ public class MarketController {
 			sum = size * price;
 			cart.setSum(sum);
 			
+			//productNo에 대해 포문이 돌 때마다 null이 아니라면 cartList중 해당 되는 객체 값을 변경한다.
 			if (foods != null) {
 				System.out.println("foods : " + foods);
 				cart.setProductName(foods.getFoodName());
@@ -88,7 +93,12 @@ public class MarketController {
 		    	System.out.println("igs : " + igs);
 		    	cart.setProductName(igs.getIngredientName());
 		    }
+		    if (menus != null) {
+		    	System.out.println("menus : " + menus);
+		    	cart.setProductName(menus.getMenuName());
+		    }
 		}
+		System.out.println("cartList : " + cartList);
 		model.addAttribute("optValues", optValues);
 		model.addAttribute("cartList", cartList);
 		return "basket";
@@ -99,7 +109,7 @@ public class MarketController {
 		
 		
 		Users users = (Users)session.getAttribute("loginUser");
-		Food foods = null; Tool tools = null; Ingredient igs = null;
+		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
 		ArrayList<Product> productInfo = new ArrayList<>();
 		ArrayList<Cart> checkedCart = new ArrayList<>();
@@ -112,9 +122,6 @@ public class MarketController {
 		
 		String[] optNo = optNos.split(",");
 		int[] intOptionNo = new int[optNo.length];
-		System.out.println("optNos.lenght : " + optNo.length ); //3 
-		
-		
 		
 		for(int i=0; i<optNo.length; i++) {
 			intOptionNo[i] = Integer.parseInt(optNo[i]);
@@ -133,6 +140,7 @@ public class MarketController {
 				foods = mkService.selectFood(productNo);
 				tools = mkService.selectTool(productNo);
 				igs = mkService.selectIngrdient(productNo);
+				menus = mkService.selectMenu(productNo);
 				
 				productInfo = mkService.selectProductInfo(productNo);
 				int price = 0; int sum = 0;
@@ -152,6 +160,9 @@ public class MarketController {
 			    }
 			    if (igs != null) {
 			    	checCart.setProductName(igs.getIngredientName());
+			    }
+			    if (menus != null) {
+			    	checCart.setProductName(menus.getMenuName());
 			    }
 			    checkedCartList.add(checCart);
 			}
@@ -323,6 +334,7 @@ public class MarketController {
 	//
 	@RequestMapping(value="selectShipping.ma", produces="application/json; charset=UTF-8")
 	public void selectShipping(@RequestParam("usersNo") int usersNo, HttpServletResponse response) {
+		
 		ArrayList<ShippingAddress> shippingInfo = mkService.selectShipping(usersNo);
 		
 		response.setContentType("application/json; charset=UTF-8");
@@ -337,6 +349,7 @@ public class MarketController {
 		
 	}
 	
+	//수정 버튼 클릭 시 클릭한 배송지 정보 조회 
 	@RequestMapping(value="updateShipping.ma", produces="application/json; charset=UTF-8")
 	public void updateShipping(@RequestParam("shippingNo") int shippingNo, HttpServletResponse response) {
 		System.out.println("shippingNo : " + shippingNo);
@@ -351,6 +364,40 @@ public class MarketController {
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	//수정 확인 시 수정 
+	@RequestMapping(value ="updateConfirmShipping.ma", produces="application/json; charset=UTF-8")
+	public String updateConfirmShipping(@ModelAttribute ShippingAddress sa, 
+				@RequestParam("updatePostcode") String addressPostCode,
+				@RequestParam("updateAddress") String addressLocation,
+				@RequestParam("updateDetailAddress") String detailAddress) {
+		
+		System.out.println("ShippingAddress : " + sa);
+		String[] addresses = new String[3];
+		addresses[0] = addressPostCode;
+		addresses[1] = addressLocation;
+		addresses[2] = detailAddress;
+		sa.setAddress(Arrays.toString(addresses));
+		
+		
+		mkService.updateConfirmShipping(sa);
+		return "payDetail";
+	}
+	
+	@RequestMapping(value="selectChecShip.ma", produces="application/json; charset=UTF-8")
+	public void selectchecShip(@RequestParam("shippingNo") int shippingNo, HttpServletResponse response) {
+		
+		ShippingAddress sa = mkService.selectChecShip(shippingNo);
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+		Gson gson = gb.create();
+		try {
+			gson.toJson(sa, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

@@ -5,6 +5,7 @@
 
 <html>
 <head>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
@@ -529,7 +530,60 @@ input[type="text"] {
 	</table>
     <button id="confirmButton">확인</button>
   </div>
-</div><br><br><br><br><br><br>
+</div>
+
+
+<!-- 배송지 수정 창 -->
+<div id="updatePopup" class="popup">
+  <div class="popup-content">
+  	<span class="close" id="closeButton3">&times;</span><br><br><br>
+    <table style="width:800px; margin-top:20px">
+		<tr>
+			<td class="address"><b>받으실 분</b></td>
+			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
+				<div>
+					<input type="text" required id="updateOrderName" style="width: 400px; margin-left: 15px" name="payName">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="address"><b>배송지 명</b></td>
+			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
+				<div>
+					<input type="text" id="updateShippingName" style="width: 400px; margin-left: 15px" name="payName">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="address" style="height: 167"><b>받으실 곳</b></td>
+			<td style="text-align: left; height: 30px">
+				<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="update_postcode" placeholder="우편번호"> 
+				<input type="button" style="border-radius: 10; height: 35px;" onclick="update_execDaumPostcode()" value="우편번호 찾기"><br>
+				<input type="text" id="update_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소"><br> 
+				<input id="update_detailAddress" type="text" id="update_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소"><br>
+		</tr>
+		<tr>
+			<td class="address"><b>전화번호</b></td>
+			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
+				<input id="updateHomeNumber" type="text" style="width: 200px; margin-left: 15px;" name="payName">
+			</td>
+		</tr>
+		<tr>
+			<td class="address"><b>휴대폰 번호</b></td>
+			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
+				<input id="updatePhoneNumber" type="text" style="width: 200px; margin-left: 15px;" name="payName">
+			</td>
+		</tr>
+	</table>
+    <button id="updateConfirm">확인</button>
+  </div>
+</div>
+
+
+
+
+
+<br><br><br><br><br><br>
 
 <%@include file="../common/footer.jsp"%>
 
@@ -586,6 +640,32 @@ input[type="text"] {
             }
         }).open();
     }
+  
+  //수정 시 주소 찾기 
+  function update_execDaumPostcode() { //우편번호 찾기 클릭 시
+        new daum.Postcode({ //다음에서 제공하는 Postcode 메서드 
+            oncomplete: function(data) {
+                var addr = ''; // 주소 변수
+
+                if (data.userSelectedType === 'R') { 
+                    addr = data.roadAddress;
+                } else { 
+                    addr = data.jibunAddress;
+                }
+                console.log(document.getElementById('update_postcode'));
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('update_postcode').value = data.zonecode;
+                document.getElementById("update_address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+//                 document.getElementById("sample7_detailAddress").focus();
+                window.close();
+            }
+        }).open();
+    }
+  
+  
+  
 </script>
 
 <script>
@@ -688,88 +768,7 @@ input[type="text"] {
 					    
 					    
 					  tbody.append(row);
-					  
-					  
-					 
 				  }
-				  
-				  //수정 버튼 클릭 시 
-				  document.getElementById('editShipping').addEventListener('click',() => {
-// 					  console.log('-----------')
-// 					  let checkedShipCount = 0;
-// 					  console.log('첫 번째 : ' + checkedShipCount)
-// 					  const shipList = document.getElementsByClassName('shippingList');
-					  //체크 된 게 없으면 return 
-					  const ship = document.getElementsByName('ship');
-					  console.log(ship);
-					  for(list of ship) {
-// 						  let checShip = list.querySelector('input[type="radio"]');
-						  console.log('list : ' + list.checked)
-						  if(list.checked) {
-							  console.log('체크 됨 ')
-						  } else {
-							  alert('수정 후 해라');
-							  return;
-						  }
-					  }
-					  
-					  
-					  
-					  
-// 					  for(list of shipList) {
-// 						  let checShip = list.querySelector('input[type="radio"]');
-// 						  let checkedShipCount = 0;
-// 						  checShip.addEventListener('change', () => {
-// 							  if(checShip.checked) {
-								  
-// // 					  			  checkedShipCount++; //+1
-// 					  			  console.log('두 번째 : ' + checkedShipCount)
-// 							  } 
-// 						  })
-						  
-// 				  		 if(checkedShipCount == 0) {
-// 				  			alert('dddd');
-// 				  			console.log('세 번째 : ' + checkedShipCount)
-// 				  			return;
-// 				  		  }
-// 					  } 
-					  
-					  
-					  
-// 					  console.log('this : ' + this);
-					  
-					  
-					  
-					  
-				  })
-// 				  const edit = document.getElementsByClassName('editShip');
-// 				  for(let e of edit) {
-// 					  console.log(e);
-// 					  e.addEventListener('click', () => {
-// 						 let editNo = e.nextSibling.value;
-						 
-// 						 $.ajax({
-// 							url:'${contextPath}/updateShipping.ma',
-// 							data:{shippingNo:editNo},
-// 							success: data => {
-// 								console.log(data);	
-// 							},
-// 							error: data => {
-// 								console.log(data);
-// 							}
-// 						 })
-						 
-						 
-						 
-						 
-						 
-						 
-// 					  })
-// 				  }
-				  
-// 				  const edit = row.querySelector('.editShip');
-// 				  console.log('edit : ' + editShip);
-				  
 			  }, 
 			  error: data => {
 				  console.log(data);
@@ -777,6 +776,71 @@ input[type="text"] {
 		  })
 		});
 
+				  
+				  
+				  
+				  
+		//수정 버튼 클릭 시 
+	    document.getElementById('editShipping').addEventListener('click',() => {
+	    	const ship = document.getElementsByName('ship');
+			let checkedShip = 0;
+			for(let i=0; i<ship.length; i++) {
+				if(ship[i].checked) {
+					checkedShip = ship[i].value;
+					break;
+				  }
+			}
+			   
+			if(checkedShip == 0) {
+				swal({
+					 text: "수정할 목록을 선택해주세요.",
+					 icon: "error",
+					 button: "확인",
+					});
+			} else {
+				popup.style.display = 'none';
+				document.getElementById('updatePopup').style.display = 'block';
+				let shippingNo = checkedShip; 
+				console.log(shippingNo);
+				
+				$.ajax({
+					url:'${contextPath}/updateShipping.ma',
+					data:{
+						shippingNo:shippingNo
+					},
+					success: data => {
+						console.log(data);
+						const pullAddress = data.address;
+						const splitPullAddress = pullAddress.split(",");
+						const postNo = splitPullAddress[0].replace("[", "").trim();
+						const address = splitPullAddress[1].trim();
+						const detailAddress = splitPullAddress[2].replace("]", "").trim();
+						
+						console.log(document.getElementById('orderName2'))
+						document.getElementById('updateOrderName').value = data.recipient;
+						document.getElementById('updateShippingName').value = data.shippingName;
+						document.getElementById('update_postcode').value = postNo;
+						document.getElementById('update_address').value = address;
+						document.getElementById('update_detailAddress').value = detailAddress;
+						document.getElementById('updateHomeNumber').value = data.homePhone;
+						document.getElementById('updatePhoneNumber').value = data.phone;
+						
+					},
+					error: data => {
+						console.log(data);
+					}
+				})
+				
+				
+			}
+			  
+			
+			  
+			  
+			  
+			  
+		  })
+		
 		// "x" 버튼 클릭 이벤트 처리
 		closeButton.addEventListener("click", function() {
 		  popup.style.display = "none";

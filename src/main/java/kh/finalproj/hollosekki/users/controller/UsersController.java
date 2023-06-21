@@ -51,10 +51,15 @@ public class UsersController {
 		
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
-		System.out.println(followingList);
-		System.out.println(followerList);
-		model.addAttribute("followingList", followingList);
-		model.addAttribute("followerList", followerList);
+		
+		if(!followingList.isEmpty() && !followerList.isEmpty()) {
+			model.addAttribute("followingList", followingList);
+			model.addAttribute("followerList", followerList);
+			
+			return "myPage_Main";
+		} else {
+			throw new UsersException("팔로우 리스트 조회 실패");
+		}
 		
 //		ArrayList<Follow> followList = uService.selectFollow(usersNo);
 //		model.addAttribute("follow", followList);
@@ -93,8 +98,6 @@ public class UsersController {
 //			model.addAttribute("followerUsers", followerUList);
 //			model.addAttribute("followerImage", followerImageList);
 //		}
-		
-		return "myPage_Main";
 	}
 	
 //	@RequestMapping("myPage_mutualFollow.me")

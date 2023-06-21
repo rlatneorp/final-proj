@@ -139,6 +139,24 @@
     	border-radius: 50%;
     	border: 2px solid gray;
     }
+    #center{
+    	font-size: 26px; font-weight: bold; 
+    	color: rgb(52, 152, 219); margin-left: 10px;
+    }
+    #center:hover{text-decoration: none;}
+    #point{
+    	font-size: 26px; font-weight: bold; 
+    	color: rgb(52, 152, 219); margin-left: 10px;
+    }
+    #point:hover{text-decoration: none;}
+    .modalFollowing{
+    	border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		background: lightgray;
+		transform: scale(1.15);
+		margin-left: 250px;
+    }
 </style>
 </head>
 <body>
@@ -250,15 +268,19 @@
 				<div class="modal-body">
 					<c:forEach items="${followerList}" var="f">
 					    <img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
-					    &nbsp;&nbsp;<label class="followName" >${f.NICKNAME}</label>
-					    <c:forEach items="${ followingList }" var="fl">
-					    	<c:if test="${ fl.NICKNAME eq f.NICNAME }">
-					    		<button class="modalFollower">팔로잉</button>
-					    	</c:if>
-					    	<c:if test="${ fl.NICKNAME ne f.NICNAME }">
-					    		<button class="modalFollower">팔로워</button>
-					    	</c:if>
+					    &nbsp;&nbsp;<label class="followName">${f.NICKNAME}</label>
+					    <c:set var="following" value="false"/>
+					    <c:forEach items="${followingList}" var="fl">
+					        <c:choose>
+					            <c:when test="${fl.NICKNAME eq f.NICKNAME}">
+					                <c:set var="following" value="true"/>
+					                <button class="modalFollowing">팔로잉</button>
+					            </c:when>
+					        </c:choose>
 					    </c:forEach>
+					    <c:if test="${not following}">
+					        <button class="modalFollower">팔로워</button>
+					    </c:if>
 					    <br><br>
 					</c:forEach>
 				</div>

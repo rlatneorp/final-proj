@@ -143,7 +143,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='${contextPath}/askBoard.cs'">공 지</div>
+							<div class="menu3" onclick="location.href='${contextPath}/noticeBoard.cs'">공 지</div>
 							<div class="menu4"></div>
 						</div>
 						

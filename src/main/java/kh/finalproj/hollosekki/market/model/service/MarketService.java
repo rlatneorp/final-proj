@@ -44,12 +44,12 @@ public class MarketService {
 		mkDAO.firstAdDay(sqlSession, map);
 	}
 	
-	//諛곗넚吏� 異붽�
+	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙
 	public int insertShipping(ShippingAddress sa) {
 		return mkDAO.insertShipping(sqlSession, sa);
 	}
 	
-	//諛곗넚吏� 議고쉶
+	//獄쏄퀣�꽊筌욑옙 鈺곌퀬�돳
 	public ArrayList<ShippingAddress> selectShipping(int usersNo) {
 		return mkDAO.selectShipping(sqlSession, usersNo);
 	}
@@ -189,6 +189,11 @@ public class MarketService {
 
 	public int insertCart(Cart c) {
 		return mkDAO.insertCart(sqlSession, c);
+	}
+
+	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

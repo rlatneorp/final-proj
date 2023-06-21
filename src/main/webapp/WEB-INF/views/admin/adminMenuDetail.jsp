@@ -286,7 +286,7 @@
 							<tr>
 								<td colspan="2">재고</td>
 								<td colspan="4">
-									<input type="number" class="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productStock}" min="0">
+									<input type="number" name="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productStock}" min="0">
 								</td>
 							</tr>
 						</table>
@@ -344,7 +344,7 @@
 	</div>
 	
 	<br><br><br><br>
-	
+	<%@ include file="../common/footer.jsp" %>
 	<script>
 	
 		window.onload = () =>{

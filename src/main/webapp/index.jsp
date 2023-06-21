@@ -13,7 +13,7 @@
 		<h3>임시화면!</h3>
 		<a href="adminMain.ad"><span>adminMainhi</span></a>
 		<a href="myPage_Main.me"><span>myPageMain</span></a>
-		<a href="askBoard.cs"><span>askBoard</span></a>
+		<a href="noticeBoard.cs"><span>고객센터</span></a>
 		<a href="personalQuestion.cs"><span>1:1문의</span></a>
 		<a href="home.do"><span>HOME</span></a>
 		<a href="market_detail.ma"><span>market</span></a>

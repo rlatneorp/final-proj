@@ -58,11 +58,7 @@
   		insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
   		values (#{usersNo}, #{recipient}, #{address}, #{homePhone}, #{phone}, SEQ_SHIPPING_ADDRESS.nextval, #{shippingName})
 	</insert>
-	
-	<insert id="insertCart">
-		INSERT INTO CART
-		VALUES (SEQ_CART_NO.NEXTVAL, ${usersNo}, ${pNo}, ${pOption}, ${cartCount}, null )
-	</insert>
+
 	
 	<select id="allAt" resultMap="AttendanceResultSet">
 		select
@@ -266,6 +262,25 @@
 	<select id="selectProductSet" resultMap="productList">
 		select * from product where product_no = #{productNo}
 	</select>
+	
+	<insert id="insertCart">
+		<if test="preorderNo == 0">
+			insert all 
+			into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, seq_pre_no.nextval)
+	  		into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, seq_pre_no.currval)
+	  		select * from dual
+		</if>
+		<selectKey keyProperty="preorderNo" resultType="int" order="AFTER" >
+			select seq_pre_no.currval from dual
+		</selectKey>
+  		<if test="preorderNo !=0">
+  			insert all 
+			into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, #{preorderNo})
+	  		into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, #{preorderNo})
+	  		select * from dual
+  		</if>	
+	</insert>
+	
 	
 	<select id="selectShippingForUpdate" resultMap="shipAddress">
 		select * from shipping_address where shipping_no = #{shippingNo}

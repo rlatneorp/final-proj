@@ -10,6 +10,7 @@ public class Cart {
 	private int usersNo;
 	private int productNo;
 	private int productOption; //수정 
+	private int productOption2; //수정 
 	private int cartCount;
 	private int preorderNo;
 	
@@ -25,27 +26,6 @@ public class Cart {
 	
 	public Cart() {
 		super();
-	}
-
-
-	public Cart(int cartNo, int usersNo, int productNo, int productOption, int cartCount, int preorderNo, int sum,
-			String shippingPrice, int productPrice, String productName, String optionValue,
-			Map<String, List<String>> optionName, ArrayList<Cart> cartValue, String selectedOpt) {
-		super();
-		this.cartNo = cartNo;
-		this.usersNo = usersNo;
-		this.productNo = productNo;
-		this.productOption = productOption;
-		this.cartCount = cartCount;
-		this.preorderNo = preorderNo;
-		this.sum = sum;
-		this.shippingPrice = shippingPrice;
-		this.productPrice = productPrice;
-		this.productName = productName;
-		this.optionValue = optionValue;
-		this.optionName = optionName;
-		this.cartValue = cartValue;
-		this.selectedOpt = selectedOpt;
 	}
 
 
@@ -86,6 +66,16 @@ public class Cart {
 
 	public void setProductOption(int productOption) {
 		this.productOption = productOption;
+	}
+
+
+	public int getProductOption2() {
+		return productOption2;
+	}
+
+
+	public void setProductOption2(int productOption2) {
+		this.productOption2 = productOption2;
 	}
 
 
@@ -154,8 +144,8 @@ public class Cart {
 	}
 
 
-	public void setOptionValue(String string) {
-		this.optionValue = string;
+	public void setOptionValue(String optionValue) {
+		this.optionValue = optionValue;
 	}
 
 
@@ -189,19 +179,36 @@ public class Cart {
 	}
 
 
+	public Cart(int cartNo, int usersNo, int productNo, int productOption, int productOption2, int cartCount,
+			int preorderNo, int sum, String shippingPrice, int productPrice, String productName, String optionValue,
+			Map<String, List<String>> optionName, ArrayList<Cart> cartValue, String selectedOpt) {
+		super();
+		this.cartNo = cartNo;
+		this.usersNo = usersNo;
+		this.productNo = productNo;
+		this.productOption = productOption;
+		this.productOption2 = productOption2;
+		this.cartCount = cartCount;
+		this.preorderNo = preorderNo;
+		this.sum = sum;
+		this.shippingPrice = shippingPrice;
+		this.productPrice = productPrice;
+		this.productName = productName;
+		this.optionValue = optionValue;
+		this.optionName = optionName;
+		this.cartValue = cartValue;
+		this.selectedOpt = selectedOpt;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Cart [cartNo=" + cartNo + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productOption="
-				+ productOption + ", cartCount=" + cartCount + ", preorderNo=" + preorderNo + ", sum=" + sum
-				+ ", shippingPrice=" + shippingPrice + ", productPrice=" + productPrice + ", productName=" + productName
-				+ ", optionValue=" + optionValue + ", optionName=" + optionName + ", cartValue=" + cartValue
-				+ ", selectedOpt=" + selectedOpt + "]";
+				+ productOption + ", productOption2=" + productOption2 + ", cartCount=" + cartCount + ", preorderNo="
+				+ preorderNo + ", sum=" + sum + ", shippingPrice=" + shippingPrice + ", productPrice=" + productPrice
+				+ ", productName=" + productName + ", optionValue=" + optionValue + ", optionName=" + optionName
+				+ ", cartValue=" + cartValue + ", selectedOpt=" + selectedOpt + "]";
 	}
 
-	
-	
-	
-	
-	
 	
 }

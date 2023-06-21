@@ -211,6 +211,11 @@ public class MarketDAO {
 
 	
 
+	public int insertCart(SqlSessionTemplate sqlSession, Cart c) {
+		sqlSession.insert("marketMapper.insertCart", c);
+		return c.getPreorderNo();
+	}
+
 
 	
 

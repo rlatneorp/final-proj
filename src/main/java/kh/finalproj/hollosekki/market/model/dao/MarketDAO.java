@@ -191,6 +191,10 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectProductSet",productNo);
 	}
 
+	public int insertCart(SqlSessionTemplate sqlSession, Cart c) {
+		return sqlSession.insert("marketMapper.insertCart", c);
+	}
+
 
 	
 

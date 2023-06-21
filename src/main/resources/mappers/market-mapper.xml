@@ -267,4 +267,11 @@
 		select * from product where product_no = #{productNo}
 	</select>
 	
+	<insert id="insertCart">
+		insert into cart (cart_no, users_no, product_no, product_option, cart_count, pre_order_no)
+  		values ((#{cartNo}, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, SEQ_CART_NO.nextval),
+  				(#{cartNo}, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, SEQ_CART_NO.currentval))
+	</insert>
+	
+	
 </mapper>

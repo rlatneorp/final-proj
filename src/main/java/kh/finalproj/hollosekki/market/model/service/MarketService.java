@@ -187,6 +187,11 @@ public class MarketService {
 		return mkDAO.selectProductSet(sqlSession,productNo);
 	}
 
+	public int insertCart(Cart c) {
+		return mkDAO.insertCart(sqlSession, c);
+	}
+
+
 	
 	
 

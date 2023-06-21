@@ -170,9 +170,9 @@ public class MarketController {
 	
 		
 		
-		System.out.println(options);
-		System.out.println(tool);
-		System.out.println(p);
+//		System.out.println(options);
+//		System.out.println(tool);
+//		System.out.println(p);
 		model.addAttribute("tool", tool);
 		model.addAttribute("p", p);
 		model.addAttribute("options", options);
@@ -246,17 +246,10 @@ public class MarketController {
 //	
 	
 	@RequestMapping("insertCart.ma")
-	public void insertCart(
-				//			@ModelAttribute Cart c,
-							@RequestParam("productNo") String pNo,@RequestParam("cartCount") String cartCount,
-							@RequestParam("productOption") String pOption,@RequestParam("productOption2") String pOption2,
-							@RequestParam("usersNo") String usersNo,
-							HttpServletResponse response) {
-		System.out.println(pNo);
-		System.out.println(cartCount);
-		System.out.println(pOption);
-		System.out.println(pOption2);
-		System.out.println(usersNo);
+	public void insertCart(@ModelAttribute Cart c,HttpServletResponse response) {
+		System.out.println(c);
+		
+		int result = mkService.insertCart(c);
 		
 		response.setContentType("application/json; charset=utf-8");
 		GsonBuilder gb = new GsonBuilder();
@@ -269,12 +262,6 @@ public class MarketController {
 			e.printStackTrace();
 		} 
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	

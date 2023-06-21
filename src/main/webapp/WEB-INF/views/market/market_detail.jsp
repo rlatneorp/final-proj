@@ -760,10 +760,10 @@ p b {
 							<label for="productOptionSet">${op.optionName}</label>
 							<select class='productOptionSet'  required>
 								<option value="">옵션을 선택해주세요</option>
-								<option value="${op.optionValue}">${op.optionValue}</option>
+								<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${op.optionName eq options[vs.index-1].optionName}">
-							<option value="${op.optionValue}">${op.optionValue}</option>
+							<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
 							</select>
@@ -771,7 +771,7 @@ p b {
 							<label for="productOption2Set">${op.optionName}</label>
 							<select class='productOption2Set'  required>
 								<option class='productOption2Set' >옵션을 선택해주세요.</option>
-								<option value="${op.optionValue}">${op.optionValue}</option>
+								<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${vs.last}">
 							</select>
@@ -1191,24 +1191,29 @@ p b {
    
       
       let productOp = []; 
+      let opTextBox = []; 
+      
     	for( prOp  of productOption2Set){ 
-   		 productOp.unshift(prOp.value);
-   		 if(prOp.value == ""){
+   		 productOp.unshift(prOp.innerText);
+   		 
+   		 for( opText of productOption2Set){
+   			opTextBox.unshift(opText.value);
+   		 }
+   		 if(prOp.innerText == ""){
    			productOp.pop();
    		 }
    	 }
-
-    	productOptionSet.addEventListener("change", function(e){
+    	productOptionSet.addEventListener("change", function(){
                 let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
                 let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-                console.log(result);
-                if ( result != "") { 
-					o = productOp;                	
-	                }else if(result == ""){
+                if ( result != "옵션을 선택해주세요.") { 
+					o = productOp;
+					console.log(productOp);
+	                }else if(result == "옵션을 선택해주세요."){
 	                	o = ["옵션을 선택해주세요."];
 		             }
                 		
-	                if((productOption2Set.value==='') == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+	                if((productOption2Set.innerText==="옵션을 선택해주세요.") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
 	             	   productOption2Set.options.length=0;
 	                }
                 
@@ -1216,20 +1221,18 @@ p b {
                 	if( i == 0){
                 		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
                 	}else{
-                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
+                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
+                		
                 	}
-                			
                   }
-                
-    		
-    	
     	})
     	
         productOption2Set.addEventListener("change", function(){
              const select =  $('.productOptionSet option:selected');
              const select2 = $('.productOption2Set option:selected');
              
-      		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
+             
+      		let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
       		const opSearch = document.getElementsByClassName('opSearch');
 
       		let YN = "Y";
@@ -1246,7 +1249,7 @@ p b {
 	      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
 						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-								 							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
+								 							+'<span class="opSearch">캠핑용 후라이팬'+select.text()+" "+select2.text()+'</span>'
 								 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
 								 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
 								 							+'<input type="hidden" name="productPrice" value="${total}">'
@@ -1269,15 +1272,12 @@ p b {
 								 						+'</div>'
 								 						 +'<br>'
 								 					+'</div>');
-						
-							
+							console.log(select.val());
+							console.log(select2.val());
 	      			}
 		  					
       	})
         		
-               
-        
-        
     	
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');

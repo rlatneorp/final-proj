@@ -129,6 +129,16 @@
     	border: 1px solid gray; background: white;
     	border-radius: 5px;
     }
+    #center{
+    	font-size: 26px; font-weight: bold; 
+    	color: rgb(52, 152, 219); margin-left: 10px;
+    }
+    #center:hover{text-decoration: none;}
+    #point{
+    	font-size: 26px; font-weight: bold; 
+    	color: rgb(52, 152, 219); margin-left: 10px;
+    }
+    #point:hover{text-decoration: none;}
 </style>
 </head>
 <body>
@@ -159,7 +169,7 @@
 					</div>
 					<div class="name">
 						<br>
-						<a style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219); margin-left: 10px;" href="${ contextPath }/askBoard.cs">고객센터
+						<a id="center" href="${ contextPath }/askBoard.cs">고객센터
 						<span class="material-symbols-outlined arrow1">
 						chevron_right
 						</span></a><br><br>
@@ -168,7 +178,7 @@
 					</div>
 					<div class="name">
 						<br>
-						<a style="font-size: 26px; font-weight: bold; color: rgb(52, 152, 219); margin-left: 10px;">포인트
+						<a id="point" href="${ contextPath }/myPage_Point.me">포인트
 						<span class="material-symbols-outlined arrow1">
 						chevron_right
 						</span></a><br>

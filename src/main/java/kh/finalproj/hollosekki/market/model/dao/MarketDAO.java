@@ -178,13 +178,24 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectOptionInfo", map);
 	}
 
+//	public ArrayList<Options> selectOptionSet(SqlSessionTemplate sqlSession, int productNo) {
+//		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionsSet", productNo);
+//	}
+
 	public ArrayList<Options> selectOptionSet(SqlSessionTemplate sqlSession, int productNo) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionsSet", productNo);
+	 return (ArrayList)sqlSession.selectList("marketMapper.selectOptionsSet", productNo);
 	}
 
-	public ShippingAddress selectShippingForUpdate(SqlSessionTemplate sqlSession, int shippingNo) {
-		return sqlSession.selectOne("marketMapper.selectShippingForUpdate", shippingNo);
+
+	public Product selectProductSet(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectProductSet",productNo);
 	}
+
+	public int insertCart(SqlSessionTemplate sqlSession, Cart c) {
+		sqlSession.insert("marketMapper.insertCart", c);
+		return c.getPreorderNo();
+	}
+
 
 	
 

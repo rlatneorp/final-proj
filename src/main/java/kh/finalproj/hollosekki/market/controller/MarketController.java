@@ -5,7 +5,7 @@ package kh.finalproj.hollosekki.market.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -145,7 +147,7 @@ public class MarketController {
 				checCart.setSum(sum);
 				
 				if (foods != null) {
-					checCart.setProductName(foods.getFoodName());
+					checCart.setProductName(foods.getFoodName()); 
 			    }
 			    if (tools != null) {
 			    	checCart.setProductName(tools.getToolName());
@@ -161,18 +163,23 @@ public class MarketController {
 		return "payDetail";
 	}
 
-//	@GetMapping("market_detail.ma")
-//	public String marketdetail(@RequestParam("productNo") int productNo,
-//	public String marketdetail(
-//							   Model model) {
-//		Tool tool = mkService.selectTool(productNo);
-//		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
-//		
+	@GetMapping("market_detail.ma")
+	public String marketdetail(@RequestParam("productNo") int productNo,
+							   Model model) {
+		Tool tool = mkService.selectTool(productNo);
+		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
+		Product p = mkService.selectProductSet(productNo);
+	
+		
+		
 //		System.out.println(options);
-//		model.addAttribute("tool", tool);
-//		model.addAttribute("options", options);
-//		return "market_detail";
-//	}
+//		System.out.println(tool);
+//		System.out.println(p);
+		model.addAttribute("tool", tool);
+		model.addAttribute("p", p);
+		model.addAttribute("options", options);
+		return "market_detail";
+	}
 	
 	@GetMapping("createqna.ma")
 	public String createqna() {
@@ -230,7 +237,7 @@ public class MarketController {
 //						  @RequestParam("cartCount")ArrayList<Cart>cartCount,
 //						  @RequestParam("productOption")ArrayList<Cart>productOption,
 //						  @RequestParam("UserNo")ArrayList<Cart>UserNo*/) {
-//
+
 //		
 //		int result = mkService.insertCart(c);
 //		
@@ -241,31 +248,28 @@ public class MarketController {
 //	
 	
 	@RequestMapping("insertCart.ma")
-	public void insertCart(
-				//			@ModelAttribute Cart c,
-							@RequestParam("productNo") String pNo,@RequestParam("cartCount") String cartCount,
-							@RequestParam("productOption") String pOption,@RequestParam("productOption2") String pOption2,
-							@RequestParam("usersNo") String usersNo,
-							HttpServletResponse response) {
-//		HashMap<String, String> result = new HashMap<String, String>();
+		public void insertCart(@ModelAttribute Cart c,
+				@RequestParam("preorderNo") int pNo
+				/*@RequestParam("productNo")ArrayList<Cart> productNo,
+				@RequestParam("cartCount")String cartCount,
+				@RequestParam("productOption")String productOption,
+				@RequestParam("usersNo")String usersNo*/,HttpServletResponse response) {
 		
-//		result.put("pNo", pNo);
-//		result.put("cartCount", cartCount);
-//		result.put("pOption", pOption);
-//		result.put("pOption2", pOption2);
-//		result.put("usersNo", usersNo);
-//
-//		mkService.insertCart(result);
 		System.out.println(pNo);
-//		System.out.println(c);
-//		ArrayList<Cart> list  = mkService.insertCart(c.getCartNo());
+		System.out.println(c);
+		int result = mkService.insertCart(c);
+//		ArrayList<Cart> list  = mkService.insertCart(c.getProductNo());
+		
+//			System.out.println(c);
+//			System.out.println(c.length);
+//		
+		
 		
 		response.setContentType("application/json; charset=utf-8");
-//		Gson gson = new Gson();//json객체로 보내고 싶은것
 		GsonBuilder gb = new GsonBuilder();
 		Gson gson = gb.create();
 		try {
-			gson.toJson("", response.getWriter());
+			gson.toJson(result, response.getWriter());
 		} catch (JsonIOException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -274,15 +278,7 @@ public class MarketController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	//장바구니 목록 삭제 
 	@RequestMapping(value="delBasket.ma", produces="application/json; charset=UTF-8")
 	public String delBasket(@RequestParam("productNo") int productNo) {
@@ -340,20 +336,20 @@ public class MarketController {
 		
 	}
 	
-	@RequestMapping(value="updateShipping.ma", produces="application/json; charset=UTF-8")
-	public void updateShipping(@RequestParam("shippingNo") int shippingNo, HttpServletResponse response) {
-		System.out.println("shippingNo : " + shippingNo);
-		
-		ShippingAddress sa = mkService.selectShippingForUpdate(shippingNo);
-		System.out.println("sa : " + sa);
-		response.setContentType("application/json; charset=UTF-8");
-		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
-		Gson gson = gb.create();
-		try {
-			gson.toJson(sa, response.getWriter());
-		} catch (JsonIOException | IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@RequestMapping(value="updateShipping.ma", produces="application/json; charset=UTF-8")
+//	public void updateShipping(@RequestParam("shippingNo") int shippingNo, HttpServletResponse response) {
+//		System.out.println("shippingNo : " + shippingNo);
+//		
+//		ShippingAddress sa = mkService.selectShippingForUpdate(shippingNo);
+//		System.out.println("sa : " + sa);
+//		response.setContentType("application/json; charset=UTF-8");
+//		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+//		Gson gson = gb.create();
+//		try {
+//			gson.toJson(sa, response.getWriter());
+//		} catch (JsonIOException | IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 }

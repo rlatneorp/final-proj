@@ -725,16 +725,17 @@ p b {
 				<div style="margin: auto; text-align: center;">
 				<br>
 					<h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
-						${ p.discountRate }20<span>%</span>
+						${ p.productSale }<span>%</span>
 						<!-- 할인율 -->
 					</h2>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						450,000원
+					<c:set var="total" value="${ p.productPrice - (p.productPrice * (p.productSale *0.01))}" />
+					<fmt:formatNumber value="${ total }" groupingUsed="true"/>
 					</h2>
 					&nbsp;&nbsp;
 					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-						540,000원
+					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>
 					</h2>
 				</div>
 			<div>
@@ -759,10 +760,10 @@ p b {
 							<label for="productOptionSet">${op.optionName}</label>
 							<select class='productOptionSet'  required>
 								<option value="">옵션을 선택해주세요</option>
-								<option value="${op.optionValue}">${op.optionValue}</option>
+								<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${op.optionName eq options[vs.index-1].optionName}">
-							<option value="${op.optionValue}">${op.optionValue}</option>
+							<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
 							</select>
@@ -770,14 +771,14 @@ p b {
 							<label for="productOption2Set">${op.optionName}</label>
 							<select class='productOption2Set'  required>
 								<option class='productOption2Set' >옵션을 선택해주세요.</option>
-								<option value="${op.optionValue}">${op.optionValue}</option>
+								<option value="${op.optionNo}">${op.optionValue}</option>
 						</c:if>
 						<c:if test="${vs.last}">
 							</select>
 						</c:if>
 					</c:forEach>
 						
-				
+				<input type="hidden" value="0" class="preorderNo">
 
 <!-- 					<label for="productOption">색상</label> -->
 <!-- 					<select class='productOption'  required> -->
@@ -827,7 +828,6 @@ p b {
 			</div>
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button>
-				
 
 		</div>
 	</main>
@@ -1132,10 +1132,10 @@ p b {
 </div><!-- 전체를 감싸는 박스 -->
 
 
-
 	<script>
 	
 	window.onload = function(){
+		
 	
 	$('.accordion_i_tit').click(function(){
 		$('.accordion_i_cont').toggle(400);
@@ -1191,45 +1191,43 @@ p b {
    
       
       let productOp = []; 
+      let opTextBox = []; 
+      
     	for( prOp  of productOption2Set){ 
-   		 productOp.unshift(prOp.value);
-   		 if(prOp.value == ""){
+   		 productOp.unshift(prOp.innerText);
+   		 
+   		 for( opText of productOption2Set){
+   			opTextBox.unshift(opText.value);
+   		 }
+   		 if(prOp.value == "옵션을 선택해주세요."){
    			productOp.pop();
    		 }
    	 }
-
-    	productOptionSet.addEventListener("change", function(e){
+    	productOptionSet.addEventListener("change", function(){
                 let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
                 let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-                console.log(result);
                 if ( result != "") { 
-					o = productOp;                	
+					o = productOp;
+					console.log(productOp);
 	                }else if(result == ""){
 	                	o = ["옵션을 선택해주세요."];
 		             }
-                		
-	                if((productOption2Set.value==='') == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+                	
+	                if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
 	             	   productOption2Set.options.length=0;
 	                }
                 
                 for ( let i = 0; i < o.length; i++) {
-                	if( i == 0){
-                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" seleted>'+ o[ i ] + '</option>' );  //첫번쨰 값은 "옵션을 선택해주요"로 나오게 한다.
-                	}else{
-                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ o[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
-                	}
-                			
+                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
                   }
-                
-    		
-    	
     	})
     	
         productOption2Set.addEventListener("change", function(){
              const select =  $('.productOptionSet option:selected');
              const select2 = $('.productOption2Set option:selected');
              
-      		let optionName = "캠핑용 후라이팬"+select.val()+" "+select2.val(); 
+             
+      		let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
       		const opSearch = document.getElementsByClassName('opSearch');
 
       		let YN = "Y";
@@ -1242,13 +1240,14 @@ p b {
       			}
       			
       		}
+      		
 	      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
 						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-								 							+'<span class="opSearch">캠핑용 후라이팬'+select.val()+" "+select2.val()+'</span>'
-								 							+'<input type="hidden" name="productNo" value="1000">'
-								 							+'<input type="hidden" name="productName" value="캠핑용 후라이팬">'
-								 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+								 							+'<span class="opSearch">캠핑용 후라이팬'+select.text()+" "+select2.text()+'</span>'
+								 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
+								 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
+								 							+'<input type="hidden" name="productPrice" value="${total}">'
 								 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
 								 							+'<input type="hidden" name="productOption2" value='+select2.val()+'>'
 								 							+'<input type="hidden" name="usersNo" value="45">'
@@ -1264,19 +1263,17 @@ p b {
 								 								+'<span>'
 								 							+'</button>'
 								 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-								 						+'<input type="hidden" name="discountRate" value="${p.discountRate}">'
+								 						+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
 								 						+'</div>'
 								 						 +'<br>'
 								 					+'</div>');
-							
+							console.log(select.val());
+							console.log(select2.val());
 	      			}
 		  					
       	})
         		
-               
-        
-        
-      
+    	
    function priceToString(productPrice) {
        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
    }
@@ -1301,9 +1298,7 @@ $(function(){
         var cartCount = $(".cartCount").val();
         var productOption = $(".productOption").val();
         var productOption2 = $(".productOption2").val();
-        
-        
-        
+        var preorderNo = 0;
      console.log($("input[name='productNo']").val());
         
         var productNoValues=[];
@@ -1320,7 +1315,8 @@ $(function(){
 	        	"cartCount":cartCountValues,
 	        	"productOption":productOptionValues, 
 	        	"productOption2":productOption2Values,
-	        	"usersNo":usersNoValues};
+	        	"usersNo":usersNoValues,
+	        	"preorderNo":preorderNo};
         
         $("input[name='productNo']").each(function(){
         	productNoValues.push($(this).val());
@@ -1344,8 +1340,7 @@ $(function(){
         
         
         console.log(allData);
-        const count = 0;
-        
+        let count = 0;
 	        for(i=0; i<productNoValues.length; i++){
 		        $.ajax({
 		            url: "insertCart.ma",
@@ -1355,11 +1350,14 @@ $(function(){
 			        	"cartCount":cartCountValues[i],
 			        	"productOption":productOptionValues[i], 
 			        	"productOption2":productOption2Values[i],
-			        	"usersNo":usersNoValues[i]},
-	// 	            contentType: "application/json; charset=utf-8",
-		            success: allData =>{
-		            	if(allData == "success") {
-		                count++;
+			        	"usersNo":usersNoValues[i],
+			        	"preorderNo":$(".preorderNo").val()},
+		            success: preNo =>{
+		            	$(".preorderNo").val(preNo);
+		            	console.log(preNo);
+		            	console.log($(".preorderNo").val());
+		            	if(preNo != 0) {
+		                	count++;
 		            	}
 		            },
 		            error: allData => {

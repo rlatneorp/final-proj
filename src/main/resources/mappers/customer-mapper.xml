@@ -20,7 +20,7 @@
 	</select>
 	
 	<select id="nBoardList" resultMap="CustomerResultSet">
-		select *
+		select faq_no, users_no, faq_title, faq_content, faq_date, faq_status, faq_type
 		from faq
 		where faq_status = 'Y' and faq_type in (1,null)  
 		order by faq_no

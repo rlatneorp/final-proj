@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -273,6 +274,7 @@ public class RecipeController {
 		}
 	}
 	
+//	레시피 삭제
 	@PostMapping("deleteRecipe.rc")
 	public String deleteRecipe(@RequestParam("foodNo") int foodNo) {
 		
@@ -287,6 +289,7 @@ public class RecipeController {
 		}
 	}
 	
+//	레시피 수정 폼으로
 	@PostMapping("updateForm.rc")
 	public ModelAndView updateForm(@RequestParam("foodNo") int foodNo, @RequestParam("page") int page, ModelAndView mv) {
 		
@@ -305,6 +308,7 @@ public class RecipeController {
 		return mv;
 	}
 	
+//	페시피 수정
 	@PostMapping("updateRecipe.rc")
 	public String updateRecipe(HttpServletRequest request, Model model, @ModelAttribute Recipe r,
 									 @ModelAttribute RecipeOrder rc, @RequestParam(value= "thum", required = false) MultipartFile thum,
@@ -449,8 +453,6 @@ public class RecipeController {
 			updateOrderResult = rService.insertOrder(orc);
 		}
 		
-		
-		
 //		완성 사진 수정
 		ArrayList<Image> comImgList = new ArrayList<>();
 		ArrayList<String> comDelRename = new ArrayList<>();
@@ -500,7 +502,6 @@ public class RecipeController {
 					comImgList.add(img);
 				}
 			}
-			
 			updateComResult = rService.insertAttm(comImgList);
 		}
 		
@@ -559,4 +560,27 @@ public class RecipeController {
 			throw new RecipeException("레시피 수정에 실패하였습니다.");
 		}
 	}
+	
+	@RequestMapping(value="recentRecipe.rc", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Recipe> recentRecipe(HttpServletRequest request, Model model){
+		
+		ArrayList<Recipe> rList = rService.recentRecipeList();
+		
+		model.addAttribute("rList", rList);
+		
+		return rList;
+	}
+	
+	@RequestMapping(value="mostRecipe.rc", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Recipe> mostRecipe(HttpServletRequest request, Model model){
+		
+		ArrayList<Recipe> rList = rService.mostRecipeList();
+		
+		model.addAttribute("rList", rList);
+		
+		return rList;
+	}
+	
 }

@@ -99,5 +99,13 @@ public class RecipeDAO {
 		return sqlSession.insert("recipeMapper.insertThum", img);
 	}
 
+	public ArrayList<Recipe> recentRecipeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.recentRecentList");
+	}
+
+	public ArrayList<Recipe> mostRecipeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.mostRecipeList");
+	}
+
 
 }

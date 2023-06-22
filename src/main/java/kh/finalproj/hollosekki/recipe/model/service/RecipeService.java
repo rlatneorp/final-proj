@@ -47,5 +47,9 @@ public interface RecipeService {
 
 	int insertThum(Image img);
 
+	ArrayList<Recipe> recentRecipeList();
+
+	ArrayList<Recipe> mostRecipeList();
+
 
 }

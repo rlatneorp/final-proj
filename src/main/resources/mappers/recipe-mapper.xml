@@ -144,6 +144,20 @@
 		insert into image values(new_image_no, #{imageDivideNo}, 2, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, 0)
 	</insert>
 	
+	<select id="recentRecentList" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+		order by recipe_modify_date desc
+	</select>
+	
+	<select id="mostRecipeList" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+		order by recipe_count desc
+	</select>
+	
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>

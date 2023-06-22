@@ -124,4 +124,14 @@ public class RecipeServiceImpl implements RecipeService{
 	public int insertThum(Image img) {
 		return rDAO.insertThum(sqlSession, img);
 	}
+	
+	@Override
+	public ArrayList<Recipe> recentRecipeList() {
+		return rDAO.recentRecipeList(sqlSession);
+	}
+	
+	@Override
+	public ArrayList<Recipe> mostRecipeList() {
+		return rDAO.mostRecipeList(sqlSession);
+	}
 }

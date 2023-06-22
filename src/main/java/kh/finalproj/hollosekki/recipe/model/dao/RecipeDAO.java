@@ -87,4 +87,17 @@ public class RecipeDAO {
 		return sqlSession.update("recipeMapper.updateRecipe", r);
 	}
 
+	public int deleteListImg(SqlSessionTemplate sqlSession, ArrayList<String> delOrderImgRename) {
+		return sqlSession.delete("recipeMapper.deleteListImg", delOrderImgRename);
+	}
+
+	public int deleteComImg(SqlSessionTemplate sqlSession, ArrayList<String> comDelRename) {
+		return sqlSession.delete("recipeMapper.deleteComImg", comDelRename);
+	}
+
+	public int insertThum(SqlSessionTemplate sqlSession, Image img) {
+		return sqlSession.insert("recipeMapper.insertThum", img);
+	}
+
+
 }

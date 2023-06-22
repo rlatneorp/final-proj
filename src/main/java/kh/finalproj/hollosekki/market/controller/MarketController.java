@@ -353,6 +353,9 @@ public class MarketController {
 	@RequestMapping("insertCart.ma")
 		public void insertCart(@ModelAttribute Cart c,HttpServletResponse response) {
 
+		
+//		System.out.println(pNo);
+		System.out.println(c.getProductNo());
 		int result = mkService.insertCart(c);
 			System.out.println(c);
 		

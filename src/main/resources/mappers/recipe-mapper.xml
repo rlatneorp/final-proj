@@ -119,10 +119,31 @@
 	
 	<update id="updateRecipe">
 		update recipe set recipe_name=#{recipeName}, category_ingredient=#{categoryIngredient}, CATEGORY_SITUATION=#{categorySituation},
-						  CATEGORY_TYPE=#{categoryType}, RECIPE_DIFFICULTY=#{recipeDifficulty}, RECIPE_TIME={recipeTime},
+						  CATEGORY_TYPE=#{categoryType}, RECIPE_DIFFICULTY=#{recipeDifficulty}, RECIPE_TIME=#{recipeTime},
 						  RECIPE_CONTENT=#{recipeContent}, RECIPE_MODIFY_DATE=sysdate
 		where food_no=#{foodNo}
 	</update>
+	
+	<delete id="deleteListImg">
+		delete from recipe_order
+		where RECIPE_RENAMENAME in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+		#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteComImg">
+		delete from image
+		where image_renamename in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<insert id="insertThum">
+		insert into image values(new_image_no, #{imageDivideNo}, 2, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, 0)
+	</insert>
+	
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>

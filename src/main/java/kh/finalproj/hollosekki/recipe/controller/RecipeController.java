@@ -305,42 +305,87 @@ public class RecipeController {
 		return mv;
 	}
 	
-//	@PostMapping("updateReicpe.rc")
-//	public ModelAndView updateRecipe(HttpServletRequest request, ModelAndView mv, @ModelAttribute Recipe r,
-//									 @ModelAttribute RecipeOrder rc, @RequestParam("thum") MultipartFile thum,
-//									 @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
-//									 @RequestParam("comPic") ArrayList<MultipartFile> comFiles,
-//									 @RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
-//									 @RequestParam("delComImg") String[] delComImg) {
-//		
-////		썸네일 변경/삭제
+	@PostMapping("updateRecipe.rc")
+	public String updateRecipe(HttpServletRequest request, Model model, @ModelAttribute Recipe r,
+									 @ModelAttribute RecipeOrder rc, @RequestParam(value= "thum", required = false) MultipartFile thum,
+									 @RequestParam(value = "orderFile", required = false) ArrayList<MultipartFile> orderFiles,
+									 @RequestParam(value = "comPic", required = false) ArrayList<MultipartFile> comFiles,
+									 @RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
+									 @RequestParam("delComImg") String[] delComImg, @RequestParam("page") int page) {
+		
+		int updateRecipeResult = 0;
+		updateRecipeResult = rService.updateRecipe(r);
+		
+//		썸네일 변경/삭제
+		ArrayList<Image> thumImgList = new ArrayList<>();
+		int thumResult = 0;
+		String delThumRename = "";
+		if(thum != null) {
+			String thumImg = thum.getOriginalFilename();
+			if(!thumImg.equals("")) {
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				String savedPath = root + "\\uploadFiles";
+				
+				delThumRename = delThum.split("/")[0];
+				
+				int thumDelResult = 0;
+				thumDelResult = rService.deleteThumImg(delThumRename);
+				
+				File file = new File(savedPath + "\\" + delThumRename);
+				
+				if(file.exists()) {
+					file.delete();
+				}
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+				int ranNum = (int) (Math.random() * 100000);
+				String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
+						+ thumImg.substring(thumImg.lastIndexOf("."));
+				
+				try {
+					thum.transferTo(new File(savedPath + "\\" + renameFileName));
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
+				String savePath = savedPath + "\\" + renameFileName;
+				
+				Image img = new Image();
+				img.setImagePath(savePath);
+				img.setImageOriginalName(thumImg);
+				img.setImageRenameName(renameFileName);
+				img.setImageLevel(0);
+				img.setImageDivideNo(r.getFoodNo());
+				
+				thumResult = rService.insertThum(img);
+			}
+		}
+		
 //		ArrayList<Image> thumImgList = new ArrayList<>();
-//		String thumImg = thum.getOriginalFilename();
-//		if(!thumImg.equals("")) {
-//			String[] thumImgArr = saveFile(thum, request);
-//			if(thumImgArr[1] != null) {
-//				Image img = new Image();
-//				img.setImagePath(thumImgArr[0]);
-//				img.setImageOriginalName(thumImg);
-//				img.setImageRenameName(thumImgArr[1]);
-//				img.setImageLevel(0);
-//				
-//				thumImgList.add(img);
+//		if(thum != null) {
+//			String thumImg = thum.getOriginalFilename();  // disabled 에서 display=hidden으로 바꾼다음 해보기
+//			if(!thumImg.equals("")) {
+//				String[] thumImgArr = saveFile(thum, request);
+//				if(thumImgArr[1] != null) {
+//					Image img = new Image();
+//					img.setImagePath(thumImgArr[0]);
+//					img.setImageOriginalName(thumImg);
+//					img.setImageRenameName(thumImgArr[1]);
+//					img.setImageLevel(0);
+//					
+//					thumImgList.add(img);
+//				}
 //			}
 //		}
 //		
-//		String thumDelRename = null;
-//		Integer thumDelLevel = null;
+//		String thumDelRename = "";
 //		
 //		if(!delThum.equals("none")) {
 //			String[] split = delThum.split("/");
 //			thumDelRename = split[0];
-//			thumDelLevel = Integer.parseInt(split[1]);
 //		}
 //		
 //		int thumDelResult = 0;
-//		int updateRecipeResult = 0;
-//		boolean existBeforeImg = true;
+//		
 //		
 //		if(!thumDelRename.isEmpty()) {
 //			thumDelResult = rService.deleteThumImg(thumDelRename);
@@ -348,17 +393,170 @@ public class RecipeController {
 //				deleteFile(thumDelRename, request);
 //			}
 //		}
-//		
-//		updateRecipeResult = rService.updateRecipe(r);
-//		
 //		int updateThumImg = 0;
 //		if(!thum.isEmpty()) {
 //			updateThumImg = rService.insertAttm(thumImgList);
 //		}
+		
+//		레시피 순서 변경/삭제
+		ArrayList<RecipeOrder> orc = new ArrayList<>();
+		String[] orderArr = rc.getRecipeOrder().split(",abc123abc,");
+		orderArr[orderArr.length - 1] = orderArr[orderArr.length - 1].replace(",abc123abc", "");
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savedPath = root + "\\uploadFiles";
+		File folder = new File(savedPath);
+		String[] recipeRe = rc.getRecipeRenameName().split(",");
+		int updateOrderResult = 0;
+		if(orderFiles != null) {
+			for(int i = 0; i < orderArr.length; i++) {
+				String recipeOriginal = orderFiles.get(i).getOriginalFilename();
+				
+				if(orderFiles.get(i) != null && !recipeOriginal.equals("")) {
+					File file = new File(savedPath + "\\" + recipeRe);
+					
+					if(file.exists()) {
+						file.delete();
+					}
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+					int ranNum = (int) (Math.random() * 100000);
+					String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
+							+ recipeOriginal.substring(recipeOriginal.lastIndexOf("."));
+
+					String renamePath = folder + "\\" + recipeRe;
+					
+					try {
+						orderFiles.get(i).transferTo(new File(renamePath));
+					} catch (IllegalStateException | IOException e) {
+						e.printStackTrace();
+					}
+					
+					RecipeOrder rcc = new RecipeOrder();
+					if(i < orderArr.length) {
+						if(!orderArr[i].equals("")) {
+							rcc.setRecipeOrder(orderArr[i]);
+							rcc.setRecipeOriginalName(recipeOriginal);
+							rcc.setRecipeRenameName(renameFileName);
+							rcc.setRecipeProcedure(i + 1);
+							rcc.setRecipeImagePath(renamePath);
+							
+							orc.add(rcc);
+						}
+					}
+				}
+			}
+			updateOrderResult = rService.insertOrder(orc);
+		}
+		
+		
+		
+//		완성 사진 수정
+		ArrayList<Image> comImgList = new ArrayList<>();
+		ArrayList<String> comDelRename = new ArrayList<>();
+		int updateComResult = 0;
+		int delComResult = 0;
+		
+		if(comFiles != null) {
+			for(int i = 0; i < comFiles.size(); i++) {
+				String comOriginal = comFiles.get(i).getOriginalFilename();
+				
+				if(comFiles.get(i) != null && !comOriginal.equals("")) {
+					
+					for(String rename : delComImg) {
+						if(!rename.equals("none")) {
+							String[] split = rename.split("/");
+							comDelRename.add(split[0]);
+						}
+					}
+					if(!comDelRename.isEmpty()) {
+						delComResult = rService.deleteComImg(comDelRename);
+						if(delComResult > 0) {
+							for(String rename : comDelRename) {
+								deleteFile(rename, request);
+							}
+						}
+					}
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmsss");
+					int ranNum = (int) (Math.random() * 100000);
+					String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
+							+ comOriginal.substring(comOriginal.lastIndexOf("."));
+					
+					String renamePath = folder + "\\" + renameFileName;
+					
+					try {
+						comFiles.get(i).transferTo(new File(renamePath));
+					} catch (IllegalStateException | IOException e) {
+						e.printStackTrace();
+					}
+					
+					Image img = new Image();
+					img.setImagePath(renamePath);
+					img.setImageOriginalName(comOriginal);
+					img.setImageRenameName(renameFileName);
+					img.setImageLevel(2);
+					img.setImageDivideNo(r.getFoodNo());
+					
+					comImgList.add(img);
+				}
+			}
+			
+			updateComResult = rService.insertAttm(comImgList);
+		}
+		
+//		ArrayList<Image> comImgList = new ArrayList<>();
+//		for(int i = 0; i < comFiles.size(); i++) {
+//			MultipartFile comFile = comFiles.get(i);
+//			if(comFile != null && !comFile.isEmpty()) {
+//				String[] comFileArr = saveFile(comFile, request);
+//				if(comFileArr[1] != null) {
+//					Image img = new Image();
+//					
+//					img.setImagePath(comFileArr[0]);
+//					img.setImageOriginalName(comFile.getOriginalFilename());
+//					img.setImageRenameName(comFileArr[1]);
+//					img.setImageLevel(2);
+//					
+//					comImgList.add(img);
+//				}
+//			}
+//		}
 //		
-////		레시피 순서 변경/삭제
+//		ArrayList<String> comDelRename = new ArrayList<>();
 //		
+//		for(String rename : delComImg) {
+//			if(!rename.equals("none")) {
+//				String[] split = rename.split("/");
+//				comDelRename.add(split[0]);
+//			}
+//		}
 //		
-//		return null;
-//	}
+//		int recipeComResult = 0;
+//		if(!comDelRename.isEmpty()) {
+//			recipeComResult = rService.deleteComImg(comDelRename);
+//			if(recipeComResult > 0) {
+//				for(String rename : comDelRename) {
+//					deleteFile(rename, request);
+//				}
+//			}
+//		}
+//		
+//		int updateComImg = 0;
+//		if(!comImgList.isEmpty()) {
+//			updateComImg = rService.insertAttm(comImgList);
+//		}
+		
+		if(updateRecipeResult + thumResult + updateOrderResult + updateComResult == thumImgList.size() + orc.size() + comImgList.size() + 1) {
+			if(delThumRename.length() + comDelRename.size() == delThum.length() + delComImg.length && updateComResult + updateOrderResult + thumResult == 0) {
+				return "redirect:recipeDetail.rc";
+			} else {
+				model.addAttribute("rId", r.getUsersId());
+				model.addAttribute("rNo", r.getFoodNo());
+				model.addAttribute("page", page);
+				return "redirect:recipeDetail.rc";
+			}
+		} else {
+			throw new RecipeException("레시피 수정에 실패하였습니다.");
+		}
+	}
 }

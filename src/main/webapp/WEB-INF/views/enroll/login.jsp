@@ -174,7 +174,7 @@
   	var naverLogin = new naver_id_login("TNwmPDnti1AIGrKuJLCM", "http://localhost:8084/hollosekki/login.en");
   	var state = naverLogin.getUniqState();
   	naverLogin.setButton("green", 3, 48);
-  	naverLogin.setDomain("http://localhost:8084");
+  	naverLogin.setDomain("http://hollosekki/");
   	naverLogin.setState(state);
   	naverLogin.init_naver_id_login();
   	

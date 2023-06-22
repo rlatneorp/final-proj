@@ -5,9 +5,8 @@ public class SocialLogin {
 	private String socialProfileImg;
 	
 	public SocialLogin() {}
-	
-	public SocialLogin(String socialId, String socialProfileImg) {
-		super();
+
+	public SocialLogin(String socialId, String socialProfileImg, int usersNo) {
 		this.socialId = socialId;
 		this.socialProfileImg = socialProfileImg;
 	}
@@ -28,11 +27,12 @@ public class SocialLogin {
 		this.socialProfileImg = socialProfileImg;
 	}
 
+
 	@Override
 	public String toString() {
-		return "SocialLogin [socialId=" + socialId + ", socialProfileImg=" + socialProfileImg + "]";
+		return "SocialLogin [socialId=" + socialId + ", socialProfileImg=" + socialProfileImg
+				+ "]";
 	}
-	
 	
 	
 	

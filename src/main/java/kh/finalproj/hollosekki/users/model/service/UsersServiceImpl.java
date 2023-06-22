@@ -67,26 +67,6 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.deleteInfo(sqlSession, usersNo);
 	}
 	
-//	@Override
-//	public ArrayList<Follow> selectFollowing(int usersNo) {
-//		return uDAO.selectFollowing(sqlSession, usersNo);
-//	}
-//	
-//	@Override
-//	public ArrayList<Follow> selectFollower(int usersNo) {
-//		return uDAO.selectFollower(sqlSession, usersNo);
-//	}
-//
-//	@Override
-//	public Users selectFollowInfo(int followNo) {
-//		return uDAO.selectFollowInfo(sqlSession, followNo);
-//	}
-//
-//	@Override
-//	public Image selectFollowImage(int followNo) {
-//		return uDAO.selectFollowImage(sqlSession, followNo);
-//	}
-	
 	@Override
 	public ArrayList<HashMap<String, Object>> selectFollowing(int usersNo) {
 		return uDAO.selectFollowing(sqlSession, usersNo);
@@ -97,15 +77,13 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.selectFollower(sqlSession, usersNo);
 	}
 	
-//	@Override
-//	public ArrayList<Follow> selectMutualFollow(int followingNo) {
-//		return uDAO.selectMutualFollow(sqlSession, followingNo);
-//	}
-//	
-//	@Override
-//	public boolean checkMutualFollow(int usersNo, String[] followerNos) {
-//		return uDAO.checkMutualFollow(sqlSession, usersNo, followerNos);
-//	}
+	@Override
+	public int deleteFollow(HashMap<String, Object> map) {
+		return uDAO.deleteFollow(sqlSession, map);
+	}
 	
-	
+	@Override
+	public int insertFollow(HashMap<String, Object> map) {
+		return uDAO.insertFollow(sqlSession, map);
+	}
 }

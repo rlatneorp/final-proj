@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,7 @@
 	.profile-img{object-fit: cover; object-position: center;}	
 	.users-nickname{font-weight: bold; font-size: 18px;}
 	.users-id{font-size: 15px;}
-	.follow-info{display: flex; justify-content: center;}
+	.follow-info{display: flex; justify-content: center; cursor:pointer;}
 	.follow{
 		border: 2px solid black; border-radius: 20px;; 
 		width : 100px; height: 35px;
@@ -34,6 +35,7 @@
 		cursor: pointer;
 		padding: 3px;}
 	.follow:active{box-shadow: 0px 1px 0px black; transform: translateY(5px);}
+	.follwing-profile{width:50px; height:50px; border-radius: 50%; overflow: hidden;}
 	
 	.list{width: 880px;}
 	.list-menu-out{display: flex; }
@@ -123,45 +125,83 @@
 	
 	.lightgray{color: ightgray;}
 	.flex{display: flex;}
+	
+	
+	/* 모달 */
+	#modal{
+		border: 1px solid black; width: 500px; height: 600px;
+		border-radius: 15px; margin: 0 auto;
+	}
+	.modal-header{background: #B0DAFF;}
+	.followName{
+		font-size: 17px; font-weight: bold;
+		margin-right: 200px; margin-top: 10px; margin-left: 10px;
+		width: 100px;
+	}
+	.modalFollow{
+		border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		background: rgba(224, 224, 224, 0.29);
+		color: rgba(231, 76, 60, 0.86);
+		margin-top: 10px;
+	}
+	.modalFollower{
+		border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		background: #B0DAFF;
+	}
+    #modalP{
+    	width: 150px;
+  		height: 150px;
+        border-radius: 50%;
+        cursor: pointer;
+        object-fit: cover; object-position: center;
+    }
 </style>
 </head>
 
 <body>
 	<%@ include file="../common/top.jsp"%>
 	<br><br>
-	
 	<div class="out-div">
 		<div class="users-info">
 			<div class="users-profile-img-out">
 				<div class="users-profile-img">
-					<c:if test="${ social == null }"> <!-- 일반유저일때 -->
-						<c:if test="${ image == null }"> <!-- 일반유저-프사없을때 -->
+					<c:if test="${ social eq null }"> <!-- 일반유저일때 -->
+						<c:if test="${ userImage eq null }"> <!-- 일반유저-프사없을때 -->
 							<img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" >
 						</c:if>
-						<c:if test="${ image != null }"> <!-- 일반유저-프사있을때 -->
-							<img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" >
+						<c:if test="${ userImage ne null }"> <!-- 일반유저-프사있을때 -->
+							<img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ userImage.imageRenameName }" >
 						</c:if>
 					</c:if>
-					<c:if test="${ social != null }"> <!-- 소셜유저일때 -->
+					<c:if test="${ social ne null }"> <!-- 소셜유저일때 -->
 						<img class="profile-img" src="${ social.social_profile_img }" >
 					</c:if>
-					
 				</div>
 			</div>
 			<div class="users-nickname">${ user.nickName }</div>
 			<div class="users-id">(${ user.usersId })</div><br>
-			<c:if test="${ user.usersSelfIntro == null }">
+			<c:if test="${ user.usersSelfIntro eq null }">
 				<div class="users-intro" style="color:gray;">자기소개글이 없습니다.</div><br>
 			</c:if>
-			<c:if test="${ user.usersSelfIntro != null }">
+			<c:if test="${ user.usersSelfIntro ne null }">
 				<div class="users-intro">${ user.usersSelfIntro }</div><br>
 			</c:if>
-			<div class="follow-info">
-				<a>팔로워 200 </a><i class="bi bi-dot lightgray"></i><a>팔로잉 100</a>
-			</div>
-			<div class="follow">
-				<a>팔로우</a>
-			</div>
+			
+			<c:if test="${ loginUser != null }">
+				<div class="follow-info flex">
+					<div data-bs-toggle="modal" data-bs-target="#follower"><a>팔로워 ${ follow } </a></div>
+					<i class="bi bi-dot lightgray"></i>
+					<div data-bs-toggle="modal" data-bs-target="#following"><a>팔로잉 ${ following }</a></div>
+				</div>
+				<div class="follow">
+					<a>팔로우</a>
+				</div>
+			</c:if>
+			
 		</div>
 		<div class="list">
 			<div class="list-menu-out">
@@ -175,15 +215,18 @@
 			
 				<!-- 메뉴1. 레시피목록 -->
 				<div class="recipe-contents flex">
-					<c:if test="${ rList == null }">
+					<c:if test="${ rList eq null }">
 						<div style="text-align: center; font-size: 20px;">등록한 레시피가 없습니다.</div>
 					</c:if>
-					<c:if test="${ rList !=null }">
+					<c:if test="${ rList ne null }">
 						<c:forEach items="${ rList }" var="r">
-							<c:forEach items="${ iList }" var="i">
-								<c:if test="${ r.foodNo eq i.imageDivideNo }">
+							<c:forEach items="${ recipeImageList}" var="ri">
+								<c:if test="${ r.foodNo eq ri.imageDivideNo }">
 									<div class="recipe-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ r.foodNo }' + '&page=' + '${ page }'">
-										<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }"></div>
+<%-- 										<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }"></div> --%>
+										<c:if test="${ ri.imageDivideNo == r.foodNo }">
+											<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${ri.imageRenameName}"></div>
+										</c:if>	
 										<div class="recipe-name">${ r.recipeName }</div>
 										<div>
 											${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ r.categorySituation }<i class="bi bi-dot lightgray"></i>${ r.categoryType }
@@ -324,60 +367,170 @@
 				<div class="bookmark-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
 					<div style="display: flex;">
-						<div class="recipe-content">
-							<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food4.jpg"></div>
-							<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
-							<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-							<div>
-								<a>채소</a>
-								<i class="bi bi-dot lightgray"></i>
-								<a>비건</a>
-								<i class="bi bi-dot lightgray"></i>
-								<a>국</a>
-							</div>
-							<div style="margin: 10px;">작성자닉넴</div>
-							<div class="recipe-date">2023-06-16</div>
-						</div>
-						<div class="recipe-content">
-							<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food5.jpeg"></div>
-							<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
-							<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-							<div>
-								<a>채소</a>
-								<i class="bi bi-dot lightgray"></i>
-								<a>비건</a>
-								<i class="bi bi-dot lightgray"></i>
-								<a>국</a>
-							</div>
-							<div style="margin: 10px;">작성자닉넴</div>
-							<div class="recipe-date">2023-06-16</div>
-						</div>
+						<c:forEach items="${ bList }" var="b">
+							<c:forEach items="${ aList }" var="a">
+								<c:if test="${ b.divisionNo == a.foodNo }">
+									<div class="recipe-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
+										<c:forEach items="${ recipeImageList}" var="ri">
+											<c:if test="${ ri.imageDivideNo == a.foodNo }">
+												<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${ri.imageRenameName}"></div>
+											</c:if>	
+										</c:forEach>
+										<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
+										<div class="recipe-name">${ a.recipeName }</div>
+										<div>
+											${ a.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }
+										</div>
+										<c:forEach items="${ hList }" var="h">
+											<c:if test="${ h.usersNo == a.usersNo }">
+												<div style="margin: 10px;">${ h.usersName }</div>
+												<div class="recipe-date">${ a.recipeCreateDate }</div>
+											</c:if>
+										</c:forEach>
+									</div>
+								</c:if>
+							</c:forEach>
+						</c:forEach>
 					</div>
 					<br>
 					
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
 					<div style="display: flex;">
-						<div class="recipe-content">
-						<div class="recipe-img-div"><img class="recipe-img" src="resources/images/food6.jpeg"></div>
-						<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
-						<div class="recipe-name">바삭바삭 맛있는 치킨</div>
-						<div>
-							<a>튼튼밥상</a>
-						</div>
-						<div style="margin: 10px;">영양사 이름</div>
-						<div class="recipe-date">2023-06-16</div>
-					</div>
+						
+						<c:if test="${ bList.isEmpty()}">
+							스크랩한 식단이 없습니다
+						</c:if>
+						
+						<c:forEach items="${ bList }" var="b">
+							<c:forEach items="${ mList }" var="m">
+								<c:if test="${ b.divisionNo == m.productNo }">
+									<div class="recipe-content">
+										<c:forEach items="${ menuImageList}" var="mi">
+											<c:if test="${ mi.imageDivideNo == m.productNo }">
+												<div class="recipe-img-div"><img class="recipe-img" src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}"></div>
+											</c:if>
+										</c:forEach>
+										<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
+										<div class="recipe-name">${ m.menuName }</div>
+										<div>
+											<c:if test="${ m.menuType == 1 }"><a>다이어트</a></c:if>
+											<c:if test="${ m.menuType == 2 }"><a>몸보신</a></c:if>
+											<c:if test="${ m.menuType == 3 }"><a>든든밥상</a></c:if>
+											<c:if test="${ m.menuType == 4 }"><a>고단백</a></c:if>
+											<c:if test="${ m.menuType == 5 }"><a>채식</a></c:if>
+										</div>
+										<c:forEach items="${ pList }" var="p">
+											<c:if test="${ p.productNo == m.productNo }">
+												<c:forEach items="${ hList }" var="h">
+													<c:if test="${ h.usersNo == p.usersNo }">
+														<div style="margin: 10px;">${ h.usersName }</div>
+														<div class="recipe-date">${ p.productCreateDate }</div>
+													</c:if>
+												</c:forEach>
+											</c:if>
+										</c:forEach>
+									</div>
+								</c:if>
+							</c:forEach>
+						</c:forEach>
 					</div>
 				</div>
 			</div>
-			
-			
 		</div>
 	</div>
 	
 	
 	<br><br><br>
 	<%@ include file="../common/footer.jsp"%>
+	
+	<!-- 팔로우, 팔로잉 모달 -->
+	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="followingLabel">팔로잉  ${ following }명</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<c:forEach items="${ followingLsit }" var="ing"> <!-- 해당 사용지의 팔로잉 목록 -->
+						
+						<div class="flex" style="justify-content: center;">
+							<c:if test="${ fn:contains(ing.USERS_PW, '$2a$')}"> <!-- 일반 유저면 -->
+								<c:if test="${ ing.IMAGE_NO != null }">
+									<div class="follwing-profile"><img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ ing.IMAGE_RENAMENAME }" ></div>
+								</c:if>
+								<c:if test="${ ing.IMAGE_NO == null }">
+									<div class="follwing-profile"><img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" ></div>
+								</c:if>
+							</c:if>
+							
+							<c:if test="${ !fn:contains(ing.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 -->
+								<div class="follwing-profile"><img class="profile-img" src="${ ing.SOCIAL_PROFILE_IMG }"/></div>
+							</c:if>
+							
+							<div><label class="followName">${ ing.NICKNAME }</label></div>
+							
+							<c:forEach items="${ lList }" var="l">
+								<c:if test="${ ing.USERS_NO eq l.USERS_NO}">
+									<div><button class="modalFollow">언팔로우</button></div>
+								</c:if>
+								<c:if test="${ ing.USERS_NO ne l.USERS_NO}">
+									<div><button class="modalFollow">팔로우</button></div>
+								</c:if>
+							</c:forEach>
+						</div><br>
+					</c:forEach>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="followingLabel">팔로워  ${ follow }명</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<c:forEach items="${ followList }" var="wo">
+						<div class="flex" style="justify-content: center;">
+							<c:if test="${ fn:contains(wo.USERS_PW, '$2a$')}"> <!-- 일반 유저면 -->
+								<c:if test="${ wo.IMAGE_NO != null }">
+									<div class="follwing-profile"><img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ wo.IMAGE_RENAMENAME }" ></div>
+								</c:if>
+								<c:if test="${ wo.IMAGE_NO == null }">
+									<div class="follwing-profile"><img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" ></div>
+								</c:if>
+							</c:if>
+							
+							<c:if test="${ !fn:contains(wo.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 -->
+								<div class="follwing-profile"><img class="profile-img" src="${ wo.SOCIAL_PROFILE_IMG }"/></div>
+							</c:if>
+							
+							<div><label class="followName">${ wo.NICKNAME }</label></div>
+							
+							<c:if test="${ !empty lList}">
+								<c:forEach items="${ lList }" var="l">
+									<c:if test="${ fn:contains(wo.USERS_NO, l.USERS_NO)}">
+										<div><button class="modalFollow">언팔로우</button></div>
+									</c:if>
+									<c:if test="${ !fn:contains(wo.USERS_NO, l.USERS_NO)}">
+										<div><button class="modalFollow">팔로우</button></div>
+									</c:if>
+								</c:forEach>
+							</c:if>
+							<c:if test="${ empty lList}">
+								<div><button class="modalFollow">팔로우</button></div>
+							</c:if>
+						</div><br>
+					</c:forEach>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
 	
 <script>
 	$(()=>{
@@ -448,7 +601,7 @@
 		
 	
 	
-	
+
 	
 </script>
 </body>

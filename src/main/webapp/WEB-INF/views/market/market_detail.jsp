@@ -21,6 +21,7 @@
 /* 	모달 */
 	.modal-body{text-align: center;}
 	.bi-check-circle-fill{font-size: 60px; color: #B0DAFF;}
+	.bi-x-circle-fill{font-size: 60px; color: #d55b67;}
 	.btn-n{background: #4485d7; color: white; border: 1px solid #4485d7; border-radius: 5px; height:40px;}
 	.btn-n:hover{background: white; color: #4485d7;}
 	.btn-y{background: white; color: #4485d7; border: 1px solid #4485d7; border-radius: 5px; height:40px;}
@@ -845,7 +846,7 @@ p b {
 			</div>
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 <!-- 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
-						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
+						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
 
 		</div>
 	</main>
@@ -881,19 +882,23 @@ p b {
 	
 		<div class="reviewWrap1" style="padding: 10px;">
 				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">${textboxCount}</span>
-
-			<div class="review_btn">
-				<a href="createReview.ma">
-				<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
-			</div>
-			<div class="photoList">
-				<ul style="padding: 10px;">
-					<li ><img src="img" alt="" /></li>
-					<li><img src="img" alt="" /></li>
-					<li ><img src="img" alt=""/></li>
-				</ul>
-			</div>
+			
+<%-- 			<c:if test="${ loginUser != null }"> --%>
+					<div class="review_btn">
+						<a href="createReview.ma">
+						<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
+					</div>
+<%-- 				</c:if>	 --%>
+				<div class="photoList">
+					<ul style="padding: 10px;">
+						<li ><img src="img" alt="" /></li>
+						<li><img src="img" alt="" /></li>
+						<li ><img src="img" alt=""/></li>
+					</ul>
+				</div>
 		</div>
+			
+
 		
 		<div class="textbox">
 			<div style="padding: 10px;">
@@ -1132,9 +1137,11 @@ p b {
             
 			</ul>
 				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
-				    <div class="review_btn_wr"><a href="createqna.ma">
-				    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
-				    </div>
+<%-- 					<c:if test="${ loginUser != null}"> --%>
+					    <div class="review_btn_wr"><a href="createqna.ma">
+					    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
+					    </div>
+<%-- 				    </c:if> --%>
 				</div>
 								<div class="pagination" style="display: block">
 							<ul>
@@ -1150,264 +1157,287 @@ p b {
 	</div><!-- 전체를 감싸는 박스 -->
 </div>
         	<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        	<div class="modal-dialog modal-dialog-centered">
-        		<div class="modal-content">
-        			<div class="modal-header">
-        				<h1 class="modal-title fs-5" id="exampleModalLabel">장바구니 담기</h1>
-        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        			</div>
-        			<div class="modal-body">
-        				<i class="bi bi-check-circle-fill"></i><br>
-        				<h3>${ tool.toolName} </h3><br>
-        				상품이 장바구니에 담겼습니다.
-
-        			</div>
-        			<div class="footer" style="text-align:center; height: 50px;">
-<!--         				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button> -->
-							<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
-							<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
-<!--         				<button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
-<!--         				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button> -->
-        			</div>
-        		</div>
-        	</div>
-        </div>
+	        	<div class="modal-dialog modal-dialog-centered">
+	        		<div class="modal-content">
+	        			<div class="modal-header">
+	        				<h1 class="modal-title fs-5" id="exampleModalLabel">장바구니 담기</h1>
+	        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	        			</div>
+	        			<div class="modal-body">
+	        				<i class="bi bi-check-circle-fill"></i><br>
+	        				<h3>${ tool.toolName} </h3><br>
+	        				상품이 장바구니에 담겼습니다.
+	
+	        			</div>
+	        			<div class="footer" style="text-align:center; height: 50px;">
+	<!--         				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button> -->
+								<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
+								<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
+	<!--         				<button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
+	<!--         				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button> -->
+	        			</div>
+	        		</div>
+	        	</div>
+	        </div>
+	        
+        	<div class="modal fade" id="cartFailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	        	<div class="modal-dialog modal-dialog-centered">
+	        		<div class="modal-content">
+	        			<div class="modal-header">
+	        				<h1 class="modal-title fs-5" id="exampleModalFail">장바구니 담기 오류</h1>
+	        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	        			</div>
+	        			<div class="modal-body">
+	        				<i class="bi bi-x-circle-fill"></i><br><br>
+	        				<h3>장바구니에 담지 못했습니다. </h3>
+	        			</div>
+	        			<div class="footer" style="text-align:center; height: 50px;">
+	        			</div>
+	        		</div>
+	        	</div>
+	        </div>
 
 <br><br><br>
 	<script>
 	
 	window.onload = function(){
 		
-	
-	$('.accordion_i_tit').click(function(){
-		$('.accordion_i_cont').toggle(400);
-	})
-	$('.accordion_i_tit2').click(function(){
-		$('.accordion_i_cont2').toggle(400);
-	})
-	$('.accordion_i_tit3').click(function(){
-		$('.accordion_i_cont3').toggle(400);
-	})
-
-   const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
-   
-   const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
-   const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
-   const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
-   const buyBtn = document.getElementById("buyBtn");
-   const result = document.getElementById("productResult");
-   const like = document.querySelector(".like");
-   const productSet = document.querySelector(".productSet");
-   const increase = document.querySelectorAll(".increase");	
-   
-	
-		$(document).on("click",".btnbox",function(e){
-			const increBtn = this.childNodes[2]; //증가버튼
-			const decreBtn = this.childNodes[0]; //감소버튼
-			const cartNum = this.childNodes[1];  //카트수량 
-			
-			e.stopPropagation();    //이벤트 버블링 막기
-		
-			if(e.target == increBtn){
-				this.childNodes[1].value++;
-			} 
-			if(e.target == decreBtn){
-				cartNum.value--;
-				if(cartNum.value < 1){
-					cartNum.value=1;
-				}
-			}
-			
-			if(e.target == this.childNodes[3] || e.target ==this.childNodes[3].childNodes[0]){ //x버튼을 클릭하거나 x이미지를 클릭하거나 상품옵션창을 삭제한다.
-				this.parentNode.parentNode.remove();
-			}
-	
+		$('.accordion_i_tit').click(function(){
+			$('.accordion_i_cont').toggle(400);
+		})
+		$('.accordion_i_tit2').click(function(){
+			$('.accordion_i_cont2').toggle(400);
+		})
+		$('.accordion_i_tit3').click(function(){
+			$('.accordion_i_cont3').toggle(400);
 		})
 	
-   
-      like.addEventListener("click", function() {
-	    if(like.innerText === '♡') {
-	        like.innerText = '♥';
-	    } else like.innerText ='♡';
-	});
-   
-      
-      let productOp = []; 
-      let opTextBox = []; 
-      
-    	for( prOp  of productOption2Set){ 
-   		 productOp.unshift(prOp.innerText);
-   		 
-   		 for( opText of productOption2Set){
-   			opTextBox.unshift(opText.value);
-   		 }
-   		 if(prOp.value == "옵션을 선택해주세요."){
-   			productOp.pop();
-   		 }
-   	 }
-    	productOptionSet.addEventListener("change", function(){
-                let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
-                let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-                if ( result != "") { 
-					o = productOp;
-					console.log(productOp);
-	                }else if(result == ""){
-	                	o = ["옵션을 선택해주세요."];
-		             }
-                	
-	                if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
-	             	   productOption2Set.options.length=0;
-	                }
-                
-                for ( let i = 0; i < o.length; i++) {
-                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
-                  }
-    	})
-    	
-        productOption2Set.addEventListener("change", function(){
-             const select =  $('.productOptionSet option:selected');
-             const select2 = $('.productOption2Set option:selected');
-             
-             
-      		let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
-      		const opSearch = document.getElementsByClassName('opSearch');
-
-      		let YN = "Y";
-      		for(let k=0; k<opSearch.length; k++){
-      			if(opSearch[k].innerText == optionName){
-      				let cartCount = document.querySelectorAll(".cartCount");
-      				alert("이미 선택한 옵션입니다.");
-      				YN = "N";
-      				
-      			}
-      			
-      		}
-      		
-	      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
-						productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
-		 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-								 							+'<span class="opSearch">캠핑용 후라이팬'+select.text()+" "+select2.text()+'</span>'
-								 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
-								 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
-								 							+'<input type="hidden" name="productPrice" value="${total}">'
-								 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
-								 							+'<input type="hidden" name="productOption2" value='+select2.val()+'>'
-								 							+'<input type="hidden" name="usersNo" value="45">'
-								 						+'</h4>'
-								 						+'<div>'
-								 							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-								 							+'<button class="decrease" type="button">-</button>'
-								 							+'<input type="number" class="cartCount"'
-								 							+'	value="1" name="cartCount" min="1" readonly>'
-								 							+'<button class="increase" type="button">+</button>'
-								 								+'<button class="removeProudct" type="button" style="float: right;">'
-								 								+'<img src="resources/images/close.png" style="width: 10px;">'
-								 								+'<span>'
-								 							+'</button>'
-								 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-								 						+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-								 						+'</div>'
-								 						 +'<br>'
-								 					+'</div>');
-							console.log(select.val());
-							console.log(select2.val());
+	   const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
+	   
+	   const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
+	   const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
+	   const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
+	   const buyBtn = document.getElementById("buyBtn");
+	   const result = document.getElementById("productResult");
+	   const like = document.querySelector(".like");
+	   const productSet = document.querySelector(".productSet");
+	   const increase = document.querySelectorAll(".increase");	
+	   
+		
+			$(document).on("click",".btnbox",function(e){
+				const increBtn = this.childNodes[2]; //증가버튼
+				const decreBtn = this.childNodes[0]; //감소버튼
+				const cartNum = this.childNodes[1];  //카트수량 
+				
+				e.stopPropagation();    //이벤트 버블링 막기
+			
+				if(e.target == increBtn){
+					this.childNodes[1].value++;
+				} 
+				if(e.target == decreBtn){
+					cartNum.value--;
+					if(cartNum.value < 1){
+						cartNum.value=1;
+					}
+				}
+				
+				if(e.target == this.childNodes[3] || e.target ==this.childNodes[3].childNodes[0]){ //x버튼을 클릭하거나 x이미지를 클릭하거나 상품옵션창을 삭제한다.
+					this.parentNode.parentNode.remove();
+				}
+		
+			})
+		
+	   
+	      like.addEventListener("click", function() {
+		    if(like.innerText === '♡') {
+		        like.innerText = '♥';
+		    } else like.innerText ='♡';
+		});
+	   
+	      
+	      let productOp = []; 
+	      let opTextBox = []; 
+	      
+	    	for( prOp  of productOption2Set){ 
+	   		 productOp.unshift(prOp.innerText);
+	   		 
+	   		 for( opText of productOption2Set){
+	   			opTextBox.unshift(opText.value);
+	   		 }
+	   		 if(prOp.value == "옵션을 선택해주세요."){
+	   			productOp.pop();
+	   		 }
+	   	 }
+	    	productOptionSet.addEventListener("change", function(){
+	                let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
+	                let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
+	                if ( result != "") { 
+						o = productOp;
+						console.log(productOp);
+		                }else if(result == ""){
+		                	o = ["옵션을 선택해주세요."];
+			             }
+	                	
+		                if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+		             	   productOption2Set.options.length=0;
+		                }
+	                
+	                for ( let i = 0; i < o.length; i++) {
+	                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
+	                  }
+	    	})
+	    	
+	        productOption2Set.addEventListener("change", function(){
+	             const select =  $('.productOptionSet option:selected');
+	             const select2 = $('.productOption2Set option:selected');
+	             
+	             
+	      		let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
+	      		const opSearch = document.getElementsByClassName('opSearch');
+	
+	      		let YN = "Y";
+	      		for(let k=0; k<opSearch.length; k++){
+	      			if(opSearch[k].innerText == optionName){
+	      				let cartCount = document.querySelectorAll(".cartCount");
+	      				alert("이미 선택한 옵션입니다.");
+	      				YN = "N";
+	      				
 	      			}
-		  					
-      	})
-        		
-    	
-   function priceToString(productPrice) {
-       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-   }
-   
-	
-$(function(){
-    $(".textbox").slice(0, 2).show(); // 초기갯수
-    $(".moreView").click(function(e){ // 클릭시 more
-        e.preventDefault();
-        $(".textbox:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
-        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
-        }
-    });
-});
-	
- 
-	
-	$(document).ready(function() {
-    $("#cartbtn").click(function() {
-        var productNo = $("input[name='productNo']").val();
-        var cartCount = $(".cartCount").val();
-        var productOption = $(".productOption").val();
-        var productOption2 = $(".productOption2").val();
-        var preorderNo = 0;
-        
-        var productNoValues=[];
-        var cartCountValues=[];
-        var productOptionValues=[];
-        var productOption2Values=[];
-        var usersNoValues=[];
-        
-    
-        	
-        
-        var allData ={
-        		"productNo":productNoValues, 
-	        	"cartCount":cartCountValues,
-	        	"productOption":productOptionValues, 
-	        	"productOption2":productOption2Values,
-	        	"usersNo":usersNoValues,
-	        	"preorderNo":preorderNo};
-        
-        $("input[name='productNo']").each(function(){
-        	productNoValues.push($(this).val());
-        })
-        
-        $(".cartCount").each(function(){
-        	cartCountValues.push($(this).val());
-        })
-        
-        $("input[name='productOption']").each(function(){
-        	productOptionValues.push($(this).val());
-        })
-        
-        $("input[name='productOption2']").each(function(){
-        	productOption2Values.push($(this).val());
-        })
-        
-        $("input[name='usersNo']").each(function(){
-        	usersNoValues.push($(this).val());
-        })
-        
-        
-        
-        let count = 0;
-	        for(i=0; i<productNoValues.length; i++){
-	        	console.log(productNoValues[i]);
-		        $.ajax({
-		            url: "insertCart.ma",
-		            async: false,
-		            data: {
-		        		"productNo":productNoValues[i], 
-			        	"cartCount":cartCountValues[i],
-			        	"productOption":productOptionValues[i], 
-			        	"productOption2":productOption2Values[i],
-			        	"usersNo":usersNoValues[i],
-			        },
-		            success: preNo =>{
-	                	count++;
-		            },
-		            error: allData => {
-		            	console.log("error");
-		            }
-		        })
+	      			
+	      		}
+	      		
+		      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
+							productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+			 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+									 							+'<span class="opSearch">캠핑용 후라이팬'+select.text()+" "+select2.text()+'</span>'
+									 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
+									 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
+									 							+'<input type="hidden" name="productPrice" value="${total}">'
+									 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
+									 							+'<input type="hidden" name="productOption2" value='+select2.val()+'>'
+									 							+'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+									 						+'</h4>'
+									 						+'<div>'
+									 							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+									 							+'<button class="decrease" type="button">-</button>'
+									 							+'<input type="number" class="cartCount"'
+									 							+'	value="1" name="cartCount" min="1" readonly>'
+									 							+'<button class="increase" type="button">+</button>'
+									 								+'<button class="removeProudct" type="button" style="float: right;">'
+									 								+'<img src="resources/images/close.png" style="width: 10px;">'
+									 								+'<span>'
+									 							+'</button>'
+									 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
+									 						+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+									 						+'</div>'
+									 						 +'<br>'
+									 					+'</div>');
+								console.log(select.val());
+								console.log(select2.val());
+		      			}
+			  					
+	      	})
+	        		
+	    	
+	   function priceToString(productPrice) {
+	       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	   }
+	   
+		
+	$(function(){
+	    $(".textbox").slice(0, 2).show(); // 초기갯수
+	    $(".moreView").click(function(e){ // 클릭시 more
+	        e.preventDefault();
+	        $(".textbox:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
+	        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+	        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
 	        }
-        if(count != productNoValues.length) {
-            alert("상품이 장바구니에 담기지 못했습니다.");
-        	}
-        	
-    })
-	
+	    });
+	});
+		
+	 
+		
+		$(document).ready(function() {
+	    $("#cartbtn").click(function() {
+	        var productNo = $("input[name='productNo']").val();
+	        var cartCount = $(".cartCount").val();
+	        var productOption = $(".productOption").val();
+	        var productOption2 = $(".productOption2").val();
+	        var preorderNo = 0;
+	        
+	        var productNoValues=[];
+	        var cartCountValues=[];
+	        var productOptionValues=[];
+	        var productOption2Values=[];
+	        var usersNoValues=[];
+	        
+	    
+	        	
+	        
+	        var allData ={
+	        		"productNo":productNoValues, 
+		        	"cartCount":cartCountValues,
+		        	"productOption":productOptionValues, 
+		        	"productOption2":productOption2Values,
+		        	"usersNo":usersNoValues,
+		        	"preorderNo":preorderNo
+		        	};
+	        
+	        $("input[name='productNo']").each(function(){
+	        	productNoValues.push($(this).val());
+	        })
+	        
+	        $(".cartCount").each(function(){
+	        	cartCountValues.push($(this).val());
+	        })
+	        
+	        $("input[name='productOption']").each(function(){
+	        	productOptionValues.push($(this).val());
+	        })
+	        
+	        $("input[name='productOption2']").each(function(){
+	        	productOption2Values.push($(this).val());
+	        })
+	        
+	        $("input[name='usersNo']").each(function(){
+	        	usersNoValues.push($(this).val());
+	        })
+	        
+	        
+	        
+	        let count = 0;
+		        for(i=0; i<productNoValues.length; i++){
+		        	console.log(productNoValues[i]);
+			        $.ajax({
+			            url: "insertCart.ma",
+			            async: false,
+			            data: {
+			        		"productNo":productNoValues[i], 
+				        	"cartCount":cartCountValues[i],
+				        	"productOption":productOptionValues[i], 
+				        	"productOption2":productOption2Values[i],
+				        	"usersNo":usersNoValues[i],
+				        },
+			            success: preNo =>{
+		                	count++;
+			            },
+			            error: allData => {
+			            	console.log("error");
+			            }
+			        })
+		        }
+	        if(count == productNoValues.length &&  count != 0) {
+	            	$("#cartModal").modal("show");
+// 	        	$("#cartFailModal").modal("show");
+	        	}else if(count != productNoValues.length){
+	        		$("#cartFailModal").modal("show");
+	        	}else if((count == 0)  || productNoValues.length == 0 ){
+	        		$("#cartFailModal").modal("show");
+	        	}
+	        	
+	    })
+		
+		})
 	}
 	 </script> 
 </body>

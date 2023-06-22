@@ -58,7 +58,8 @@
 				
 				<c:forEach items="${tList}" var="t" varStatus="vs">
 					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
-						<td>${t.productNo}
+						<td>
+							${t.productNo}
 							<input type="hidden" name="productNo" value="${t.productNo}">
 						</td>
 						<td>

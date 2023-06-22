@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.dao.EnrollDAO;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -104,8 +106,58 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public ArrayList<Menu> menuList(int usersNo) {
-		return eDAO.menuList(sqlSession, usersNo);
+	public ArrayList<Menu> menuList() {
+		return eDAO.menuList(sqlSession);
+	}
+
+	@Override
+	public int follow(int usersNo) {
+		return eDAO.follow(sqlSession, usersNo);
+	}
+
+	@Override
+	public int following(int usersNo) {
+		return eDAO.following(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Image> menuImageList() {
+		return eDAO.menuImageList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Product> productList() {
+		return eDAO.productList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Users> healtherList() {
+		return eDAO.healtherList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Recipe> allRecipeList() {
+		return eDAO.allRecipeList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Image> allRecipeImageList() {
+		return eDAO.allRecipeImageList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Follow> followList(int usersNo) {
+		return eDAO.followList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Follow> followingLsit(int usersNo) {
+		return  eDAO.followingLsit(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Follow> loginUserFollowingList(int usersNo) {
+		return eDAO.loginUserFollowingList(sqlSession, usersNo);
 	}
 
 	

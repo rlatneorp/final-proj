@@ -27,21 +27,13 @@ public interface UsersService {
 
 	int deleteInfo(int usersNo);
 
-//	ArrayList<Follow> selectFollowing(int usersNo);
-
-//	ArrayList<Follow> selectFollower(int usersNo);
-
-//	Users selectFollowInfo(int followNo);
-
-//	Image selectFollowImage(int followNo);
-
 	ArrayList<HashMap<String, Object>> selectFollowing(int usersNo);
 
 	ArrayList<HashMap<String, Object>> selectFollower(int usersNo);
 
-//	ArrayList<Follow> selectMutualFollow(int followingNo);
+	int deleteFollow(HashMap<String, Object> map);
 
-//	boolean checkMutualFollow(int usersNo, String[] followerNos);
+	int insertFollow(HashMap<String, Object> map);
 
-
+	
 }

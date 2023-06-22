@@ -307,4 +307,31 @@
 		<result column="MENU_TYPE" property="menuType"/>
 		<result column="MENU_CONTENT" property="menuContent"/>
 	</resultMap>
+	
+	<insert id="insertImage">
+		insert into image(image_no, image_divide_no, image_type, image_originalname, image_renamename, image_path, image_level)
+		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, #{imageLevel})
+	</insert>
+	
+		<select id="selectAllImageList" resultMap="imageResultSet">
+		select *
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != null">
+			and image_level = #{imageLevel}
+		</if>
+	</select>
+	
+		<resultMap type="Image" id="imageResultSet">
+		<id column="image_no" property="imageNo"/>
+		<result column="image_divide_no" property="imageDivideNo"/>
+		<result column="image_type" property="imageType"/>
+		<result column="image_originalname" property="imageOriginalName"/>
+		<result column="image_renamename" property="imageRenameName"/>
+		<result column="image_path" property="imagePath"/>
+		<result column="image_level" property="imageLevel"/>
+	</resultMap>
+	
 </mapper>

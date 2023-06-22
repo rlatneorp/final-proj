@@ -722,6 +722,7 @@ p b {
 	<form id="toolUpdateForm" action="${contextPath}/adminToolUpdate.ad" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="productNo" value="${t.productNo}">
 		<input type="hidden" name="productStatus" value="${t.productStatus}">
+		<input type="hidden" name="optionCount">
 		<main id="order-wrap">
 			<!-- 구매창 컨테이너 -->
 			<div class="left">
@@ -986,41 +987,39 @@ p b {
 			const addValBtns = document.getElementsByClassName('addValBtn');
 			const delValBtns = document.getElementsByClassName('delValBtn');
 			
-// 			setTimeout( function(){
-				for(const addNameBtn of addNameBtns){
-					addNameBtn.addEventListener('click', ()=>{
-						optionBoxMain.insertAdjacentHTML("beforeend", optionBoxMainHTML);
-						addName(optionBoxMainHTML);
-						delName();
-						addVal();
-						delVal();
-					})
-				}
-				for(const delNameBtn of delNameBtns){
-					delNameBtn.addEventListener('click', function(){
-						const optionBoxs = optionBoxMain.querySelectorAll('.optionBox');
-						if(optionBoxs.length > 1){
-							this.parentElement.remove();
-						}
-					})
-				}
-				for(const addValBtn of addValBtns){
-					addValBtn.addEventListener('click', function(){
-						const optionBox = this.parentElement;
-						optionBox.insertAdjacentHTML("beforeend",
-								'<p class="col-6"></p><input type="text" class="optionValue col-4" placeholder="옵션내용">');
-					})
-				}
-				for(const delValBtn of delValBtns){
-					delValBtn.addEventListener('click', function(){
-						const optionBox = this.parentElement;
-						if(optionBox.querySelectorAll('.optionValue').length > 1){
-							optionBox.lastElementChild.remove();
-							optionBox.lastElementChild.remove();
-						}
-					})
-				}
-// 			}, 500);
+			for(const addNameBtn of addNameBtns){
+				addNameBtn.addEventListener('click', ()=>{
+					optionBoxMain.insertAdjacentHTML("beforeend", optionBoxMainHTML);
+					addName(optionBoxMainHTML);
+					delName();
+					addVal();
+					delVal();
+				})
+			}
+			for(const delNameBtn of delNameBtns){
+				delNameBtn.addEventListener('click', function(){
+					const optionBoxs = optionBoxMain.querySelectorAll('.optionBox');
+					if(optionBoxs.length > 1){
+						this.parentElement.remove();
+					}
+				})
+			}
+			for(const addValBtn of addValBtns){
+				addValBtn.addEventListener('click', function(){
+					const optionBox = this.parentElement;
+					optionBox.insertAdjacentHTML("beforeend",
+							'<p class="col-6"></p><input type="text" class="optionValue col-4" placeholder="옵션내용">');
+				})
+			}
+			for(const delValBtn of delValBtns){
+				delValBtn.addEventListener('click', function(){
+					const optionBox = this.parentElement;
+					if(optionBox.querySelectorAll('.optionValue').length > 1){
+						optionBox.lastElementChild.remove();
+						optionBox.lastElementChild.remove();
+					}
+				})
+			}
 			
 		}
 		
@@ -1087,9 +1086,10 @@ p b {
 				const opHidden = optionBoxs[j].querySelector('.optionTotal');
 				opHidden.value = opName.value;
 				for(let i = 0; i<opVal.length; i++){
-					opHidden.value += ","+opVal[i].value;
+					opHidden.value += "@"+opVal[i].value;
 				}
 			}
+			document.getElementsByName('optionCount')[0].value = optionBoxs.length;
 		}
 		
 // 		submit 전 값 설정 및 검토
@@ -1108,12 +1108,6 @@ p b {
 			}else if(document.getElementsByName('toolContent')[0].value.trim() == ''){
 				alert("상품 소개 내용을 입력해주세요.");
 				document.getElementsByName('toolContent')[0].focus();
-// 			}else if(document.getElementsByName('imageFile')[0].value == false){
-// 				alert("상품 대표 이미지를 등록해주세요.");
-// 				document.getElementsByName('imageFile')[0].focus();
-// 			}else if(document.getElementsByName('imageFile')[1].value == false){
-// 				alert("상품 상세 이미지를 등록해주세요.");
-// 				document.getElementsByName('imageFile')[1].focus();
 			}else{
 				let pass = "Y";
 // 				옵션버튼 선택에 따라 제외할지 여부 결정

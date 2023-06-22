@@ -43,95 +43,61 @@ public class UsersController {
 	
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
+		// 이미지 조회
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		Image image = uService.selectImage(usersNo);
-		if(image != null) {
-			model.addAttribute("image", image);
-		}
+		model.addAttribute("image", image);
 		
+		int following = eService.following(usersNo);
+		int follower = eService.follow(usersNo);
+		model.addAttribute("following", following);
+		model.addAttribute("follower", follower);
+		
+		// 팔로잉 팔로워 리스트 조회
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
+		System.out.println(followingList);
+		System.out.println(followerList);
 		
 			model.addAttribute("followingList", followingList);
 			model.addAttribute("followerList", followerList);
 			
 			return "myPage_Main";
-		
-//		ArrayList<Follow> followList = uService.selectFollow(usersNo);
-//		model.addAttribute("follow", followList);
-//		
-//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
-//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
-//
-//		Users followU = null;
-//		Image followImage = null;
-//		if(!followingList.isEmpty()) {
-//			List<Users> followingUList = new ArrayList<>();
-//			List<Image> followingImageList = new ArrayList<>();
-//			for(Follow following : followingList) {
-//				int followNo = following.getFollowingUsersNo();
-//				followU = uService.selectFollowInfo(followNo);
-//				followImage = uService.selectFollowImage(followNo);
-//				
-//				followingUList.add(followU);
-//			    followingImageList.add(followImage);
-//			}
-//			model.addAttribute("followingUsers", followingUList);
-//			model.addAttribute("followingImage", followingImageList);
-//		}
-//		
-//		if(!followerList.isEmpty()) {
-//			List<Users> followerUList = new ArrayList<>();
-//			List<Image> followerImageList = new ArrayList<>();
-//			for(Follow follower : followerList) {
-//				int followNo = follower.getUsersNo();
-//				followU = uService.selectFollowInfo(followNo);
-//				followImage = uService.selectFollowImage(followNo);
-//				
-//				followerUList.add(followU);
-//				followerImageList.add(followImage);
-//			}
-//			model.addAttribute("followerUsers", followerUList);
-//			model.addAttribute("followerImage", followerImageList);
-//		}
 	}
 	
-//	@RequestMapping("myPage_mutualFollow.me")
-//	@ResponseBody
-//	public String myPage_mutualFollow(Model model, @RequestParam("followerNos[]") String[] followerNos) {
-//		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
-//		
-//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
-//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+	// 언팔
+	@RequestMapping("myPage_unFollow.me")
+	@ResponseBody
+	public String myPage_unFollow(Model model, @RequestParam("usersNo") int usersNo, @RequestParam("followingNo") int followingNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("followingNo", followingNo);
 		
-//		boolean hasMutualFollow = false;
-//		
-//		String[] fNo = followerNos.split(",");
-//		int[] followersNo = new int[fNo.length];
-//		
-//		for(int i = 0; i < fNo.length; i++) {
-//			followersNo[i] = Integer.parseInt(fNo[i]);
-//			System.out.println(followersNo[i]);
-//			int followerNo = followersNo[i]; // 나를 팔로하고 있는 회번
-//			
-//			ArrayList<Follow> followerNoList = uService.selectMutualFollow(followerNo);
-//			System.out.println(followerNoList);
-//			for(Follow fn : followerNoList) {
-//				int followingNo = fn.getUsersNo(); // 나를 팔로하고 있는 회원이 팔로하고 있는 회번
-//				
-//				if(followingNo == followerNo) {
-//					hasMutualFollow = true;
-//				}
-//			}
-//		}
-//	    boolean hasMutualFollow = uService.checkMutualFollow(usersNo, followerNos);
-//	    
-//		if(hasMutualFollow) {
-//			return "yes";
-//		} else {
-//			return "no";
-//		}
-//	}
+		int result = uService.deleteFollow(map);
+		
+		if(result > 0) {
+			return "yes";
+		} else {
+			return "no";
+		}
+	}
+	
+	// 팔로우
+	@RequestMapping("myPage_follow.me")
+	@ResponseBody
+	public String myPage_follow(Model model, @RequestParam("usersNo") int usersNo, @RequestParam("followNo") int followNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("followNo", followNo);
+		
+		int result = uService.insertFollow(map);
+		
+		if(result > 0) {
+			return "yes";
+		} else {
+			return "no";
+		}
+	}
 	
 	// 파일 저장
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {

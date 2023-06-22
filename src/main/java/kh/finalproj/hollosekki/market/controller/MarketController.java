@@ -265,7 +265,7 @@ public class MarketController {
 				HttpServletResponse response) {
 
 		
-		System.out.println(pNo);
+//		System.out.println(pNo);
 		System.out.println(c.getProductNo());
 		int result = mkService.insertCart(c);
 //		ArrayList<Cart> list  = mkService.insertCart(c.getProductNo());

@@ -205,10 +205,14 @@ public class MarketService {
 		return mkDAO.insertCart(sqlSession, c);
 	}
 
-	public ShippingAddress selectShippingForUpdate(int shippingNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public void delShipping(int shippingNo) {
+		mkDAO.delShipping(sqlSession, shippingNo);
 	}
+
+//	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 
 	

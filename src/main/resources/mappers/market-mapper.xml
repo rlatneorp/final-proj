@@ -307,4 +307,10 @@
 		<result column="MENU_TYPE" property="menuType"/>
 		<result column="MENU_CONTENT" property="menuContent"/>
 	</resultMap>
+	
+	<!-- 배송지 삭제 -->
+	<delete id="delShipping">
+		DELETE FROM shipping_address
+		WHERE shipping_no = #{shippingNo}
+	</delete>
 </mapper>

@@ -170,6 +170,8 @@ public class MarketController {
 			    checkedCartList.add(checCart);
 			}
 		}
+		System.out.println("checkedCartList : " + checkedCartList); 
+		
 		model.addAttribute("checkedCartList", checkedCartList );
 		model.addAttribute("optValues", optValues);
 		return "payDetail";
@@ -265,7 +267,7 @@ public class MarketController {
 				HttpServletResponse response) {
 
 		
-		System.out.println(pNo);
+//		System.out.println(pNo);
 		System.out.println(c.getProductNo());
 		int result = mkService.insertCart(c);
 //		ArrayList<Cart> list  = mkService.insertCart(c.getProductNo());
@@ -396,6 +398,12 @@ public class MarketController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@RequestMapping("delShipping.ma")
+	@ResponseBody
+	public void delShipping(@RequestParam("shippingNo") int shippingNo) {
+		mkService.delShipping(shippingNo);
 	}
 	
 }

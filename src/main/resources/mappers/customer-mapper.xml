@@ -7,11 +7,11 @@
 		where faq_status= 'Y' and faq_type in(1,null) 
 	</select>
 	
-	<select id="getFListCount" resultType="_int">
-		select count(*)
-		from faq
-		where faq_status= 'Y' and faq_type = 2
-	</select>
+<!-- 	<select id="getFListCount" resultType="_int"> -->
+<!-- 		select count(*) -->
+<!-- 		from faq -->
+<!-- 		where faq_status= 'Y' and faq_type = 2 -->
+<!-- 	</select> -->
 	
 	<select id="getPListCount" resultType="_int">
 		select count(*)
@@ -25,12 +25,12 @@
 		where faq_status = 'Y' and faq_type in (1,null)  
 		order by faq_no
 	</select>
-	<select id="fBoardList" resultMap="CustomerResultSet">
-		select *
-		from faq
-		where faq_status = 'Y' and faq_type = 2  
-		order by faq_no
-	</select>
+<!-- 	<select id="fBoardList" resultMap="CustomerResultSet"> -->
+<!-- 		select * -->
+<!-- 		from faq -->
+<!-- 		where faq_status = 'Y' and faq_type = 2   -->
+<!-- 		order by faq_no -->
+<!-- 	</select> -->
 	<select id="pBoardList" resultMap="CustomerResultSet">
 		select *
 		from faq
@@ -47,5 +47,58 @@
 		<result column="FAQ_STATUS" property="faqStatus"/>
 		<result column="FAQ_TYPE" property="faqType"/>
 	</resultMap>
+	
+	<select id="getCategoryFListCount" resultType="_int">
+		select count(*)
+		from faq
+		where faq_status = 'Y' and faq_type = 2 
+		<if test="category == 'user'">
+			  and (faq_title like '[회원]%'
+			  or faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'delivery'">
+			  and (faq_title like '[배송]%'
+			  or faq_title like '%' || #{search} || '%') 
+		</if>
+		<if test="category == 'pay'">
+			  and (faq_title like '[결제]%'
+			  or faq_title like '%' || #{search} || '%') 
+		</if>
+		<if test="category == 'etc'">
+			  and (faq_title like '[기타]%'
+			  or faq_title like '%' || #{search} || '%') 
+		</if>
+		<if test="category == 'all'">
+			  and (faq_title like '%'
+			  or faq_title like '%' || #{search} || '%') 
+		</if>
+	</select>
+	
+	<select id="fBoardList" resultMap="CustomerResultSet">
+		select *
+		from faq
+		where faq_status = 'Y' and faq_type = 2 
+		<if test="category == 'user'">
+			  and (faq_title like '[회원]%'
+			  or faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'delivery'">
+			  and (faq_title like '[배송]%'
+			  or faq_title like '%' || #{search} || '%') 
+		</if>
+		<if test="category == 'pay'">
+			  and (faq_title like '[결제]%'
+			  or faq_title like '%' || #{search} || '%') 
+		</if>
+		<if test="category == 'etc'">
+			  and (faq_title like '[기타]%'
+			  or faq_title like '%' || #{search} || '%') 
+		</if>
+		<if test="category == 'all'">
+			  and (faq_title like '%'
+			  or faq_title like '%' || #{search} || '%') 
+		</if>
+		order by faq_no
+	</select>
 
 </mapper>

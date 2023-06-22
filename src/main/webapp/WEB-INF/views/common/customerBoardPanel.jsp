@@ -70,7 +70,7 @@ font-family: 'Noto Sans KR', sans-serif;
 	
 }
 
-.categoryBtn .btn-secondary{
+#categoryBtn{
 	
 	width:150px;
 	height:50px;
@@ -78,11 +78,11 @@ font-family: 'Noto Sans KR', sans-serif;
 	color:black;
 	border: 2px solid black;
 }
-.categoryBtn .btn-secondary:hover{
+#categoryBtn:hover{
 	background-color: #B0DAFF;
 	color:black;
 }
-.categoryBtn .btn-secondary:focus{
+#categoryBtn:focus{
 	background-color: #B0DAFF;
 	color:black;
 }

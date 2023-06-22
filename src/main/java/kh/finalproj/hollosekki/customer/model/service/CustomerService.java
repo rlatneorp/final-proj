@@ -23,9 +23,9 @@ public class CustomerService {
 		return csDAO.getNListCount(sqlSession, i);
 	}
 	
-	public int getFListCount(int i) {
-		return csDAO.getFListCount(sqlSession, i);
-	}
+//	public int getFListCount(int i) {
+//		return csDAO.getFListCount(sqlSession, i);
+//	}
 	
 	public int getPListCount(int i, HashMap<String, Object> map) {
 		return csDAO.getPListCount(sqlSession, i, map);
@@ -35,12 +35,16 @@ public class CustomerService {
 		return csDAO.nBoardList(sqlSession, pi);
 	}
 
-	public ArrayList<Customer> fBoardList(PageInfo pi) {
-		return csDAO.fBoardList(sqlSession, pi);
+	public ArrayList<Customer> fBoardList(PageInfo pi, HashMap<String, Object> map) {
+		return csDAO.fBoardList(sqlSession, pi, map);
 	}
 
 	public ArrayList<Customer> pBoardList(PageInfo pi, HashMap<String, Object> map) {
 		return csDAO.pBoardList(sqlSession, pi, map);
+	}
+
+	public int getCategoryFListCount(HashMap<String, Object> map) {
+		return csDAO.getCategoryFListCount(sqlSession, map);
 	}
 
 

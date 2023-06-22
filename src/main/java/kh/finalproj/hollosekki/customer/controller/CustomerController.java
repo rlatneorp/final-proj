@@ -1,12 +1,11 @@
 package kh.finalproj.hollosekki.customer.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.taglibs.standard.tag.common.fmt.FormatDateSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,11 +35,6 @@ public class CustomerController {
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		ArrayList<Customer> nlist = csService.nBoardList(pi);
-		
-		
-//		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy≥‚MMø˘dd¿œ");
-//		 
-		
 		model.addAttribute("nlist", nlist);
 		model.addAttribute("pi", pi);
 		
@@ -48,19 +42,31 @@ public class CustomerController {
 	}	
 	
 	@RequestMapping("faqBoard.cs")
-	public String faqBoard(HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
+	public String faqBoard(@RequestParam(value="category", required=false) String category,@RequestParam(value="search", required=false) String search, HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
 			Model model) {
 		if(currentPage == null) {
 			currentPage = 1;
 		}
-			
-		int	listCount = csService.getFListCount(2);
 		
+//		int categoryAndSearchCount = csService.getFListCount(category);
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+		map.put("search", search);
+		
+		int	listCount = csService.getCategoryFListCount(map);
+		System.out.println("category " + category);
+		System.out.println("search " + search);
+		System.out.println("count " + listCount);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-		ArrayList<Customer> flist = csService.fBoardList(pi);
-		
+		System.out.println("p "  + pi);
+
+		ArrayList<Customer> flist = csService.fBoardList(pi, map);
+		System.out.println("f " + flist);
 		model.addAttribute("flist", flist);
 		model.addAttribute("pi", pi);
+		model.addAttribute("category", category);
+		model.addAttribute("search", search);
 		
 		return "faqBoard";
 	}	
@@ -102,5 +108,8 @@ public class CustomerController {
 	public String personalQuestion() {
 		return "personalQuestion";
 	}
+	
+	
+	
 }
 

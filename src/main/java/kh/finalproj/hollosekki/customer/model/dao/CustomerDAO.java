@@ -17,9 +17,9 @@ public class CustomerDAO {
 		return sqlSession.selectOne("customerMapper.getNListCount", i);
 	}
 	
-	public int getFListCount(SqlSessionTemplate sqlSession, int i) {
-		return sqlSession.selectOne("customerMapper.getFListCount", i);
-	}
+//	public int getFListCount(SqlSessionTemplate sqlSession, int i) {
+//		return sqlSession.selectOne("customerMapper.getFListCount", i);
+//	}
 	
 	public int getPListCount(SqlSessionTemplate sqlSession, int i, HashMap<String, Object> map) {
 		return sqlSession.selectOne("customerMapper.getPListCount", map);
@@ -31,16 +31,20 @@ public class CustomerDAO {
 		return (ArrayList)sqlSession.selectList("customerMapper.nBoardList", null, rowBounds);
 	}
 
-	public ArrayList<Customer> fBoardList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<Customer> fBoardList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(),pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("customerMapper.fBoardList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("customerMapper.fBoardList", map, rowBounds);
 	}
 
 	public ArrayList<Customer> pBoardList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(), pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("customerMapper.pBoardList", map, rowBounds);
+	}
+
+	public int getCategoryFListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("customerMapper.getCategoryFListCount", map);
 	}
 
 

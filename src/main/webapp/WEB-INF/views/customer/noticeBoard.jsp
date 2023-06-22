@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,8 +40,8 @@
 				    	<c:forEach items="${ nlist }" var="i">
 					    <tr>
 					        <th class="col-1">${i.faqNo }</th>
-					        <th class="col-9 text-start">${i.faqTitle }</th>
-					        <th class="col-2">${i.faqDate }</th>
+					        <th class="col-9 text-cetner">${i.faqTitle }</th>
+					        <th class="col-2"><fmt:formatDate value="${i.faqDate }" pattern="yyyy-MM-dd"/></th>
 					    </tr>
 					    </c:forEach>
 					    </c:if>

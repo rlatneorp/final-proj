@@ -30,27 +30,25 @@
 					<hr style="width: 1050px;">
 					<br>
 					<div class="categoryBtn row justify-content-end" style="margin-right: 20px;">
-						<div class="ddd col-2 dropdown-center">
-							<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-							    카테고리 전체
-							</button>
-							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">회원</a></li>
-								<li><a class="dropdown-item" href="#">배송</a></li>
-								<li><a class="dropdown-item" href="#">결제</a></li>
-								<li><a class="dropdown-item" href="#">기타</a></li>
-							</ul>
+						<div class="ddd col-2">
+							<select class="text-center" id="categoryBtn">
+								<option value="all" <c:if test="${ category == 'all'}">selected</c:if>>전체</option>
+								<option value="user" <c:if test="${ category == 'user'}">selected</c:if>>회원</option>
+								<option <c:if test="${ category == 'delivery'}">selected</c:if> value="delivery">배송</option>
+								<option <c:if test="${ category == 'pay'}">selected</c:if> value="pay">결제</option>
+								<option <c:if test="${ category == 'etc'}">selected</c:if> value="etc">기타</option>
+							</select>
 						</div>
-						<input class="col-3" id="searchText" type="text" name="search">
+						<input class="col-3" id="searchText" type="text" name="search" value="<c:if test='${ !empty search }'>${ search }</c:if>">
 						<button id="serachBtn" type="button" class="col-1 btn btn-outline-secondary">검색</button>
 					</div>	
 					<br>
-					<div class="accordion acCustomer" id="accordionFlush">
+					<div class="accordion acCustomer text-cetner" id="accordionFlush">
 						<c:forEach items="${ flist }" var="i" varStatus="st"> 
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="flush-headingOne-${st.index +1 }">
 							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${st.index +1 }" aria-expanded="false" aria-controls="flush-collapseOne-${st.index +1 }">
-							        Q. ${i.faqTitle } 
+							       　　|　　Q. ${i.faqTitle } 
 							</button>
 							</h2>
 							<div id="flush-collapseOne-${st.index +1 }" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${st.index +1 }">
@@ -77,6 +75,10 @@
 							    <li class="page-item">
 							    	<c:url var="goBack" value="${ loc }">
 										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+										<c:if test="${ category != null }">
+											<c:param name="category" value="${ category }"/>
+											<c:param name="search" value="${ search }"/>
+										</c:if>
 									</c:url>
 									<a class="page-link" href="${ goBack }" aria-label="Previous">
 										<span aria-hidden="true">&laquo;</span>
@@ -86,13 +88,23 @@
 								<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 								   	<c:url var="goNum" value="${ loc }">
 										<c:param name="page" value="${ p }"></c:param>
+										<c:if test="${ category != null }">
+											<c:param name="category" value="${ category }"/>
+											<c:param name="search" value="${ search }"/>
+										</c:if>
 									</c:url>
-								  	<li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
+								  	<li class="page-item pageCustomer">
+								  		<a class="page-link" href="${ goNum }">${ p }</a>
+								  	</li>
 								</c:forEach>
 								<c:if test="${ pi.currentPage < pi.maxPage }">
 								<li class="page-item">
 									<c:url var="goNext" value="${ loc }">
 										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+										<c:if test="${ category != null }">
+											<c:param name="category" value="${ category }"/>
+											<c:param name="search" value="${ search }"/>
+										</c:if>
 									</c:url>
 									<a class="page-link" href="${ goNext }" aria-label="Next">
 										<span aria-hidden="true">&raquo;</span>
@@ -109,5 +121,35 @@
 	<br><br><br><br><br>
 <%@ include file="../common/footer.jsp" %>	
 
+<script>
+
+window.onload=()=>{
+
+	const categoryBtn = document.querySelector('#categoryBtn');
+	const searchBtn = document.getElementById('serachBtn');
+	let category = '';
+	let search = '';
+	
+	categoryBtn.addEventListener('click', ()=>{
+		category = categoryBtn.value;
+		location.href='${contextPath}/faqBoard.cs?category=' + category;
+		
+	});
+	
+	searchBtn.addEventListener('click', function(){
+		category = categoryBtn.value;
+		search = searchBtn.previousElementSibling.value;
+		location.href='${contextPath}/faqBoard.cs?category=' + category + '&search=' + search;
+	});
+	
+	
+}	
+	
+	
+	
+	
+	
+	
+</script>
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -205,9 +206,12 @@ public class MarketService {
 		return mkDAO.insertCart(sqlSession, c);
 	}
 
-	public ShippingAddress selectShippingForUpdate(int shippingNo) {
-		// TODO Auto-generated method stub
-		return null;
+//	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+//		return null;
+//	}
+
+	public int insertImage(Image image) {
+		return mkDAO.insertImage(sqlSession, image);
 	}
 
 

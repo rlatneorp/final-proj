@@ -2,11 +2,14 @@ package kh.finalproj.hollosekki.market.controller;
 
 
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
+import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -15,15 +18,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -177,11 +181,12 @@ public class MarketController {
 
 	@GetMapping("market_detail.ma")
 	public String marketdetail(@RequestParam("productNo") int productNo,
-							   Model model) {
+							   HttpSession session, Model model) {
+		Users users = (Users)session.getAttribute("loginUser");
 		Tool tool = mkService.selectTool(productNo);
 		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
 		Product p = mkService.selectProductSet(productNo);
-	
+		
 		
 		
 //		System.out.println(options);
@@ -198,10 +203,88 @@ public class MarketController {
 		return "createQnA";
 	}
 	
+	@PostMapping("insertReview.ma")
+	public String insertReview(HttpSession session, 
+							   @ModelAttribute Product p,
+							   @RequestParam ("imageFile") ArrayList<MultipartFile> imageFiles,
+							   HttpServletRequest request,
+							   Model model) {
+		
+		model.addAttribute("productNo", p.getProductNo());
+		
+		int i = 0;
+		int resultF = 0;
+		int resultImg = 0;
+		
+		for(MultipartFile imageFile : imageFiles) {
+			Image image = new Image();
+			if(imageFile != null && !imageFile.isEmpty()) {
+				String[] returnArr = saveFile(imageFile, request);
+				if(returnArr[1] != null) {
+					image.setImageDivideNo(p.getProductNo());
+					image.setImageType(7); /*리뷰는 7번*/
+					image.setImagePath(returnArr[0]);
+					image.setImageOriginalName(imageFile.getOriginalFilename());
+					image.setImageRenameName(returnArr[1]);
+					image.setImageLevel(0);
+					if(i==0) {
+						image.setImageLevel(1);
+					}
+					resultImg += mkService.insertImage(image);
+					i++;
+				}
+			}
+		}
+		if(resultImg == i) {
+			return "redirect:market_detail.ma";
+		}
+		
+		
+		return "redirect:market_detail.ma";
+//		return "redirect:market_detail.ma"+p.getProductNo();
+	}
+		
+	
 	@GetMapping("createReview.ma")
-	public String createReview() {
+	public String createReview(HttpSession session, Product p, Model model) {
+		Users users = (Users)session.getAttribute("loginUser");
+		model.addAttribute("productNo", p.getProductNo());
 		return "createReview";
 	}
+	
+	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
+//		파일 저장소 지정
+		String root = request.getSession().getServletContext().getRealPath("resources");	// webapp-resources 폴더 의미
+//								  ┌ String에서 역슬래쉬를 표현하기 위해 '\\' 라고 적음  
+		String savePath = root + "\\uploadFiles";
+		File folder = new File(savePath);
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+//		파일 이름 변경 형식 지정
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		int ranNum = (int)(Math.random()*100000);
+		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum 
+								+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		
+//		변경된 이름의 파일을 저장
+		String renamePath = folder + "\\" + renameFileName;
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String[] returnArr = new String[2];
+		returnArr[0] = savePath;
+		returnArr[1] = renameFileName;
+		
+		return returnArr; 
+	}
+	
 	
 	@GetMapping("kitchenToolMain.ma")
 	public String kitchenToolMain() {
@@ -214,7 +297,15 @@ public class MarketController {
 		return "paySuccess";
 	}
 	
-
+	private void deleteFile(String fileName, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		
+		File f = new File(savePath + "\\" + fileName);
+		if(f.exists()) {
+			f.delete();
+		}
+	}
 		
 	
 	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙 獄쏉옙 鈺곌퀬�돳
@@ -260,20 +351,10 @@ public class MarketController {
 //	
 	
 	@RequestMapping("insertCart.ma")
-		public void insertCart(
-				@ModelAttribute Cart c,
-				HttpServletResponse response) {
+		public void insertCart(@ModelAttribute Cart c,HttpServletResponse response) {
 
-		
-		System.out.println(pNo);
-		System.out.println(c.getProductNo());
 		int result = mkService.insertCart(c);
-//		ArrayList<Cart> list  = mkService.insertCart(c.getProductNo());
-		
 			System.out.println(c);
-//			System.out.println(c.length);
-//		
-		
 		
 		response.setContentType("application/json; charset=utf-8");
 		GsonBuilder gb = new GsonBuilder();

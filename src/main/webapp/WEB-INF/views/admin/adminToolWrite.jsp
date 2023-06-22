@@ -719,6 +719,7 @@ p b {
 <br>
 </span>
 	<form id="toolInsertForm" action="${contextPath}/adminToolInsert.ad" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="optionCount">
 		<main id="order-wrap">
 			<!-- 구매창 컨테이너 -->
 			<div class="left">
@@ -997,9 +998,10 @@ p b {
 				const opHidden = optionBoxs[j].querySelector('.optionTotal');
 				opHidden.value = opName.value;
 				for(let i = 0; i<opVal.length; i++){
-					opHidden.value += ","+opVal[i].value;
+					opHidden.value += "@"+opVal[i].value;
 				}
 			}
+			document.getElementsByName('optionCount')[0].value = optionBoxs.length;
 		}
 		
 // 		submit 전 값 설정 및 검토

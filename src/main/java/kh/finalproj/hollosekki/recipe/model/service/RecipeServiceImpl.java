@@ -109,4 +109,29 @@ public class RecipeServiceImpl implements RecipeService{
 	public int updateRecipe(Recipe r) {
 		return rDAO.updateRecipe(sqlSession, r);
 	}
+	
+	@Override
+	public int deleteListImg(ArrayList<String> delOrderImgRename) {
+		return rDAO.deleteListImg(sqlSession, delOrderImgRename);
+	}
+	
+	@Override
+	public int deleteComImg(ArrayList<String> comDelRename) {
+		return rDAO.deleteComImg(sqlSession, comDelRename);
+	}
+	
+	@Override
+	public int insertThum(Image img) {
+		return rDAO.insertThum(sqlSession, img);
+	}
+	
+	@Override
+	public ArrayList<Recipe> recentRecipeList() {
+		return rDAO.recentRecipeList(sqlSession);
+	}
+	
+	@Override
+	public ArrayList<Recipe> mostRecipeList() {
+		return rDAO.mostRecipeList(sqlSession);
+	}
 }

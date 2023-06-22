@@ -82,18 +82,6 @@
 		where users_no = #{usersNo} and status = 'Y'
 	</update>
 	
-<!-- 	<select id="selectFollowing" resultMap="followResultSet"> -->
-<!-- 		select * -->
-<!-- 		from follow -->
-<!-- 		where users_no = #{usersNo} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectFollower" resultMap="followResultSet"> -->
-<!-- 		select * -->
-<!-- 		from follow -->
-<!-- 		where FOLLOWING_USER_NO = #{usersNo} -->
-<!-- 	</select> -->
-	
 	<resultMap type="Follow" id="followResultSet">
 		<id column="FOLLOW_NO" property="followNo"/>
 		<result column="FOLLOWING_USER_NO" property="followingUsersNo"/>
@@ -101,46 +89,44 @@
 		<result column="USERS_NO" property="usersNo"/>
 	</resultMap>
 	
-<!-- 	<select id="selectFollowInfo" resultMap="usersResultSet"> -->
-<!-- 		select * -->
-<!-- 		from users -->
-<!-- 		where users_no = #{followNo} and status = 'Y' -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectFollowImage" resultMap="imageResultSet"> -->
-<!-- 		select * -->
-<!-- 		from image -->
-<!-- 		where IMAGE_DIVIDE_NO = #{followNo} and image_type = 1 -->
-<!-- 	</select> -->
-	
 	<select id="selectFollowing" resultType="map">
-		select follow_no, following_user_no, f.users_no, nickname, image_renamename
+		select follow_no, following_user_no, f.users_no, nickname, image_renamename, social_id, social_profile_img, users_pw
 		from follow f
 		     join users u on(u.users_no = following_user_no)
 		     left join image on(u.users_no = image_divide_no)
+		     left join social_login on (u.users_id = social_id)
 		where f.users_no = #{usersNo}
 	</select>
 	
 	<select id="selectFollower" resultType="map">
-		select follow_no, following_user_no, f.users_no, nickname, image_renamename
+		select follow_no, following_user_no, f.users_no, nickname, image_renamename, social_id, social_profile_img, users_pw
 		from follow f
 		     join users u on(u.users_no = f.users_no)
 		     left join image on(u.users_no = image_divide_no)
+		     left join social_login on (u.users_id = social_id)
 		where f.following_user_no = #{usersNo}
 	</select>
 	
-<!-- 	<select id="selectMutualFollow" resultMap="followResultSet"> -->
-<!-- 		select * -->
-<!-- 		from follow -->
-<!-- 		where FOLLOWING_USER_NO = #{followingNo} -->
-<!-- 	</select> -->
+	<delete id="deleteFollow">
+		delete from follow
+		where users_no = #{usersNo} and following_user_no = #{followingNo}
+	</delete>
 	
-<!-- 	<select id="checkMutualFollow" parameterType="java.util.Map" resultType="boolean"> -->
-<!-- 		SELECT COUNT(*)  -->
-<!-- 		FROM follow -->
-<!-- 		WHERE users_no = #{usersNo} AND FOLLOWING_USER_NO IN -->
-<!-- 		<foreach collection="followerNos" item="followerNo" open="(" close=")" separator=","> -->
-<!-- 		  #{followerNo} -->
-<!-- 		</foreach> -->
-<!-- 	</select> -->
+	<insert id="insertFollow">
+		insert into follow
+		values(seq_follow_no.nextval, #{followNo}, default, #{usersNo})
+	</insert>
+	
+	<select id="follow" resultType="_int">
+		select count(*)
+		from follow
+		where following_user_no = #{usersNo}
+	</select>
+	
+	<select id="following" resultType="_int">
+		select count(*)
+		from follow
+		where users_no = #{usersNo}
+	</select>
+	
 </mapper>

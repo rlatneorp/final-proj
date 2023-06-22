@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -45,12 +46,12 @@ public class MarketService {
 		mkDAO.firstAdDay(sqlSession, map);
 	}
 	
-	//獄쏄퀣�꽊筌욑옙 �빊遺쏙옙
+	//�뛾�룄�ｏ옙苑딁춯�쉻�삕 占쎈퉲�겫�룞�삕
 	public int insertShipping(ShippingAddress sa) {
 		return mkDAO.insertShipping(sqlSession, sa);
 	}
 	
-	//獄쏄퀣�꽊筌욑옙 鈺곌퀬�돳
+	//�뛾�룄�ｏ옙苑딁춯�쉻�삕 �댖怨뚰�э옙�뤂
 	public ArrayList<ShippingAddress> selectShipping(int usersNo) {
 		return mkDAO.selectShipping(sqlSession, usersNo);
 	}
@@ -181,22 +182,22 @@ public class MarketService {
 		return mkDAO.selectProductSet(sqlSession,productNo);
 	}
 	
-	//수정할 배송지 조회 
+	//�닔�젙�븷 諛곗넚吏� 議고쉶 
 	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 		return mkDAO.selectShippingForUpdate(sqlSession, shippingNo);
 	}
 	
-	//배송지 수정 
+	//諛곗넚吏� �닔�젙 
 	public void updateConfirmShipping(ShippingAddress sa) {
 		mkDAO.updateConfirmShipping(sqlSession, sa);
 	}
 	
-	//선택한 배송지 조회 
+	//�꽑�깮�븳 諛곗넚吏� 議고쉶 
 	public ShippingAddress selectChecShip(int shippingNo) {
 		return mkDAO.selectChecShip(sqlSession, shippingNo);
 	}
 
-	//productNo에 대한 메뉴 조회 
+	//productNo�뿉 ���븳 硫붾돱 議고쉶 
 	public Menu selectMenu(int productNo) {
 		return mkDAO.selectMenu(sqlSession, productNo);
 	}
@@ -207,6 +208,12 @@ public class MarketService {
 
 	public void delShipping(int shippingNo) {
 		mkDAO.delShipping(sqlSession, shippingNo);
+//	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+//		return null;
+//	}
+
+	public int insertImage(Image image) {
+		return mkDAO.insertImage(sqlSession, image);
 	}
 
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {

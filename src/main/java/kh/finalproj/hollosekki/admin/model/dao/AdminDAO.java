@@ -16,6 +16,7 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
+import kh.finalproj.hollosekki.common.model.vo.Users;
 
 @Repository
 public class AdminDAO {
@@ -209,6 +210,27 @@ public class AdminDAO {
 
 	public int deletesTool(SqlSessionTemplate sqlSession, String[] toolDeletes) {
 		return sqlSession.delete("adminMapper.deletesTool", toolDeletes);
+	}
+
+	
+
+	
+	public int getUsersCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getUsersCount", ab);
+	}
+
+	public ArrayList<Users> selectUsersList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectUsersList", ab, rowBounds);
+	}
+
+	public Users selectUsers(SqlSessionTemplate sqlSession, int uNo) {
+		return sqlSession.selectOne("adminMapper.selectUsers", uNo);
+	}
+
+	public ArrayList<Integer> selectUsersInfo(SqlSessionTemplate sqlSession, HashMap<String, Integer> uMap) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectUsersInfo", uMap);
 	}
 
 	

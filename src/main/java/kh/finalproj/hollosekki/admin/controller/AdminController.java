@@ -36,6 +36,7 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
+import kh.finalproj.hollosekki.common.model.vo.Users;
 
 @Controller
 public class AdminController {
@@ -77,21 +78,63 @@ public class AdminController {
 	}
 	
 	
-//	Member-회원 관리
-	@GetMapping("adminMemberManage.ad")
-	public String adminMemberManage() {
-		return "adminMemberManage";
+//	Users-회원 관리
+	@GetMapping("adminUsersManage.ad")
+	public String adminUsersManage(@ModelAttribute AdminBasic ab,
+								   HttpSession session,
+								   Model model) {
+		
+		ab = adminBasic(ab, session);
+		
+		int listCount = aService.getUsersCount(ab);
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Users> uList = aService.selectUsersList(pi, ab);
+
+		if(uList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("ab", ab);
+			model.addAttribute("uList", uList);
+			return "adminUsersManage";
+		}else {
+			throw new AdminException("식재료 조회를 실패하였습니다.");
+		}
 	}
-	@GetMapping("adminMemberDetail.ad")
-	public String adminMemberDetail() {
-		return "adminMemberDetail";
+	@GetMapping("adminUsersDetail.ad")
+	public String adminUsersDetail(@ModelAttribute AdminBasic ab,
+								   @RequestParam("usersNo") int uNo,
+							 	   Model model) {
+		
+		Users u = aService.selectUsers(uNo);
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", uNo);
+		map.put("imageType", 1);
+		ArrayList<Image> img = aService.selectAllImageList(map);
+
+		HashMap<String, Integer> uMap = new HashMap<String, Integer>();
+		uMap.put("usersNo", uNo);
+		uMap.put("bookmarkType", 0);
+		uMap.put("likeType", 0);
+		ArrayList<Integer> uInfo = aService.selectUsersInfo(uMap);
+		u.setFollowing(uInfo.get(0));
+		u.setFollower(uInfo.get(1));
+		u.setEnrollRecipe(uInfo.get(2));
+		u.setBookmarkCount(uInfo.get(3));
+		u.setLikeCount(uInfo.get(4));
+		
+		if(u != null) {
+			model.addAttribute("ab", ab);
+			model.addAttribute("u", u);
+			model.addAttribute("img", img);
+			return "adminUsersDetail";
+		}else {
+			throw new AdminException("회원 상세조회에 실패하였습니다.");
+		}
 	}
-	@PostMapping("adminMemberUpdate.ad")
-	public String adminMemberUpdate() {
+	@PostMapping("adminUsersUpdate.ad")
+	public String adminUsersUpdate() {
 //		update 진행
-		return "redirect:adminMemberManage.ad";
+		return "redirect:adminUsersManage.ad";
 	}
-	
 	
 //	Menu-식단 관리
 	@GetMapping("adminMenuManage.ad")
@@ -114,7 +157,7 @@ public class AdminController {
 			model.addAttribute("mList", mList);
 			return "adminMenuManage";
 		}else {
-			throw new AdminException("식재료 조회를 실패하였습니다.");
+			throw new AdminException("식단 조회를 실패하였습니다.");
 		}
 		
 	}
@@ -274,8 +317,8 @@ public class AdminController {
 								  @RequestParam("imageFile") MultipartFile imageFile,
 								  HttpServletRequest request,
 								  HttpSession session) {
-		
-		m.setUsersNo(1);
+		Users user = (Users)session.getAttribute("loginUser");
+		m.setUsersNo(user.getUsersNo());
 		
 		int resultPd = -1;
 		int resultM = 0;
@@ -391,8 +434,8 @@ public class AdminController {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("imageDivideNo", igdNo);
 		map.put("imageType", 5);
-		Image img = aService.selectAllImageList(map).get(0);
-
+		ArrayList<Image> img = aService.selectAllImageList(map);
+		
 		if(igd.getProductNo() != 0) {
 			igd = (Ingredient)selectProduct(igd);
 		}
@@ -543,8 +586,8 @@ public class AdminController {
 										HttpServletRequest request,
 										HttpSession session,
 										Model model) {
-//		Users user = (Users)session.getAttribute("loginUser");
-		igd.setUsersNo(1);
+		Users user = (Users)session.getAttribute("loginUser");
+		igd.setUsersNo(user.getUsersNo());
 		
 		int resultPd = -1;
 		int resultIgd = 0;
@@ -720,8 +763,8 @@ public class AdminController {
 								  @ModelAttribute Food f,
 								  @ModelAttribute Product p,
 								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
-
-		f.setUsersNo(1);
+		Users user = (Users)session.getAttribute("loginUser");
+		f.setUsersNo(user.getUsersNo());
 		
 //		foodContent값 합치기
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
@@ -848,27 +891,26 @@ public class AdminController {
 		int resultImgDel = 0;
 		int resultImgIn = 0;
 		int upImageCount = 0;
-		
+		System.out.println(t);
 		resultPd = aService.updateProduct(t);
 		
 		resultT = aService.updateTool(t);
 		
-		
-		if(t.getProductOption().equals("Y")) {
+		if(t.getProductOption().equals("Y") && t.getOptionTotal() != null) {
 			String[] delList = {t.getProductNo()+""};
 			resultOpDel = aService.deletesOptions(delList);
 			
 			ArrayList<Options> oList = new ArrayList<Options>();
 			for(String op:t.getOptionTotal()) {
-				for(int i = 1; i<op.split(",").length; i++) {
+				for(int i = 1; i<op.split("@").length; i++) {
 					Options option = new Options();
-					
 					option.setProductNo(t.getProductNo());
-					option.setOptionName(op.split(",")[0]);
-					option.setOptionValue(op.split(",")[i]);
+					option.setOptionName(op.split("@")[0]);
+					option.setOptionValue(op.split("@")[i]);
 					oList.add(option);
 				}
 			}
+			
 			resultOpIn = aService.insertOptions(oList);
 		}
 			
@@ -881,7 +923,10 @@ public class AdminController {
 					HashMap<String, Integer> map = new HashMap<String, Integer>();
 					map.put("imageDivideNo", t.getProductNo());
 					map.put("imageType", 6);
-					Image img = aService.selectAllImageList(map).get(i);
+					map.put("imageLevel", (i == 0 ? 1 : 0 ));
+					System.out.println(map);
+					Image img = aService.selectAllImageList(map).get(0);
+					System.out.println(img);
 					
 					int delImgLevel = img.getImageLevel();
 					
@@ -889,7 +934,7 @@ public class AdminController {
 							
 //					DB서버 이미지 삭제
 					resultImgDel += aService.deleteImage(img);
-					
+					System.out.println(resultImgDel);
 					
 //					이미지 저장
 					Image image = new Image();
@@ -907,7 +952,9 @@ public class AdminController {
 			
 				}
 			}
-			if(resultImgDel == resultImgIn && resultImgIn == upImageCount) {
+			if((resultPd + resultT + resultOpDel + resultOpIn >= (1+1+0+1)) 
+					&& resultImgDel == resultImgIn 
+					&& resultImgIn == upImageCount) {
 				model.addAttribute("ab", ab);
 				return "redirect:adminToolManage.ad";
 			}else {
@@ -963,11 +1010,11 @@ public class AdminController {
 								  Model model,
 								  @ModelAttribute Tool t,
 								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
-		t.setUsersNo(1);
-
-//		Tool 기본값 설정
+		
+		Users user = (Users)session.getAttribute("loginUser");
+		t.setUsersNo(user.getUsersNo());
+		
 		t.setProductType(4);
-		t.setProductStatus("Y");
 		
 		int resultPd = 0;
 		int resultT = 0;
@@ -982,12 +1029,11 @@ public class AdminController {
 		
 		ArrayList<Options> oList = new ArrayList<Options>();
 		for(String op:t.getOptionTotal()) {
-			for(int i = 1; i<op.split(",").length; i++) {
+			for(int i = 1; i<op.split("@").length; i++) {
 				Options option = new Options();
-				
 				option.setProductNo(nowToolNo);
-				option.setOptionName(op.split(",")[0]);
-				option.setOptionValue(op.split(",")[i]);
+				option.setOptionName(op.split("@")[0]);
+				option.setOptionValue(op.split("@")[i]);
 				oList.add(option);
 			}
 		}
@@ -1140,6 +1186,8 @@ public class AdminController {
 		map.put("dataNo", dataNo);
 		map.put("dataStatus", dataStatus);
 		map.put("dataType", dataType);
+//		dataType = 5
+//		-> users status 업데이트
 		
 		int result = aService.updateStatus(map);
 		String msg = "msg";
@@ -1157,7 +1205,6 @@ public class AdminController {
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {

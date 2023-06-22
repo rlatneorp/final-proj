@@ -56,6 +56,7 @@
 		box-shadow: 0px 1px 0px black; transform: translateY(5px);
 		background: #B0DAFF;
 	}
+	.followDiv{display: flex; justify-content: center;}
 	.follow{
 		border: none; border-radius: 5px;
 		font-weight: bold; font-size: 12px;
@@ -67,33 +68,48 @@
 		border-radius: 15px; margin: 0 auto;
 	}
 	.modal-header{background: #B0DAFF;}
-	#following{
-		width: 500px; height: 600px;
-		margin-left: 750px;
-	}
 	.followName{
 		font-size: 17px; font-weight: bold;
+		width:100px; margin-top: 10px; margin-left: 10px;
 	}
 	.modalFollow{
 		border: none; border-radius: 5px;
-		font-weight: bold; font-size: 12px;
+		font-weight: bold; font-size: 11.5px;
 		width: 60px; height: 30px;
-		background: rgba(224, 224, 224, 0.29);
-		color: rgba(231, 76, 60, 0.86);
-		transform: scale(1.15);
+		color: white;
+		background: rgba(231, 76, 60, 0.8);
+		transform: scale(1.2);
 		margin-left: 200px;
+		margin-top: 10px;
 	}
 	.modalFollower{
 		border: none; border-radius: 5px;
 		font-weight: bold; font-size: 12px;
 		width: 60px; height: 30px;
 		background: #B0DAFF;
-		transform: scale(1.15);
-		margin-left: 250px;
+		transform: scale(1.2);
+		margin-left: 200px;
+		margin-top: 10px;
 	}
-	#follower{
-		width: 500px; height: 600px;
-		margin-left: 750px;
+    .modalFollow:hover {
+	    border: 1px #C6C6C6 solid;
+	    box-shadow: 1px 1px 1px #EAEAEA;
+	    color: white;
+	    background: rgba(231, 76, 60, 0.9);
+	}
+	
+	.modalFollow:active {
+	    box-shadow: inset 1px 1px 1px #DFDFDF;   
+	}
+    .modalFollower:hover {
+	    border: 1px #C6C6C6 solid;
+	    box-shadow: 1px 1px 1px #EAEAEA;
+	    color: #333333;
+	    background: #8bc4f7;
+	}
+	
+	.modalFollower:active {
+	    box-shadow: inset 1px 1px 1px #DFDFDF;   
 	}
     #text{
     	margin: 0 auto;
@@ -138,6 +154,7 @@
     	width: 50px; height: 50px;
     	border-radius: 50%;
     	border: 2px solid gray;
+    	object-fit: cover; object-position: center;
     }
     #center{
     	font-size: 26px; font-weight: bold; 
@@ -149,14 +166,6 @@
     	color: rgb(52, 152, 219); margin-left: 10px;
     }
     #point:hover{text-decoration: none;}
-    .modalFollowing{
-    	border: none; border-radius: 5px;
-		font-weight: bold; font-size: 12px;
-		width: 60px; height: 30px;
-		background: lightgray;
-		transform: scale(1.15);
-		margin-left: 250px;
-    }
 </style>
 </head>
 <body>
@@ -241,17 +250,25 @@
 		</div>
 	</div>
 	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="followingLabel">팔로잉  0명</h1>
+					<h1 class="modal-title fs-5" id="followingLabel">팔로잉  ${ following }명</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<c:forEach items="${followingList}" var="f">
-					    <img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
-					    &nbsp;&nbsp;<label class="followName">${f.NICKNAME}</label>
-					    <button class="modalFollow">언팔로우</button><br><br>
+					    <div class="followDiv">
+				    		<c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
+				    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+				    		</c:if>
+				    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
+				    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+				    		</c:if>
+					    	<input type="hidden" value="${ f.FOLLOWING_USER_NO }" class="followingsNo">
+					    	<div><label class="followName">${f.NICKNAME}</label></div>
+					    	<div class="unfollowDiv" data-user-no="${f.FOLLOWING_USER_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+					    </div><br>
 					</c:forEach>
 				</div>
 			</div>
@@ -259,29 +276,37 @@
 	</div>
 	
 	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="followingLabel">팔로워  0명</h1>
+					<h1 class="modal-title fs-5" id="followingLabel">팔로워  ${ follower }명</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<c:forEach items="${followerList}" var="f">
-					    <img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
-					    &nbsp;&nbsp;<label class="followName">${f.NICKNAME}</label>
-					    <c:set var="following" value="false"/>
-					    <c:forEach items="${followingList}" var="fl">
-					        <c:choose>
-					            <c:when test="${fl.NICKNAME eq f.NICKNAME}">
-					                <c:set var="following" value="true"/>
-					                <button class="modalFollowing">팔로잉</button>
-					            </c:when>
-					        </c:choose>
-					    </c:forEach>
-					    <c:if test="${not following}">
-					        <button class="modalFollower">팔로워</button>
-					    </c:if>
-					    <br><br>
+						<div class="followDiv">
+						    <c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
+				    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+				    		</c:if>
+				    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
+				    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+				    		</c:if>
+						    <input type="hidden" value="${ f.USERS_NO }" class="followersNo">
+						    <div><label class="followName">${f.NICKNAME}</label></div>
+						    <c:set var="following" value="false"/>
+						    <c:forEach items="${followingList}" var="fl">
+						        <c:choose>
+						            <c:when test="${fl.NICKNAME eq f.NICKNAME}">
+						                <c:set var="following" value="true"/>
+						                <div class="unfollowDiv" data-user-no="${f.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+						            </c:when>
+						        </c:choose>
+						    </c:forEach>
+						    <c:if test="${not following}">
+						        <div class="unfollowDiv" data-user-no="${f.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+						    </c:if>
+					    </div>
+					    <br>
 					</c:forEach>
 				</div>
 			</div>
@@ -478,7 +503,6 @@
 			$.ajax({
 				url: 'point.ma',
 				success: function(info){
-					console.log(info);
 					let myP = document.querySelector('#myP');
 					myP.innerHTML = info.point;
 				}
@@ -486,59 +510,55 @@
 			});
 		}
 		
-		// 맞팔 조회 - ajax
-		const followerBtn = document.getElementsByClassName('follow')[1];
-		const followersNo = document.getElementsByClassName('followersNo');
-		const followingsNo = document.getElementsByClassName('followingsNo');
-		const btnSpan = document.getElementById('btnSpan');
-		const usersNo = '${loginUser.usersNo}';
+// 		const unFollowBtn = document.getElementsByClassName('modalFollow')[0]; // 팔로잉 모달의 언팔
+// 		const unFollowerBtn = document.getElementsByClassName('modalFollow')[1]; // 팔로우 모달의 언팔
+// 		const unfollowDiv = document.getElementsByClassName('unfollowDiv');
+// 		const followBtn = document.getElementById('modalFollower');
+		const usersNo = ${loginUser.usersNo};
+// 		const followingsNo = document.getElementsByClassName('followingsNo'); // 내가 팔로잉한 사람의 No
+// 		const followersNo = document.getElementsByClassName('followersNo'); // 나를 팔로우한 사람의 No
 		
-		let followers = [];
+		// 팔로잉 모달
+		// 언팔
+		function unfollowUser(button) {
+		  var userNo = button.parentNode.dataset.userNo;
 		
-		for(fn of followersNo){
-			const followerNo = fn.value;
-			followers.push(followerNo);
+		  $.ajax({
+		    type: 'POST',
+		    url: '${contextPath}/myPage_unFollow.me',
+		    data: { usersNo: usersNo, followingNo: userNo },
+		    success: function (data) {
+		      console.log('언팔로우 성공');
+		      if (data == 'yes') {
+		        var unfollowDiv = button.parentNode;
+		        unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
+		      }
+		    },
+		    error: function (data) {
+		      console.log('언팔로우 실패');
+		    }
+		  });
 		}
 		
-		let followings = [];
-		
-		for(fin of followingsNo){
-			const followingNo = fin.value;
-			followers.push(followingNo);
+		// 팔로
+		function followUser(button) {
+			  var userNo = button.parentNode.dataset.userNo;
+			  console.log(userNo);
+			  
+			  $.ajax({
+			    type: 'POST',
+			    url: '${contextPath}/myPage_follow.me',
+			    data: { usersNo: usersNo, followNo: userNo },
+			    success: function (data) {
+			      console.log('팔로우 성공');
+			      var unfollowDiv = button.parentNode;
+			      unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
+			    },
+			    error: function (data) {
+			      console.log('실패');
+			    }
+			  });
 		}
-		console.log(followings);
-		
-// 		followerBtn.addEventListener('click', () => {
-// 			$.ajax({
-// 				type : 'GET',
-// 				url : '${contextPath}/myPage_mutualFollow.me',
-// 				data : {followerNos : followers},
-// 				success : data => {
-// 					console.log(data);
-// 					if(data == 'yes'){
-// 						const followingNos = [followings];
-// 		                console.log(followingNos);
-// 		                if (followingNos.includes(usersNo)) {
-// 		                    btnSpan.innerHTML = '<button class="modalFollower">팔로잉</button>';
-// 		                } else {
-// 		                    btnSpan.innerHTML = '<button class="modalFollower">팔로우</button>';
-// 		                }
-// // 						btnSpan.innerHTML = '<button class="modalFollower">팔로잉</button>'
-// 					} else if (data == 'no') {
-// 		                const followingNos = [followings];
-// 		                console.log(followingNos);
-// 		                if (followingNos.includes(usersNo)) {
-// 		                    btnSpan.innerHTML = '<button class="modalFollower">팔로잉</button>';
-// 		                } else {
-// 		                    btnSpan.innerHTML = '<button class="modalFollower">팔로우</button>';
-// 		                }
-// 		            }
-// 				},
-// 				error : data => {
-// 					console.log('에ㄹ에러에ㅓㄹ');
-// 				}
-// 			});
-// 		});
 	</script>
 </body>
 </html> 

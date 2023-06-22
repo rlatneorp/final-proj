@@ -207,7 +207,7 @@ input[type="text"] {
 						<b>${cl.productName}</b><br><br>
 						<c:forEach items="${optValues }" var="opt">
 							<c:if test="${ opt.productNo eq cl.productNo }">
-								<input type="text" value="${opt.optionNo }">
+								<input type="hidden" value="${opt.optionNo }">
 								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
 							</c:if>
 						</c:forEach>
@@ -430,9 +430,6 @@ input[type="text"] {
 						pointRate = data*0.005;
 						document.getElementById('point-' + pNos).innerText = pointRate;
 							
-						//개당 합계 금액 요약 
-// 						trTotalPrice = totalPrice + data;
-							
 						//플러스 버튼 누를 때마다 개당 합계 금액 금액화 
 						const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
 						const sum = formattedPrice.replace(/[₩]/g, "");
@@ -491,9 +488,6 @@ input[type="text"] {
 								pointRate = data*0.005;
 								document.getElementById('point-' + pNos).innerText = pointRate;
 									
-								//개당 합계 금액 요약 
-//		 						trTotalPrice = totalPrice + data;
-									
 								//마이너스 버튼 누를 때마다 개당 합계 금액 금액화 
 								const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
 								const sum = formattedPrice.replace(/[₩]/g, "");
@@ -524,47 +518,6 @@ input[type="text"] {
 								} else {
 											
 								}
-								
-								
-								
-								
-// 								//포인트 
-// 								pointRate = data*0.005;
-// 								document.getElementById('point-' + pNos).innerText = pointRate;
-								
-// 								totalPrice += data;
-// 								//minus 버튼 클릭 시 변동된 합계금액 금액화 
-// 								const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
-// 								const sum = formattedPrice.replace(/[₩]/g, "");
-// 								document.getElementById('sum-'+pNos).innerText = sum;
-// 								//minus 버튼 클릭 시 
-								
-// 								//요약 숫자 변화 
-// 								let intOrderSize = parseInt(document.getElementById('orderSize').innerText);
-// 								intOrderSize--;
-// 								document.getElementById('orderSize').innerText = intOrderSize;
-// 								let price = 0;
-// 								const sumPrice = document.getElementsByClassName('sum');
-// 								for(const sum of sumPrice) {
-// 									const intSum = parseInt(sum.innerText.replace(/,/g, ''));
-// 									price += intSum;
-// 								}
-// 								document.getElementById('trTotalSum').innerText = price;
-								
-// 								//배송비
-// 								if(price >= 30000) {
-// 									document.getElementById('shipPrice').innerText = '0';
-// 								} else {
-// 									document.getElementById('shipPrice').innerText = '3,000';
-// 								}
-// 								//하단 총 합계 금액 
-// 								if(document.getElementById('shipPrice').innerText == '3,000') {
-// 									const ship = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
-// 									document.getElementById('shipSum').innerText = (price + ship)
-// 								} else {
-// 									document.getElementById('shipSum').innerText = document.getElementById('trTotalSum').innerText;
-// 								}
-								
 							},
 							error: (data) => {}
 						})
@@ -589,7 +542,6 @@ input[type="text"] {
 				this.innerHTML = '> 03 ㅈㅁㅇㄹ &nbsp;';
 			})
 			
-// 		}
 	
 	//전체 선택 체크 
 	const selAllChec = document.getElementById('selectAllCheckBox');
@@ -658,9 +610,6 @@ input[type="text"] {
 		}
 	}
 	
-	
-	
-	
 	//장바구니 내 상품 한 개 이상 클릭 시 구매 버튼 실행 
 	document.getElementById('goPay').addEventListener('click', function() {
 		const products = document.getElementById('products');
@@ -672,39 +621,13 @@ input[type="text"] {
 				 button: "확인",
 				});
 		} else {
-// 			let values = []; //productNo 담을 배열 
-// 			let optionValues = []; //select 된 option 담을 배열 
 			let optNos = [];
-// 			console.log(checkProducts);
 			for(cp of checkProducts) { //체크 된 input type checkbox 
-				
 				const preorderNo = cp.parentElement.lastElementChild.value;
 				optNos.push(preorderNo);
-				
-// 				const selectTag = cp.parentElement.nextSibling.nextElementSibling.childNodes[5];
-				
-// 				values.push(cp.value); //체크 된 productNo
-// 				const productNo = cp.value;
-				
-// 				const optionNo = selectTag.value;
-				
-				
-				
-// 				const pair = [productNo, optionNo];
-// 				pairs.push(pair);
-// 				optionValues.push(selectTag.value);//선택 된 옵션 값 
 			}
 			console.log('optNos : ' + optNos);
-// 			console.log('pairs : ', pairs);
-// 			const strPairs = pairs.map(pair => pair.join(',')).join(';');
-// 			console.log(strPairs);
 			
-			
-			
-// 			const prNo = values.toString(); //배열 문자화
-// 			const options = optionValues.toString(); 
-// 			console.log('options : ' + options);
-// 			console.log('prNo : ' + prNo);
 			const form = document.createElement('form');
 			form.method = 'POST';
 			form.action = '${contextPath}/payDetail.ma'
@@ -714,16 +637,10 @@ input[type="text"] {
 			prNoInput.name = 'optNos';
 			prNoInput.value = optNos;
 			
-// 			const optionsInput = document.createElement('input');
-// 			optionsInput.type = 'hidden';
-// 			optionsInput.name = 'options';
-// 			optionsInput.value = options;
 			form.appendChild(prNoInput);
-// 			form.appendChild(optionsInput);
 			
 			document.body.appendChild(form);
 			form.submit();
-			
 			
 		}
 	})
@@ -733,8 +650,6 @@ input[type="text"] {
 </script>
 
 <script>
-// 	document.getElementById('trTotalSum').innerText = '0';	
-// 	document.getElementById('orderSize').innerText = '0';
 	
 	const trSum = document.getElementsByClassName('sum');
 	
@@ -744,7 +659,6 @@ input[type="text"] {
 		const checkSum = checkbox.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText.replace(/,/g, ''); // 합계금액이 표시된 요소
 		const checkCount = checkbox.parentElement.nextElementSibling.nextElementSibling.innerText.replace(/,/g, ''); // 체크된 카운트 수
 		
-// 		console.log('checkSum!! : ' + checkSum)
 		const intCheckSum = parseInt(checkSum);
 		const intCheckCount = parseInt(checkCount);
 		if (checkbox.checked) {

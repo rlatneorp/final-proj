@@ -7,8 +7,8 @@
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
 <title>Hollo Store</title>
-<link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
-	rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <style>
@@ -17,6 +17,25 @@
 	margin: 0px;
 	font-family: 'Noto Sans KR', sans-serif;
 }
+
+/* 	모달 */
+	.modal-body{text-align: center;}
+	.bi-check-circle-fill{font-size: 60px; color: #B0DAFF;}
+	.btn-n{background: #4485d7; color: white; border: 1px solid #4485d7; border-radius: 5px; height:40px;}
+	.btn-n:hover{background: white; color: #4485d7;}
+	.btn-y{background: white; color: #4485d7; border: 1px solid #4485d7; border-radius: 5px; height:40px;}
+	.btn-y:hover{background: #4485d7; color: white;}
+
+	#modalNick{display: inline-block;}
+	#modalInfo{height: 100px;}
+
+	.modalMid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 15px; margin: 5px 0px; font-weight: bold;}
+	.modalMid::before{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0spx;}
+	.modalMid::after{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
+	
+	.modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
+	.moCon{height: 75px; border-radius: 10px;}
+
 
 h4{
 	margin-bottom: 0px;
@@ -720,7 +739,7 @@ p b {
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-					 <span style="font-weight: 400; font-size: 42px;">캠핑용 후라이팬</span>
+					 <span style="font-weight: 400; font-size: 42px;">${ tool.toolName} </span>
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
@@ -778,8 +797,6 @@ p b {
 						</c:if>
 					</c:forEach>
 						
-				<input type="hidden" value="0" class="preorderNo">
-
 <!-- 					<label for="productOption">색상</label> -->
 <!-- 					<select class='productOption'  required> -->
 <!-- 						사이즈 선택 창  -->
@@ -827,7 +844,8 @@ p b {
 					</div>
 			</div>
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button>
+<!-- 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
+						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
 
 		</div>
 	</main>
@@ -835,7 +853,7 @@ p b {
 <br>
 		
 	
-<div class ="productInfoMain" st>
+<div class ="productInfoMain">
 	<div class="reviewbox">
 		<ul>
 			<li>상세정보</li>
@@ -872,7 +890,7 @@ p b {
 				<ul style="padding: 10px;">
 					<li ><img src="img" alt="" /></li>
 					<li><img src="img" alt="" /></li>
-					<li ><img src="img"" alt=""/></li>
+					<li ><img src="img" alt=""/></li>
 				</ul>
 			</div>
 		</div>
@@ -889,7 +907,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -918,7 +936,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -944,7 +962,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -970,7 +988,7 @@ p b {
 					<ul style="padding: 10px;">
 						<li ><img src="img" alt="" /></li>
 						<li><img src="img" alt="" /></li>
-						<li ><img src="img"" alt=""/></li>
+						<li ><img src="img" alt=""/></li>
 					</ul>
 				</div>
 			</div>
@@ -1128,9 +1146,34 @@ p b {
 					</div>
 				</div>
           	</li>
-	</div>
-</div><!-- 전체를 감싸는 박스 -->
+		</div>
+	</div><!-- 전체를 감싸는 박스 -->
+</div>
+        	<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        	<div class="modal-dialog modal-dialog-centered">
+        		<div class="modal-content">
+        			<div class="modal-header">
+        				<h1 class="modal-title fs-5" id="exampleModalLabel">장바구니 담기</h1>
+        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        			</div>
+        			<div class="modal-body">
+        				<i class="bi bi-check-circle-fill"></i><br>
+        				<h3>${ tool.toolName} </h3><br>
+        				상품이 장바구니에 담겼습니다.
 
+        			</div>
+        			<div class="footer" style="text-align:center; height: 50px;">
+<!--         				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button> -->
+							<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
+							<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
+<!--         				<button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
+<!--         				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button> -->
+        			</div>
+        		</div>
+        	</div>
+        </div>
+
+<br><br><br>
 	<script>
 	
 	window.onload = function(){
@@ -1291,13 +1334,13 @@ $(function(){
 	
  
 	
-    $(".cartbtn").click(function() {
+	$(document).ready(function() {
+    $("#cartbtn").click(function() {
         var productNo = $("input[name='productNo']").val();
         var cartCount = $(".cartCount").val();
         var productOption = $(".productOption").val();
         var productOption2 = $(".productOption2").val();
         var preorderNo = 0;
-     console.log($("input[name='productNo']").val());
         
         var productNoValues=[];
         var cartCountValues=[];
@@ -1337,40 +1380,32 @@ $(function(){
         })
         
         
-        console.log(allData);
+        
         let count = 0;
 	        for(i=0; i<productNoValues.length; i++){
+	        	console.log(productNoValues[i]);
 		        $.ajax({
 		            url: "insertCart.ma",
-	// 	            type: "post",
-					dataType:json,
+		            async: false,
 		            data: {
 		        		"productNo":productNoValues[i], 
 			        	"cartCount":cartCountValues[i],
 			        	"productOption":productOptionValues[i], 
 			        	"productOption2":productOption2Values[i],
 			        	"usersNo":usersNoValues[i],
-			        	"preorderNo":$(".preorderNo").val()},
+			        },
 		            success: preNo =>{
-		            	$(".preorderNo").val(preNo);
-		            	console.log(preNo);
-		            	console.log($(".preorderNo").val());
-		            	if(preNo != 0) {
-		                	count++;
-		                	console.log(count);
-		            	}
+	                	count++;
 		            },
 		            error: allData => {
 		            	console.log("error");
 		            }
 		        })
 	        }
-        if(count == productNoValues.length) {
-            alert("상품이 장바구니에 담겼습니다.");
-            
-        	}else{
-        		alert("상품이 장바구니에 담기지 못했습니다.");
+        if(count != productNoValues.length) {
+            alert("상품이 장바구니에 담기지 못했습니다.");
         	}
+        	
     })
 	
 	}

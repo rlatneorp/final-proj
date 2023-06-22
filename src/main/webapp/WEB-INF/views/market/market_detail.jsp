@@ -749,12 +749,12 @@ p b {
 					</h2>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
 					<c:set var="total" value="${ p.productPrice - (p.productPrice * (p.productSale *0.01))}" />
-					<fmt:formatNumber value="${ total }" groupingUsed="true"/>
+					<fmt:formatNumber value="${ total }" groupingUsed="true"/>원
 					</h2>
 					&nbsp;&nbsp;
 					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>
+					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
 					</h2>
 				</div>
 			<div>
@@ -1407,10 +1407,8 @@ $(function(){
         	}
         	
     })
-})
 	
 	}
 	 </script> 
-
 </body>
 </html>

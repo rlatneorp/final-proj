@@ -273,7 +273,7 @@
 		<selectKey keyProperty="preorderNo" resultType="int" order="AFTER" >
 			select seq_pre_no.currval from dual
 		</selectKey>
-  		<if test="preorderNo !=0">
+  		<if test="preorderNo != 0">
   			insert all 
 			into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, #{preorderNo})
 	  		into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, #{preorderNo})

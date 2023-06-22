@@ -256,11 +256,11 @@ public class MarketController {
 				@RequestParam("usersNo")String usersNo*/,HttpServletResponse response) {
 		
 		System.out.println(pNo);
-		System.out.println(c);
+		System.out.println(c.getProductNo());
 		int result = mkService.insertCart(c);
 //		ArrayList<Cart> list  = mkService.insertCart(c.getProductNo());
 		
-//			System.out.println(c);
+			System.out.println(c);
 //			System.out.println(c.length);
 //		
 		

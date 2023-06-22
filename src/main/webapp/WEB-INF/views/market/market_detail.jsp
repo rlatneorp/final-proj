@@ -730,12 +730,12 @@ p b {
 					</h2>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
 					<c:set var="total" value="${ p.productPrice - (p.productPrice * (p.productSale *0.01))}" />
-					<fmt:formatNumber value="${ total }" groupingUsed="true"/>
+					<fmt:formatNumber value="${ total }" groupingUsed="true"/>원
 					</h2>
 					&nbsp;&nbsp;
 					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>
+					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
 					</h2>
 				</div>
 			<div>
@@ -1131,7 +1131,6 @@ p b {
 	</div>
 </div><!-- 전체를 감싸는 박스 -->
 
-
 	<script>
 	
 	window.onload = function(){
@@ -1292,7 +1291,6 @@ $(function(){
 	
  
 	
-	$(document).ready(function() {
     $(".cartbtn").click(function() {
         var productNo = $("input[name='productNo']").val();
         var cartCount = $(".cartCount").val();
@@ -1345,6 +1343,7 @@ $(function(){
 		        $.ajax({
 		            url: "insertCart.ma",
 	// 	            type: "post",
+					dataType:json,
 		            data: {
 		        		"productNo":productNoValues[i], 
 			        	"cartCount":cartCountValues[i],
@@ -1358,6 +1357,7 @@ $(function(){
 		            	console.log($(".preorderNo").val());
 		            	if(preNo != 0) {
 		                	count++;
+		                	console.log(count);
 		            	}
 		            },
 		            error: allData => {
@@ -1372,10 +1372,8 @@ $(function(){
         		alert("상품이 장바구니에 담기지 못했습니다.");
         	}
     })
-})
 	
 	}
 	 </script> 
-
 </body>
 </html>

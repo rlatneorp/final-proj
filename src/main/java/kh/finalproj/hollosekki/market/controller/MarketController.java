@@ -324,20 +324,20 @@ public class MarketController {
 		
 	}
 	
-	@RequestMapping(value="updateShipping.ma", produces="application/json; charset=UTF-8")
-	public void updateShipping(@RequestParam("shippingNo") int shippingNo, HttpServletResponse response) {
-		System.out.println("shippingNo : " + shippingNo);
-		
-		ShippingAddress sa = mkService.selectShippingForUpdate(shippingNo);
-		System.out.println("sa : " + sa);
-		response.setContentType("application/json; charset=UTF-8");
-		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
-		Gson gson = gb.create();
-		try {
-			gson.toJson(sa, response.getWriter());
-		} catch (JsonIOException | IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@RequestMapping(value="updateShipping.ma", produces="application/json; charset=UTF-8")
+//	public void updateShipping(@RequestParam("shippingNo") int shippingNo, HttpServletResponse response) {
+//		System.out.println("shippingNo : " + shippingNo);
+//		
+////		ShippingAddress sa = mkService.selectShippingForUpdate(shippingNo);
+//		System.out.println("sa : " + sa);
+//		response.setContentType("application/json; charset=UTF-8");
+//		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+//		Gson gson = gb.create();
+//		try {
+//			gson.toJson(sa, response.getWriter());
+//		} catch (JsonIOException | IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 }

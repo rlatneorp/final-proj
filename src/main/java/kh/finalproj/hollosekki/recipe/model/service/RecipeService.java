@@ -45,5 +45,7 @@ public interface RecipeService {
 
 	int deleteComImg(ArrayList<String> comDelRename);
 
+	int insertThum(Image img);
+
 
 }

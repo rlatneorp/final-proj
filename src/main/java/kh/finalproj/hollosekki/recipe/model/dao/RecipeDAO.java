@@ -95,5 +95,9 @@ public class RecipeDAO {
 		return sqlSession.delete("recipeMapper.deleteComImg", comDelRename);
 	}
 
+	public int insertThum(SqlSessionTemplate sqlSession, Image img) {
+		return sqlSession.insert("recipeMapper.insertThum", img);
+	}
+
 
 }

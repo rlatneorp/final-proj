@@ -119,4 +119,9 @@ public class RecipeServiceImpl implements RecipeService{
 	public int deleteComImg(ArrayList<String> comDelRename) {
 		return rDAO.deleteComImg(sqlSession, comDelRename);
 	}
+	
+	@Override
+	public int insertThum(Image img) {
+		return rDAO.insertThum(sqlSession, img);
+	}
 }

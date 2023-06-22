@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -214,6 +215,13 @@ public class MarketDAO {
 	public int insertCart(SqlSessionTemplate sqlSession, Cart c) {
 		sqlSession.insert("marketMapper.insertCart", c);
 		return c.getPreorderNo();
+	}
+
+	public int insertImage(SqlSessionTemplate sqlSession, Image image) {
+		return sqlSession.insert("marketMapper.insertImage", image);
+	//배송지 삭제 
+	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
+		sqlSession.delete("marketMapper.delShipping", shippingNo);
 	}
 
 

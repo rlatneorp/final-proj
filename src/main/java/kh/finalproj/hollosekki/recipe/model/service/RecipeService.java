@@ -41,4 +41,15 @@ public interface RecipeService {
 
 	int updateRecipe(Recipe r);
 
+	int deleteListImg(ArrayList<String> delOrderImgRename);
+
+	int deleteComImg(ArrayList<String> comDelRename);
+
+	int insertThum(Image img);
+
+	ArrayList<Recipe> recentRecipeList();
+
+	ArrayList<Recipe> mostRecipeList();
+
+
 }

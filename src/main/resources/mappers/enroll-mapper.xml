@@ -12,27 +12,7 @@
 		from users
 		where users_id = #{usersId} and status = 'Y'
 	</select>
-	
-	<resultMap type="kh.finalproj.hollosekki.enroll.model.vo.Users" id="usersResultSet">
-		<id column="USERS_NO" property="usersNo"/>
-		<result column="USERS_ID" property="usersId"/>
-		<result column="USERS_PW" property="usersPw"/>
-		<result column="USERS_NAME" property="usersName"/>
-		<result column="NICKNAME" property="nickName"/>
-		<result column="EMAIL" property="email"/>
-		<result column="PHONE" property="phone"/>
-		<result column="ENROLL_DATE" property="enrollDate"/>
-		<result column="EXIT_DATE" property="eixtDate"/>
-		<result column="STATUS" property="status"/>
-		<result column="CHECK_DAY" property="checkDay"/>
-		<result column="POINT" property="point"/>
-		<result column="IS_ADMIN" property="isAdmin"/>
-		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
-		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
-		<result column="USERS_ADDRESS" property="usersAddress"/>
-		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
-	</resultMap>
-	
+
 	<select id="checkId" resultType="_int">
 		select count(*)
 		from users
@@ -73,11 +53,6 @@
 		where social_id=#{id}
 	</select>
 	
-	<resultMap type="SocialLogin" id="socialResultSet">
-		<id column="SOCIAL_ID" property="socialId"/>
-		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
-	</resultMap>
-	
 	<insert id="socialInsertUser">
 		insert into social_login
 		values(#{socialId}, #{socialProfileImg})
@@ -106,6 +81,126 @@
 		order by food_no desc
 	</select>
 	
+	<select id="recipeImageList" resultMap="imageResultSet">
+		select *
+		from image
+		where image_divide_no = #{ foodNo } and image_level = 0
+		order by image_no desc
+	</select>
+	
+	<select id="bookMarkList" resultMap="bookmarkResultSet">
+		select *
+		from bookmark
+		where users_no = #{usersNo}
+	</select>
+	
+	<select id="menuList" resultMap="menuResultSet">
+		select *
+		from menu
+		order by product_no desc
+	</select>
+	
+	<select id="follow" resultType="_int">
+		select count(*)
+		from follow
+		where following_user_no = #{usersNo}
+	</select>
+	
+	<select id="following" resultType="_int">
+		select count(*)
+		from follow
+		where users_no = #{usersNo}
+	</select>
+	
+	<select id="menuImageList" resultMap="imageResultSet">
+		select *
+		from image
+		where image_type=4
+		order by image_no desc
+	</select>
+	
+	<select id="productList" resultMap="productResultSet">
+		select *
+		from product
+		where product_status = 'Y'
+		order by product_no desc
+	</select>
+	
+	<select id="healtherList" resultMap="usersResultSet">
+		select *
+		from users
+		where status = 'Y'
+	</select>
+	
+	<select id="allRecipeList" resultMap="recipeResultSet">
+		select *
+		from recipe
+		where recipe_status = 'Y'
+	</select>
+	
+	<select id="allRecipeImageList" resultMap="imageResultSet">
+		select *
+		from image
+		where image_type=2 and image_level=0
+		order by image_no desc
+	</select>
+	
+	<select id="followList" resultType="map">
+		select *
+		from follow
+			 left join users on(following_user_no = users.users_no)
+			 left join image on(following_user_no = image.image_divide_no)
+			 left join social_login on(users.users_id = social_login.social_id)
+		where follow.users_no = #{usersNo}
+		order by users.users_no desc
+	</select>
+	
+	<select id="followingLsit" resultType="map">
+		select *
+		from follow
+			 left join users on(follow.users_no = users.users_no)
+    		 left join image on(follow.users_no = image.image_divide_no)
+     		 left join social_login on(users.users_id = social_login.social_id)
+		where following_user_no = #{usersNo}
+		order by users.users_no desc
+	</select>
+	
+	<select id="loginUserFollowingList" resultType="map">
+		select *
+		from follow
+			 left join users on(follow.users_no = users.users_no)
+    		 left join image on(follow.users_no = image.image_divide_no)
+     		 left join social_login on(users.users_id = social_login.social_id)
+		where following_user_no = #{usersNo}
+		order by users.users_no desc
+	</select>
+	
+	
+	<resultMap type="Users" id="usersResultSet">
+		<id column="USERS_NO" property="usersNo"/>
+		<result column="USERS_ID" property="usersId"/>
+		<result column="USERS_PW" property="usersPw"/>
+		<result column="USERS_NAME" property="usersName"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="EMAIL" property="email"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="EXIT_DATE" property="eixtDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="CHECK_DAY" property="checkDay"/>
+		<result column="POINT" property="point"/>
+		<result column="IS_ADMIN" property="isAdmin"/>
+		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
+		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
+		<result column="USERS_ADDRESS" property="usersAddress"/>
+		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
+	</resultMap>
+		
+	<resultMap type="SocialLogin" id="socialResultSet">
+		<id column="SOCIAL_ID" property="socialId"/>
+		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
+	</resultMap>
+	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>
@@ -122,13 +217,6 @@
 		<result column="RECIPE_STATUS" property="recipeStatus"/>
 	</resultMap>
 	
-	<select id="recipeImageList" resultMap="imageResultSet">
-		select *
-		from image
-		where image_divide_no = ${ foodNo } and image_level = 0
-		order by image_no desc
-	</select>
-	
 	<resultMap type="Image" id="imageResultSet">
 		<id column="IMAGE_NO" property="imageNo"/>
 		<result column="IMAGE_DIVIDE_NO" property="imageDivideNo"/>
@@ -139,12 +227,6 @@
 		<result column="IMAGE_LEVEL" property="imageLevel"/>
 	</resultMap>
 	
-	<select id="bookMarkList" resultMap="bookmarkResultSet">
-		select *
-		from bookmark
-		where users_no = ${usersNo}
-	</select>
-	
 	<resultMap type="BookMark" id="bookmarkResultSet">
 		<id column="BOOKMARK_NO" property="bookmarkNo"></id>
 		<result column="USERS_NO" property="usersNo"/>
@@ -152,16 +234,31 @@
 		<result column="NUMBER_TYPE" property="numberType"/>
 	</resultMap>
 	
-	<select id="menuList" resultMap="menuResultSet">
-		select *
-		from menu
-		order by product_no desc
-	</select>
-	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="PRODUCT_NO" property="productNo"/>
 		<result column="MENU_NAME" property="menuName"/>
 		<result column="MENU_TYPE" property="menuType"/>
 		<result column="MENU_CONTENT" property="menuContent"/>
+	</resultMap>
+	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="PRODUCT_PRICE" property="productPrice"/>
+		<result column="PRODUCT_OPTION" property="productOption"/>
+		<result column="PRODUCT_STOCK" property="productStock"/>
+		<result column="PRODUCT_CREATE_DATE" property="productCreateDate"/>
+		<result column="PRODUCT_MODIFY_DATE" property="productModifyDate"/>
+		<result column="PRODUCT_SALE" property="productSale"/>
+		<result column="PRODUCT_COUNT" property="productCount"/>
+		<result column="PRODUCT_STATUS" property="productStatus"/>
+		<result column="USERS_NO" property="usersNo"/>
+	</resultMap>
+	
+	<resultMap type="Follow" id="followResultSet">
+		<id column="FOLLOW_NO" property="followNo"/>
+		<result column="FOLLOWING_USER_NO" property="followingUsersNo"/>
+		<result column="FOLLOW_CREATE_DATE" property="followCreateDate"/>
+		<result column="USERS_NO" property="usersNo"/>
 	</resultMap>
 </mapper>

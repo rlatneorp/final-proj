@@ -8,15 +8,22 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<!-- iamport.payment.js -->
+<!-- <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-{SDK-최신버전}.js"></script> -->
+<!-- <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script> -->
+
+
 <style>
 /* Normal white Button as seen on Google.com*/
 .shipButton {
-
+	
     color: #444444;
     background: #F3F3F3;
     border: 1px #DADADA solid;
     padding: 5px 10px;
-    border-radius: 2px;
+    border-radius: 5px;
     font-weight: bold;
     font-size: 13pt;
     outline: none;
@@ -170,7 +177,8 @@ input[type="text"] {
   padding: 20px;
   border: 1px solid #888;
   width: 950px;
-  height:700px
+  height:700px;
+  
 }
 
 .close {
@@ -188,7 +196,7 @@ input[type="text"] {
 }
 
 .shippingList{border-bottom:2px solid lightgray; height:60px; line-height: 1.5;}
-.shippingList2{border-bottom:2px solid lightgray; height:45px;}
+.shippingList2{border-bottom:2px solid lightgray; height:45px; background-color:#B0DAFF}
 </style>
 </head>
 <body>
@@ -294,7 +302,7 @@ input[type="text"] {
 		배송정보
 	</div>
 	<div style="width: 1200px; margin: 0 auto; text-align: left; margin-bottom:5px;">
-		<button id="openButton" class="shipButton">배송지 관리</button>&nbsp;
+		<button id="openButton" class="shipButton" >배송지 관리</button>&nbsp;
 		<button id="deleteContent" class="shipButton" >초기화</button><br>
 	</div>
 	<table>
@@ -419,8 +427,8 @@ input[type="text"] {
     <img style="border-radius:2em; width:45; height:45px"src="${contextPath }/resources/images/naverPay.jpg">
     <div>네이버페이 결제</div>
   </div>
-  <div class="payElement">
-    <div style="margin-left:40%; background:#B0DAFF; padding-top:8px; border-radius:2em; width:45px; height:45px; "><i class="bi bi-credit-card" style="font-size: 30px;"></i></div>
+  <div class="payElement"  onclick="requestPay()" id="requestPay">
+    <div  style="margin-left:40%; background:#B0DAFF; padding-top:8px; border-radius:2em; width:45px; height:45px; "><i class="bi bi-credit-card" style="font-size: 30px;"></i></div>
     <div>신용카드 결제</div>
   </div>
   <div class="payElement">
@@ -436,30 +444,20 @@ input[type="text"] {
 	    <br><br>
 	    <h2><b>나의 배송지 목록</b></h2><br>
 	    <button class="shipButton" id="openSecondButton" style="margin-left:600x;">+ 새 배송지 추가</button><br><br>
-	    <table style=" height:35px; width:100%; border-left:none; border-right:none;">
+	    <table style="font-size:14.5px; height:35px; width:100%; border-left:none; border-right:none;">
 	    	<tr class="shippingList2">
-	    		<th>선택</th>
+	    		<th style="width:70px;">선택</th>
 	    		<th style="width:150px">받으실 분</th>
 	    		<th>배송지 명</th>
 	    		<th style="width:300px">배송지</th>
 	    		<th>전화번호</th>
 	    		<th>휴대폰 번호</th>
 	    	</tr>
-	    		<tbody id="tbody">
-		    		<c:forEach items="${shipAddress}" var="sa" >
-					    <tr class="shippingList">
-					        <td><input type="radio" name="ship"></td>
-					        <td>${sa.recipient}</td>
-					        <td>배송지 명</td>
-					        <td>${sa.address}</td>
-					        <td>${sa.homePhone}</td>
-					        <td>${sa.phone}</td>
-					    </tr>
-				    </c:forEach>
-				</tbody>
-				
+	    		<tbody id="tbody"></tbody>
 	    </table>
-	    <br><button class="shipButton" id="editShipping">수정</button>&nbsp;<button class="shipButton">삭제</button>&nbsp;<button id="checShipping" class="shipButton">배송지 선택</button>
+	    <br><button class="shipButton" id="editShipping">수정</button>&nbsp;
+	    <button class="shipButton" id="delShipping">삭제</button>&nbsp;
+	    <button id="checShipping" style="margin-left:657px" class="shipButton">배송지 선택</button>
 	  </div>
 	</div>
 
@@ -640,13 +638,10 @@ input[type="text"] {
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('update_postcode').value = data.zonecode;
                 document.getElementById("update_address").value = addr;
-                // 커서를 상세주소 필드로 이동한다.
-//                 document.getElementById("sample7_detailAddress").focus();
                 window.close();
             }
         }).open();
     }
-  
   
 </script>
 
@@ -772,6 +767,7 @@ input[type="text"] {
 		let updatePhoneNumber = document.getElementById('updatePhoneNumber');
 		let checkedShip = 0;
 		
+		
 	    document.getElementById('editShipping').addEventListener('click',() => {
 	    	const ship = document.getElementsByName('ship');
 			
@@ -830,6 +826,50 @@ input[type="text"] {
 			
 		  })
 		
+		document.getElementById('delShipping').addEventListener('click', () => {
+			deleteShipping();
+		})
+		
+		//배송지 삭제 버튼 클릭시
+		function deleteShipping()  {
+				const ship = document.getElementsByName('ship');
+				
+				let shippingNo = 0;
+				for(let i=0; i<ship.length; i++) {
+					if(ship[i].checked) {
+						shippingNo = ship[i].value;
+						break;
+					  }
+				}
+				
+				if(shippingNo == 0) {
+					swal({
+						 text: "삭제할 배송지를 선택해주세요.",
+						 icon: "error",
+						 button: "확인",
+						});
+				} else {
+					$.ajax({
+						url:'${contextPath}/delShipping.ma',
+						data:{shippingNo:shippingNo},
+						success: data => {
+							popup.style.display = 'none';
+							swal({
+							 text: "삭제 되었습니다.",
+							 icon: "success",
+							 button: "확인",
+							});
+						},
+						error: data => {
+						}
+					})
+				} //else문 
+	    }
+		
+		
+		  
+		  
+		  
 		//배송지 선택 버튼 클릭 시
 		document.getElementById('checShipping').addEventListener('click', () => {
 			const ship = document.getElementsByName('ship');
@@ -999,23 +1039,21 @@ input[type="text"] {
 					  
 					  for(datas of data) {
 						  
-						  console.log('datas : ' + datas);
+						  let shippingNo = datas.shippingNo;
 						  var row = document.createElement("tr");
 						  row.classList.add('shippingList');
-						  row.innerHTML = "<td><input type='radio' name='ship'></td>" +
+						  row.innerHTML = "<td><input type='radio' name='ship' value='" + shippingNo + "'></td>" +
 						    "<td>" + datas.recipient + "</td>" +
 						    "<td>" + datas.shippingName + "</td>" +
 						    "<td>" + datas.address + "</td>" +
 						    "<td>" + datas.homePhone + "</td>" +
 						    "<td>" + datas.phone + "</td>";
-// 						    "<td><button class='editShip'>수정</button><button>삭제</button></td>";
-						    
 						  tbody.append(row);
 					  }
 					  
-					  
-					  
-					  
+					// 삭제 버튼 클릭 이벤트 리스너 등록
+					    const deleteButton = document.getElementById('delShipping');
+					    deleteButton.addEventListener('click', deleteShipping);
 				  },
 				  error: data => {
 					  console.log(data);
@@ -1026,7 +1064,9 @@ input[type="text"] {
 
 		});
 		
+		
 	} //window.onload
+	
 	
 	document.getElementById('deleteContent').addEventListener('click', () => {
 		document.getElementById('shippingName').value = '';
@@ -1042,7 +1082,60 @@ input[type="text"] {
 	})
 	
 	
+
+    
+    
+    
+
 	
+	
+	
+	
+</script>
+
+<script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script>
+	var IMP = window.IMP;
+	IMP.init("imp02384108"); // 예: imp00000000
+	
+	
+	function requestPay() {
+		console.log('aaaa');
+		IMP.request_pay({
+	        pg: 'html5_inicis', // version 1.1.0부터 지원.
+	        pay_method: 'card',
+	        name: '주문명:결제테스트',
+	        //결제창에서 보여질 이름
+	        amount: 100,
+	        //가격
+	        buyer_email: 'iamport@siot.do',
+	        buyer_name: '구매자이름',
+	        buyer_tel: '010-1234-5678',
+	        buyer_addr: '서울특별시 강남구 삼성동',
+	        buyer_postcode: '123-456',
+	//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
+	//         m_redirect_url: 'humanentec.iptime.org'
+	        /*
+	        모바일 결제시,
+	        결제가 끝나고 랜딩되는 URL을 지정
+	        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
+	        */
+	    }, function (rsp) {
+	        console.log(rsp);
+	        if (rsp.success) {
+	            var msg = '결제가 완료되었습니다.';
+	            //ajax !!!!! 
+	//             msg += '고유ID : ' + rsp.imp_uid;
+	//             msg += '상점 거래ID : ' + rsp.merchant_uid;
+	//             msg += '결제 금액 : ' + rsp.paid_amount;
+	//             msg += '카드 승인번호 : ' + rsp.apply_num;
+	        } else {
+	            var msg = '결제에 실패하였습니다.';
+	//             msg += '에러내용 : ' + rsp.error_msg;
+	        }
+	        alert(msg);
+	    });
+	} // requestPay 끝 
 </script>
 
 </html>

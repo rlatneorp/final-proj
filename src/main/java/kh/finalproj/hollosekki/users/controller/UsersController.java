@@ -52,14 +52,10 @@ public class UsersController {
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
 		
-		if(!followingList.isEmpty() && !followerList.isEmpty()) {
 			model.addAttribute("followingList", followingList);
 			model.addAttribute("followerList", followerList);
 			
 			return "myPage_Main";
-		} else {
-			throw new UsersException("팔로우 리스트 조회 실패");
-		}
 		
 //		ArrayList<Follow> followList = uService.selectFollow(usersNo);
 //		model.addAttribute("follow", followList);

@@ -9,6 +9,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
+/* Normal white Button as seen on Google.com*/
+.shipButton {
+
+    color: #444444;
+    background: #F3F3F3;
+    border: 1px #DADADA solid;
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 13pt;
+    outline: none;
+}
+
+.shipButton:hover {
+    border: 1px #C6C6C6 solid;
+    box-shadow: 1px 1px 1px #EAEAEA;
+    color: #333333;
+    background: #F7F7F7;
+}
+
+.shipButton:active {
+    box-shadow: inset 1px 1px 1px #DFDFDF;   
+}
+
 
 .carrier {
 	/* 		border:2px solid #dee2e6; */
@@ -163,7 +187,7 @@ input[type="text"] {
   cursor: pointer;
 }
 
-.shippingList{border-bottom:2px solid lightgray; height:45px;}
+.shippingList{border-bottom:2px solid lightgray; height:60px; line-height: 1.5;}
 .shippingList2{border-bottom:2px solid lightgray; height:45px;}
 </style>
 </head>
@@ -195,18 +219,13 @@ input[type="text"] {
 			<th class="tableBorder1"><b>상품가격</b></th>
 			<th class="tableBorder1"><b>적립/할인</b></th>
 			<th class="tableBorder1"><b>합계금액</b></th>
-<!-- 			<th style="border-bottom: 2px solid #dee2e6">배송비</th> -->
 		</tr>
 		<tbody id="products">
 			<c:forEach items="${ checkedCartList}" var="cl" varStatus="status" >
 				<c:if test="${cl.preorderNo != checkedCartList[status.index - 1].preorderNo}">
-				
-<%-- 				<c:set var="prevPreorderNo" value="${cl.preorderNo}"/> --%>
-<%-- 				<c:if test="${cl.preorderNo eq prevPreorderNo }"> --%>
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-<%-- 						<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;"> --%>
 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
 						<input type="hidden" value="${cl.preorderNo }">
 					</td>
@@ -214,15 +233,12 @@ input[type="text"] {
 						<b>${cl.productName}</b><br><br>
 						<c:forEach items="${optValues }" var="opt">
 							<c:if test="${ opt.productNo eq cl.productNo }">
-<%-- 								<input type="text" value="${opt.optionNo }"> --%>
 								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
 							</c:if>
 						</c:forEach>
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:130px">
-<%-- 						<i class="bi bi-dash-square-fill" id="minus-${cl.productNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp; --%>
 						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp;
-<%-- 						<i class="bi bi-plus-square-fill" id="plus-${cl.productNo }" style="color: #00AAFF; font-size: 15px"></i> --%>
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:150px " >
 						<span id="pp-${cl.productNo }" class="price">
@@ -237,39 +253,9 @@ input[type="text"] {
 						${cl.sum }
 						</span>원
 					</td>
-<%-- 					<td id="shippingPrice-${cl.productNo }">${cl.shippingPrice }</td> --%>
 				</tr>
 				</c:if>
 			</c:forEach>
-<%-- 			<c:forEach items="${ cartList}" var="cl" > --%>
-<!-- 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;"> -->
-<!-- 					<td class="imgTab"> -->
-<%-- 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }"> --%>
-<%-- <%-- 						<input type="checkbox" value="${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;"> --%> --%>
-<!-- 						<img src="" style="border: 1px solid black; width: 200px; height: 200px;"> -->
-<!-- 					</td> -->
-<!-- 					<td style="border-right: 2px solid #dee2e6; text-align: left"> -->
-<%-- 						<b>${cl.productName}</b><br><br> --%>
-<%-- 						옵션 : ${cl.selectedOpt } --%>
-<!-- 					</td> -->
-<!-- 					<td style="border-right: 2px solid #dee2e6; width:130px"> -->
-<%-- 						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp; --%>
-<!-- 					</td> -->
-<!-- 					<td style="border-right: 2px solid #dee2e6; width:150px " > -->
-<%-- 						<span id="pp-${cl.productNo }" class="price"> --%>
-<%-- 						${cl.productPrice} --%>
-<!-- 						</span>원 -->
-<!-- 					</td> -->
-<!-- 					<td style="border-right: 2px solid #dee2e6; width:130px"> -->
-<%-- 						<span class="point" id="point-${cl.productNo }"></span>P 적립 --%>
-<!-- 					</td> -->
-<!-- 					<td style="border-right: 2px solid #dee2e6; width:160px"> -->
-<%-- 						<span class="sum" id="sum-${cl.productNo }"> --%>
-<%-- 						${cl.sum } --%>
-<!-- 						</span>원 -->
-<!-- 					</td> -->
-<!-- 				</tr> -->
-<%-- 				</c:forEach> --%>
 		</tbody>
 	</table><br><br>
 	<div style="width: 1200px; margin: 0 auto; font-align: right">
@@ -304,20 +290,14 @@ input[type="text"] {
 		</tbody>
 	</table><br><br>
 	<!-- 배송 정보 -->
-	<div
-		style="width: 1200px; margin: 0 auto; margin-bottom: 10px; text-align: left; font-weight: bold; font-size: 30">
-		배송정보</div>
+	<div style="width: 1200px; margin: 0 auto; margin-bottom: 10px; text-align: left; font-weight: bold; font-size: 30">
+		배송정보
+	</div>
+	<div style="width: 1200px; margin: 0 auto; text-align: left; margin-bottom:5px;">
+		<button id="openButton" class="shipButton">배송지 관리</button>&nbsp;
+		<button id="deleteContent" class="shipButton" >초기화</button><br>
+	</div>
 	<table>
-		<tr>
-			<td class="address"><b>배송지 확인</b></td>
-			<td style="width: 400px; text-align: left; padding-left: 13px">
-				<div>
-					<input type="radio" name="payment" style="margin-left: 10px; font-size: 70px; margin-right: 10px;">&nbsp;직접입력&nbsp;&nbsp;&nbsp;&nbsp; 
-					<input type="radio" name="payment" style="font-size: 70px; margin-right: 10px;">&nbsp;주문자정보와 동일
-					<button id="openButton">배송지 관리</button>
-				</div>
-			</td>
-		</tr>
 		<tr>
 			<td class="address"><b>배송지 명</b></td>
 			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
@@ -331,8 +311,7 @@ input[type="text"] {
 			<td
 				style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
 				<div>
-					<input type="text" style="width: 400px; margin-left: 15px"
-						name="payName">
+					<input type="text" style="width: 400px; margin-left: 15px" id="shippingRecipient" name="payName">
 				</div>
 			</td>
 		</tr>
@@ -347,20 +326,20 @@ input[type="text"] {
 		<tr>
 			<td class="address"><b>전화번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
-				<input type="text" style="width: 200px; margin-left: 15px;" name="payName">
+				<input type="text" id="homePhone" style="width: 200px; margin-left: 15px;" name="payName">
 			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
-				<input type="text" style="width: 200px; margin-left: 15px;" name="payName">
+				<input type="text" id="phone" style="width: 200px; margin-left: 15px;" name="payName">
 			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>배송 요청사항</b></td>
 			<td style="text-align: left">
 				<div>
-					<input type="text" style="margin-left: 15px; width: 400px" name="payName" maxlength="50" placeholder="공백 포함 50글자까지 작성 가능합니다.">
+					<input type="text" id="shippingAsk" style="margin-left: 15px; width: 400px" name="payName" maxlength="50" placeholder="공백 포함 50글자까지 작성 가능합니다.">
 				</div>
 			</td>
 		</tr>
@@ -455,8 +434,8 @@ input[type="text"] {
 	  <div class="popup-content">
 	    <span class="close" id="closeButton">&times;</span>
 	    <br><br>
-	    <h3>나의 배송지 목록</h3><br>
-	    <button id="openSecondButton" style="margin-left:600x;">+ 새 배송지 추가</button><br><br>
+	    <h2><b>나의 배송지 목록</b></h2><br>
+	    <button class="shipButton" id="openSecondButton" style="margin-left:600x;">+ 새 배송지 추가</button><br><br>
 	    <table style=" height:35px; width:100%; border-left:none; border-right:none;">
 	    	<tr class="shippingList2">
 	    		<th>선택</th>
@@ -465,7 +444,6 @@ input[type="text"] {
 	    		<th style="width:300px">배송지</th>
 	    		<th>전화번호</th>
 	    		<th>휴대폰 번호</th>
-<!-- 	    		<th>수정/삭제</th> -->
 	    	</tr>
 	    		<tbody id="tbody">
 		    		<c:forEach items="${shipAddress}" var="sa" >
@@ -476,20 +454,23 @@ input[type="text"] {
 					        <td>${sa.address}</td>
 					        <td>${sa.homePhone}</td>
 					        <td>${sa.phone}</td>
-<%-- 					        <td><button class='editShip'>수정</button><input type="text" value="${sa.shippingNo }"><button>삭제</button></td> --%>
 					    </tr>
 				    </c:forEach>
 				</tbody>
 				
 	    </table>
-	    <br><br><button id="editShipping">수정</button>&nbsp;<button>삭제</button>
+	    <br><button class="shipButton" id="editShipping">수정</button>&nbsp;<button class="shipButton">삭제</button>&nbsp;<button id="checShipping" class="shipButton">배송지 선택</button>
 	  </div>
 	</div>
+
 
 	<!-- 배송지 추가 시 입력 창 -->
 	<div id="secondPopup" class="popup">
   <div class="popup-content">
-  	<span class="close" id="closeButton2">&times;</span><br><br><br>
+  	<div style="text-align:center; margin-top:30px;">
+  	 	<span class="close" id="closeButton2">&times;</span><br><br>
+  	 	<h2><b>배송지 추가</b></h2>
+	</div>
     <table style="width:800px; margin-top:20px">
 		<tr>
 			<td class="address"><b>받으실 분</b></td>
@@ -528,7 +509,7 @@ input[type="text"] {
 			</td>
 		</tr>
 	</table>
-    <button id="confirmButton">확인</button>
+    <button class="shipButton" id="confirmButton" style="margin-top:20px; margin-left:50%;" >추가</button>
   </div>
 </div>
 
@@ -536,46 +517,49 @@ input[type="text"] {
 <!-- 배송지 수정 창 -->
 <div id="updatePopup" class="popup">
   <div class="popup-content">
-  	<span class="close" id="closeButton3">&times;</span><br><br><br>
-    <table style="width:800px; margin-top:20px">
-		<tr>
-			<td class="address"><b>받으실 분</b></td>
-			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
-				<div>
-					<input type="text" required id="updateOrderName" style="width: 400px; margin-left: 15px" name="payName">
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="address"><b>배송지 명</b></td>
-			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
-				<div>
-					<input type="text" id="updateShippingName" style="width: 400px; margin-left: 15px" name="payName">
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="address" style="height: 167"><b>받으실 곳</b></td>
-			<td style="text-align: left; height: 30px">
-				<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="update_postcode" placeholder="우편번호"> 
-				<input type="button" style="border-radius: 10; height: 35px;" onclick="update_execDaumPostcode()" value="우편번호 찾기"><br>
-				<input type="text" id="update_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소"><br> 
-				<input id="update_detailAddress" type="text" id="update_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소"><br>
-		</tr>
-		<tr>
-			<td class="address"><b>전화번호</b></td>
-			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
-				<input id="updateHomeNumber" type="text" style="width: 200px; margin-left: 15px;" name="payName">
-			</td>
-		</tr>
-		<tr>
-			<td class="address"><b>휴대폰 번호</b></td>
-			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
-				<input id="updatePhoneNumber" type="text" style="width: 200px; margin-left: 15px;" name="payName">
-			</td>
-		</tr>
-	</table>
-    <button id="updateConfirm">확인</button>
+  	 <div style="text-align:center; margin-top:30px;">
+  	 	<span class="close" id="closeButton3">&times;</span><br><br>
+  	 	<h2><b>배송지 수정</b></h2>
+	 </div>
+	    <table style="width:800px; margin-top:20px">
+				<tr>
+					<td class="address"><b>받으실 분</b></td>
+					<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
+						<div>
+							<input type="text" required id="updateOrderName" style="width: 400px; margin-left: 15px" name="recipient">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="address"><b>배송지 명</b></td>
+					<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
+						<div>
+							<input type="text" id="updateShippingName" style="width: 400px; margin-left: 15px" name="shippingName">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="address" style="height: 167"><b>받으실 곳</b></td>
+					<td style="text-align: left; height: 30px">
+						<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="update_postcode" name="addressPostCode" placeholder="우편번호"> 
+						<input type="button" style="border-radius: 10; height: 35px;" onclick="update_execDaumPostcode()" value="우편번호 찾기"><br>
+						<input type="text" id="update_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" name="addressLocation" placeholder="주소"><br> 
+						<input id="update_detailAddress" type="text" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" name="detailAddress" placeholder="상세주소"><br>
+				</tr>
+				<tr>
+					<td class="address"><b>전화번호</b></td>
+					<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
+						<input id="updateHomeNumber" type="text" style="width: 200px; margin-left: 15px;" name="homePhone">
+					</td>
+				</tr>
+				<tr>
+					<td class="address"><b>휴대폰 번호</b></td>
+					<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
+						<input id="updatePhoneNumber" type="text" style="width: 200px; margin-left: 15px;" name="phone">
+					</td>
+				</tr>
+		</table>
+		<button class="shipButton" id="updateConfirm" style="margin-top:20px; margin-left:50%;">수정</button>
   </div>
 </div>
 
@@ -590,8 +574,7 @@ input[type="text"] {
 
 </body>
 
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 	//주소 찾기 
     function sample6_execDaumPostcode() { //우편번호 찾기 클릭 시
@@ -663,7 +646,6 @@ input[type="text"] {
             }
         }).open();
     }
-  
   
   
 </script>
@@ -781,9 +763,18 @@ input[type="text"] {
 				  
 				  
 		//수정 버튼 클릭 시 
+		let updateOrderName = document.getElementById('updateOrderName');
+		let updateShippingName = document.getElementById('updateShippingName');
+		let updatePostcode = document.getElementById('update_postcode');
+		let updateAddress = document.getElementById('update_address');
+		let updateDetailAddress = document.getElementById('update_detailAddress');
+		let updateHomeNumber = document.getElementById('updateHomeNumber');
+		let updatePhoneNumber = document.getElementById('updatePhoneNumber');
+		let checkedShip = 0;
+		
 	    document.getElementById('editShipping').addEventListener('click',() => {
 	    	const ship = document.getElementsByName('ship');
-			let checkedShip = 0;
+			
 			for(let i=0; i<ship.length; i++) {
 				if(ship[i].checked) {
 					checkedShip = ship[i].value;
@@ -803,6 +794,12 @@ input[type="text"] {
 				let shippingNo = checkedShip; 
 				console.log(shippingNo);
 				
+				//닫기 버튼 눌렀을 때 
+				document.getElementById('closeButton3').addEventListener('click', () => {
+					document.getElementById('updatePopup').style.display = 'none';
+					popup.style.display = 'block';
+				})
+				
 				$.ajax({
 					url:'${contextPath}/updateShipping.ma',
 					data:{
@@ -816,30 +813,114 @@ input[type="text"] {
 						const address = splitPullAddress[1].trim();
 						const detailAddress = splitPullAddress[2].replace("]", "").trim();
 						
-						console.log(document.getElementById('orderName2'))
-						document.getElementById('updateOrderName').value = data.recipient;
-						document.getElementById('updateShippingName').value = data.shippingName;
-						document.getElementById('update_postcode').value = postNo;
-						document.getElementById('update_address').value = address;
-						document.getElementById('update_detailAddress').value = detailAddress;
-						document.getElementById('updateHomeNumber').value = data.homePhone;
-						document.getElementById('updatePhoneNumber').value = data.phone;
+						updateOrderName.value = data.recipient;
+						updateShippingName.value = data.shippingName;
+						updatePostcode.value = postNo;
+						updateAddress.value = address;
+						updateDetailAddress.value = detailAddress;
+						updateHomeNumber.value = data.homePhone;
+						updatePhoneNumber.value = data.phone;
 						
 					},
 					error: data => {
 						console.log(data);
 					}
 				})
-				
-				
 			}
-			  
 			
-			  
-			  
-			  
-			  
 		  })
+		
+		//배송지 선택 버튼 클릭 시
+		document.getElementById('checShipping').addEventListener('click', () => {
+			const ship = document.getElementsByName('ship');
+			
+			let shippingNo = 0;
+			for(let i=0; i<ship.length; i++) {
+				if(ship[i].checked) {
+					shippingNo = ship[i].value;
+					break;
+				  }
+			}
+			
+			if(shippingNo == 0) {
+				swal({
+					 text: "배송지를 선택해주세요.",
+					 icon: "error",
+					 button: "확인",
+					});
+			} 
+			
+			$.ajax({
+				url:'${contextPath}/selectChecShip.ma',
+				data:{shippingNo:shippingNo},
+				success: data => {
+					console.log(data)
+					console.log(data.recipient);
+					popup.style.display = 'none';
+					
+					const pullAddress = data.address;
+					const splitPullAddress = pullAddress.split(",");
+					const postNo = splitPullAddress[0].replace("[", "").trim();
+					const address = splitPullAddress[1].trim();
+					const detailAddress = splitPullAddress[2].replace("]", "").trim();
+					
+					
+					document.getElementById('shippingName').value = data.shippingName;
+					document.getElementById('shippingRecipient').value = data.recipient;
+					
+					document.getElementById('sample6_postcode').value = postNo;
+					document.getElementById('sample6_address').value = address;
+					document.getElementById('sample6_detailAddress').value = detailAddress;
+					
+					
+					
+					document.getElementById('homePhone').value = data.homePhone;
+					document.getElementById('phone').value = data.phone;
+					
+					
+					
+				},
+				error: data => {
+					console.log(data);
+				}
+			})
+			
+		})
+		
+		  
+		  
+		  
+		//수정 확인 버튼 클릭 시 
+		document.getElementById('updateConfirm').addEventListener('click', () => {
+			document.getElementById('updatePopup').style.display = 'none';
+			popup.style.display = 'block';
+			let shippingNo = checkedShip; 
+			
+			console.log('aaaa' + shippingNo);
+			$.ajax({
+				url:'${contextPath}/updateConfirmShipping.ma',
+				data:{
+					shippingNo:shippingNo,
+					recipient:updateOrderName.value,
+					shippingName:updateShippingName.value,
+					updatePostcode:updatePostcode.value,
+					updateAddress:updateAddress.value,
+					updateDetailAddress:updateDetailAddress.value,
+					homePhone:updateHomeNumber.value,
+					phone:updatePhoneNumber.value
+				},
+				success : data => {
+					console.log(data);
+					popup.style.display = 'none';
+					alert('수정이 완료되었습니다.');
+				},
+				error : data => { 
+					console.log(data);
+				}
+			})
+	
+		})
+		  
 		
 		// "x" 버튼 클릭 이벤트 처리
 		closeButton.addEventListener("click", function() {
@@ -850,11 +931,23 @@ input[type="text"] {
 		// 배송지 추가 창 열기 버튼 클릭 이벤트 처리
 		openSecondButton.addEventListener("click", function() {
 			if(document.getElementById('tbody').children.length >= 5) {
-				  alert('배송지는 최대 5개만 등록 가능합니다.');
+				  swal({
+						 text: "배송지는 최대 5개만 등록 가능합니다.",
+						 icon: "error",
+						 button: "확인",
+						});
 				  return;
 			  } else {
 				  popup.style.display = "none";
 				  secondPopup.style.display = "block";
+				  //입력되어 있는 내용 비우기 
+				  document.getElementById('orderName2').value = '';
+				  document.getElementById('shippingName2').value = '';
+				  document.getElementById('sample7_postcode').value = '';
+				  document.getElementById('sample7_address').value = '';
+				  document.getElementById('detailAddress2').value = '';
+				  document.getElementById('homeNumber2').value = '';
+				  document.getElementById('phoneNumber2').value = '';
 			  }
 		});
 		
@@ -865,6 +958,7 @@ input[type="text"] {
 		})
 		
 		// 확인 버튼 클릭 이벤트 처리 - 배송지 등록 및 조회 
+		// 배송지 추가 
 		confirmButton.addEventListener("click", function() { 
 			const shippingName = document.getElementById('shippingName2').value;
 			const orderName = document.getElementById('orderName2').value;
@@ -875,7 +969,11 @@ input[type="text"] {
 			const phone = document.getElementById('phoneNumber2').value;
 			
 		  if (orderName.trim() === '' || postcode.trim() === '' || addressInfo.trim() === '' || detailAddress.trim() === '' || homePhone.trim() === '' || phone.trim() === '') {
-			  alert('모든 입력값은 필수사항입니다.')  
+			  swal({
+				 text: "모든 입력값은 필수사항입니다.",
+				 icon: "error",
+				 button: "확인",
+			  });
 			  return;
 	      } else {
 	    	  secondPopup.style.display = "none";
@@ -915,6 +1013,9 @@ input[type="text"] {
 						  tbody.append(row);
 					  }
 					  
+					  
+					  
+					  
 				  },
 				  error: data => {
 					  console.log(data);
@@ -925,9 +1026,23 @@ input[type="text"] {
 
 		});
 		
+	} //window.onload
+	
+	document.getElementById('deleteContent').addEventListener('click', () => {
+		document.getElementById('shippingName').value = '';
+		document.getElementById('shippingRecipient').value = '';
+		document.getElementById('sample6_postcode').value = '';
+		document.getElementById('sample6_address').value = '';
+		document.getElementById('sample6_detailAddress').value = '';
+		document.getElementById('homePhone').value = '';
+		document.getElementById('phone').value = '';
+		document.getElementById('shippingAsk').value = '';
 		
 		
-	}
+	})
+	
+	
+	
 </script>
 
 </html>

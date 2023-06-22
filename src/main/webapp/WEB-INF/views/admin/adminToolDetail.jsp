@@ -1,6 +1,7 @@
-><%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <!DOCTYPE html>
 <html>
@@ -718,27 +719,29 @@ p b {
 <%@include file="../common/storeTop.jsp" %>
 <br>
 </span>
-	<form id="toolInsertForm" action="${contextPath}/adminToolInsert.ad" method="post" enctype="multipart/form-data">
+	<form id="toolUpdateForm" action="${contextPath}/adminToolUpdate.ad" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="productNo" value="${t.productNo}">
+		<input type="hidden" name="productStatus" value="${t.productStatus}">
 		<main id="order-wrap">
 			<!-- 구매창 컨테이너 -->
 			<div class="left">
 				<!-- 구매창 왼쪽 사진 넣는 곳 -->
 				<div style="width:540px; height:540px;">
-					<img class="previewImage" src="${contextPath}/resources/images/Logo.png" style="width:540px; height:540px;">
+					<img class="previewImage" src="${contextPath}/resources/uploadFiles/${thumbnail.imageRenameName}" style="width:540px; height:540px;">
 				</div>
 				<label>대표이미지 - </label>
 				<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 				<p style="font-size: 12px; color: gray">최적 이미지 비율은 1:1입니다.</p>
 				<label>상세이미지 - </label>
 				<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
-				<p style="font-size: 12px; color: gray">가로는 최대 1200px입니다.</p>
+				<p style="font-size: 12px; color: gray">사진의 가로 사이즈는 1200px입니다.</p>
 			</div>
 			<div class="right">
 				<!-- 상품 정보 -->
 				<div class="top">
 					<div style="text-align: center; margin-bottom:0px;">
- 						<input type="text" name="toolName" placeholder="상품 이름" style="font-weight: 400; font-size: 42px; width: 100%; margin-bottom:50px;">
-						<textarea name="toolContent" placeholder="상품 소개" style="font-weight: 400; font-size: 20px; width: 100%; height:150px; margin-bottom:50px;"></textarea>
+ 						<input type="text" name="toolName" placeholder="상품 이름" style="font-weight: 400; font-size: 42px; width: 100%; margin-bottom:50px;" value="${t.toolName}">
+						<textarea name="toolContent" placeholder="상품 소개" style="font-weight: 400; font-size: 20px; width: 100%; height:150px; margin-bottom:50px;">${t.toolContent}</textarea>
 					</div>
 					<div class="d-flex justify-content-end">
 						<table class="d-flex text-center priceBox" style="margin-bottom: 30px;">
@@ -751,11 +754,11 @@ p b {
 							</tr>
 							<tr>
 								<td>
-									<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0">
+									<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${t.productPrice}" min="0">
 								</td>
 								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">원 - </td>
 								<td>
-									<input type="number" name="productSale" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0" max="99.9">
+									<input type="number" name="productSale" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${t.productSale}" min="0" max="99.9">
 								</td>
 								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">% =</td>
 								<td>
@@ -768,7 +771,7 @@ p b {
 								<td colspan="2"></td>
 								<td><b>재고</b></td>
 								<td colspan="2" style="text-align: right;">
-									<input type="number" name="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0">
+									<input type="number" name="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${t.productStock}" min="0">
 								</td>
 								<td>개</td>
 							</tr>
@@ -778,9 +781,9 @@ p b {
 									<b style="margin-right: 20px;">분류</b>
 									<select name="toolType" style="height:50px; width:163px;">
 										<option value="0">- - 분류 - -</option>
-										<option value="1">조리도구</option>
-										<option value="2">보관용품</option>
-										<option value="3">기타</option>
+										<option value="1" <c:if test="${t.toolType eq 1}">selected</c:if>>조리도구</option>
+										<option value="2" <c:if test="${t.toolType eq 2}">selected</c:if>>보관용품</option>
+										<option value="3" <c:if test="${t.toolType eq 3}">selected</c:if>>기타</option>
 									</select>
 								</td>
 							</tr>
@@ -789,9 +792,15 @@ p b {
 								<td colspan="5">
 									<div>
 										<span style="width:50%; padding-right: 9px; text-align: right; display: inline-block;"><b>옵션여부</b></span>
-										<input type="hidden" name="productOption" value="Y">
-										<button type="button" class="pOption" style="width:15%; background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
-										<button type="button" class="pOption" style="width:15%; background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
+										<input type="hidden" name="productOption" value="${t.productOption}">
+										<c:if test="${t.productOption eq 'Y'}">
+											<button type="button" class="pOption" style="width:15%; background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
+											<button type="button" class="pOption" style="width:15%; background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
+										</c:if>
+										<c:if test="${t.productOption eq 'N'}">
+											<button type="button" class="pOption" style="width:15%; background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
+											<button type="button" class="pOption" style="width:15%; background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
+										</c:if>
 										<span class="col-5"></span>
 									</div>
 								</td>
@@ -799,17 +808,57 @@ p b {
 						</table>
 					</div>						
 					
-					<div class="optionBoxMain">
-						<div class="optionBox row">
-							<input type="hidden" name="optionTotal" class="optionTotal"> 
-							<input type="text" class="optionName col-4" placeholder="옵션이름">
-							<button type="button" class="col-1 addNameBtn">+</button>
-							<button type="button" class="col-1 delNameBtn">-</button>
-							<input type="text" class="optionValue col-4" placeholder="옵션내용">
-							<button type="button" class="col-1 addValBtn">+</button>
-							<button type="button" class="col-1 delValBtn">-</button>
+<%-- 					<c:if test="${t.productOption eq 'Y'}"> --%>
+					<c:if test="${opList ne null}">
+						<div class="optionBoxMain" <c:if test="${t.productOption eq 'N'}">style="opacity:0.3;"</c:if>  >
+							<c:forEach items="${opList}" var="o" varStatus="vs">
+								<c:if test="${vs.index eq 0}">
+										<div class="optionBox row">
+											<input type="hidden" name="optionTotal" class="optionTotal">
+											<input type="text" class="optionName col-4" placeholder="옵션이름" value="${o.optionName}">
+											<button type="button" class="col-1 addNameBtn">+</button>
+											<button type="button" class="col-1 delNameBtn">-</button>
+											<input type="text" class="optionValue col-4" placeholder="옵션내용" value="${o.optionValue}">
+											<button type="button" class="col-1 addValBtn">+</button>
+											<button type="button" class="col-1 delValBtn">-</button>
+								</c:if>
+								<c:if test="${vs.index ne 0}">
+									<c:if test="${o.optionName eq opList[vs.index-1].optionName}">
+											<p class="col-6"></p><input type="text" class="optionValue col-4" placeholder="옵션내용" value="${o.optionValue}">
+									</c:if>
+									<c:if test="${o.optionName ne opList[vs.index-1].optionName}">
+										</div>
+										<div class="optionBox row">
+											<input type="hidden" name="optionTotal" class="optionTotal">
+											<input type="text" class="optionName col-4" placeholder="옵션이름" value="${o.optionName}">
+											<button type="button" class="col-1 addNameBtn">+</button>
+											<button type="button" class="col-1 delNameBtn">-</button>
+											<input type="text" class="optionValue col-4" placeholder="옵션내용" value="${o.optionValue}">
+											<button type="button" class="col-1 addValBtn">+</button>
+											<button type="button" class="col-1 delValBtn">-</button>
+									</c:if>
+								</c:if>
+								<c:if test="${vs.last}">
+									</div>
+								</c:if>
+							</c:forEach>
+						
 						</div>
-					</div>
+					</c:if>
+					
+					<c:if test="${opList eq null}">
+						<div class="optionBoxMain">
+							<div class="optionBox row">
+								<input type="hidden" name="optionTotal" class="optionTotal">
+								<input type="text" class="optionName col-4" placeholder="옵션이름">
+								<button type="button" class="col-1 addNameBtn">+</button>
+								<button type="button" class="col-1 delNameBtn">-</button>
+								<input type="text" class="optionValue col-4" placeholder="옵션내용">
+								<button type="button" class="col-1 addValBtn">+</button>
+								<button type="button" class="col-1 delValBtn">-</button>
+							</div>
+						</div>
+					</c:if>
 				</div>
 			</div>
 		</main>
@@ -824,7 +873,9 @@ p b {
 		<div class="Infobox">
 			<!-- 제품 사진 및 소개 칸 -->
 			<div class="imgbox">
-				<img class="previewImage">
+				<c:forEach items="${imgList}" var="img">
+					<img class="previewImage" src="${contextPath}/resources/uploadFiles/${img.imageRenameName}" >
+				</c:forEach>
 			</div>
 		</div>
 		<br>
@@ -833,7 +884,7 @@ p b {
 	<hr>
 	<div class="d-flex justify-content-center mb-5">
 		<div class="d-flex">
-			<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">작성하기</button>
+			<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
 			<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 		</div>
 	</div>
@@ -900,8 +951,6 @@ p b {
 			
 			cal();
 			
-			
-			
 // 			옵션여부 버튼 이벤트
 			const opBtns = document.getElementsByClassName('pOption');
 			const pOption = document.getElementsByName('productOption')[0];
@@ -919,19 +968,60 @@ p b {
 				document.getElementsByClassName('optionBoxMain')[0].style.opacity = "0.3";
 			});
 			
-			
 //		 	옵션 기본 +/- 버튼 이벤트 추가
 			const optionBoxMain = document.getElementsByClassName('optionBoxMain')[0];
-			const optionBoxMainHTML = document.getElementsByClassName('optionBoxMain')[0].innerHTML;
-			const addNameBtn = document.getElementsByClassName('addNameBtn')[0];
-			const delNameBtn = document.getElementsByClassName('delNameBtn')[0];
-			const addValBtn = document.getElementsByClassName('addValBtn')[0];
-			const delValBtn = document.getElementsByClassName('delValBtn')[0];
+// 			const optionBoxMainHTML = document.getElementsByClassName('optionBoxMain')[0].innerHTML;
+			const optionBoxMainHTML ='<div class="optionBox row">'
+									+'<input type="hidden" name="optionTotal" class="optionTotal">' 
+									+'<input type="text" class="optionName col-4" placeholder="옵션이름">'
+									+'<button type="button" class="col-1 addNameBtn">+</button>'
+									+'<button type="button" class="col-1 delNameBtn">-</button>'
+									+'<input type="text" class="optionValue col-4" placeholder="옵션내용">'
+									+'<button type="button" class="col-1 addValBtn">+</button>'
+									+'<button type="button" class="col-1 delValBtn">-</button>'
+									+'</div>'
 			
-			addName(optionBoxMainHTML);
-			delName();
-			addVal();
-			delVal();
+			const addNameBtns = document.getElementsByClassName('addNameBtn');
+			const delNameBtns = document.getElementsByClassName('delNameBtn');
+			const addValBtns = document.getElementsByClassName('addValBtn');
+			const delValBtns = document.getElementsByClassName('delValBtn');
+			
+// 			setTimeout( function(){
+				for(const addNameBtn of addNameBtns){
+					addNameBtn.addEventListener('click', ()=>{
+						optionBoxMain.insertAdjacentHTML("beforeend", optionBoxMainHTML);
+						addName(optionBoxMainHTML);
+						delName();
+						addVal();
+						delVal();
+					})
+				}
+				for(const delNameBtn of delNameBtns){
+					delNameBtn.addEventListener('click', function(){
+						const optionBoxs = optionBoxMain.querySelectorAll('.optionBox');
+						if(optionBoxs.length > 1){
+							this.parentElement.remove();
+						}
+					})
+				}
+				for(const addValBtn of addValBtns){
+					addValBtn.addEventListener('click', function(){
+						const optionBox = this.parentElement;
+						optionBox.insertAdjacentHTML("beforeend",
+								'<p class="col-6"></p><input type="text" class="optionValue col-4" placeholder="옵션내용">');
+					})
+				}
+				for(const delValBtn of delValBtns){
+					delValBtn.addEventListener('click', function(){
+						const optionBox = this.parentElement;
+						if(optionBox.querySelectorAll('.optionValue').length > 1){
+							optionBox.lastElementChild.remove();
+							optionBox.lastElementChild.remove();
+						}
+					})
+				}
+// 			}, 500);
+			
 		}
 		
 //	 	옵션 +/- 버튼 이벤트 함수
@@ -973,8 +1063,8 @@ p b {
 			lastDelValBtn.addEventListener('click', function(){
 				const optionBox = this.parentElement;
 				if(optionBox.querySelectorAll('.optionValue').length > 1){
-					optionBox.lastChild.remove();
-					optionBox.lastChild.remove();
+					optionBox.lastElementChild.remove();
+					optionBox.lastElementChild.remove();
 				}
 			})
 		}
@@ -1018,12 +1108,12 @@ p b {
 			}else if(document.getElementsByName('toolContent')[0].value.trim() == ''){
 				alert("상품 소개 내용을 입력해주세요.");
 				document.getElementsByName('toolContent')[0].focus();
-			}else if(document.getElementsByName('imageFile')[0].value == false){
-				alert("상품 대표 이미지를 등록해주세요.");
-				document.getElementsByName('imageFile')[0].focus();
-			}else if(document.getElementsByName('imageFile')[1].value == false){
-				alert("상품 상세 이미지를 등록해주세요.");
-				document.getElementsByName('imageFile')[1].focus();
+// 			}else if(document.getElementsByName('imageFile')[0].value == false){
+// 				alert("상품 대표 이미지를 등록해주세요.");
+// 				document.getElementsByName('imageFile')[0].focus();
+// 			}else if(document.getElementsByName('imageFile')[1].value == false){
+// 				alert("상품 상세 이미지를 등록해주세요.");
+// 				document.getElementsByName('imageFile')[1].focus();
 			}else{
 				let pass = "Y";
 // 				옵션버튼 선택에 따라 제외할지 여부 결정
@@ -1050,7 +1140,7 @@ p b {
 					}
 				}
 				if(pass == "Y"){
-					document.getElementById('toolInsertForm').submit();
+					document.getElementById('toolUpdateForm').submit();
 				}
 			}
 		}

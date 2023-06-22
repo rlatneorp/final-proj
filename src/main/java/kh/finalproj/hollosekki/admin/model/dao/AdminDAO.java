@@ -25,8 +25,20 @@ public class AdminDAO {
 		return sqlSession.update("adminMapper.updateStatus", map);
 	}
 
+	public int insertOptions(SqlSessionTemplate sqlSession, ArrayList<Options> oList) {
+		int result = 0;
+		for(Options op: oList) {
+			result += sqlSession.insert("adminMapper.insertOptions", op);
+		}
+		return result; 
+	}
+	
 	public int deletesOptions(SqlSessionTemplate sqlSession, String[] selDeletes) {
 		return sqlSession.delete("adminMapper.deletesOptions", selDeletes);
+	}
+
+	public ArrayList<Options> selectOptions(SqlSessionTemplate sqlSession, int pNo) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectOptions", pNo);
 	}
 
 //	Product-상품
@@ -183,30 +195,24 @@ public class AdminDAO {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectToolList", ab, rowBounds);
 	}
 
-	public int insertTool(SqlSessionTemplate sqlSession, Tool t) {
-		return sqlSession.insert("adminMapper.insertTool", t);
+	public Tool selectTool(SqlSessionTemplate sqlSession, int toolNo) {
+		return sqlSession.selectOne("adminMapper.selectTool", toolNo);
 	}
 
-	public int insertOptions(SqlSessionTemplate sqlSession, ArrayList<Options> oList) {
-		int result = 0;
-		for(Options op: oList) {
-			result += sqlSession.insert("adminMapper.insertOptions", op);
-		}
-		return result; 
+	public int updateTool(SqlSessionTemplate sqlSession, Tool t) {
+		return sqlSession.update("adminMapper.updateTool", t);
+	}
+
+	public int insertTool(SqlSessionTemplate sqlSession, Tool t) {
+		return sqlSession.insert("adminMapper.insertTool", t);
 	}
 
 	public int deletesTool(SqlSessionTemplate sqlSession, String[] toolDeletes) {
 		return sqlSession.delete("adminMapper.deletesTool", toolDeletes);
 	}
 
-
-
-
-
 	
-
-
-
+	
 
 
 

@@ -32,10 +32,17 @@ public class AdminService {
 		return aDAO.updateStatus(sqlSession, map);
 	}
 
+	public int insertOptions(ArrayList<Options> oList) {
+		return aDAO.insertOptions(sqlSession, oList);
+	}
+
 	public int deletesOptions(String[] selDeletes) {
 		return aDAO.deletesOptions(sqlSession, selDeletes);
 	}
-	
+
+	public ArrayList<Options> selectOptions(int pNo) {
+		return aDAO.selectOptions(sqlSession, pNo);
+	}
 //	Product-상품
 	public Product selectProduct(int pNo) {
 		return aDAO.selectProduct(sqlSession, pNo);
@@ -171,30 +178,21 @@ public class AdminService {
 		return aDAO.selectToolList(sqlSession, pi, ab);
 	}
 
+	public Tool selectTool(int toolNo) {
+		return aDAO.selectTool(sqlSession, toolNo);
+	}
+	
+	public int updateTool(Tool t) {
+		return aDAO.updateTool(sqlSession, t);
+	}
+	
 	public int insertTool(Tool t) {
 		return aDAO.insertTool(sqlSession, t);
-	}
-
-	public int insertOptions(ArrayList<Options> oList) {
-		return aDAO.insertOptions(sqlSession, oList);
 	}
 
 	public int deletesTool(String[] toolDeletes) {
 		return aDAO.deletesTool(sqlSession, toolDeletes);
 	}
-
-
-	
-
-
-
-
-	
-
-	
-
-
-
 
 
 

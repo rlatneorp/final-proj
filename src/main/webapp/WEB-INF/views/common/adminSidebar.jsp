@@ -48,7 +48,7 @@
 					</button>
 					<div class="collapse show" id="collapse-two">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="${contextPath}/adminMemberManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">회원관리</a></li>
+							<li><a href="${contextPath}/adminUsersManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">회원관리</a></li>
 							<li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">출석체크관리</a></li>
 							<li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">포인트관리</a></li>
 						</ul>

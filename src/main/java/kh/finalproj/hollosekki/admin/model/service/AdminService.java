@@ -17,6 +17,7 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
+import kh.finalproj.hollosekki.common.model.vo.Users;
 
 @Service
 public class AdminService {
@@ -193,6 +194,26 @@ public class AdminService {
 	public int deletesTool(String[] toolDeletes) {
 		return aDAO.deletesTool(sqlSession, toolDeletes);
 	}
+
+	
+	
+	
+	public int getUsersCount(AdminBasic ab) {
+		return aDAO.getUsersCount(sqlSession, ab);
+	}
+
+	public ArrayList<Users> selectUsersList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectUsersList(sqlSession, pi, ab);
+	}
+
+	public Users selectUsers(int uNo) {
+		return aDAO.selectUsers(sqlSession, uNo);
+	}
+
+	public ArrayList<Integer> selectUsersInfo(HashMap<String, Integer> uMap) {
+		return aDAO.selectUsersInfo(sqlSession, uMap);
+	}
+
 
 
 

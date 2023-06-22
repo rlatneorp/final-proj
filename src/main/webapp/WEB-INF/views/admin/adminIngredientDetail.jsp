@@ -75,7 +75,7 @@
 				
 				<div class="col-6 ps-5">
 					<div class="border" style="margin-top:56px; width:360px; height:270px;">
-						<img class="previewImage" width="360px" height="270px" src="${contextPath}/resources/uploadFiles/${img.imageRenameName}">
+						<img class="previewImage" width="360px" height="270px" src="${contextPath}/resources/uploadFiles/${img[0].imageRenameName}">
 					</div>
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 					<input type="hidden" name="imageChange" value="N">

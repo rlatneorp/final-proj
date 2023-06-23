@@ -35,20 +35,14 @@
 /* 	조리순서 */
 	#order{width: 1100px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
 	#orderList{padding: 60px 80px; }
-	#orderTable{
-		border-collapse: collapse;
+	table{
+		border-collapse: separate;
 		border-spacing:0 15px;
 	}
-	.orderTr{
-		background-color: white;
-		text-align: center;
-		border: 1px solid black;
-		border-radius: 10px;
-		}
+	td{text-align: center;}
 	.no{width: 100px;}
-	.nono{width: 30px; height: 30px; background-color: #B0DAFF; border-radius: 50%; margin: auto}
-	.content{width: 640px;}
-	.image{width: 200px; height:200px}
+	.content{width: 540px;}
+	.image{width: 300px; height:300px}
 	
 /* 	완성된 사진 */
 	#comText{text-align: center; font-weight: bold; font-size: 30px;}
@@ -190,7 +184,7 @@
 			</div>
 			
 			<div id="userInfo">
-				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}'">
+				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${ recipe.usersNo }' + '&page=' + '${page}'">
 				<p>${recipe.nickName }</p>
 				<p>${recipe.recipeContent }</p>
 			</div>
@@ -229,7 +223,6 @@
 	
 	<br><br><br>
 	
-<!-- 	조리 순서 -->
 	<div class="mid">
 		조리 순서
 	</div>
@@ -238,14 +231,12 @@
 	
 	<div id="order">
 		<div id="orderList">
-			<table id="orderTable">
+			<table>
 				<c:forEach items="${orderList}" var="orderList">
-					<tr class="orderTr">
-						<td class="no"><div class="nono">${orderList.recipeProcedure}</div></td>
+					<tr>
+						<td class="no">${orderList.recipeProcedure}</td>
 						<td class="content">${orderList.recipeOrder}</td>
-						<td class="image">
-							<img src="${contextPath}/resources/uploadFiles/${orderList.recipeRenameName}" width="100%" height="100%" alt="조리 순서 사진 1">
-						</td>
+						<td class="image"><img src="${contextPath}/resources/uploadFiles/${orderList.recipeRenameName}" width="100%" height="100%" alt="조리 순서 사진 1"></td>
 					</tr>
 					<tr>
 						<td style="height: 10px;"></td>
@@ -266,6 +257,11 @@
 </div>
 <div id="completePic">
 	<div id="myCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+		<div class="carousel-indicators">
+			<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+			<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+		</div>
 		<div class="carousel-inner">
 			<c:forEach items="${cList }" var="c">
 				<div class="carousel-item active">
@@ -295,7 +291,6 @@
 </form>
 <br><br>
 
-<!-- 문의 / 후기 -->
 <p class="mid">문의</p>
 
 <br>

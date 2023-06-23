@@ -19,6 +19,7 @@ import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
@@ -211,11 +212,20 @@ public class MarketService {
 	}
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 //		return null;
-//	}
 
 	public int insertImage(Image image) {
 		return mkDAO.insertImage(sqlSession, image);
 	}
+	
+	//현재 포인트 가져오기 
+	public int selectPoint(int usersNo) {
+		return mkDAO.selectPoint(sqlSession, usersNo);
+	}
+
+	public ArrayList<Review> selectReview(int productNo) {
+		return mkDAO.selectReview(sqlSession,productNo);
+	}
+
 
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 //		// TODO Auto-generated method stub

@@ -195,6 +195,12 @@ input[type="text"] {
   cursor: pointer;
 }
 
+/* 형광펜 css */
+.highlight{
+  display: inline;
+  box-shadow: inset 0 -15px 0 rgba(176, 218, 255, 0.4); 
+  /*-10px은 highlight의 두께*/
+}
 .shippingList{border-bottom:2px solid lightgray; height:60px; line-height: 1.5;}
 .shippingList2{border-bottom:2px solid lightgray; height:45px; background-color:#B0DAFF}
 </style>
@@ -266,6 +272,26 @@ input[type="text"] {
 			</c:forEach>
 		</tbody>
 	</table><br><br>
+	
+	<div style="padding:45px; width:1200px; height:200px; border:2px solid lightgray;  text-align:right; font-size:20px; margin:0 auto;">
+		<div style="display:flex; height:35px; justify-content:right">
+			<div style="margin-top:5px;"><i class="bi bi-coin" style="color:#00AAFF; font-size:27px; margin-right:5px"></i></div>
+			<div style="margin-top:2px">
+				<span class="highlight">
+					<b style="font-size:20px;">홀로세끼 포인트</b>
+				</span>
+			</div>
+		</div><br>
+		<div>
+			<span style="margin-left:50px;">
+				사용 : 
+				<input type="text" id="inputPoint" style="width:150px; border: none; border-bottom: 2px solid black;text-align: right; "  placeholder="0원">
+				<button class="shipButton" id="totalPointCheck">전액사용</button>&nbsp;&nbsp;(보유 : <span id="currentPoint">${point}</span>원)
+			</span>
+		</div>
+	</div>
+	
+	<br><br>
 	<div style="width: 1200px; margin: 0 auto; font-align: right">
 		<i class="bi bi-caret-left-fill"></i><i class="bi bi-caret-left-fill"></i>
 		<b>쇼핑 계속하기</b><br>
@@ -275,7 +301,7 @@ input[type="text"] {
 	<table>
 		<tbody>
 			<tr style="height: 130px; font-size: 20px;">
-				<td style="width: 800px; text-align: right">
+				<td style="width: 600px; text-align: right">
 					<b>총 <span id="orderSize">1</span>개의 상품 금액<br><br>
 					<span style="color: #00AAFF" id="trTotalSum">46,500</span>원</b>
 				</td>
@@ -283,7 +309,13 @@ input[type="text"] {
 					&nbsp;&nbsp;&nbsp;<i class="bi bi-plus-circle-fill" style="color: #00AAFF; font-size: 30px"></i>
 				</td>
 				<td>
-					<b>배송비<br><br><span style="color: #00AAFF" id="shipPrice">0</span>원</b>
+					&nbsp;&nbsp;&nbsp;<b>배송비<br><br>&nbsp;&nbsp;&nbsp;<span style="color: #00AAFF" id="shipPrice">0</span>원</b>
+				</td>
+				<td>
+					&nbsp;&nbsp;&nbsp;<i class="bi bi-dash-circle-fill" style="color: #00AAFF; font-size: 30px"></i>
+				</td>
+				<td>
+					<b>포인트 사용<br><br><span style="color: #00AAFF" id="usePoint">0</span>원</b>
 				</td>
 				<td>
 					<span class="material-symbols-outlined" style="color: #00AAFF">equal</span>
@@ -297,6 +329,8 @@ input[type="text"] {
 			</tr>
 		</tbody>
 	</table><br><br>
+	
+	
 	<!-- 배송 정보 -->
 	<div style="width: 1200px; margin: 0 auto; margin-bottom: 10px; text-align: left; font-weight: bold; font-size: 30">
 		배송정보
@@ -310,7 +344,7 @@ input[type="text"] {
 			<td class="address"><b>배송지 명</b></td>
 			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
 				<div>
-					<input type="text" id="shippingName" style="width: 400px; margin-left: 15px" name="payName">
+					<input type="text" id="shippingName" class="payContent" style="width: 400px; margin-left: 15px" name="payName">
 				</div>
 			</td>
 		</tr>
@@ -319,35 +353,35 @@ input[type="text"] {
 			<td
 				style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
 				<div>
-					<input type="text" style="width: 400px; margin-left: 15px" id="shippingRecipient" name="payName">
+					<input type="text" class="payContent" style="width: 400px; margin-left: 15px" id="shippingRecipient" name="payName">
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="address" style="height: 167"><b>받으실 곳</b></td>
 			<td style="text-align: left; height: 30px">
-				<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="sample6_postcode" placeholder="우편번호"> 
+				<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="sample6_postcode" class="payContent" placeholder="우편번호"> 
 				<input type="button" style="border-radius: 10; height: 35px;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-				<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소"><br> 
-				<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소"><br>
+				<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" class="payContent" placeholder="주소"><br> 
+				<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;"class="payContent"  placeholder="상세주소"><br>
 		</tr>
 		<tr>
 			<td class="address"><b>전화번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
-				<input type="text" id="homePhone" style="width: 200px; margin-left: 15px;" name="payName">
+				<input type="text" id="homePhone" style="width: 200px; margin-left: 15px;" class="payContent" name="payName">
 			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
-				<input type="text" id="phone" style="width: 200px; margin-left: 15px;" name="payName">
+				<input type="text" id="phone" class="payContent" style="width: 200px; margin-left: 15px;" name="payName">
 			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>배송 요청사항</b></td>
 			<td style="text-align: left">
 				<div>
-					<input type="text" id="shippingAsk" style="margin-left: 15px; width: 400px" name="payName" maxlength="50" placeholder="공백 포함 50글자까지 작성 가능합니다.">
+					<input type="text" id="shippingAsk" class="payContent" style="margin-left: 15px; width: 400px" name="payName" maxlength="50" value="조심히 안전하게 와주세요.">
 				</div>
 			</td>
 		</tr>
@@ -365,32 +399,26 @@ input[type="text"] {
 			<td
 				style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
 				<div>
-					<input type="text" style="width: 200px; margin-left: 15px"
-						name="payName">
+					<input type="text" style="width: 200px; margin-left: 15px" class="payContent" name="payName">
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>전화번호</b></td>
-			<td
-				style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"><input
-				type="text" style="width: 200px; margin-left: 15px;" name="payName"></td>
+			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
+				<input type="text" class="payContent" style="width: 200px; margin-left: 15px;" name="payName">
+			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
-			<td
-				style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
-				<input type="text" style="width: 200px; margin-left: 15px;"
-				oninput="phoneNumber(this)" maxlength="14" name="phone">
+			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
+				<input type="text" class="payContent" style="width: 200px; margin-left: 15px;" maxlength="14" name="phone">
 			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>이메일</b></td>
-			<td
-				style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
-				<input type="email"
-				style="width: 200px; height: 35px; margin-left: 15px;"
-				name="payName">
+			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
+				<input type="email" class="payContent" style="width: 200px; height: 35px; margin-left: 15px;" name="payName">
 			</td>
 	</table>
 
@@ -672,7 +700,7 @@ input[type="text"] {
 		for(let p of parentPnos) { 
 			let pNos = p.children[0].value;
 			let sumPrice = parseInt(document.getElementById('sum-' + pNos).innerText);
-			document.getElementById('point-' + pNos).innerText = (sumPrice*0.005) 
+			document.getElementById('point-' + pNos).innerText = Math.round(sumPrice*0.005) 
 		}
 		
 		
@@ -752,10 +780,6 @@ input[type="text"] {
 			  }
 		  })
 		});
-
-				  
-				  
-				  
 				  
 		//수정 버튼 클릭 시 
 		let updateOrderName = document.getElementById('updateOrderName');
@@ -866,10 +890,6 @@ input[type="text"] {
 				} //else문 
 	    }
 		
-		
-		  
-		  
-		  
 		//배송지 선택 버튼 클릭 시
 		document.getElementById('checShipping').addEventListener('click', () => {
 			const ship = document.getElementsByName('ship');
@@ -912,12 +932,8 @@ input[type="text"] {
 					document.getElementById('sample6_address').value = address;
 					document.getElementById('sample6_detailAddress').value = detailAddress;
 					
-					
-					
 					document.getElementById('homePhone').value = data.homePhone;
 					document.getElementById('phone').value = data.phone;
-					
-					
 					
 				},
 				error: data => {
@@ -926,9 +942,6 @@ input[type="text"] {
 			})
 			
 		})
-		
-		  
-		  
 		  
 		//수정 확인 버튼 클릭 시 
 		document.getElementById('updateConfirm').addEventListener('click', () => {
@@ -1064,7 +1077,54 @@ input[type="text"] {
 
 		});
 		
+		const currentPoint = parseInt(document.getElementById('currentPoint').innerText);
+		const inputPoint = document.getElementById('inputPoint'); 
+		const usePoint = document.getElementById('usePoint');
 		
+// 		const shipSum = parseInt(document.getElementById('shipSum').innerText);
+		//포인트 전액 사용 클릭 시
+		document.getElementById('totalPointCheck').addEventListener('click', () => {
+			const trTotalSum = parseInt(document.getElementById('trTotalSum').innerText);
+			const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
+			
+			inputPoint.value = currentPoint + '원';
+			usePoint.innerText = currentPoint;
+			document.getElementById('shipSum').innerText = (trTotalSum + shipPrice - currentPoint );
+			
+		})
+		
+		//input 금액화
+		inputPoint.addEventListener('change', () => {
+			const value = parseInt(inputPoint.value.replace(/원/g));
+			const formattedValue = value.toLocaleString(); //새로 입력한 값
+			const trTotalSum = parseInt(document.getElementById('trTotalSum').innerText);
+			const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
+			
+			if(inputPoint.value.trim() == '') { //값이 없으면 
+				usePoint.innerText = '0';
+				document.getElementById('shipSum').innerText = (trTotalSum + shipPrice);
+			} else { //값이 들어오면 
+				if(value > currentPoint) { //새로 입력한 값이 보유 포인트 금액보다 크면 
+					swal({
+						 text: "보유 포인트를 초과했습니다.",
+						 icon: "error",
+						 button: "확인",
+					});
+					inputPoint.value = currentPoint + '원';
+					usePoint.innerText = currentPoint;
+					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-currentPoint); //총금액+배송비-포인트
+				} else if ( value < currentPoint) { //새로 입력한 값보다 보유 포인트 금액이 크면 
+					inputPoint.value = formattedValue + '원';
+					usePoint.innerText = value;
+					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-value);
+				} else if (value == currentPoint) {
+					inputPoint.value = formattedValue + '원';
+					usePoint.innerText = value;
+					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-value);
+				}
+
+			}
+		})
 	} //window.onload
 	
 	
@@ -1082,37 +1142,48 @@ input[type="text"] {
 	})
 	
 	
-
-    
-    
-    
-
-	
-	
-	
-	
 </script>
 
+<!-- 결제 script -->
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
+
 	var IMP = window.IMP;
-	IMP.init("imp02384108"); // 예: imp00000000
+	IMP.init("imp02384108"); 
 	
-	
-	function requestPay() {
-		console.log('aaaa');
+	//1. 주문명 
+	//2. 개수 
+	//3. 합계금액
+	//
+// 	const inputs = document.querySelectorAll('input[type="text"]'); //모든 input 태그 
+// 	console.log(inputs)
+// 	const email = document.querySelector('input[type="email"]');
+	const payContent = document.getElementsByClassName('payContent');
+	requestPay = () => {
+		
+		for(pc of payContent) {
+			//길이가 다르게 됨 
+				if(pc.value.trim() === '') {
+					swal({
+						 text: "결제 시 모든 입력값은 필수사항입니다.",
+						 icon: "error",
+						 button: "확인",
+						});
+				return;
+			}
+		}
+		
 		IMP.request_pay({
-	        pg: 'html5_inicis', // version 1.1.0부터 지원.
+	        pg: 'html5_inicis', 
 	        pay_method: 'card',
 	        name: '주문명:결제테스트',
-	        //결제창에서 보여질 이름
 	        amount: 100,
 	        //가격
-	        buyer_email: 'iamport@siot.do',
-	        buyer_name: '구매자이름',
-	        buyer_tel: '010-1234-5678',
-	        buyer_addr: '서울특별시 강남구 삼성동',
-	        buyer_postcode: '123-456',
+	//	        buyer_email: 'iamport@siot.do',
+	//	        buyer_name: '구매자이름',
+	//	        buyer_tel: '010-1234-5678',
+	//	        buyer_addr: '서울특별시 강남구 삼성동',
+	//	        buyer_postcode: '123-456',
 	//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
 	//         m_redirect_url: 'humanentec.iptime.org'
 	        /*
@@ -1121,10 +1192,13 @@ input[type="text"] {
 	        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
 	        */
 	    }, function (rsp) {
-	        console.log(rsp);
 	        if (rsp.success) {
 	            var msg = '결제가 완료되었습니다.';
 	            //ajax !!!!! 
+	            
+	            
+	            
+	            
 	//             msg += '고유ID : ' + rsp.imp_uid;
 	//             msg += '상점 거래ID : ' + rsp.merchant_uid;
 	//             msg += '결제 금액 : ' + rsp.paid_amount;
@@ -1135,7 +1209,12 @@ input[type="text"] {
 	        }
 	        alert(msg);
 	    });
-	} // requestPay 끝 
+	} // requestPay 끝
+	
+
+
+
+
 </script>
 
 </html>

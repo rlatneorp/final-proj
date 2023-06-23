@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,10 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import kh.finalproj.hollosekki.common.model.vo.Follow;
+import kh.finalproj.hollosekki.common.model.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.exception.UsersException;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
@@ -34,6 +36,9 @@ public class UsersController {
 	
 	@Autowired
 	private EnrollService eService;
+	
+	@Autowired
+	private RecipeService rService;
 	
 	@Autowired
 	private UsersService uService;
@@ -59,8 +64,8 @@ public class UsersController {
 		System.out.println(followingList);
 		System.out.println(followerList);
 		
-			model.addAttribute("followingList", followingList);
-			model.addAttribute("followerList", followerList);
+		model.addAttribute("followingList", followingList);
+		model.addAttribute("followerList", followerList);
 			
 			return "myPage_Main";
 	}
@@ -141,6 +146,7 @@ public class UsersController {
 		}
 	}
 	
+	// 프로필 추가
 	@RequestMapping("myPage_InsertProfile.me")
 	public String myPage_InsertProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 									   Model model, HttpServletRequest request) {
@@ -178,6 +184,7 @@ public class UsersController {
 		}
 	}
 	
+	// 프로필 업뎃
 	@RequestMapping("myPage_UpdateProfile.me")
 	public String myPage_UpdateProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 			   						   Model model, HttpServletRequest request) {
@@ -234,6 +241,7 @@ public class UsersController {
 		}
 	}
 	
+	// 프사 삭제
 	@RequestMapping("myPage_DeleteImage.me")
 	@ResponseBody
 	public String myPage_DeleteImage(@RequestParam("usersNo") int usersNo, Model model,
@@ -253,14 +261,36 @@ public class UsersController {
 			return "no";
 		}
 	}
-	
-	@RequestMapping("myPage_Intro.me")
-	public String myPage_Intro() {
-		return "myPage_Intro";
-	}
-	
+
+	// 내 레시피 조회
 	@RequestMapping("myPage_MyRecipe.me")
-	public String myPage_MyRecipe() {
+	public String myPage_MyRecipe(Model model,  @RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		int listCount = rService.getListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		
+		ArrayList<Recipe> list = uService.selectMyRecipe(usersNo, pi);
+		
+		int recipeBookCount = 0;
+		int recipeLikeCount = 0;
+		for(Recipe r : list) {
+			int foodNo = r.getFoodNo();
+			
+			recipeBookCount = uService.recipeBookCount(foodNo);
+			recipeLikeCount = uService.recipeLikeCount(foodNo);
+			
+			r.setRecipeBookCount(recipeBookCount); // 필드에 얘네를 추가해서 set해주기 그럼 list에 들어감
+			r.setRecipeLikeCount(recipeLikeCount);
+		}
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+		
 		return "myPage_MyRecipe";
 	}
 	

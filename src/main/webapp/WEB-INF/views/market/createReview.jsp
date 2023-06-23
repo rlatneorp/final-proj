@@ -178,12 +178,14 @@ dl dd div label{
 
 			<div style="font-weight: 200; border-bottom: 1px solid black; color: rgb(68, 133, 215); font-weight: bold; 10px; font-size: 20px;">리뷰 작성</div>
 
-			<form name="form" id="form" role="form" method="post" action="${ contextPath }/insertReview.ma" enctype="multipart/form-data" class="reviewForm">
+			<form name="form" id="form" role="form" method="Post" action="${ contextPath }/insertReview.ma" enctype="multipart/form-data" class="reviewForm">
 
 				<div class="mb-name">
 
 					<label for="title" style="font-weight: 800;">아이디</label>
 
+					<input type="hidden" class="form-control" name="productNo" id="productNo" value="${productNo}">
+					
 					<input type="text" class="form-control" name="title" id="title" value="${loginUser.usersId}" readonly>
 
 				</div>
@@ -211,7 +213,7 @@ dl dd div label{
 				<div class="mb-contents">
 
 					<label for="content" style="font-weight: 800;">내용</label>
-
+					
 					<textarea class="form-control" rows="5" name="content" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  ></textarea>
 
 				</div>
@@ -221,22 +223,22 @@ dl dd div label{
 							<img class="addImage" src="resources/images/filePlus.jpg">
 						</label>
 						
-<!-- 						<div class="mb-3"> -->
-<!-- 							<input type="file" class="form-control form-control-lg" name="imageFiles"> -->
-<!-- 						</div> -->
+						<div class="mb-3">
+							<input type="file" class="form-control form-control-lg" name="imageFile" >
+						</div>
 				</div>
 						<div>
 <%-- 							<c:forEach items="${ list }" var="a"> --%>
 								<h5>
-									<a href="${ contextPath }/resources/uploadFils/"
-														download=" "> </a>
+<%-- 									<a href="${ contextPath }/resources/uploadFils/" --%>
+<!-- 														download=" "> </a> -->
 									<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" id="delete-">삭제 OFF</button>
 									<input type="hidden" name="deleteAttm" value="none">
 								</h5>
 <%-- 							</c:forEach> --%>
 						</div>					
 					<button type="submit" class="button" id="Save">작성하기</button>
-				<button type="button" class="button" id="btnList" onclick="history.back();">취소</button>
+				<button type="button" class="button" id="btnList" onclick="javascript:history.back();">취소</button>
 					
 
 			</form>

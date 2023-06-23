@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
 public class UsersDAO {
@@ -64,6 +67,20 @@ public class UsersDAO {
 
 	public int insertFollow(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return sqlSession.insert("usersMapper.insertFollow", map);
+	}
+
+	public ArrayList<Recipe> selectMyRecipe(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("usersMapper.selectMyRecipe", usersNo, rowBounds);
+	}
+
+	public int recipeBookCount(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("usersMapper.recipeBookCount", foodNo);
+	}
+
+	public int recipeLikeCount(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("usersMapper.recipeLikeCount", foodNo);
 	}
 
 

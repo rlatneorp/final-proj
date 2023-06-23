@@ -66,6 +66,10 @@ public interface EnrollService {
 
 	ArrayList<Follow> loginUserFollowingList(int usersNo);
 
+	int recipeBookMarkList(int usersNo);
+
+	int menuBookMarkList(int usersNo);
+
 
 
 

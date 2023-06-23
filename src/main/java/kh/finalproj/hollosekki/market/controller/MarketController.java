@@ -485,7 +485,7 @@ public class MarketController {
 	}
 	
 	@RequestMapping("delShipping.ma")
-	@ResponseBody
+//	@ResponseBody
 	public void delShipping(@RequestParam("shippingNo") int shippingNo) {
 		mkService.delShipping(shippingNo);
 	}

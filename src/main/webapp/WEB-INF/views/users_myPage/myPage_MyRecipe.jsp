@@ -111,54 +111,16 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<tr>
-								<td>1</td>
-								<td>미역국</td>
-								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>미역국</td>
-								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>미역국</td>
-								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>미역국</td>
-								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>미역국</td>
-								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>미역국</td>
-								<td>2020-0620</td>
-								<td>5</td>
-								<td>4</td>
-								<td>1</td>
-							</tr>
+							<c:forEach items="${ list }" var="l">
+								<tr onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.foodNo }' + '&page=' + '${ pi.currentPage }'">
+									<td>${ l.foodNo }</td>
+									<td>${ l.recipeName }</td>
+									<td>${ l.recipeModifyDate }</td>
+									<td>${ l.recipeCount }</td>
+									<td>${ l.recipeLikeCount }</td>
+									<td>${ l.recipeBookCount }</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -225,8 +187,6 @@ th:first-child, td:first-child {
 	   })
 	   
 	   //검색어 입력 엔터 기능 
-	   
-	
 	   searchInput.addEventListener('keyup', function(event) {
 	     if (event.key === 'Enter') {
 	       const searchText = searchInput.value

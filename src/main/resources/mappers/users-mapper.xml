@@ -90,21 +90,23 @@
 	</resultMap>
 	
 	<select id="selectFollowing" resultType="map">
-		select follow_no, following_user_no, f.users_no, nickname, image_renamename, social_id, social_profile_img, users_pw
+		select follow_no, following_user_no, f.users_no, nickname, image_renamename, social_id, social_profile_img, users_pw, users_id
 		from follow f
 		     join users u on(u.users_no = following_user_no)
 		     left join image on(u.users_no = image_divide_no)
 		     left join social_login on (u.users_id = social_id)
 		where f.users_no = #{usersNo}
+		order by follow_create_date desc
 	</select>
 	
 	<select id="selectFollower" resultType="map">
-		select follow_no, following_user_no, f.users_no, nickname, image_renamename, social_id, social_profile_img, users_pw
+		select follow_no, following_user_no, f.users_no, nickname, image_renamename, social_id, social_profile_img, users_pw, users_id
 		from follow f
 		     join users u on(u.users_no = f.users_no)
 		     left join image on(u.users_no = image_divide_no)
 		     left join social_login on (u.users_id = social_id)
 		where f.following_user_no = #{usersNo}
+		order by follow_create_date desc
 	</select>
 	
 	<delete id="deleteFollow">
@@ -127,6 +129,41 @@
 		select count(*)
 		from follow
 		where users_no = #{usersNo}
+	</select>
+	
+	<select id="selectMyRecipe" resultMap="recipeResultSet">
+		select *
+		from recipe
+		where users_no = #{usersNo} and recipe_status = 'Y'
+		order by food_no desc
+	</select>
+	
+	<resultMap type="Recipe" id="recipeResultSet">
+		<id column="food_no" property="foodNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="RECIPE_NAME" property="recipeName"/>
+		<result column="CATEGORY_INGREDIENT" property="categoryIngredient"/>
+		<result column="CATEGORY_SITUATION" property="categorySituation"/>
+		<result column="CATEGORY_TYPE" property="categoryType"/>
+		<result column="RECIPE_DIFFICULTY" property="recipeDifficulty"/>
+		<result column="RECIPE_TIME" property="recipeTime"/>
+		<result column="RECIPE_CONTENT" property="recipeContent"/>
+		<result column="RECIPE_COUNT" property="recipeCount"/>
+		<result column="RECIPE_CREATE_DATE" property="recipeCreateDate"/>
+		<result column="RECIPE_MODIFY_DATE" property="recipeModifyDate"/>
+		<result column="RECIPE_STATUS" property="recipeStatus"/>
+	</resultMap>
+	
+	<select id="recipeBookCount" resultType="_int">
+		select count(*)
+		from bookmark
+		where DIVISION_NO = #{foodNo} and number_type = 1
+	</select>
+	
+	<select id="recipeLikeCount" resultType="_int">
+		select count(*)
+		from likes
+		where DIVISION_NO = #{foodNo} and number_type = 1
 	</select>
 	
 </mapper>

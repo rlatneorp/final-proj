@@ -214,7 +214,7 @@
 						<td>
 						<i class="bi bi-currency-dollar dollars"></i>
 						</td>
-						<td style="font-size: 18px; color: rgb(52, 152, 219);"><p class="d-inline" id="myP">P</p></td>
+						<td style="font-size: 18px; color: rgb(52, 152, 219);"><p class="d-inline" id="myP" style="font-weight: bold;">P</p></td>
 						</tr>
 						</table>
 						<p style="font-size: 13px;">소멸 예정 포인트 0원</p>
@@ -257,19 +257,27 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<c:forEach items="${followingList}" var="f">
-					    <div class="followDiv">
-				    		<c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
-				    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
-				    		</c:if>
-				    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-				    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
-				    		</c:if>
-					    	<input type="hidden" value="${ f.FOLLOWING_USER_NO }" class="followingsNo">
-					    	<div><label class="followName">${f.NICKNAME}</label></div>
-					    	<div class="unfollowDiv" data-user-no="${f.FOLLOWING_USER_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
-					    </div><br>
-					</c:forEach>
+					<c:if test="${ following eq 0 }">
+						<div style="justify-content: center; margin-top: 30px; margin-bottom: 80px; text-align: center;">
+							<a style="font-size: 80px; margin: 10px; color:gray;"><i class="fa-solid fa-face-surprise"></i></a><br>
+							<a>팔로잉이 없습니다</a>
+						</div>
+					</c:if>
+					<c:if test="${ following ne 0 }">
+						<c:forEach items="${followingList}" var="f">
+						    <div class="followDiv" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.FOLLOWING_USER_NO }' + '&page=' + '${page}'">
+					    		<c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
+					    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+					    		</c:if>
+					    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
+					    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+					    		</c:if>
+						    	<input type="hidden" value="${ f.FOLLOWING_USER_NO }" class="followingsNo">
+						    	<div><label class="followName">${f.NICKNAME}</label></div>
+						    	<div class="unfollowDiv" data-user-no="${f.FOLLOWING_USER_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+						    </div><br>
+						</c:forEach>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -283,31 +291,39 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<c:forEach items="${followerList}" var="f">
-						<div class="followDiv">
-						    <c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
-				    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
-				    		</c:if>
-				    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-				    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
-				    		</c:if>
-						    <input type="hidden" value="${ f.USERS_NO }" class="followersNo">
-						    <div><label class="followName">${f.NICKNAME}</label></div>
-						    <c:set var="following" value="false"/>
-						    <c:forEach items="${followingList}" var="fl">
-						        <c:choose>
-						            <c:when test="${fl.NICKNAME eq f.NICKNAME}">
-						                <c:set var="following" value="true"/>
-						                <div class="unfollowDiv" data-user-no="${f.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
-						            </c:when>
-						        </c:choose>
-						    </c:forEach>
-						    <c:if test="${not following}">
-						        <div class="unfollowDiv" data-user-no="${f.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
-						    </c:if>
-					    </div>
-					    <br>
-					</c:forEach>
+					<c:if test="${ follower eq 0 }">
+						<div style="justify-content: center; margin-top: 30px; margin-bottom: 80px; text-align: center;">
+							<a style="font-size: 80px; margin: 10px; color:gray;"><i class="fa-solid fa-face-surprise"></i></a><br>
+							<a>팔로워가 없습니다</a>
+						</div>
+					</c:if>
+					<c:if test="${ follower ne 0 }">
+						<c:forEach items="${followerList}" var="f">
+							<div class="followDiv" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.USERS_NO }' + '&page=' + '${page}'">
+							    <c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
+					    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+					    		</c:if>
+					    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
+					    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+					    		</c:if>
+							    <input type="hidden" value="${ f.USERS_NO }" class="followersNo">
+							    <div><label class="followName">${f.NICKNAME}</label></div>
+							    <c:set var="following" value="false"/>
+							    <c:forEach items="${followingList}" var="fl">
+							        <c:choose>
+							            <c:when test="${fl.NICKNAME eq f.NICKNAME}">
+							                <c:set var="following" value="true"/>
+							                <div class="unfollowDiv" data-user-no="${f.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							            </c:when>
+							        </c:choose>
+							    </c:forEach>
+							    <c:if test="${not following}">
+							        <div class="unfollowDiv" data-user-no="${f.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+							    </c:if>
+						    </div>
+						    <br>
+						</c:forEach>
+					</c:if>
 				</div>
 			</div>
 		</div>

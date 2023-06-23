@@ -19,6 +19,8 @@ public class Recipe {
 	private String usersId;
 	private String nickName;
 	private String imageRenameName;
+	private int recipeBookCount;
+	private int recipeLikeCount;
 	
 	public Recipe() {
 		super();
@@ -174,6 +176,22 @@ public class Recipe {
 	public void setImageRenameName(String imageRenameName) {
 		this.imageRenameName = imageRenameName;
 	}
+	
+	public int getRecipeBookCount() {
+		return recipeBookCount;
+	}
+
+	public void setRecipeBookCount(int recipeBookCount) {
+		this.recipeBookCount = recipeBookCount;
+	}
+
+	public int getRecipeLikeCount() {
+		return recipeLikeCount;
+	}
+
+	public void setRecipeLikeCount(int recipeLikeCount) {
+		this.recipeLikeCount = recipeLikeCount;
+	}
 
 	@Override
 	public String toString() {
@@ -182,8 +200,9 @@ public class Recipe {
 				+ ", categoryType=" + categoryType + ", recipeDifficulty=" + recipeDifficulty + ", recipeTime="
 				+ recipeTime + ", recipeContent=" + recipeContent + ", recipeCount="
 				+ recipeCount + ", recipeCreateDate=" + recipeCreateDate + ", recipeModifyDate=" + recipeModifyDate
-				+ ", recipeStatus=" + recipeStatus + ", usersId=" + usersId + ", nickName=" + nickName + ", imageRenameName" + imageRenameName +"]";
+				+ ", recipeStatus=" + recipeStatus + ", usersId=" + usersId + ", nickName=" + nickName + ", imageRenameName" + imageRenameName
+				+ ", recipeBookCount=" + recipeBookCount + ", recipeLikeCount=" + recipeLikeCount + "]";
 	}
-	
+
 	
 }

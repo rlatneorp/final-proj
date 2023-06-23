@@ -176,8 +176,10 @@ public class MarketController {
 			    checkedCartList.add(checCart);
 			}
 		}
-		System.out.println("checkedCartList : " + checkedCartList); 
 		
+		int point = mkService.selectPoint(users.getUsersNo());
+		
+		model.addAttribute("point", point);
 		model.addAttribute("checkedCartList", checkedCartList );
 		model.addAttribute("optValues", optValues);
 		return "payDetail";

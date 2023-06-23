@@ -216,6 +216,11 @@ public class MarketService {
 	public int insertImage(Image image) {
 		return mkDAO.insertImage(sqlSession, image);
 	}
+	
+	//현재 포인트 가져오기 
+	public int selectPoint(int usersNo) {
+		return mkDAO.selectPoint(sqlSession, usersNo);
+	}
 
 	public ArrayList<Review> selectReview(int productNo) {
 		return mkDAO.selectReview(sqlSession,productNo);

@@ -207,7 +207,7 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectChecShip", shippingNo);
 	}
 
-	//productNo에 대한 메뉴 조회 
+	//productNo�뿉 ���븳 硫붾돱 議고쉶 
 	public Menu selectMenu(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectMenu", productNo);
 	}
@@ -224,6 +224,8 @@ public class MarketDAO {
 		
 	}	
 	//배송지 삭제 
+	}
+	//諛곗넚吏� �궘�젣 
 	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
 		sqlSession.delete("marketMapper.delShipping", shippingNo);
 	}

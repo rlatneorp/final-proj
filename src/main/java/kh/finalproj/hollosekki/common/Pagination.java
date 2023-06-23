@@ -1,4 +1,4 @@
-package kh.finalproj.hollosekki.common.model;
+package kh.finalproj.hollosekki.common;
 
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 

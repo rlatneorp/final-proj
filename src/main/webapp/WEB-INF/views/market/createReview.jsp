@@ -178,7 +178,7 @@ dl dd div label{
 
 			<div style="font-weight: 200; border-bottom: 1px solid black; color: rgb(68, 133, 215); font-weight: bold; 10px; font-size: 20px;">리뷰 작성</div>
 
-			<form name="form" id="form" role="form" method="post" action="${ contextPath }/market_detail.ma?" enctype="multipart/form-data" class="reviewForm">
+			<form name="form" id="form" role="form" method="Post" action="${ contextPath }/insertReview.ma" enctype="multipart/form-data" class="reviewForm">
 
 				<div class="mb-name">
 
@@ -223,15 +223,15 @@ dl dd div label{
 							<img class="addImage" src="resources/images/filePlus.jpg">
 						</label>
 						
-<!-- 						<div class="mb-3"> -->
-<!-- 							<input type="file" class="form-control form-control-lg" name="imageFiles"> -->
-<!-- 						</div> -->
+						<div class="mb-3">
+							<input type="file" class="form-control form-control-lg" name="imageFile" >
+						</div>
 				</div>
 						<div>
 <%-- 							<c:forEach items="${ list }" var="a"> --%>
 								<h5>
-									<a href="${ contextPath }/resources/uploadFils/"
-														download=" "> </a>
+<%-- 									<a href="${ contextPath }/resources/uploadFils/" --%>
+<!-- 														download=" "> </a> -->
 									<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" id="delete-">삭제 OFF</button>
 									<input type="hidden" name="deleteAttm" value="none">
 								</h5>

@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +16,12 @@
 *{
 font-family: 'Noto Sans KR', sans-serif;
 }
-.Qtitle .dropdown-center{
-	margin-left: -40px;
+.Qtitle .ddd{
+	display: inline-block;
+    height: 40px;
+    padding: 0 7px;
+    border: 1px solid #dddddd;
+    color: #999999;
 }
 
 .customerQ #floatingInput{
@@ -30,40 +36,12 @@ font-family: 'Noto Sans KR', sans-serif;
 .customerQ .form-floating{
 	width: 900px;
 }
-.customerQ .dropdown-item:active{
+.qaaCategoryBtn:active{
 	background-color: #B0DAFF;
 	color:black;
 }
 
-.filebox input[type="file"] {
-    position: absolute;
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-}
 
-.filebox label {
-    display: inline-block;
-    padding: 10px 20px;
-    color: #fff;
-    vertical-align: middle;
-    background-color: #999999;
-    cursor: pointer;
-    height: 40px;
-    margin-left: 10px;
-}
-
-.filebox .upload-name {
-    display: inline-block;
-    height: 40px;
-    padding: 0 7px;
-    vertical-align: middle;
-    border: 1px solid #dddddd;
-    width: 35%;
-    color: #999999;
-}
 
 #add{
 	width: 200px;
@@ -88,44 +66,74 @@ font-family: 'Noto Sans KR', sans-serif;
 		<br>
 		<hr>
 		<br>
+		<form action="${contextPath }/personalQuestion.cs" method="POST"> 
 		<div>
 			<h2>문의 작성</h2>
+			<p>카테고리를 지정해주세요</p>
 			<br><br>
 			<div class="customerQ">
 				<div class="Qtitle row justify-content-evenly">
-					<div class="dropdown-center d-inline col-4">
-					    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-					    문의종류
-					    </button>
-					    <ul class="dropdown-menu">
-					        <li><a class="dropdown-item" href="#">배송</a></li>
-					        <li><a class="dropdown-item" href="#">결제</a></li>
-					        <li><a class="dropdown-item" href="#">회원</a></li>
-					    </ul>
-					</div>
-					<div class="filebox d-inline col-4">
-					    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
-					    <label for="file">사진첨부</label> 
-					    <input type="file" id="file">
+					<div class="col-1" >
+						<select name="qnaCategory" class="ddd qaaCategoryBtn text-center" id="categoryBtn" required>
+							<option>카테고리</option>
+							<option value="user" <c:if test="${ category == 'user'}">selected</c:if>>회원</option>
+							<option <c:if test="${ category == 'delivery'}">selected</c:if> value="delivery">배송</option>
+							<option <c:if test="${ category == 'pay'}">selected</c:if> value="pay">결제</option>
+							<option <c:if test="${ category == 'etc'}">selected</c:if> value="etc">기타</option>
+						</select>
 					</div>
 				</div>
 				<br><br>
 				<div class="form-floating mb-3">
-				  <input type="text" class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요.">
+				  <input required type="text" class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요.">
 				  <label for="floatingInput">제목</label>
 				</div>
 				<div class="form-floating">
-				  <input type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요.">
+				  <input name="qnaContent" required type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요.">
 				  <label for="floatingText">내용</label>
 				</div>
 				<br>
 			</div>
 			<div>
-				<button id="add">작성완료</button>
+				<button type="submit" id="add">작성완료</button>
 			</div>
 		</div>
+	</form>
 	</div>
 	<br><br><br><br><br><br>
 <%@ include file="../common/footer.jsp" %>
+<script>
+window.onload=()=>{
+	const floatingInput = document.querySelector('#floatingInput');
+	const categoryBtn = document.querySelector('#categoryBtn');
+	const options = document.getElementsByTagName('option');
+	let category = '';
+	let titlePlusCategory = '';
+	let qnaTitle = '';
+	
+		$.ajax({
+			for(let j = 1; j < options.length; j++){
+				categoryBtn.addEventListener('change', ()=>{
+					if(options[j].value == categoryBtn.value){
+						category = options[j].innerText;
+						qnaTitle = floatingInput.value;
+						titlePlusCategory =  qnaTitle + '[' + category + '] ';
+						
+					}
+				})	
+			type: 'post',
+			url:'${contextPath}/personalQuestion.cs',
+			data: {
+				qnaTitle: titlePlusCategory
+			},
+			success: function(data){
+				console.log(data);
+				floatingInput.focus();
+			}
+		})
+	};
+	
+}
+</script>
 </body>
 </html>

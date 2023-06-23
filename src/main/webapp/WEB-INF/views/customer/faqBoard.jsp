@@ -47,7 +47,7 @@
 						<c:forEach items="${ flist }" var="i" varStatus="st"> 
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="flush-headingOne-${st.index +1 }">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${st.index +1 }" aria-expanded="false" aria-controls="flush-collapseOne-${st.index +1 }">
+							<button class="accordion-button collapsed titleBt" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${st.index +1 }" aria-expanded="false" aria-controls="flush-collapseOne-${st.index +1 }">
 							       　　|　　Q. ${i.faqTitle } 
 							</button>
 							</h2>
@@ -126,12 +126,20 @@
 window.onload=()=>{
 
 	const categoryBtn = document.querySelector('#categoryBtn');
+// 	const titleBt = document.querySelectorAll('.titleBt');
 	const searchBtn = document.getElementById('serachBtn');
 	let category = '';
 	let search = '';
 	
-	categoryBtn.addEventListener('click', ()=>{
+	 
+	
+	
+	
+	categoryBtn.addEventListener('change', ()=>{
 		category = categoryBtn.value;
+// 		for(int i = 0; i < titleBt.length; i++){
+// 			titleBt[i].innerHTML = '<a>' + '[' + category + ']' + '</a>';
+// 		}
 		location.href='${contextPath}/faqBoard.cs?category=' + category;
 		
 	});

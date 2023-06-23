@@ -210,9 +210,10 @@ public class MarketService {
 	public void delShipping(int shippingNo) {
 		mkDAO.delShipping(sqlSession, shippingNo);
 	}
+//	public void delShipping(int shippingNo) {
+//		mkDAO.delShipping(sqlSession, shippingNo);
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 //		return null;
-	}
 
 	public int insertImage(Image image) {
 		return mkDAO.insertImage(sqlSession, image);

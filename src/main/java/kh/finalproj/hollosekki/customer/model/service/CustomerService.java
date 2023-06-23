@@ -27,8 +27,8 @@ public class CustomerService {
 //		return csDAO.getFListCount(sqlSession, i);
 //	}
 	
-	public int getPListCount(int i, HashMap<String, Object> map) {
-		return csDAO.getPListCount(sqlSession, i, map);
+	public int getPListCount(HashMap<String, Object> map) {
+		return csDAO.getPListCount(sqlSession,  map);
 	}
 
 	public ArrayList<Customer> nBoardList(PageInfo pi) {
@@ -45,6 +45,10 @@ public class CustomerService {
 
 	public int getCategoryFListCount(HashMap<String, Object> map) {
 		return csDAO.getCategoryFListCount(sqlSession, map);
+	}
+
+	public int qnaInsert(HashMap<String, Object> map) {
+		return csDAO.qnaInsert(sqlSession, map);
 	}
 
 

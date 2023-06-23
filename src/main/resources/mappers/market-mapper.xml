@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="marketMapper">
-	<update id="attendanceCheck">
-		update users
-		set attendance_date = #{attendanceDate}
-		where users_id = #{uId}
-	</update>
-	
 	<update id="aDateCheck">
 		update users
 		set check_day = (select count(dateStr)
 		                from attendance
-		                where users_id = #{u.usersId})
+		                where users_id = #{u.usersId} and
+		                	substr(dateStr,6,2) = to_char(last_day(sysdate),'MM'))
 		where users_id = #{u.usersId}
 	</update>
 	
@@ -86,7 +81,8 @@
 	
 	<update id="getMonthPoint">
 		update users
-		set point = #{u.point} + 1000
+		set point = #{u.point} + 1000,
+			check_day = 0
 		where users_id in (select users_id
                           from attendance
                           		join users using(users_id)
@@ -94,9 +90,8 @@
                               and users_id = #{u.usersId}
                               and check_day = to_char(last_day(sysdate),'dd')
 	         				  and sysdate = last_day(sysdate))
-	           
 	</update>
-	
+
 <!-- 	<select id="selectShipping" resultMap="shipAddress"> -->
 <!-- 		select * -->
 <!-- 		from shipping_address -->

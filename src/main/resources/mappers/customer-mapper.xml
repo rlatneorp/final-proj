@@ -15,8 +15,8 @@
 	
 	<select id="getPListCount" resultType="_int">
 		select count(*)
-		from faq
-		where faq_status= 'Y' and faq_type = 3 and users_no = #{usersNo}
+		from qna
+		where qna_status = 'Y' and users_no = #{usersNo} 
 	</select>
 	
 	<select id="nBoardList" resultMap="CustomerResultSet">
@@ -31,13 +31,13 @@
 <!-- 		where faq_status = 'Y' and faq_type = 2   -->
 <!-- 		order by faq_no -->
 <!-- 	</select> -->
-	<select id="pBoardList" resultMap="CustomerResultSet">
+	<select id="pBoardList" resultMap="QnaResultSet">
 		select *
-		from faq
-		where faq_status = 'Y' and faq_type = 3 and users_no = #{usersNo} 
-		order by faq_no
+		from qna
+		where qna_status = 'Y' and users_no = #{usersNo} 
+		order by qna_no
 	</select>
-
+	
 	<resultMap type="Customer" id="CustomerResultSet">
 		<id column="FAQ_NO" property="faqNo"/>
 		<result column="USERS_NO" property="usersNo"/>
@@ -48,57 +48,106 @@
 		<result column="FAQ_TYPE" property="faqType"/>
 	</resultMap>
 	
+	<resultMap type="Qna" id="QnaResultSet">
+		<id column="QNA_NO" property="qnaNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="QNA_DATE" property="qnaDate"/>
+		<result column="QNA_TITLE" property="qnaTitle"/>
+		<result column="QNA_CONTENT" property="qnaContent"/>
+		<result column="ADMIN_NO" property="adminNo"/>
+		<result column="ANSWER_DATE" property="answerDate"/>
+		<result column="ANSWER_CONTENT" property="answerContent"/>
+		<result column="QNA_STATUS" property="qnaStatus"/>
+	</resultMap>
+	
 	<select id="getCategoryFListCount" resultType="_int">
 		select count(*)
 		from faq
 		where faq_status = 'Y' and faq_type = 2 
 		<if test="category == 'user'">
-			  and (faq_title like '[회원]%'
-			  or faq_title like '%' || #{search} || '%')
+			  and (faq_title like '%회원%')
 		</if>
 		<if test="category == 'delivery'">
-			  and (faq_title like '[배송]%'
-			  or faq_title like '%' || #{search} || '%') 
+			  and (faq_title like '%배송%')
+			  
 		</if>
 		<if test="category == 'pay'">
-			  and (faq_title like '[결제]%'
-			  or faq_title like '%' || #{search} || '%') 
+			  and (faq_title like '%결제%') 
 		</if>
 		<if test="category == 'etc'">
-			  and (faq_title like '[기타]%'
-			  or faq_title like '%' || #{search} || '%') 
+			  and (faq_title like '%기타%')
 		</if>
 		<if test="category == 'all'">
+			  and (faq_title like '%')
+		</if>
+		<if test="category == 'user' and search != ''">
+			  and (faq_title like '%회원%'
+			  and faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'delivery' and search != ''">
+			  and (faq_title like '%배송%'
+			  and faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'pay' and search != ''">
+			  and (faq_title like '%결제%' 
+			  and faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'etc' and search != ''">
+			  and (faq_title like '%기타%'
+			  and faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'all' and search != ''">
 			  and (faq_title like '%'
-			  or faq_title like '%' || #{search} || '%') 
+			  and faq_title like '%' || #{search} || '%')
 		</if>
 	</select>
 	
 	<select id="fBoardList" resultMap="CustomerResultSet">
 		select *
 		from faq
-		where faq_status = 'Y' and faq_type = 2 
+		where faq_status = 'Y' and faq_type = 2  
 		<if test="category == 'user'">
-			  and (faq_title like '[회원]%'
-			  or faq_title like '%' || #{search} || '%')
+			  and (faq_title like '%회원%')
 		</if>
 		<if test="category == 'delivery'">
-			  and (faq_title like '[배송]%'
-			  or faq_title like '%' || #{search} || '%') 
+			  and (faq_title like '%배송%')
 		</if>
 		<if test="category == 'pay'">
-			  and (faq_title like '[결제]%'
-			  or faq_title like '%' || #{search} || '%') 
+			  and (faq_title like '%결제%') 
 		</if>
 		<if test="category == 'etc'">
-			  and (faq_title like '[기타]%'
-			  or faq_title like '%' || #{search} || '%') 
+			  and (faq_title like '%기타%')
 		</if>
 		<if test="category == 'all'">
+			  and (faq_title like '%')
+		</if>
+		<if test="category == 'user' and search != ''">
+			  and (faq_title like '%회원%'
+			  and faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'delivery' and search != ''">
+			  and (faq_title like '%배송%'
+			  and faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'pay' and search != ''">
+			  and (faq_title like '%결제%' 
+			  and faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'etc' and search != ''">
+			  and (faq_title like '%기타%'
+			  and faq_title like '%' || #{search} || '%')
+		</if>
+		<if test="category == 'all' and search != ''">
 			  and (faq_title like '%'
-			  or faq_title like '%' || #{search} || '%') 
+			  and faq_title like '%' || #{search} || '%')
 		</if>
 		order by faq_no
 	</select>
+
+	<insert id="qnaInsert">
+		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status)
+	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default)
+	</insert>
+
 
 </mapper>

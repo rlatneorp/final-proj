@@ -25,6 +25,8 @@
 	
 	#recipeList{width: 1150px;}
 	
+/* 	.height{height: 245px;} */
+	
 /* 	페이지 */
 	.page_wrap {
 		text-align:center;
@@ -124,10 +126,9 @@
 			<c:forEach items="${ rList }" var="r">
 				<c:forEach items="${ iList }" var="i">
 					<c:if test="${ r.foodNo eq i.imageDivideNo }">
-<%-- 					<c:forEach begin="1" end="10"> --%>
-						<div class="col">
+						<div class="col height">
 							<div class="card shadow-sm">
-								<img src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }" style="width: 100%; height: 100%;">
+								<img src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }" style="width: 236.39px; height: 160px;">
 								<div class="card-body">
 									<h5>${ r.recipeName }</h5>
 									<p class="card-text">${ r.nickName }</p>
@@ -136,7 +137,6 @@
 								<input type="hidden" value="${ r.foodNo }">
 							</div>
 						</div>
-<%-- 						</c:forEach> --%>
 					</c:if>
 				</c:forEach>
 			</c:forEach>

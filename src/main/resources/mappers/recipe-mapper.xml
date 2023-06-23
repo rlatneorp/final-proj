@@ -155,6 +155,7 @@
 		select *
 		from recipe
 			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
 		order by recipe_count desc
 	</select>
 	

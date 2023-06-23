@@ -76,10 +76,12 @@
 <br><br>
 
 <div id="search">
+	<form role="search" action="recipeList.rc">
 	<div id="searchBar">
 		<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
-		<div id="searchIcon"><button id="searchBtn"><i class="bi bi-search"></i></button></div>
+		<div id="searchIcon"><button type="submit" id="searchBtn"><i class="bi bi-search"></i></button></div>
 	</div>
+	</form>
 	<div id="category">
 		<div>
 			<span class="title">재료별 | </span>
@@ -181,6 +183,12 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
+	const search = document.getElementById('searchBtn');
+	search.addEventListener('click', function(){
+		const text = document.getElementById('inputText').value;
+		location.href="${contextPath}/searchRecipe.rc?word="+text;
+	})
+
 	window.onload = () =>{
 		const recipes = document.getElementsByClassName('card');
 		for(const recipe of recipes){
@@ -216,6 +224,9 @@
 					const card = document.createElement('div');
 					card.classList.add('card');
 					card.classList.add('shadow-sm');
+					card.onclick=function(){
+						location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
+					}
 					
 					const img = document.createElement('img');
 					img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;

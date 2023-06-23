@@ -158,6 +158,19 @@
 		order by recipe_count desc
 	</select>
 	
+	<select id="searchRecipe" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+		where recipe_name like '%${word}%' and recipe_status='Y'
+	</select>
+	
+	<select id="searchImage" resultMap="imageResultSet">
+		select *
+		from image
+		where image_type=2 and image_level=0
+	</select>
+	
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>

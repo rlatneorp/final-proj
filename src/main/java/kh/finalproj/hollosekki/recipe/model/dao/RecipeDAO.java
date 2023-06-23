@@ -107,5 +107,13 @@ public class RecipeDAO {
 		return (ArrayList)sqlSession.selectList("recipeMapper.mostRecipeList");
 	}
 
+	public ArrayList<Recipe> searchRecipe(SqlSessionTemplate sqlSession, String word) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.searchRecipe", word);
+	}
+
+	public ArrayList<Image> searchImage(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.searchImage", sqlSession);
+	}
+
 
 }

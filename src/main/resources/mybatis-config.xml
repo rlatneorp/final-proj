@@ -26,6 +26,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.enroll.model.vo.SocialLogin" alias="SocialLogin"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.BookMark" alias="BookMark"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Menu" alias="Menu"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Review" alias="Review"/>
 		
 	</typeAliases>
 	

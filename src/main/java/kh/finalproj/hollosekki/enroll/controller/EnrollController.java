@@ -340,26 +340,26 @@ public class EnrollController {
 			// 팔로우 정보
 			int follow = eService.follow(usersNo);
 			int following = eService.following(usersNo);
-			model.addAttribute("following", follow); // 남이 나를 카운트
-			model.addAttribute("follow", following); // 내가 남을 카운트
+			model.addAttribute("follow", follow); // 남이 나를 카운트
+			model.addAttribute("following", following); // 내가 남을 카운트
+//			System.out.println("following: "+ following);
+//			System.out.println("follow : " + follow);
 			
 			ArrayList<Follow> followList =  eService.followList(usersNo);
 			ArrayList<Follow> followingLsit =  eService.followingLsit(usersNo);
 			model.addAttribute("followList", followList);
 			model.addAttribute("followingLsit", followingLsit);
 			
-			System.out.println("followList : " + followList);
-			System.out.println("followingList : " + followingLsit);
+//			System.out.println("followList : " + followList);
+//			System.out.println("followingList : " + followingLsit);
 			
 			HttpSession session = request.getSession();
 			Users loginUser = (Users)session.getAttribute("loginUser");
 			
 			if(loginUser != null) {
 				ArrayList<Follow> loginUserFollowingList = eService.loginUserFollowingList(loginUser.getUsersNo());
-				System.out.println(loginUser.getUsersNo());
-				System.out.println("loginUserFollowingList : "+ loginUserFollowingList);
+//				System.out.println("loginUserFollowingList : "+ loginUserFollowingList);
 				model.addAttribute("lList", loginUserFollowingList);
-				
 			}
 			
 			// 프사정보

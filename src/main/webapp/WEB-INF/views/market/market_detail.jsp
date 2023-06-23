@@ -885,7 +885,7 @@ p b {
 			
 <%-- 			<c:if test="${ loginUser != null }"> --%>
 					<div class="review_btn">
-						<a href="createReview.ma">
+						<a href="createReview.ma?productNo = ${p.productNo}">
 						<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 					</div>
 <%-- 				</c:if>	 --%>

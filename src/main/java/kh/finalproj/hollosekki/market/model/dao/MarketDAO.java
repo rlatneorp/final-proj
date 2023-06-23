@@ -219,6 +219,8 @@ public class MarketDAO {
 
 	public int insertImage(SqlSessionTemplate sqlSession, Image image) {
 		return sqlSession.insert("marketMapper.insertImage", image);
+	}
+	
 	//배송지 삭제 
 	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
 		sqlSession.delete("marketMapper.delShipping", shippingNo);

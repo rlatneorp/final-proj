@@ -207,20 +207,25 @@ public class MarketController {
 		return "createQnA";
 	}
 	
-//	@PostMapping("insertReview.ma/productNo")
-	@RequestMapping("insertReview.ma")
+	@PostMapping("insertReview.ma")
+//	@RequestMapping("insertReview.ma")
 	public String insertReview(@RequestParam (value="reviewStar", required = false) String reviewStar,
 							   HttpSession session, 
-//							   @ModelAttribute Product p,
+							   @ModelAttribute Product p,
+							   @RequestParam("productNo") int productNo,
 							   @ModelAttribute Review r,
-							   @RequestParam (value="imageFile", required = false) ArrayList<MultipartFile> imageFiles,
+							   @RequestParam ("imageFile") ArrayList<MultipartFile> imageFiles,
 							   HttpServletRequest request,
 							   Model model) {
-//		
-		model.addAttribute("productNo", r.getProductNo());
+//	
+		
+		model.addAttribute("productNo", productNo);
 		model.addAttribute("reviewStar", reviewStar);
 		model.addAttribute("imageFile", imageFiles);
 		model.addAttribute("reviewContent", r.getReviewContent());
+		
+		System.out.println(imageFiles);
+		
 		int i = 0;
 		int resultF = 0;
 		int resultImg = 0;
@@ -230,7 +235,7 @@ public class MarketController {
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
 				if(returnArr[1] != null) {
-					image.setImageDivideNo(r.getProductNo());
+					image.setImageDivideNo(p.getProductNo());
 					image.setImageType(7); /*리뷰는 7번*/
 					image.setImagePath(returnArr[0]);
 					image.setImageOriginalName(imageFile.getOriginalFilename());
@@ -245,30 +250,28 @@ public class MarketController {
 			}
 		}
 		if(resultImg == i) {
-			return "market_detail.ma";
+			return "redirect:market_detail.ma";
 		}
 		
 		
-		return "market_detail.ma";
+		return "redirect:market_detail.ma";
 //		return "redirect:market_detail.ma"+p.getProductNo();
 	}
 	
+	
 	@GetMapping("selectReview")
-	public String selectReview(Review reivew, Model model){
-		
-		int productNo = 0;
+	public String selectReview(@RequestParam ("productNo") int productNo,Review reivew, Model model){
 		
 		
-		ArrayList<Product> p = new ArrayList<>(); 
 		ArrayList<Review> reviewlist = new ArrayList<>();
-		
-		for(Review review : reviewlist) {
-			productNo = review.getProductNo();
-		}
 		
 		reviewlist = mkService.selectReview(productNo);
 		
-		model.addAttribute("reviewlist", reviewlist);
+		if(reviewlist != null) {
+			model.addAttribute("reviewlist", reviewlist);
+		}
+		
+		System.out.println(productNo);
 		
 		return "market_detail";
 	}
@@ -276,7 +279,7 @@ public class MarketController {
 		
 	
 	@GetMapping("createReview.ma")
-	public String createReview(@RequestParam (value="productNo", required=false) int productNo, HttpSession session, Model model) {
+	public String createReview(@RequestParam ("productNo") int productNo, HttpSession session, Model model) {
 		Users users = (Users)session.getAttribute("loginUser");
 		model.addAttribute("productNo", productNo);
 		return "createReview";

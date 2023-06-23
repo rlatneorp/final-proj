@@ -173,6 +173,18 @@
 		order by follow_create_date desc
 	</select>
 	
+	<select id="recipeBookMarkList" resultType="_int">
+		select count(*)
+		from bookmark
+		where users_no = ${ usersNo } and number_type = 1
+	</select>
+	
+	<select id="menuBookMarkList" resultType="_int">
+		select count(*)
+		from bookmark
+		where users_no = ${ usersNo } and number_type = 2
+	</select>
+	
 	
 	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>

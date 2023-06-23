@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.dao.UsersDAO;
 
 @Service
@@ -85,5 +87,20 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public int insertFollow(HashMap<String, Object> map) {
 		return uDAO.insertFollow(sqlSession, map);
+	}
+	
+	@Override
+	public ArrayList<Recipe> selectMyRecipe(int usersNo, PageInfo pi) {
+		return uDAO.selectMyRecipe(sqlSession, usersNo, pi);
+	}
+	
+	@Override
+	public int recipeBookCount(int foodNo) {
+		return uDAO.recipeBookCount(sqlSession, foodNo);
+	}
+	
+	@Override
+	public int recipeLikeCount(int foodNo) {
+		return uDAO.recipeLikeCount(sqlSession, foodNo);
 	}
 }

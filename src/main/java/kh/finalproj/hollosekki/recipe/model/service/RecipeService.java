@@ -51,5 +51,15 @@ public interface RecipeService {
 
 	ArrayList<Recipe> mostRecipeList();
 
+	ArrayList<Recipe> searchRecipe(String word);
+
+	ArrayList<Image> searchImage();
+
+	ArrayList<Recipe> ingredientSearch(String ingredient);
+
+	ArrayList<Recipe> situationSearch(String situation);
+
+	ArrayList<Recipe> typeSearch(String type);
+
 
 }

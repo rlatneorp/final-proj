@@ -39,7 +39,8 @@ public class RecipeController {
 	
 //	레시피 리스트 조회
 	@RequestMapping("recipeList.rc")
-	public String recipeList(@ModelAttribute Recipe r, Model model, @RequestParam(value = "page", required = false) Integer page) {
+	public String recipeList(@ModelAttribute Recipe r, Model model, @RequestParam(value = "page", required = false) Integer page, 
+							 @RequestParam(value="input", required=false) String word) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
@@ -47,12 +48,28 @@ public class RecipeController {
 		int listCount = rService.getListCount();
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
-		ArrayList<Recipe> rList = rService.selectRecipeList(pi);
-		ArrayList<Image> iList = rService.selectRecipeImageList();
+		ArrayList<Recipe> rList = new ArrayList<>();
+		ArrayList<Recipe> searchList = new ArrayList<>();
+		ArrayList<Image> iList = new ArrayList<>();
+		ArrayList<Image> searchImage= new ArrayList<>();
 		
-		if(rList != null) {
+		if(word == null) {
+			rList = rService.selectRecipeList(pi);
+			iList = rService.selectRecipeImageList();
+		} else if(word != null) {
+			searchList = rService.searchRecipe(word);
+			searchImage = rService.searchImage();
+		}
+		
+		if(word ==null) {
 			model.addAttribute("rList", rList);
 			model.addAttribute("iList", iList);
+			model.addAttribute("pi", pi);
+			
+			return "recipeList";
+		} else if(word != null) {
+			model.addAttribute("rList", searchList);
+			model.addAttribute("iList", searchImage);
 			model.addAttribute("pi", pi);
 			
 			return "recipeList";
@@ -561,6 +578,7 @@ public class RecipeController {
 		}
 	}
 	
+	// 최신순 정렬
 	@RequestMapping(value="recentRecipe.rc", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public ArrayList<Recipe> recentRecipe(HttpServletRequest request, Model model){
@@ -572,6 +590,7 @@ public class RecipeController {
 		return rList;
 	}
 	
+	// 조회순 정렬
 	@RequestMapping(value="mostRecipe.rc", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public ArrayList<Recipe> mostRecipe(HttpServletRequest request, Model model){
@@ -579,6 +598,36 @@ public class RecipeController {
 		ArrayList<Recipe> rList = rService.mostRecipeList();
 		
 		model.addAttribute("rList", rList);
+		
+		return rList;
+	}
+	
+	// 재료 카테고리 검색
+	@RequestMapping(value="recipeIngredient.rc", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Recipe> recipeIngredient(HttpServletRequest request, Model model, @RequestParam("ingredient") String ingredient){
+		
+		ArrayList<Recipe> rList = rService.ingredientSearch(ingredient);
+		
+		return rList;
+	}
+	
+	// 상황 카테고리 검색
+	@RequestMapping(value="recipeSituation.rc", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Recipe> recipeSituation(HttpServletRequest request, Model model, @RequestParam("situation") String situation){
+		
+		ArrayList<Recipe> rList = rService.situationSearch(situation);
+		
+		return rList;
+	}
+
+	// 타입 카테고리 검색
+	@RequestMapping(value="recipeType.rc", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Recipe> recipeType(HttpServletRequest request, Model model, @RequestParam("type") String type){
+		
+		ArrayList<Recipe> rList = rService.typeSearch(type);
 		
 		return rList;
 	}

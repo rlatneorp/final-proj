@@ -107,5 +107,25 @@ public class RecipeDAO {
 		return (ArrayList)sqlSession.selectList("recipeMapper.mostRecipeList");
 	}
 
+	public ArrayList<Recipe> searchRecipe(SqlSessionTemplate sqlSession, String word) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.searchRecipe", word);
+	}
+
+	public ArrayList<Image> searchImage(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.searchImage", sqlSession);
+	}
+
+	public ArrayList<Recipe> ingredientSearch(SqlSessionTemplate sqlSession, String ingredient) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.ingredientSearch", ingredient);
+	}
+
+	public ArrayList<Recipe> situationSearch(SqlSessionTemplate sqlSession, String situation) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.situationSearch", situation);
+	}
+
+	public ArrayList<Recipe> typeSearch(SqlSessionTemplate sqlSession, String type) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.typeSearch", type);
+	}
+
 
 }

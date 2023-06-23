@@ -39,7 +39,8 @@ public class RecipeController {
 	
 //	레시피 리스트 조회
 	@RequestMapping("recipeList.rc")
-	public String recipeList(@ModelAttribute Recipe r, Model model, @RequestParam(value = "page", required = false) Integer page) {
+	public String recipeList(@ModelAttribute Recipe r, Model model, @RequestParam(value = "page", required = false) Integer page, 
+							 @RequestParam(value="input", required=false) String word) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
@@ -47,12 +48,28 @@ public class RecipeController {
 		int listCount = rService.getListCount();
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
-		ArrayList<Recipe> rList = rService.selectRecipeList(pi);
-		ArrayList<Image> iList = rService.selectRecipeImageList();
+		ArrayList<Recipe> rList = new ArrayList<>();
+		ArrayList<Recipe> searchList = new ArrayList<>();
+		ArrayList<Image> iList = new ArrayList<>();
+		ArrayList<Image> searchImage= new ArrayList<>();
 		
-		if(rList != null) {
+		if(word == null) {
+			rList = rService.selectRecipeList(pi);
+			iList = rService.selectRecipeImageList();
+		} else if(word != null) {
+			searchList = rService.searchRecipe(word);
+			searchImage = rService.searchImage();
+		}
+		
+		if(word ==null) {
 			model.addAttribute("rList", rList);
 			model.addAttribute("iList", iList);
+			model.addAttribute("pi", pi);
+			
+			return "recipeList";
+		} else if(word != null) {
+			model.addAttribute("rList", searchList);
+			model.addAttribute("iList", searchImage);
 			model.addAttribute("pi", pi);
 			
 			return "recipeList";

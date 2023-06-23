@@ -642,12 +642,11 @@
 	})
 	
 	
-// 	const usersNo = ${loginUser.usersNo}; // 얘 어케 수정함~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	const usersNo = '${loginUser.usersNo}'; // 얘 어케 수정함~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 		// 팔로잉 모달
 		// 언팔
 		function unfollowUser(button) {
-			const usersNo = ${loginUser.usersNo};
 			var userNo = button.parentNode.dataset.userNo;
 		
 			$.ajax({

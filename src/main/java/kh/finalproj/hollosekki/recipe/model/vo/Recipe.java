@@ -19,6 +19,9 @@ public class Recipe {
 	private String usersId;
 	private String nickName;
 	
+	private int recipeBookCount;
+	private int recipeLikeCount;
+	
 	public Recipe() {
 		super();
 	}
@@ -164,16 +167,33 @@ public class Recipe {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
+	
+	public int getRecipeBookCount() {
+		return recipeBookCount;
+	}
+
+	public void setRecipeBookCount(int recipeBookCount) {
+		this.recipeBookCount = recipeBookCount;
+	}
+
+	public int getRecipeLikeCount() {
+		return recipeLikeCount;
+	}
+
+	public void setRecipeLikeCount(int recipeLikeCount) {
+		this.recipeLikeCount = recipeLikeCount;
+	}
 
 	@Override
 	public String toString() {
 		return "Recipe [foodNo=" + foodNo + ", usersNo=" + usersNo + ", recipeName=" + recipeName
 				+ ", categoryIngredient=" + categoryIngredient + ", categorySituation=" + categorySituation
 				+ ", categoryType=" + categoryType + ", recipeDifficulty=" + recipeDifficulty + ", recipeTime="
-				+ recipeTime + ", recipeContent=" + recipeContent + ", recipeCount="
-				+ recipeCount + ", recipeCreateDate=" + recipeCreateDate + ", recipeModifyDate=" + recipeModifyDate
-				+ ", recipeStatus=" + recipeStatus + ", usersId=" + usersId + ", nickName=" + nickName +"]";
+				+ recipeTime + ", recipeContent=" + recipeContent + ", recipeCount=" + recipeCount
+				+ ", recipeCreateDate=" + recipeCreateDate + ", recipeModifyDate=" + recipeModifyDate
+				+ ", recipeStatus=" + recipeStatus + ", usersId=" + usersId + ", nickName=" + nickName
+				+ ", recipeBookCount=" + recipeBookCount + ", recipeLikeCount=" + recipeLikeCount + "]";
 	}
-	
+
 	
 }

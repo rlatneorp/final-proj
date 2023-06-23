@@ -211,7 +211,7 @@ public class MarketService {
 	}
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 //		return null;
-	}
+//	}
 
 	public int insertImage(Image image) {
 		return mkDAO.insertImage(sqlSession, image);

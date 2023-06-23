@@ -134,4 +134,14 @@ public class RecipeServiceImpl implements RecipeService{
 	public ArrayList<Recipe> mostRecipeList() {
 		return rDAO.mostRecipeList(sqlSession);
 	}
+	
+	@Override
+	public ArrayList<Recipe> searchRecipe(String word) {
+		return rDAO.searchRecipe(sqlSession, word);
+	}
+	
+	@Override
+	public ArrayList<Image> searchImage() {
+		return rDAO.searchImage(sqlSession);
+	}
 }

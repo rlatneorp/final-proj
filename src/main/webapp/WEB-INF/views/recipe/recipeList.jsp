@@ -25,6 +25,8 @@
 	
 	#recipeList{width: 1150px;}
 	
+/* 	.height{height: 245px;} */
+	
 /* 	페이지 */
 	.page_wrap {
 		text-align:center;
@@ -74,10 +76,12 @@
 <br><br>
 
 <div id="search">
+	<form role="search" action="recipeList.rc">
 	<div id="searchBar">
 		<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
-		<div id="searchIcon"><button id="searchBtn"><i class="bi bi-search"></i></button></div>
+		<div id="searchIcon"><button type="submit" id="searchBtn"><i class="bi bi-search"></i></button></div>
 	</div>
+	</form>
 	<div id="category">
 		<div>
 			<span class="title">재료별 | </span>
@@ -124,10 +128,9 @@
 			<c:forEach items="${ rList }" var="r">
 				<c:forEach items="${ iList }" var="i">
 					<c:if test="${ r.foodNo eq i.imageDivideNo }">
-<%-- 					<c:forEach begin="1" end="10"> --%>
-						<div class="col">
+						<div class="col height">
 							<div class="card shadow-sm">
-								<img src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }" style="width: 100%; height: 100%;">
+								<img src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }" style="width: 236.39px; height: 160px;">
 								<div class="card-body">
 									<h5>${ r.recipeName }</h5>
 									<p class="card-text">${ r.nickName }</p>
@@ -136,7 +139,6 @@
 								<input type="hidden" value="${ r.foodNo }">
 							</div>
 						</div>
-<%-- 						</c:forEach> --%>
 					</c:if>
 				</c:forEach>
 			</c:forEach>
@@ -181,6 +183,12 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
+	const search = document.getElementById('searchBtn');
+	search.addEventListener('click', function(){
+		const text = document.getElementById('inputText').value;
+		location.href="${contextPath}/searchRecipe.rc?word="+text;
+	})
+
 	window.onload = () =>{
 		const recipes = document.getElementsByClassName('card');
 		for(const recipe of recipes){
@@ -216,6 +224,9 @@
 					const card = document.createElement('div');
 					card.classList.add('card');
 					card.classList.add('shadow-sm');
+					card.onclick=function(){
+						location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
+					}
 					
 					const img = document.createElement('img');
 					img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;

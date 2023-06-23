@@ -208,6 +208,7 @@ public class MarketService {
 
 	public void delShipping(int shippingNo) {
 		mkDAO.delShipping(sqlSession, shippingNo);
+	}
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 //		return null;
 //	}

@@ -578,6 +578,7 @@ public class RecipeController {
 		}
 	}
 	
+	// 최신순 정렬
 	@RequestMapping(value="recentRecipe.rc", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public ArrayList<Recipe> recentRecipe(HttpServletRequest request, Model model){
@@ -589,6 +590,7 @@ public class RecipeController {
 		return rList;
 	}
 	
+	// 조회순 정렬
 	@RequestMapping(value="mostRecipe.rc", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public ArrayList<Recipe> mostRecipe(HttpServletRequest request, Model model){
@@ -596,6 +598,36 @@ public class RecipeController {
 		ArrayList<Recipe> rList = rService.mostRecipeList();
 		
 		model.addAttribute("rList", rList);
+		
+		return rList;
+	}
+	
+	// 재료 카테고리 검색
+	@RequestMapping(value="recipeIngredient.rc", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Recipe> recipeIngredient(HttpServletRequest request, Model model, @RequestParam("ingredient") String ingredient){
+		
+		ArrayList<Recipe> rList = rService.ingredientSearch(ingredient);
+		
+		return rList;
+	}
+	
+	// 상황 카테고리 검색
+	@RequestMapping(value="recipeSituation.rc", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Recipe> recipeSituation(HttpServletRequest request, Model model, @RequestParam("situation") String situation){
+		
+		ArrayList<Recipe> rList = rService.situationSearch(situation);
+		
+		return rList;
+	}
+
+	// 타입 카테고리 검색
+	@RequestMapping(value="recipeType.rc", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Recipe> recipeType(HttpServletRequest request, Model model, @RequestParam("type") String type){
+		
+		ArrayList<Recipe> rList = rService.typeSearch(type);
 		
 		return rList;
 	}

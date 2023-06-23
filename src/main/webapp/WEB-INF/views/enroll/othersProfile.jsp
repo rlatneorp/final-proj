@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +18,8 @@
 	.users-profile-img-out{display: flex; justify-content: center;}
 	.users-profile-img{
 		width: 120px; height: 120px; 
-		border-radius: 50%; 
+		border-radius: 50%;
+		border: 2px solid gray;
 		overflow: hidden; 
 		margin: 10px; margin-bottom: 10px;}
 	.profile-img{object-fit: cover; object-position: center;}	
@@ -35,7 +37,7 @@
 		cursor: pointer;
 		padding: 3px;}
 	.follow:active{box-shadow: 0px 1px 0px black; transform: translateY(5px);}
-	.follwing-profile{width:50px; height:50px; border-radius: 50%; overflow: hidden;}
+	.follwing-profile{width:50px; height:50px; border-radius: 50%; overflow: hidden; border: 2px solid gray;}
 	
 	.list{width: 880px;}
 	.list-menu-out{display: flex; }
@@ -137,20 +139,43 @@
 		font-size: 17px; font-weight: bold;
 		margin-right: 200px; margin-top: 10px; margin-left: 10px;
 		width: 100px;
+		cursor: pointer;
 	}
 	.modalFollow{
 		border: none; border-radius: 5px;
-		font-weight: bold; font-size: 12px;
+		font-weight: bold; font-size: 11.5px;
 		width: 60px; height: 30px;
-		background: rgba(224, 224, 224, 0.29);
-		color: rgba(231, 76, 60, 0.86);
+		color: white;
+		background: rgba(231, 76, 60, 0.8);
+		transform: scale(1.2);
 		margin-top: 10px;
+	}
+	.modalFollow:hover {
+	    border: 1px #C6C6C6 solid;
+	    box-shadow: 1px 1px 1px #EAEAEA;
+	    color: white;
+	    background: rgba(231, 76, 60, 0.9);
+	}
+	
+	.modalFollow:active {
+	    box-shadow: inset 1px 1px 1px #DFDFDF;   
 	}
 	.modalFollower{
 		border: none; border-radius: 5px;
 		font-weight: bold; font-size: 12px;
 		width: 60px; height: 30px;
 		background: #B0DAFF;
+		transform: scale(1.2);
+		margin-top: 10px;
+	}
+	.modalFollower:hover {
+	    border: 1px #C6C6C6 solid;
+	    box-shadow: 1px 1px 1px #EAEAEA;
+	    color: #333333;
+	    background: #8bc4f7;
+	}
+	.modalFollower:active {
+	    box-shadow: inset 1px 1px 1px #DFDFDF;   
 	}
     #modalP{
     	width: 150px;
@@ -159,6 +184,14 @@
         cursor: pointer;
         object-fit: cover; object-position: center;
     }
+    .modalUsers{
+		border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		transform: scale(1.2);
+		background: white;
+		margin-top: 10px;
+	}
 </style>
 </head>
 
@@ -174,11 +207,11 @@
 							<img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" >
 						</c:if>
 						<c:if test="${ userImage ne null }"> <!-- 일반유저-프사있을때 -->
-							<img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ userImage.imageRenameName }" >
+							<img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ userImage.imageRenameName }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';">
 						</c:if>
 					</c:if>
 					<c:if test="${ social ne null }"> <!-- 소셜유저일때 -->
-						<img class="profile-img" src="${ social.social_profile_img }" >
+						<img class="profile-img" src="${ social.socialProfileImg }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';">
 					</c:if>
 				</div>
 			</div>
@@ -193,13 +226,25 @@
 			
 			<c:if test="${ loginUser != null }">
 				<div class="follow-info flex">
-					<div data-bs-toggle="modal" data-bs-target="#follower"><a>팔로워 ${ follow } </a></div>
+					<div data-bs-toggle="modal" data-bs-target="#follower"><a>팔로잉 ${ following } </a></div>
 					<i class="bi bi-dot lightgray"></i>
-					<div data-bs-toggle="modal" data-bs-target="#following"><a>팔로잉 ${ following }</a></div>
+					<div data-bs-toggle="modal" data-bs-target="#following"><a>팔로워 ${ follow }</a></div>
 				</div>
-				<div class="follow">
-					<a>팔로우</a>
-				</div>
+				
+				<!-- 로그인유저의 팔로잉 리스트에 해당유저 있으면 언팔, 없으면 팔 -->
+				<c:if test="${ user.usersNo != loginUser.usersNo }">
+					<c:set var="followStatus" value="false" />
+					<c:forEach items="${lList}" var="l">
+						<c:if test="${l.FOLLOWING_USER_NO eq user.usersNo}">
+							<c:set var="followStatus" value="true" />
+							<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+						</c:if>
+					</c:forEach>
+					<c:if test="${not followStatus}">
+					 	<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					</c:if>
+				</c:if>
+				
 			</c:if>
 			
 		</div>
@@ -215,15 +260,14 @@
 			
 				<!-- 메뉴1. 레시피목록 -->
 				<div class="recipe-contents flex">
-					<c:if test="${ rList eq null }">
-						<div style="text-align: center; font-size: 20px;">등록한 레시피가 없습니다.</div>
+					<c:if test="${ empty rList }">
+						<div style="margin: 0 auto; margin-top: 40px; margin-bottom: 40px; font-size: 18px;">등록한 레시피가 없습니다.</div>
 					</c:if>
-					<c:if test="${ rList ne null }">
+					<c:if test="${ !empty rList }">
 						<c:forEach items="${ rList }" var="r">
 							<c:forEach items="${ recipeImageList}" var="ri">
 								<c:if test="${ r.foodNo eq ri.imageDivideNo }">
 									<div class="recipe-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ r.foodNo }' + '&page=' + '${ page }'">
-<%-- 										<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }"></div> --%>
 										<c:if test="${ ri.imageDivideNo == r.foodNo }">
 											<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${ri.imageRenameName}"></div>
 										</c:if>	
@@ -367,6 +411,9 @@
 				<div class="bookmark-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
 					<div style="display: flex;">
+						<c:if test="${ rCount == 0 }">
+							<div style="margin: 0 auto; margin-top: 25px; margin-bottom: 30px;">스크랩한 레시피가 없습니다.</div>
+						</c:if>
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
@@ -396,11 +443,9 @@
 					
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
 					<div style="display: flex;">
-						
-						<c:if test="${ bList.isEmpty()}">
-							스크랩한 식단이 없습니다
+						<c:if test="${ mCount == 0 }">
+							<div style="margin: 0 auto;  margin-top: 25px; margin-bottom: 30px;">스크랩한 식단이 없습니다.</div>
 						</c:if>
-						
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.productNo }">
@@ -424,7 +469,9 @@
 												<c:forEach items="${ hList }" var="h">
 													<c:if test="${ h.usersNo == p.usersNo }">
 														<div style="margin: 10px;">${ h.usersName }</div>
-														<div class="recipe-date">${ p.productCreateDate }</div>
+														<div class="recipe-date">
+															<fmt:formatDate value="${ p.productCreateDate }" pattern="yyyy-MM-dd"/>
+														</div>
 													</c:if>
 												</c:forEach>
 											</c:if>
@@ -448,38 +495,60 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="followingLabel">팔로잉  ${ following }명</h1>
+					<h1 class="modal-title fs-5" id="followingLabel">팔로워  ${ follow }명</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<c:forEach items="${ followingLsit }" var="ing"> <!-- 해당 사용지의 팔로잉 목록 -->
-						
-						<div class="flex" style="justify-content: center;">
-							<c:if test="${ fn:contains(ing.USERS_PW, '$2a$')}"> <!-- 일반 유저면 -->
-								<c:if test="${ ing.IMAGE_NO != null }">
-									<div class="follwing-profile"><img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ ing.IMAGE_RENAMENAME }" ></div>
+					<c:if test="${ follow eq 0 }">
+						<div style="justify-content: center; margin-top: 30px; margin-bottom: 80px; text-align: center;">
+							<a style="font-size: 80px; margin: 10px; color:gray;"><i class="fa-solid fa-face-surprise"></i></a><br>
+							<a>팔로워가 없습니다</a>
+						</div>
+					</c:if>
+					
+					<c:if test="${ follow ne 0}">
+						<c:forEach items="${ followingLsit }" var="ing"> <!-- 해당 사용지의 팔로잉 목록 -->
+							<div class="flex" style="justify-content: center; cursor: pointer;">
+								<c:if test="${ fn:contains(ing.USERS_PW, '$2a$')}"> <!-- 일반 유저면 -->
+									<c:if test="${ ing.IMAGE_NO != null }">
+										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ ing.IMAGE_RENAMENAME }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
+									</c:if>
+									<c:if test="${ ing.IMAGE_NO == null }">
+										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'"><img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" ></div>
+									</c:if>
 								</c:if>
-								<c:if test="${ ing.IMAGE_NO == null }">
-									<div class="follwing-profile"><img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" ></div>
+								
+								<c:if test="${ !fn:contains(ing.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 -->
+									<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ ing.SOCIAL_PROFILE_IMG }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
 								</c:if>
-							</c:if>
-							
-							<c:if test="${ !fn:contains(ing.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 -->
-								<div class="follwing-profile"><img class="profile-img" src="${ ing.SOCIAL_PROFILE_IMG }"/></div>
-							</c:if>
-							
-							<div><label class="followName">${ ing.NICKNAME }</label></div>
-							
-							<c:forEach items="${ lList }" var="l">
-								<c:if test="${ ing.USERS_NO eq l.USERS_NO}">
-									<div><button class="modalFollow">언팔로우</button></div>
-								</c:if>
-								<c:if test="${ ing.USERS_NO ne l.USERS_NO}">
-									<div><button class="modalFollow">팔로우</button></div>
-								</c:if>
-							</c:forEach>
-						</div><br>
-					</c:forEach>
+								
+								<div><label class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'">${ ing.NICKNAME }</label></div>
+								
+								<c:set var="follow" value="false"/>
+							    <c:forEach items="${lList}" var="fl">
+							        <c:choose>
+							            <c:when test="${fl.NICKNAME eq ing.NICKNAME}">
+							                <c:set var="follow" value="true"/>
+							                <c:if test="${ ing.NICKNAME eq loginUser.nickName }">
+							                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+							                </c:if>
+							                <c:if test="${ ing.NICKNAME ne loginUser.nickName }">
+							                	 <div class="unfollowDiv" data-user-no="${ing.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							                </c:if>
+							            </c:when>
+							        </c:choose>
+							    </c:forEach>
+							    <c:if test="${not follow}">
+							    	<c:if test="${ ing.NICKNAME eq loginUser.nickName }">
+					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+					                </c:if>
+					                <c:if test="${ ing.NICKNAME ne loginUser.nickName }">
+					                	 <div class="unfollowDiv" data-user-no="${ing.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					                </c:if>
+							    </c:if>
+							</div><br>
+						</c:forEach>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -489,42 +558,62 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="followingLabel">팔로워  ${ follow }명</h1>
+					<h1 class="modal-title fs-5" id="followingLabel">팔로잉  ${ following }명</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<c:forEach items="${ followList }" var="wo">
-						<div class="flex" style="justify-content: center;">
-							<c:if test="${ fn:contains(wo.USERS_PW, '$2a$')}"> <!-- 일반 유저면 -->
-								<c:if test="${ wo.IMAGE_NO != null }">
-									<div class="follwing-profile"><img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ wo.IMAGE_RENAMENAME }" ></div>
-								</c:if>
-								<c:if test="${ wo.IMAGE_NO == null }">
-									<div class="follwing-profile"><img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" ></div>
-								</c:if>
-							</c:if>
-							
-							<c:if test="${ !fn:contains(wo.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 -->
-								<div class="follwing-profile"><img class="profile-img" src="${ wo.SOCIAL_PROFILE_IMG }"/></div>
-							</c:if>
-							
-							<div><label class="followName">${ wo.NICKNAME }</label></div>
-							
-							<c:if test="${ !empty lList}">
-								<c:forEach items="${ lList }" var="l">
-									<c:if test="${ fn:contains(wo.USERS_NO, l.USERS_NO)}">
-										<div><button class="modalFollow">언팔로우</button></div>
+				
+					<c:if test="${ following eq 0 }">
+						<div style="justify-content: center; margin-top: 30px; margin-bottom: 80px; text-align: center;">
+							<a style="font-size: 80px; margin: 10px; color:gray;"><i class="fa-solid fa-face-surprise"></i></a><br>
+							<a>팔로잉하는 사용자가 없습니다</a>
+						</div>
+					</c:if>
+				
+					<c:if test="${ following ne 0 }">
+						<c:forEach items="${ followList }" var="wo">
+							<div class="flex" style="justify-content: center; cursor: pointer;">
+								<c:if test="${ fn:contains(wo.USERS_PW, '$2a$')}"> <!-- 일반 유저면 -->
+									<c:if test="${ wo.IMAGE_NO != null }">
+										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ wo.IMAGE_RENAMENAME }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
 									</c:if>
-									<c:if test="${ !fn:contains(wo.USERS_NO, l.USERS_NO)}">
-										<div><button class="modalFollow">팔로우</button></div>
+									<c:if test="${ wo.IMAGE_NO == null }">
+										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'"><img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" ></div>
 									</c:if>
-								</c:forEach>
-							</c:if>
-							<c:if test="${ empty lList}">
-								<div><button class="modalFollow">팔로우</button></div>
-							</c:if>
-						</div><br>
-					</c:forEach>
+								</c:if>
+								
+								<c:if test="${ !fn:contains(wo.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 -->
+									<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ wo.SOCIAL_PROFILE_IMG }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
+								</c:if>
+								
+								<div><label class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'">${ wo.NICKNAME }</label></div>
+								
+								<c:set var="following" value="false"/>
+							    <c:forEach items="${lList}" var="fl">
+							        <c:choose>
+							            <c:when test="${fl.NICKNAME eq wo.NICKNAME}">
+							                <c:set var="following" value="true"/>
+							                
+							                <c:if test="${ wo.NICKNAME eq loginUser.nickName }">
+							                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+							                </c:if>
+							                <c:if test="${ wo.NICKNAME ne loginUser.nickName }">
+							                	 <div class="unfollowDiv" data-user-no="${wo.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							                </c:if>
+							            </c:when>
+							        </c:choose>
+							    </c:forEach>
+							    <c:if test="${not following}">
+							    	<c:if test="${ wo.NICKNAME eq loginUser.nickName }">
+					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+					                </c:if>
+					                <c:if test="${ wo.NICKNAME ne loginUser.nickName }">
+					                	 <div class="unfollowDiv" data-user-no="${wo.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					                </c:if>
+							    </c:if>
+							</div><br>
+						</c:forEach>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -598,10 +687,51 @@
 		})
 	})
 	
+	
+	const usersNo = '${loginUser.usersNo}'; // 얘 어케 수정함~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
-	
-	
-
+		// 팔로잉 모달
+		// 언팔
+		function unfollowUser(button) {
+			const usersNo = '${loginUser.usersNo}';
+			var userNo = button.parentNode.dataset.userNo;
+		
+			$.ajax({
+			    type: 'POST',
+			    url: '${contextPath}/myPage_unFollow.me',
+			    data: { usersNo: usersNo, followingNo: userNo },
+			    success: function (data) {
+		     		 console.log('언팔로우 성공');
+					if (data == 'yes') {
+						var unfollowDiv = button.parentNode;
+						unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
+					}
+		    	},
+		    	error: function (data) {
+					console.log('언팔로우 실패');
+				}
+			});
+		}
+		
+		// 팔로
+		function followUser(button) {
+			var userNo = button.parentNode.dataset.userNo;
+				console.log(userNo);
+			  
+			$.ajax({
+				type: 'POST',
+			    url: '${contextPath}/myPage_follow.me',
+			    data: { usersNo: usersNo, followNo: userNo },
+			    success: function (data) {
+					console.log('팔로우 성공');
+					var unfollowDiv = button.parentNode;
+			  		unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
+				},
+			    error: function (data) {
+			 		console.log('실패');
+			    }
+			});
+		}
 	
 </script>
 </body>

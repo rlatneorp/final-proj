@@ -145,6 +145,14 @@ public class EnrollDAO {
 		return (ArrayList)sqlSession.selectList("enrollMapper.loginUserFollowingList", usersNo);
 	}
 
+	public int recipeBookMarkList(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("enrollMapper.recipeBookMarkList", usersNo);
+	}
+
+	public int menuBookMarkList(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("enrollMapper.menuBookMarkList", usersNo);
+	}
+
 
 
 

@@ -160,5 +160,15 @@ public class EnrollServiceImpl implements EnrollService{
 		return eDAO.loginUserFollowingList(sqlSession, usersNo);
 	}
 
+	@Override
+	public int recipeBookMarkList(int usersNo) {
+		return eDAO.recipeBookMarkList(sqlSession, usersNo);
+	}
+
+	@Override
+	public int menuBookMarkList(int usersNo) {
+		return eDAO.menuBookMarkList(sqlSession, usersNo);
+	}
+
 	
 }

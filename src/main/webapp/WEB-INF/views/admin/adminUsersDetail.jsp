@@ -18,14 +18,18 @@
 		<h4 class="py-4 mb-0">회원정보관리</h4>
 		
 		<c:set value="${u.usersPw eq '네이버로그인 회원입니다' || u.usersPw eq '카카오로그인 회원입니다'}" var="social"/>
-		<form action="${contextPath}/adminMemberUpdate.ad" method="post">
+		<form action="${contextPath}/adminUsersUpdate.ad" method="post">
+			<input type="hidden" name="pointBefore" value="${u.point}">
+			<input type="hidden" name="uri" value="${uri}">
 			<div class="row">
 				<div class="col-6 row">
 					<h5 class="my-3">- 개인정보 -</h5>
 					<span class="col-4">회원번호</span>
-					<input type="text" class="col-8 pb-1 mb-2 rounded border" value="${u.usersNo}" readonly>
+					<input type="text" name="usersNo" class="col-8 pb-1 mb-2 rounded border" value="${u.usersNo}" readonly>
 					<span class="col-4">이름</span>
-					<input type="text" class="col-8 pb-1 mb-2 rounded border" value="${u.usersName}" readonly>
+					<input type="text" name="usersName" class="col-8 pb-1 mb-2 rounded" value="${u.usersName}">
+					<span class="col-4">닉네임</span>
+					<input type="text" name="nickName" class="col-8 pb-1 mb-2 rounded" value="${u.nickName}">
 					
 					<c:if test="${social}">
 						<c:if test="${u.usersPw eq '네이버로그인 회원입니다' }">
@@ -47,17 +51,20 @@
 					</c:if>
 					<c:if test="${!social}">
 						<span class="col-4">아이디</span>
-						<input type="text" class="col-8 pb-1 mb-2 rounded border" value="${u.usersId}" readonly>
+						<input type="text" name="usersId" class="col-8 pb-1 mb-2 rounded" value="${u.usersId}">
 						<span class="col-4">이메일</span>
-						<input type="text" class="col-8 pb-1 mb-2 rounded border" value="${u.email}" readonly>
+						<input type="text" name="email" class="col-8 pb-1 mb-2 rounded" value="${u.email}">
 						<span class="col-4">전화번호</span>
-						<input type="text" class="col-8 pb-1 mb-2 rounded border" value="${fn:substring(u.phone,0,3)}-${fn:substring(u.phone,3,7)}-${fn:substring(u.phone,7,11)}" readonly>
+<%-- 						<input type="text" name="phone" class="col-8 pb-1 mb-2 rounded" value="${fn:substring(u.phone,0,3)}-${fn:substring(u.phone,3,7)}-${fn:substring(u.phone,7,11)}"> --%>
+						<input type="number" name="phone" class="col-2 pe-0 pb-1 mb-2 rounded" value="${fn:substring(u.phone,0,3)}">
+						<span class="col-1">-</span>
+						<input type="number" name="phone" class="col-2 pe-0 pb-1 mb-2 rounded" value="${fn:substring(u.phone,3,7)}">
+						<span class="col-1">-</span>
+						<input type="number" name="phone" class="col-2 pe-0 pb-1 mb-2 rounded" value="${fn:substring(u.phone,7,11)}">
 					</c:if>
 					
 					<span class="col-4">가입일자</span>
 					<input type="date" class="col-8 pb-1 mb-2 rounded border" value="<fmt:formatDate value="${u.enrollDate}" pattern="yyyy-MM-dd" />" readonly>
-					<span class="col-4">출석체크</span>
-					<input type="text" name="" class="col-8 pb-1 mb-2 rounded" style="border: 2px solid rgba(0,0,0,0.3);" value="${u.checkDay}">
 					<span class="col-4">탈퇴일자</span>
 					<input type="text" class="col-8 pb-1 mb-2 rounded border" value="<fmt:formatDate value="${u.exitDate}" pattern="yyyy-MM-dd" />" readonly>
 					
@@ -76,8 +83,10 @@
 	
 					
 					<h5 class="mb-3">- 기타정보 -</h5>
+<!-- 					<span class="col-4">출석체크</span> -->
+<%-- 					<input type="number" name="checkDay" class="col-8 pb-1 mb-2 rounded" value="${u.checkDay}"> --%>
 					<span class="col-4">포인트</span>
-					<input type="number" class="col-3 mb-2 rounded text-end border" readonly value="<fmt:formatNumber pattern="###,###,###" value="${u.point}"/>">
+					<input type="number" name="pointBefore" class="col-3 mb-2 rounded text-end border" readonly value="<fmt:formatNumber pattern="###,###,###" value="${u.point}"/>">
 					
 					<span class="col-2 text-center">-></span>
 					<input type="number" name="point" class="col-3 mb-2 rounded text-end" value="<fmt:formatNumber pattern="###,###,###" value="${u.point}"/>">
@@ -129,8 +138,8 @@
 				<div class="mb-5"></div>
 				<div class="d-flex justify-content-center mb-5">
 					<div class="d-flex">
-						<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
-						<button onclick="history.back()"  type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+						<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
+						<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
 					</div>
 				</div>
 			</div>
@@ -213,6 +222,8 @@
 				point.value = 0;
 			}
 		}
+		
+		
 		
 	</script>
 </body>

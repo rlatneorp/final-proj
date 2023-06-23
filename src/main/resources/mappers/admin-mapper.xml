@@ -85,8 +85,8 @@
 			  from image
 			  order by image_no asc)	
 		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
-		<if test="imageLevel != null">
-			and image_level = #{imageLevel}
+		<if test="imageLevel != -1">
+			  and image_level = #{imageLevel}
 		</if>
 	</select>
 	
@@ -157,6 +157,52 @@
 			</if>
 	</select>
 	
+	<update id="updateUsers">
+		update users
+		set 
+			<if test="usersId != null">
+				users_id = #{usersId},
+			</if>
+			users_name = #{usersName},
+			nickname = #{nickName},
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="phone != null">
+				phone = #{phone},
+			</if>
+			status = #{status}, 
+			point = #{point},
+			is_Admin = #{isAdmin}
+		where users_no = #{usersNo}
+	</update>
+	
+	<insert id="insertPoint">
+		insert into point(point_no, users_no, point_type, point_before, point_change, modify_date)
+		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{pointChange}, default)
+	</insert>
+	
+<!--Point-포인트 -->
+	<select id="getPointCount" resultType="_int">
+		select count(*)
+		from point
+		<if test="searchText != null">
+			<if test='searchType == "number"'>
+				where users_no like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectPointList" resultMap="pointResultSet">
+		select *
+		from point
+		<if test="searchText != null">
+			<if test='searchType == "number"'>
+				where users_no like '%${searchText}%'
+			</if>
+		</if>
+		order by point_no desc
+	</select>
 	
 <!--Menu-메뉴 -->
 	<select id="getMenuCount" resultType="_int">
@@ -480,6 +526,15 @@
 		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
+	</resultMap>
+	
+	<resultMap type="Point" id="pointResultSet">
+		<id column="POINT_NO" property="pointNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="POINT_TYPE" property="pointType"/>
+		<result column="POINT_BEFORE" property="pointBefore"/>
+		<result column="POINT_CHANGE" property="pointChange"/>
+		<result column="MODIFY_DATE" property="modifyDate"/>
 	</resultMap>
 	
 	<resultMap type="Menu" id="menuResultSet">

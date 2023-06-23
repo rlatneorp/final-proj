@@ -148,6 +148,8 @@
 		select *
 		from recipe
 			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where image_level=0
 		order by recipe_modify_date desc
 	</select>
 	
@@ -155,7 +157,46 @@
 		select *
 		from recipe
 			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where image_level=0
 		order by recipe_count desc
+	</select>
+	
+	<select id="searchRecipe" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+		where recipe_name like '%${word}%' and recipe_status='Y'
+	</select>
+	
+	<select id="searchImage" resultMap="imageResultSet">
+		select *
+		from image
+		where image_type=2 and image_level=0
+	</select>
+	
+	<select id="ingredientSearch" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where CATEGORY_INGREDIENT=#{ingredient} and image_level=0 and image_type=2
+	</select>
+	
+	<select id="situationSearch" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where CATEGORY_SITUATION=#{situation} and image_level=0	and image_type=2
+	</select>
+	
+	<select id="typeSearch" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where CATEGORY_TYPE=#{type} and image_level=0 and image_type=2
 	</select>
 	
 		
@@ -175,6 +216,7 @@
 		<result column="RECIPE_STATUS" property="recipeStatus"/>
 		<result column="users_id" property="usersId"/>
 		<result column="nickname" property="nickName"/>
+		<result column="image_renamename" property="imageRenameName"/>
 	</resultMap>
 	
 	<resultMap type="Image" id="imageResultSet">

@@ -23,7 +23,7 @@
 
 <body>
 	<c:set value="${pageContext.servletContext.contextPath}" var="contextPath" scope="application"/>
-	<div class="d-flex position-fixed" style="width: 200px; z-index: 2000;">
+	<div class="d-flex position-fixed" style="width: 230px; z-index: 2000;">
 		<div class="d-flex flex-column p-3 bg-white">
 			<a href="${contextPath}/adminMain.ad" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
 	<!-- 			<svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg> -->
@@ -49,8 +49,8 @@
 					<div class="collapse show" id="collapse-two">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 							<li><a href="${contextPath}/adminUsersManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">회원관리</a></li>
-							<li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">출석체크관리</a></li>
-							<li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">포인트관리</a></li>
+<!-- 							<li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">출석체크관리</a></li> -->
+							<li><a href="${contextPath}/adminPointManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">포인트관리</a></li>
 						</ul>
 					</div>
 				</li>

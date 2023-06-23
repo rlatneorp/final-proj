@@ -796,19 +796,19 @@ p b {
 			const addLeft = document.getElementById('addLeft');
 			const addRight = document.getElementById('addRight');
 			
-// 			왼쪽사진내용추가 버튼 이벤트
-			addLeft.addEventListener('click', () => {
-				detailBox.insertAdjacentHTML("beforeend", menuTable1);
-				numbering();
-				imageLoad();
-			})
+// // 			왼쪽사진내용추가 버튼 이벤트
+// 			addLeft.addEventListener('click', () => {
+// 				detailBox.insertAdjacentHTML("beforeend", menuTable1);
+// 				numbering();
+// 				imageLoad();
+// 			})
 			
-// 			오른쪽사진내용추가 버튼 이벤트
-			addRight.addEventListener('click', () => {
-				detailBox.insertAdjacentHTML("beforeend", menuTable2);
-				numbering();
-				imageLoad();
-			})
+// // 			오른쪽사진내용추가 버튼 이벤트
+// 			addRight.addEventListener('click', () => {
+// 				detailBox.insertAdjacentHTML("beforeend", menuTable2);
+// 				numbering();
+// 				imageLoad();
+// 			})
 		}
 		
 // 		가격 계산 함수

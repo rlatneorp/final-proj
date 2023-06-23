@@ -152,7 +152,7 @@
 			 left join image on(following_user_no = image.image_divide_no)
 			 left join social_login on(users.users_id = social_login.social_id)
 		where follow.users_no = #{usersNo}
-		order by users.users_no desc
+		order by follow_create_date desc
 	</select>
 	
 	<select id="followingLsit" resultType="map">
@@ -162,17 +162,27 @@
     		 left join image on(follow.users_no = image.image_divide_no)
      		 left join social_login on(users.users_id = social_login.social_id)
 		where following_user_no = #{usersNo}
-		order by users.users_no desc
+		order by follow_create_date desc
 	</select>
 	
 	<select id="loginUserFollowingList" resultType="map">
 		select *
 		from follow
-			 left join users on(follow.users_no = users.users_no)
-    		 left join image on(follow.users_no = image.image_divide_no)
-     		 left join social_login on(users.users_id = social_login.social_id)
-		where following_user_no = #{usersNo}
-		order by users.users_no desc
+			 left join users on(users.users_no = following_user_no)
+		where follow.users_no = #{usersNo}
+		order by follow_create_date desc
+	</select>
+	
+	<select id="recipeBookMarkList" resultType="_int">
+		select count(*)
+		from bookmark
+		where users_no = ${ usersNo } and number_type = 1
+	</select>
+	
+	<select id="menuBookMarkList" resultType="_int">
+		select count(*)
+		from bookmark
+		where users_no = ${ usersNo } and number_type = 2
 	</select>
 	
 	

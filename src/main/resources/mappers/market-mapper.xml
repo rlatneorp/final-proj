@@ -363,4 +363,9 @@
 		DELETE FROM shipping_address
 		WHERE shipping_no = #{shippingNo}
 	</delete>
+	
+	<!-- 포인트 조회  -->
+	<select id="selectPoint" resultType="_int">
+		select point from users where users_no = #{usersNo}
+	</select>
 </mapper>

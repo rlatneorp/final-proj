@@ -18,7 +18,8 @@
 	.users-profile-img-out{display: flex; justify-content: center;}
 	.users-profile-img{
 		width: 120px; height: 120px; 
-		border-radius: 50%; 
+		border-radius: 50%;
+		border: 2px solid gray;
 		overflow: hidden; 
 		margin: 10px; margin-bottom: 10px;}
 	.profile-img{object-fit: cover; object-position: center;}	
@@ -36,7 +37,7 @@
 		cursor: pointer;
 		padding: 3px;}
 	.follow:active{box-shadow: 0px 1px 0px black; transform: translateY(5px);}
-	.follwing-profile{width:50px; height:50px; border-radius: 50%; overflow: hidden;}
+	.follwing-profile{width:50px; height:50px; border-radius: 50%; overflow: hidden; border: 2px solid gray;}
 	
 	.list{width: 880px;}
 	.list-menu-out{display: flex; }
@@ -183,6 +184,14 @@
         cursor: pointer;
         object-fit: cover; object-position: center;
     }
+    .modalUsers{
+		border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 60px; height: 30px;
+		transform: scale(1.2);
+		background: white;
+		margin-top: 10px;
+	}
 </style>
 </head>
 
@@ -221,9 +230,21 @@
 					<i class="bi bi-dot lightgray"></i>
 					<div data-bs-toggle="modal" data-bs-target="#following"><a>팔로워 ${ follow }</a></div>
 				</div>
-				<div class="follow">
-					<a>팔로우</a>
-				</div>
+				
+				<!-- 로그인유저의 팔로잉 리스트에 해당유저 있으면 언팔, 없으면 팔 -->
+				<c:if test="${ user.usersNo != loginUser.usersNo }">
+					<c:set var="followStatus" value="false" />
+					<c:forEach items="${lList}" var="l">
+						<c:if test="${l.FOLLOWING_USER_NO eq user.usersNo}">
+							<c:set var="followStatus" value="true" />
+							<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+						</c:if>
+					</c:forEach>
+					<c:if test="${not followStatus}">
+					 	<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					</c:if>
+				</c:if>
+				
 			</c:if>
 			
 		</div>
@@ -390,7 +411,9 @@
 				<div class="bookmark-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
 					<div style="display: flex;">
-					
+						<c:if test="${ rCount == 0 }">
+							<div style="margin: 0 auto; margin-top: 25px; margin-bottom: 30px;">스크랩한 레시피가 없습니다.</div>
+						</c:if>
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
@@ -420,7 +443,9 @@
 					
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
 					<div style="display: flex;">
-						
+						<c:if test="${ mCount == 0 }">
+							<div style="margin: 0 auto;  margin-top: 25px; margin-bottom: 30px;">스크랩한 식단이 없습니다.</div>
+						</c:if>
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.productNo }">
@@ -504,12 +529,22 @@
 							        <c:choose>
 							            <c:when test="${fl.NICKNAME eq ing.NICKNAME}">
 							                <c:set var="follow" value="true"/>
-							                <div class="unfollowDiv" data-user-no="${ing.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							                <c:if test="${ ing.NICKNAME eq loginUser.nickName }">
+							                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+							                </c:if>
+							                <c:if test="${ ing.NICKNAME ne loginUser.nickName }">
+							                	 <div class="unfollowDiv" data-user-no="${ing.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							                </c:if>
 							            </c:when>
 							        </c:choose>
 							    </c:forEach>
 							    <c:if test="${not follow}">
-							        <div class="unfollowDiv" data-user-no="${ing.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+							    	<c:if test="${ ing.NICKNAME eq loginUser.nickName }">
+					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+					                </c:if>
+					                <c:if test="${ ing.NICKNAME ne loginUser.nickName }">
+					                	 <div class="unfollowDiv" data-user-no="${ing.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					                </c:if>
 							    </c:if>
 							</div><br>
 						</c:forEach>
@@ -558,12 +593,23 @@
 							        <c:choose>
 							            <c:when test="${fl.NICKNAME eq wo.NICKNAME}">
 							                <c:set var="following" value="true"/>
-							                <div class="unfollowDiv" data-user-no="${wo.FOLLOWING_USER_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							                
+							                <c:if test="${ wo.NICKNAME eq loginUser.nickName }">
+							                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+							                </c:if>
+							                <c:if test="${ wo.NICKNAME ne loginUser.nickName }">
+							                	 <div class="unfollowDiv" data-user-no="${wo.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							                </c:if>
 							            </c:when>
 							        </c:choose>
 							    </c:forEach>
 							    <c:if test="${not following}">
-							        <div class="unfollowDiv" data-user-no="${wo.FOLLOWING_USER_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+							    	<c:if test="${ wo.NICKNAME eq loginUser.nickName }">
+					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+					                </c:if>
+					                <c:if test="${ wo.NICKNAME ne loginUser.nickName }">
+					                	 <div class="unfollowDiv" data-user-no="${wo.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					                </c:if>
 							    </c:if>
 							</div><br>
 						</c:forEach>
@@ -642,12 +688,12 @@
 	})
 	
 	
-// 	const usersNo = ${loginUser.usersNo}; // 얘 어케 수정함~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	const usersNo = '${loginUser.usersNo}'; // 얘 어케 수정함~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 		// 팔로잉 모달
 		// 언팔
 		function unfollowUser(button) {
-			const usersNo = ${loginUser.usersNo};
+			const usersNo = '${loginUser.usersNo}';
 			var userNo = button.parentNode.dataset.userNo;
 		
 			$.ajax({
@@ -686,7 +732,6 @@
 			    }
 			});
 		}
-
 	
 </script>
 </body>

@@ -238,6 +238,10 @@ public class MarketDAO {
 		map.put("productNo", productNo);
 		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", map);
 	}
+	
+	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
+	}
 
 
 	

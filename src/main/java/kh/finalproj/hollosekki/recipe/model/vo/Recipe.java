@@ -18,6 +18,9 @@ public class Recipe {
 	private String recipeStatus;
 	private String usersId;
 	private String nickName;
+	private String imageRenameName;
+	private int recipeBookCount;
+	private int recipeLikeCount;
 	
 	public Recipe() {
 		super();
@@ -25,7 +28,7 @@ public class Recipe {
 
 	public Recipe(int foodNo, int usersNo, String recipeName, String categoryIngredient, String categorySituation,
 			String categoryType, int recipeDifficulty, int recipeTime, String recipeContent,
-			int recipeCount, Date recipeCreateDate, Date recipeModifyDate, String recipeStatus, String usersId, String nickName) {
+			int recipeCount, Date recipeCreateDate, Date recipeModifyDate, String recipeStatus, String usersId, String nickName, String imageRenameName) {
 		super();
 		this.foodNo = foodNo;
 		this.usersNo = usersNo;
@@ -42,6 +45,7 @@ public class Recipe {
 		this.recipeStatus = recipeStatus;
 		this.usersId = usersId;
 		this.nickName = nickName;
+		this.imageRenameName = imageRenameName;
 		
 	}
 
@@ -164,6 +168,30 @@ public class Recipe {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
+	
+	public String getImageRenameName() {
+		return imageRenameName;
+	}
+	
+	public void setImageRenameName(String imageRenameName) {
+		this.imageRenameName = imageRenameName;
+	}
+	
+	public int getRecipeBookCount() {
+		return recipeBookCount;
+	}
+
+	public void setRecipeBookCount(int recipeBookCount) {
+		this.recipeBookCount = recipeBookCount;
+	}
+
+	public int getRecipeLikeCount() {
+		return recipeLikeCount;
+	}
+
+	public void setRecipeLikeCount(int recipeLikeCount) {
+		this.recipeLikeCount = recipeLikeCount;
+	}
 
 	@Override
 	public String toString() {
@@ -172,8 +200,9 @@ public class Recipe {
 				+ ", categoryType=" + categoryType + ", recipeDifficulty=" + recipeDifficulty + ", recipeTime="
 				+ recipeTime + ", recipeContent=" + recipeContent + ", recipeCount="
 				+ recipeCount + ", recipeCreateDate=" + recipeCreateDate + ", recipeModifyDate=" + recipeModifyDate
-				+ ", recipeStatus=" + recipeStatus + ", usersId=" + usersId + ", nickName=" + nickName +"]";
+				+ ", recipeStatus=" + recipeStatus + ", usersId=" + usersId + ", nickName=" + nickName + ", imageRenameName" + imageRenameName
+				+ ", recipeBookCount=" + recipeBookCount + ", recipeLikeCount=" + recipeLikeCount + "]";
 	}
-	
+
 	
 }

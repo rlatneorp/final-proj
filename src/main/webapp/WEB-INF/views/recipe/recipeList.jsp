@@ -117,7 +117,7 @@
 	
 	<div id="align">
 		<button class="group-button" id="recent" data-value="최신" onclick="recentAl()">최신순</button>
-		<button class="group-button" id="most" data-value="인기" onclick="mostAl()">인기순</button>
+		<button class="group-button" id="most" data-value="조회" onclick="mostAl()">조회순</button>
 	</div>
 </div>
 
@@ -203,6 +203,212 @@
 		}
 	}
 	
+	const groupBtn1s = document.getElementsByClassName("group-button1");
+	for(groupBtn1 of groupBtn1s){
+		const ingredient = groupBtn1.innerText;
+		groupBtn1.addEventListener('click', function(){
+			$.ajax({
+				url:"recipeIngredient.rc",
+				data: {"ingredient" : ingredient},
+				success: data=>{
+					console.log(data);
+					const listBox = document.getElementById('listBox');
+					listBox.innerHTML ="";
+					
+					data.forEach(post =>{
+						
+						console.log(post);
+						
+						const col = document.createElement('div');
+						col.classList.add('col');
+						
+						const card = document.createElement('div');
+						card.classList.add('card');
+						card.classList.add('shadow-sm');
+						card.onclick=function(){
+							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
+						}
+						
+						const img = document.createElement('img');
+						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
+						img.style.height="160px";
+						img.style.width="236.39px";
+						
+						const cardBody = document.createElement('div');
+						cardBody.classList.add('card-body');
+						
+						const h5 = document.createElement('h5');
+						h5.innerText = post.recipeName;
+						
+						const p = document.createElement('p');
+						p.innerText = post.nickName;
+						p.classList.add('card-text');
+						
+						const uId = document.createElement('input');
+						uId.setAttribute("type", "hidden");
+						uId.value= post.usersId;
+
+						const fNo = document.createElement('input');
+						fNo.setAttribute("type", "hidden");
+						fNo.value= post.foodNo;
+						
+						cardBody.appendChild(h5);
+						cardBody.appendChild(p);
+						
+						card.appendChild(img);
+						card.appendChild(cardBody);
+						card.appendChild(uId);
+						card.appendChild(fNo);
+						
+						col.appendChild(card);
+						
+						listBox.appendChild(col);
+					});
+				},
+				error: data =>{
+					console.log("실패");
+				}
+			})
+		})
+	}
+	const groupBtn2s = document.getElementsByClassName("group-button2");
+	for(groupBtn2 of groupBtn2s){
+		const situation = groupBtn2.innerText;
+		groupBtn2.addEventListener('click', function(){
+			$.ajax({
+				url:"recipeSituation.rc",
+				data: {"situation" : situation},
+				success: data=>{
+					console.log(data);
+					const listBox = document.getElementById('listBox');
+					listBox.innerHTML ="";
+					
+					data.forEach(post =>{
+						
+						console.log(post);
+						
+						const col = document.createElement('div');
+						col.classList.add('col');
+						
+						const card = document.createElement('div');
+						card.classList.add('card');
+						card.classList.add('shadow-sm');
+						card.onclick=function(){
+							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
+						}
+						
+						const img = document.createElement('img');
+						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
+						img.style.height="160px";
+						img.style.width="236.39px";
+						
+						const cardBody = document.createElement('div');
+						cardBody.classList.add('card-body');
+						
+						const h5 = document.createElement('h5');
+						h5.innerText = post.recipeName;
+						
+						const p = document.createElement('p');
+						p.innerText = post.nickName;
+						p.classList.add('card-text');
+						
+						const uId = document.createElement('input');
+						uId.setAttribute("type", "hidden");
+						uId.value= post.usersId;
+
+						const fNo = document.createElement('input');
+						fNo.setAttribute("type", "hidden");
+						fNo.value= post.foodNo;
+						
+						cardBody.appendChild(h5);
+						cardBody.appendChild(p);
+						
+						card.appendChild(img);
+						card.appendChild(cardBody);
+						card.appendChild(uId);
+						card.appendChild(fNo);
+						
+						col.appendChild(card);
+						
+						listBox.appendChild(col);
+					});
+				},
+				error: data =>{
+					console.log("실패");
+				}
+			})
+		})
+	}
+	const groupBtn3s = document.getElementsByClassName("group-button3");
+	for(groupBtn3 of groupBtn3s){
+		const type = groupBtn3.innerText;
+		groupBtn3.addEventListener('click', function(){
+			$.ajax({
+				url:"recipeType.rc",
+				data: {"type" : type},
+				success: data=>{
+					console.log(data);
+					const listBox = document.getElementById('listBox');
+					listBox.innerHTML ="";
+					
+					data.forEach(post =>{
+						
+						console.log(post);
+						
+						const col = document.createElement('div');
+						col.classList.add('col');
+						
+						const card = document.createElement('div');
+						card.classList.add('card');
+						card.classList.add('shadow-sm');
+						card.onclick=function(){
+							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
+						}
+						
+						const img = document.createElement('img');
+						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
+						img.style.height="160px";
+						img.style.width="236.39px";
+						
+						const cardBody = document.createElement('div');
+						cardBody.classList.add('card-body');
+						
+						const h5 = document.createElement('h5');
+						h5.innerText = post.recipeName;
+						
+						const p = document.createElement('p');
+						p.innerText = post.nickName;
+						p.classList.add('card-text');
+						
+						const uId = document.createElement('input');
+						uId.setAttribute("type", "hidden");
+						uId.value= post.usersId;
+
+						const fNo = document.createElement('input');
+						fNo.setAttribute("type", "hidden");
+						fNo.value= post.foodNo;
+						
+						cardBody.appendChild(h5);
+						cardBody.appendChild(p);
+						
+						card.appendChild(img);
+						card.appendChild(cardBody);
+						card.appendChild(uId);
+						card.appendChild(fNo);
+						
+						col.appendChild(card);
+						
+						listBox.appendChild(col);
+					});
+				},
+				error: data =>{
+					console.log("실패");
+				}
+			})
+		})
+	}
+	
+	
 	const recent = document.getElementById('recent');
 	const most = document.getElementById('most');
 	function recentAl(){
@@ -230,8 +436,8 @@
 					
 					const img = document.createElement('img');
 					img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-					img.style.height="100%";
-					img.style.width="100%";
+					img.style.height="160px";
+					img.style.width="236.39px";
 					
 					const cardBody = document.createElement('div');
 					cardBody.classList.add('card-body');
@@ -289,11 +495,14 @@
 					const card = document.createElement('div');
 					card.classList.add('card');
 					card.classList.add('shadow-sm');
+					card.onclick=function(){
+						location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
+					}
 					
 					const img = document.createElement('img');
 					img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-					img.style.height="100%";
-					img.style.width="100%";
+					img.style.height="160px";
+					img.style.width="236.39px";
 					
 					const cardBody = document.createElement('div');
 					cardBody.classList.add('card-body');

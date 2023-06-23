@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -174,8 +175,10 @@ public class MarketController {
 			    checkedCartList.add(checCart);
 			}
 		}
-		System.out.println("checkedCartList : " + checkedCartList); 
 		
+		int point = mkService.selectPoint(users.getUsersNo());
+		
+		model.addAttribute("point", point);
 		model.addAttribute("checkedCartList", checkedCartList );
 		model.addAttribute("optValues", optValues);
 		return "payDetail";

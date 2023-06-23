@@ -397,7 +397,9 @@ input[type="text"] {
 			
 		//적립금(POINT)
 		const sum = parseFloat(document.getElementById('sum-' + pNos).innerText.replace(/,/g, ''));
-		let pointRate = sum*0.005
+		let pointRate = Math.round(sum*0.005);
+		
+		
 		document.getElementById('point-' + pNos).innerText = pointRate; 
 		
 		const shippingPrice = document.getElementById('shippingPrice-' + pNos);

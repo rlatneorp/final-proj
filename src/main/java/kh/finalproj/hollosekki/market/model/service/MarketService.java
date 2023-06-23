@@ -210,10 +210,15 @@ public class MarketService {
 		mkDAO.delShipping(sqlSession, shippingNo);
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 //		return null;
-//	}
+	}
 
 	public int insertImage(Image image) {
 		return mkDAO.insertImage(sqlSession, image);
+	}
+	
+	//현재 포인트 가져오기 
+	public int selectPoint(int usersNo) {
+		return mkDAO.selectPoint(sqlSession, usersNo);
 	}
 
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {

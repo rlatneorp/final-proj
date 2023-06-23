@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
@@ -17,6 +18,8 @@ import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.Review;
+
 import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -204,7 +207,7 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectChecShip", shippingNo);
 	}
 
-	//productNo에 대한 메뉴 조회 
+	//productNo�뿉 ���븳 硫붾돱 議고쉶 
 	public Menu selectMenu(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectMenu", productNo);
 	}
@@ -214,6 +217,32 @@ public class MarketDAO {
 	public int insertCart(SqlSessionTemplate sqlSession, Cart c) {
 		sqlSession.insert("marketMapper.insertCart", c);
 		return c.getPreorderNo();
+	}
+
+	public int insertImage(SqlSessionTemplate sqlSession, Image image) {
+		return sqlSession.insert("marketMapper.insertImage", image);
+		
+	}	
+	//배송지 삭제 
+	}
+	//諛곗넚吏� �궘�젣 
+	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
+		sqlSession.delete("marketMapper.delShipping", shippingNo);
+	}
+
+	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", productNo);
+	}
+
+	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, Review review, int productNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("review", review);
+		map.put("productNo", productNo);
+		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", map);
+	}
+	
+	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
 	}
 
 

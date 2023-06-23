@@ -119,10 +119,86 @@
 	
 	<update id="updateRecipe">
 		update recipe set recipe_name=#{recipeName}, category_ingredient=#{categoryIngredient}, CATEGORY_SITUATION=#{categorySituation},
-						  CATEGORY_TYPE=#{categoryType}, RECIPE_DIFFICULTY=#{recipeDifficulty}, RECIPE_TIME={recipeTime},
+						  CATEGORY_TYPE=#{categoryType}, RECIPE_DIFFICULTY=#{recipeDifficulty}, RECIPE_TIME=#{recipeTime},
 						  RECIPE_CONTENT=#{recipeContent}, RECIPE_MODIFY_DATE=sysdate
 		where food_no=#{foodNo}
 	</update>
+	
+	<delete id="deleteListImg">
+		delete from recipe_order
+		where RECIPE_RENAMENAME in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+		#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteComImg">
+		delete from image
+		where image_renamename in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<insert id="insertThum">
+		insert into image values(new_image_no, #{imageDivideNo}, 2, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, 0)
+	</insert>
+	
+	<select id="recentRecentList" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where image_level=0
+		order by recipe_modify_date desc
+	</select>
+	
+	<select id="mostRecipeList" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where image_level=0
+		order by recipe_count desc
+	</select>
+	
+	<select id="searchRecipe" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+		where recipe_name like '%${word}%' and recipe_status='Y'
+	</select>
+	
+	<select id="searchImage" resultMap="imageResultSet">
+		select *
+		from image
+		where image_type=2 and image_level=0
+	</select>
+	
+	<select id="ingredientSearch" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where CATEGORY_INGREDIENT=#{ingredient} and image_level=0 and image_type=2
+	</select>
+	
+	<select id="situationSearch" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where CATEGORY_SITUATION=#{situation} and image_level=0	and image_type=2
+	</select>
+	
+	<select id="typeSearch" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where CATEGORY_TYPE=#{type} and image_level=0 and image_type=2
+	</select>
+	
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
@@ -140,6 +216,7 @@
 		<result column="RECIPE_STATUS" property="recipeStatus"/>
 		<result column="users_id" property="usersId"/>
 		<result column="nickname" property="nickName"/>
+		<result column="image_renamename" property="imageRenameName"/>
 	</resultMap>
 	
 	<resultMap type="Image" id="imageResultSet">

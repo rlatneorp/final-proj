@@ -87,4 +87,45 @@ public class RecipeDAO {
 		return sqlSession.update("recipeMapper.updateRecipe", r);
 	}
 
+	public int deleteListImg(SqlSessionTemplate sqlSession, ArrayList<String> delOrderImgRename) {
+		return sqlSession.delete("recipeMapper.deleteListImg", delOrderImgRename);
+	}
+
+	public int deleteComImg(SqlSessionTemplate sqlSession, ArrayList<String> comDelRename) {
+		return sqlSession.delete("recipeMapper.deleteComImg", comDelRename);
+	}
+
+	public int insertThum(SqlSessionTemplate sqlSession, Image img) {
+		return sqlSession.insert("recipeMapper.insertThum", img);
+	}
+
+	public ArrayList<Recipe> recentRecipeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.recentRecentList");
+	}
+
+	public ArrayList<Recipe> mostRecipeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.mostRecipeList");
+	}
+
+	public ArrayList<Recipe> searchRecipe(SqlSessionTemplate sqlSession, String word) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.searchRecipe", word);
+	}
+
+	public ArrayList<Image> searchImage(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.searchImage", sqlSession);
+	}
+
+	public ArrayList<Recipe> ingredientSearch(SqlSessionTemplate sqlSession, String ingredient) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.ingredientSearch", ingredient);
+	}
+
+	public ArrayList<Recipe> situationSearch(SqlSessionTemplate sqlSession, String situation) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.situationSearch", situation);
+	}
+
+	public ArrayList<Recipe> typeSearch(SqlSessionTemplate sqlSession, String type) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.typeSearch", type);
+	}
+
+
 }

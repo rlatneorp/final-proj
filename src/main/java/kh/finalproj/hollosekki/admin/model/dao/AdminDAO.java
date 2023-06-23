@@ -14,8 +14,10 @@ import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
+import kh.finalproj.hollosekki.common.model.vo.Users;
 
 @Repository
 public class AdminDAO {
@@ -209,6 +211,50 @@ public class AdminDAO {
 
 	public int deletesTool(SqlSessionTemplate sqlSession, String[] toolDeletes) {
 		return sqlSession.delete("adminMapper.deletesTool", toolDeletes);
+	}
+
+	
+
+	
+	public int getUsersCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getUsersCount", ab);
+	}
+
+	public ArrayList<Users> selectUsersList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectUsersList", ab, rowBounds);
+	}
+
+	public Users selectUsers(SqlSessionTemplate sqlSession, int uNo) {
+		return sqlSession.selectOne("adminMapper.selectUsers", uNo);
+	}
+
+	public ArrayList<Integer> selectUsersInfo(SqlSessionTemplate sqlSession, HashMap<String, Integer> uMap) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectUsersInfo", uMap);
+	}
+
+	public int updateUsers(SqlSessionTemplate sqlSession, Users u, Point p) {
+		int resultU = sqlSession.update("adminMapper.updateUsers", u);
+		int resultP = 0;
+		if(resultU > 0) {
+			if(p.getPointBefore() != p.getPoint()) {
+				resultP = sqlSession.insert("adminMapper.insertPoint", p);
+			}else {
+				resultP = 1;
+			}
+		}
+		return resultU+resultP;
+	}
+
+	public int getPointCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getPointCount", ab);
+	}
+
+	public ArrayList<Point> selectPointList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectPointList", ab, rowBounds);
 	}
 
 	

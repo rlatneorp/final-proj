@@ -98,7 +98,7 @@
 						<td class="detail">닉네임</td>
 						<td>
 							<input type="text" style="width: 190px; margin-left: 15px;" name="nickName" value="${ loginUser.nickName }" id="nickName">
-							<input type="button" style="width: 100px; height: 35px;" value="중복확인" id="nickCheck">
+							<input type="button" style="width: 100px; height: 35px; margin-left: 10px;" value="중복확인" id="nickCheck">
 							<div class="check"></div>
 						</td>
 					</tr>

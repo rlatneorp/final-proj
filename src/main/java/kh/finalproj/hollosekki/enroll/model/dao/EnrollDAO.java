@@ -8,8 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -99,9 +101,58 @@ public class EnrollDAO {
 		return (ArrayList)sqlSession.selectList("enrollMapper.bookMarkList", usersNo);
 	}
 
-	public ArrayList<Menu> menuList(SqlSessionTemplate sqlSession, int usersNo) {
-		return (ArrayList)sqlSession.selectList("enrollMapper.menuList", usersNo);
+	public ArrayList<Menu> menuList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.menuList");
 	}
+
+	public int follow(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("enrollMapper.follow", usersNo);
+	}
+
+	public int following(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("enrollMapper.following", usersNo);
+	}
+
+	public ArrayList<Image> menuImageList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.menuImageList");
+	}
+
+	public ArrayList<Product> productList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.productList");
+	}
+
+	public ArrayList<Users> healtherList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.healtherList");
+	}
+
+	public ArrayList<Recipe> allRecipeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.allRecipeList");
+	}
+
+	public ArrayList<Image> allRecipeImageList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.allRecipeImageList");
+	}
+
+	public ArrayList<Follow> followList(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.followList", usersNo);
+	}
+
+	public ArrayList<Follow> followingLsit(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.followingLsit", usersNo);
+	}
+
+	public ArrayList<Follow> loginUserFollowingList(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.loginUserFollowingList", usersNo);
+	}
+
+	public int recipeBookMarkList(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("enrollMapper.recipeBookMarkList", usersNo);
+	}
+
+	public int menuBookMarkList(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("enrollMapper.menuBookMarkList", usersNo);
+	}
+
 
 
 

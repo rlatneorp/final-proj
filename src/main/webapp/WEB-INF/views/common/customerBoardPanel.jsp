@@ -70,7 +70,7 @@ font-family: 'Noto Sans KR', sans-serif;
 	
 }
 
-.categoryBtn .btn-secondary{
+#categoryBtn{
 	
 	width:150px;
 	height:50px;
@@ -78,11 +78,11 @@ font-family: 'Noto Sans KR', sans-serif;
 	color:black;
 	border: 2px solid black;
 }
-.categoryBtn .btn-secondary:hover{
+#categoryBtn:hover{
 	background-color: #B0DAFF;
 	color:black;
 }
-.categoryBtn .btn-secondary:focus{
+#categoryBtn:focus{
 	background-color: #B0DAFF;
 	color:black;
 }
@@ -182,7 +182,7 @@ font-family: 'Noto Sans KR', sans-serif;
 	height: auto;
 }
 
-.customer .dropdown-item:active{
+.customer .qaaCategoryBtn:active{
 	background-color: #B0DAFF;
 	color:black;
 }
@@ -238,6 +238,7 @@ boradTypeNo2.addEventListener('click', ()=>{
 boradTypeNo3.addEventListener('click', ()=>{
 	$.ajax({
 		url:'${contextPath}/personalBoard.cs',
+		type: 'post',
 		data:{
 			faqType: 3
 		},

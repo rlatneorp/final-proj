@@ -8,6 +8,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,7 +16,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.exception.EnrollException;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
@@ -228,7 +230,7 @@ public class EnrollController {
 			String profileImg = request.getParameter("profileImg");	// http://k.kakaocdn.net/dn/KMVzH/btrOQyPkSGp/6psjYBhYIgREkghu0yVwK0/img_640x640.jpg
 		        
 			SocialLogin sl = eService.SocialLogin(id);
-		        
+			
 			if(sl == null) { // 회원 아닐경우 -> 새로 등록
 				SocialLogin sl2 = new SocialLogin(); // kakaoLogin 테이블에 저장 -> 안해도되나? 이미지주소만 저장하면 될듯
 				sl2.setSocialId(id);
@@ -249,14 +251,14 @@ public class EnrollController {
 	        	}
 	        	u.setPhone("카카오로그인 회원입니다");
 		        
-		        int result = eService.insertUser(u); 
-		        	
+		        int result = eService.insertUser(u);
+		        		
 	        	if(result > 0) { // 회원정보 저장했을때 
-	        		
 	        		Users u2 = eService.socialLoginUpdate(id);
 	        		
 		        	model.addAttribute("socialUser", sl2);
 	        		model.addAttribute("loginUser", u2);
+	        		
 	        	} else { // 회원정보 저장 실패
 	        	}
 	        } else { // 기존 회원일 경우 -> 불러오기 (프사랑 닉넴 업뎃해서 가져와야함)
@@ -266,6 +268,7 @@ public class EnrollController {
 				
 				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
 	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
+	        	
 	        	
 	        	model.addAttribute("socialUser", sl2);
 	        	model.addAttribute("loginUser", u2);
@@ -328,25 +331,47 @@ public class EnrollController {
 		
 
 		@RequestMapping("otherUsersProfile.en")
-		public String otherUsersProfile(@RequestParam("uId") String id, @RequestParam("uNo") int usersNo, @RequestParam(value = "page", required = false) Integer page, Model model) {
+		public String otherUsersProfile(@RequestParam("uId") String id, @RequestParam("uNo") int usersNo, @RequestParam(value = "page", required = false) Integer page, Model model
+										,HttpServletRequest request) {
 			// 유저정보
 			Users user = eService.socialLoginUpdate(id);
 			model.addAttribute("user", user);
 			
+			// 팔로우 정보
+			int follow = eService.follow(usersNo);
+			int following = eService.following(usersNo);
+			model.addAttribute("follow", follow); // 남이 나를 카운트
+			model.addAttribute("following", following); // 내가 남을 카운트
+//			System.out.println("following: "+ following);
+//			System.out.println("follow : " + follow);
+			
+			ArrayList<Follow> followList =  eService.followList(usersNo);
+			ArrayList<Follow> followingLsit =  eService.followingLsit(usersNo);
+			model.addAttribute("followList", followList);
+			model.addAttribute("followingLsit", followingLsit);
+			
+//			System.out.println("followList : " + followList);
+//			System.out.println("followingList : " + followingLsit);
+			
+			HttpSession session = request.getSession();
+			Users loginUser = (Users)session.getAttribute("loginUser");
+			
+			if(loginUser != null) {
+				ArrayList<Follow> loginUserFollowingList = eService.loginUserFollowingList(loginUser.getUsersNo());
+//				System.out.println("loginUserFollowingList : "+ loginUserFollowingList);
+				model.addAttribute("lList", loginUserFollowingList);
+			}
+			
 			// 프사정보
 			SocialLogin social = eService.SocialLogin(id);
 			model.addAttribute("social", social);
-			Image image = uService.selectImage(usersNo);
-			model.addAttribute("image", image);
+			Image userImage = uService.selectImage(usersNo);
+			model.addAttribute("userImage", userImage);
 				
-			// 레시피 목록 + image
+			// 작성 레시피 목록 + image
 			ArrayList<Recipe> recipe = eService.recipeList(usersNo);
 			model.addAttribute("rList", recipe);
-			
-			int foodNo = recipe.get(0).getFoodNo();
-			
-			ArrayList<Image> recipeImage = eService.recipeImageList(foodNo);
-			model.addAttribute("iList", recipeImage);
+//			System.out.println("recipe : " + recipe);
 			model.addAttribute("page", page);
 			
 			// 작성 글 목록
@@ -354,17 +379,37 @@ public class EnrollController {
 			// 작성 댓글 목록
 			
 			// 작성 레시피후기 목록
-
+			
 			
 			// 북마크 목록
 			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo);
 			model.addAttribute("bList", bookMarkList);
+			int recipeBookMarkList = eService.recipeBookMarkList(usersNo);
+			model.addAttribute("rCount" ,recipeBookMarkList);
+			int menuBookMarkList = eService.menuBookMarkList(usersNo);
+			model.addAttribute("mCount", menuBookMarkList);
 			
-//			// 북마크 - 레시피목록 => recipe (위에 가져온거 있음)
 			
-//			// 북마크 - 식단목록
-			ArrayList<Menu> menuList = eService.menuList(usersNo);
-			model.addAttribute("mList", menuList);
+//			// 북마크 - 레시피목록
+			ArrayList<Recipe> allRecipeList = eService.allRecipeList();
+			model.addAttribute("aList", allRecipeList);
+			
+			ArrayList<Image> allRecipeImageList = eService.allRecipeImageList();
+			model.addAttribute("recipeImageList", allRecipeImageList);
+			
+//			// 북마크 - 식단목록...모든 식단목록 가져와서....
+			ArrayList<Menu> allMenuList = eService.menuList();
+			model.addAttribute("mList", allMenuList);
+			
+			ArrayList<Image> menuImageList = eService.menuImageList();
+			model.addAttribute("menuImageList", menuImageList);
+			
+			ArrayList<Product> productList = eService.productList(); // 영양사정보 가져오기
+			model.addAttribute("pList", productList);
+			ArrayList<Users> healtherList = eService.healtherList();
+			model.addAttribute("hList", healtherList);
+//			System.out.println("product: " + productList);
+			
 			
 			return "othersProfile";
 		}

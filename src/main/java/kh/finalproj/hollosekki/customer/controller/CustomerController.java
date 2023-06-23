@@ -1,20 +1,20 @@
 package kh.finalproj.hollosekki.customer.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.taglibs.standard.tag.common.fmt.FormatDateSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kh.finalproj.hollosekki.common.model.Pagination;
+import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.customer.model.service.CustomerService;
 import kh.finalproj.hollosekki.customer.model.vo.Customer;
@@ -36,11 +36,6 @@ public class CustomerController {
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		ArrayList<Customer> nlist = csService.nBoardList(pi);
-		
-		
-//		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy≥‚MMø˘dd¿œ");
-//		 
-		
 		model.addAttribute("nlist", nlist);
 		model.addAttribute("pi", pi);
 		
@@ -48,26 +43,38 @@ public class CustomerController {
 	}	
 	
 	@RequestMapping("faqBoard.cs")
-	public String faqBoard(HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
+	public String faqBoard(@RequestParam(value="category", required=false) String category,@RequestParam(value="search", required=false) String search, HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
 			Model model) {
 		if(currentPage == null) {
 			currentPage = 1;
 		}
-			
-		int	listCount = csService.getFListCount(2);
 		
+//		int categoryAndSearchCount = csService.getFListCount(category);
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+		map.put("search", search);
+		
+		int	listCount = csService.getCategoryFListCount(map);
+//		System.out.println("category " + category);
+//		System.out.println("search " + search);
+//		System.out.println("count " + listCount);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-		ArrayList<Customer> flist = csService.fBoardList(pi);
-		
+//		System.out.println("p "  + pi);
+
+		ArrayList<Customer> flist = csService.fBoardList(pi, map);
+//		System.out.println("f " + flist);
 		model.addAttribute("flist", flist);
 		model.addAttribute("pi", pi);
+		model.addAttribute("category", category);
+		model.addAttribute("search", search);
 		
 		return "faqBoard";
 	}	
 	
 	@RequestMapping("personalBoard.cs")
 	public String personalBoard(HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
-			@ModelAttribute Customer customer, Model model) {
+			Model model) {
 		Users u = (Users)session.getAttribute("loginUser");
 		if(currentPage == null) {
 			currentPage = 1;
@@ -77,17 +84,12 @@ public class CustomerController {
 		if(u != null) {
 			usersNo = u.getUsersNo();
 		}
-		Integer faqType = 0;
-		if(customer != null) {
-			faqType = customer.getFaqType();
-		}
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("usersNo", usersNo);
-		map.put("faqType", faqType);
 		
-		int	listCount = csService.getPListCount(3, map);
+		int	listCount = csService.getPListCount(map);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		ArrayList<Customer> plist = csService.pBoardList(pi, map);
@@ -99,8 +101,35 @@ public class CustomerController {
 	}
 	
 	@RequestMapping("personalQuestion.cs")
-	public String personalQuestion() {
+	public String personalQuestion(HttpSession session, @RequestParam(value="qnaContent",required=false) String qnaContent, Model model) {
+		Users u = (Users)session.getAttribute("loginUser");
+		int usersNo = 0;
+//		int adminNo = 0;
+		if(u != null) {
+			usersNo = u.getUsersNo();
+//			if(u.getIsAdmin().equals('Y')) {
+//				adminNo = u.getUsersNo();
+//			} else {
+//				adminNo = 0;
+//			}
+		}
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(qnaContent != null) {
+			map.put("qnaContent", qnaContent);
+			map.put("usersNo", usersNo);
+//			map.put("adminNO", adminNo);
+			
+			int result = csService.qnaInsert(map);
+			if(result > 0) {
+				return "redirect:personalBoard.cs";
+			}
+		}
 		return "personalQuestion";
+		
 	}
+	
+	
+	
 }
 

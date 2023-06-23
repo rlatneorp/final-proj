@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,10 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import kh.finalproj.hollosekki.common.model.vo.Follow;
+import kh.finalproj.hollosekki.common.model.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.exception.UsersException;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
@@ -36,6 +38,9 @@ public class UsersController {
 	private EnrollService eService;
 	
 	@Autowired
+	private RecipeService rService;
+	
+	@Autowired
 	private UsersService uService;
 	
 	@Autowired
@@ -43,99 +48,61 @@ public class UsersController {
 	
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
+		// 이미지 조회
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		Image image = uService.selectImage(usersNo);
-		if(image != null) {
-			model.addAttribute("image", image);
-		}
+		model.addAttribute("image", image);
 		
+		int following = eService.following(usersNo);
+		int follower = eService.follow(usersNo);
+		model.addAttribute("following", following);
+		model.addAttribute("follower", follower);
+		
+		// 팔로잉 팔로워 리스트 조회
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
+		System.out.println(followingList);
+		System.out.println(followerList);
 		
-		if(!followingList.isEmpty() && !followerList.isEmpty()) {
-			model.addAttribute("followingList", followingList);
-			model.addAttribute("followerList", followerList);
+		model.addAttribute("followingList", followingList);
+		model.addAttribute("followerList", followerList);
 			
 			return "myPage_Main";
-		} else {
-			throw new UsersException("팔로우 리스트 조회 실패");
-		}
-		
-//		ArrayList<Follow> followList = uService.selectFollow(usersNo);
-//		model.addAttribute("follow", followList);
-//		
-//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
-//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
-//
-//		Users followU = null;
-//		Image followImage = null;
-//		if(!followingList.isEmpty()) {
-//			List<Users> followingUList = new ArrayList<>();
-//			List<Image> followingImageList = new ArrayList<>();
-//			for(Follow following : followingList) {
-//				int followNo = following.getFollowingUsersNo();
-//				followU = uService.selectFollowInfo(followNo);
-//				followImage = uService.selectFollowImage(followNo);
-//				
-//				followingUList.add(followU);
-//			    followingImageList.add(followImage);
-//			}
-//			model.addAttribute("followingUsers", followingUList);
-//			model.addAttribute("followingImage", followingImageList);
-//		}
-//		
-//		if(!followerList.isEmpty()) {
-//			List<Users> followerUList = new ArrayList<>();
-//			List<Image> followerImageList = new ArrayList<>();
-//			for(Follow follower : followerList) {
-//				int followNo = follower.getUsersNo();
-//				followU = uService.selectFollowInfo(followNo);
-//				followImage = uService.selectFollowImage(followNo);
-//				
-//				followerUList.add(followU);
-//				followerImageList.add(followImage);
-//			}
-//			model.addAttribute("followerUsers", followerUList);
-//			model.addAttribute("followerImage", followerImageList);
-//		}
 	}
 	
-//	@RequestMapping("myPage_mutualFollow.me")
-//	@ResponseBody
-//	public String myPage_mutualFollow(Model model, @RequestParam("followerNos[]") String[] followerNos) {
-//		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
-//		
-//		ArrayList<Follow> followingList = uService.selectFollowing(usersNo);
-//		ArrayList<Follow> followerList = uService.selectFollower(usersNo);
+	// 언팔
+	@RequestMapping("myPage_unFollow.me")
+	@ResponseBody
+	public String myPage_unFollow(Model model, @RequestParam("usersNo") int usersNo, @RequestParam("followingNo") int followingNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("followingNo", followingNo);
 		
-//		boolean hasMutualFollow = false;
-//		
-//		String[] fNo = followerNos.split(",");
-//		int[] followersNo = new int[fNo.length];
-//		
-//		for(int i = 0; i < fNo.length; i++) {
-//			followersNo[i] = Integer.parseInt(fNo[i]);
-//			System.out.println(followersNo[i]);
-//			int followerNo = followersNo[i]; // 나를 팔로하고 있는 회번
-//			
-//			ArrayList<Follow> followerNoList = uService.selectMutualFollow(followerNo);
-//			System.out.println(followerNoList);
-//			for(Follow fn : followerNoList) {
-//				int followingNo = fn.getUsersNo(); // 나를 팔로하고 있는 회원이 팔로하고 있는 회번
-//				
-//				if(followingNo == followerNo) {
-//					hasMutualFollow = true;
-//				}
-//			}
-//		}
-//	    boolean hasMutualFollow = uService.checkMutualFollow(usersNo, followerNos);
-//	    
-//		if(hasMutualFollow) {
-//			return "yes";
-//		} else {
-//			return "no";
-//		}
-//	}
+		int result = uService.deleteFollow(map);
+		
+		if(result > 0) {
+			return "yes";
+		} else {
+			return "no";
+		}
+	}
+	
+	// 팔로우
+	@RequestMapping("myPage_follow.me")
+	@ResponseBody
+	public String myPage_follow(Model model, @RequestParam("usersNo") int usersNo, @RequestParam("followNo") int followNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("followNo", followNo);
+		
+		int result = uService.insertFollow(map);
+		
+		if(result > 0) {
+			return "yes";
+		} else {
+			return "no";
+		}
+	}
 	
 	// 파일 저장
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
@@ -179,6 +146,7 @@ public class UsersController {
 		}
 	}
 	
+	// 프로필 추가
 	@RequestMapping("myPage_InsertProfile.me")
 	public String myPage_InsertProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 									   Model model, HttpServletRequest request) {
@@ -216,6 +184,7 @@ public class UsersController {
 		}
 	}
 	
+	// 프로필 업뎃
 	@RequestMapping("myPage_UpdateProfile.me")
 	public String myPage_UpdateProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 			   						   Model model, HttpServletRequest request) {
@@ -272,6 +241,7 @@ public class UsersController {
 		}
 	}
 	
+	// 프사 삭제
 	@RequestMapping("myPage_DeleteImage.me")
 	@ResponseBody
 	public String myPage_DeleteImage(@RequestParam("usersNo") int usersNo, Model model,
@@ -291,14 +261,36 @@ public class UsersController {
 			return "no";
 		}
 	}
-	
-	@RequestMapping("myPage_Intro.me")
-	public String myPage_Intro() {
-		return "myPage_Intro";
-	}
-	
+
+	// 내 레시피 조회
 	@RequestMapping("myPage_MyRecipe.me")
-	public String myPage_MyRecipe() {
+	public String myPage_MyRecipe(Model model,  @RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		int listCount = rService.getListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		
+		ArrayList<Recipe> list = uService.selectMyRecipe(usersNo, pi);
+		
+		int recipeBookCount = 0;
+		int recipeLikeCount = 0;
+		for(Recipe r : list) {
+			int foodNo = r.getFoodNo();
+			
+			recipeBookCount = uService.recipeBookCount(foodNo);
+			recipeLikeCount = uService.recipeLikeCount(foodNo);
+			
+			r.setRecipeBookCount(recipeBookCount); // 필드에 얘네를 추가해서 set해주기 그럼 list에 들어감
+			r.setRecipeLikeCount(recipeLikeCount);
+		}
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+		
 		return "myPage_MyRecipe";
 	}
 	

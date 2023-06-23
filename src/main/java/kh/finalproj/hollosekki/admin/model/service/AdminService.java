@@ -15,8 +15,10 @@ import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
+import kh.finalproj.hollosekki.common.model.vo.Users;
 
 @Service
 public class AdminService {
@@ -193,6 +195,39 @@ public class AdminService {
 	public int deletesTool(String[] toolDeletes) {
 		return aDAO.deletesTool(sqlSession, toolDeletes);
 	}
+
+	
+	
+//	Users-회원관리
+	public int getUsersCount(AdminBasic ab) {
+		return aDAO.getUsersCount(sqlSession, ab);
+	}
+
+	public ArrayList<Users> selectUsersList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectUsersList(sqlSession, pi, ab);
+	}
+
+	public Users selectUsers(int uNo) {
+		return aDAO.selectUsers(sqlSession, uNo);
+	}
+
+	public ArrayList<Integer> selectUsersInfo(HashMap<String, Integer> uMap) {
+		return aDAO.selectUsersInfo(sqlSession, uMap);
+	}
+
+	public int updateUsers(Users u, Point p) {
+		return aDAO.updateUsers(sqlSession, u, p);
+	}
+
+//	Point-포인트관리
+	public int getPointCount(AdminBasic ab) {
+		return aDAO.getPointCount(sqlSession, ab);
+	}
+
+	public ArrayList<Point> selectPointList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectPointList(sqlSession, pi, ab);
+	}
+
 
 
 

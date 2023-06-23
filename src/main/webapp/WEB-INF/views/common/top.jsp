@@ -243,6 +243,7 @@
 var loginUser = '${loginUser}';
 if(loginUser != ''){
 	$.ajax({
+		type: 'post',
 		url: 'point.ma',
 		success: function(info){
 			console.log(info);

@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="marketMapper">
-	<update id="attendanceCheck">
-		update users
-		set attendance_date = #{attendanceDate}
-		where users_id = #{uId}
-	</update>
-	
 	<update id="aDateCheck">
 		update users
 		set check_day = (select count(dateStr)
 		                from attendance
-		                where users_id = #{u.usersId})
+		                where users_id = #{u.usersId} and
+		                	substr(dateStr,6,2) = to_char(last_day(sysdate),'MM'))
 		where users_id = #{u.usersId}
 	</update>
 	
@@ -86,7 +81,8 @@
 	
 	<update id="getMonthPoint">
 		update users
-		set point = #{u.point} + 1000
+		set point = #{u.point} + 1000,
+			check_day = 0
 		where users_id in (select users_id
                           from attendance
                           		join users using(users_id)
@@ -94,9 +90,8 @@
                               and users_id = #{u.usersId}
                               and check_day = to_char(last_day(sysdate),'dd')
 	         				  and sysdate = last_day(sysdate))
-	           
 	</update>
-	
+
 <!-- 	<select id="selectShipping" resultMap="shipAddress"> -->
 <!-- 		select * -->
 <!-- 		from shipping_address -->
@@ -263,6 +258,12 @@
 		select * from product where product_no = #{productNo}
 	</select>
 	
+	<select	id="selectReview" resultMap ="reviewResultSet">
+		select * from review where product_no = #{productNo}
+	</select>
+	
+	
+	
 	<insert id="insertCart">
 		<if test="preorderNo == 0">
 			insert all 
@@ -273,7 +274,7 @@
 		<selectKey keyProperty="preorderNo" resultType="int" order="AFTER" >
 			select seq_pre_no.currval from dual
 		</selectKey>
-  		<if test="preorderNo !=0">
+  		<if test="preorderNo != 0">
   			insert all 
 			into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, #{preorderNo})
 	  		into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, #{preorderNo})
@@ -307,4 +308,59 @@
 		<result column="MENU_TYPE" property="menuType"/>
 		<result column="MENU_CONTENT" property="menuContent"/>
 	</resultMap>
+	
+	<insert id="insertImage">
+		insert into image(image_no, image_divide_no, image_type, image_originalname, image_renamename, image_path, image_level)
+		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, #{imageLevel})
+	</insert>
+	
+		<select id="selectAllImageList" resultMap="imageResultSet">
+		select *
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != null">
+			and image_level = #{imageLevel}
+		</if>
+	</select>
+	
+	<resultMap type="Image" id="imageResultSet">
+		<id column="image_no" property="imageNo"/>
+		<result column="image_divide_no" property="imageDivideNo"/>
+		<result column="image_type" property="imageType"/>
+		<result column="image_originalname" property="imageOriginalName"/>
+		<result column="image_renamename" property="imageRenameName"/>
+		<result column="image_path" property="imagePath"/>
+		<result column="image_level" property="imageLevel"/>
+	</resultMap>
+	
+	
+	<resultMap type="Review" id="reviewResultSet">
+		<id column="review_No" property="reviewNo"/>
+		<result column="orderNo" property="orderNo" />
+		<result column="review_no" property="reviewNo" />
+		<result column="review_title" property="reviewTitle" />
+		<result column="review_content" property="reviewContent" />
+		<result column="review_score" property="reviewScore" />
+		<result column="review_status" property="reviewStatus" />
+	</resultMap>
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 배송지 삭제 -->
+	<delete id="delShipping">
+		DELETE FROM shipping_address
+		WHERE shipping_no = #{shippingNo}
+	</delete>
+	
+	<!-- 포인트 조회  -->
+	<select id="selectPoint" resultType="_int">
+		select point from users where users_no = #{usersNo}
+	</select>
 </mapper>

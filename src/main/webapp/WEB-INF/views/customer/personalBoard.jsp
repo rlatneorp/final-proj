@@ -30,27 +30,27 @@
 					<br>
 					<c:if test="${loginUser eq null }">
 					<h1>로그인 후 문의 하실 수 있습니다.</h1>
-					<button id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
+					<button  id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
 					</c:if>
 					<c:if test="${loginUser ne null}">
 						<div class="accordion acCustomer" id="accordionFlushExample">
 							<c:forEach items="${ plist }" var="c" varStatus="stc"> 
 							<div class="accordion-item">
 								<h2 class="accordion-header" id="flush-headingOne-${stc.index +1 }c">
-								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${stc.index +1 }c" aria-expanded="false" aria-controls="flush-collapseOne-${stc.index +1 }c">
-								        글번호: ${stc.index +1 } 제목: ${c.faqTitle } 
+								<button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${stc.index +1 }c" aria-expanded="false" aria-controls="flush-collapseOne-${stc.index +1 }c">
+								        글번호: ${stc.index +1 } 제목: ${c.qnaTitle } 
 								</button>
 								</h2>
 								<div id="flush-collapseOne-${stc.index +1 }c" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${stc.index +1 }c">
 									<div class="accordion-body">
 										<div>
 											<h4>Q. 질문한 내용</h4>
-											<span class="11question">${c.faqTitle }</span>
+											<span class="11question">${c.qnaTitle }</span>
 										</div>
 										<hr>
 										<div> 
 											<h4>A. 답변한 내용</h4>
-											<span class="11answer">${c.faqContent }</span>
+											<span class="11answer">${c.qnaContent }</span>
 										</div>
 									</div>
 								</div>
@@ -70,7 +70,7 @@
 										</c:url>
 										<a class="page-link" href="${ goBack }" aria-label="Previous">
 											<span aria-hidden="true">&laquo;</span>
-										</a>
+										</a>	
 									</li>
 									</c:if>
 									<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">

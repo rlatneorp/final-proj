@@ -3,8 +3,10 @@ package kh.finalproj.hollosekki.enroll.model.service;
 import java.util.ArrayList;
 
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -42,7 +44,31 @@ public interface EnrollService {
 
 	ArrayList<BookMark> bookMarkList(int usersNo);
 
-	ArrayList<Menu> menuList(int usersNo);
+	ArrayList<Menu> menuList();
+
+	int follow(int usersNo);
+
+	int following(int usersNo);
+
+	ArrayList<Image> menuImageList();
+
+	ArrayList<Product> productList();
+
+	ArrayList<Users> healtherList();
+
+	ArrayList<Recipe> allRecipeList();
+
+	ArrayList<Image> allRecipeImageList();
+
+	ArrayList<Follow> followList(int usersNo);
+
+	ArrayList<Follow> followingLsit(int usersNo);
+
+	ArrayList<Follow> loginUserFollowingList(int usersNo);
+
+	int recipeBookMarkList(int usersNo);
+
+	int menuBookMarkList(int usersNo);
 
 
 

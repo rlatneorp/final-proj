@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
 public class UsersDAO {
@@ -50,22 +53,6 @@ public class UsersDAO {
 		return sqlSession.update("usersMapper.deleteInfo", usersNo);
 	}
 
-//	public ArrayList<Follow> selectFollowing(SqlSessionTemplate sqlSession, int usersNo) {
-//		return (ArrayList)sqlSession.selectList("usersMapper.selectFollowing", usersNo);
-//	}
-//
-//	public ArrayList<Follow> selectFollower(SqlSessionTemplate sqlSession, int usersNo) {
-//		return (ArrayList)sqlSession.selectList("usersMapper.selectFollower", usersNo);
-//	}
-//
-//	public Users selectFollowInfo(SqlSessionTemplate sqlSession, int followNo) {
-//		return sqlSession.selectOne("usersMapper.selectFollowInfo", followNo);
-//	}
-//
-//	public Image selectFollowImage(SqlSessionTemplate sqlSession, int followNo) {
-//		return sqlSession.selectOne("usersMapper.selectFollowImage", followNo);
-//	}
-
 	public ArrayList<HashMap<String, Object>> selectFollowing(SqlSessionTemplate sqlSession, int usersNo) {
 		return (ArrayList)sqlSession.selectList("usersMapper.selectFollowing", usersNo);
 	}
@@ -74,15 +61,27 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.selectFollower", usersNo);
 	}
 
-//	public ArrayList<Follow> selectMutualFollow(SqlSessionTemplate sqlSession, int followingNo) {
-//		return (ArrayList)sqlSession.selectList("usersMapper.selectMutualFollow", followingNo);
-//	}
+	public int deleteFollow(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.delete("usersMapper.deleteFollow", map);
+	}
 
-//	public boolean checkMutualFollow(SqlSessionTemplate sqlSession, int usersNo, String[] followerNos) {
-//		Map<String, Object> map = new HashMap<>();
-//	    map.put("usersNo", usersNo);
-//	    map.put("followerNos", followerNos);
-//		return sqlSession.selectOne("usersMapper.checkMutualFollow", map);
-//	}
+	public int insertFollow(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.insert("usersMapper.insertFollow", map);
+	}
+
+	public ArrayList<Recipe> selectMyRecipe(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("usersMapper.selectMyRecipe", usersNo, rowBounds);
+	}
+
+	public int recipeBookCount(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("usersMapper.recipeBookCount", foodNo);
+	}
+
+	public int recipeLikeCount(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("usersMapper.recipeLikeCount", foodNo);
+	}
+
 
 }

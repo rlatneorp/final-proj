@@ -4,10 +4,17 @@
 
 <!--Common-공용 -->
 	<update id="updateStatus">
-		update product
-		set product_status = #{dataStatus}
-		where product_type = #{dataType} 
-			  and product_no = #{dataNo}
+		<if test="dataType != 5">
+			update product
+			set product_status = #{dataStatus}
+			where product_type = #{dataType} 
+				  and product_no = #{dataNo}
+		</if>
+		<if test="dataType == 5">
+			update users
+			set status = #{dataStatus}
+			where users_no = #{dataNo}
+		</if>
 	</update>
 	
 	<insert id="insertOptions">
@@ -78,8 +85,8 @@
 			  from image
 			  order by image_no asc)	
 		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
-		<if test="imageLevel != null">
-			and image_level = #{imageLevel}
+		<if test="imageLevel != -1">
+			  and image_level = #{imageLevel}
 		</if>
 	</select>
 	
@@ -91,9 +98,112 @@
 	<delete id="deleteImage">
 		delete image
 		where image_type = #{imageType} and image_divide_no = ${imageDivideNo} 
+		<if test="imageLevel != null">
+			and image_level = #{imageLevel}
+		</if>
 	</delete>
 
 
+<!--Users-회원 -->
+	<select id="getUsersCount" resultType="_int">
+		select count(*)
+		from users
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where users_name like '%${searchText}%'
+			</if>
+			<if test='searchType == "id"'>
+				where users_id like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+		
+	<select id="selectUsersList" resultMap="usersResultSet">
+		select *
+		from (select * 
+			  from users
+			  order by users_no desc) 
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				where users_name like '%${searchText}%'
+			</if>
+			<if test='searchType == "id"'>
+				where users_id like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectUsers" resultMap="usersResultSet">
+		select *
+		from users
+		where users_no = #{users_no}
+	</select>
+	
+	<select id="selectUsersInfo" resultType="_int">
+		select count(*) from follow	where following_user_no = #{usersNo}
+		union all
+		select count(*) from follow where users_no = #{usersNo}
+		union all
+		select count(*) from recipe where users_no = #{usersNo}
+		union all
+		select count(*) from bookmark where users_no = #{usersNo}
+			<if test="bookmarkType != 0">
+				and number_type = #{bookmarkType}
+			</if>
+		union all
+		select count(*) from likes where users_no = #{usersNo}
+			<if test="likeType != 0">
+				and number_type = #{likeType}
+			</if>
+	</select>
+	
+	<update id="updateUsers">
+		update users
+		set 
+			<if test="usersId != null">
+				users_id = #{usersId},
+			</if>
+			users_name = #{usersName},
+			nickname = #{nickName},
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="phone != null">
+				phone = #{phone},
+			</if>
+			status = #{status}, 
+			point = #{point},
+			is_Admin = #{isAdmin}
+		where users_no = #{usersNo}
+	</update>
+	
+	<insert id="insertPoint">
+		insert into point(point_no, users_no, point_type, point_before, point_change, modify_date)
+		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{pointChange}, default)
+	</insert>
+	
+<!--Point-포인트 -->
+	<select id="getPointCount" resultType="_int">
+		select count(*)
+		from point
+		<if test="searchText != null">
+			<if test='searchType == "number"'>
+				where users_no like '%${searchText}%'
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectPointList" resultMap="pointResultSet">
+		select *
+		from point
+		<if test="searchText != null">
+			<if test='searchType == "number"'>
+				where users_no like '%${searchText}%'
+			</if>
+		</if>
+		order by point_no desc
+	</select>
+	
 <!--Menu-메뉴 -->
 	<select id="getMenuCount" resultType="_int">
 		select count(*)
@@ -396,6 +506,35 @@
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="OPTION_NAME" property="optionName"/>
 		<result column="OPTION_VALUE" property="optionValue"/>
+	</resultMap>
+	
+	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Users" id="usersResultSet">
+		<id column="USERS_NO" property="usersNo"/>
+		<result column="USERS_ID" property="usersId"/>
+		<result column="USERS_PW" property="usersPw"/>
+		<result column="USERS_NAME" property="usersName"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="EMAIL" property="email"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="EXIT_DATE" property="exitDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="CHECK_DAY" property="checkDay"/>
+		<result column="POINT" property="point"/>
+		<result column="IS_ADMIN" property="isAdmin"/>
+		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
+		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
+		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
+	</resultMap>
+	
+	<resultMap type="Point" id="pointResultSet">
+		<id column="POINT_NO" property="pointNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="POINT_TYPE" property="pointType"/>
+		<result column="POINT_BEFORE" property="pointBefore"/>
+		<result column="POINT_CHANGE" property="pointChange"/>
+		<result column="MODIFY_DATE" property="modifyDate"/>
 	</resultMap>
 	
 	<resultMap type="Menu" id="menuResultSet">

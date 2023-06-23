@@ -36,6 +36,7 @@ import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
@@ -205,15 +206,20 @@ public class MarketController {
 		return "createQnA";
 	}
 	
-	@PostMapping("insertReview.ma")
-	public String insertReview(HttpSession session, 
-							   @ModelAttribute Product p,
-							   @RequestParam ("imageFile") ArrayList<MultipartFile> imageFiles,
+//	@PostMapping("insertReview.ma/productNo")
+	@RequestMapping("insertReview.ma")
+	public String insertReview(@RequestParam (value="reviewStar", required = false) String reviewStar,
+							   HttpSession session, 
+//							   @ModelAttribute Product p,
+							   @ModelAttribute Review r,
+							   @RequestParam (value="imageFile", required = false) ArrayList<MultipartFile> imageFiles,
 							   HttpServletRequest request,
 							   Model model) {
-		
-		model.addAttribute("productNo", p.getProductNo());
-		
+//		
+		model.addAttribute("productNo", r.getProductNo());
+		model.addAttribute("reviewStar", reviewStar);
+		model.addAttribute("imageFile", imageFiles);
+		model.addAttribute("reviewContent", r.getReviewContent());
 		int i = 0;
 		int resultF = 0;
 		int resultImg = 0;
@@ -223,7 +229,7 @@ public class MarketController {
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
 				if(returnArr[1] != null) {
-					image.setImageDivideNo(p.getProductNo());
+					image.setImageDivideNo(r.getProductNo());
 					image.setImageType(7); /*리뷰는 7번*/
 					image.setImagePath(returnArr[0]);
 					image.setImageOriginalName(imageFile.getOriginalFilename());
@@ -238,19 +244,40 @@ public class MarketController {
 			}
 		}
 		if(resultImg == i) {
-			return "redirect:market_detail.ma";
+			return "market_detail.ma";
 		}
 		
 		
-		return "redirect:market_detail.ma";
+		return "market_detail.ma";
 //		return "redirect:market_detail.ma"+p.getProductNo();
 	}
+	
+	@GetMapping("selectReview")
+	public String selectReview(Review reivew, Model model){
+		
+		int productNo = 0;
+		
+		
+		ArrayList<Product> p = new ArrayList<>(); 
+		ArrayList<Review> reviewlist = new ArrayList<>();
+		
+		for(Review review : reviewlist) {
+			productNo = review.getProductNo();
+		}
+		
+		reviewlist = mkService.selectReview(productNo);
+		
+		model.addAttribute("reviewlist", reviewlist);
+		
+		return "market_detail";
+	}
+	
 		
 	
 	@GetMapping("createReview.ma")
-	public String createReview(HttpSession session, Product p, Model model) {
+	public String createReview(@RequestParam (value="productNo", required=false) int productNo, HttpSession session, Model model) {
 		Users users = (Users)session.getAttribute("loginUser");
-		model.addAttribute("productNo", p.getProductNo());
+		model.addAttribute("productNo", productNo);
 		return "createReview";
 	}
 	
@@ -290,7 +317,6 @@ public class MarketController {
 	
 	@GetMapping("kitchenToolMain.ma")
 	public String kitchenToolMain() {
-		
 		return "kitchenToolMainPage";
 	}
 	
@@ -372,6 +398,8 @@ public class MarketController {
 			e.printStackTrace();
 		} 
 	}
+	
+	
 	
 	
 
@@ -484,10 +512,10 @@ public class MarketController {
 		
 	}
 	
-	@RequestMapping("delShipping.ma")
-	@ResponseBody
-	public void delShipping(@RequestParam("shippingNo") int shippingNo) {
-		mkService.delShipping(shippingNo);
-	}
+//	@RequestMapping("delShipping.ma")
+//	@ResponseBody
+//	public void delShipping(@RequestParam("shippingNo") int shippingNo) {
+//		mkService.delShipping(shippingNo);
+//	}
 	
 }

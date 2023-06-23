@@ -18,6 +18,8 @@ import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.Review;
+
 import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -219,9 +221,22 @@ public class MarketDAO {
 
 	public int insertImage(SqlSessionTemplate sqlSession, Image image) {
 		return sqlSession.insert("marketMapper.insertImage", image);
+		
+	}	
 	//배송지 삭제 
 	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
 		sqlSession.delete("marketMapper.delShipping", shippingNo);
+	}
+
+	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", productNo);
+	}
+
+	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, Review review, int productNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("review", review);
+		map.put("productNo", productNo);
+		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", map);
 	}
 
 

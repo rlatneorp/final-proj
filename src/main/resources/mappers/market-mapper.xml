@@ -263,6 +263,12 @@
 		select * from product where product_no = #{productNo}
 	</select>
 	
+	<select	id="selectReview" resultMap ="reviewResultSet">
+		select * from review where product_no = #{productNo}
+	</select>
+	
+	
+	
 	<insert id="insertCart">
 		<if test="preorderNo == 0">
 			insert all 
@@ -324,7 +330,7 @@
 		</if>
 	</select>
 	
-		<resultMap type="Image" id="imageResultSet">
+	<resultMap type="Image" id="imageResultSet">
 		<id column="image_no" property="imageNo"/>
 		<result column="image_divide_no" property="imageDivideNo"/>
 		<result column="image_type" property="imageType"/>
@@ -333,6 +339,24 @@
 		<result column="image_path" property="imagePath"/>
 		<result column="image_level" property="imageLevel"/>
 	</resultMap>
+	
+	
+	<resultMap type="Review" id="reviewResultSet">
+		<id column="review_No" property="reviewNo"/>
+		<result column="orderNo" property="orderNo" />
+		<result column="review_no" property="reviewNo" />
+		<result column="review_title" property="reviewTitle" />
+		<result column="review_content" property="reviewContent" />
+		<result column="review_score" property="reviewScore" />
+		<result column="review_status" property="reviewStatus" />
+	</resultMap>
+	
+	
+	
+	
+	
+	
+	
 	
 	<!-- 배송지 삭제 -->
 	<delete id="delShipping">

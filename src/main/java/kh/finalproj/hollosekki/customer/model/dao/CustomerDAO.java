@@ -21,7 +21,7 @@ public class CustomerDAO {
 //		return sqlSession.selectOne("customerMapper.getFListCount", i);
 //	}
 	
-	public int getPListCount(SqlSessionTemplate sqlSession, int i, HashMap<String, Object> map) {
+	public int getPListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return sqlSession.selectOne("customerMapper.getPListCount", map);
 	}
 
@@ -45,6 +45,10 @@ public class CustomerDAO {
 
 	public int getCategoryFListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return sqlSession.selectOne("customerMapper.getCategoryFListCount", map);
+	}
+
+	public int qnaInsert(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.insert("customerMapper.qnaInsert", map);
 	}
 
 

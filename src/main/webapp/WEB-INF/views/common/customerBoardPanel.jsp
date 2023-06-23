@@ -182,7 +182,7 @@ font-family: 'Noto Sans KR', sans-serif;
 	height: auto;
 }
 
-.customer .dropdown-item:active{
+.customer .qaaCategoryBtn:active{
 	background-color: #B0DAFF;
 	color:black;
 }
@@ -238,6 +238,7 @@ boradTypeNo2.addEventListener('click', ()=>{
 boradTypeNo3.addEventListener('click', ()=>{
 	$.ajax({
 		url:'${contextPath}/personalBoard.cs',
+		type: 'post',
 		data:{
 			faqType: 3
 		},

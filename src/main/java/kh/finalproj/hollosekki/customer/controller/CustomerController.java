@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -55,14 +56,14 @@ public class CustomerController {
 		map.put("search", search);
 		
 		int	listCount = csService.getCategoryFListCount(map);
-		System.out.println("category " + category);
-		System.out.println("search " + search);
-		System.out.println("count " + listCount);
+//		System.out.println("category " + category);
+//		System.out.println("search " + search);
+//		System.out.println("count " + listCount);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-		System.out.println("p "  + pi);
+//		System.out.println("p "  + pi);
 
 		ArrayList<Customer> flist = csService.fBoardList(pi, map);
-		System.out.println("f " + flist);
+//		System.out.println("f " + flist);
 		model.addAttribute("flist", flist);
 		model.addAttribute("pi", pi);
 		model.addAttribute("category", category);
@@ -73,7 +74,7 @@ public class CustomerController {
 	
 	@RequestMapping("personalBoard.cs")
 	public String personalBoard(HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
-			@ModelAttribute Customer customer, Model model) {
+			Model model) {
 		Users u = (Users)session.getAttribute("loginUser");
 		if(currentPage == null) {
 			currentPage = 1;
@@ -83,17 +84,12 @@ public class CustomerController {
 		if(u != null) {
 			usersNo = u.getUsersNo();
 		}
-		Integer faqType = 0;
-		if(customer != null) {
-			faqType = customer.getFaqType();
-		}
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("usersNo", usersNo);
-		map.put("faqType", faqType);
 		
-		int	listCount = csService.getPListCount(3, map);
+		int	listCount = csService.getPListCount(map);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		ArrayList<Customer> plist = csService.pBoardList(pi, map);
@@ -105,8 +101,32 @@ public class CustomerController {
 	}
 	
 	@RequestMapping("personalQuestion.cs")
-	public String personalQuestion() {
+	public String personalQuestion(HttpSession session, @RequestParam(value="qnaContent",required=false) String qnaContent, Model model) {
+		Users u = (Users)session.getAttribute("loginUser");
+		int usersNo = 0;
+//		int adminNo = 0;
+		if(u != null) {
+			usersNo = u.getUsersNo();
+//			if(u.getIsAdmin().equals('Y')) {
+//				adminNo = u.getUsersNo();
+//			} else {
+//				adminNo = 0;
+//			}
+		}
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(qnaContent != null) {
+			map.put("qnaContent", qnaContent);
+			map.put("usersNo", usersNo);
+//			map.put("adminNO", adminNo);
+			
+			int result = csService.qnaInsert(map);
+			if(result > 0) {
+				return "redirect:personalBoard.cs";
+			}
+		}
 		return "personalQuestion";
+		
 	}
 	
 	

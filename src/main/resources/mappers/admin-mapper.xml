@@ -179,7 +179,7 @@
 	
 	<insert id="insertPoint">
 		insert into point(point_no, users_no, point_type, point_before, point_change, modify_date)
-		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{pointChange}, default)
+		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{point}, default)
 	</insert>
 	
 <!--Point-포인트 -->

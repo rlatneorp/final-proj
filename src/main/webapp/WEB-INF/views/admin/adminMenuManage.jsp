@@ -19,24 +19,8 @@
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
 		<h4 class="py-4 mb-0">식단관리</h4>
-		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>
-		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
-		<div style="width: 100%; margin-bottom:3px; height:35px;" class="d-flex justify-content-between">
-			<div class="d-flex">
-				<form id="pageCountForm" action="adminMenuManage.ad">
-					<input type="hidden" name="page" value="${ab.page}">
-					<input type="hidden" name="searchType" value="${ab.searchType}">
-					<input type="hidden" name="searchText" value="${ab.searchText}">
-					<select name="pageCount" style="font-size: 14px; height:25px">
-						<option value="10" <c:if test="${pageCount eq 10}">selected</c:if>>10개씩 보기</option>
-						<option value="20" <c:if test="${pageCount eq 20}">selected</c:if>>20개씩 보기</option>
-						<option value="40" <c:if test="${pageCount eq 40}">selected</c:if>>40개씩 보기</option>
-					</select>
-					<button style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 45px; height: 25px; font-size: 12px; font-weight: bold;">변경</button>
-				</form>
-			</div>
-			<span class="d-flex material-symbols-outlined me-2 deleteBtn" style="font-size: 36px; color: black; text-shadow: 1px 1px 2px gray; cursor:pointer;">delete</span>
-		</div>
+		
+		<jsp:include page="../common/adminPageCountForm.jsp"/>
 		
 		<form id="deleteForm" action="${contextPath}/adminMenuDeletes.ad" method="post">
 			<table class="w-100 text-center mb-3">
@@ -97,21 +81,8 @@
 				<button type="button" onclick="location.href='${contextPath}/adminMenuWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식단등록</button>
 			</div>
 		</div>
-		<form id="searchForm">
-			<input type="hidden" name="page" value="${ab.page}">
-			<input type="hidden" name="pageCount" value="${ab.pageCount}">
-			<div class="text-center">
-				<input type="hidden" name="page" value="${pi.currentPage}"> 
-				<select name="searchType" class="border" style="padding: 6px 7px;">
-					<option value="name">이름</option>
-				</select>
 
-				<div style="width:200px" class="d-inline-block mb-4">
-					<input type="search" class="form-control" name="searchText" value="${ab.searchText}">
-				</div>
-				<button style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 38px; font-size: 14px; font-weight: bold;">검색</button>
-			</div>
-		</form>
+		<jsp:include page="../common/adminSearchForm.jsp"/>
 		
 		<jsp:include page="../common/adminPaging.jsp"/>
 		

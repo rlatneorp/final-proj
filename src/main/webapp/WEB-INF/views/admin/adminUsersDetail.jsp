@@ -21,6 +21,7 @@
 		<form action="${contextPath}/adminUsersUpdate.ad" method="post">
 			<input type="hidden" name="pointBefore" value="${u.point}">
 			<input type="hidden" name="uri" value="${uri}">
+			<input type="hidden" name="page" value="${ab.page}">
 			<div class="row">
 				<div class="col-6 row">
 					<h5 class="my-3">- 개인정보 -</h5>

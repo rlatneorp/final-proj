@@ -20,7 +20,6 @@ public class CheckAdminInterceptor implements HandlerInterceptor{
 		HttpSession session = request.getSession();
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
-		
 //		if(loginUser == null || loginUser.getIsAdmin().equals("N")){
 //			response.setContentType("text/html; charset=UTF-8");
 //			PrintWriter out = response.getWriter();

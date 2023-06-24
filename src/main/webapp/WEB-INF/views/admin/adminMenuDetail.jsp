@@ -130,7 +130,6 @@
 			
 			<div id="order">
 				<div id="orderList">
-<%-- 					<c:forEach begin="1" end="7" varStatus="vs"> --%>
 						<c:forEach items="${m.foodProductNo.split(',')}" var="fNo" varStatus="vs">
 							<c:if test="${(vs.index)%4 == 0}">
 							<div style="margin-bottom: 30px; border: 3px solid rgba(0,0,0,0.7); border-radius: 5px; box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.3);">
@@ -172,59 +171,6 @@
 											<input type="number" class="priceBox pb${vs.index}" readonly style="width:80%" value="0"><span style="width:20%">원</span>
 										</td>
 									</tr>
-									
-<!-- 									<tr> -->
-<!-- 										<td class="no" rowspan="4" style="width:5%; font-size: 18px; font-weight: bold;"> -->
-<%-- 											${vs.index}일차 --%>
-<!-- 											</td> -->
-<!-- 										<td class="imageTd" style="width:20%; text-align: center;"> -->
-<!-- 											<input type="hidden" name="productNo" value=""> -->
-<!-- 											<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0"> -->
-<%-- 											<input type="hidden" class="index" value="${vs.index-1}"> --%>
-<%-- 											<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="메인메뉴사진"> --%>
-<!-- 										</td> -->
-<!-- 										<td class="content align-top p-3" style="width:40%"> -->
-<!-- 											<p style="font-size: 18px;">식품 이름</p> -->
-<!-- 											<p>식품 내용</p> -->
-<!-- 										</td> -->
-<!-- 										<td style="width:25%"> -->
-<!-- 											<select name="foodProductNo" class="foodSelector" style="width: 100%; height: 40px; font-size: 16px;"> -->
-<!-- 												<option value="0">-- 메인메뉴 --</option> -->
-<%-- 												<c:forEach items="${fList1}" var="f"> --%>
-<%-- 													<option value="${f.productNo}">${f.foodName}</option> --%>
-<%-- 												</c:forEach> --%>
-<!-- 											</select> -->
-<!-- 										</td> -->
-<!-- 										<td style="width:10%; text-align: center"> -->
-<%-- 											<input type="number" class="priceBox pb${vs.index}" readonly style="width:80%" value="0"><span style="width:20%">원</span> --%>
-<!-- 										</td> -->
-<!-- 									</tr> -->
-									
-<%-- 									<c:forEach begin="1" end="3"> --%>
-<!-- 										<tr> -->
-<!-- 											<td class="imageTd" style="width:20%; text-align: center;"> -->
-<!-- 												<input type="hidden" name="productNo" value=""> -->
-<!-- 												<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0"> -->
-<%-- 												<input type="hidden" class="index" value="${vs.index-1}"> --%>
-<%-- 												<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="서브메뉴사진"> --%>
-<!-- 											</td> -->
-<!-- 											<td class="content align-top p-3" style="width:40%"> -->
-<!-- 												<p style="font-size: 18px;">식품 이름</p> -->
-<!-- 												<p>식품 내용</p> -->
-<!-- 											</td> -->
-<!-- 											<td style="width:25%"> -->
-<!-- 												<select name="foodProductNo" class="foodSelector" style="width: 100%; height: 40px; font-size: 16px;"> -->
-<!-- 													<option value="0">-- 서브메뉴 --</option> -->
-<%-- 													<c:forEach items="${fList2}" var="f"> --%>
-<%-- 														<option value="${f.productNo}">${f.foodName}</option> --%>
-<%-- 													</c:forEach> --%>
-<!-- 												</select> -->
-<!-- 											</td> -->
-<!-- 											<td style="width:10%; text-align: center"> -->
-<%-- 												<input type="number" class="priceBox pb${vs.index}" readonly style="width:80%" value="0"><span style="width:20%">원</span> --%>
-<!-- 											</td> -->
-<!-- 										</tr> -->
-<%-- 									</c:forEach> --%>
 								<c:if test="${(vs.index)%4 == 3}">
 									</table>
 								</c:if>
@@ -257,7 +203,6 @@
 								</c:if>
 							</div>
 						</c:forEach>
-<%-- 					</c:forEach>			 --%>
 					
 					<p style="font-size: 22px; font-weight: bold; text-align: right;">총계</p>
 					<div class="d-flex justify-content-end">

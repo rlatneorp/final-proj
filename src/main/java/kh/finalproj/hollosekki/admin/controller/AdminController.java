@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +27,8 @@ import com.google.gson.JsonIOException;
 
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
+import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.common.Pagination;
-import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -82,11 +82,13 @@ public class AdminController {
 	
 //	Users-회원 관리
 	@GetMapping("adminUsersManage.ad")
-	public String adminUsersManage(@ModelAttribute AdminBasic ab,
-								   HttpSession session,
+	public String adminUsersManage(
+//								   @ModelAttribute AdminBasic ab,
+//								   HttpSession session,
+//								   @RequestAttribute("ab") AdminBasic ab,
+								   HttpServletRequest request,
 								   Model model) {
-		
-		ab = adminBasic(ab, session);
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
 		int listCount = aService.getUsersCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
@@ -94,7 +96,7 @@ public class AdminController {
 
 		if(uList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("uList", uList);
 			return "adminUsersManage";
 		}else {
@@ -102,11 +104,11 @@ public class AdminController {
 		}
 	}
 	@GetMapping("adminUsersDetail.ad")
-	public String adminUsersDetail(@ModelAttribute AdminBasic ab,
+	public String adminUsersDetail(
+//			@ModelAttribute AdminBasic ab,
 								   @RequestParam("usersNo") int uNo,
 								   @RequestParam(value="uri", required=false) String uri,
 							 	   Model model) {
-
 		Users u = aService.selectUsers(uNo);
 //		HashMap<String, Integer> map = new HashMap<String, Integer>();
 //		map.put("imageDivideNo", uNo);
@@ -126,7 +128,7 @@ public class AdminController {
 		u.setLikeCount(uInfo.get(4));
 		
 		if(u != null) {
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("u", u);
 			model.addAttribute("img", img);
 			model.addAttribute("uri", uri);
@@ -136,10 +138,13 @@ public class AdminController {
 		}
 	}
 	@PostMapping("adminUsersUpdate.ad")
-	public String adminUsersUpdate(@ModelAttribute AdminBasic ab,
+	public String adminUsersUpdate(HttpServletRequest request,
+								   Model model,
 								   @ModelAttribute Users u,
 								   @ModelAttribute Point p,
+//								   @RequestParam(value="page", required=false) Integer page,
 								   @RequestParam(value="uri", required=false) String uri) {
+		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
 		if(u.getPhone() != null) {
 			u.setPhone(u.getPhone().replace(",", ""));
 		}
@@ -149,6 +154,9 @@ public class AdminController {
 		
 		int resultU = aService.updateUsers(u, p);
 		if(resultU == 2) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			if(uri.equals("")) {
 				return "redirect:adminUsersManage.ad";
 			}else {
@@ -159,16 +167,15 @@ public class AdminController {
 		}
 	}
 	
-	
 //	Point-포인트 관리
 	@GetMapping("adminPointManage.ad")
-	public String adminPointManage(@ModelAttribute AdminBasic ab,
+	public String adminPointManage(
+//			@ModelAttribute AdminBasic ab,
 								   HttpServletRequest request,
 								   HttpSession session,
 							 	   Model model) {
+		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
 		String uri = request.getServletPath();
-		
-		ab = adminBasic(ab, session);
 		
 		int listCount = aService.getPointCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
@@ -176,7 +183,7 @@ public class AdminController {
 		
 		if(pointList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("pointList", pointList);
 			model.addAttribute("uri", uri);
 			return "adminPointManage";
@@ -188,11 +195,12 @@ public class AdminController {
 	
 //	Menu-식단 관리
 	@GetMapping("adminMenuManage.ad")
-	public String adminMenuManage(@ModelAttribute AdminBasic ab,
-								  HttpSession session,
+	public String adminMenuManage(
+//			@ModelAttribute AdminBasic ab,
+								  HttpServletRequest request,
 							 	  Model model) {
-		
-		ab = adminBasic(ab, session);
+		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
+//		ab = adminBasic(ab, session);
 		
 		int listCount = aService.getMenuCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
@@ -203,7 +211,7 @@ public class AdminController {
 		}
 		if(mList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("mList", mList);
 			return "adminMenuManage";
 		}else {
@@ -212,9 +220,11 @@ public class AdminController {
 		
 	}
 	@GetMapping("adminMenuDetail.ad")
-	public String adminMenuDetail(@ModelAttribute AdminBasic ab,
+	public String adminMenuDetail(
+//			@ModelAttribute AdminBasic ab,
 								  @RequestParam("productNo") int pNo,
 							 	  Model model) {
+		
 		PageInfo pi = new PageInfo();
 		AdminBasic ab1 = new AdminBasic();
 		AdminBasic ab2 = new AdminBasic();
@@ -225,7 +235,7 @@ public class AdminController {
 		ab2.setKind(2);
 		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
 		
-		ab.setKind(0);
+//		ab.setKind(0);
 		Menu m = aService.selectMenu(pNo);
 		ArrayList<String> fNoArr = aService.selectFoodProductNo(pNo);
 		String str = "";
@@ -255,13 +265,13 @@ public class AdminController {
 		}
 	}
 	@PostMapping("adminMenuUpdate.ad")
-	public String adminMenuUpdate(@ModelAttribute AdminBasic ab,
+	public String adminMenuUpdate(
+//			@ModelAttribute AdminBasic ab,
 								  @ModelAttribute Menu m,
-//								  @ModelAttribute Product pd,
 								  @RequestParam("imageFile") MultipartFile imageFile,
 								  HttpServletRequest request,
 							 	  Model model) {
-		
+		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
 		int resultM1 = 0;
 		int resultM2 = 0;
 		int resultM3 = 0;
@@ -305,7 +315,10 @@ public class AdminController {
 		}
 
 		if(resultM1 + resultM2 + resultM3  + resultPd + resultImg + resultImgDel == (1+28+28+1+1+1)) {
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminMenuManage.ad";
 		}else {
 			throw new AdminException("메뉴 수정에 실패하였습니다.");
@@ -314,8 +327,9 @@ public class AdminController {
 	}
 	@PostMapping("adminMenuDeletes.ad")
 	public String adminMenuDeletes(@RequestParam("selectDelete") String[] selDeletes,
-								   HttpServletRequest request) {
-		
+								   HttpServletRequest request,
+								   Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		int resultImg = 0;
 		int resultM = 0;
 		int resultPd = 0;
@@ -340,6 +354,9 @@ public class AdminController {
 		resultPd = aService.deletesProduct(selDeletes);
 		
 		if(resultImg == imgList.size() && resultM == selDeletes.length && resultPd == selDeletes.length) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminFoodManage.ad";
 		}else {
 			throw new AdminException("식재료 삭제 실패");
@@ -368,8 +385,10 @@ public class AdminController {
 	public String adminMenuInsert(@ModelAttribute Menu m,
 								  @RequestParam("foodProductNo") String[] fPNo,
 								  @RequestParam("imageFile") MultipartFile imageFile,
+								  Model model,
 								  HttpServletRequest request,
 								  HttpSession session) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		Users user = (Users)session.getAttribute("loginUser");
 		m.setUsersNo(user.getUsersNo());
 		
@@ -406,6 +425,9 @@ public class AdminController {
 		}
 		
 		if(resultPd != 0 && resultM != 0 && resultImg != 0) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminMenuManage.ad";
 		}else {
 			throw new AdminException("메뉴 등록에 실패하였습니다.");
@@ -454,15 +476,17 @@ public class AdminController {
 	
 //	Ingredient-식재료 관리
 	@GetMapping("adminIngredientManage.ad")
-	public String adminIngredientManage(@ModelAttribute AdminBasic ab,
-										HttpSession session,
+	public String adminIngredientManage(
+//			@ModelAttribute AdminBasic ab,
+										HttpServletRequest request,
 									 	Model model) {
-		ab = adminBasic(ab, session);
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
 		int listCount = aService.getIngredientCount(ab);
 		
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Ingredient> igdList = aService.selectIngredientList(pi, ab);
+		
 //		product에 등록된 Ingredient에 한해 product정보 입력 메소드 실행
 		for(int i = 0; i < igdList.size(); i++) {
 			Ingredient igd = igdList.get(i);
@@ -474,7 +498,7 @@ public class AdminController {
 		}
 		if(igdList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("igdList", igdList);
 			return "adminIngredientManage";
 		}else {
@@ -482,11 +506,12 @@ public class AdminController {
 		}
 	}
 	@GetMapping("adminIngredientDetail.ad")
-	public String adminIngredientDetail(@ModelAttribute AdminBasic ab,
+	public String adminIngredientDetail(
+//			@ModelAttribute AdminBasic ab,
 									 	@RequestParam("ingredientNo") int igdNo,
 									 	Model model) {
 		Ingredient igd = aService.selectIngredient(igdNo);
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+//		HashMap<String, Integer> map = new HashMap<String, Integer>();
 //		map.put("imageDivideNo", igdNo);
 //		map.put("imageType", 5);
 //		ArrayList<Image> img = aService.selectAllImageList(map);
@@ -496,7 +521,7 @@ public class AdminController {
 			igd = (Ingredient)selectProduct(igd);
 		}
 		if(igd != null) {
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("igd", igd);
 			model.addAttribute("img", img);
 			return "adminIngredientDetail";
@@ -506,13 +531,15 @@ public class AdminController {
 		
 	}
 	@PostMapping("adminIngredientUpdate.ad")
-	public String adminIngredientUpdate(@ModelAttribute AdminBasic ab,
+	public String adminIngredientUpdate(
+//			@ModelAttribute AdminBasic ab,
 									 	@ModelAttribute Ingredient igd,
-//									 	@ModelAttribute Product pd,
 									 	@RequestParam("imageChange") String imageChange,
 									 	@RequestParam("imageFile") MultipartFile imageFile,
 										HttpServletRequest request,
 									 	Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
 		int resultPd = -1;		// 선택사항이면서, ProductNo이 1일 수 있으므로 -1
 		int resultIgd = 0;		// 필수사항이므로 0
 		int resultImgDel = 1;	// 선택사항이므로 1
@@ -562,7 +589,9 @@ public class AdminController {
 			
 		}
 		if(resultPd != 0 && resultIgd != 0 && resultImgDel != 0 && resultImgSave != 0) {
-			model.addAttribute("ab", ab);
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminIngredientManage.ad";
 		}else {
 			throw new AdminException("식재료 수정에 실패하였습니다.");
@@ -591,7 +620,9 @@ public class AdminController {
 	}
 	@PostMapping("adminIngredientDeletes.ad")
 	public String adminIngredientDeletes(@RequestParam("selectDelete") String[] selDeletes,
-										 HttpServletRequest request) {
+										 HttpServletRequest request,
+										 Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
 		String[] igdDeletes = new String[selDeletes.length];
 		String[] pDeletes = new String[selDeletes.length];
@@ -630,6 +661,9 @@ public class AdminController {
 		
 		if(resultPd == pCount) {
 			if(resultIgd+resultImg == igdDeletes.length*2) {
+				model.addAttribute("page", ab.getPage());
+				model.addAttribute("searchType", ab.getSearchType());
+				model.addAttribute("searchText", ab.getSearchText());
 				return "redirect:adminIngredientManage.ad";
 			}
 		}
@@ -641,11 +675,12 @@ public class AdminController {
 	}
 	@PostMapping("adminIngredientInsert.ad")
 	public String adminIngredientInsert(@ModelAttribute Ingredient igd,
-//									    @ModelAttribute Product pd,
 										@RequestParam("imageFile") MultipartFile imageFile, 
 										HttpServletRequest request,
 										HttpSession session,
 										Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
 		Users user = (Users)session.getAttribute("loginUser");
 		igd.setUsersNo(user.getUsersNo());
 		
@@ -682,6 +717,9 @@ public class AdminController {
 		}
 		
 		if(resultPd != 0 && resultIgd != 0 && resultImg != 0) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminIngredientManage.ad";
 		}else {
 			throw new AdminException("식재료 등록에 실패하였습니다.");
@@ -691,10 +729,11 @@ public class AdminController {
 	
 //	Food-식품 관리
 	@GetMapping("adminFoodManage.ad")
-	public String adminFoodManage(@ModelAttribute AdminBasic ab,
-								  HttpSession session,
+	public String adminFoodManage(
+//			@ModelAttribute AdminBasic ab,
+								  HttpServletRequest request,
 								  Model model) {
-		ab = adminBasic(ab, session);
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
 		int listCount = aService.getFoodCount(ab);
 		
@@ -706,7 +745,7 @@ public class AdminController {
 		}
 		if(fList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("fList", fList);
 			return "adminFoodManage";
 		}else{
@@ -714,7 +753,8 @@ public class AdminController {
 		}
 	}
 	@GetMapping("adminFoodDetail.ad")
-	public String adminFoodDetail(@ModelAttribute AdminBasic ab,
+	public String adminFoodDetail(
+//			@ModelAttribute AdminBasic ab,
 								  @RequestParam("productNo") int foodNo,
 								  Model model) {
 		Food f = aService.selectFood(foodNo);
@@ -735,7 +775,7 @@ public class AdminController {
 		
 		f = (Food)selectProduct(f);
 		if(f != null) {
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("f", f);
 			model.addAttribute("thumbnail", thumbnail);
 			model.addAttribute("imgList", imgList);
@@ -745,21 +785,24 @@ public class AdminController {
 		}
 	}
 	@PostMapping("adminFoodUpdate.ad")
-	public String adminFoodUpdate(@ModelAttribute AdminBasic ab,
+	public String adminFoodUpdate(
+//			@ModelAttribute AdminBasic ab,
 								  HttpServletRequest request,
-								  HttpSession session,
 								  Model model,
 								  @ModelAttribute Food f
-//								  @ModelAttribute Product p
 //								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles
 								  ) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
 		
 		int resultF = aService.updateFood(f);
 		int resultPd = aService.updateProduct(f);
 		
 		if(resultF+resultPd == 2) {
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminFoodManage.ad";
 		}else {
 			throw new AdminException("식품 수정에 실패하였습니다.");
@@ -767,8 +810,10 @@ public class AdminController {
 	}
 	@PostMapping("adminFoodDeletes.ad")
 	public String adminFoodDeletes(@RequestParam("selectDelete") String[] selDeletes,
-								   HttpServletRequest request) {
-
+								   HttpServletRequest request,
+								   Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
 		int resultImg = 0;
 		int resultFood = 0;
 		int resultPd = 0;
@@ -793,6 +838,9 @@ public class AdminController {
 		resultPd = aService.deletesProduct(selDeletes);
 		
 		if(resultImg == imgList.size() && resultFood == selDeletes.length && resultPd == selDeletes.length) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminFoodManage.ad";
 		}else {
 			throw new AdminException("식재료 삭제 실패");
@@ -819,13 +867,16 @@ public class AdminController {
 		return "adminFoodWrite";
 	}
 	@PostMapping("adminFoodInsert.ad")
-	public String adminFoodInsert(@ModelAttribute AdminBasic ab,
+	public String adminFoodInsert(
+//			@ModelAttribute AdminBasic ab,
 								  HttpServletRequest request,
 								  HttpSession session,
 								  Model model,
 								  @ModelAttribute Food f,
 //								  @ModelAttribute Product p,
 								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
 		Users user = (Users)session.getAttribute("loginUser");
 		f.setUsersNo(user.getUsersNo());
 		
@@ -873,6 +924,9 @@ public class AdminController {
 				}
 			}
 			if(resultImg == i ) {
+				model.addAttribute("page", ab.getPage());
+				model.addAttribute("searchType", ab.getSearchType());
+				model.addAttribute("searchText", ab.getSearchText());
 				return "redirect:adminFoodManage.ad";
 			}
 		}
@@ -882,11 +936,11 @@ public class AdminController {
 	
 //	Tool-상품 관리
 	@GetMapping("adminToolManage.ad")
-	public String adminToolManage(@ModelAttribute AdminBasic ab,
-			  						 HttpSession session,
+	public String adminToolManage(
+//			@ModelAttribute AdminBasic ab,
+			  						 HttpServletRequest request,
 			  						 Model model) {
-		
-		ab = adminBasic(ab, session);
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 
 		int listCount = aService.getToolCount(ab);
 		
@@ -898,7 +952,7 @@ public class AdminController {
 		}
 		if(tList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("tList", tList);
 			return "adminToolManage";
 		}else{
@@ -907,7 +961,8 @@ public class AdminController {
 		
 	}
 	@GetMapping("adminToolDetail.ad")
-	public String adminToolDetail(@ModelAttribute AdminBasic ab,
+	public String adminToolDetail(
+//			@ModelAttribute AdminBasic ab,
 								  @RequestParam("productNo") int toolNo,
 								  Model model) {
 		Tool t = aService.selectTool(toolNo);
@@ -931,7 +986,7 @@ public class AdminController {
 		}
 		
 		if(t != null) {
-			model.addAttribute("ab", ab);
+//			model.addAttribute("ab", ab);
 			model.addAttribute("t", t);
 			model.addAttribute("thumbnail", thumbnail);
 			model.addAttribute("imgList", imgList);
@@ -942,12 +997,13 @@ public class AdminController {
 		}
 	}
 	@PostMapping("adminToolUpdate.ad")
-	public String adminToolUpdate(@ModelAttribute AdminBasic ab,
+	public String adminToolUpdate(
+//			@ModelAttribute AdminBasic ab,
 								  HttpServletRequest request,
-								  HttpSession session,
 								  Model model,
 								  @ModelAttribute Tool t,
 								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
 		int resultPd = 0;
 		int resultT = 0;
@@ -1019,21 +1075,22 @@ public class AdminController {
 			if((resultPd + resultT + resultOpDel + resultOpIn >= (1+1+0+1)) 
 					&& resultImgDel == resultImgIn 
 					&& resultImgIn == upImageCount) {
-				model.addAttribute("ab", ab);
+				model.addAttribute("page", ab.getPage());
+				model.addAttribute("searchType", ab.getSearchType());
+				model.addAttribute("searchText", ab.getSearchText());
 				return "redirect:adminToolManage.ad";
 			}else {
 				throw new AdminException("상품 수정에 실패하였습니다.");
 			}
+		}else {
+			throw new AdminException("상품 수정에 실패하였습니다.");
 		}
-		
-		
-		
-		
-		return "redirect:adminToolManage.ad";
 	}
 	@PostMapping("adminToolDeletes.ad")
 	public String adminTooldDeletes(@RequestParam("selectDelete") String[] selDeletes,
-									HttpServletRequest request) {
+									HttpServletRequest request,
+									Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
 		int resultImg = 0;
 		int resultOp = 0;
@@ -1059,6 +1116,9 @@ public class AdminController {
 		resultPd = aService.deletesProduct(selDeletes);
 		
 		if(resultImg == imgList.size() && resultOp != 0 && resultTool == selDeletes.length && resultPd == selDeletes.length) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminToolManage.ad";
 		}else {
 			throw new AdminException("식재료 삭제 실패");
@@ -1069,12 +1129,14 @@ public class AdminController {
 		return "adminToolWrite";
 	}
 	@PostMapping("adminToolInsert.ad")
-	public String adminToolInsert(@ModelAttribute AdminBasic ab,
+	public String adminToolInsert(
+//			@ModelAttribute AdminBasic ab,
 								  HttpServletRequest request,
 								  HttpSession session,
 								  Model model,
 								  @ModelAttribute Tool t,
 								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
 		Users user = (Users)session.getAttribute("loginUser");
 		t.setUsersNo(user.getUsersNo());
@@ -1128,6 +1190,9 @@ public class AdminController {
 				}
 			}
 			if(resultImg == i) {
+				model.addAttribute("page", ab.getPage());
+				model.addAttribute("searchType", ab.getSearchType());
+				model.addAttribute("searchText", ab.getSearchText());
 				return "redirect:adminToolManage.ad";
 			}
 		}
@@ -1332,27 +1397,27 @@ public class AdminController {
 		return p;
 	}
 	
-	private AdminBasic adminBasic(AdminBasic ab, HttpSession session) {
-		int currentPage = 1;
-		if(ab.getPage() == null) {
-			ab.setPage(currentPage);
-		}
-		int pageCount = 10;
-	//	세션에 값 X ab에 값 X	-> 초기값 동일 설정
-		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
-			ab.setPageCount(pageCount);
-			session.setAttribute("pageCount", pageCount);
-	//	세션에 값 X ab에 값 O	(불가능)
-	//	세션에 값 O ab에 값 X	-> 세션값 ab에 입력
-		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
-			ab.setPageCount((int)session.getAttribute("pageCount"));
-	//	세션에 값 O ab에 값 O	-> ab값 세션에 입력
-		}else {
-			session.setAttribute("pageCount", ab.getPageCount());
-		}
-		
-		return ab;
-	}
+//	private AdminBasic adminBasic(AdminBasic ab, HttpSession session) {
+//		int currentPage = 1;
+//		if(ab.getPage() == null) {
+//			ab.setPage(currentPage);
+//		}
+//		int pageCount = 10;
+//	//	세션에 값 X ab에 값 X	-> 초기값 동일 설정
+//		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
+//			ab.setPageCount(pageCount);
+//			session.setAttribute("pageCount", pageCount);
+//	//	세션에 값 X ab에 값 O	(불가능)
+//	//	세션에 값 O ab에 값 X	-> 세션값 ab에 입력
+//		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
+//			ab.setPageCount((int)session.getAttribute("pageCount"));
+//	//	세션에 값 O ab에 값 O	-> ab값 세션에 입력
+//		}else {
+//			session.setAttribute("pageCount", ab.getPageCount());
+//		}
+//		
+//		return ab;
+//	}
 
 	private ArrayList<Image> selectAllImageList(int imageDivideNo, int imageType, int imageLevel) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();

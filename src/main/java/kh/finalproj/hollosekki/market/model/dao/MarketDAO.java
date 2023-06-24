@@ -224,7 +224,7 @@ public class MarketDAO {
 		
 	}	
 	//배송지 삭제 
-	}
+	
 	//諛곗넚吏� �궘�젣 
 	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
 		sqlSession.delete("marketMapper.delShipping", shippingNo);

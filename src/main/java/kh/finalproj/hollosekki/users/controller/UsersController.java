@@ -270,7 +270,7 @@ public class UsersController {
 			currentPage = page;
 		}
 		int listCount = rService.getListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		PageInfo pi = kh.finalproj.hollosekki.common.Pagination.getPageInfo(currentPage, listCount, 10);
 		
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		

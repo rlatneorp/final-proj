@@ -223,6 +223,10 @@ public class MarketDAO {
 		return sqlSession.insert("marketMapper.insertImage", image);
 		
 	}	
+	//배송지 삭제 
+	
+	//諛곗넚吏� �궘�젣 
+	
 	//獄쏄퀣�꽊筌욑옙 占쎄텣占쎌젫 
 	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
 		sqlSession.delete("marketMapper.delShipping", shippingNo);

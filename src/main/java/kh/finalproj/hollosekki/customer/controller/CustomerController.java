@@ -3,14 +3,12 @@ package kh.finalproj.hollosekki.customer.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,6 +16,7 @@ import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.customer.model.service.CustomerService;
 import kh.finalproj.hollosekki.customer.model.vo.Customer;
+import kh.finalproj.hollosekki.customer.model.vo.Qna;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
 @Controller
@@ -46,6 +45,7 @@ public class CustomerController {
 	public String faqBoard(@RequestParam(value="category", required=false) String category,@RequestParam(value="search", required=false) String search, HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
 			Model model) {
 		if(currentPage == null) {
+			
 			currentPage = 1;
 		}
 		
@@ -101,7 +101,7 @@ public class CustomerController {
 	}
 	
 	@RequestMapping("personalQuestion.cs")
-	public String personalQuestion(HttpSession session, @RequestParam(value="qnaContent",required=false) String qnaContent, Model model) {
+	public String personalQuestion(HttpSession session, @ModelAttribute Qna q) {
 		Users u = (Users)session.getAttribute("loginUser");
 		int usersNo = 0;
 //		int adminNo = 0;
@@ -115,8 +115,9 @@ public class CustomerController {
 		}
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(qnaContent != null) {
-			map.put("qnaContent", qnaContent);
+		if(q.getQnaContent() != null) {
+			map.put("qnaContent", q.getQnaContent());
+			map.put("qnaTitle", q.getQnaTitle());
 			map.put("usersNo", usersNo);
 //			map.put("adminNO", adminNo);
 			

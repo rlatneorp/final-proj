@@ -314,7 +314,7 @@
 		values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, #{imageLevel})
 	</insert>
 	
-		<select id="selectAllImageList" resultMap="imageResultSet">
+	<select id="selectAllImageList" resultMap="imageResultSet">
 		select *
 		from (select *
 			  from image

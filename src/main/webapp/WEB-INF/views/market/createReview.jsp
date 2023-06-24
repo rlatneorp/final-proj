@@ -184,8 +184,7 @@ dl dd div label{
 
 					<label for="title" style="font-weight: 800;">아이디</label>
 
-					<input type="hidden" class="form-control" name="productNo" id="productNo" value="${productNo}">
-					
+					<input type="hidden" class="form-control" name="productNo" id="productNo" value="${productNo}" readonly>
 					<input type="text" class="form-control" name="title" id="title" value="${loginUser.usersId}" readonly>
 
 				</div>
@@ -193,16 +192,16 @@ dl dd div label{
 					<fieldset>
 						<span style="font-weight: 800;"> 별점을 남겨주세요</span>
 						<br>
-						<input type="radio" name="reviewStar" value="★★★★★" id="reviewStar5">
-							<label for="reviewStar5">★</label>
-						<input type="radio" name="reviewStar" value="★★★★" id="reviewStar4">
-							<label for="reviewStar4">★</label>
-						<input type="radio" name="reviewStar" value="★★★" id="reviewStar3">
-							<label for="reviewStar3">★</label>
-						<input type="radio" name="reviewStar" value="★★" id="reviewStar2">
-							<label for="reviewStar2">★</label>
-						<input type="radio" name="reviewStar" value="★" id="reviewStar1">
-							<label for="reviewStar1">★</label>
+						<input type="radio" name="reviewScore" value="5" id="reviewScore5">
+							<label for="reviewScore5">★</label>
+						<input type="radio" name="reviewScore" value="4" id="reviewScore4">
+							<label for="reviewScore4">★</label>
+						<input type="radio" name="reviewScore" value="3" id="reviewScore3">
+							<label for="reviewScore3">★</label>
+						<input type="radio" name="reviewScore" value="2" id="reviewScore2">
+							<label for="reviewScore2">★</label>
+						<input type="radio" name="reviewScore" value="1" id="reviewScore1">
+							<label for="reviewScore1">★</label>
 				  </fieldset>
 				
 				<br>
@@ -213,8 +212,8 @@ dl dd div label{
 				<div class="mb-contents">
 
 					<label for="content" style="font-weight: 800;">내용</label>
-					
-					<textarea class="form-control" rows="5" name="content" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  ></textarea>
+
+					<textarea class="form-control" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  ></textarea>
 
 				</div>
 				

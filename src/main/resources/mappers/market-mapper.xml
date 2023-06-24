@@ -239,7 +239,11 @@
 	</select>
 	
 	<select id="selectOptionsSet" resultMap="optionsList">
-		select * from options where product_no = #{productNo}
+				select *
+		from (select *
+			  from options
+			  order by option_no)
+		where product_no = #{productNo}
 	</select>
 	
 	<select id="updateOptionNo" resultType="_int">
@@ -255,7 +259,7 @@
 	</select>
 	
 	<select id="selectProductSet" resultMap="productList">
-		select * from product where product_no = #{productNo}
+		select * from product where product_no = #{productNo} 
 	</select>
 	
 	<select	id="selectReview" resultMap ="reviewResultSet">
@@ -358,6 +362,46 @@
 		DELETE FROM shipping_address
 		WHERE shipping_no = #{shippingNo}
 	</delete>
+	
+	
+	<resultMap type="Review" id="reviewResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="REVIEW_NO" property="reviewNo"/>
+		<result column="REVIEW_TITLE" property="reviewTitle"/>
+		<result column="REVIEW_CONTENT" property="reviewContent"/>
+		<result column="REVIEW_SCORE" property="reviewScore"/>
+		<result column="REVIEW_STATUS" property="reviewStatus"/>
+		<result column="REVIEW_DATE" property="reviewDate"/>
+	</resultMap>
+	
+	
+	<insert	 id="insertReview">
+		insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date)
+		values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate)
+	</insert>
+	
+	<select	 id="selectReview" resultMap="reviewResultSet">
+		select *
+		from (select *
+			  from review
+			  order by review_date desc)	
+		where product_no = #{productNo}
+	</select>
+	
+	<select id="selectImgList" resultMap="imageResultSet">
+		select *
+		from image
+		where image_divide_no = #{productNo} and image_type = 7
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<!-- 포인트 조회  -->
 	<select id="selectPoint" resultType="_int">

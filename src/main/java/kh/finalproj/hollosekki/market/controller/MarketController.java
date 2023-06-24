@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,7 @@ import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
@@ -183,6 +185,8 @@ public class MarketController {
 
 	@GetMapping("market_detail.ma")
 	public String marketdetail(@RequestParam("productNo") int productNo,
+							   @ModelAttribute Review r,
+							   @ModelAttribute Image img,
 							   HttpSession session, Model model) {
 		Users users = (Users)session.getAttribute("loginUser");
 		Tool tool = mkService.selectTool(productNo);
@@ -190,10 +194,13 @@ public class MarketController {
 		Product p = mkService.selectProductSet(productNo);
 		
 		
+		ArrayList<Review> list = mkService.selectReview(productNo);
+//		ArrayList<Image> rList = new ArrayList();
+//		
+		if(list != null) {
+			model.addAttribute("list", list);
+		}
 		
-//		System.out.println(options);
-//		System.out.println(tool);
-//		System.out.println(p);
 		model.addAttribute("tool", tool);
 		model.addAttribute("p", p);
 		model.addAttribute("options", options);
@@ -207,23 +214,45 @@ public class MarketController {
 	
 	@PostMapping("insertReview.ma")
 	public String insertReview(HttpSession session, 
-							   @ModelAttribute Product p,
-							   @RequestParam ("imageFile") ArrayList<MultipartFile> imageFiles,
+							   @RequestParam ("productNo") int productNo,
+							   @ModelAttribute Review r,
+//							   @ModelAttribute Image img,
+							   @RequestParam(value="reviewScore", defaultValue = "0", required=false) int reviewScore,
+							   @RequestParam (value = "imageFile", required = false) ArrayList<MultipartFile> imageFiles,
 							   HttpServletRequest request,
 							   Model model) {
 		
-		model.addAttribute("productNo", p.getProductNo());
+		r.setProductNo(productNo);
+		r.setReviewContent(r.getReviewContent());
+		r.setReviewScore(r.getReviewScore());
+		int result = mkService.insertReview(r);
+		
+//		System.out.println(imageFiles);
+		
+ 		
+		if(result > 0) {
+			model.addAttribute("productNo", productNo);
+			model.addAttribute("review", r);
+		}
+		
+		
+		
+//		if(imgList != null) {
+//			model.addAttribute("rImg", imageFiles);
+//		}
+//		
+//		System.out.println(imgList);
+		
 		
 		int i = 0;
 		int resultF = 0;
 		int resultImg = 0;
-		
 		for(MultipartFile imageFile : imageFiles) {
 			Image image = new Image();
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
 				if(returnArr[1] != null) {
-					image.setImageDivideNo(p.getProductNo());
+					image.setImageDivideNo(productNo);
 					image.setImageType(7); /*리뷰는 7번*/
 					image.setImagePath(returnArr[0]);
 					image.setImageOriginalName(imageFile.getOriginalFilename());
@@ -241,9 +270,7 @@ public class MarketController {
 			return "redirect:market_detail.ma";
 		}
 		
-		
 		return "redirect:market_detail.ma";
-//		return "redirect:market_detail.ma"+p.getProductNo();
 	}
 		
 	

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -230,6 +231,10 @@ public class MarketDAO {
 	//獄쏄퀣�꽊筌욑옙 占쎄텣占쎌젫 
 	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
 		sqlSession.delete("marketMapper.delShipping", shippingNo);
+	}
+
+	public int isertReview(SqlSessionTemplate sqlSession, Review r) {
+		return sqlSession.insert("marketMapper.insertReview", r);
 	}
 
 	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {

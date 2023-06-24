@@ -8,6 +8,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -227,6 +228,19 @@ public class MarketService {
 	public ArrayList<Review> selectReview(int productNo) {
 		return mkDAO.selectReview(sqlSession,productNo);
 	}
+
+
+	public int insertReview(Review r) {
+		return mkDAO.isertReview(sqlSession, r);
+	}
+
+	public ArrayList<Review> selectReview(int productNo) {
+		return mkDAO.selectReview(sqlSession, productNo);
+	}
+
+//	public ArrayList<Image> selectImgList(ArrayList<MultipartFile> imageFiles) {
+//		return mkDAO.selectImgList(sqlSession,imageFiles);
+//	}
 
 
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {

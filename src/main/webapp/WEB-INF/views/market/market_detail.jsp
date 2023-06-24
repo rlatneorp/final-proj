@@ -879,26 +879,139 @@ p b {
 	
 	
 	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
+		<div class="reviewWrap1" style="padding: 10px;">
+				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">${textboxCount}</span>
+			
+<%-- 			<c:if test="${ loginUser != null }"> --%>
+					<div class="review_btn">
+						<a href="createReview.ma?productNo=1000">
+						<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
+					</div>
+<%-- 				</c:if>	 --%>
+				<div class="photoList">
+					<ul style="padding: 10px;">
+						<li ><img src="img" alt="" /></li>
+						<li><img src="img" alt="" /></li>
+						<li ><img src="img" alt=""/></li>
+					</ul>
+				</div>
+		</div>
+			
+
+		<c:forEach items="${ list }" var="r" >
+			<div class="textbox">
+				<div style="padding: 10px;">
+					<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
+					<span style="font-size: 20px; font-weight: 200; color:#4485d7;" class="reviewStar">
+						<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
+						<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
+						<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
+						<c:if test="${r.reviewScore  eq  2 }" >★★☆☆☆</c:if>
+						<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
+						<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
+					</span>
+					&nbsp;
+					<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
+				
+<%-- 				<c:if test="${ fn:containsIgnoreCase(a.renameName, 'jpg') or fn:containsIgnoreCase(a.renameName, 'png')}"> --%>
+					<div class="reviewPhoto">
+						<ul style="padding: 10px;">
+								<li><img src="${ contextPath }/resources/uploadFiles/${a.renameName}"></li>
+						</ul>
+					</div>
+				</div>
+<%-- 			</c:if> --%>
+					
+				<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
 	
-			<div class="reviewWrap1" style="padding: 10px;">
-					<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">${textboxCount}</span>
-				
-	<%-- 			<c:if test="${ loginUser != null }"> --%>
-						<div class="review_btn">
-							<a href="createReview.ma?productNo=${p.productNo}">
-							<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
+					<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+							${r.reviewContent}  
 						</div>
-	<%-- 				</c:if>	 --%>
-<!-- 					<div class="photoList"> -->
-<!-- 						<ul style="padding: 10px;"> -->
-<!-- 							<li ><img src="img" alt="" /></li> -->
-<!-- 							<li><img src="img" alt="" /></li> -->
-<!-- 							<li ><img src="img" alt=""/></li> -->
-<!-- 						</ul> -->
-<!-- 					</div> -->
+				</div>
+				
 			</div>
+		</c:forEach>
+		
+<!-- 		<div class="textbox"> -->
+<!-- 			<div style="padding: 10px;"> -->
+<!-- 				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div> -->
 				
+<!-- 				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span> -->
+<!-- 				&nbsp; -->
+<!-- 				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span> -->
 				
+<!-- 				<div class="reviewPhoto"> -->
+<!-- 					<ul style="padding: 10px;"> -->
+<!-- 						<li ><img src="img" alt="" /></li> -->
+<!-- 						<li><img src="img" alt="" /></li> -->
+<!-- 						<li ><img src="img" alt=""/></li> -->
+<!-- 					</ul> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			
+				
+<!-- 			<div style="display: inline-block; width: 100%; margin-bottom: 30px;"> -->
+
+<!-- 				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;"> -->
+<%-- <%-- 					<c:forEach items="list" var="r"> --%> 
+				
+<%-- <%-- 					</c:forEach> --%> 
+<!-- 					</div> -->
+<!-- 			</div> -->
+			
+<!-- 		</div> -->
+<!-- 		<div class="textbox"> -->
+<!-- 			<div style="padding: 10px;"> -->
+<!-- 				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div> -->
+				
+<!-- 				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span> -->
+<!-- 				&nbsp; -->
+<!-- 				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span> -->
+				
+<!-- 				<div class="reviewPhoto"> -->
+<!-- 					<ul style="padding: 10px;"> -->
+<!-- 						<li ><img src="img" alt="" /></li> -->
+<!-- 						<li><img src="img" alt="" /></li> -->
+<!-- 						<li ><img src="img" alt=""/></li> -->
+<!-- 					</ul> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			
+				
+<!-- 			<div style="display: inline-block; width: 100%; margin-bottom: 30px;"> -->
+
+<!-- 				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;"> -->
+<!-- 					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!! -->
+<!-- 					</div> -->
+<!-- 			</div> -->
+			
+<!-- 		</div> -->
+<!-- 		<div class="textbox"> -->
+<!-- 			<div style="padding: 10px;"> -->
+<!-- 				<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div> -->
+				
+<!-- 				<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span> -->
+<!-- 				&nbsp; -->
+<!-- 				<span style="font-size: 15px; font-weight: 200;">2023-05-05</span> -->
+				
+<!-- 				<div class="reviewPhoto"> -->
+<!-- 					<ul style="padding: 10px;"> -->
+<!-- 						<li ><img src="img" alt="" /></li> -->
+<!-- 						<li><img src="img" alt="" /></li> -->
+<!-- 						<li ><img src="img" alt=""/></li> -->
+<!-- 					</ul> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			
+				
+<!-- 			<div style="display: inline-block; width: 100%; margin-bottom: 30px;"> -->
+
+<!-- 				<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;"> -->
+<!-- 					상품이 좋네요 실물과 비슷해요 배송도 빠르고 너무 좋네요 색깔별로 살려구요 \(*ㅠ*)b!! -->
+<!-- 					</div> -->
+<!-- 			</div> -->
+			
+<!-- 		</div> -->
 	
 				<div class="textbox">
 					<div style="padding: 10px;">
@@ -1021,7 +1134,7 @@ p b {
               	
         <!--  반복 될 부분 -->      	
              <li class="accordion_q_li js_data_row" >
-                <div class="accordion_q_tit1">
+                <div class="accordion_q_tit1"> 
                    
                     <div class="qna">
                         상품문의 입니다.
@@ -1140,7 +1253,8 @@ p b {
 	   const like = document.querySelector(".like");
 	   const productSet = document.querySelector(".productSet");
 	   const increase = document.querySelectorAll(".increase");	
-	   
+	   const reviewStar = document.querySelectorAll(".reviewStar");
+	  
 		
 			$(document).on("click",".btnbox",function(e){
 				const increBtn = this.childNodes[2]; //증가버튼
@@ -1257,10 +1371,22 @@ p b {
 	      	})
 	        		
 	    	
-	   function priceToString(productPrice) {
-	       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	   }
+// 	   function priceToString(productPrice) {
+// 	       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+// 	   }
 	   
+	    	
+	    	
+	    	
+	   
+	 	   function star(){
+	 		   for(let i=0; i<=5; i++){
+	 			  if( reviewStar[i].innerText == 5 ){
+	 				 console.log(i);
+	 			  }
+	 		   }
+	 	   } 
+
 		
 	$(function(){
 	    $(".textbox").slice(0, 2).show(); // 초기갯수

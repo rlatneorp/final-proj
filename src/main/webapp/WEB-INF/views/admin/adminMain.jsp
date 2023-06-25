@@ -15,7 +15,7 @@
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
 	
-	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
+	<div class="mainBox d-inline-block align-top">
 		<div class="row mt-5">
 			<div class="dataBox col-6 border-end border-bottom p-4">
 				<h4>매출</h4>

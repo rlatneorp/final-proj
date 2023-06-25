@@ -27,7 +27,7 @@
 					<br>
 					<h1 style="text-align: left;">자주 묻는 질문</h1>
 					<br>
-					<hr style="width: 1050px;">
+					<hr style="width: 1000px;">
 					<br>
 					<div class="categoryBtn row justify-content-end" style="margin-right: 20px;">
 						<div class="ddd col-2">
@@ -48,7 +48,7 @@
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="flush-headingOne-${st.index +1 }">
 							<button class="accordion-button collapsed titleBt" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${st.index +1 }" aria-expanded="false" aria-controls="flush-collapseOne-${st.index +1 }">
-							       　　|　　Q. ${i.faqTitle } 
+							       　　Q. ${i.faqTitle } 
 							</button>
 							</h2>
 							<div id="flush-collapseOne-${st.index +1 }" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${st.index +1 }">

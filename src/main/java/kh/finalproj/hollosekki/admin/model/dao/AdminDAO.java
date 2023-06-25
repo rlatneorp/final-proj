@@ -7,7 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -18,6 +18,7 @@ import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.common.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
 public class AdminDAO {
@@ -76,6 +77,51 @@ public class AdminDAO {
 		return sqlSession.delete("adminMapper.deleteImage", img);
 	}
 	
+	
+//	Users-회원
+	public int getUsersCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getUsersCount", ab);
+	}
+
+	public ArrayList<Users> selectUsersList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectUsersList", ab, rowBounds);
+	}
+
+	public Users selectUsers(SqlSessionTemplate sqlSession, int uNo) {
+		return sqlSession.selectOne("adminMapper.selectUsers", uNo);
+	}
+
+	public ArrayList<Integer> selectUsersInfo(SqlSessionTemplate sqlSession, HashMap<String, Integer> uMap) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectUsersInfo", uMap);
+	}
+
+	public int updateUsers(SqlSessionTemplate sqlSession, Users u, Point p) {
+		int resultU = sqlSession.update("adminMapper.updateUsers", u);
+		int resultP = 0;
+		if(resultU > 0) {
+			if(p.getPointBefore() != p.getPoint()) {
+				resultP = sqlSession.insert("adminMapper.insertPoint", p);
+			}else {
+				resultP = 1;
+			}
+		}
+		return resultU+resultP;
+	}
+
+	
+//	Point-포인트
+	public int getPointCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getPointCount", ab);
+	}
+
+	public ArrayList<Point> selectPointList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectPointList", ab, rowBounds);
+	}
+
 	
 //	Menu-메뉴
 	public int getMenuCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
@@ -213,48 +259,25 @@ public class AdminDAO {
 		return sqlSession.delete("adminMapper.deletesTool", toolDeletes);
 	}
 
-	
 
-	
-	public int getUsersCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
-		return sqlSession.selectOne("adminMapper.getUsersCount", ab);
+//	Recipe-레시피
+	public int getRecipeCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getRecipeCount", ab);
 	}
 
-	public ArrayList<Users> selectUsersList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+	public ArrayList<Recipe> selectRecipeList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("adminMapper.selectUsersList", ab, rowBounds);
+		return (ArrayList)sqlSession.selectList("adminMapper.selectRecipeList", ab, rowBounds);
 	}
 
-	public Users selectUsers(SqlSessionTemplate sqlSession, int uNo) {
-		return sqlSession.selectOne("adminMapper.selectUsers", uNo);
-	}
-
-	public ArrayList<Integer> selectUsersInfo(SqlSessionTemplate sqlSession, HashMap<String, Integer> uMap) {
-		return (ArrayList)sqlSession.selectList("adminMapper.selectUsersInfo", uMap);
-	}
-
-	public int updateUsers(SqlSessionTemplate sqlSession, Users u, Point p) {
-		int resultU = sqlSession.update("adminMapper.updateUsers", u);
-		int resultP = 0;
-		if(resultU > 0) {
-			if(p.getPointBefore() != p.getPoint()) {
-				resultP = sqlSession.insert("adminMapper.insertPoint", p);
-			}else {
-				resultP = 1;
-			}
+	public int deletesRecipeOrder(SqlSessionTemplate sqlSession, String[] selDeletes) {
+		int resultRpOd = sqlSession.delete("adminMapper.deletesRecipeOrder", selDeletes);
+		int resultRp = 0;
+		if(resultRpOd > 0) {
+			resultRp = sqlSession.delete("adminMapper.deletesRecipe", selDeletes);
 		}
-		return resultU+resultP;
-	}
-
-	public int getPointCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
-		return sqlSession.selectOne("adminMapper.getPointCount", ab);
-	}
-
-	public ArrayList<Point> selectPointList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("adminMapper.selectPointList", ab, rowBounds);
+		return resultRpOd+resultRp;
 	}
 
 	

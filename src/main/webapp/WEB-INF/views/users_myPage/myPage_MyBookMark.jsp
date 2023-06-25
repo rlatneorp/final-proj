@@ -114,7 +114,7 @@ th:first-child, td:first-child {
 					<table>
 						<thead>
 							<tr style="background-color: #B0DAFF; opacity: 90%">
-								<th width=200>사진</th>
+								<th width=150>사진</th>
 								<th>종류</th>
 								<th>제목</th>
 								<th>작성자</th>
@@ -123,54 +123,26 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<tr>
-								<td><img src="resources/images/food3.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td>강건강</td>
-								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food4.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td>강건강</td>
-								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food5.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td>강건강</td>
-								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food6.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td>강건강</td>
-								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food7.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td>강건강</td>
-								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food8.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td>강건강</td>
-								<td>2020-0620</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
+							<c:forEach items="${ list }" var="l">
+								<tr>
+									<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+									<c:if test="${ l.NUMBER_TYPE == 1 }">
+										<td>레시피</td>
+									</c:if>
+									<c:if test="${ l.NUMBER_TYPE == 2 }">
+										<td>식단</td>
+									</c:if>
+									<c:if test="${ l.RECIPE_NAME != null }">
+										<td>${ l.RECIPE_NAME }</td>
+									</c:if>
+									<c:if test="${ l.RECIPE_NAME == null }">
+										<td>${ l.MENU_NAME }</td>
+									</c:if>
+									<td>${ l.NICKNAME }</td>
+									<td>${ fn:split(l.RECIPE_MODIFY_DATE, ' ')[0] }</td>
+									<td><input type="checkbox" class="delete"></td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

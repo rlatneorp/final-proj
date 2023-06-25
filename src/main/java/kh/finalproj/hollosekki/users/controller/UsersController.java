@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import kh.finalproj.hollosekki.common.Pagination;
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
@@ -264,13 +265,13 @@ public class UsersController {
 
 	// �궡 �젅�떆�뵾 議고쉶
 	@RequestMapping("myPage_MyRecipe.me")
-	public String myPage_MyRecipe(Model model,  @RequestParam(value = "page", required = false) Integer page) {
+	public String myPage_MyRecipe(Model model, @RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
 		}
 		int listCount = rService.getListCount();
-		PageInfo pi = kh.finalproj.hollosekki.common.Pagination.getPageInfo(currentPage, listCount, 10);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		
@@ -295,7 +296,21 @@ public class UsersController {
 	}
 	
 	@RequestMapping("myPage_MyBookMark.me")
-	public String myPage_MyBookMark() {
+	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		int listCount = rService.getListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		
+		ArrayList<HashMap<String, Object>> list = uService.myBookMarkList(usersNo, pi);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+		
 		return "myPage_MyBookMark";
 	}
 	

@@ -115,7 +115,7 @@ th:first-child, td:first-child {
 					<table>
 						<thead>
 							<tr style="background-color: #B0DAFF; opacity: 90%">
-								<th width=250>사진</th>
+								<th width=150>사진</th>
 								<th>종류</th>
 								<th>제목</th>
 								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>

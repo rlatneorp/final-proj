@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
@@ -81,6 +82,12 @@ public class UsersDAO {
 
 	public int recipeLikeCount(SqlSessionTemplate sqlSession, int foodNo) {
 		return sqlSession.selectOne("usersMapper.recipeLikeCount", foodNo);
+	}
+
+	public ArrayList<HashMap<String, Object>> myBookMarkList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("usersMapper.myBookMarkList", usersNo, rowBounds);
 	}
 
 

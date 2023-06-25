@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
@@ -102,5 +103,10 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public int recipeLikeCount(int foodNo) {
 		return uDAO.recipeLikeCount(sqlSession, foodNo);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> myBookMarkList(int usersNo, PageInfo pi) {
+		return uDAO.myBookMarkList(sqlSession, usersNo, pi);
 	}
 }

@@ -3,6 +3,7 @@ package kh.finalproj.hollosekki.users.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
@@ -42,6 +43,8 @@ public interface UsersService {
 	int recipeBookCount(int foodNo);
 
 	int recipeLikeCount(int foodNo);
+
+	ArrayList<HashMap<String, Object>> myBookMarkList(int usersNo, PageInfo pi);
 
 	
 }

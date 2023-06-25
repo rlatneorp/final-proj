@@ -49,7 +49,7 @@ public class UsersController {
 	
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
-		// �씠誘몄� 議고쉶
+		// 이미지 조회
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		Image image = uService.selectImage(usersNo);
 		model.addAttribute("image", image);
@@ -59,7 +59,7 @@ public class UsersController {
 		model.addAttribute("following", following);
 		model.addAttribute("follower", follower);
 		
-		// �뙏濡쒖엵 �뙏濡쒖썙 由ъ뒪�듃 議고쉶
+		// 팔로잉 팔로워 리스트 조회
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
 		System.out.println(followingList);
@@ -71,7 +71,7 @@ public class UsersController {
 			return "myPage_Main";
 	}
 	
-	// �뼵�뙏
+	// 언팔
 	@RequestMapping("myPage_unFollow.me")
 	@ResponseBody
 	public String myPage_unFollow(Model model, @RequestParam("usersNo") int usersNo, @RequestParam("followingNo") int followingNo) {
@@ -88,7 +88,7 @@ public class UsersController {
 		}
 	}
 	
-	// �뙏濡쒖슦
+	// 팔로
 	@RequestMapping("myPage_follow.me")
 	@ResponseBody
 	public String myPage_follow(Model model, @RequestParam("usersNo") int usersNo, @RequestParam("followNo") int followNo) {
@@ -105,9 +105,9 @@ public class UsersController {
 		}
 	}
 	
-	// �뙆�씪 ���옣
+	// 파일 저장
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
-		// �뙆�씪 ���옣�냼 吏��젙
+		// 파일 저장소 지정
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
 		File folder = new File(savePath);
@@ -116,7 +116,7 @@ public class UsersController {
 			folder.mkdirs();
 		}
 		
-		// �뙆�씪 �씠由� 蹂�寃� �삎�떇 吏��젙
+		// 파일 이름 변경 형식 지정
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		int ranNum = (int)(Math.random()*100000);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
@@ -136,7 +136,7 @@ public class UsersController {
 		return returnArr;
 	}
 	
-	// �뙆�씪 �궘�젣
+	// 파일 삭제
 	public void deleteFile(String fileName, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
@@ -147,7 +147,6 @@ public class UsersController {
 		}
 	}
 	
-	// �봽濡쒗븘 異붽�
 	@RequestMapping("myPage_InsertProfile.me")
 	public String myPage_InsertProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 									   Model model, HttpServletRequest request) {
@@ -172,7 +171,7 @@ public class UsersController {
 				if(result2 > 0) {
 					model.addAttribute("image", image);
 				} else {
-					throw new UsersException("�궗吏� �떎�뙣");
+					throw new UsersException("사진 실패");
 				}
 			}
 		}
@@ -181,11 +180,10 @@ public class UsersController {
 	        model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
-			throw new UsersException("�봽濡쒗븘 �닔�젙 �떎�뙣");
+			throw new UsersException("프로필 수정 실패");
 		}
 	}
 	
-	// �봽濡쒗븘 �뾽�럠
 	@RequestMapping("myPage_UpdateProfile.me")
 	public String myPage_UpdateProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 			   						   Model model, HttpServletRequest request) {
@@ -194,7 +192,7 @@ public class UsersController {
 		
 		Image image = null;
 		
-		if(file != null && !file.isEmpty()) { // �깉�뙆�씪 �뱾�뼱�샂
+		if(file != null && !file.isEmpty()) { // 새파일 들어옴
 			String[] returnArr = saveFile(file, request);
 			
 			if(returnArr[1] != null) {
@@ -206,13 +204,13 @@ public class UsersController {
 				image.setImageDivideNo(u.getUsersNo());
 				
 				Image existingImage = uService.selectImage(u.getUsersNo());
-				if(existingImage == null) { // 湲곗〈 �뙆�씪�씠 �뾾�쓣 �븣
+				if(existingImage == null) { // 기존 파일이 없을 때
 					int insertImage = uService.insertImage(image);
 					
 					if(insertImage > 0) {
 						model.addAttribute("image", image);
 					} else {
-						throw new UsersException("�궗吏� �닔�젙 �떎�뙣");
+						throw new UsersException("사진 수정 실패");
 					}
 				} else {
 					int deleteImage = uService.deleteImage(existingImage);
@@ -225,10 +223,10 @@ public class UsersController {
 						if(insertImage > 0) {
 							model.addAttribute("image", image);
 						} else {
-							throw new UsersException("�궗吏� �닔�젙 �떎�뙣");
+							throw new UsersException("사진 수정 실패");
 						}
 					} else {
-						throw new UsersException("�궗吏� �궘�젣 �떎�뙣");
+						throw new UsersException("사진 삭제 실패");
 					}
 				}
 			}
@@ -238,18 +236,17 @@ public class UsersController {
 	        model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
-			throw new UsersException("�봽濡쒗븘 �닔�젙 �떎�뙣");
+			throw new UsersException("프로필 수정 실패");
 		}
 	}
 	
-	// �봽�궗 �궘�젣
 	@RequestMapping("myPage_DeleteImage.me")
 	@ResponseBody
 	public String myPage_DeleteImage(@RequestParam("usersNo") int usersNo, Model model,
 									 HttpServletRequest request) {
 		Image existingImage = uService.selectImage(usersNo);
 		int deleteImage = 0;
-		if(existingImage != null) { // 湲곗〈 �뙆�씪�씠 �엳�쓣 �븣
+		if(existingImage != null) { // 기존 파일이 있을 때
 			deleteImage = uService.deleteImage(existingImage);
 		}
 		
@@ -263,7 +260,7 @@ public class UsersController {
 		}
 	}
 
-	// �궡 �젅�떆�뵾 議고쉶
+	// 내 레시피 조회
 	@RequestMapping("myPage_MyRecipe.me")
 	public String myPage_MyRecipe(Model model, @RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = 1;
@@ -285,7 +282,7 @@ public class UsersController {
 			recipeBookCount = uService.recipeBookCount(foodNo);
 			recipeLikeCount = uService.recipeLikeCount(foodNo);
 			
-			r.setRecipeBookCount(recipeBookCount); // �븘�뱶�뿉 �뼐�꽕瑜� 異붽��빐�꽌 set�빐二쇨린 洹몃읆 list�뿉 �뱾�뼱媛�
+			r.setRecipeBookCount(recipeBookCount); // 필드에 얘네를 추가해서 set해주기 그럼 list에 들어감
 			r.setRecipeLikeCount(recipeLikeCount);
 		}
 		

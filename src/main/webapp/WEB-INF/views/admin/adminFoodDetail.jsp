@@ -402,7 +402,6 @@ p b {
 </style>
 <body>
 <span>
-<%@include file="../common/top.jsp" %>
 <jsp:include page="../common/adminSidebar.jsp"/>
 <br>
 </span>
@@ -412,7 +411,7 @@ p b {
 		<input type="hidden" name="productType" value="${f.productType}">
 		<input type="hidden" name="productOption" value="${f.productOption}">
 		<input type="hidden" name="productStatus" value="${f.productStatus}">
-		<input type="text" name="page" value="${ab.page}">
+		<input type="hidden" name="page" value="${ab.page}">
 		<main id="order-wrap">
 			<!-- 구매창 컨테이너 -->
 			<div class="left">

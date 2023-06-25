@@ -9,15 +9,12 @@
 <meta charset="UTF-8">
 <title>admin</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
-<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
-<style>
-	.btns{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;}
-</style>
+<!-- <script src="http://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 </head>
 
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
+	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-0">식단관리</h4>
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>

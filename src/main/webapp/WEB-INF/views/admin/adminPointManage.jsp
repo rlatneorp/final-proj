@@ -9,14 +9,11 @@
 <meta charset="UTF-8">
 <title>admin</title>
 <script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
-<style>
-	.btns{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;}
-</style>
 </head>
 
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
+	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-0">포인트관리</h4>
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>

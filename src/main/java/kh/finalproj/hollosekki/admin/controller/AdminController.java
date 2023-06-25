@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,12 +38,17 @@ import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.common.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Controller
 public class AdminController {
 	
 	@Autowired
 	private AdminService aService;
+	
+	@Autowired
+	private RecipeService rService;
 	
 	@GetMapping("adminMain.ad")
 	public String adminMain() {
@@ -166,6 +170,7 @@ public class AdminController {
 			throw new AdminException("usersUpdate에 실패하였습니다.");
 		}
 	}
+	
 	
 //	Point-포인트 관리
 	@GetMapping("adminPointManage.ad")
@@ -943,7 +948,6 @@ public class AdminController {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 
 		int listCount = aService.getToolCount(ab);
-		
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Tool> tList = aService.selectToolList(pi, ab);
 //		product정보 입력 메소드
@@ -1121,7 +1125,7 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminToolManage.ad";
 		}else {
-			throw new AdminException("식재료 삭제 실패");
+			throw new AdminException("도구상품 삭제 실패");
 		}
 	}
 	@GetMapping("adminToolWrite.ad")
@@ -1200,15 +1204,32 @@ public class AdminController {
 	}
 	
 
-
-	//	Recipe-레시피 관리
+//	Recipe-레시피 관리
 	@GetMapping("adminRecipeManage.ad")
-	public String adminRecipeManage() {
-		return "adminRecipeManage";
+	public String adminRecipeManage(HttpServletRequest request,
+									Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+
+		int listCount = aService.getRecipeCount(ab);
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Recipe> rpList = aService.selectRecipeList(pi, ab);
+		
+		if(rpList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("rpList", rpList);
+			return "adminRecipeManage";
+		}else {
+			throw new AdminException("레시피 목록 조회에 실패하였습니다.");
+		}
 	}
 	@GetMapping("adminRecipeDetail.ad")
-	public String adminRecipeDetail() {
-		return "adminRecipeDetail";
+	public String adminRecipeDetail(Model model,
+									@ModelAttribute Recipe r) {
+		
+		model.addAttribute("page", 1);
+		model.addAttribute("rId", r.getUsersId());
+		model.addAttribute("rNo", r.getFoodNo());
+		return "redirect:recipeDetail.rc";
 	}
 	@PostMapping("adminRecipeUpdate.ad")
 	public String adminRecipeUpdate() {
@@ -1216,13 +1237,43 @@ public class AdminController {
 	}
 	@GetMapping("adminRecipeWrite.ad")
 	public String adminRecipeWrite() {
-		return "adminRecipeWrite";
+		return "redirect:recipeWrite.rc";
 	}
 	@PostMapping("adminRecipeInsert.ad")
 	public String adminRecipeInsert() {
 		return "redirect:adminRecipeManage.ad";
 	}
-	
+	@PostMapping("adminRecipeDeletes.ad")
+	public String adminRecipedDeletes(@RequestParam("selectDelete") String[] selDeletes,
+									HttpServletRequest request,
+									Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
+		int resultImg = 0;
+		int resultRp = 0;
+		
+		resultRp = aService.deletesRicipeOrder(selDeletes);
+		
+		ArrayList<Image> imgList = null;
+		for(int i = 0; i < selDeletes.length; i++) {
+//			데이터 서버 이미지 삭제
+			imgList = selectAllImageList(Integer.parseInt(selDeletes[i]), 2, -1);
+			for(Image img:imgList) {
+				deleteFile(img.getImageRenameName(), request);
+//				DB서버 이미지 삭제
+				resultImg += aService.deleteImage(img);
+			}
+		}
+		
+		if(resultRp != 0 && resultImg == imgList.size()) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
+			return "redirect:adminRecipeManage.ad";
+		}else {
+			throw new AdminException("레시피 삭제 실패");
+		}
+	}
 	
 //	RecipeReview-레시피후기 관리
 	@GetMapping("adminRecipeReviewManage.ad")
@@ -1317,8 +1368,9 @@ public class AdminController {
 		map.put("dataNo", dataNo);
 		map.put("dataStatus", dataStatus);
 		map.put("dataType", dataType);
-//		dataType = 5
-//		-> users status 업데이트
+//		dataType = 
+//		5	-> users	status 업데이트
+//		6	-> recipe	status 업데이트
 		
 		int result = aService.updateStatus(map);
 		String msg = "msg";

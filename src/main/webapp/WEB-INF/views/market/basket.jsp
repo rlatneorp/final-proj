@@ -92,6 +92,12 @@ input[type="text"] {
 	height: 35px;
 }
 
+/* 형광펜 css */
+.highlight{
+  display: inline;
+   box-shadow: inset 0 -15px 0 rgba(255, 0, 0, 0.45);
+  /*-10px은 highlight의 두께*/
+}
 
 
 .address {
@@ -186,7 +192,7 @@ input[type="text"] {
 			<th class="tableBorder1" colspan="2" style="height: 40px"><b>상품/옵션정보</b></th>
 			<th class="tableBorder1"><b>수량</b></th>
 			<th class="tableBorder1"><b>상품가격</b></th>
-			<th class="tableBorder1"><b>적립/할인</b></th>
+			<th class="tableBorder1"><b>적립</b></th>
 			<th class="tableBorder1"><b>합계금액</b></th>
 		</tr>
 		<tbody id="products">
@@ -214,9 +220,18 @@ input[type="text"] {
 						<i class="bi bi-plus-square-fill" id="plus-${cl.productNo }" style="color: #00AAFF; font-size: 15px"></i>
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:150px " >
-						<span id="pp-${cl.productNo }" class="price">
-						${cl.productPrice}
-						</span>원
+						<c:if test="${cl.sale ne 0 }">
+							<span id="sale-${cl.productNo }" class="highlight"><b>${cl.sale }% 할인</b></span>
+							<br><br> <span style="text-decoration: line-through;" id="originP-${cl.productNo }">${cl.productPrice}</span>
+							<br><span id="pp-${cl.productNo }" style="font-size:25px; font-weight:bold" class="price">
+								${cl.productPrice}
+							</span>원
+						</c:if>
+						<c:if test="${cl. sale eq 0 }">
+							<span id="pp-${cl.productNo }" class="price">
+								${cl.productPrice}
+							</span>원
+						</c:if>
 					</td>
 					<td style="border-right: 2px solid #dee2e6; width:130px">
 						<span class="point" id="point-${cl.productNo }"></span>P 적립
@@ -394,7 +409,20 @@ input[type="text"] {
 	for(let p of parentPnos) { 
 		let pNos = p.children[1].value;
 		let size = parseInt(document.getElementById('size-'+ pNos).innerText);
+		
+		//상품가격 및 개별 상품 합계 금액 
+		const sales =document.getElementById('sale-' + pNos);
+		if(sales != null) {
+			const sale = parseInt(sales.innerText);
+			const originP = parseInt(document.getElementById('originP-' + pNos).innerText);
+			const discountAmount = originP * (sale / 100);
+			const discountedPrice = originP - discountAmount;
+			document.getElementById('pp-' + pNos).innerText = discountedPrice;
+			document.getElementById('sum-' + pNos).innerText = (size * discountedPrice);
 			
+		}
+		
+		
 		//적립금(POINT)
 		const sum = parseFloat(document.getElementById('sum-' + pNos).innerText.replace(/,/g, ''));
 		let pointRate = Math.round(sum*0.005);

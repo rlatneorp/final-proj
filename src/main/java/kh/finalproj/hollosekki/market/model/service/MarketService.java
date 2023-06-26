@@ -238,9 +238,10 @@ public class MarketService {
 		return mkDAO.selectReview(sqlSession, productNo);
 	}
 
-//	public ArrayList<Image> selectImgList(ArrayList<MultipartFile> imageFiles) {
-//		return mkDAO.selectImgList(sqlSession,imageFiles);
-//	}
+
+	public ArrayList<Image> selectImagList(HashMap<String, Integer> map) {
+		return mkDAO.selectImageList(sqlSession, map);
+	}
 
 
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {

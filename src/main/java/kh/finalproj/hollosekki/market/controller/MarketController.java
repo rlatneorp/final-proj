@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -182,6 +183,15 @@ public class MarketController {
 		model.addAttribute("optValues", optValues);
 		return "payDetail";
 	}
+	
+	private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", imageDivideNo);
+		map.put("imageType", imageType);
+		map.put("imageLevel", imageLevel);
+		ArrayList<Image> imageList = mkService.selectImagList(map);
+		return imageList;
+	}
 
 	@GetMapping("market_detail.ma")
 	public String marketdetail(@RequestParam("productNo") int productNo,
@@ -194,12 +204,19 @@ public class MarketController {
 		Product p = mkService.selectProductSet(productNo);
 		
 		
+		
 		ArrayList<Review> list = mkService.selectReview(productNo);
-//		ArrayList<Image> rList = new ArrayList();
+		ArrayList<Image> imgList = selectImagList(productNo, 7, 1);
+		
+		if(imgList != null) {
+			model.addAttribute("imgList", imgList);
+		}
+		
 //		
 		if(list != null) {
 			model.addAttribute("list", list);
 		}
+		
 		
 		model.addAttribute("tool", tool);
 		model.addAttribute("p", p);
@@ -216,63 +233,63 @@ public class MarketController {
 	public String insertReview(HttpSession session, 
 							   @RequestParam ("productNo") int productNo,
 							   @ModelAttribute Review r,
-//							   @ModelAttribute Image img,
+							   @ModelAttribute Image img,
 							   @RequestParam(value="reviewScore", defaultValue = "0", required=false) int reviewScore,
 							   @RequestParam (value = "imageFile", required = false) ArrayList<MultipartFile> imageFiles,
 							   HttpServletRequest request,
 							   Model model) {
 		
+		Users users = (Users)session.getAttribute("loginUser");
 		r.setProductNo(productNo);
 		r.setReviewContent(r.getReviewContent());
 		r.setReviewScore(r.getReviewScore());
+		r.setReviewWriter(users.getNickName());
 		int result = mkService.insertReview(r);
 		
-//		System.out.println(imageFiles);
 		
- 		
 		if(result > 0) {
 			model.addAttribute("productNo", productNo);
 			model.addAttribute("review", r);
 		}
 		
-		
-		
-//		if(imgList != null) {
-//			model.addAttribute("rImg", imageFiles);
-//		}
-//		
-//		System.out.println(imgList);
-		
-		
-		int i = 0;
-		int resultF = 0;
-		int resultImg = 0;
-		for(MultipartFile imageFile : imageFiles) {
-			Image image = new Image();
-			if(imageFile != null && !imageFile.isEmpty()) {
-				String[] returnArr = saveFile(imageFile, request);
-				if(returnArr[1] != null) {
-					image.setImageDivideNo(productNo);
-					image.setImageType(7); /*리뷰는 7번*/
-					image.setImagePath(returnArr[0]);
-					image.setImageOriginalName(imageFile.getOriginalFilename());
-					image.setImageRenameName(returnArr[1]);
-					image.setImageLevel(0);
-					if(i==0) {
-						image.setImageLevel(1);
+	
+		if(imageFiles != null) {	
+			int i = 0;
+			int resultF = 0;
+			int resultImg = 0;
+			for(MultipartFile imageFile : imageFiles) {
+				Image image = new Image();
+				if(imageFile != null && !imageFile.isEmpty()) {
+					String[] returnArr = saveFile(imageFile, request);
+					if(returnArr[1] != null) {
+						image.setImageDivideNo(productNo);
+						image.setImageType(7); /*리뷰는 7번*/
+						image.setImagePath(returnArr[0]);
+						image.setImageOriginalName(imageFile.getOriginalFilename());
+						image.setImageRenameName(returnArr[1]);
+						image.setImageLevel(0);
+						if(i==0) {
+							image.setImageLevel(1);
+						}
+						resultImg += mkService.insertImage(image);
+						i++;
 					}
-					resultImg += mkService.insertImage(image);
-					i++;
 				}
 			}
+			
+			
+			if(resultImg == i) {
+				return "redirect:market_detail.ma";
+			}
+			
 		}
-		if(resultImg == i) {
-			return "redirect:market_detail.ma";
-		}
-		
 		return "redirect:market_detail.ma";
 	}
-		
+	
+
+	
+	
+	
 	
 	@GetMapping("createReview.ma")
 	public String createReview(HttpSession session, Product p, Model model) {
@@ -386,7 +403,6 @@ public class MarketController {
 //		System.out.println(pNo);
 		System.out.println(c.getProductNo());
 		int result = mkService.insertCart(c);
-			System.out.println(c);
 		
 		response.setContentType("application/json; charset=utf-8");
 		GsonBuilder gb = new GsonBuilder();

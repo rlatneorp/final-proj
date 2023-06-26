@@ -234,7 +234,8 @@ public class MarketDAO {
 	}
 
 	public int isertReview(SqlSessionTemplate sqlSession, Review r) {
-		return sqlSession.insert("marketMapper.insertReview", r);
+				sqlSession.insert("marketMapper.insertReview", r);
+		return r.getReviewNo();
 	}
 
 	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {
@@ -250,6 +251,9 @@ public class MarketDAO {
 	
 	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
 		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
+
+	public ArrayList<Image> selectImageList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectImageList", map);
 	}
 
 

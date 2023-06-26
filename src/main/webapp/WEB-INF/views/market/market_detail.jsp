@@ -740,7 +740,7 @@ p b {
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-					 <span style="font-weight: 400; font-size: 42px;">${ tool.toolName} </span>
+					 <span style="font-weight: 400; font-size: 42px;">${ tool.toolName } </span>
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
@@ -901,7 +901,7 @@ p b {
 		<c:forEach items="${ list }" var="r" >
 			<div class="textbox">
 				<div style="padding: 10px;">
-					<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
+					<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">${r.reviewWriter}</div>
 					<span style="font-size: 20px; font-weight: 200; color:#4485d7;" class="reviewStar">
 						<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
 						<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
@@ -914,21 +914,27 @@ p b {
 					<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
 				
 <%-- 				<c:if test="${ fn:containsIgnoreCase(a.renameName, 'jpg') or fn:containsIgnoreCase(a.renameName, 'png')}"> --%>
+<%-- 				 <c:if test="${imgList ne null}">  --%>
 					<div class="reviewPhoto">
-						<ul style="padding: 10px;">
-								<li><img src="${ contextPath }/resources/uploadFiles/${a.renameName}"></li>
-						</ul>
-					</div>
+					${imgList}
+						  <c:forEach items="${imgList}" var="img" >
+<%-- 						  	  <c:if test="${img.imageDivideNo eq r.reviewNo}">  --%>
+								<ul style="padding: 10px;">
+										<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}"></li>
+								</ul>
+<%-- 								</c:if> --%>
+						  </c:forEach>
+						</div>
+<%-- 					 </c:if> --%>
 				</div>
 <%-- 			</c:if> --%>
-					
 				<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
 	
 					<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
 							${r.reviewContent}  
 						</div>
+						${img}
 				</div>
-				
 			</div>
 		</c:forEach>
 		

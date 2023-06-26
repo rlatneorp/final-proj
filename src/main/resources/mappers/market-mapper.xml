@@ -373,12 +373,17 @@
 		<result column="REVIEW_SCORE" property="reviewScore"/>
 		<result column="REVIEW_STATUS" property="reviewStatus"/>
 		<result column="REVIEW_DATE" property="reviewDate"/>
+		<result column="REVIEW_WRITER" property="reviewWriter"/>
 	</resultMap>
 	
 	
 	<insert	 id="insertReview">
-		insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date)
-		values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate)
+		insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date, review_writer)
+		values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
+		<selectKey keyProperty="reviewNo" resultType="int" order="AFTER" >
+			select seq_review_no.currval from dual
+		</selectKey>
+	
 	</insert>
 	
 	<select	 id="selectReview" resultMap="reviewResultSet">
@@ -389,10 +394,15 @@
 		where product_no = #{productNo}
 	</select>
 	
-	<select id="selectImgList" resultMap="imageResultSet">
+	<select id="selectImageList" resultMap="imageResultSet">
 		select *
-		from image
-		where image_divide_no = #{productNo} and image_type = 7
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != -1">
+			  and image_level = #{imageLevel}
+		</if>
 	</select>
 	
 	

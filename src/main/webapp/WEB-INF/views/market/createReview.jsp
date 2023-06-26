@@ -184,8 +184,7 @@ dl dd div label{
 
 					<label for="title" style="font-weight: 800;">아이디</label>
 
-					<input type="hidden" class="form-control" name="productNo" id="productNo" value="${productNo}">
-					
+					<input type="hidden" class="form-control" name="productNo" id="productNo" value="${productNo}" readonly>
 					<input type="text" class="form-control" name="title" id="title" value="${loginUser.usersId}" readonly>
 
 				</div>

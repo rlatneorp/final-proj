@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -224,6 +225,11 @@ public class MarketDAO {
 		return sqlSession.delete("marketMapper.delShipping", shippingNo);
 	}
 
+	public int isertReview(SqlSessionTemplate sqlSession, Review r) {
+				sqlSession.insert("marketMapper.insertReview", r);
+		return r.getReviewNo();
+	}
+
 	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", productNo);
 	}
@@ -235,32 +241,11 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", map);
 	}
 	
-//	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
-//		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
-//	}
-
-	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
-		return sqlSession.insert("marketMapper.insertReview", r);
-	}
+	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
 
 	public ArrayList<Image> selectImageList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectImageList", map);
-	}
-
-	public int selectReviewCount(SqlSessionTemplate sqlSession, int productNo) {
-		return sqlSession.selectOne("marketMapper.selectReviewCount", productNo);
-	}
-
-	public ArrayList<String> selectImgList(SqlSessionTemplate sqlSession, int productNo) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectImgList", productNo);
-	}
-
-	public String selectImg(SqlSessionTemplate sqlSession, int productNo, int i) {
-		Map<Object, Object> map = new HashMap<>();
-		map.put("productNo", productNo);
-		map.put("imgType", i);
-		
-		return sqlSession.selectOne("marketMapper.selectImg", map);
 	}
 
 

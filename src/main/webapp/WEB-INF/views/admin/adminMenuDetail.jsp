@@ -86,7 +86,7 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 	<div class="mainBox">
 		<form id="menuUpdateForm" action="${contextPath}/adminMenuUpdate.ad" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="productNo" value="${m.productNo}">

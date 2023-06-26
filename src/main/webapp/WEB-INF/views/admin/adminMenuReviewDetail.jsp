@@ -72,7 +72,7 @@
 </head>
 <body>
 	
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 		
 	<div class="mainBox">
 		<div id="top" style="margin-bottom:120px;">

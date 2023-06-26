@@ -13,7 +13,7 @@
 </head>
 
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-0">식단관리</h4>
 		

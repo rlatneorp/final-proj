@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,16 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+
 import kh.finalproj.hollosekki.common.Pagination;
+import kh.finalproj.hollosekki.common.ReviewPagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -93,17 +100,23 @@ public class RecipeController {
 			yn = true;
 		}
 		
+		int reviewCount = rService.getReviewCount(foodNo);
+		PageInfo rpi = ReviewPagination.getPageInfo(1, reviewCount, 5);
+		
 		Recipe recipe = rService.recipeDetail(foodNo, yn);
 		ArrayList<RecipeOrder> orderList = rService.recipeDetailOrderText(foodNo);
 		Image thum = rService.recipeDetailThum(foodNo);
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
+		ArrayList<Review> reList = rService.selectReviewList(rpi, foodNo);
 		
 		if(recipe != null) {
 			mv.addObject("recipe", recipe);
 			mv.addObject("orderList", orderList);
 			mv.addObject("thum", thum);
 			mv.addObject("cList", cList);
+			mv.addObject("reList", reList);
 			mv.addObject("page", page);
+			mv.addObject("rpi", rpi);
 			mv.setViewName("recipeDetail");
 			
 			return mv;
@@ -235,7 +248,11 @@ public class RecipeController {
 		result4 = rService.insertAttm(comImgList);
 		
 		if(result1 + result2 + resultOrder + result4 == thumImgList.size() + resultOrder + comImgList.size() + 1) {
-			return "redirect:recipeList.rc";
+			if(user.getIsAdmin().equals("Y")) {
+				return "redirect:adminRecipeManage.ad";
+			}else {
+				return "redirect:recipeList.rc";
+			}
 		} else {
 			for(Image thi : thumImgList) {
 				deleteFile(thi.getImageRenameName(), request);
@@ -630,6 +647,34 @@ public class RecipeController {
 		ArrayList<Recipe> rList = rService.typeSearch(type);
 		
 		return rList;
+	}
+	
+	// 후기 입력
+	@RequestMapping("reviewWrite.rc")
+	public void reviewWrite(@RequestParam("content") String content, @RequestParam("id") String id,
+							@RequestParam("foodNo") String foodNo, HttpServletResponse response) {
+		Review re = new Review();
+		
+		re.setProductNo(0);
+		re.setOrderNo(Integer.parseInt(foodNo));
+		re.setReviewContent(content);
+		re.setReviewWriter(id);
+		
+		rService.reviewWrite(re);
+		ArrayList<Review> reList = rService.selectReview(Integer.parseInt(foodNo));
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+//		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+//		Gson gson = gb.create();
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		
+		try {
+			gson.toJson(reList, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

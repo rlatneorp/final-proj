@@ -121,7 +121,9 @@
 <body>
 
 	<c:set value="${pageContext.servletContext.contextPath}" var="contextPath" scope="application"/>
-	
+	<c:if test="${loginUser.isAdmin eq 'Y'}">
+		<%@ include file="../common/adminSidebar.jsp" %>
+	</c:if>	
 	<div class=top-top>
 		<div class="empty"></div>
 		<c:if test="${ loginUser == null }"><div class="top-text"></div></c:if>

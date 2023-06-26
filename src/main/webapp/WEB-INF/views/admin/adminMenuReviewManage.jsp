@@ -11,7 +11,7 @@
 </head>
 
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-0">식단구독 후기 관리</h4>
 		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>

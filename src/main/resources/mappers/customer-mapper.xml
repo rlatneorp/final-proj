@@ -149,8 +149,5 @@
 	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default)
 	</insert>
 	
-	
-
-
 
 </mapper>

@@ -12,7 +12,7 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 	<div class="mainBox d-inline-block align-top p-4 ps-5 rounded" style="height:1000px; border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">식재료관리</h4>
 		

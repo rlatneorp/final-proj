@@ -402,7 +402,7 @@ p b {
 </style>
 <body>
 <span>
-<jsp:include page="../common/adminSidebar.jsp"/>
+<%@ include file="../common/top.jsp" %>
 <br>
 </span>
 

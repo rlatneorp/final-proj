@@ -2,10 +2,8 @@ package kh.finalproj.hollosekki.market.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,12 +17,6 @@ import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
-
-import java.util.ArrayList;
-
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
-
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
@@ -228,8 +220,8 @@ public class MarketDAO {
 	//諛곗넚吏� �궘�젣 
 	
 	//獄쏄퀣�꽊筌욑옙 占쎄텣占쎌젫 
-	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
-		sqlSession.delete("marketMapper.delShipping", shippingNo);
+	public int delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
+		return sqlSession.delete("marketMapper.delShipping", shippingNo);
 	}
 
 	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {
@@ -261,6 +253,14 @@ public class MarketDAO {
 
 	public ArrayList<String> selectImgList(SqlSessionTemplate sqlSession, int productNo) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectImgList", productNo);
+	}
+
+	public String selectImg(SqlSessionTemplate sqlSession, int productNo, int i) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("productNo", productNo);
+		map.put("imgType", i);
+		
+		return sqlSession.selectOne("marketMapper.selectImg", map);
 	}
 
 

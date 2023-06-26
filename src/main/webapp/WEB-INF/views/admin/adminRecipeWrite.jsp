@@ -1,296 +1,334 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>admin</title>
+<title>Insert title here</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
-	span{height:30px;}
+	#titleTop{width: 1200px; margin: auto; border-bottom: 1px solid black;}
+	#mainBox{width: 1200px; margin: auto; background-color: lightgray; border-radius: 10px; box-shadow: 5px 5px 7px 0px black;}
+	#contentBox{width: 1100px; padding: 50px 100px; position: relative;}
 	
-/* 	식단 소개 */
-	#top{width: 1200px; height: 600px; position: relative; display: inline-block; margin-top: 100px;}
-	#thumImg{width: 500px; height: 500px; display: inline-block; position: absolute; border-radius: 5px;}
-	#imformation{width: 650px; height: 500px; display: inline-block; position: absolute; left: 550px;}
-	#title{border-bottom: 1px solid black; width: 630px;}
-	#category{width: 550px; height: 50px; margin-left: 50px; margin-right: 50px; margin-top: 50px; font-weight: bold; font-size: 18px; text-align: center;}
-	#userInfo{text-align: center;}
-	#updateBtn{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px;}
-	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; margin-left: 10px;}
+/* 	썸네일 이미지 넣기 */
+	#insertRecipePic:hover{color:#19A7CE;}
+	#thumImg{width:300px; height:300px; background-color:white; margin:auto; border-radius:2em; border:1px solid #B0DAFF; position: relative;}
+	#insertBtn{display:none;}
+	#insertRecipePic{padding-top:95px; font-weight:bold; text-align:center; font-size:15px; height:300px; width:300px; display:inline-block;}
 	
-/* 	중간선 */
-	.mid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 30px; margin: 5px 0px; font-weight: bold;}
-	.mid::before{content: ""; flex-grow: 1; margin: 23px 16px 15px 200px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
-	.mid::after{content: ""; flex-grow: 1; margin: 23px 200px 15px 16px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
+/* 	레시피 제목, 카테고리 등등 */
+	#place{display: inline-block; width: 100px; height: 300px;}
+	.insertInfo{position: absolute;}
+	.beforeInput{width: 130px; height: 50px; font-weight: bold; font-size: 20px;}
+	#title{border-radius: 4px; width: 320px;}
+	#category{width: 320px;}
+	.categoryItem{width: 100px;}
+	#time{width: 150px;}
+	.term{height: 35px;}
 	
-/* 	식품 상세설명 */
-	#order{width: 900px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
+/* 	레시피 설명 */
+	.recipeInformationBox{width: 1000px; padding: 0 5px;}
+	.recipeInformation{width: 1000px; height: 100px; resize: none; border-radius: 5px;}
+	.recipeBox{width: 1000px; height: 200px; border-radius: 5px; border: 1px solid black; margin-bottom: 5px; position: relative;}
+	.recipeNo{width: 100px; height: 20px; text-align: center; position: absolute; padding-top: 90px;}
+	.recipeContent{width: 700px; height: 200px; border-radius: 10px;}
+	.content{width: 680px; height: 180px; border: none; position: absolute; left: 110px; top: 10px; border-radius: 10px; resize:none; white-space: pre-wrap;}
+	.recipeImage{width: 200px; height: 200px; position: absolute; left: 800px;}
+	.insertOrderPic{padding-top:15px; padding-right: 15px; font-weight:bold; text-align:center; font-size:15px; height:130px; width:200px; display:inline-block; position: relative; z-index: 1;}
+	.orderImgPreview{position: relative; top: -180px; height:130px; width: 180px; border-radius: 10px;}
 
-/* 	영양 정보 */
-	#infoTable{width: 1100px; margin: auto; border: 1px solid black; border-radius: 10px;}
-	#infoTop{border-bottom: 1px solid black; background-color: lightgray; border-radius: 10px 10px 0 0;}
-	#infoTop th{width: 157px; text-align: center; border-right: 1px solid black}
-	.infoContent td{padding: 3px; border-right: 1px solid black;}
-	.infoContent td input{width: 100px; margin: 0px 3px;}
+
+/* 	레시피 사진 추가 */
+	.recipeImg{width:180px; height:180px; border:none; position: absolute; top: 10px;}
+	.imgInsert{margin-top: 60px; border:1px solid #B0DAFF;}
 	
+/* 	사진 추가 버튼 */
+	#plusBtn{width: 200px; margin-left: 300px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
+	#minusBtn{width: 200px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
 	
-/* 	버튼 */
-	.buy{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 130px; height: 40px;}
+/* 	완성된 요리 추가 */
+	#completePic{height: 330px;}
+	.insertCompletePic{font-weight:bold; text-align:center; font-size:15px; height:200px; width:200px; display:inline-block; position: relative; z-index: 1; padding-top: 50px;}
+	.completeImg{width: 200px; background-color: #B0DAFF;}
+	.comPicBox{width: 1000px; height: 280px; margin-bottom: 5px;}
+	.completeImgPreview{position: relative; top: -248px; height:200px; width: 205px; border-radius: 10px;}
+	.comImgBox{width: 210px; height: 250px; border-radius: 10px; border: 1px solid black; position: absolute;}
 	
-/* 	문의 */
-	#qna{width: 1000px; margin: auto; text-align: center;}
-	.boardNo{width: 100px;}
-	.boardContent{width: 540px;}
-	.boardWrite{width: 150px;}
-	.boardDate{width: 210px;}
-	.board{border-collapse: collapse; }
-	.boardTop{background-color: #B0DAFF;}
-	.line{border-bottom: 1px solid black; border-top: 1px solid black;}
-	.lineAll:hover{background-color: #19A7CE; color: white;}
+	#plusComBtn{width: 200px; margin-left: 300px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
+	#minusComBtn{width: 200px; margin-top: 30px; font-size: 18px; font-weight: bold; border: none; background-color: lightgray;}
 	
-/* 	입력 박스 */
-	.inputBox{width:730px; height: 50px; margin: auto; position: relative;}
-	.profile{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
-	.profileImg{width:35px; height: 35px; border-radius: 50%;}
-	.inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px; position: absolute; left: 40px;}
-	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; position: absolute; right: 0;}
+	#comAddPlace1{width: 300px; height: 280px; position: absolute; left: 400px;}
+	#comAddPlace2{width: 300px; height: 280px; position: absolute; left: 700px;}
 	
-/* 	후기 */
-	.star{width: 110px;}
-	.boardReviewWrite{width: 100px;}
-	.boardReviewDate{width: 150px;}
-	
-/* 	기타 */
-	.border-none tr th{border:none;}
-	.border-none tr td{border:none;}
+/* 	완료 */
+	#buttonBox{width: 300px; margin: auto; padding: 30px 0; }
+	#can{width: 130px; height: 50px; border-radius: 10px; border: 1px solid lightgray; background-color: lightgray; box-shadow: 0px 5px 0px 0px black; margin-right: 5px;}
+	#sub{width: 130px; height: 50px; border-radius: 10px; border: 1px solid #B0DAFF; background-color: #B0DAFF; box-shadow: 0px 5px 0px 0px black; margin-left: 5px;}
+
+	textarea{white-space: pre-wrap;}
 </style>
+
 </head>
 <body>
-	
-	<jsp:include page="../common/adminSidebar.jsp"/>
-		
-	<div class="mainBox">
-		<form action="${contextPath}/adminRecipeInsert.ad" method="post">
-			<div id="top">
-				<div id="thumImg">
-					<img src="${contextPath}/resources/images/logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
-					<input type="file" >
-				</div>
-				<div style="width: 50px; height: 500px; display: inline-block; left: 500px;"></div>
-				<div id="imformation">
-					<div id="title">
-						<input type="text" name="title" style="font-size: 20px; width: 250px; margin-right: 340px;" placeholder="레시피 이름을 적어주세요.">
-						<a href="#"><i class="bi bi-bookmark " style="font-size: 20px;"></i></a>
-					</div>
-					<div id="category">
-						카테고리 선택
-						<select name="category">
-							<option>다이어트</option>
-							<option>육류</option>
-							<option>해산물</option>
-						</select>
-					</div>
-					<br>
-					<div id="userInfo">
-						<img src="#" style="width: 100px; height: 100px; border-radius: 50%">
-						<p style="font-weight: bold;">000영양사</p>
-						<p>*****(별점)</p>
-						<textarea name="subContent" rows="6" cols="80" placeholder="레시피에 대한 설명을 입력해주세요."></textarea>
-					</div>
-					
-					<br><br>
-					
-				</div>
-			</div>
-		
-			
-			<div class="mid">
-				레시피 상세설명
+<%@ include file="../common/top.jsp" %>
+<br><br>
+
+	<div id="titleTop">
+		<h1>레시피 등록</h1>
+	</div>
+	<br><br> 
+<form action="writeRecipe.rc" method="post" enctype="multipart/form-data">
+	<div id="mainBox">
+		<div id="contentBox">
+			<div id="thumImg" class="d-inline-block">
+				<span id="insertRecipePic">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+								<path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
+						<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+					</svg><br><br>
+					레시피 대표 이미지 첨부<br>[필수 사항]
+				</span>
+				<img id="preview">		
+				<input type="file" accept="image/*" class="form-control form-control-lg" name="thum" id="insertBtn" onchange="setThumbnail(event);">
 			</div>
 			
-			<br>
+			<div id="place"></div>
 			
-			<div id="order">
-				<div id="detailBox" style="padding:30px 40px;">
-					
-					<div class="menuTable1">
-						<table class="mb-3 w-100">
-							<tr>
-								<td class="num" style="width: 5%; text-align: center">1</td>
-								<td style="width: 30%;">
-									<div style="width: 250px; height: 200px;" class="d-flex justify-content-center">
-										<img src="${contextPath}/resources/images/logo.png" width="200" height="200" class="d-flex">
-									</div>
-									<input type="file">
-								</td>
-								<td style="width: 58%;">
-									<textarea rows="8" style="width: 100%" maxlength="200" placeholder="내용을 입력해주세요."></textarea>
-								</td>
-								<td style="width: 7%; text-align: center">
-									<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<div class="menuTable2">
-						<table class="mb-3 w-100">
-							<tr>
-								<td style="width: 58%;">
-									<textarea rows="8" style="width: 100%" maxlength="200" placeholder="내용을 입력해주세요."></textarea>
-								</td>
-								<td style="width: 30%;">
-									<div style="width: 250px; height: 200px;" class="d-flex justify-content-center">
-										<img src="${contextPath}/resources/images/logo.png" width="200" height="200" class="d-flex">
-									</div>
-									<input type="file">
-								</td>
-								<td class="num" style="width: 5%; text-align: center">2</td>
-								<td style="width: 7%; text-align: center">
-									<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>
-								</td>
-							</tr>
-						</table>
-					</div>
+			
+<!-- 			레시피 명, 카테고리 등등 -->
+			<div class="d-inline-block insertInfo">
+				<div class="d-inline-block beforeInput">레시피 명</div><input type="text" id="title" placeholder=" 제목을 입력해주세요." name="recipeName" maxlength="30">
+				<div class="term"></div>
+				<div class="d-inline-block beforeInput">카테고리</div>
+				<div class="d-inline-block" id="category">
+					<select class="categoryItem" name="categoryIngredient">
+						<option selected disabled value="">재료 별</option>
+						<option value="고기">고기</option>
+						<option value="해물">해물</option>
+						<option value="과일">과일</option>
+						<option value="채소">채소</option>
+					</select>
+					<select class="categoryItem" name="categorySituation">
+						<option selected disabled value="">상황 별</option>
+						<option value="다이어트">다이어트</option>
+						<option value="술안주">술안주</option>
+						<option value="도시락">도시락</option>
+						<option value="아침식사">아침식사</option>
+						<option value="비건">비건</option>
+					</select>
+					<select class="categoryItem" name="categoryType">
+						<option selected disabled value="">종류 별</option>
+						<option value="메인반찬">메인반찬</option>
+						<option value="반찬">반찬</option>
+						<option value="간식">간식</option>
+						<option value="면">면</option>
+						<option value="국">국</option>
+					</select>
 				</div>
-				 
-				<br>
-				<div style="padding: 40px 30px;">
-					<div class="text-end mb-5">
-						<button id="addLeft" type="button" style="width: 100px; border: 2px solid rgba(0,0,0,0.3); border-radius: 10px;">왼쪽사진<br>내용추가</button>
-						<button id="addRight" type="button" style="width: 100px; border: 2px solid rgba(0,0,0,0.3); border-radius: 10px;">오른쪽사진<br>내용추가</button>
-					</div>
-				</div>
-			</div>
-			
-			
-			<br><br><br>
-			
-			<div class="mid">
-				영양 정보
+				<div class="term"></div>
+				<div class="d-inline-block beforeInput">난이도</div><input type="range" min="1" max="5" id="grade" name="recipeDifficulty"><span>(난이도는 1~5, 기본 3)</span>
+				<div class="term"></div>
+				<div class="d-inline-block beforeInput">조리시간</div><input type="number" min="5" max="120" step="5" id="time" value="30" name="recipeTime">
 			</div>
 			
 			<br><br>
 			
-			<table id="infoTable" style="margin-bottom: 100px;">
-				<tr id="infoTop">
-					<th>칼로리</th>
-					<th>탄수화물</th>
-					<th>지방</th>
-					<th>트랜스지방</th>
-					<th>포화지방</th>
-					<th>나트륨</th>
-					<th>당류</th>
-					<th>콜레스테롤</th>
-				</tr>
-				<tr class="infoContent">
-					<td>
-						<input type="number" min="0">kcal
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">mg
-					</td>
-					<td>
-						<input type="number" min="0">g
-					</td>
-					<td>
-						<input type="number" min="0">mg
-					</td>
-				</tr>
-			</table>
-		
-			<div class="d-flex justify-content-center mb-5">
-				<div class="d-flex">
-					<button class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">작성하기</button>
-					<button onclick="location.href='${contextPath}/adminRecipeManage.ad'" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+<!-- 			레시피 설명 -->
+			<div class="recipeInformationBox">
+				<div class="beforeInput">레시피 설명</div>
+				<textarea class="recipeInformation" placeholder=" 간단한 요리 설명을 적어주세요." name="recipeContent" maxlength=100;></textarea>
+			</div>
+			
+			<br><br>
+			
+<!-- 			재료 -->
+			<div class="recipeInformationBox">
+				<div class="beforeInput">재료</div>
+				<textarea class="recipeInformation" placeholder=" 재료를 적어주세요." name="recipeIngredient" maxlength=300;></textarea>
+			</div>
+			
+			<br><br>
+			
+<!-- 			레시피 순서 -->
+			<div class="recipeInformationBox" id="recipeOrderBox">
+				<div class="d-inline-block beforeInput">조리 순서 |</div><div class="d-inline-block">조리 순서를 추가하려면 +버튼을 눌러주세요.(조리순서는 최대 10개)</div>
+				
+				<div id="copy" class="copyC">
+					<div class="recipeBox">
+						<div class="d-inline-block recipeNo">1</div>
+						<div class="d-inline-block recipeContent">
+							<textarea class="content" name="recipeOrder" maxlength=100;></textarea>
+							<input type="hidden" value="abc123abc" name="recipeOrder">
+						</div>
+						<div class="d-inline-block recipeImage">
+							<div class="d-inline-block recipeImg">
+								<span class="insertOrderPic">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+									<path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
+									<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+									</svg><br><br>
+									레시피 이미지 첨부<br>[필수 사항]
+								</span>
+								<input type="file" accept="image/*" class="form-control form-control-lg" name="orderFile" onchange="orderImage(this)">
+								<img class="orderImgPreview" style="display: none;">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="addplace"></div>
+				
+			</div>
+			
+			<button type="button" id="plusBtn" onclick="orderPlus()">+ 조리 순서 추가하기</button>
+			<span> / </span>
+			<button type="button" id="minusBtn" onclick="orderRemove()">- 조리 순서 삭제하기</button>
+			
+			<br><br><br>
+			
+			
+			<div class="recipeInformationBox" id="completePic">
+				<div class="d-inline-block beforeInput">완성된 요리 |</div><div class="d-inline-block">완성된 요리 이미지를 올려주세요. 이미지를 추가하려면 +버튼을 눌러주세요.(완성된 요리 이미지는 최대 3개)</div>
+				<div class="comPicBox" id="cPicBox">
+					<div id="comCopy" class="comCopyC">
+						<div class="comImgBox">
+							<span class="insertCompletePic">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+									<path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
+									<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+								</svg><br><br>
+								레시피 완성 이미지 첨부<br>[필수 사항]
+							</span>
+							<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic" onchange="comImageIns(this)">
+							<img class="completeImgPreview">
+						</div>
+					</div>
+					<div id="comAddPlace1"></div>
+					<div id="comAddPlace2"></div>
 				</div>
 			</div>
-		</form>
+			
+			<button type="button" id="plusComBtn" onclick="comPlus()">+ 이미지 추가하기</button>
+			<span> / </span>
+			<button type="button" id="minusComBtn" onclick="comRemove()">- 이미지 삭제하기</button>
+		</div>
 	</div>
-	<br><br><br><br>
-	
-	
-	<script>
-		
-		window.onload =()=>{
-			const menuTable1 = document.getElementsByClassName('menuTable1')[0].innerHTML;
-			const menuTable2 = document.getElementsByClassName('menuTable2')[0].innerHTML;
-			
-			const addLeft = document.getElementById('addLeft');
-			const addRight = document.getElementById('addRight');
-			
-// 			왼쪽사진내용추가 버튼 이벤트
-			addLeft.addEventListener('click', () => {
-				let detailBox = document.getElementById('detailBox');
-				detailBox.innerHTML += menuTable1;
-				
-				numbering();
-			})
-			
-// 			오른쪽사진내용추가 버튼 이벤트
-			addRight.addEventListener('click', () => {
-				let detailBox = document.getElementById('detailBox');
-				detailBox.innerHTML += menuTable2; 
-				
-				numbering();
-			})
+	<div id="buttonBox">
+		<button type="submit" id="sub">작성하기</button>
+		<button onclick="history.back()" type="button" id="can">취소하기</button>
+	</div>
+</form>
 
+<br>
+<%@ include file="../common/footer.jsp" %>
+
+<script>
+// 레시피 썸네일
+const imgDiv = document.getElementById('thumImg');
+imgDiv.addEventListener('click', ()=>{
+	document.getElementById('insertBtn').click();
+})
+
+function setThumbnail(event){
+	for(const image of event.target.files){
+		const reader = new FileReader();
+		reader.onload = function(event){
+			document.getElementById('insertRecipePic').style.display='none';
+			document.getElementById('thumImg').style.border='none';
+			const img = document.getElementById("preview");
+			img.src = event.target.result;
+			img.setAttribute("style", "width:300px; height:300px; border-radius: 2em; border:3px solid #B0DAFF; position: absolute;");				
 			
-// 			가격 계산 이벤트
-			const cost = document.getElementsByClassName('cost')[0];
-			const discount = document.getElementsByClassName('discount')[0];
-			cost.addEventListener('blur', ()=>{
-				calculate();
-			})
-			discount.addEventListener('blur', ()=>{
-				calculate();
-			})
-			
-		} 
-			
-		
-		
-// 		삭제버튼 클릭 함수
-		function del(obj){
-			obj.parentElement.parentElement.parentElement.parentElement.remove();
-			numbering();
 		}
-		
-// 		순서 넘버링 함수
-		function numbering(){
-			const numbers = document.getElementsByClassName('num');
-			for(const i in numbers){
-				numbers[i].innerText = i*1+1; 
-			}
+		reader.readAsDataURL(image);
+	}
+	console.log(document.getElementById('insertBtn').value);
+}
+
+// 레시피 순서
+function orderImage(obj){
+	var imgid = obj.nextElementSibling;
+	imgid.src = URL.createObjectURL(event.target.files[0]);
+	imgid.onload = function(){
+		URL.revokeObjectURL(imgid.src)
+		obj.nextElementSibling.style.display="inline";
+		obj.previousElementSibling.style.zIndex = 0;
+	}
+}
+
+// 순서추가 버튼 클릭 시
+const addplace = document.querySelector('#addplace');
+const copy = document.querySelector('#copy');
+var count = 1;
+function orderPlus(){
+	if(count < 10){
+		addplace.appendChild(copy.cloneNode(true));
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[3].childNodes[1].value = "";
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[5].childNodes[1].childNodes[5].style.display = "none";
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[5].childNodes[1].childNodes[3].value=""
+// 		console.log(document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[5].childNodes[1].childNodes[3]);
+		count++;
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[1].innerText=count;
+// 		console.log(document.querySelectorAll('.copyC').length);
+	}
+}
+
+// 순서 삭제 버튼 클릭 시
+const copys = document.querySelectorAll('.copyC');
+function orderRemove(){
+	if(count > 1){
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].remove();
+		count--;
+	}
+}
+
+// 완성된 이미지
+function comImageIns(obj){
+	var imgid = obj.nextElementSibling;
+	imgid.src = URL.createObjectURL(event.target.files[0]);
+	imgid.onload = function(){
+		URL.revokeObjectURL(imgid.src)
+		obj.nextElementSibling.style.display="inline";
+		obj.previousElementSibling.style.zIndex = 0;
+	}
+}
+
+// 완성 사진 추가
+const comCopy = document.querySelector("#comCopy");
+const comAddPlace1 = document.querySelector("#comAddPlace1");
+const comAddPlace2 = document.querySelector("#comAddPlace2");
+const cPicBox = document.querySelector('#cPicBox');
+var comCount = 1;
+function comPlus(){
+	if(comCount < 3){
+		if(comCount == 1){
+			comAddPlace1.appendChild(comCopy.cloneNode(true));
+			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
+			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
+			comCount++;
+		} else if(comCount == 2){
+			comAddPlace2.appendChild(comCopy.cloneNode(true));
+			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
+			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
+			comCount++;
 		}
-		
-// 		가격 계산 함수
-		function calculate(){
-			const cost = document.getElementsByClassName('cost')[0].value;
-			const discount = document.getElementsByClassName('discount')[0].value;
-			let resultCost = document.getElementsByClassName('resultCost')[0];
-			
-			resultCost.value = cost*(100-discount)*0.01;
-		}
-	
-	</script>
-		
-	
+	}
+	console.log(comCount);
+}
+
+// 완성 사진 삭제
+const comCopyC = document.querySelectorAll(".comCopyC");
+function comRemove(){
+	if(comCount > 1){
+		document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].remove();
+		comCount--;
+	}
+}
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

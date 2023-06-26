@@ -88,7 +88,7 @@
 
 	<div id="successPage">
 		<i class="bi bi-bag-heart-fill" style=" font-size:120px;  text-shadow: 3px 2px 2px gray;color:#B0DAFF"></i>
-		<h3>박보서 고객님,</h3>
+		<h3>${users.usersName} 고객님,</h3>
 		<h3><span style="color:#2962FF"><b>결제</b></span>가 <span style="color:#2962FF"><b>완료</b></span>되었습니다.</h3>
 		
 		<div class="btn-container">

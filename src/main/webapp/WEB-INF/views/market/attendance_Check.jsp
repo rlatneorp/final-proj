@@ -30,7 +30,9 @@ font-family: 'Noto Sans KR', sans-serif;
 /*    background-image: url("resources/images/checked.png") !important; */
 /*    z-index: 999 !important; */
 /*  } */
-
+.eventTr .toast{
+	z-index: 11 !important;
+}
 #alreadyCheck{
 	
 	width: 970px; height: 200px;
@@ -106,7 +108,7 @@ font-family: 'Noto Sans KR', sans-serif;
 .fc-day-today {
     background: #FFF !important;
     border: none !important;
-  	background-image: url("resources/images/checkCircle.png") !important;
+   	background-image: url("resources/images/checkCircle.png") !important; 
 	background-position: center !important;
 	background-size: 110% !important;
 	z-index: 10 !important;
@@ -215,6 +217,14 @@ font-family: 'Noto Sans KR', sans-serif;
 	<c:if test="${ !empty loginUser }">
 		<div class="eventTr">
 			<br><br>
+				<div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+				  <div class="d-flex">
+				    <div class="toast-body">
+				      Hello, world! This is a toast message.
+				    </div>
+				    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+				  </div>
+				</div>
 				<h1 class="eventTitle">출 석 체 크 이 벤 트</h1><br>
 				<span class="material-symbols-outlined">done</span><p class="event1 d-inline">매일 1회 출석체크 시</p><p class="event1 d-inline"> 포인트 10 지급 </p><br>
 				<span class="material-symbols-outlined">done</span><p class="event1 d-inline">한 달 간 연속 출석체크 시</p><p class="event1 d-inline"> 추가 포인트 1,000 지급 </p>
@@ -228,13 +238,11 @@ font-family: 'Noto Sans KR', sans-serif;
 				<br><br><br>
 			</div>
 			<input id="hiddenResult" type="hidden" value="${result}"/>
-<%-- 			<c:if test="${ result >= 1 }"> --%>
-				<div id="alreadyCheck">
-					<p>오늘은 이미 출석체크를 하셨습니다. </p><p> 내일 다시 와주세요~!</p>
-				</div>
-<%-- 			</c:if> --%>
+			<div id="alreadyCheck" style="display:none;">
+				<p>오늘은 이미 출석체크를 하셨습니다. </p><p> 내일 다시 와주세요~!</p>
+			</div>
 		</div>
-		</c:if>
+	</c:if>
 	</div>
 	
 	<br><br><br>
@@ -254,7 +262,6 @@ font-family: 'Noto Sans KR', sans-serif;
 	}
 	 
 	document.addEventListener('DOMContentLoaded', function() {
-		
 		const calendarEl = document.getElementById('calendar');
 		const calendar = new FullCalendar.Calendar(calendarEl, {
 	    	headerToolbar: {
@@ -262,8 +269,10 @@ font-family: 'Noto Sans KR', sans-serif;
 	      		center: 'title',
 	      		right: ''
 	    	},
+	    	nowIndicator: true, 
 	    	locale: 'ko',
 	    	dateClick: function(info) {
+    			
 	    		const clickedDate = moment(info.date).format('yyyy-MM-DD');
 	    		const todayDate = moment().format('yyyy-MM-DD');
 	    		if (clickedDate === todayDate && !isAttendanceChecked) {

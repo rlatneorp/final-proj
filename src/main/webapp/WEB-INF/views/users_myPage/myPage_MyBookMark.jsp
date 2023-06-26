@@ -125,22 +125,22 @@ th:first-child, td:first-child {
 						<tbody id="tbody">
 							<c:forEach items="${ list }" var="l">
 								<tr>
-									<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 									<c:if test="${ l.NUMBER_TYPE == 1 }">
+										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
+										<td>${ l.RECIPE_NAME }</td>
+										<td>${ l.NICKNAME }</td>
+										<td>${ fn:split(l.RECIPE_MODIFY_DATE, ' ')[0] }</td>
+										<td><input type="checkbox" class="delete"></td>
 									</c:if>
 									<c:if test="${ l.NUMBER_TYPE == 2 }">
+										<td><img src="${ contextPath }/resources/uploadFiles/${l.MENU_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>식단</td>
-									</c:if>
-									<c:if test="${ l.RECIPE_NAME != null }">
-										<td>${ l.RECIPE_NAME }</td>
-									</c:if>
-									<c:if test="${ l.RECIPE_NAME == null }">
 										<td>${ l.MENU_NAME }</td>
+										<td>${ l.NAME }</td>
+										<td>${ fn:split(l.PRODUCT_MODIFY_DATE, ' ')[0] }</td>
+										<td><input type="checkbox" class="delete"></td>
 									</c:if>
-									<td>${ l.NICKNAME }</td>
-									<td>${ fn:split(l.RECIPE_MODIFY_DATE, ' ')[0] }</td>
-									<td><input type="checkbox" class="delete"></td>
 								</tr>
 							</c:forEach>
 						</tbody>

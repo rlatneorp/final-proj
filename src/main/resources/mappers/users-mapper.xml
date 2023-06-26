@@ -167,14 +167,43 @@
 	</select>
 	
 	<select id="myBookMarkList" resultType="map">
-		select DIVISION_NO, NUMBER_TYPE, image_renamename, nickname, recipe_modify_date, recipe_name, menu_name
+		select DIVISION_NO, NUMBER_TYPE, i.image_renamename recipe_image, u.nickname, r.recipe_modify_date, r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, im.image_renamename menu_image
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
+		     left join healther h on (m.users_no = h.users_no)
+		     left join product p on (m.product_no = p.product_no)
 		     left join recipe r on (b.division_no = r.food_no)
 		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO)
+		     left join image im on (m.product_no = im.image_divide_no)
 		     left join users u on (u.users_no = r.users_no)
-		where b.users_no = ${usersNo}
+		where b.users_no = #{usersNo}
 		order by bookmark_no desc
+	</select>
+	
+	<select id="myLikeList" resultType="map">
+		select l.number_type, nickname, recipe_name, recipe_modify_date, i.image_renamename recipe_image, name, menu_name, product_modify_date, tool_name, mi.image_renamename product_image, product_type, mi.image_type, mi.image_level
+		from likes l
+		     left join recipe r on (l.division_no = r.food_no)
+		     left join users u on (u.users_no = r.users_no)
+		     left join image i on (r.food_no = i.image_divide_no)
+		     left join menu m on (l.division_no = m.product_no)
+		     left join healther h on (m.users_no = h.users_no)
+		     left join product p on (l.division_no = p.product_no)
+		     left join tool t on (p.product_no = t.product_no)
+		     left join image mi on (p.product_no = mi.image_divide_no)
+		where l.users_no = #{usersNo}
+		order by like_no desc
+	</select>
+	
+	<select id="myFoodLikeList" resultType="map">
+		select name, food_name, food_type, image_renamename
+		from likes l
+		     join product p on (l.division_no = p.product_no) 
+		     join healther h on (p.users_no = h.users_no)
+		     join food f on (p.product_no = f.product_no)
+		     left join image i on (f.product_no = i.image_divide_no) 
+		where l.users_no = #{usersNo} and image_level = 1
+		order by like_no desc
 	</select>
 	
 </mapper>

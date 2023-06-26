@@ -34,5 +34,24 @@
 		<result column="REVIEW_STATUS" property="boardCommentStatus"/>
 		<result column="BOARD_COUNT" property="boardCount"/>
 	</resultMap>
+	
+	<update id="addCount">
+		update board
+		set board_count = board_count + 1
+		where board_no = #{bId}
+	</update>
+	
+	<select id="selectBoard" resultMap="BoardResultSet">
+		select *
+		from board
+			join users using(users_no)
+			left join review on(board_no = product_no)
+		where board_type = 0 and board_status = 'Y' and board_no = #{bid}	
+	</select>
+	
+<!-- 	<insert id="insertReply"> -->
+<!-- 		insert into review() -->
+		
+<!-- 	</insert> -->
 
 </mapper>

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.dao.RecipeDAO;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
@@ -158,5 +159,25 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public ArrayList<Recipe> typeSearch(String type) {
 		return rDAO.typeSearch(sqlSession, type);
+	}
+	
+	@Override
+	public int reviewWrite(Review re) {
+		return rDAO.reviewWrite(sqlSession, re);
+	}
+	
+	@Override
+	public ArrayList<Review> selectReview(int foodNo) {
+		return rDAO.selectReview(sqlSession, foodNo);
+	}
+	
+	@Override
+	public int getReviewCount(int foodNo) {
+		return rDAO.getReviewCount(sqlSession, foodNo);
+	}
+	
+	@Override
+	public ArrayList<Review> selectReviewList(PageInfo rpi, int foodNo) {
+		return rDAO.selectReivewList(sqlSession, rpi, foodNo);
 	}
 }

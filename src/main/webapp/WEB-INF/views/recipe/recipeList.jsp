@@ -174,7 +174,7 @@
 			<c:param name="page" value="${pi.currentPage + 1 }"></c:param>
 		</c:url>
 		<c:if test="${pi.currentPage < pi.endPage }">
-			<a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+			<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
 		</c:if>
 	</div>
 </div>

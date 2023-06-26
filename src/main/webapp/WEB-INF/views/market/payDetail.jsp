@@ -240,7 +240,7 @@ input[type="text"] {
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
+						<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
 						<input type="hidden" value="${cl.preorderNo }">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">

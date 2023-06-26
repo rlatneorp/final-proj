@@ -61,7 +61,7 @@ public class MarketController {
 		ArrayList<Options> optValues = new ArrayList<>();
 		for(Cart cart : cartList) {
 			int productNo = cart.getProductNo();
-			
+			System.out.println("productNo : " + productNo);
 			Options opt = mkService.selectOptionInfo(cart.getProductNo(), cart.getProductOption()); //옵션 넘버 보내서 조회
 			optValues.add(opt);
 			
@@ -69,8 +69,10 @@ public class MarketController {
 			
 			//카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
 			foods = mkService.selectFood(productNo);
+			System.out.println("foods : " + foods);
 			tools = mkService.selectTool(productNo);
 			igs = mkService.selectIngrdient(productNo);
+			System.out.println("igs : " + igs);
 			menus = mkService.selectMenu(productNo);
 			
 			//productNo에 대한 모든 정보를 하나하나 가져옴 
@@ -88,24 +90,27 @@ public class MarketController {
 			cart.setSum(sum);
 			
 			//productNo에 대해 포문이 돌 때마다 null이 아니라면 cartList중 해당 되는 객체 값을 변경한다.
-			if (foods != null) {
-				System.out.println("foods : " + foods);
+			if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
 				cart.setProductName(foods.getFoodName());
+				String imgName = mkService.selectImg(productNo, 3);
+				cart.setImgName(imgName);
 		    }
-		    if (tools != null) {
-		    	System.out.println("tools : " + tools);
+		    if (tools != null) { //이미지 타입 : 6 ( 주방도구)
 		    	cart.setProductName(tools.getToolName());
+		    	String imgName = mkService.selectImg(productNo, 6);
+				cart.setImgName(imgName);
 		    }
-		    if (igs != null) {
-		    	System.out.println("igs : " + igs);
+		    if (igs != null) { //이미지 타입 :5 (식재료) 
 		    	cart.setProductName(igs.getIngredientName());
+		    	String imgName = mkService.selectImg(productNo, 5);
+				cart.setImgName(imgName);
 		    }
-		    if (menus != null) {
-		    	System.out.println("menus : " + menus);
+		    if (menus != null) { //이미지 타입 : 4 (식단)
 		    	cart.setProductName(menus.getMenuName());
+		    	String imgName = mkService.selectImg(productNo, 4);
+		    	cart.setImgName(imgName);
 		    }
 		}
-		System.out.println("cartList : " + cartList);
 		model.addAttribute("optValues", optValues);
 		model.addAttribute("cartList", cartList);
 		return "basket";
@@ -159,23 +164,32 @@ public class MarketController {
 				sum = size * price;
 				checCart.setSum(sum);
 				
-				if (foods != null) {
-					checCart.setProductName(foods.getFoodName()); 
+				if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+					checCart.setProductName(foods.getFoodName());
+					String imgName = mkService.selectImg(productNo, 3);
+					checCart.setImgName(imgName);
 			    }
-			    if (tools != null) {
+			    if (tools != null) { //이미지 타입 : 6 ( 주방도구)
 			    	checCart.setProductName(tools.getToolName());
+			    	String imgName = mkService.selectImg(productNo, 6);
+					checCart.setImgName(imgName);
 			    }
-			    if (igs != null) {
+			    if (igs != null) { //이미지 타입 : 5 (식재료) 
 			    	checCart.setProductName(igs.getIngredientName());
+			    	String imgName = mkService.selectImg(productNo, 5);
+					checCart.setImgName(imgName);
 			    }
-			    if (menus != null) {
+			    if (menus != null) { //이미지 타입 : 4 (식단)
 			    	checCart.setProductName(menus.getMenuName());
+			    	String imgName = mkService.selectImg(productNo, 4);
+					checCart.setImgName(imgName);
 			    }
 			    checkedCartList.add(checCart);
 			}
 		}
-		System.out.println("checkedCartList : " + checkedCartList); 
+		int point = mkService.selectPoint(users.getUsersNo());
 		
+		model.addAttribute("point", point);
 		model.addAttribute("checkedCartList", checkedCartList );
 		model.addAttribute("optValues", optValues);
 		return "payDetail";

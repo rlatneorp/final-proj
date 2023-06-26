@@ -228,6 +228,11 @@ public class MarketService {
 		return mkDAO.selectReview(sqlSession,productNo);
 	}
 
+	//장바구니 상품에 대한 이미지 조회 
+	public String selectImg(int productNo, int i) {
+		return mkDAO.selectImg(sqlSession, productNo, i);
+	}
+
 
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 //		// TODO Auto-generated method stub

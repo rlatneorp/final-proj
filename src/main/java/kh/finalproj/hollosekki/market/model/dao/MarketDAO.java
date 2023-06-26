@@ -247,6 +247,14 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
 	}
 
+	public String selectImg(SqlSessionTemplate sqlSession, int productNo, int i) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("productNo", productNo);
+		map.put("imgType", i);
+		
+		return sqlSession.selectOne("marketMapper.selectImg", map);
+	}
+
 
 	
 

@@ -196,7 +196,7 @@ input[type="text"] {
 					<td class="imgTab">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
 						<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
-						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
+						<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
 						<input type="hidden" value="${cl.preorderNo }">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">

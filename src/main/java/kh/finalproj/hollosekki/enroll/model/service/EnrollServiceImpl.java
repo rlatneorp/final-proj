@@ -86,8 +86,8 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public void socialInfoUpdate2(String id, String name) {
-		eDAO.socialInfoUpdate2(sqlSession, id, name);
+	public void socialInfoUpdate2(String id, String name, String nickName) {
+		eDAO.socialInfoUpdate2(sqlSession, id, name, nickName);
 	}
 
 	@Override

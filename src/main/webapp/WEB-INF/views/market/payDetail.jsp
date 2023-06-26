@@ -240,7 +240,7 @@ input[type="text"] {
 				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 					<td class="imgTab">
 						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-						<img src="" style="border: 1px solid black; width: 200px; height: 200px;">
+						<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
 						<input type="hidden" value="${cl.preorderNo }">
 					</td>
 					<td style="border-right: 2px solid #dee2e6; text-align: left">
@@ -365,12 +365,12 @@ input[type="text"] {
 				<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" class="payContent" placeholder="주소"><br> 
 				<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;"class="payContent"  placeholder="상세주소"><br>
 		</tr>
-		<tr>
-			<td class="address"><b>전화번호</b></td>
-			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
-				<input type="text" id="homePhone" style="width: 200px; margin-left: 15px;" class="payContent" name="payName">
-			</td>
-		</tr>
+<!-- 		<tr> -->
+<!-- 			<td class="address"><b>전화번호</b></td> -->
+<!-- 			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"> -->
+<!-- 				<input type="text" id="homePhone" style="width: 200px; margin-left: 15px;" class="payContent" name="payName"> -->
+<!-- 			</td> -->
+<!-- 		</tr> -->
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
@@ -403,12 +403,12 @@ input[type="text"] {
 				</div>
 			</td>
 		</tr>
-		<tr>
-			<td class="address"><b>전화번호</b></td>
-			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
-				<input type="text" class="payContent" style="width: 200px; margin-left: 15px;" name="payName">
-			</td>
-		</tr>
+<!-- 		<tr> -->
+<!-- 			<td class="address"><b>전화번호</b></td> -->
+<!-- 			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"> -->
+<!-- 				<input type="text" class="payContent" style="width: 200px; margin-left: 15px;" name="payName"> -->
+<!-- 			</td> -->
+<!-- 		</tr> -->
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
@@ -478,7 +478,7 @@ input[type="text"] {
 	    		<th style="width:150px">받으실 분</th>
 	    		<th>배송지 명</th>
 	    		<th style="width:300px">배송지</th>
-	    		<th>전화번호</th>
+<!-- 	    		<th>전화번호</th> -->
 	    		<th>휴대폰 번호</th>
 	    	</tr>
 	    		<tbody id="tbody"></tbody>
@@ -522,12 +522,12 @@ input[type="text"] {
 				<input type="text" id="sample7_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소"><br> 
 				<input id="detailAddress2" type="text" id="sample7_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소"><br>
 		</tr>
-		<tr>
-			<td class="address"><b>전화번호</b></td>
-			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
-				<input id="homeNumber2" type="text" style="width: 200px; margin-left: 15px;" name="payName">
-			</td>
-		</tr>
+<!-- 		<tr> -->
+<!-- 			<td class="address"><b>전화번호</b></td> -->
+<!-- 			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"> -->
+<!-- 				<input id="homeNumber2" type="text" style="width: 200px; margin-left: 15px;" name="payName"> -->
+<!-- 			</td> -->
+<!-- 		</tr> -->
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
@@ -572,12 +572,12 @@ input[type="text"] {
 						<input type="text" id="update_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" name="addressLocation" placeholder="주소"><br> 
 						<input id="update_detailAddress" type="text" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" name="detailAddress" placeholder="상세주소"><br>
 				</tr>
-				<tr>
-					<td class="address"><b>전화번호</b></td>
-					<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6">
-						<input id="updateHomeNumber" type="text" style="width: 200px; margin-left: 15px;" name="homePhone">
-					</td>
-				</tr>
+<!-- 				<tr> -->
+<!-- 					<td class="address"><b>전화번호</b></td> -->
+<!-- 					<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"> -->
+<!-- 						<input id="updateHomeNumber" type="text" style="width: 200px; margin-left: 15px;" name="homePhone"> -->
+<!-- 					</td> -->
+<!-- 				</tr> -->
 				<tr>
 					<td class="address"><b>휴대폰 번호</b></td>
 					<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
@@ -767,7 +767,7 @@ input[type="text"] {
 					    "<td>" + datas.recipient + "</td>" +
 					    "<td>" + datas.shippingName + "</td>" +
 					    "<td>" + datas.address + "</td>" +
-					    "<td>" + datas.homePhone + "</td>" +
+// 					    "<td>" + datas.homePhone + "</td>" +
 					    "<td>" + datas.phone + "</td>";
 // 					    "<td><button class='editShip'>수정</button><input type='text' value='" + shippingNo + "'><button>삭제</button></td>";
 					    
@@ -787,7 +787,7 @@ input[type="text"] {
 		let updatePostcode = document.getElementById('update_postcode');
 		let updateAddress = document.getElementById('update_address');
 		let updateDetailAddress = document.getElementById('update_detailAddress');
-		let updateHomeNumber = document.getElementById('updateHomeNumber');
+// 		let updateHomeNumber = document.getElementById('updateHomeNumber');
 		let updatePhoneNumber = document.getElementById('updatePhoneNumber');
 		let checkedShip = 0;
 		
@@ -838,7 +838,7 @@ input[type="text"] {
 						updatePostcode.value = postNo;
 						updateAddress.value = address;
 						updateDetailAddress.value = detailAddress;
-						updateHomeNumber.value = data.homePhone;
+// 						updateHomeNumber.value = data.homePhone;
 						updatePhoneNumber.value = data.phone;
 						
 					},
@@ -862,6 +862,7 @@ input[type="text"] {
 				for(let i=0; i<ship.length; i++) {
 					if(ship[i].checked) {
 						shippingNo = ship[i].value;
+						console.log(shippingNo);
 						break;
 					  }
 				}
@@ -878,11 +879,19 @@ input[type="text"] {
 						data:{shippingNo:shippingNo},
 						success: data => {
 							popup.style.display = 'none';
-							swal({
-							 text: "삭제 되었습니다.",
-							 icon: "success",
-							 button: "확인",
-							});
+							if(data == 'success') {
+								swal({
+								 text: "삭제 되었습니다.",
+								 icon: "success",
+								 button: "확인",
+								});
+							} else {
+								swal({
+								 text: "삭제 실패하였습니다.",
+								 icon: "success",
+								 button: "확인",
+								});
+							}
 						},
 						error: data => {
 						}
@@ -932,7 +941,7 @@ input[type="text"] {
 					document.getElementById('sample6_address').value = address;
 					document.getElementById('sample6_detailAddress').value = detailAddress;
 					
-					document.getElementById('homePhone').value = data.homePhone;
+// 					document.getElementById('homePhone').value = data.homePhone;
 					document.getElementById('phone').value = data.phone;
 					
 				},
@@ -959,13 +968,17 @@ input[type="text"] {
 					updatePostcode:updatePostcode.value,
 					updateAddress:updateAddress.value,
 					updateDetailAddress:updateDetailAddress.value,
-					homePhone:updateHomeNumber.value,
+// 					homePhone:updateHomeNumber.value,
 					phone:updatePhoneNumber.value
 				},
 				success : data => {
 					console.log(data);
 					popup.style.display = 'none';
-					alert('수정이 완료되었습니다.');
+					swal({
+					 text: "수정이 완료되었습니다.",
+					 icon: "success",
+					 button: "확인",
+					});
 				},
 				error : data => { 
 					console.log(data);
@@ -999,7 +1012,7 @@ input[type="text"] {
 				  document.getElementById('sample7_postcode').value = '';
 				  document.getElementById('sample7_address').value = '';
 				  document.getElementById('detailAddress2').value = '';
-				  document.getElementById('homeNumber2').value = '';
+// 				  document.getElementById('homeNumber2').value = '';
 				  document.getElementById('phoneNumber2').value = '';
 			  }
 		});
@@ -1018,10 +1031,10 @@ input[type="text"] {
 			const postcode = document.getElementById('sample7_postcode').value;
 			const addressInfo = document.getElementById('sample7_address').value;
 			const detailAddress = document.getElementById('detailAddress2').value;
-			const homePhone = document.getElementById('homeNumber2').value;
+// 			const homePhone = document.getElementById('homeNumber2').value;
 			const phone = document.getElementById('phoneNumber2').value;
 			
-		  if (orderName.trim() === '' || postcode.trim() === '' || addressInfo.trim() === '' || detailAddress.trim() === '' || homePhone.trim() === '' || phone.trim() === '') {
+		  if (orderName.trim() === '' || postcode.trim() === '' || addressInfo.trim() === '' || detailAddress.trim() === '' ||  phone.trim() === '') {
 			  swal({
 				 text: "모든 입력값은 필수사항입니다.",
 				 icon: "error",
@@ -1043,7 +1056,7 @@ input[type="text"] {
 					  postcode:postcode,
 					  addressInfo:addressInfo,
 					  detailAddress:detailAddress,
-					  homePhone:homePhone,
+// 					  homePhone:homePhone,
 					  phone:phone
 				  },
 				  success: data => {
@@ -1059,7 +1072,7 @@ input[type="text"] {
 						    "<td>" + datas.recipient + "</td>" +
 						    "<td>" + datas.shippingName + "</td>" +
 						    "<td>" + datas.address + "</td>" +
-						    "<td>" + datas.homePhone + "</td>" +
+// 						    "<td>" + datas.homePhone + "</td>" +
 						    "<td>" + datas.phone + "</td>";
 						  tbody.append(row);
 					  }
@@ -1134,7 +1147,7 @@ input[type="text"] {
 		document.getElementById('sample6_postcode').value = '';
 		document.getElementById('sample6_address').value = '';
 		document.getElementById('sample6_detailAddress').value = '';
-		document.getElementById('homePhone').value = '';
+// 		document.getElementById('homePhone').value = '';
 		document.getElementById('phone').value = '';
 		document.getElementById('shippingAsk').value = '';
 		

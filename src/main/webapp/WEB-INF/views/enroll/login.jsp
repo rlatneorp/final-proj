@@ -171,7 +171,7 @@
     });
 
 	// 네이버 로그인
-  	var naverLogin = new naver_id_login("TNwmPDnti1AIGrKuJLCM", "http://localhost:8084/hollosekki/login.en");
+  	var naverLogin = new naver_id_login("TNwmPDnti1AIGrKuJLCM", "http://localhost:8085/hollosekki/login.en");
   	var state = naverLogin.getUniqState();
   	naverLogin.setButton("green", 3, 48);
   	naverLogin.setDomain("http://hollosekki/");
@@ -185,15 +185,15 @@
 		
 		const id = naverLogin.getProfileData('id');
 		const name = naverLogin.getProfileData('name');
-// 		const nickName = naverLogin.getProfileData('nickname');
-// 		const email = naverLogin.getProfileData('email');
+		const nickName = naverLogin.getProfileData('nickname');
+		const email = naverLogin.getProfileData('email');
 // 		const phone = naverLogin.getProfileData('mobile');
 		const profileImg = naverLogin.getProfileData('profile_image');
 		
 		console.log(id);
 		console.log(name);
-// 		console.log(nickName);
-// 		console.log(email);
+		console.log(nickName);
+		console.log(email);
 // 		console.log(phone);
 		console.log(profileImg);
 		
@@ -204,8 +204,8 @@
 			url:"naverLogin.en",
 			data: { "id":id,
 					"name":name,
-// 					"nickName":nickName,
-// 					"email":email,
+					"nickName":nickName,
+					"email":email,
 // 					"phone":phone,
 					"profileImg":profileImg,
 			},

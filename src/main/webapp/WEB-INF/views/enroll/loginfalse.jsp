@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,14 +28,14 @@
 		}
 	.mid{
 		display: flex; justify-content: center;  
-		font-size: 18px; color: #1f8acb; font-weight: bold;
+		font-size: 18px; color: #1f8acb; font-weight: bold; text-align: center;
 		}
 	.mid33{
 		font-size: 15px; color: #1f8acb; font-weight: bold;
 		margin-top: 30px; margin-bottom: 20px;
 		text-align: center;
 		}
-	.fa-face-grimace{font-size: 100px;}
+	.fa-face-grin-beam-sweat{font-size: 80px;}
 	.join{
 		font-size: 25px; font-weight: bold;
 		margin: 10px; margin-top: 100px; 
@@ -59,7 +60,7 @@
 		}
 	.button:active{box-shadow: 0px 1px 0px black; transform: translateY(5px); background: #b0daff;}
 	
-	.find{font-size: 13px; line-height: 35px; text-align: left; margin-left: 80px;}
+	.find{font-size: 16px; line-height: 35px; text-align: center;}
 	.find2{cursor: pointer; text-decoration: underline;}
 	
 </style>
@@ -76,12 +77,20 @@
 					</div>
 					<br><br>
 					<div class="mid">
-						<i class="fa-regular fa-face-grimace"></i>
+						<i class="fa-regular fa-face-grin-beam-sweat"></i>
 					</div>
 					<br><br>
-					<div class="mid">
-						로그인에 실패했습니다.<br>
-						다시 로그인 해주세요.
+					<div class="mid" style="display: block; line-height: 30px;">
+						<c:choose>
+							<c:when test="${ login == 1 }">
+								<div>입력한 아이디에 해당하는 사용자가 없습니다.</div>
+								<div>다시 확인해주세요.</div>
+							</c:when>
+							<c:otherwise>
+								<div>로그인에 실패했습니다.</div>
+								<div>다시 로그인 해주세요.</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div class="mid">
 						<div><button class="button" onclick="location.href='login.en'">로그인</button></div>

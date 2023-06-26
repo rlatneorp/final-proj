@@ -82,10 +82,11 @@ public class EnrollDAO {
 		
 	}
 
-	public void socialInfoUpdate2(SqlSessionTemplate sqlSession, String id, String name) {
+	public void socialInfoUpdate2(SqlSessionTemplate sqlSession, String id, String name, String nickName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("name", name);
+		map.put("nickName", nickName);
 		sqlSession.update("enrollMapper.socialInfoUpdate2", map);
 	}
 

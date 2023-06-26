@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -17,7 +18,7 @@ import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
-import kh.finalproj.hollosekki.common.model.vo.Users;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
@@ -278,6 +279,10 @@ public class AdminDAO {
 			resultRp = sqlSession.delete("adminMapper.deletesRecipe", selDeletes);
 		}
 		return resultRpOd+resultRp;
+	}
+
+	public ArrayList<AdminMain> adminMainWeek(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.adminMainWeek");
 	}
 
 	

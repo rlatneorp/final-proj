@@ -36,7 +36,7 @@ public interface EnrollService {
 
 	void socialInfoUpdate(String id, String profileImg);
 
-	void socialInfoUpdate2(String id, String name);
+	void socialInfoUpdate2(String id, String name, String nickName);
 
 	ArrayList<Recipe> recipeList(int usersNo);
 

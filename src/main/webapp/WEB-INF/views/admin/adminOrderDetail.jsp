@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 	
 	<div class="mainBox d-inline-block align-top p-4 ps-5 rounded" style="border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">주문정보관리</h4>

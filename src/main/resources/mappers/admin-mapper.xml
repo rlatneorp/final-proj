@@ -117,6 +117,12 @@
 	</delete>
 
 
+<!--Admin-관리자페이지 -->
+	<select id="">
+	
+	</select>
+
+
 <!--Users-회원 -->
 	<select id="getUsersCount" resultType="_int">
 		select count(*)

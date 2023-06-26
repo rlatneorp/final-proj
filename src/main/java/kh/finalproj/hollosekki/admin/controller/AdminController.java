@@ -27,6 +27,7 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -37,8 +38,7 @@ import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
-import kh.finalproj.hollosekki.common.model.vo.Users;
-import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Controller
@@ -47,11 +47,9 @@ public class AdminController {
 	@Autowired
 	private AdminService aService;
 	
-	@Autowired
-	private RecipeService rService;
-	
 	@GetMapping("adminMain.ad")
-	public String adminMain() {
+	public String adminMain(Model model) {
+		ArrayList<AdminMain> amList = aService.adminMainWeek();
 		return "adminMain";
 	}
 	
@@ -1237,11 +1235,7 @@ public class AdminController {
 	}
 	@GetMapping("adminRecipeWrite.ad")
 	public String adminRecipeWrite() {
-		return "redirect:recipeWrite.rc";
-	}
-	@PostMapping("adminRecipeInsert.ad")
-	public String adminRecipeInsert() {
-		return "redirect:adminRecipeManage.ad";
+		return "adminRecipeWrite";
 	}
 	@PostMapping("adminRecipeDeletes.ad")
 	public String adminRecipedDeletes(@RequestParam("selectDelete") String[] selDeletes,

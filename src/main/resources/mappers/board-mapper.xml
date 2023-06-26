@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardMapper">
+
+	<select id="getFreeBoardListCount" resultType="_int">
+		select count(*)
+		from board
+		where board_type = 0 and board_status = 'Y'
+	</select>
+
+	<select id="freeBoardView" resultMap="BoardResultSet">
+		select *
+		from board
+			join users using(users_no)
+		where board_type = 0 and board_status = 'Y'
+	</select>
+	
+	<resultMap id="BoardResultSet" type="Board">
+		<id column="BOARD_NO" property="boardNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_DATE" property="boardDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		<result column="BOARD_TYPE" property="boardType"/>
+		<result column="REVIEW_CONTENT" property="boardComment"/>
+		<result column="ORDER_NO" property="boardCommentNo"/>
+		<result column="REVIEW_DATE" property="boardCommentDate"/>
+		<result column="REVIEW_WRITER" property="boardCommentNickName"/>
+		<result column="REVIEW_STATUS" property="boardCommentStatus"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+	</resultMap>
+
+</mapper>

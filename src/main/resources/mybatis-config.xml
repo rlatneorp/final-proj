@@ -29,6 +29,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Review" alias="Review"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Point" alias="Point"/>
 		<typeAlias type="kh.finalproj.hollosekki.customer.model.vo.Qna" alias="Qna"/>
+		<typeAlias type="kh.finalproj.hollosekki.board.model.vo.Board" alias="Board"/>
 		
 	</typeAliases>
 	
@@ -41,6 +42,7 @@
 		<mapper resource="mappers/users-mapper.xml"/>
 		<mapper resource="mappers/recipe-mapper.xml"/>
 		<mapper resource="mappers/customer-mapper.xml"/>
+		<mapper resource="mappers/board-mapper.xml"/>
 	</mappers>
 	
 </configuration>

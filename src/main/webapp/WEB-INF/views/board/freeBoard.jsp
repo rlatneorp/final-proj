@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -145,7 +146,7 @@ input {
 		</div><br><br><br><br><br>
 	
 	<!-- 자유게시글 -->
-	<table>
+		<table>
 			<tr style="background-color: #B0DAFF; opacity: 90%">
 				<th>글번호</th>
 				<th>작성자</th>
@@ -154,80 +155,52 @@ input {
 				<th>조회수</th>
 			</tr>
 			<tbody id="tbody">
-			<tr>
-				<td>1</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[10]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[19]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[2]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[8]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[8]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[8]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[8]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[8]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td>이렇게 드셔보세요[8]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-		</tbody>
-	</table>
+				<c:forEach items="${list }" var="b" > 
+				<tr>
+					<td>${b.boardNo }</td>
+					<td>${b.nickName }
+					<td>${b.boardTitle }[]</td>
+					<td>${b.boardDate }</td>
+					<td>${b.boardCount }</td>
+				</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
-	
+	<br><br>
+	<div class="pageFreeBoard" > 
+		<nav aria-label="Page navigation example">
+			<ul class="pageFreeBoard pagination justify-content-center">
+			    <c:if test="${ pi.currentPage > 1 }">
+			    <li class="page-item">
+			    	<c:url var="goBack" value="${ loc }">
+						<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+					</c:url>
+					<a class="page-link" href="${ goBack }" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>	
+				</li>
+				</c:if>
+				<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+				   	<c:url var="goNum" value="${ loc }">
+						<c:param name="page" value="${ p }"></c:param>
+					</c:url>
+				  	<li class="page-item pageFreeBoard"><a class="page-link" href="${ goNum }">${ p }</a></li>
+				</c:forEach>
+				<c:if test="${ pi.currentPage < pi.maxPage }">
+				<li class="page-item">
+					<c:url var="goNext" value="${ loc }">
+						<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+					</c:url>
+					<a class="page-link" href="${ goNext }" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+				</c:if>
+			</ul>
+		</nav>	
+	</div>
+	<br><br>
 	<!-- 작성 버튼 -->
 	<div style="width: 900px; margin: 0 auto; text-align: right;">
 		<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
@@ -269,12 +242,25 @@ input {
 	searchInput.addEventListener('keyup', function(event) {
 	  if (event.key === 'Enter') {
 	    const searchText = searchInput.value
-	    //여기에 ajax로 searchText 넘기기 
+	    
 	    
 	    console.log('검색어:', searchText);
 	    searchInput.value = '';
 	  }
 	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//작성하기 버튼 클릭 시 작성하기 페이지로 이동 
 	document.getElementById('')

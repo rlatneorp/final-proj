@@ -212,8 +212,14 @@ public class AdminDAO {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectFoodList", ab, rowBounds);
 	}
 	
-	public Food selectFood(SqlSessionTemplate sqlSession, int foodNo) {
-		return sqlSession.selectOne("adminMapper.selectFood", foodNo);
+	public ArrayList<Food> selectFoodListNotD(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectFoodListNotD", ab, rowBounds);
+	}
+	
+	public Food selectFood(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.selectOne("adminMapper.selectFood", map);
 	}
 	
 	public int updateFood(SqlSessionTemplate sqlSession, Food f) {
@@ -284,6 +290,7 @@ public class AdminDAO {
 	public ArrayList<AdminMain> adminMainWeek(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("adminMapper.adminMainWeek");
 	}
+
 
 	
 	

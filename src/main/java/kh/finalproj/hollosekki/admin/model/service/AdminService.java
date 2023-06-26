@@ -184,8 +184,12 @@ public class AdminService {
 		return aDAO.selectFoodList(sqlSession, pi, ab);
 	}
 	
-	public Food selectFood(int foodNo) {
-		return aDAO.selectFood(sqlSession, foodNo);
+	public ArrayList<Food> selectFoodListNotD(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectFoodListNotD(sqlSession, pi, ab);
+	}
+	
+	public Food selectFood(HashMap<String, Integer> map) {
+		return aDAO.selectFood(sqlSession, map);
 	}
 	
 	public int updateFood(Food f) {
@@ -247,6 +251,8 @@ public class AdminService {
 	public ArrayList<AdminMain> adminMainWeek() {
 		return aDAO.adminMainWeek(sqlSession);
 	}
+
+
 
 
 

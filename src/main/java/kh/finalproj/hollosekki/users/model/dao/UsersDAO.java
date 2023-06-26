@@ -90,5 +90,17 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.myBookMarkList", usersNo, rowBounds);
 	}
 
+	public ArrayList<HashMap<String, Object>> myLikeList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("usersMapper.myLikeList", usersNo, rowBounds);
+	}
+
+	public ArrayList<HashMap<String, Object>> myFoodLikeList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("usersMapper.myFoodLikeList", usersNo, rowBounds);
+	}
+
 
 }

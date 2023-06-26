@@ -113,21 +113,23 @@
 
 	
 	<br><br><br><br>
-	
-	
 	<div id="searchTable">	
 		<div class="search" style="margin:0 auto; left:290px;">
 			<select style="width: 100px; height: 40px; padding-top: 8px;">
-				<option>글번호</option>
-				<option>작성자</option>
-				<option>제목</option>
-				<option>내용</option>
+				<option value="bId" <c:if test="${ category == 'bId'}">selected</c:if>>글번호</option>
+				<option <c:if test="${ category == 'writer'}">selected</c:if> value="writer">작성자</option>
+				<option <c:if test="${ category == 'title'}">selected</c:if> value="title">제목</option>
+				<option <c:if test="${ category == 'content'}">selected</c:if> value="content">내용</option>
 			</select>
 			<div class="searchBar">
-				<input id="searchInput" type="text" placeholder="내용을 입력해 주세요"> 
-				<div id="searchIcon"><button type="submit" id="searchBtn"><i class="bi bi-search"></i></button></div>
+				<input id="searchInput" type="text" value="<c:if test='${ !empty search }'>${ search }</c:if>" placeholder="내용을 입력해 주세요"> 
+				<div id="searchIcon">
+					<button type="submit" id="searchBtn"><i class="bi bi-search"></i></button>
+				</div>
 			</div>
-		</div><br><br><br><br>
+		</div>
+		
+		<br><br><br><br>
 	
 	<!-- 자유게시글 -->
 		<table>
@@ -201,7 +203,10 @@
 	
 	for(tr of trs) {
 		tr.addEventListener('click', function() {
-			location.href = '${contextPath}/selectFreeBoard.bo';
+			const trTd = this.children;
+			const boardId = trTd[0].innerText;
+			const boardWriter = trTd[1].innerText;
+			location.href = '${contextPath}/selectFreeBoard.bo?bId=' + boardId + '&writer=' + boardWriter + '&page=' + ${pi.currentPage};
 		})
 		
 		 tr.addEventListener('mouseenter', function() {

@@ -8,11 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +39,7 @@ import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
@@ -54,7 +57,6 @@ public class MarketController {
 		
 		ArrayList<Cart> cartList = mkService.selectCartList(userNo);
 		
-//		ArrayList<Food> foodsList = new ArrayList<>(); ArrayList<Tool> toolsList = new ArrayList<>(); ArrayList<Ingredient> igsList = new ArrayList<>();
 		ArrayList<Product> selectProductInfo = new ArrayList<>(); 
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		
@@ -81,10 +83,12 @@ public class MarketController {
 			
 			//위에서 조회 된 정보 중 price로 cart 속성값 변경 ( cartList 하나로 보내기 위해 )
 			//합계 계산 
-			int price = 0; int sum = 0;
+			int price = 0; int sum = 0; int sale = 0;
 			for (Product product : selectProductInfo) {
 			    price = product.getProductPrice();
-			    cart.setProductPrice(price); 
+			    sale = product.getProductSale();
+			    cart.setProductPrice(price);
+			    cart.setSale(sale);
 			}
 			int size = mkService.plusResultCount(productNo);
 			sum = size * price;
@@ -113,6 +117,7 @@ public class MarketController {
 		    }
 		}
 		model.addAttribute("optValues", optValues);
+		System.out.println("cartList : " + cartList);
 		model.addAttribute("cartList", cartList);
 		return "basket";
 	}
@@ -156,10 +161,11 @@ public class MarketController {
 				menus = mkService.selectMenu(productNo);
 				
 				productInfo = mkService.selectProductInfo(productNo);
-				int price = 0; int sum = 0;
+				int price = 0; int sum = 0; int sale = 0;
 				for (Product product : productInfo) {
 				    price = product.getProductPrice();
 				    checCart.setProductPrice(price); 
+				    checCart.setSale(product.getProductSale());
 				}
 				int size = mkService.plusResultCount(productNo);
 				sum = size * price;
@@ -190,14 +196,27 @@ public class MarketController {
 		}
 		int point = mkService.selectPoint(users.getUsersNo());
 		
+		
 		model.addAttribute("point", point);
 		model.addAttribute("checkedCartList", checkedCartList );
+		System.out.println("cc : " + checkedCartList);
 		model.addAttribute("optValues", optValues);
 		return "payDetail";
+	}
+	
+	private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", imageDivideNo);
+		map.put("imageType", imageType);
+		map.put("imageLevel", imageLevel);
+		ArrayList<Image> imageList = mkService.selectImagList(map);
+		return imageList;
 	}
 
 	@GetMapping("market_detail.ma")
 	public String marketdetail(@RequestParam("productNo") int productNo,
+							   @ModelAttribute Review r,
+							   @ModelAttribute Image img,
 							   HttpSession session, Model model) {
 		Users users = (Users)session.getAttribute("loginUser");
 		Tool tool = mkService.selectTool(productNo);
@@ -205,14 +224,42 @@ public class MarketController {
 		Product p = mkService.selectProductSet(productNo);
 		
 		
+		ArrayList<Review> list = mkService.selectReview(productNo);
+		ArrayList<String> imglist = mkService.selectImgList(productNo);
+		int reviewCount = mkService.selectReviewCount(productNo);
 		
-//		System.out.println(options);
-//		System.out.println(tool);
-//		System.out.println(p);
+		System.out.println(imglist);
+		
+		if(list != null) {
+			model.addAttribute("list", list);
+		}
+		
+		if(imglist != null) {
+			model.addAttribute("imglist", imglist);
+		}
+		
+		model.addAttribute("reviewCount", reviewCount);
+		
+//		ArrayList<Image> imgList = selectImagList(r.getReviewNo(), 7, 1);
+		
+//		if(imgList != null) {
+//			model.addAttribute("imgList", imgList);
+//		}
+		
+		
 		model.addAttribute("tool", tool);
 		model.addAttribute("p", p);
 		model.addAttribute("options", options);
 		return "market_detail";
+	}
+	
+	private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("imageDivideNo", imageDivideNo);
+		map.put("imageType", imageType);
+		map.put("imageLevel", imageLevel);
+		ArrayList<Image> imageList = mkService.selectImageList(map);
+		return imageList;
 	}
 	
 	@GetMapping("createqna.ma")
@@ -222,23 +269,40 @@ public class MarketController {
 	
 	@PostMapping("insertReview.ma")
 	public String insertReview(HttpSession session, 
-							   @ModelAttribute Product p,
-							   @RequestParam ("imageFile") ArrayList<MultipartFile> imageFiles,
+							   @RequestParam ("productNo") int productNo,
+							   @ModelAttribute Review r,
+							   @ModelAttribute Image img,
+							   @RequestParam(value="reviewScore", defaultValue = "0", required=false) int reviewScore,
+							   @RequestParam (value = "imageFile", required = false) ArrayList<MultipartFile> imageFiles,
 							   HttpServletRequest request,
 							   Model model) {
 		
-		model.addAttribute("productNo", p.getProductNo());
 		
-		int i = 0;
-		int resultF = 0;
-		int resultImg = 0;
+		Users users = (Users)session.getAttribute("loginUser");
+		r.setProductNo(productNo);
+		r.setReviewContent(r.getReviewContent());
+		r.setReviewScore(r.getReviewScore());
+		r.setReviewWriter(users.getNickName());
+		
+		int result = mkService.insertReview(r);
+		
+//		System.out.println(imageFiles);
+		
+ 		
+		if(result > 0) {
+			model.addAttribute("productNo", productNo);
+			model.addAttribute("review", r);
+		}
+		
+		
+		
 		
 		for(MultipartFile imageFile : imageFiles) {
 			Image image = new Image();
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
 				if(returnArr[1] != null) {
-					image.setImageDivideNo(p.getProductNo());
+					image.setImageDivideNo(r.getReviewNo());
 					image.setImageType(7); /*리뷰는 7번*/
 					image.setImagePath(returnArr[0]);
 					image.setImageOriginalName(imageFile.getOriginalFilename());
@@ -246,21 +310,49 @@ public class MarketController {
 					image.setImageLevel(0);
 					if(i==0) {
 						image.setImageLevel(1);
+		if(result > 0) {
+			model.addAttribute("productNo", productNo);
+			model.addAttribute("review", r);
+		}
+		
+	
+		if(imageFiles != null) {	
+			int i = 0;
+			int resultF = 0;
+			int resultImg = 0;
+			for(MultipartFile imageFile : imageFiles) {
+				Image image = new Image();
+				if(imageFile != null && !imageFile.isEmpty()) {
+					String[] returnArr = saveFile(imageFile, request);
+					if(returnArr[1] != null) {
+						image.setImageDivideNo(productNo);
+						image.setImageType(7); /*리뷰는 7번*/
+						image.setImagePath(returnArr[0]);
+						image.setImageOriginalName(imageFile.getOriginalFilename());
+						image.setImageRenameName(returnArr[1]);
+						image.setImageLevel(0);
+						if(i==0) {
+							image.setImageLevel(1);
+						}
+						resultImg += mkService.insertImage(image);
+						i++;
 					}
-					resultImg += mkService.insertImage(image);
-					i++;
 				}
 			}
+			
+			
+			if(resultImg == i) {
+				return "redirect:market_detail.ma";
+			}
+			
 		}
-		if(resultImg == i) {
-			return "redirect:market_detail.ma";
-		}
-		
-		
 		return "redirect:market_detail.ma";
-//		return "redirect:market_detail.ma"+p.getProductNo();
 	}
-		
+	
+
+	
+	
+	
 	
 	@GetMapping("createReview.ma")
 	public String createReview(HttpSession session, Product p, Model model) {
@@ -310,7 +402,9 @@ public class MarketController {
 	}
 	
 	@RequestMapping("paySuccess.ma")
-	public String paySuccess() {
+	public String paySuccess(HttpSession session, Model model) {
+		Users users = (Users)session.getAttribute("loginUser");
+		model.addAttribute("users", users);
 		return "paySuccess";
 	}
 	
@@ -374,7 +468,6 @@ public class MarketController {
 //		System.out.println(pNo);
 		System.out.println(c.getProductNo());
 		int result = mkService.insertCart(c);
-			System.out.println(c);
 		
 		response.setContentType("application/json; charset=utf-8");
 		GsonBuilder gb = new GsonBuilder();

@@ -7,10 +7,12 @@ public class AdminBasic {
 	private String searchText;
 	private int type;
 	private int kind;
+	private String duplication;
 	
 	public AdminBasic() {}
 
-	public AdminBasic(Integer page, Integer pageCount, String searchType, String searchText, int type, int kind) {
+	public AdminBasic(Integer page, Integer pageCount, String searchType, String searchText, int type, int kind,
+			String duplication) {
 		super();
 		this.page = page;
 		this.pageCount = pageCount;
@@ -18,6 +20,7 @@ public class AdminBasic {
 		this.searchText = searchText;
 		this.type = type;
 		this.kind = kind;
+		this.duplication = duplication;
 	}
 
 	public Integer getPage() {
@@ -68,10 +71,18 @@ public class AdminBasic {
 		this.kind = kind;
 	}
 
+	public String getDuplication() {
+		return duplication;
+	}
+
+	public void setDuplication(String duplication) {
+		this.duplication = duplication;
+	}
+
 	@Override
 	public String toString() {
 		return "AdminBasic [page=" + page + ", pageCount=" + pageCount + ", searchType=" + searchType + ", searchText="
-				+ searchText + ", type=" + type + ", kind=" + kind + "]";
+				+ searchText + ", type=" + type + ", kind=" + kind + ", duplication=" + duplication + "]";
 	}
 	
 }

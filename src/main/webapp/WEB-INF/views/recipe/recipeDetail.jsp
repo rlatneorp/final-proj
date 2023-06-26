@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
 <style>
 /* 	레시피 소개 */
 	#top{width: 1200px; height: 600px; margin: auto; position: relative;}
@@ -170,8 +171,9 @@
 <br><br>
 <form method="POST" id="detailForm">
 	<div id="top">
-	<input type="hidden" value="${recipe.foodNo}" name="foodNo">
-	<input type="hidden" value="${page}" name="page">
+	<input type="hidden" value="${recipe.foodNo}" name="foodNo" id="foodNo">
+	<input type="hidden" value="${page}" name="page" id="recipePage">
+	<input type="hidden" value="${loginUser.usersId }" id="recipeWriter">
 		<div id="thumImg">
 			<img src="${contextPath }/resources/uploadFiles/${thum.imageRenameName}" style="width: 100%; height: 100%; border-radius: 5px;">
 		</div>
@@ -199,7 +201,7 @@
 			
 			<c:if test="${loginUser.usersId eq recipe.usersId }">
 				<div id="updateBox">
-					<button type="button" id="updateBtn">수정</button>
+					<button type="button" id="updateBtn" onclick="update()">수정</button>
 					<button type="button" id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
 				</div>
 			</c:if>
@@ -355,13 +357,14 @@
 </div>
 
 <br>
-
-<div class="inputBox">
-	<div class="profile d-inline-block">
-		<img src="resources/images/mudo.png" class="profileImg">
-	</div>	
-	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeQnaInput">&nbsp;<button class="enter">등록</button>
-</div>
+<c:if test="${loginUser != null }">
+	<div class="inputBox">
+		<div class="profile d-inline-block">
+			<img src="resources/images/mudo.png" class="profileImg">
+		</div>	
+		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeQnaInput">&nbsp;<button class="enter">등록</button>
+	</div>
+</c:if>
 <br><br>
 
 <p class="mid">후기</p>
@@ -377,41 +380,17 @@
 			<th class="line reviewWrite">작성자</th>
 			<th class="line reviewDate">날짜</th>
 		</tr>
-		<tr class="lineAll">
-			<td class="line">1</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">2</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">3</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">4</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">5</td>
-			<td class="line">*****</td>
-			<td class="line">후기~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
+		<tbody id="reviewBody">
+			<c:forEach items="${reList }" var="re">
+				<tr class="lineAll">
+					<td class="line">${re.reviewNo }</td>
+					<td class="line">5</td>
+					<td class="line">${re.reviewContent }</td>
+					<td class="line">${re.reviewWriter }</td>
+					<td class="line">${re.reviewDate }</td>
+				</tr>
+			</c:forEach>
+		</tbody>
 	</table>
 </div>
 
@@ -419,22 +398,46 @@
 
 <div class="page_wrap">
    <div class="page_nation">
-      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-      <a href="#" class="active">1</a>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">4</a>
-      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+      <!-- 		이전 페이지로	 -->
+		<c:url var="goBack" value="${loc }">
+			<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+		</c:url>
+		<c:if test="${rpi.currentPage > 1 }">
+			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
+		</c:if>
+		
+<!-- 		페이지 -->
+		<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
+			<c:url var="goNum" value="${loc }">
+				<c:param name="page" value="${p }"></c:param>
+			</c:url>
+			<c:if test="${ rpi.currentPage eq p }">
+				<a class="active">${p }</a>
+			</c:if>
+			<c:if test="${ !(rpi.currentPage eq p) }">
+				<a href="${goNum }">${p }</a>
+			</c:if>
+		</c:forEach>
+		
+		<c:url var="goNext" value="${loc }">
+			<c:param name="page" value="${rpi.currentPage + 1 }"></c:param>
+		</c:url>
+		<c:if test="${rpi.currentPage < rpi.endPage }">
+			<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
+		</c:if>
    </div>
 </div>
 
 <br>
-<div class="inputBox">
-	<div class="profile d-inline-block">
-		<img src="resources/images/mudo.png" class="profileImg">
+<c:if test="${loginUser != null }">
+	<div class="inputBox">
+		<div class="profile d-inline-block">
+			<img src="resources/images/mudo.png" class="profileImg">
+		</div>
+		<input type="text" id="reviewWrite" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeReviewInput">&nbsp;<button onclick="reviewEnter()" id="reviewIn" class="enter">등록</button>
+		<input type="hidden" id="reviewId" value="${loginUser.usersId }">
 	</div>
-	<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeReviewInput">&nbsp;<button class="enter">등록</button>
-</div>
+</c:if>
 <br><br>
 <br>
 
@@ -474,10 +477,70 @@ deleteRecBtn.addEventListener('click', function(){
 	detailForm.submit();
 })
 
-updateBtn.addEventListener('click',function(){
+function update(){
 	detailForm.action="${contextPath}/updateForm.rc";
 	detailForm.submit();
-})
+}
+
+const reviewWrite = document.getElementById('reviewWrite');
+const id = document.getElementById('reviewId');
+const foodNo = document.getElementById('foodNo');
+const recipeWriter = document.getElementById('recipeWriter');
+const recipePage = document.getElementById('recipePage');
+
+const reviewIn = document.getElementById('reviewIn');
+function reviewEnter(){
+	$.ajax({
+		url:"reviewWrite.rc",
+		data:{content:reviewWrite.value, id:id.value, foodNo: foodNo.value},
+		success:data=>{
+			console.log(data);
+			
+			const reviewBody = document.getElementById('reviewBody');
+			reviewBody.innerHTML ="";
+			
+			for(const re of data){
+				const tr = document.createElement('tr');
+				tr.classList.add('lineAll');
+				
+				const no = document.createElement('td');
+				no.classList.add('line');
+				no.innerText = re.reviewNo;
+				
+				const star = document.createElement('td');
+				star.classList.add('line');
+				
+				const content = document.createElement('td');
+				content.classList.add('line');
+				content.innerText = re.reviewContent;
+				
+				const writer = document.createElement('td');
+				writer.classList.add('line');
+				writer.innerText=re.reviewWriter;
+				
+				const date = document.createElement('td');
+				date.classList.add('line');
+				date.innerText=re.reviewDate;
+				
+				tr.append(no);
+				tr.append(star);
+				tr.append(content);
+				tr.append(writer);
+				tr.append(date);
+				
+				reviewBody.append(tr);
+			}
+			
+			reviewWrite.value = '';
+			location.href="${contextPath}/recipeDetail.rc?rId="+recipeWriter.value + "&rNo="+foodNo.value+"&page="+recipePage.value;
+		},
+		error:data=>{
+			console.log(data);
+		}
+	})
+}
+
+
 </script>
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	

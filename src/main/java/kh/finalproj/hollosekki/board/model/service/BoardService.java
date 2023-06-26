@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.board.model.dao.BoardDAO;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 
 @Service
 public class BoardService {
@@ -26,4 +27,16 @@ public class BoardService {
 		return bDAO.getFreeBoardListCount(sqlSession, i);
 	}
 
+	public Board selectBoard(int bId, boolean yn) {
+		int result = 0;
+		if(yn) {
+			result = bDAO.addCount(sqlSession, bId);
+		}
+		Board b = bDAO.selectBoard(sqlSession, bId);
+		return b;
+	}
+
+	public void insertReply(Review r) {
+		bDAO.insertReply(sqlSession, r);
+	}	
 }

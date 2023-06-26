@@ -118,44 +118,18 @@ th:first-child, td:first-child {
 								<th width=150>사진</th>
 								<th>종류</th>
 								<th>제목</th>
+								<th>작성자</th>
+								<th>작성날짜</th>
 								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
 							<tr>
-								<td><img src="resources/images/food1.jpg"/></td>
+								<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
 								<td>레시피</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food2.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg"></td>
-								<td>상품</td>
-								<td>냄비</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food4.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food5.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food6.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
+								<td>${ l.RECIPE_NAME }</td>
+								<td>${ l.NICKNAME }</td>
+								<td>${ fn:split(l.RECIPE_MODIFY_DATE, ' ')[0] }</td>
 								<td><input type="checkbox" class="delete"></td>
 							</tr>
 						</tbody>

@@ -28,6 +28,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Menu" alias="Menu"/>
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Review" alias="Review"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Point" alias="Point"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Review" alias="Review"/>
 		<typeAlias type="kh.finalproj.hollosekki.customer.model.vo.Qna" alias="Qna"/>
 		<typeAlias type="kh.finalproj.hollosekki.board.model.vo.Board" alias="Board"/>
 		

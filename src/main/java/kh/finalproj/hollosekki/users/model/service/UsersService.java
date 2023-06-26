@@ -46,5 +46,9 @@ public interface UsersService {
 
 	ArrayList<HashMap<String, Object>> myBookMarkList(int usersNo, PageInfo pi);
 
+	ArrayList<HashMap<String, Object>> myLikeList(int usersNo, PageInfo pi);
+
+	ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, PageInfo pi);
+
 	
 }

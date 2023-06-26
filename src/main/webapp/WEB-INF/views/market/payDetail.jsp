@@ -1194,15 +1194,42 @@ input[type="text"] {
 	IMP.init("imp02384108"); 
 	
 	const parentNo = document.getElementsByClassName('imgTab');
-	for(pn of parentNo) {
-		const productNo = pn.firstChild.nextSibling.value;
-		const usersNo = '${loginUser.usersId}';
-		const count = document.getElementById('size-' + productNo).innerText;
-		const sum = document.getElementById('sum-' + productNo).innerText;
-		const orderInfo = 1 /* 상품 단가, 할인률?, 포인트 사용 금액 */
-// 		const date = new Date();
+	const orderInfo = []; /* 상품 단가, 할인률?, 적립금, 포인트 사용 금액 */
+	const orderAddress = [];
+// 	for(pn of parentNo) {
+// 		const productNo = pn.firstChild.nextSibling.value;
+// 		const usersNo = '${loginUser.usersId}';
+// 		const count = document.getElementById('size-' + productNo).innerText;
+// 		const sum = parseInt(document.getElementById('sum-' + productNo).innerText.replace(/,/g, ''));
+// 		const price = document.getElementById('originP-' + productNo);
+// 		const sale = document.getElementById('sale-' + productNo);
+// 		if(price != null) {
+// 			orderInfo.push(price.innerText);
+// 		}
+// 		if(sale != null) {
+// 			orderInfo.push(sale.innerText);
+// 		}
 		
-	}
+// 		const plusPoint = document.getElementById('point-' + productNo).innerText;
+// 		const usePoint = document.getElementById('inputPoint').innerText;
+		
+		
+// 		orderInfo.push(plusPoint);
+// 		orderInfo.push(usePoint);
+		
+// 		const orderDate ='';
+// 		const postcode = document.getElementById('sample6_postcode').innerText;
+// 		const address = document.getElementById('sample6_address').innerText;
+// 		const detailAddress = document.getElementById('sample6_detailAddress').innerText;
+// 		orderAddress.push(postcode);
+// 		orderAddress.push(address);
+// 		orderAddress.push(detailAddress);
+		
+// 		const deliveryComment = document.getElementById('shippingAsk').innerText
+// 	}
+// 	console.log('oa : ' + orderAddress);
+// 	console.log('oi : ' + orderInfo);
+	
 	
 	
 	//1. 주문명 

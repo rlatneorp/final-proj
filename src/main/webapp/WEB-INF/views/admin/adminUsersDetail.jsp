@@ -14,13 +14,14 @@
 </head>
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="mainBox d-inline-block align-top mt-5 p-4 ps-5 rounded" style="width: 900px; height:1000px; border: 2px solid rgba(0,0,0,0.1);">
+	<div class="mainBox d-inline-block align-top p-4 ps-5 rounded" style="height:1000px; border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">회원정보관리</h4>
 		
 		<c:set value="${u.usersPw eq '네이버로그인 회원입니다' || u.usersPw eq '카카오로그인 회원입니다'}" var="social"/>
 		<form action="${contextPath}/adminUsersUpdate.ad" method="post">
 			<input type="hidden" name="pointBefore" value="${u.point}">
 			<input type="hidden" name="uri" value="${uri}">
+			<input type="hidden" name="page" value="${ab.page}">
 			<div class="row">
 				<div class="col-6 row">
 					<h5 class="my-3">- 개인정보 -</h5>

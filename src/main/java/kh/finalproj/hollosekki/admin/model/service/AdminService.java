@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.admin.model.dao.AdminDAO;
-import kh.finalproj.hollosekki.common.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -19,6 +19,7 @@ import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.common.model.vo.Users;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Service
 public class AdminService {
@@ -77,6 +78,38 @@ public class AdminService {
 	}
 
 
+//	Users-회원
+	public int getUsersCount(AdminBasic ab) {
+		return aDAO.getUsersCount(sqlSession, ab);
+	}
+
+	public ArrayList<Users> selectUsersList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectUsersList(sqlSession, pi, ab);
+	}
+
+	public Users selectUsers(int uNo) {
+		return aDAO.selectUsers(sqlSession, uNo);
+	}
+
+	public ArrayList<Integer> selectUsersInfo(HashMap<String, Integer> uMap) {
+		return aDAO.selectUsersInfo(sqlSession, uMap);
+	}
+
+	public int updateUsers(Users u, Point p) {
+		return aDAO.updateUsers(sqlSession, u, p);
+	}
+
+	
+//	Point-포인트
+	public int getPointCount(AdminBasic ab) {
+		return aDAO.getPointCount(sqlSession, ab);
+	}
+
+	public ArrayList<Point> selectPointList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectPointList(sqlSession, pi, ab);
+	}
+
+	
 //	Menu-메뉴
 	public int getMenuCount(AdminBasic ab) {
 		return aDAO.getMenuCount(sqlSession, ab);
@@ -195,37 +228,19 @@ public class AdminService {
 	public int deletesTool(String[] toolDeletes) {
 		return aDAO.deletesTool(sqlSession, toolDeletes);
 	}
-
 	
 	
-//	Users-회원관리
-	public int getUsersCount(AdminBasic ab) {
-		return aDAO.getUsersCount(sqlSession, ab);
+//	Recipe-레시피
+	public int getRecipeCount(AdminBasic ab) {
+		return aDAO.getRecipeCount(sqlSession, ab);
 	}
 
-	public ArrayList<Users> selectUsersList(PageInfo pi, AdminBasic ab) {
-		return aDAO.selectUsersList(sqlSession, pi, ab);
+	public ArrayList<Recipe> selectRecipeList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectRecipeList(sqlSession, pi, ab);
 	}
 
-	public Users selectUsers(int uNo) {
-		return aDAO.selectUsers(sqlSession, uNo);
-	}
-
-	public ArrayList<Integer> selectUsersInfo(HashMap<String, Integer> uMap) {
-		return aDAO.selectUsersInfo(sqlSession, uMap);
-	}
-
-	public int updateUsers(Users u, Point p) {
-		return aDAO.updateUsers(sqlSession, u, p);
-	}
-
-//	Point-포인트관리
-	public int getPointCount(AdminBasic ab) {
-		return aDAO.getPointCount(sqlSession, ab);
-	}
-
-	public ArrayList<Point> selectPointList(PageInfo pi, AdminBasic ab) {
-		return aDAO.selectPointList(sqlSession, pi, ab);
+	public int deletesRicipeOrder(String[] selDeletes) {
+		return aDAO.deletesRecipeOrder(sqlSession, selDeletes);
 	}
 
 

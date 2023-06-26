@@ -398,7 +398,6 @@ p b {
 </style>
 <body>
 <span>
-<%@include file="../common/top.jsp" %>
 <jsp:include page="../common/adminSidebar.jsp"/>
 <br>
 </span>

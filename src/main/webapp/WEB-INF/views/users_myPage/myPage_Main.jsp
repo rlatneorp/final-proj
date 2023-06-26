@@ -71,6 +71,7 @@
 	.followName{
 		font-size: 17px; font-weight: bold;
 		width:100px; margin-top: 10px; margin-left: 10px;
+		cursor: pointer;
 	}
 	.modalFollow{
 		border: none; border-radius: 5px;
@@ -265,15 +266,17 @@
 					</c:if>
 					<c:if test="${ following ne 0 }">
 						<c:forEach items="${followingList}" var="f">
-						    <div class="followDiv" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.FOLLOWING_USER_NO }' + '&page=' + '${page}'">
-					    		<c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
-					    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
-					    		</c:if>
-					    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-					    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
-					    		</c:if>
-						    	<input type="hidden" value="${ f.FOLLOWING_USER_NO }" class="followingsNo">
-						    	<div><label class="followName">${f.NICKNAME}</label></div>
+						    <div class="followDiv">
+						    	<div onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.FOLLOWING_USER_NO }' + '&page=' + '${page}'" style="cursor: pointer;">
+						    		<c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
+						    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+						    		</c:if>
+						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
+						    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+						    		</c:if>
+							    	<input type="hidden" value="${ f.FOLLOWING_USER_NO }" class="followingsNo">
+							    	<label class="followName">${f.NICKNAME}</label>
+						    	</div>
 						    	<div class="unfollowDiv" data-user-no="${f.FOLLOWING_USER_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
 						    </div><br>
 						</c:forEach>
@@ -299,15 +302,17 @@
 					</c:if>
 					<c:if test="${ follower ne 0 }">
 						<c:forEach items="${followerList}" var="f">
-							<div class="followDiv" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.USERS_NO }' + '&page=' + '${page}'">
-							    <c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
-					    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
-					    		</c:if>
-					    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-					    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
-					    		</c:if>
-							    <input type="hidden" value="${ f.USERS_NO }" class="followersNo">
-							    <div><label class="followName">${f.NICKNAME}</label></div>
+							<div class="followDiv">
+								<div onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.USERS_NO }' + '&page=' + '${page}'" style="cursor: pointer;">
+								    <c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
+						    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+						    		</c:if>
+						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
+						    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+						    		</c:if>
+								    <input type="hidden" value="${ f.USERS_NO }" class="followersNo">
+								    <label class="followName">${f.NICKNAME}</label>
+							    </div>
 							    <c:set var="following" value="false"/>
 							    <c:forEach items="${followingList}" var="fl">
 							        <c:choose>

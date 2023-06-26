@@ -13,7 +13,7 @@
 </head>
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="mainBox d-inline-block align-top mt-5 p-4 ps-5 rounded" style="width: 900px; border: 2px solid rgba(0,0,0,0.1); margin-bottom: 100px;">
+	<div class="mainBox d-inline-block align-top p-4 ps-5 rounded" style="border: 2px solid rgba(0,0,0,0.1); margin-bottom: 100px;">
 		<h4 class="py-4 mb-0">1:1문의관리</h4>
 		
 		<form action="${contextPath}/adminQNAUpdate.ad" method="post">

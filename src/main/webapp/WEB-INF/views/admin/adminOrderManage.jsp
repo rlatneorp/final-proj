@@ -16,7 +16,7 @@
 
 <body>
 	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="mainBox d-inline-block align-top mt-5" style="width: 1200px;">
+	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-3">주문관리</h4>
 		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>
 		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>

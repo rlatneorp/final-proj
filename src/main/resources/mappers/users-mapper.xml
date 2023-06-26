@@ -166,4 +166,15 @@
 		where DIVISION_NO = #{foodNo} and number_type = 1
 	</select>
 	
+	<select id="myBookMarkList" resultType="map">
+		select DIVISION_NO, NUMBER_TYPE, image_renamename, nickname, recipe_modify_date, recipe_name, menu_name
+		from bookmark b
+		     left join menu m on (b.division_no = m.product_no)
+		     left join recipe r on (b.division_no = r.food_no)
+		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO)
+		     left join users u on (u.users_no = r.users_no)
+		where b.users_no = ${usersNo}
+		order by bookmark_no desc
+	</select>
+	
 </mapper>

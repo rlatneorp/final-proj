@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import kh.finalproj.hollosekki.common.Pagination;
+import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
@@ -87,7 +88,7 @@ public class UsersController {
 		}
 	}
 	
-	// 팔로우
+	// 팔로
 	@RequestMapping("myPage_follow.me")
 	@ResponseBody
 	public String myPage_follow(Model model, @RequestParam("usersNo") int usersNo, @RequestParam("followNo") int followNo) {
@@ -146,7 +147,6 @@ public class UsersController {
 		}
 	}
 	
-	// 프로필 추가
 	@RequestMapping("myPage_InsertProfile.me")
 	public String myPage_InsertProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 									   Model model, HttpServletRequest request) {
@@ -184,7 +184,6 @@ public class UsersController {
 		}
 	}
 	
-	// 프로필 업뎃
 	@RequestMapping("myPage_UpdateProfile.me")
 	public String myPage_UpdateProfile(@RequestParam("file") MultipartFile file, @ModelAttribute Users u,
 			   						   Model model, HttpServletRequest request) {
@@ -241,7 +240,6 @@ public class UsersController {
 		}
 	}
 	
-	// 프사 삭제
 	@RequestMapping("myPage_DeleteImage.me")
 	@ResponseBody
 	public String myPage_DeleteImage(@RequestParam("usersNo") int usersNo, Model model,
@@ -264,7 +262,7 @@ public class UsersController {
 
 	// 내 레시피 조회
 	@RequestMapping("myPage_MyRecipe.me")
-	public String myPage_MyRecipe(Model model,  @RequestParam(value = "page", required = false) Integer page) {
+	public String myPage_MyRecipe(Model model, @RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
@@ -295,7 +293,21 @@ public class UsersController {
 	}
 	
 	@RequestMapping("myPage_MyBookMark.me")
-	public String myPage_MyBookMark() {
+	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		int listCount = rService.getListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		
+		ArrayList<HashMap<String, Object>> list = uService.myBookMarkList(usersNo, pi);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+		
 		return "myPage_MyBookMark";
 	}
 	
@@ -339,7 +351,7 @@ public class UsersController {
 		return "myPage_checkPwd";
 	}
 	
-	// 회원 정보 수정 전 비밀번호 체크
+	// �쉶�썝 �젙蹂� �닔�젙 �쟾 鍮꾨�踰덊샇 泥댄겕
 	@RequestMapping("myPage_checkPwd.me")
 	@ResponseBody
 	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
@@ -385,11 +397,11 @@ public class UsersController {
 			model.addAttribute("loginUser", eService.login(u));
 			return "yes";
 		} else {
-			throw new UsersException("회원 정보 수정 실패");
+			throw new UsersException("�쉶�썝 �젙蹂� �닔�젙 �떎�뙣");
 		}
 	}
 	
-	// 회원탈퇴
+	// �쉶�썝�깉�눜
 	@RequestMapping("myPage_deleteInfo.me")
 	public String myPage_deleteInfo(@RequestParam("usersNo") int usersNo) {
 		int result = uService.deleteInfo(usersNo);
@@ -397,7 +409,7 @@ public class UsersController {
 		if(result > 0) {
 			return "redirect:logout.en";
 		} else {
-			throw new UsersException("회원 탈퇴 실패");
+			throw new UsersException("�쉶�썝 �깉�눜 �떎�뙣");
 		}
 	}
 	

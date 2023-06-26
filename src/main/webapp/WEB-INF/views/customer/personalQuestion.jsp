@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,6 +55,18 @@ font-family: 'Noto Sans KR', sans-serif;
 	padding: 7px; 
 	margin-top: 30px;
 }
+
+#goToLogin{
+	width: 200px; height: 46px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	margin: 10px;
+	font-size: 24px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 5px; 
+}
 </style>
 </head>
 <body>
@@ -66,74 +77,75 @@ font-family: 'Noto Sans KR', sans-serif;
 		<br>
 		<hr>
 		<br>
+		<c:if test="${loginUser eq null }">
+			<h1>로그인 후 문의 하실 수 있습니다.</h1>
+			<button  id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
+		</c:if>
+		<c:if test="${loginUser ne null}">
 		<form action="${contextPath }/personalQuestion.cs" method="POST"> 
-		<div>
-			<h2>문의 작성</h2>
-			<p>카테고리를 지정해주세요</p>
-			<br><br>
-			<div class="customerQ">
-				<div class="Qtitle row justify-content-evenly">
-					<div class="col-1" >
-						<select name="qnaCategory" class="ddd qaaCategoryBtn text-center" id="categoryBtn" required>
-							<option>카테고리</option>
-							<option value="user" <c:if test="${ category == 'user'}">selected</c:if>>회원</option>
-							<option <c:if test="${ category == 'delivery'}">selected</c:if> value="delivery">배송</option>
-							<option <c:if test="${ category == 'pay'}">selected</c:if> value="pay">결제</option>
-							<option <c:if test="${ category == 'etc'}">selected</c:if> value="etc">기타</option>
-						</select>
-					</div>
-				</div>
-				<br><br>
-				<div class="form-floating mb-3">
-				  <input required type="text" class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요.">
-				  <label for="floatingInput">제목</label>
-				</div>
-				<div class="form-floating">
-				  <input name="qnaContent" required type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요.">
-				  <label for="floatingText">내용</label>
-				</div>
-				<br>
-			</div>
 			<div>
-				<button type="submit" id="add">작성완료</button>
+				<h2>문의 작성</h2>
+				<p>카테고리를 지정해주세요</p>
+				<br><br>
+				<div class="customerQ">
+					<div class="Qtitle row justify-content-evenly">
+						<div class="col-1" >
+							<select name="qnaCategory" class="ddd qaaCategoryBtn text-center" id="categoryBtn" required>
+								<option value="cate">카테고리</option>
+								<option value="user" <c:if test="${ category == 'user'}">selected</c:if>>회원</option>
+								<option <c:if test="${ category == 'delivery'}">selected</c:if> value="delivery">배송</option>
+								<option <c:if test="${ category == 'pay'}">selected</c:if> value="pay">결제</option>
+								<option <c:if test="${ category == 'etc'}">selected</c:if> value="etc">기타</option>
+							</select>
+						</div>
+					</div>
+					<br><br>
+					<div class="form-floating mb-3">
+					   <input required type="text" class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요.">
+					   <label for="floatingInput">제목</label>
+					</div>
+					   <input type="hidden" name="qnaTitle" id="titleSub">
+					<div class="form-floating">
+					   <input name="qnaContent" required type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요.">
+					   <label for="floatingText">내용</label>
+					</div>
+					<br>
+				</div>
+				<div>
+					<button id="add" disabled="disabled">작성완료</button>
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+		</c:if>
 	</div>
 	<br><br><br><br><br><br>
 <%@ include file="../common/footer.jsp" %>
+
 <script>
-window.onload=()=>{
 	const floatingInput = document.querySelector('#floatingInput');
+	const titleSub = document.querySelector('#titleSub');
+	
 	const categoryBtn = document.querySelector('#categoryBtn');
 	const options = document.getElementsByTagName('option');
+	const add = document.getElementById('add');
 	let category = '';
-	let titlePlusCategory = '';
-	let qnaTitle = '';
-	
-		$.ajax({
-			for(let j = 1; j < options.length; j++){
-				categoryBtn.addEventListener('change', ()=>{
-					if(options[j].value == categoryBtn.value){
-						category = options[j].innerText;
-						qnaTitle = floatingInput.value;
-						titlePlusCategory =  qnaTitle + '[' + category + '] ';
-						
-					}
-				})	
-			type: 'post',
-			url:'${contextPath}/personalQuestion.cs',
-			data: {
-				qnaTitle: titlePlusCategory
-			},
-			success: function(data){
-				console.log(data);
-				floatingInput.focus();
+			
+		categoryBtn.addEventListener('change', ()=>{
+			if(categoryBtn.value){
+				add.disabled = false;
 			}
-		})
-	};
-	
-}
+			floatingInput.focus()
+			for(let j = 1; j < options.length; j++){
+				if(options[j].value == categoryBtn.value){
+					category = options[j].innerText;
+				}
+			}
+		});
+		 
+		add.addEventListener('click', ()=>{
+			titleSub.value = '[' + category + '] ' + floatingInput.value;
+		});
+		
 </script>
 </body>
 </html>

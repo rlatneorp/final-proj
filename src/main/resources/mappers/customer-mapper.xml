@@ -148,6 +148,9 @@
 		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status)
 	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default)
 	</insert>
+	
+	
+
 
 
 </mapper>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,31 +27,39 @@
 					<br>
 					<h1 style="text-align: left;">1:1 문의</h1>
 					<br>
-					<hr style="width: 1050px;">
+					<hr style="width: 1000px;">
 					<br>
 					<c:if test="${loginUser eq null }">
 					<h1>로그인 후 문의 하실 수 있습니다.</h1>
 					<button  id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
 					</c:if>
-					<c:if test="${loginUser ne null}">
+					<c:if test="${!empty loginUser}">
 						<div class="accordion acCustomer" id="accordionFlushExample">
+						<c:if test="${empty plist}">
+						    <img src="resources/images/qnaNull.png" width="700px" height="500px">
+						</c:if>
 							<c:forEach items="${ plist }" var="c" varStatus="stc"> 
 							<div class="accordion-item">
 								<h2 class="accordion-header" id="flush-headingOne-${stc.index +1 }c">
 								<button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${stc.index +1 }c" aria-expanded="false" aria-controls="flush-collapseOne-${stc.index +1 }c">
-								        글번호: ${stc.index +1 } 제목: ${c.qnaTitle } 
+								        <c:set var="date"><fmt:formatDate value="${c.qnaDate }" pattern=" MM월 dd일" /></c:set><c:out value="${date}" /> | ${c.qnaTitle } 
 								</button>
 								</h2>
 								<div id="flush-collapseOne-${stc.index +1 }c" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${stc.index +1 }c">
 									<div class="accordion-body">
 										<div>
-											<h4>Q. 질문한 내용</h4>
-											<span class="11question">${c.qnaTitle }</span>
+											<h4>Q. ${c.qnaTitle } </h4>
+											<span class="11answer">${c.qnaContent }</span>
 										</div>
 										<hr>
 										<div> 
-											<h4>A. 답변한 내용</h4>
-											<span class="11answer">${c.qnaContent }</span>
+											<h4>A. 답변 내용</h4>
+											<c:if test="${!empty c.answerContent}">
+											<span class="11answer">${c.answerContent }</span>
+											</c:if>
+											<c:if test="${empty c.answerContent}">
+											<h5>아직 답변 처리중입니다. 조금만 기다려주세요.</h5>
+											</c:if>
 										</div>
 									</div>
 								</div>

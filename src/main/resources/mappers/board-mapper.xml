@@ -5,13 +5,16 @@
 	<select id="getFreeBoardListCount" resultType="_int">
 		select count(*)
 		from board
+                join users using(users_no)
+			left join review on(board_no = product_no)
 		where board_type = 0 and board_status = 'Y'
 	</select>
 
 	<select id="freeBoardView" resultMap="BoardResultSet">
 		select *
 		from board
-			join users using(users_no)
+                join users using(users_no)
+			left join review on(board_no = product_no)
 		where board_type = 0 and board_status = 'Y'
 	</select>
 	

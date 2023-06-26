@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -138,78 +139,17 @@
 				<th>조회수</th>
 			</tr>
 			<tbody id="tbody">
-			<tr>
-				<td>1</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">아침부터 열코딩 해보셨나요? 저는 지금 하고 있습니닿ㅎㅎㅎㅎ [10]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">아침부터 열코딩 해보셨나요? 저는 지금 하고 있습니닿ㅎㅎㅎㅎ [10]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">아침부터 열코딩 해보셨나요? 저는 지금 하고 있습니닿ㅎㅎㅎㅎ [10]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">하이여 가나다라마바사아아자자자자자자자자자자자자잦잦자자자자자자자자 [599]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-		</tbody>
-	</table>
+				<c:forEach items="${list }" var="b" > 
+					<tr>
+						<td>${b.boardNo }</td>
+						<td>${b.nickName }
+						<td>${b.boardTitle }[]</td>
+						<td><fmt:formatDate value="${b.boardDate }" pattern="yyyy-MM-dd"/></td>
+						<td>${b.boardCount }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
 	<br><br>
 	<div class="pageFreeBoard" > 

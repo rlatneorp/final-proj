@@ -54,7 +54,6 @@ public class MarketController {
 		
 		ArrayList<Cart> cartList = mkService.selectCartList(userNo);
 		
-//		ArrayList<Food> foodsList = new ArrayList<>(); ArrayList<Tool> toolsList = new ArrayList<>(); ArrayList<Ingredient> igsList = new ArrayList<>();
 		ArrayList<Product> selectProductInfo = new ArrayList<>(); 
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		
@@ -81,10 +80,12 @@ public class MarketController {
 			
 			//위에서 조회 된 정보 중 price로 cart 속성값 변경 ( cartList 하나로 보내기 위해 )
 			//합계 계산 
-			int price = 0; int sum = 0;
+			int price = 0; int sum = 0; int sale = 0;
 			for (Product product : selectProductInfo) {
 			    price = product.getProductPrice();
-			    cart.setProductPrice(price); 
+			    sale = product.getProductSale();
+			    cart.setProductPrice(price);
+			    cart.setSale(sale);
 			}
 			int size = mkService.plusResultCount(productNo);
 			sum = size * price;
@@ -113,6 +114,7 @@ public class MarketController {
 		    }
 		}
 		model.addAttribute("optValues", optValues);
+		System.out.println("cartList : " + cartList);
 		model.addAttribute("cartList", cartList);
 		return "basket";
 	}
@@ -156,10 +158,11 @@ public class MarketController {
 				menus = mkService.selectMenu(productNo);
 				
 				productInfo = mkService.selectProductInfo(productNo);
-				int price = 0; int sum = 0;
+				int price = 0; int sum = 0; int sale = 0;
 				for (Product product : productInfo) {
 				    price = product.getProductPrice();
 				    checCart.setProductPrice(price); 
+				    checCart.setSale(product.getProductSale());
 				}
 				int size = mkService.plusResultCount(productNo);
 				sum = size * price;
@@ -190,8 +193,10 @@ public class MarketController {
 		}
 		int point = mkService.selectPoint(users.getUsersNo());
 		
+		
 		model.addAttribute("point", point);
 		model.addAttribute("checkedCartList", checkedCartList );
+		System.out.println("cc : " + checkedCartList);
 		model.addAttribute("optValues", optValues);
 		return "payDetail";
 	}
@@ -310,7 +315,9 @@ public class MarketController {
 	}
 	
 	@RequestMapping("paySuccess.ma")
-	public String paySuccess() {
+	public String paySuccess(HttpSession session, Model model) {
+		Users users = (Users)session.getAttribute("loginUser");
+		model.addAttribute("users", users);
 		return "paySuccess";
 	}
 	

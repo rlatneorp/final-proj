@@ -93,11 +93,17 @@ public class EnrollController {
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
 			Users loginUser = eService.login(u);
-			if(bcrypt.matches(u.getUsersPw(), loginUser.getUsersPw())) {
-				model.addAttribute("loginUser", loginUser);
-				return "redirect:home.do";
+			if(loginUser == null) {
+				int num = 1;
+				model.addAttribute("login", num);
+				return "loginfalse";
 			} else {
-				throw new EnrollException("로그인에 실패했습니다.");
+				if(bcrypt.matches(u.getUsersPw(), loginUser.getUsersPw())) {
+					model.addAttribute("loginUser", loginUser);
+					return "redirect:home.do";
+				} else {
+					return "loginfalse";
+				}
 			}
 		}
 		
@@ -262,9 +268,9 @@ public class EnrollController {
 	        	} else { // 회원정보 저장 실패
 	        	}
 	        } else { // 기존 회원일 경우 -> 불러오기 (프사랑 닉넴 업뎃해서 가져와야함)
-	        	
+	        	String nickName = name;
 				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
-				eService.socialInfoUpdate2(id, name); // 이름, 닉넴 업데이트
+				eService.socialInfoUpdate2(id, name, nickName); // 이름, 닉넴 업데이트
 				
 				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
 	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
@@ -279,6 +285,8 @@ public class EnrollController {
 		public String naverLogin(HttpServletRequest request, Model model) {
 			String id = request.getParameter("id");
 			String name = request.getParameter("name");
+			String nickName = request.getParameter("nickName");
+			String email = request.getParameter("email");
 			String profileImg = request.getParameter("profileImg");
 			
 			SocialLogin sl = eService.SocialLogin(id);
@@ -294,8 +302,13 @@ public class EnrollController {
 				u.setUsersId(id);
 				u.setUsersPw("네이버로그인 회원입니다");
 				u.setUsersName(name);
-				u.setNickName("네이버로그인 회원입니다");
-				u.setEmail("네이버로그인 회원입니다");
+				u.setNickName(nickName);
+				
+				if(email != null) {
+	        		u.setEmail(email);
+	        	} else {
+	        		u.setEmail("네이버로그인 회원입니다");
+	        	}
 				u.setPhone("네이버로그인 회원입니다");
 				
 				int result = eService.insertUser(u);
@@ -312,7 +325,7 @@ public class EnrollController {
 				}
 			} else { // 기존 회원일경우 -> 불러오기
 				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
-				eService.socialInfoUpdate2(id, name); // 이름, 닉넴 업데이트
+				eService.socialInfoUpdate2(id, name, nickName); // 이름, 닉넴 업데이트
 				
 				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
 	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
@@ -342,23 +355,17 @@ public class EnrollController {
 			int following = eService.following(usersNo);
 			model.addAttribute("follow", follow); // 남이 나를 카운트
 			model.addAttribute("following", following); // 내가 남을 카운트
-//			System.out.println("following: "+ following);
-//			System.out.println("follow : " + follow);
 			
 			ArrayList<Follow> followList =  eService.followList(usersNo);
 			ArrayList<Follow> followingLsit =  eService.followingLsit(usersNo);
 			model.addAttribute("followList", followList);
 			model.addAttribute("followingLsit", followingLsit);
 			
-//			System.out.println("followList : " + followList);
-//			System.out.println("followingList : " + followingLsit);
-			
 			HttpSession session = request.getSession();
 			Users loginUser = (Users)session.getAttribute("loginUser");
 			
 			if(loginUser != null) {
 				ArrayList<Follow> loginUserFollowingList = eService.loginUserFollowingList(loginUser.getUsersNo());
-//				System.out.println("loginUserFollowingList : "+ loginUserFollowingList);
 				model.addAttribute("lList", loginUserFollowingList);
 			}
 			
@@ -371,7 +378,6 @@ public class EnrollController {
 			// 작성 레시피 목록 + image
 			ArrayList<Recipe> recipe = eService.recipeList(usersNo);
 			model.addAttribute("rList", recipe);
-//			System.out.println("recipe : " + recipe);
 			model.addAttribute("page", page);
 			
 			// 작성 글 목록
@@ -408,7 +414,6 @@ public class EnrollController {
 			model.addAttribute("pList", productList);
 			ArrayList<Users> healtherList = eService.healtherList();
 			model.addAttribute("hList", healtherList);
-//			System.out.println("product: " + productList);
 			
 			
 			return "othersProfile";

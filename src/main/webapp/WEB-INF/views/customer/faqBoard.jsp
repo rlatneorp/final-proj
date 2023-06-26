@@ -146,11 +146,29 @@ window.onload=()=>{
 	
 	searchBtn.addEventListener('click', function(){
 		category = categoryBtn.value;
-		search = searchBtn.previousElementSibling.value;
+		search = this.previousElementSibling.value;
+		this.style.backgroundColor = '#B0DAFF'; 
 		location.href='${contextPath}/faqBoard.cs?category=' + category + '&search=' + search;
 	});
 	
+	const searchText = document.getElementById('searchText');
+	searchText.addEventListener('keyup', function(event){
+		if(event.key == 'Enter'){
+			category = categoryBtn.value;
+			search = searchBtn.previousElementSibling.value;
+			searchBtn.style.backgroundColor = '#B0DAFF'; 
+			location.href='${contextPath}/faqBoard.cs?category=' + category + '&search=' + search;
+		}
+	});
 	
+	searchBtn.addEventListener('mouseenter', function() {
+	    this.style.backgroundColor = '#B0DAFF'; 
+	    this.style.cursor = 'pointer';
+	});
+
+// 	searchBtn.addEventListener('mouseleave', function() {
+// 	    this.style.backgroundColor = 'white';
+// 	}); 
 }	
 	
 	

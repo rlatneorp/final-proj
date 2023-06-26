@@ -220,14 +220,28 @@ public class MarketService {
 	}
 	
 	//현재 포인트 가져오기 
-	public int selectPoint(int usersNo) {
-		return mkDAO.selectPoint(sqlSession, usersNo);
-	}
+//	public int selectPoint(int usersNo) {
+//		return mkDAO.selectPoint(sqlSession, usersNo);
+//	}
 
 	public ArrayList<Review> selectReview(int productNo) {
 		return mkDAO.selectReview(sqlSession,productNo);
 	}
 
+	public int insertReview(Review r) {
+		return mkDAO.insertReview(sqlSession, r);
+	}
+
+	public ArrayList<Image> selectImageList(HashMap<String, Integer> map) {
+		return mkDAO.selectImageList(sqlSession, map);
+	}
+
+	public int selectReviewCount(int productNo) {
+		return mkDAO.selectReviewCount(sqlSession, productNo);
+	}
+
+	public ArrayList<String> selectImgList(int productNo) {
+		return mkDAO.selectImgList(sqlSession, productNo);
 	//장바구니 상품에 대한 이미지 조회 
 	public String selectImg(int productNo, int i) {
 		return mkDAO.selectImg(sqlSession, productNo, i);

@@ -146,6 +146,7 @@ font-family: 'Noto Sans KR', sans-serif;
 			titleSub.value = '[' + category + '] ' + floatingInput.value;
 		});
 		
+		
 </script>
 </body>
 </html>

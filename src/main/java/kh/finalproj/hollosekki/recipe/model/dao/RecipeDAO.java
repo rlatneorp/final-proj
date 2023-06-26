@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
@@ -125,6 +126,24 @@ public class RecipeDAO {
 
 	public ArrayList<Recipe> typeSearch(SqlSessionTemplate sqlSession, String type) {
 		return (ArrayList)sqlSession.selectList("recipeMapper.typeSearch", type);
+	}
+
+	public int reviewWrite(SqlSessionTemplate sqlSession, Review re) {
+		return sqlSession.insert("recipeMapper.reviewWrite", re);
+	}
+
+	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int foodNo) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.selectReview", foodNo);
+	}
+
+	public int getReviewCount(SqlSessionTemplate sqlSession, int foodNo) {
+		return sqlSession.selectOne("recipeMapper.getReviewCount", foodNo);
+	}
+
+	public ArrayList<Review> selectReivewList(SqlSessionTemplate sqlSession, PageInfo rpi, int foodNo) {
+		int offset = (rpi.getCurrentPage() - 1) * rpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, rpi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("recipeMapper.selectReview", foodNo, rowBounds);
 	}
 
 

@@ -235,7 +235,11 @@ public class RecipeController {
 		result4 = rService.insertAttm(comImgList);
 		
 		if(result1 + result2 + resultOrder + result4 == thumImgList.size() + resultOrder + comImgList.size() + 1) {
-			return "redirect:recipeList.rc";
+			if(user.getIsAdmin().equals("Y")) {
+				return "redirect:adminRecipeManage.ad";
+			}else {
+				return "redirect:recipeList.rc";
+			}
 		} else {
 			for(Image thi : thumImgList) {
 				deleteFile(thi.getImageRenameName(), request);

@@ -6,14 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>adminMain</title>
-<style>
-	table tr{height: 34px;}
-	td{font-size: 14px;}
-	.dataBox{height: 400px;}
-</style>
 </head>
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 	
 	<div class="mainBox d-inline-block align-top">
 		<div class="row mt-5">
@@ -22,6 +17,7 @@
 				<table class="w-100 text-center mt-3">
 					<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 						<th>날짜</th>
+						<th>판매건수</th>
 						<th>매출액</th>
 						<th>월 누적 매출액</th>
 					</tr>
@@ -29,6 +25,7 @@
 					<c:forEach begin="1" end="7" varStatus="vs">
 						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
 							<td>2023-05-${20-vs.index}</td>
+							<td>2000건</td>
 							<td>30,302,000원</td>
 							<td>603,203,200원</td>
 						</tr>

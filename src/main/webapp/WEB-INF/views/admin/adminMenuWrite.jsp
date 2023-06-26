@@ -83,7 +83,7 @@
 </head>
 <body>
 	
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 	<div class="mainBox">
 		<form id="menuInsertForm" action="${contextPath}/adminMenuInsert.ad" method="post" enctype="multipart/form-data">
 			<div id="top">

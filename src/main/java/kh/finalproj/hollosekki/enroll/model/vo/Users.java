@@ -11,7 +11,7 @@ public class Users {
 	private String email;
 	private String phone;
 	private Date enrollDate;
-	private Date eixtDate;
+	private Date exitDate;
 	private String status;
 	private int checkDay;
 	private int point;
@@ -20,15 +20,18 @@ public class Users {
 	private String attendanceDay;
 	private String usersAddress;
 	private String usersSelfIntro;
+	private int following;
+	private int follower;
+	private int enrollRecipe;
+	private int bookmarkCount;
+	private int likeCount;
 	
 	public Users() {}
-	
-
-
 
 	public Users(int usersNo, String usersId, String usersPw, String usersName, String nickName, String email,
-			String phone, Date enrollDate, Date eixtDate, String status, int checkDay, int point, String isAdmin,
-			String attendanceDate, String attendanceDay, String usersAddress, String usersSelfIntro) {
+			String phone, Date enrollDate, Date exitDate, String status, int checkDay, int point, String isAdmin,
+			String attendanceDate, String attendanceDay, String usersAddress, String usersSelfIntro, int following,
+			int follower, int enrollRecipe, int bookmarkCount, int likeCount) {
 		super();
 		this.usersNo = usersNo;
 		this.usersId = usersId;
@@ -38,7 +41,7 @@ public class Users {
 		this.email = email;
 		this.phone = phone;
 		this.enrollDate = enrollDate;
-		this.eixtDate = eixtDate;
+		this.exitDate = exitDate;
 		this.status = status;
 		this.checkDay = checkDay;
 		this.point = point;
@@ -47,22 +50,12 @@ public class Users {
 		this.attendanceDay = attendanceDay;
 		this.usersAddress = usersAddress;
 		this.usersSelfIntro = usersSelfIntro;
+		this.following = following;
+		this.follower = follower;
+		this.enrollRecipe = enrollRecipe;
+		this.bookmarkCount = bookmarkCount;
+		this.likeCount = likeCount;
 	}
-
-
-	public String getUsersAddress() {
-		return usersAddress;
-	}
-
-
-
-
-	public void setUsersAddress(String usersAddress) {
-		this.usersAddress = usersAddress;
-	}
-
-
-
 
 	public int getUsersNo() {
 		return usersNo;
@@ -128,12 +121,12 @@ public class Users {
 		this.enrollDate = enrollDate;
 	}
 
-	public Date getEixtDate() {
-		return eixtDate;
+	public Date getExitDate() {
+		return exitDate;
 	}
 
-	public void setEixtDate(Date eixtDate) {
-		this.eixtDate = eixtDate;
+	public void setExitDate(Date exitDate) {
+		this.exitDate = exitDate;
 	}
 
 	public String getStatus() {
@@ -175,13 +168,21 @@ public class Users {
 	public void setAttendanceDate(String attendanceDate) {
 		this.attendanceDate = attendanceDate;
 	}
-	
+
 	public String getAttendanceDay() {
 		return attendanceDay;
 	}
 
 	public void setAttendanceDay(String attendanceDay) {
 		this.attendanceDay = attendanceDay;
+	}
+
+	public String getUsersAddress() {
+		return usersAddress;
+	}
+
+	public void setUsersAddress(String usersAddress) {
+		this.usersAddress = usersAddress;
 	}
 
 	public String getUsersSelfIntro() {
@@ -192,14 +193,55 @@ public class Users {
 		this.usersSelfIntro = usersSelfIntro;
 	}
 
+	public int getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(int following) {
+		this.following = following;
+	}
+
+	public int getFollower() {
+		return follower;
+	}
+
+	public void setFollower(int follower) {
+		this.follower = follower;
+	}
+
+	public int getEnrollRecipe() {
+		return enrollRecipe;
+	}
+
+	public void setEnrollRecipe(int enrollRecipe) {
+		this.enrollRecipe = enrollRecipe;
+	}
+
+	public int getBookmarkCount() {
+		return bookmarkCount;
+	}
+
+	public void setBookmarkCount(int bookmarkCount) {
+		this.bookmarkCount = bookmarkCount;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Users [usersNo=" + usersNo + ", usersId=" + usersId + ", usersPw=" + usersPw + ", usersName="
 				+ usersName + ", nickName=" + nickName + ", email=" + email + ", phone=" + phone + ", enrollDate="
-				+ enrollDate + ", eixtDate=" + eixtDate + ", status=" + status + ", checkDay=" + checkDay + ", point="
+				+ enrollDate + ", exitDate=" + exitDate + ", status=" + status + ", checkDay=" + checkDay + ", point="
 				+ point + ", isAdmin=" + isAdmin + ", attendanceDate=" + attendanceDate + ", attendanceDay="
-				+ attendanceDay + ", usersAddress=" + usersAddress + ", usersSelfIntro=" + usersSelfIntro + "]";
+				+ attendanceDay + ", usersAddress=" + usersAddress + ", usersSelfIntro=" + usersSelfIntro
+				+ ", following=" + following + ", follower=" + follower + ", enrollRecipe=" + enrollRecipe
+				+ ", bookmarkCount=" + bookmarkCount + ", likeCount=" + likeCount + "]";
 	}
 	
-
 }

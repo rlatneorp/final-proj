@@ -15,7 +15,7 @@
 </head>
 
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>s
 	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-0">1:1문의관리</h4>
 		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>

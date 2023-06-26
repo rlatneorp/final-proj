@@ -243,8 +243,24 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", map);
 	}
 	
-	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
-		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
+//	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
+//		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
+//	}
+
+	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
+		return sqlSession.insert("marketMapper.insertReview", r);
+	}
+
+	public ArrayList<Image> selectImageList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectImageList", map);
+	}
+
+	public int selectReviewCount(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectReviewCount", productNo);
+	}
+
+	public ArrayList<String> selectImgList(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectImgList", productNo);
 	}
 
 

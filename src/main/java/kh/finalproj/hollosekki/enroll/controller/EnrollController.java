@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -32,6 +33,7 @@ import kh.finalproj.hollosekki.enroll.model.exception.EnrollException;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
@@ -381,11 +383,18 @@ public class EnrollController {
 			model.addAttribute("page", page);
 			
 			// 작성 글 목록
+			ArrayList<Board> board = eService.boardList(usersNo);
+			model.addAttribute("boList", board);
+//			int replyCount = eService.replyCount(); // 댓글카운트.. -> 해당 글에대한 댓글만 카운트 해야함!
 			
 			// 작성 댓글 목록
 			
-			// 작성 레시피후기 목록
-			
+			// 레시피후기 목록
+			String usersId = user.getUsersId();
+			System.out.println(usersId);
+			ArrayList<Review> reviewList = eService.reviewList(usersId);
+			System.out.println(reviewList);
+			model.addAttribute("rvList", reviewList);
 			
 			// 북마크 목록
 			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo);

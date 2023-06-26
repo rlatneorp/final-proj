@@ -1,5 +1,7 @@
 package kh.finalproj.hollosekki.market.model.vo;
 
+import java.sql.Date;
+
 public class Review {
 
 	private int productNo;
@@ -9,6 +11,8 @@ public class Review {
 	private String reviewContent;
 	private int reviewScore;
 	private String reviewStatus;
+	private Date reviewDate;
+	private String reviewWriter;
 	private String reviewStar;
 	
 	public Review() {
@@ -16,8 +20,7 @@ public class Review {
 	}
 
 	public Review(int productNo, int orderNo, int reviewNo, String reviewTitle, String reviewContent, int reviewScore,
-			String reviewStatus, String reviewStar) {
-		super();
+			String reviewStatus, Date reviewDate, String reviewWriter, String reviewStar) {
 		this.productNo = productNo;
 		this.orderNo = orderNo;
 		this.reviewNo = reviewNo;
@@ -25,6 +28,8 @@ public class Review {
 		this.reviewContent = reviewContent;
 		this.reviewScore = reviewScore;
 		this.reviewStatus = reviewStatus;
+		this.reviewDate = reviewDate;
+		this.reviewWriter = reviewWriter;
 		this.reviewStar = reviewStar;
 	}
 
@@ -84,6 +89,22 @@ public class Review {
 		this.reviewStatus = reviewStatus;
 	}
 
+	public Date getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+	public String getReviewWriter() {
+		return reviewWriter;
+	}
+
+	public void setReviewWriter(String reviewWriter) {
+		this.reviewWriter = reviewWriter;
+	}
+
 	public String getReviewStar() {
 		return reviewStar;
 	}
@@ -96,7 +117,10 @@ public class Review {
 	public String toString() {
 		return "Review [productNo=" + productNo + ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle="
 				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
-				+ reviewStatus + ", reviewStar=" + reviewStar + "]";
+				+ reviewStatus + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + ", reviewStar="
+				+ reviewStar + "]";
 	}
+
+	
 
 }

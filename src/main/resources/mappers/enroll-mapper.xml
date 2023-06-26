@@ -70,7 +70,7 @@
 	</update>
 	
 	<update id="socialInfoUpdate2">
-		update users set users_name = #{name}, nickname = #{name}
+		update users set users_name = #{name}, nickname = #{nickName}
 		where users_id = #{id}
 	</update>
 	

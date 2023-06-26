@@ -289,7 +289,7 @@
 	
 	<update id="updateConfirmShipping">
 		update shipping_address set
-		RECIPIENT=#{recipient}, ADDRESS=#{address}, HOME_PHONE=#{homePhone}, PHONE=#{phone}, SHIPPING_NAME=#{shippingName}
+		RECIPIENT=#{recipient}, ADDRESS=#{address}, PHONE=#{phone}, SHIPPING_NAME=#{shippingName}
 		where SHIPPING_NO = #{shippingNo}
 	</update>
 	

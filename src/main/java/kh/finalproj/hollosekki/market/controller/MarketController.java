@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -499,9 +500,12 @@ public class MarketController {
 	}
 	
 	@RequestMapping("delShipping.ma")
-//	@ResponseBody
-	public void delShipping(@RequestParam("shippingNo") int shippingNo) {
-		mkService.delShipping(shippingNo);
+	@ResponseBody
+	public String delShipping(@RequestParam("shippingNo") int shippingNo) {
+		System.out.println("sn : " + shippingNo);
+		int result = mkService.delShipping(shippingNo);
+		
+		return result >= 0 ? "yes" : "no";
 	}
 	
 }

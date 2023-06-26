@@ -207,8 +207,8 @@ public class MarketService {
 		return mkDAO.insertCart(sqlSession, c);
 	}
 
-	public void delShipping(int shippingNo) {
-		mkDAO.delShipping(sqlSession, shippingNo);
+	public int delShipping(int shippingNo) {
+		return mkDAO.delShipping(sqlSession, shippingNo);
 	}
 //	public void delShipping(int shippingNo) {
 //		mkDAO.delShipping(sqlSession, shippingNo);

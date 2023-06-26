@@ -220,8 +220,8 @@ public class MarketDAO {
 	//諛곗넚吏� �궘�젣 
 	
 	//獄쏄퀣�꽊筌욑옙 占쎄텣占쎌젫 
-	public void delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
-		sqlSession.delete("marketMapper.delShipping", shippingNo);
+	public int delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
+		return sqlSession.delete("marketMapper.delShipping", shippingNo);
 	}
 
 	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {

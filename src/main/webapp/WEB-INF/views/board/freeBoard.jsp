@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -111,24 +113,26 @@
 
 	
 	<br><br><br><br>
-	
-	
 	<div id="searchTable">	
 		<div class="search" style="margin:0 auto; left:290px;">
 			<select style="width: 100px; height: 40px; padding-top: 8px;">
-				<option>글번호</option>
-				<option>작성자</option>
-				<option>제목</option>
-				<option>내용</option>
+				<option value="bId" <c:if test="${ category == 'bId'}">selected</c:if>>글번호</option>
+				<option <c:if test="${ category == 'writer'}">selected</c:if> value="writer">작성자</option>
+				<option <c:if test="${ category == 'title'}">selected</c:if> value="title">제목</option>
+				<option <c:if test="${ category == 'content'}">selected</c:if> value="content">내용</option>
 			</select>
 			<div class="searchBar">
-				<input id="searchInput" type="text" placeholder="내용을 입력해 주세요"> 
-				<div id="searchIcon"><button type="submit" id="searchBtn"><i class="bi bi-search"></i></button></div>
+				<input id="searchInput" type="text" value="<c:if test='${ !empty search }'>${ search }</c:if>" placeholder="내용을 입력해 주세요"> 
+				<div id="searchIcon">
+					<button type="submit" id="searchBtn"><i class="bi bi-search"></i></button>
+				</div>
 			</div>
-		</div><br><br><br><br>
+		</div>
+		
+		<br><br><br><br>
 	
 	<!-- 자유게시글 -->
-	<table>
+		<table>
 			<tr style="background-color: #B0DAFF; opacity: 90%">
 				<th style="width: 110px;">글번호</th>
 				<th>작성자</th>
@@ -137,80 +141,52 @@
 				<th>조회수</th>
 			</tr>
 			<tbody id="tbody">
-			<tr>
-				<td>1</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">아침부터 열코딩 해보셨나요? 저는 지금 하고 있습니닿ㅎㅎㅎㅎ [10]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">아침부터 열코딩 해보셨나요? 저는 지금 하고 있습니닿ㅎㅎㅎㅎ [10]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">아침부터 열코딩 해보셨나요? 저는 지금 하고 있습니닿ㅎㅎㅎㅎ [10]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">이렇게 드셔보세요 [59]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>박보보</td>
-				<td style="text-align: left; padding-left: 20px;">하이여 가나다라마바사아아자자자자자자자자자자자자잦잦자자자자자자자자 [599]</td>
-				<td>2023-06-01</td>
-				<td>15912</td>
-			</tr>
-		</tbody>
-	</table>
+				<c:forEach items="${list }" var="b" > 
+					<tr>
+						<td>${b.boardNo }</td>
+						<td>${b.nickName }
+						<td>${b.boardTitle }[]</td>
+						<td><fmt:formatDate value="${b.boardDate }" pattern="yyyy-MM-dd"/></td>
+						<td>${b.boardCount }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
-	
+	<br><br>
+	<div class="pageFreeBoard" > 
+		<nav aria-label="Page navigation example">
+			<ul class="pageFreeBoard pagination justify-content-center">
+			    <c:if test="${ pi.currentPage > 1 }">
+			    <li class="page-item">
+			    	<c:url var="goBack" value="${ loc }">
+						<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+					</c:url>
+					<a class="page-link" href="${ goBack }" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>	
+				</li>
+				</c:if>
+				<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+				   	<c:url var="goNum" value="${ loc }">
+						<c:param name="page" value="${ p }"></c:param>
+					</c:url>
+				  	<li class="page-item pageFreeBoard"><a class="page-link" href="${ goNum }">${ p }</a></li>
+				</c:forEach>
+				<c:if test="${ pi.currentPage < pi.maxPage }">
+				<li class="page-item">
+					<c:url var="goNext" value="${ loc }">
+						<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+					</c:url>
+					<a class="page-link" href="${ goNext }" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+				</c:if>
+			</ul>
+		</nav>	
+	</div>
+	<br><br>
 	<!-- 작성 버튼 -->
 	<div style="width: 900px; margin: 0 auto; text-align: right;">
 		<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
@@ -227,7 +203,10 @@
 	
 	for(tr of trs) {
 		tr.addEventListener('click', function() {
-			location.href = '${contextPath}/selectFreeBoard.bo';
+			const trTd = this.children;
+			const boardId = trTd[0].innerText;
+			const boardWriter = trTd[1].innerText;
+			location.href = '${contextPath}/selectFreeBoard.bo?bId=' + boardId + '&writer=' + boardWriter + '&page=' + ${pi.currentPage};
 		})
 		
 		 tr.addEventListener('mouseenter', function() {
@@ -252,12 +231,25 @@
 	searchInput.addEventListener('keyup', function(event) {
 	  if (event.key === 'Enter') {
 	    const searchText = searchInput.value
-	    //여기에 ajax로 searchText 넘기기 
+	    
 	    
 	    console.log('검색어:', searchText);
 	    searchInput.value = '';
 	  }
 	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//작성하기 버튼 클릭 시 작성하기 페이지로 이동 
 	document.getElementById('')

@@ -319,10 +319,13 @@ p b {
 	margin: auto;
 }
 
-.textbox {
-	width: 100%;
-	display: none;
-}
+/* .textbox { */
+/* 	width: 100%; */
+/* } */
+
+ .textbox:hidden { 
+ 	width: 100%; 
+ } 
 
 
 .reviewComment {
@@ -858,8 +861,8 @@ p b {
 	<div class="reviewbox">
 		<ul>
 			<li>상세정보</li>
-			<li>후기</li>
-			<li>배송환불</li>
+			<li>후기 (${reviewCount})</li>
+			<li>배송 및 환불</li>
 			<li>문의</li>
 		</ul>
 	</div>
@@ -878,16 +881,16 @@ p b {
 		<br>
 	
 	
-	<div class="reviewWrap" style=" width:1200px; margin-top: 5px; ">
+	<div class="reviewWrap" style=" width:1200px;">
 	
-			<div class="reviewWrap1" style="padding: 10px;">
-					<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;">${textboxCount}</span>
-				
+			<div class="reviewWrap1" style="padding: 10px; border-bottom: 1px solid lightgray;">
+					<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
 	<%-- 			<c:if test="${ loginUser != null }"> --%>
 						<div class="review_btn">
 							<a href="createReview.ma?productNo=${p.productNo}">
 							<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 						</div>
+						
 	<%-- 				</c:if>	 --%>
 <!-- 					<div class="photoList"> -->
 <!-- 						<ul style="padding: 10px;"> -->
@@ -896,38 +899,57 @@ p b {
 <!-- 							<li ><img src="img" alt=""/></li> -->
 <!-- 						</ul> -->
 <!-- 					</div> -->
+
 			</div>
-				
-				
-	
-				<div class="textbox">
-					<div style="padding: 10px;">
-						<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">Hype boy</div>
+			
+					<c:set var="reviewCount" value="${reviewCount}" />
+					   <c:if test="${reviewCount eq 0}">
+					  	<div style="text-align:center; margin: 10px;">
+					  		<img style="width:100px; height:100px;" src="resources/images/icon_none.png">
+					  	</div>
+					       <p style="margin:auto; text-align:center; font-weight: 400; color: #999999; font-size: 15px">등록된 후기가 없습니다.</p>
+					  </c:if>
+					  
+		<c:forEach items="${ list }" var="r">
+				<div class="textbox" >
+						<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 400;">${r.reviewWriter}</div>
+						<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar">
+							<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
+							<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
+							<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
+							<c:if test="${r.reviewScore  eq  2 }" >★★☆☆☆</c:if>
+							<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
+							<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
+						</span>
+						<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
 						
-						<span style="font-size: 20px; font-weight: 200; color:#4485d7;">★★★★☆</span>
-						&nbsp;
-						<span style="font-size: 15px; font-weight: 200;">2023-05-05</span>
 						
-						<div class="reviewPhoto">
-							<ul style="padding: 10px;">
-								<li ><img src="img" alt="" /></li>
-								<li><img src="img" alt="" /></li>
-								<li ><img src="img" alt=""/></li>
-							</ul>
-						</div>
-					</div>
-					
-						
-					<div style="display: inline-block; width: 100%; margin-bottom: 30px;">
+<%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
 		
-						<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-							좋네용ㅁㄴㅇ
-						</div>
-						
-					</div>
-					
-				</div>
 				
+							<div class="reviewPhoto">
+								<ul>
+									<c:forEach items="${imglist}" var="img" >
+										<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
+											<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}"></li>
+										</c:if>
+									</c:forEach>
+								</ul>
+							</div>
+							
+<%-- 						<c:forEach items="${imglist}" var="img"> --%>
+<%-- 							<c:if test ="${img.imageDivideNo eq r.reviewNo}"> --%>
+								<div style="display: inline-block; width: 100%;">
+<%-- 										<c:if test ="${img.imageDivideNo ep r.reviewNo}" > --%>
+										<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+												${r.reviewContent}  
+										</div>
+<%-- 									</c:if> --%>
+								</div>
+<%-- 							</c:if> --%>
+<%-- 						</c:forEach> --%>
+			</div>
+		</c:forEach>
 			<div class="moreView">더보기</div>
 				
 	<div class="productBox">
@@ -1072,8 +1094,6 @@ p b {
 	          	</li>
 			</div>
 		</div>
-	</div>
-</div><!-- 전체를 감싸는 박스 -->
         	<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	        	<div class="modal-dialog modal-dialog-centered">
 	        		<div class="modal-content">
@@ -1088,7 +1108,6 @@ p b {
 	
 	        			</div>
 	        			<div class="footer" style="text-align:center; height: 50px;">
-	<!--         				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button> -->
 								<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
 								<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
 	<!--         				<button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
@@ -1114,7 +1133,7 @@ p b {
 	        		</div>
 	        	</div>
 	        </div>
-
+		</div>
 <br><br><br>
 	<script>
 	
@@ -1131,7 +1150,6 @@ p b {
 		})
 	
 	   const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
-	   
 	   const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 	   const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
 	   const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
@@ -1257,25 +1275,31 @@ p b {
 	      	})
 	        		
 	    	
+	      	
+	      	
 	   function priceToString(productPrice) {
 	       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	   }
 	   
-		
+	    
 	$(function(){
-	    $(".textbox").slice(0, 2).show(); // 초기갯수
-	    $(".moreView").click(function(e){ // 클릭시 more
-	        e.preventDefault();
-	        $(".textbox:hidden").wrapAll().show(); // 클릭시 more 갯수 지저정
-	        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-	        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
-	        }
-	    });
+		    $(".textbox").slice(0, 3).show(); // 초기갯수
+		    $(".moreView").click(function(e){ // 클릭시 more
+		        e.preventDefault();
+		        $(".textbox").wrapAll().show(); // 클릭시 more 갯수 지저정
+		        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+		        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
+		        }
+		    });
 	});
-		
-	 
+	
+	
+
+
+
 		
 		$(document).ready(function() {
+			
 	    $("#cartbtn").click(function() {
 	        var productNo = $("input[name='productNo']").val();
 	        var cartCount = $(".cartCount").val();

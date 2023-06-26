@@ -1,6 +1,10 @@
 package kh.finalproj.hollosekki.market.model.vo;
 
-public class Review {
+import java.sql.Date;
+
+import kh.finalproj.hollosekki.common.model.vo.Image;
+
+public class Review extends Image{
 
 	private int productNo;
 	private int orderNo;
@@ -10,13 +14,15 @@ public class Review {
 	private int reviewScore;
 	private String reviewStatus;
 	private String reviewStar;
+	private Date reviewDate;
+	private String reviewWriter;
 	
 	public Review() {
 		super();
 	}
 
 	public Review(int productNo, int orderNo, int reviewNo, String reviewTitle, String reviewContent, int reviewScore,
-			String reviewStatus, String reviewStar) {
+			String reviewStatus, String reviewStar, Date reviewDate, String reviewWriter) {
 		super();
 		this.productNo = productNo;
 		this.orderNo = orderNo;
@@ -26,6 +32,8 @@ public class Review {
 		this.reviewScore = reviewScore;
 		this.reviewStatus = reviewStatus;
 		this.reviewStar = reviewStar;
+		this.reviewDate = reviewDate;
+		this.reviewWriter = reviewWriter;
 	}
 
 	public int getProductNo() {
@@ -91,12 +99,46 @@ public class Review {
 	public void setReviewStar(String reviewStar) {
 		this.reviewStar = reviewStar;
 	}
+	
+	public Date getReviewDate() {
+		return reviewDate;
+	}
+	
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+	
+	public String getReviewWriter() {
+		return reviewWriter;
+	}
+	
+	public void setReviewWriter(String reviewWriter) {
+		this.reviewWriter = reviewWriter;
+	}
+
+
+	public Date getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+	public String getReviewWriter() {
+		return reviewWriter;
+	}
+
+	public void setReviewWriter(String reviewWriter) {
+		this.reviewWriter = reviewWriter;
+	}
 
 	@Override
 	public String toString() {
 		return "Review [productNo=" + productNo + ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle="
 				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
-				+ reviewStatus + ", reviewStar=" + reviewStar + "]";
+				+ reviewStatus + ", reviewStar=" + reviewStar + ", reviewDate=" + reviewDate + ", reviewWriter="
+				+ reviewWriter + "]";
 	}
 
 }

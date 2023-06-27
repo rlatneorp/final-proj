@@ -389,11 +389,9 @@ public class EnrollController {
 			
 			// 작성 댓글 목록
 			
-			// 레시피후기 목록
+			// 리뷰 목록
 			String usersId = user.getUsersId();
-			System.out.println(usersId);
 			ArrayList<Review> reviewList = eService.reviewList(usersId);
-			System.out.println(reviewList);
 			model.addAttribute("rvList", reviewList);
 			
 			// 북마크 목록

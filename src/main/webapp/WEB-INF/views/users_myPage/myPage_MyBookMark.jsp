@@ -118,7 +118,6 @@ th:first-child, td:first-child {
 								<th>종류</th>
 								<th>제목</th>
 								<th>작성자</th>
-								<th>작성날짜</th>
 								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
@@ -130,7 +129,6 @@ th:first-child, td:first-child {
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
 										<td>${ l.NICKNAME }</td>
-										<td>${ fn:split(l.RECIPE_MODIFY_DATE, ' ')[0] }</td>
 										<td><input type="checkbox" class="delete"></td>
 									</c:if>
 									<c:if test="${ l.NUMBER_TYPE == 2 }">
@@ -138,7 +136,6 @@ th:first-child, td:first-child {
 										<td>식단</td>
 										<td>${ l.MENU_NAME }</td>
 										<td>${ l.NAME }</td>
-										<td>${ fn:split(l.PRODUCT_MODIFY_DATE, ' ')[0] }</td>
 										<td><input type="checkbox" class="delete"></td>
 									</c:if>
 								</tr>

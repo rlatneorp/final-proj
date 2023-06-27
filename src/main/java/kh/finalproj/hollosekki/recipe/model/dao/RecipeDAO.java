@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -144,6 +145,10 @@ public class RecipeDAO {
 		int offset = (rpi.getCurrentPage() - 1) * rpi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, rpi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("recipeMapper.selectReview", foodNo, rowBounds);
+	}
+
+	public ArrayList<Ingredient> selectIngredient(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.selectIngredient");
 	}
 
 

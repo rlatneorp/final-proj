@@ -375,7 +375,8 @@
 			}else{
 				$.ajax({
 					url: '${contextPath}/adminFoodSelector.ad',
-					data: {pNo:obj.value},
+					data: {no:obj.value,
+						   type:1},
 					success: data =>{
 						const tr = obj.parentElement.parentElement;
 						tr.querySelector('.content').querySelectorAll('p')[0].innerText = data.foodName;
@@ -387,7 +388,7 @@
 						
 						$.ajax({
 							url: '${contextPath}/adminFoodImageSelector.ad',
-							data: {pNo:obj.value},
+							data: {no:obj.value},
 							success: data =>{
 								tr.querySelector('.previewImage').src = "${contextPath}/resources/uploadFiles/"+data.imageRenameName;
 							}

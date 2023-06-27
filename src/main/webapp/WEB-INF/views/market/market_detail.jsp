@@ -743,7 +743,7 @@ p b {
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-					 <span style="font-weight: 400; font-size: 42px;">${ tool.toolName} </span>
+					 <span style="font-weight: 400; font-size: 42px;">${ tool.toolName } </span>
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
@@ -1043,7 +1043,7 @@ p b {
               	
         <!--  반복 될 부분 -->      	
              <li class="accordion_q_li js_data_row" >
-                <div class="accordion_q_tit1">
+                <div class="accordion_q_tit1"> 
                    
                     <div class="qna">
                         상품문의 입니다.
@@ -1158,7 +1158,8 @@ p b {
 	   const like = document.querySelector(".like");
 	   const productSet = document.querySelector(".productSet");
 	   const increase = document.querySelectorAll(".increase");	
-	   
+	   const reviewStar = document.querySelectorAll(".reviewStar");
+	  
 		
 			$(document).on("click",".btnbox",function(e){
 				const increBtn = this.childNodes[2]; //증가버튼

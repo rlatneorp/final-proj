@@ -27,7 +27,6 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
-import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -49,7 +48,7 @@ public class AdminController {
 	
 	@GetMapping("adminMain.ad")
 	public String adminMain(Model model) {
-		ArrayList<AdminMain> amList = aService.adminMainWeek();
+//		ArrayList<AdminMain> amList = aService.adminMainWeek();
 		return "adminMain";
 	}
 	
@@ -436,14 +435,51 @@ public class AdminController {
 			throw new AdminException("메뉴 등록에 실패하였습니다.");
 		}
 	}
+	@GetMapping("adminGetFoodList.ad")
+	public void adminGetFoodList(@ModelAttribute AdminBasic ab,
+								 HttpServletResponse response) {
+		
+		PageInfo pi = new PageInfo();
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(100000);
+		
+		ArrayList<Food> fList = aService.selectFoodList(pi, ab);
+		
+//		product정보 입력 메소드
+		for(Food f: fList) {
+			f = (Food)selectProduct(f);
+		}
+		
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		
+		try {
+			gson.toJson(fList, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	@GetMapping("adminFoodSelector.ad")
-	public void adminFoodSelector(@RequestParam("pNo") int pNo,
+	public void adminFoodSelector(@RequestParam("no") Integer no,
+								  @RequestParam(value="type", required=false) Integer type,
 				  				  HttpServletResponse response) {
 		Food food = null;
-		if(pNo != 0) {
-			food = aService.selectFood(pNo);
+//		type 	1: productNo
+//				2: foodNo
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("no", no);
+		map.put("type", type);
+		
+		System.out.println(map);
+		System.out.println(food);
+		if(no != 0) {
+			food = aService.selectFood(map);
 			food = (Food)selectProduct(food);
 		}
+		
 		response.setContentType("application/json; charset=UTF-8");
 		
 		GsonBuilder gb = new GsonBuilder();
@@ -455,16 +491,16 @@ public class AdminController {
 		}
 	}
 	@GetMapping("adminFoodImageSelector.ad")
-	public void adminFoodImageSelector(@RequestParam("pNo") int pNo,
+	public void adminFoodImageSelector(@RequestParam("no") int no,
 									   HttpServletResponse response) {
 		Image img = null; 
-		if(pNo != 0) {
+		if(no != 0) {
 //			HashMap<String, Integer> map = new HashMap<String, Integer>();
 //			map.put("imageDivideNo", pNo);
 //			map.put("imageType", 3);
 //			map.put("imageLevel", 1);
 //			img = aService.selectAllImageList(map).get(0);
-			img = selectAllImageList(pNo, 3, 1).get(0);
+			img = selectAllImageList(no, 3, 1).get(0);
 		}
 		response.setContentType("application/json; charset=UTF-8");
 		
@@ -476,6 +512,7 @@ public class AdminController {
 			e.printStackTrace();
 		}
 	}
+	
 	
 //	Ingredient-식재료 관리
 	@GetMapping("adminIngredientManage.ad")
@@ -758,14 +795,18 @@ public class AdminController {
 	@GetMapping("adminFoodDetail.ad")
 	public String adminFoodDetail(
 //			@ModelAttribute AdminBasic ab,
-								  @RequestParam("productNo") int foodNo,
+								  @RequestParam("productNo") Integer pNo,
 								  Model model) {
-		Food f = aService.selectFood(foodNo);
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("no", pNo);
+		map.put("type", 1);
+		
+		Food f = aService.selectFood(map);
 //		HashMap<String, Integer> map = new HashMap<String, Integer>();
 //		map.put("imageDivideNo", foodNo);
 //		map.put("imageType", 3);
 //		ArrayList<Image> imgList = aService.selectAllImageList(map);
-		ArrayList<Image> imgList = selectAllImageList(foodNo, 3, -1);
+		ArrayList<Image> imgList = selectAllImageList(pNo, 3, -1);
 		
 		Image thumbnail = null;
 		for(int i = 0; i<imgList.size(); i++) {
@@ -876,7 +917,6 @@ public class AdminController {
 								  HttpSession session,
 								  Model model,
 								  @ModelAttribute Food f,
-//								  @ModelAttribute Product p,
 								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
@@ -887,7 +927,6 @@ public class AdminController {
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
 
 //		food 기본값 설정
-		f.setFoodType(0);
 		f.setProductType(1);
 		f.setProductOption("N");
 		f.setProductStatus("Y");
@@ -909,6 +948,7 @@ public class AdminController {
 			for(MultipartFile imageFile: imageFiles) {
 				Image image = new Image();
 				if(imageFile != null && !imageFile.isEmpty()) {
+					System.out.println(imageFile);
 					String[] returnArr = saveFile(imageFile, request);
 					if(returnArr[1] != null) {
 //						image.setImageDivideNo(nowFoodNo);
@@ -918,7 +958,9 @@ public class AdminController {
 //						image.setImageRenameName(returnArr[1]);
 //						image.setImageLevel(0);
 						image = setImage(nowFoodNo, 3, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 0);
+						System.out.println(image);
 						if(i==0) {
+							System.out.println(image);
 							image.setImageLevel(1);
 						}
 						resultImg += aService.insertImage(image);
@@ -935,6 +977,27 @@ public class AdminController {
 		}
 		throw new AdminException("식품 등록에 실패하였습니다.");
 	}
+	@GetMapping("adminGetFoodListNotD.ad")
+	public void adminGetFoodListNotD(@ModelAttribute AdminBasic ab,
+								 HttpServletResponse response) {
+		
+		PageInfo pi = new PageInfo();
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(100000);
+		
+		ArrayList<Food> fList = aService.selectFoodListNotD(pi, ab);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		
+		try {
+			gson.toJson(fList, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	
 //	Tool-상품 관리
@@ -1482,7 +1545,7 @@ public class AdminController {
 		image.setImageRenameName(imageRenameName);
 		image.setImagePath(imagePath);
 		image.setImageLevel(imageLevel);
-		return null;
+		return image;
 	}
 	
 	

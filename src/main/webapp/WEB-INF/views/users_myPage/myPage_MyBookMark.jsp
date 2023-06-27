@@ -123,22 +123,24 @@ th:first-child, td:first-child {
 						</thead>
 						<tbody id="tbody">
 							<c:forEach items="${ list }" var="l">
-								<tr>
-									<c:if test="${ l.NUMBER_TYPE == 1 }">
+								<c:if test="${ l.NUMBER_TYPE == 1 }">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
 										<td>${ l.NICKNAME }</td>
 										<td><input type="checkbox" class="delete"></td>
-									</c:if>
-									<c:if test="${ l.NUMBER_TYPE == 2 }">
+									</tr>
+								</c:if>
+								<c:if test="${ l.NUMBER_TYPE == 2 }">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.MENU_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>식단</td>
 										<td>${ l.MENU_NAME }</td>
 										<td>${ l.NAME }</td>
 										<td><input type="checkbox" class="delete"></td>
-									</c:if>
-								</tr>
+									</tr>
+								</c:if>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -227,8 +229,12 @@ th:first-child, td:first-child {
 			    });
 			
 		})
+		
+		// 상세페이지
+// 		const tbody = document.querySelector('tbody');
+// 		const tds = tbody.querySelectorAll('td');
+// 		console.log(tds);
 	</script>
-	
 	
 	<br><br><br><br><br><br><br><br>
 	<br><br><br><br><br><br><br>

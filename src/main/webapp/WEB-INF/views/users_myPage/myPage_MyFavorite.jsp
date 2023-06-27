@@ -102,11 +102,13 @@ th:first-child, td:first-child {
 				<br><br>
 				<div class="search" style="margin: 0 auto; left: 480px;">
 					<select style="width: 100px">
-						<option>최신순</option>
-						<option>레시피</option>
-						<option>식단</option>
-						<option>식품</option>
-						<option>상품</option>
+						<option>--------</option>
+						<option value="0">전체</option>
+						<option value="1">레시피</option>
+						<option value="2">식단</option>
+						<option value="3">식품</option>
+						<option value="4">식재료</option>
+						<option value="5">상품</option>
 					</select>
 				</div>
 				<br>
@@ -127,7 +129,7 @@ th:first-child, td:first-child {
 						<tbody id="tbody">
 							<c:forEach items="${ list }" var="l">
 								<c:if test="${ l.NUMBER_TYPE == 1 }">
-									<tr>
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
@@ -276,6 +278,29 @@ th:first-child, td:first-child {
 			    });
 			
 		})
+		
+		// 옵션 선택
+		const selectElement = document.querySelector("select");
+
+	    selectElement.addEventListener("change", function() {
+	        const value = this.value; // 선택된 값 출력
+	        console.log(value);
+
+	        // 선택된 값에 따라 URL을 생성하여 페이지 이동
+	        if(value == 0){
+	        	location.href = "${contextPath}/myPage_MyFavorite.me?searchType=0";
+	        } else if (value == 1) { // 전체
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=1";
+	        } else if (value == 2) { // 레시피
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=2";
+	        } else if (value == 3) { // 식단
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=3";
+	        } else if (value == 4) { // 식품
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=4";
+	        } else if (value == 5) { // 식재료
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=5";
+	        }
+	    });
 	</script>
 	
 	

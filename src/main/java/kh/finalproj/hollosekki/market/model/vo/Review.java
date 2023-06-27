@@ -16,8 +16,6 @@ public class Review extends Image{
 	private Date reviewDate;
 	private String reviewWriter;
 	private String reviewStar;
-	private Date reviewDate;
-	private String reviewWriter;
 	
 	public Review() {
 		super();
@@ -114,51 +112,6 @@ public class Review extends Image{
 
 	public String getReviewStar() {
 		return reviewStar;
-	}
-
-	public void setReviewDate(Date reviewDate) {
-		this.reviewDate = reviewDate;
-	}
-
-	public String getReviewWriter() {
-		return reviewWriter;
-	}
-
-	public void setReviewWriter(String reviewWriter) {
-		this.reviewWriter = reviewWriter;
-	}
-	
-	public Date getReviewDate() {
-		return reviewDate;
-	}
-	
-	public void setReviewDate(Date reviewDate) {
-		this.reviewDate = reviewDate;
-	}
-	
-	public String getReviewWriter() {
-		return reviewWriter;
-	}
-	
-	public void setReviewWriter(String reviewWriter) {
-		this.reviewWriter = reviewWriter;
-	}
-
-
-	public Date getReviewDate() {
-		return reviewDate;
-	}
-
-	public void setReviewDate(Date reviewDate) {
-		this.reviewDate = reviewDate;
-	}
-
-	public String getReviewWriter() {
-		return reviewWriter;
-	}
-
-	public void setReviewWriter(String reviewWriter) {
-		this.reviewWriter = reviewWriter;
 	}
 
 	@Override

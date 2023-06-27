@@ -17,6 +17,7 @@ public class Cart {
 	private int sum;
 	private String shippingPrice;
 	private int productPrice;
+	private int sale;
 	private String productName;
 	private String optionValue;
 	private Map<String, List<String>> optionName;
@@ -27,12 +28,13 @@ public class Cart {
 	public Cart() {
 		super();
 	}
+	
+	
 
-	
-	
 	public Cart(int cartNo, int usersNo, int productNo, int productOption, int productOption2, int cartCount,
-			int preorderNo, int sum, String shippingPrice, int productPrice, String productName, String optionValue,
-			Map<String, List<String>> optionName, ArrayList<Cart> cartValue, String selectedOpt, String imgName) {
+			int preorderNo, int sum, String shippingPrice, int productPrice, int sale, String productName,
+			String optionValue, Map<String, List<String>> optionName, ArrayList<Cart> cartValue, String selectedOpt,
+			String imgName) {
 		super();
 		this.cartNo = cartNo;
 		this.usersNo = usersNo;
@@ -44,6 +46,7 @@ public class Cart {
 		this.sum = sum;
 		this.shippingPrice = shippingPrice;
 		this.productPrice = productPrice;
+		this.sale = sale;
 		this.productName = productName;
 		this.optionValue = optionValue;
 		this.optionName = optionName;
@@ -52,7 +55,6 @@ public class Cart {
 		this.imgName = imgName;
 	}
 
-	
 
 
 	public int getCartNo() {
@@ -175,6 +177,18 @@ public class Cart {
 
 
 
+	public int getSale() {
+		return sale;
+	}
+
+
+
+	public void setSale(int sale) {
+		this.sale = sale;
+	}
+
+
+
 	public String getProductName() {
 		return productName;
 	}
@@ -252,9 +266,13 @@ public class Cart {
 		return "Cart [cartNo=" + cartNo + ", usersNo=" + usersNo + ", productNo=" + productNo + ", productOption="
 				+ productOption + ", productOption2=" + productOption2 + ", cartCount=" + cartCount + ", preorderNo="
 				+ preorderNo + ", sum=" + sum + ", shippingPrice=" + shippingPrice + ", productPrice=" + productPrice
-				+ ", productName=" + productName + ", optionValue=" + optionValue + ", optionName=" + optionName
-				+ ", cartValue=" + cartValue + ", selectedOpt=" + selectedOpt + ", imgName=" + imgName + "]";
+				+ ", sale=" + sale + ", productName=" + productName + ", optionValue=" + optionValue + ", optionName="
+				+ optionName + ", cartValue=" + cartValue + ", selectedOpt=" + selectedOpt + ", imgName=" + imgName
+				+ "]";
 	}
+
+	
+	
 
 	
 	

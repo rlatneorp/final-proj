@@ -1,8 +1,10 @@
 package kh.finalproj.hollosekki.market.model.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class Review {
+import kh.finalproj.hollosekki.common.model.vo.Image;
+
+public class Review extends Image{
 
 	private int productNo;
 	private int orderNo;
@@ -11,10 +13,11 @@ public class Review {
 	private String reviewContent;
 	private int reviewScore;
 	private String reviewStatus;
+	private Date reviewDate;
+	private String reviewWriter;
 	private String reviewStar;
 	private Date reviewDate;
 	private String reviewWriter;
-	
 	
 	public Review() {
 		super();
@@ -30,6 +33,8 @@ public class Review {
 		this.reviewContent = reviewContent;
 		this.reviewScore = reviewScore;
 		this.reviewStatus = reviewStatus;
+		this.reviewDate = reviewDate;
+		this.reviewWriter = reviewWriter;
 		this.reviewStar = reviewStar;
 		this.reviewDate = reviewDate;
 		this.reviewWriter = reviewWriter;
@@ -91,12 +96,36 @@ public class Review {
 		this.reviewStatus = reviewStatus;
 	}
 
+	public Date getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+	public String getReviewWriter() {
+		return reviewWriter;
+	}
+
+	public void setReviewWriter(String reviewWriter) {
+		this.reviewWriter = reviewWriter;
+	}
+
 	public String getReviewStar() {
 		return reviewStar;
 	}
 
-	public void setReviewStar(String reviewStar) {
-		this.reviewStar = reviewStar;
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+	public String getReviewWriter() {
+		return reviewWriter;
+	}
+
+	public void setReviewWriter(String reviewWriter) {
+		this.reviewWriter = reviewWriter;
 	}
 	
 	public Date getReviewDate() {
@@ -116,11 +145,28 @@ public class Review {
 	}
 
 
+	public Date getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+	public String getReviewWriter() {
+		return reviewWriter;
+	}
+
+	public void setReviewWriter(String reviewWriter) {
+		this.reviewWriter = reviewWriter;
+	}
+
 	@Override
 	public String toString() {
 		return "Review [productNo=" + productNo + ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle="
 				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
-				+ reviewStatus + ", reviewStar=" + reviewStar + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + "]";
+				+ reviewStatus + ", reviewStar=" + reviewStar + ", reviewDate=" + reviewDate + ", reviewWriter="
+				+ reviewWriter + "]";
 	}
-
+	
 }

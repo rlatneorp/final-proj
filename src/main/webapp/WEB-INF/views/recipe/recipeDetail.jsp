@@ -192,7 +192,7 @@
 			</div>
 			
 			<div id="userInfo">
-				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}">
+				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'">
 				<p>${recipe.nickName }</p>
 				<p>${recipe.recipeContent }</p>
 			</div>

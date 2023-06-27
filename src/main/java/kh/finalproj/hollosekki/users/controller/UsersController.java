@@ -62,8 +62,6 @@ public class UsersController {
 		// 팔로잉 팔로워 리스트 조회
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
-		System.out.println(followingList);
-		System.out.println(followerList);
 		
 		model.addAttribute("followingList", followingList);
 		model.addAttribute("followerList", followerList);
@@ -304,6 +302,7 @@ public class UsersController {
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		
 		ArrayList<HashMap<String, Object>> list = uService.myBookMarkList(usersNo, pi);
+		System.out.println(list);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
@@ -312,7 +311,25 @@ public class UsersController {
 	}
 	
 	@RequestMapping("myPage_MyFavorite.me")
-	public String myPage_MyFavorite() {
+	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		int listCount = rService.getListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		
+		ArrayList<HashMap<String, Object>> lList = uService.myLikeList(usersNo, pi);
+		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, pi);
+		System.out.println(lList);
+		System.out.println(fList);
+		
+		model.addAttribute("lList", lList);
+		model.addAttribute("fList", fList);
+		model.addAttribute("pi", pi);
+		
 		return "myPage_MyFavorite";
 	}
 	

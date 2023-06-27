@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.common.model.vo;
 
 public class Food extends Product{
+	private int foodNo;
 	private String foodName;
 	private int foodKind;
 	private int foodType;
@@ -13,9 +14,10 @@ public class Food extends Product{
 		super();
 	}
 
-	public Food(String foodName, int foodKind, int foodType, String foodContent, String foodTarget, String foodTable,
-			String nutrient) {
+	public Food(int foodNo, String foodName, int foodKind, int foodType, String foodContent, String foodTarget,
+			String foodTable, String nutrient) {
 		super();
+		this.foodNo = foodNo;
 		this.foodName = foodName;
 		this.foodKind = foodKind;
 		this.foodType = foodType;
@@ -23,6 +25,14 @@ public class Food extends Product{
 		this.foodTarget = foodTarget;
 		this.foodTable = foodTable;
 		this.nutrient = nutrient;
+	}
+
+	public int getFoodNo() {
+		return foodNo;
+	}
+
+	public void setFoodNo(int foodNo) {
+		this.foodNo = foodNo;
 	}
 
 	public String getFoodName() {
@@ -83,9 +93,9 @@ public class Food extends Product{
 
 	@Override
 	public String toString() {
-		return "Food [foodName=" + foodName + ", foodKind=" + foodKind + ", foodType=" + foodType + ", foodContent="
-				+ foodContent + ", foodTarget=" + foodTarget + ", foodTable=" + foodTable + ", nutrient=" + nutrient
-				+ "]";
+		return "Food [foodNo=" + foodNo + ", foodName=" + foodName + ", foodKind=" + foodKind + ", foodType=" + foodType
+				+ ", foodContent=" + foodContent + ", foodTarget=" + foodTarget + ", foodTable=" + foodTable
+				+ ", nutrient=" + nutrient + "]";
 	}
 
 }

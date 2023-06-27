@@ -457,37 +457,52 @@ p b {
 							<tr>
 								<td colspan="6">
 									<div class="row pe-4">
+										<div class="col-12" style="text-align: right;">
+											<select name="foodNo" style="width: 100%;">
+											</select>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="6">
+									<div class="row pe-4 text-end">
+										<span style="font-size: 12px;">*기존 등록한 음식의 '등록하지 않은 식재료/밀키트'를 등록할 수 있습니다.</span>
+										<span style="font-size: 12px;">*아래의 버튼을 통해, 등록 가능한 리스트를 조회할 수 있습니다.</span>
+										<span style="font-size: 12px;">ex) 제육볶음(6)-밀키트 등록완료 -> 제육볶음(5)-식재료 등록가능</span>
+									</div>
+								</td>
+							</tr>
+							<tr style="height:10px;"></tr>
+							<tr>
+								<td colspan="6">
+									<div class="row pe-4">
 										<div class="col-6">
 											<input type="hidden" name="foodKind" value="1">
 										</div>
-										<div class="col-3">
-											<button type="button" class="foodKindBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
-										</div>
-										<div class="col-3">
-											<button type="button" class="foodKindBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button>
+										<div class="col-6">
+											<button type="button" class="foodKindBtn d-inline-block" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
+											<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button>
 										</div>
 									</div>
 								</td>
 							</tr>
 <!-- 						밀키트/식재료 여부 -->
-<!-- 							<tr style="height:10px;"></tr> -->
-<!-- 							<tr> -->
-<!-- 								<td colspan="6"> -->
-<!-- 									<div class="row pe-4"> -->
-<!-- 										<div class="col-6"> -->
-<!-- 											<input type="hidden" name="foodType" value="1"> -->
-<!-- 										</div> -->
-<!-- 										<div class="col-3"> -->
-<!-- 											<button type="button" class="foodKindBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button> -->
-<!-- 										</div> -->
-<!-- 										<div class="col-3"> -->
-<!-- 											<button type="button" class="foodKindBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</td> -->
-<!-- 							</tr> -->
+							<tr style="height:10px;"></tr>
+							<tr>
+								<td colspan="6">
+									<div class="row pe-4">
+										<div class="col-6">
+											<input type="hidden" name="foodType" value="1">
+										</div>
+										<div class="col-6">
+											<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button>
+											<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button>
+										</div>
+									</div>
+								</td>
+							</tr>
 						</table>
-						<input type="hidden" name="foodType" value="1">
 					</div>
 				</div>
 			</div>
@@ -649,6 +664,7 @@ p b {
 
 	<script>
 		window.onload =()=>{
+			getFoodList();
 // 			이미지 미리보기 함수, 이벤트
 			const imageFiles = document.getElementsByName('imageFile');
 			const previewImages = document.getElementsByClassName('previewImage');
@@ -695,6 +711,35 @@ p b {
 			})
 			
 			
+
+// 			기존 식품에 추가 등록 선택시 이벤트
+			const foodSelector = document.getElementsByName('foodNo')[0];
+			foodSelector.addEventListener('change', function(){
+				if(this.value == 0){
+					reset();
+				}else{
+					$.ajax({
+						url:'${contextPath}/adminFoodSelector.ad',
+						data:{no:this.value,
+							  type:2},
+						success: data => {
+							document.getElementsByName('foodName')[0].value = data.foodName;
+							document.getElementsByName('foodContent')[0].value = data.foodContent.split('@')[0];
+							document.getElementsByName('productPrice')[0].value = data.productPrice;
+							document.getElementsByName('productSale')[0].value = data.productSale;
+							cal();
+							document.getElementsByName('foodTarget')[0].value = data.foodContent.split('@')[1].split(',')[0];
+							document.getElementsByName('foodTarget')[1].value = data.foodContent.split('@')[1].split(',')[1];
+							document.getElementsByName('foodTarget')[2].value = data.foodContent.split('@')[1].split(',')[2];
+						},
+						error: data => {
+							console.log(data);
+						}
+					})
+				}
+			})
+			
+			
 // 			메뉴 종류 버튼 이벤트
 			const foodKind = document.getElementsByName('foodKind')[0];
 			const foodKindBtns = document.getElementsByClassName('foodKindBtn');
@@ -704,15 +749,38 @@ p b {
 				foodKind.value="1";
 				foodKindBtns[0].style.backgroundColor="#19A7CE";
 				foodKindBtns[1].style.backgroundColor="gray";
+				getFoodList();
+				reset();
 			});
 			// 서브메뉴 버튼
 			foodKindBtns[1].addEventListener('click', ()=>{
 				foodKind.value="2";
 				foodKindBtns[1].style.backgroundColor="#19A7CE";
 				foodKindBtns[0].style.backgroundColor="gray";
+				getFoodList();
+				reset();
 			});
 			
+// 			식재료 / 밀키트 버튼 이벤트
+			const foodType = document.getElementsByName('foodType')[0];
+			const foodTypeBtns = document.getElementsByClassName('foodTypeBtn');
 			
+			// 식재료 메뉴 버튼
+			foodTypeBtns[0].addEventListener('click', ()=>{
+				foodType.value="1";
+				foodTypeBtns[0].style.backgroundColor="#19A7CE";
+				foodTypeBtns[1].style.backgroundColor="gray";
+				getFoodList();
+				reset();
+			});
+			// 밀키트 메뉴 버튼
+			foodTypeBtns[1].addEventListener('click', ()=>{
+				foodType.value="2";
+				foodTypeBtns[1].style.backgroundColor="#19A7CE";
+				foodTypeBtns[0].style.backgroundColor="gray";
+				getFoodList();
+				reset();
+			});
 			
 			const menuTable1 = document.getElementsByClassName('menuTable1')[0].innerHTML;
 			const menuTable2 = document.getElementsByClassName('menuTable2')[0].innerHTML;
@@ -782,6 +850,48 @@ p b {
 			
 			resultCost.value = cost*(100-discount)*0.01;
 		}
+		
+// 		메인/서브, 식재료/밀키트 버튼선택에 따른 식품리스트 조회 ajax
+		function getFoodList(){
+			const kind = document.getElementsByName('foodKind')[0].value;
+			const type = document.getElementsByName('foodType')[0].value == 1 ? 2 : 1;
+			const foodSelector = document.getElementsByName('foodNo')[0];
+			
+			$.ajax({
+				url:'${contextPath}/adminGetFoodListNotD.ad',
+				data: {type:type,
+					   kind:kind,
+					   duplication:'N'},
+				success: data => {
+					foodSelector.innerHTML = "<option value='0'>식품 새로 등록</option>";
+					for(let i = 0; i < data.length; i++){
+						const foodName = data[i].foodName;
+						const foodNo = data[i].foodNo;
+						foodSelector.innerHTML += "<option value='"+foodNo+"'>"
+														+foodName+"("+foodNo+")"
+												  +"</option>"
+						
+					}
+				},
+				error: data =>{
+					console.log(data);
+				}
+			})
+		}
+		
+		
+// 		상단 내용 초기화 함수
+		function reset(){
+			document.getElementsByName('foodName')[0].value = "";
+			document.getElementsByName('foodContent')[0].value = "";
+			document.getElementsByName('productPrice')[0].value = "";
+			document.getElementsByName('productSale')[0].value = "";
+			cal();
+			document.getElementsByName('foodTarget')[0].value = "";
+			document.getElementsByName('foodTarget')[1].value = "";
+			document.getElementsByName('foodTarget')[2].value = "";
+		}
+		
 		
 		
 // 		submit 전 검토 / submit

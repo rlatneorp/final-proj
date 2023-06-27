@@ -12,7 +12,7 @@
 <%-- <c:if test="${location.pathname}"></c:if> --%>
 <style>
 	.sidebar{width: 230px; z-index: 2000; top: 40px;}
-	.mainBox{margin: 0px 250px; width: 1450px;}
+	.mainBox{margin: 0px 270px; width: 1450px;}
 	.mainBox tr{height: 40px;}
 	.mainBox th{font-size: 14px;}
 	.mainBox td{font-size: 14px;}

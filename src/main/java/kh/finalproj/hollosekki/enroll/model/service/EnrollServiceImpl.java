@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -14,6 +15,7 @@ import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.dao.EnrollDAO;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Service
@@ -168,6 +170,16 @@ public class EnrollServiceImpl implements EnrollService{
 	@Override
 	public int menuBookMarkList(int usersNo) {
 		return eDAO.menuBookMarkList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Board> boardList(int usersNo) {
+		return eDAO.boardList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Review> reviewList(String usersId) {
+		return eDAO.reviewList(sqlSession, usersId);
 	}
 
 	

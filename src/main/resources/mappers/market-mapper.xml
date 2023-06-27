@@ -352,34 +352,6 @@
 	</resultMap>
 	
 	
-	<insert	id="insertReview">
-		insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date, review_writer)
-		values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
-		<selectKey keyProperty="reviewNo" resultType="int" order="AFTER" >
-			select seq_review_no.currval from dual
-		</selectKey>
-	</insert>
-	
-	<select	 id="selectReview" resultMap="reviewResultSet">
-		select *
-		from review
-			 join image on (review_no = image_divide_no)
-		where image_type = 7
-			  and product_no = #{productNo}	
-		order by review_no
-	</select>
-	
-	<select id="selectImageList" resultMap="imageResultSet">
-		select *
-		from (select *
-			  from image
-			  order by image_no asc)	
-		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
-		<if test="imageLevel != -1">
-			  and image_level = #{imageLevel}
-		</if>
-	</select>
-	
 	<select id="selectReviewCount" resultType="int">
 		select count(*)
 		from review
@@ -395,26 +367,11 @@
 	
 	</select>
 	
-	
-	
 	<!-- 배송지 삭제 -->
 	<delete id="delShipping">
 		DELETE FROM shipping_address
 		WHERE shipping_no = #{shippingNo}
 	</delete>
-	
-	
-	<resultMap type="Review" id="reviewResultSet">
-		<id column="PRODUCT_NO" property="productNo"/>
-		<result column="ORDER_NO" property="orderNo"/>
-		<result column="REVIEW_NO" property="reviewNo"/>
-		<result column="REVIEW_TITLE" property="reviewTitle"/>
-		<result column="REVIEW_CONTENT" property="reviewContent"/>
-		<result column="REVIEW_SCORE" property="reviewScore"/>
-		<result column="REVIEW_STATUS" property="reviewStatus"/>
-		<result column="REVIEW_DATE" property="reviewDate"/>
-		<result column="REVIEW_WRITER" property="reviewWriter"/>
-	</resultMap>
 	
 	
 	<insert	 id="insertReview">
@@ -444,8 +401,6 @@
 			  and image_level = #{imageLevel}
 		</if>
 	</select>
-	
-	
 	
 	
 	

@@ -204,14 +204,6 @@ public class MarketController {
 		return "payDetail";
 	}
 	
-	private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
-		map.put("imageDivideNo", imageDivideNo);
-		map.put("imageType", imageType);
-		map.put("imageLevel", imageLevel);
-		ArrayList<Image> imageList = mkService.selectImagList(map);
-		return imageList;
-	}
 
 	@GetMapping("market_detail.ma")
 	public String marketdetail(@RequestParam("productNo") int productNo,
@@ -240,12 +232,6 @@ public class MarketController {
 		
 		model.addAttribute("reviewCount", reviewCount);
 		
-//		ArrayList<Image> imgList = selectImagList(r.getReviewNo(), 7, 1);
-		
-//		if(imgList != null) {
-//			model.addAttribute("imgList", imgList);
-//		}
-		
 		
 		model.addAttribute("tool", tool);
 		model.addAttribute("p", p);
@@ -258,7 +244,7 @@ public class MarketController {
 		map.put("imageDivideNo", imageDivideNo);
 		map.put("imageType", imageType);
 		map.put("imageLevel", imageLevel);
-		ArrayList<Image> imageList = mkService.selectImageList(map);
+		ArrayList<Image> imageList = mkService.selectImagList(map);
 		return imageList;
 	}
 	
@@ -297,23 +283,23 @@ public class MarketController {
 		
 		
 		
-		for(MultipartFile imageFile : imageFiles) {
-			Image image = new Image();
-			if(imageFile != null && !imageFile.isEmpty()) {
-				String[] returnArr = saveFile(imageFile, request);
-				if(returnArr[1] != null) {
-					image.setImageDivideNo(r.getReviewNo());
-					image.setImageType(7); /*리뷰는 7번*/
-					image.setImagePath(returnArr[0]);
-					image.setImageOriginalName(imageFile.getOriginalFilename());
-					image.setImageRenameName(returnArr[1]);
-					image.setImageLevel(0);
-					if(i==0) {
-						image.setImageLevel(1);
-		if(result > 0) {
-			model.addAttribute("productNo", productNo);
-			model.addAttribute("review", r);
-		}
+//		for(MultipartFile imageFile : imageFiles) {
+//			Image image = new Image();
+//			if(imageFile != null && !imageFile.isEmpty()) {
+//				String[] returnArr = saveFile(imageFile, request);
+//				if(returnArr[1] != null) {
+//					image.setImageDivideNo(r.getReviewNo());
+//					image.setImageType(7); /*리뷰는 7번*/
+//					image.setImagePath(returnArr[0]);
+//					image.setImageOriginalName(imageFile.getOriginalFilename());
+//					image.setImageRenameName(returnArr[1]);
+//					image.setImageLevel(0);
+//					if(i==0) {
+//						image.setImageLevel(1);
+//		if(result > 0) {
+//			model.addAttribute("productNo", productNo);
+//			model.addAttribute("review", r);
+//		}
 		
 	
 		if(imageFiles != null) {	
@@ -325,7 +311,7 @@ public class MarketController {
 				if(imageFile != null && !imageFile.isEmpty()) {
 					String[] returnArr = saveFile(imageFile, request);
 					if(returnArr[1] != null) {
-						image.setImageDivideNo(productNo);
+						image.setImageDivideNo(r.getReviewNo());
 						image.setImageType(7); /*리뷰는 7번*/
 						image.setImagePath(returnArr[0]);
 						image.setImageOriginalName(imageFile.getOriginalFilename());
@@ -340,7 +326,6 @@ public class MarketController {
 				}
 			}
 			
-			
 			if(resultImg == i) {
 				return "redirect:market_detail.ma";
 			}
@@ -348,10 +333,6 @@ public class MarketController {
 		}
 		return "redirect:market_detail.ma";
 	}
-	
-
-	
-	
 	
 	
 	@GetMapping("createReview.ma")

@@ -211,20 +211,11 @@ public class MarketService {
 	public int delShipping(int shippingNo) {
 		return mkDAO.delShipping(sqlSession, shippingNo);
 	}
-//	public void delShipping(int shippingNo) {
-//		mkDAO.delShipping(sqlSession, shippingNo);
-//	public ShippingAddress selectShippingForUpdate(int shippingNo) {
-//		return null;
 
 	public int insertImage(Image image) {
 		return mkDAO.insertImage(sqlSession, image);
 	}
 	
-	//현재 포인트 가져오기 
-//	public int selectPoint(int usersNo) {
-//		return mkDAO.selectPoint(sqlSession, usersNo);
-//	}
-
 	public ArrayList<Review> selectReview(int productNo) {
 		return mkDAO.selectReview(sqlSession,productNo);
 	}
@@ -233,36 +224,25 @@ public class MarketService {
 		return mkDAO.insertReview(sqlSession, r);
 	}
 
-	public ArrayList<Image> selectImageList(HashMap<String, Integer> map) {
-		return mkDAO.selectImageList(sqlSession, map);
-	}
-
 	public int selectReviewCount(int productNo) {
 		return mkDAO.selectReviewCount(sqlSession, productNo);
 	}
 
 	public ArrayList<String> selectImgList(int productNo) {
 		return mkDAO.selectImgList(sqlSession, productNo);
+	}
 	//장바구니 상품에 대한 이미지 조회 
 	public String selectImg(int productNo, int i) {
 		return mkDAO.selectImg(sqlSession, productNo, i);
 	}
 
-
-	public int insertReview(Review r) {
-		return mkDAO.isertReview(sqlSession, r);
-	}
-
-	public ArrayList<Review> selectReview(int productNo) {
-		return mkDAO.selectReview(sqlSession, productNo);
-	}
-
-
 	public ArrayList<Image> selectImagList(HashMap<String, Integer> map) {
 		return mkDAO.selectImageList(sqlSession, map);
 	}
-
-
+	
+	public int selectPoint(int usersNo) {
+		return mkDAO.selectPoint(sqlSession, usersNo);
+	}
 //	public ShippingAddress selectShippingForUpdate(int shippingNo) {
 //		// TODO Auto-generated method stub
 //		return null;

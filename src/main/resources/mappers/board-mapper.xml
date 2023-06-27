@@ -27,12 +27,23 @@
 		<result column="BOARD_DATE" property="boardDate"/>
 		<result column="BOARD_STATUS" property="boardStatus"/>
 		<result column="BOARD_TYPE" property="boardType"/>
-		<result column="REVIEW_CONTENT" property="boardComment"/>
-		<result column="ORDER_NO" property="boardCommentNo"/>
-		<result column="REVIEW_DATE" property="boardCommentDate"/>
-		<result column="REVIEW_WRITER" property="boardCommentNickName"/>
-		<result column="REVIEW_STATUS" property="boardCommentStatus"/>
+		<result column="REVIEW_CONTENT" property="riviewContent"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="REVIEW_DATE" property="reviewDate"/>
+		<result column="REVIEW_WRITER" property="reviewWriter"/>
+		<result column="REVIEW_STATUS" property="reviewStatus"/>
 		<result column="BOARD_COUNT" property="boardCount"/>
+	</resultMap>
+	
+		<resultMap type="Review" id="reviewResultSet">
+		<id column="review_No" property="reviewNo"/>
+		<result column="orderNo" property="orderNo" />
+		<result column="review_no" property="reviewNo" />
+		<result column="review_title" property="reviewTitle" />
+		<result column="review_content" property="reviewContent" />
+		<result column="review_score" property="reviewScore" />
+		<result column="review_status" property="reviewStatus" />
 	</resultMap>
 	
 	<update id="addCount">
@@ -49,9 +60,19 @@
 		where board_type = 0 and board_status = 'Y' and board_no = #{bid}	
 	</select>
 	
-<!-- 	<insert id="insertReply"> -->
-<!-- 		insert into review() -->
-		
-<!-- 	</insert> -->
+	<insert id="insertReply">
+		insert into review
+		values (#{r.productNo}, -1, #{r.productNo}, null, ${r.reviewContent}, 0 ,'Y', sysdate, ${reviewWriter})
+	</insert>
+
+	<select id="selectReply" resultMap="BoardResultSet">
+		select *
+		from review
+			join users on(review_writer = users_id)
+			join board on(board_no = product_no)
+		where board_no = #{boardNo} and review_status = 'Y'
+		order by review_date desc
+	</select>
+	
 
 </mapper>

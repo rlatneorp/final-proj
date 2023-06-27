@@ -2,6 +2,8 @@ package kh.finalproj.hollosekki.market.model.vo;
 
 import java.util.Date;
 
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
+
 public class Review {
 
 	private int productNo;
@@ -122,5 +124,6 @@ public class Review {
 				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
 				+ reviewStatus + ", reviewStar=" + reviewStar + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + "]";
 	}
+
 
 }

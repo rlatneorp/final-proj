@@ -124,7 +124,7 @@
 
 </head>
 <body>
-
+	
 	<%@include file="../common/top.jsp"%>
 	<br><br><br><br><br><br>
 	<div id="parentDiv">
@@ -146,12 +146,12 @@
 		<div class="comment text-start">
 			<div class="intro form-floating">
 				<table class="form-control" id="commentContent">
-				<c:if test="${!empty b.boardComment}">
+				<c:if test="${!empty list.reviewContent}">
 				<tbody> 
 					<tr>
-						<td scope="row">${b.boardComment} </td>
-						<td scope="row">${b.boardCommentNickName }</td>
-						<td scope="row">${b.boardCommentDate }</td>
+						<td scope="row">${list.reviewContent} </td>
+						<td scope="row">${list.boardCommentNickName }</td>
+						<td scope="row">${list.reviewDate }</td>
 						<td scope="row">
 							<button type="button" id="xBtn">삭제</button>
 						</td>
@@ -172,6 +172,7 @@
 				<a id="replySubmit" class="btn-3d blue position-absolute end-0">작성하기</a>
 			</div>
 		</div>
+		<input type="hidden" id="hdnBoardNo" value="${b.boardNo}">
 	<!-- 작성 버튼 -->
 	<br><br><br><br><br><br><br><br><br><br><br><br>
 	
@@ -201,17 +202,23 @@
 window.onload=()=>{
 	const deleteModal = document.getElementById('deleteModal');
 	const xBtn = document.getElementById('xBtn');
-	xBtn.addEventListener('click', ()=>{
-		 deleteModal.modal('show');
-	}
+	const replySubmit = document.getElementById('replySubmit');
+	const boardNo = document.getElementById('hdnBoardNo').value;
 	
-	document.getElementById('replySubmit').addEventListener('click', ()=>{
+	console.log(boardNo);
+// 	xBtn.addEventListener('click', ()=>{
+// 		 deleteModal.modal('show');
+	
+
+
+// 	});
+	replySubmit.addEventListener('click', ()=>{
+		
 		$.ajax({
 			url: '${contextPath}/insertReply.bo',
 			data: {
-					reviewContent:document.getElementById('commentWrite').value,
-					reviewWriter:'${loginUser.nickName}', 
-					orderNo: -1 
+					productNo: boardNo,
+					reviewContent: document.getElementById('commentWrite').value,
 			},
 			success: data =>{
 				console.log(data);

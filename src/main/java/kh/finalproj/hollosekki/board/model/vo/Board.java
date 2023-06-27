@@ -12,18 +12,19 @@ public class Board {
 	private Date boardDate;
 	private char boardStatus;
 	private String boardType;
-	private String boardComment;
-	private int boardCommentNo;
-	private Date boardCommentDate;
-	private String boardCommentNickName;
-	private char boardCommentStatus;
+	private String reviewcontent;
+	private int productNo;
+	private int orderNo;
+	private Date reviewDate;
+	private String reviewWriter;
+	private char reviewStatus;
 	private int boardCount;
 	
 	public Board() {}
 
 	public Board(int boardNo, int usersNo, String nickName, String boardTitle, String boardContent, Date boardDate,
-			char boardStatus, String boardType, String boardComment, int boardCommentNo, Date boardCommentDate,
-			String boardCommentNickName, char boardCommentStatus, int boardCount) {
+			char boardStatus, String boardType, String reviewcontent, int productNo, int orderNo, Date reviewDate,
+			String reviewWriter, char reviewStatus, int boardCount) {
 		super();
 		this.boardNo = boardNo;
 		this.usersNo = usersNo;
@@ -33,11 +34,12 @@ public class Board {
 		this.boardDate = boardDate;
 		this.boardStatus = boardStatus;
 		this.boardType = boardType;
-		this.boardComment = boardComment;
-		this.boardCommentNo = boardCommentNo;
-		this.boardCommentDate = boardCommentDate;
-		this.boardCommentNickName = boardCommentNickName;
-		this.boardCommentStatus = boardCommentStatus;
+		this.reviewcontent = reviewcontent;
+		this.productNo = productNo;
+		this.orderNo = orderNo;
+		this.reviewDate = reviewDate;
+		this.reviewWriter = reviewWriter;
+		this.reviewStatus = reviewStatus;
 		this.boardCount = boardCount;
 	}
 
@@ -105,44 +107,52 @@ public class Board {
 		this.boardType = boardType;
 	}
 
-	public String getBoardComment() {
-		return boardComment;
+	public String getReviewcontent() {
+		return reviewcontent;
 	}
 
-	public void setBoardComment(String boardComment) {
-		this.boardComment = boardComment;
+	public void setReviewcontent(String reviewcontent) {
+		this.reviewcontent = reviewcontent;
 	}
 
-	public int getBoardCommentNo() {
-		return boardCommentNo;
+	public int getProductNo() {
+		return productNo;
 	}
 
-	public void setBoardCommentNo(int boardCommentNo) {
-		this.boardCommentNo = boardCommentNo;
+	public void setProductNo(int productNo) {
+		this.productNo = productNo;
 	}
 
-	public Date getBoardCommentDate() {
-		return boardCommentDate;
+	public int getOrderNo() {
+		return orderNo;
 	}
 
-	public void setBoardCommentDate(Date boardCommentDate) {
-		this.boardCommentDate = boardCommentDate;
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
 	}
 
-	public String getBoardCommentNickName() {
-		return boardCommentNickName;
+	public Date getReviewDate() {
+		return reviewDate;
 	}
 
-	public void setBoardCommentNickName(String boardCommentNickName) {
-		this.boardCommentNickName = boardCommentNickName;
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
 	}
 
-	public char getBoardCommentStatus() {
-		return boardCommentStatus;
+	public String getReviewWriter() {
+		return reviewWriter;
 	}
 
-	public void setBoardCommentStatus(char boardCommentStatus) {
-		this.boardCommentStatus = boardCommentStatus;
+	public void setReviewWriter(String reviewWriter) {
+		this.reviewWriter = reviewWriter;
+	}
+
+	public char getReviewStatus() {
+		return reviewStatus;
+	}
+
+	public void setReviewStatus(char reviewStatus) {
+		this.reviewStatus = reviewStatus;
 	}
 
 	public int getBoardCount() {
@@ -157,12 +167,11 @@ public class Board {
 	public String toString() {
 		return "Board [boardNo=" + boardNo + ", usersNo=" + usersNo + ", nickName=" + nickName + ", boardTitle="
 				+ boardTitle + ", boardContent=" + boardContent + ", boardDate=" + boardDate + ", boardStatus="
-				+ boardStatus + ", boardType=" + boardType + ", boardComment=" + boardComment + ", boardCommentNo="
-				+ boardCommentNo + ", boardCommentDate=" + boardCommentDate + ", boardCommentNickName="
-				+ boardCommentNickName + ", boardCommentStatus=" + boardCommentStatus + ", boardCount=" + boardCount
-				+ "]";
+				+ boardStatus + ", boardType=" + boardType + ", reviewcontent=" + reviewcontent + ", productNo="
+				+ productNo + ", orderNo=" + orderNo + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter
+				+ ", reviewStatus=" + reviewStatus + ", boardCount=" + boardCount + "]";
 	}
-
+ 
 	
 		
 	

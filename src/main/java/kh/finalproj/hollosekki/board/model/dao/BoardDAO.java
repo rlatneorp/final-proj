@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.board.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -31,8 +32,12 @@ public class BoardDAO {
 		return sqlSession.selectOne("boardMapper.selectBoard", bId);
 	}
 
-	public void insertReply(SqlSessionTemplate sqlSession, Review r) {
-		sqlSession.insert("boardMapper.insertReply",r);
+	public void insertReply(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
+		sqlSession.insert("boardMapper.insertReply", map);
+	}
+
+	public ArrayList<Review> selectReply(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectReply",map);
 	}
 	
 }

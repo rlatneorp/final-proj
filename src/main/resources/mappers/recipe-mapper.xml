@@ -73,7 +73,7 @@
 	<select id="recipeDetailThum" resultMap="imageResultSet">
 		select *
 		from image
-		where image_Divide_No = #{foodNo} and image_Level=0
+		where image_Divide_No = #{foodNo} and image_Level=0 and image_type=2
 	</select>
 	
 	<select id="recipeDetailOrder" resultMap="imageResultSet">
@@ -219,6 +219,30 @@
 	<select id="selectIngredient" resultMap="ingredientResultSet">
 		select * from ingredient
 	</select>
+	
+	<insert id="insertIngredient">
+		insert all 
+		<foreach collection="list" item="item">
+		into recipe_element values(SEQ_RECIPE_NO.currval, #{item.elementNo}, #{item.elementQuantity}, #{item.elementName})
+		</foreach>
+		select * from dual
+	</insert>
+	
+	<insert id="insertNewIngredient">
+		insert into ingredient values(seq_ingredient_no.nextval, 0, #{newI}, '임의', '임의', default, 1, 'Y')
+	</insert>
+	
+	<select id="selectNewIngredient" resultMap="ingredientResultSet">
+		select *
+		from ingredient
+		where ingredient_name=#{newI}
+	</select>
+	
+	<select id="selectRecipeElement" resultMap="recipeElementResultSet">
+		select *
+		from recipe_element
+		where food_no=#{foodNo}
+	</select>
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
@@ -281,5 +305,12 @@
 		<result column="IS_ACCEPT" property="isAccept"/>
 		<result column="USERS_NO" property="usersNo"/>
 		<result column="INGREDIENT_STATUS" property="ingredientStatus"/>
+	</resultMap>
+	
+	<resultMap type="RecipeElement" id="recipeElementResultSet">
+		<id column="food_no" property="foodNo"/>
+		<result column="element_no" property="elementNo"/>
+		<result column="element_quantity" property="elementQuantity"/>
+		<result column="element_name" property="elementName"/>
 	</resultMap>
 </mapper>

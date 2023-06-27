@@ -45,6 +45,7 @@
 		<mapper resource="mappers/recipe-mapper.xml"/>
 		<mapper resource="mappers/customer-mapper.xml"/>
 		<mapper resource="mappers/board-mapper.xml"/>
+		<mapper resource="mappers/menu-mapper.xml"/>
 	</mappers>
 	
 </configuration>

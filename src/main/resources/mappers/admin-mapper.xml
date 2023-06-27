@@ -598,7 +598,7 @@
 	</resultMap>
 	
 	
-	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Users" id="usersResultSet">
+	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>
 		<result column="USERS_PW" property="usersPw"/>

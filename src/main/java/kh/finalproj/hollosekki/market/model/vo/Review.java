@@ -6,35 +6,35 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 
 public class Review extends Image{
 
-   private int productNo;
-   private int orderNo;
-   private int reviewNo;
-   private String reviewTitle;
-   private String reviewContent;
-   private int reviewScore;
-   private String reviewStatus;
-   private Date reviewDate;
-   private String reviewWriter;
-   private String reviewStar;
-   
-   public Review() {
-      super();
-   }
+	private int productNo;
+	private int orderNo;
+	private int reviewNo;
+	private String reviewTitle;
+	private String reviewContent;
+	private int reviewScore;
+	private String reviewStatus;
+	private Date reviewDate;
+	private String reviewWriter;
+	private String reviewStar;
+	
+	public Review() {
+		super();
+	}
 
-   public Review(int productNo, int orderNo, int reviewNo, String reviewTitle, String reviewContent, int reviewScore,
-         String reviewStatus, Date reviewDate, String reviewWriter, String reviewStar) {
-      super();
-      this.productNo = productNo;
-      this.orderNo = orderNo;
-      this.reviewNo = reviewNo;
-      this.reviewTitle = reviewTitle;
-      this.reviewContent = reviewContent;
-      this.reviewScore = reviewScore;
-      this.reviewStatus = reviewStatus;
-      this.reviewDate = reviewDate;
-      this.reviewWriter = reviewWriter;
-      this.reviewStar = reviewStar;
-   }
+	public Review(int productNo, int orderNo, int reviewNo, String reviewTitle, String reviewContent, int reviewScore,
+			String reviewStatus, Date reviewDate, String reviewWriter, String reviewStar) {
+		super();
+		this.productNo = productNo;
+		this.orderNo = orderNo;
+		this.reviewNo = reviewNo;
+		this.reviewTitle = reviewTitle;
+		this.reviewContent = reviewContent;
+		this.reviewScore = reviewScore;
+		this.reviewStatus = reviewStatus;
+		this.reviewDate = reviewDate;
+		this.reviewWriter = reviewWriter;
+		this.reviewStar = reviewStar;
+	}
 
    public int getProductNo() {
       return productNo;
@@ -112,17 +112,17 @@ public class Review extends Image{
       return reviewStar;
    }
 
-   public void setReviewStar(String reviewStar) {
-      this.reviewStar = reviewStar;
-   }
+	public void setReviewStar(String reviewStar) {
+		this.reviewStar = reviewStar;
+	}
 
-   @Override
-   public String toString() {
-      return "Review [productNo=" + productNo + ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle="
-            + reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
-            + reviewStatus + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + ", reviewStar="
-            + reviewStar + "]";
-   }
+	@Override
+	public String toString() {
+		return "Review [productNo=" + productNo + ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle="
+				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
+				+ reviewStatus + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + ", reviewStar="
+				+ reviewStar + "]";
+	}
 
-   
+	
 }

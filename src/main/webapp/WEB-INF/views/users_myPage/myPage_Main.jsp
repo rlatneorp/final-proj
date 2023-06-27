@@ -211,12 +211,14 @@
 						chevron_right
 						</span></a><br>
 						<table style="margin-left: 10px;">
-						<tr>
-						<td>
-						<i class="bi bi-currency-dollar dollars"></i>
-						</td>
-						<td style="font-size: 18px; color: rgb(52, 152, 219);"><p class="d-inline" id="myP" style="font-weight: bold;">P</p></td>
-						</tr>
+							<tr>
+								<td>
+									<i class="bi bi-currency-dollar dollars"></i>
+								</td>
+								<td style="font-size: 18px; color: rgb(52, 152, 219);">
+									<p class="d-inline" id="myP" style="font-weight: bold;">P</p>
+								</td>
+							</tr>
 						</table>
 						<p style="font-size: 13px;">소멸 예정 포인트 0원</p>
 					</div>

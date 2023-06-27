@@ -296,8 +296,9 @@ public class UsersController {
 		if(page != null) {
 			currentPage = page;
 		}
-		int listCount = rService.getListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		int listCount = uService.getBookListCount();
+		System.out.println(listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		
@@ -311,25 +312,49 @@ public class UsersController {
 	}
 	
 	@RequestMapping("myPage_MyFavorite.me")
-	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page) {
+	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page,
+									@RequestParam(value="searchType", required=false) Integer searchType) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
 		}
+		System.out.println(searchType);
+		int selectType = 0;
+		if(searchType != null) {
+			selectType = searchType;
+		}
+		
 		int listCount = rService.getListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		
-		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, pi); // 식단, 식품, 상품도구
+		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, selectType, pi); // 식단, 식품, 상품도구
 		ArrayList<HashMap<String, Object>> rList = uService.myRecipeLikeList(usersNo, pi); // 레시피
 		ArrayList<HashMap<String, Object>> pList = uService.myProductLikeList(usersNo, pi); // 식재료
 		
-		list.addAll(fList);
-		list.addAll(rList);
-		list.addAll(pList);
+		if(searchType == null || selectType == 0) {
+			list.addAll(fList);
+			list.addAll(rList);
+			list.addAll(pList);
+		} else if(selectType == 1) {
+			list.addAll(rList);
+		} else if(selectType == 2) {
+			list.addAll(fList);
+		} else if(selectType == 3) {
+			list.addAll(fList);
+		} else if(selectType == 4) {
+			list.addAll(pList);
+		} else if(selectType == 5) {
+			list.addAll(fList);
+		}
+		
+		System.out.println("list : " + list.size());
+//		list.addAll(fList);
+//		list.addAll(rList);
+//		list.addAll(pList);
 		
 		System.out.println(list);
 		

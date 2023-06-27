@@ -800,53 +800,12 @@ p b {
 							</select>
 						</c:if>
 					</c:forEach>
-						
-<!-- 					<label for="productOption">색상</label> -->
-<!-- 					<select class='productOption'  required> -->
-<!-- 						사이즈 선택 창  -->
-<!-- 						<option value="">옵션을 선택해주세요</option> -->
-<!-- 						<option value="Black">black</option> -->
-<!-- 						<option value="silver">silver</option> -->
-<!-- 						<option value="gray">gray</option> -->
-<!-- 						<option value="light-gray">light-gray</option> -->
-<!-- 					</select> -->
-					
-<!-- 					<label for="productOption2">사이즈</label> -->
-<!-- 					<select class='productOption2' required> -->
-<!-- 						사이즈 선택 창 -->
-<!-- 						<option class='productOption2Set' >옵션을 선택해주세요.</option> -->
-<!-- 					</select> -->
-
-
-<!-- 					<div id="productResult" class="productResultSet"> -->
-<!-- 						사이즈 선택시 내려오는 창 -->
-<!-- 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
-<!-- 							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span> -->
-<!-- 							<input type="hidden" name="productNo" value="134"> -->
-<!-- 							<input type="hidden" name="productName" value="캠핑용 후라이팬"> -->
-<%-- 							<input type="hidden" name="productPrice" value="${p.productPrice}"> --%>
-<!-- 						</h4> -->
-<!-- 						<div style=""> -->
-<!-- 							<span class="btnbox" style=" margin: 0 0 0 -1px;"> -->
-<!-- 								<button class="decrease" type="button">-</button> -->
-<!-- 								<input type="number" class="cartCount" -->
-<!-- 									 value="1" name="cartCount" min="1" readonly> -->
-									
-<!-- 								<button class="increase" type="button">+</button> -->
-								
-<!-- 							</span> -->
-<!-- 							<button class="removeProudct" type="button" style="float: right;"> -->
-<!-- 								<img src="resources/images/close.png" style="width: 10px;"> -->
-<!-- 							</button> -->
-<!-- 							<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
-<%-- 						<input type="hidden" name="discountRate" value="${p.discountRate}"> --%>
-<!-- 						</div> -->
-<!-- 						 <br> -->
-<!-- 					</div> -->
 					
 				</div>
 					</div>
 			</div>
+							<div class="totalPrice"></div>
+							<br>
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 <!-- 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
@@ -900,7 +859,10 @@ p b {
 <!-- 						</ul> -->
 <!-- 					</div> -->
 
+			<span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span>
+			<span class="review_star_desc" style="font-size: 500;">별점순</span>
 			</div>
+		
 			
 					<c:set var="reviewCount" value="${reviewCount}" />
 					   <c:if test="${reviewCount eq 0}">
@@ -937,17 +899,16 @@ p b {
 								</ul>
 							</div>
 							
-<%-- 						<c:forEach items="${imglist}" var="img"> --%>
-<%-- 							<c:if test ="${img.imageDivideNo eq r.reviewNo}"> --%>
 								<div style="display: inline-block; width: 100%;">
+<%-- 									<c:forEach items="${imglist}" var="img" > --%>
 <%-- 										<c:if test ="${img.imageDivideNo ep r.reviewNo}" > --%>
-										<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-												${r.reviewContent}  
-										</div>
-<%-- 									</c:if> --%>
+											<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+													${r.reviewContent}  
+											</div>
+<%-- 									</c:if> --%> 
+<%-- 									</c:forEach> --%>
 								</div>
 <%-- 							</c:if> --%>
-<%-- 						</c:forEach> --%>
 			</div>
 		</c:forEach>
 			<div class="moreView">더보기</div>
@@ -1035,11 +996,11 @@ p b {
 					</li>
 				</ul>
 				<li id="page-qna" class="accordion_i_li">
-                <a class="accordion_i_tit3">문의<span>(2)</span></a>
-                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
-                    <div id="ajax-goods-goodsqa-list">
-                    
-              	<ul class="goods_accordion_qna">
+	                <a class="accordion_i_tit3">문의<span>(2)</span></a>
+	                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
+	                    <div id="ajax-goods-goodsqa-list">
+	                    
+	              	<ul class="goods_accordion_qna">
               	
         <!--  반복 될 부분 -->      	
              <li class="accordion_q_li js_data_row" >
@@ -1159,8 +1120,10 @@ p b {
 	   const productSet = document.querySelector(".productSet");
 	   const increase = document.querySelectorAll(".increase");	
 	   const reviewStar = document.querySelectorAll(".reviewStar");
-	  
-		
+	   const total = document.querySelector('.totalPrice');
+	   const cartCount = document.querySelectorAll(".cartCount");
+	   
+	   
 			$(document).on("click",".btnbox",function(e){
 				const increBtn = this.childNodes[2]; //증가버튼
 				const decreBtn = this.childNodes[0]; //감소버튼
@@ -1272,11 +1235,12 @@ p b {
 								console.log(select.val());
 								console.log(select2.val());
 		      			}
+		      			
+		      			total.innerText = ${total} 
 			  					
 	      	})
 	        		
-	    	
-	      	
+
 	      	
 	   function priceToString(productPrice) {
 	       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -1294,10 +1258,6 @@ p b {
 		    });
 	});
 	
-	
-
-
-
 		
 		$(document).ready(function() {
 			
@@ -1314,8 +1274,6 @@ p b {
 	        var productOption2Values=[];
 	        var usersNoValues=[];
 	        
-	    
-	        	
 	        
 	        var allData ={
 	        		"productNo":productNoValues, 
@@ -1345,7 +1303,6 @@ p b {
 	        $("input[name='usersNo']").each(function(){
 	        	usersNoValues.push($(this).val());
 	        })
-	        
 	        
 	        
 	        let count = 0;

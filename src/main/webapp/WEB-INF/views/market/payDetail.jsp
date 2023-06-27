@@ -150,12 +150,12 @@ input[type="text"] {
 
 /* 결제 div */
 .payElement{
-	padding-top: 40px; text-align: center; margin: 0 10px; border: 2px solid black; 
-	width: 250px; height: 150px; border-radius: 2em
+	padding-top: 40px; text-align: center; margin: 0 10px; border: 4px solid black; 
+	width: 250px; height: 165px; border-radius: 2em; 
 }
 
 .payElement:hover{
-	cursor:pointer;
+	cursor:pointer; background-color:#B0DAFF; border:5px solid black;
 }
 
 .popup {
@@ -463,8 +463,8 @@ input[type="text"] {
 	<br>
 	<div style="display: flex; justify-content: center;">
     <div class="payElement"  onclick="requestPay()" id="requestPay">
-   		<div  style="margin-left:40%; background:#B0DAFF; padding-top:8px; border-radius:2em; width:45px; height:45px; "><i class="bi bi-credit-card" style="font-size: 30px;"></i></div>
-    	<div>신용카드 결제</div>
+   		<div style="margin:0 auto;border-radius:2em; width:60px; height:60px; "><i class="bi bi-credit-card" style="font-size: 50px;"></i></div>
+    	<div><b style="font-size:25px;">결제</b></div>
     </div>
 </div>
 
@@ -1194,15 +1194,45 @@ input[type="text"] {
 	IMP.init("imp02384108"); 
 	
 	const parentNo = document.getElementsByClassName('imgTab');
+	const orderInfo = []; /* 상품 단가, 할인률?, 적립금, 포인트 사용 금액 */
+	const orderAddress = [];
 	for(pn of parentNo) {
 		const productNo = pn.firstChild.nextSibling.value;
 		const usersNo = '${loginUser.usersId}';
 		const count = document.getElementById('size-' + productNo).innerText;
-		const sum = document.getElementById('sum-' + productNo).innerText;
-		const orderInfo = 1 /* 상품 단가, 할인률?, 포인트 사용 금액 */
-// 		const date = new Date();
+		const sum = parseInt(document.getElementById('sum-' + productNo).innerText.replace(/,/g, ''));
+		const price = document.getElementById('originP-' + productNo);
+		const sale = document.getElementById('sale-' + productNo);
+		if(price != null) {
+			orderInfo.push(price.innerText);
+		}
+		if(sale != null) {
+			orderInfo.push(sale.innerText);
+		}
 		
+		const plusPoint = document.getElementById('point-' + productNo).innerText;
+		const usePoint = document.getElementById('inputPoint').innerText;
+		
+		
+		orderInfo.push(plusPoint);
+		orderInfo.push(usePoint);
+		
+		const orderDate ='';
+		const postcode = document.getElementById('sample6_postcode').innerText;
+		console.log(postcode)
+		const address = document.getElementById('sample6_address').innerText;
+		console.log(address)
+		const detailAddress = document.getElementById('sample6_detailAddress').innerText;
+		console.log(detailAddress)
+		orderAddress.push(postcode);
+		orderAddress.push(address);
+		orderAddress.push(detailAddress);
+		
+		const deliveryComment = document.getElementById('shippingAsk').innerText
 	}
+	console.log('oa : ' + orderAddress);
+	console.log('oi : ' + orderInfo);
+	
 	
 	
 	//1. 주문명 

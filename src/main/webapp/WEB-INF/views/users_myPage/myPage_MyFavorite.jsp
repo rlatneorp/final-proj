@@ -105,6 +105,7 @@ th:first-child, td:first-child {
 						<option>최신순</option>
 						<option>레시피</option>
 						<option>식단</option>
+						<option>식품</option>
 						<option>상품</option>
 					</select>
 				</div>
@@ -118,46 +119,76 @@ th:first-child, td:first-child {
 								<th width=150>사진</th>
 								<th>종류</th>
 								<th>제목</th>
+								<th>작성자</th>
+								<th>가격</th>
 								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<tr>
-								<td><img src="resources/images/food1.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food2.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg"></td>
-								<td>상품</td>
-								<td>냄비</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food4.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food5.jpg"/></td>
-								<td>식단</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td><img src="resources/images/food6.jpg"/></td>
-								<td>레시피</td>
-								<td>미역국</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
+							<c:forEach items="${ list }" var="l">
+								<c:if test="${ l.NUMBER_TYPE == 1 }">
+									<tr>
+										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
+										<td>레시피</td>
+										<td>${ l.RECIPE_NAME }</td>
+										<td>${ l.NICKNAME }</td>
+										<td>-</td>
+										<td><input type="checkbox" class="delete"></td>
+									</tr>
+								</c:if>
+								<c:if test="${ l.NUMBER_TYPE == 2 }">
+									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 2 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>식품 - 밀키트</td>
+											<td>${ l.FOOD_NAME }</td>
+											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 1 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>식품 - 식재료</td>
+											<td>${ l.FOOD_NAME }</td>
+											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+									<c:if test="${ l.PRODUCT_TYPE == 2 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>식단</td>
+											<td>${ l.MENU_NAME }</td>
+											<td>${ l.NAME }</td>
+											<td>-</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+									<c:if test="${ l.PRODUCT_TYPE == 3 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.FOOD_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>식재료</td>
+											<td>${ l.INGREDIENT_NAME }</td>
+											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+									<c:if test="${ l.PRODUCT_TYPE == 4 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>상품</td>
+											<td>${ l.TOOL_NAME }</td>
+											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+								</c:if>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

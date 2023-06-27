@@ -22,12 +22,14 @@
 		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.Recipe" alias="Recipe"/>
 		<typeAlias type="kh.finalproj.hollosekki.customer.model.vo.Customer" alias="Customer"/>
 		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder" alias="RecipeOrder"/>
+		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.RecipeElement" alias="RecipeElement"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Follow" alias="Follow"/>
 		<typeAlias type="kh.finalproj.hollosekki.enroll.model.vo.SocialLogin" alias="SocialLogin"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.BookMark" alias="BookMark"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Menu" alias="Menu"/>
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Review" alias="Review"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Point" alias="Point"/>
+		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Review" alias="Review"/>
 		<typeAlias type="kh.finalproj.hollosekki.customer.model.vo.Qna" alias="Qna"/>
 		<typeAlias type="kh.finalproj.hollosekki.board.model.vo.Board" alias="Board"/>
 		

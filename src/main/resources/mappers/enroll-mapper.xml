@@ -185,6 +185,17 @@
 		where users_no = ${ usersNo } and number_type = 2
 	</select>
 	
+	<select id="boardList" resultMap="BoardResultSet">
+		select *
+		from board
+		where users_No = #{ usersNo } and board_status = 'Y'
+	</select>
+	
+	<select id="reviewList" resultMap="reviewResultSet">
+		select *
+		from review
+		where review_writer = #{usersId} and review_status = 'Y'
+	</select>
 	
 	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
@@ -270,5 +281,29 @@
 		<result column="FOLLOWING_USER_NO" property="followingUsersNo"/>
 		<result column="FOLLOW_CREATE_DATE" property="followCreateDate"/>
 		<result column="USERS_NO" property="usersNo"/>
+	</resultMap>
+	
+	<resultMap type="Board" id="BoardResultSet">
+		<id column="BOARD_NO" property="boardNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_DATE" property="boardDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		<result column="BOARD_TYPE" property="boardType"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+	</resultMap>
+	
+	<resultMap type="Review" id="reviewResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo" />
+		<result column="REVIEW_NO" property="reviewNo" />
+		<result column="REVIEW_TITLE" property="reviewTitle" />
+		<result column="REVIEW_CONTENT" property="reviewContent" />
+		<result column="REVIEW_SCORE" property="reviewScore" />
+		<result column="REVIEW_STATUS" property="reviewStatus" />
+		<result column="REVIEW_DATE" property="reviewDate" />
+		<result column="REVIEW_WRITER" property="reviewWriter" />
 	</resultMap>
 </mapper>

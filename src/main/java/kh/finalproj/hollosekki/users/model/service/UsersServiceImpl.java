@@ -109,4 +109,19 @@ public class UsersServiceImpl implements UsersService {
 	public ArrayList<HashMap<String, Object>> myBookMarkList(int usersNo, PageInfo pi) {
 		return uDAO.myBookMarkList(sqlSession, usersNo, pi);
 	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, PageInfo pi) {
+		return uDAO.myFoodLikeList(sqlSession, usersNo, pi);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, PageInfo pi) {
+		return uDAO.myRecipeLikeList(sqlSession, usersNo, pi);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, PageInfo pi) {
+		return uDAO.myProductLikeList(sqlSession, usersNo, pi);
+	}
 }

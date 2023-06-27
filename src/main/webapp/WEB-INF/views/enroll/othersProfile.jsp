@@ -98,7 +98,7 @@
 		display: flex;
 		}
 	
-	/* 4. 작성한 레시피 후기 */
+	/* 4. 작성한 후기 */
 	.recipe-review-content{
 		width: 830px;
 		border: 1px solid gray; border-radius: 3px;
@@ -253,7 +253,7 @@
 				<div class="list-menu" id="recipe"><i class="fa-solid fa-book-bookmark"></i> 레시피</div>
 				<div class="list-menu" id="write-list"><i class="fa-solid fa-pencil"></i> 글</div>
 				<div class="list-menu" id="write-reply"><i class="fa-solid fa-comment"></i> 댓글</div>
-				<div class="list-menu" id="recipe-review"><i class="fa-solid fa-utensils"></i> 레시피후기</div>
+				<div class="list-menu" id="recipe-review"><i class="fa-solid fa-utensils"></i> 후기</div>
 				<div class="list-menu" id=bookmark><i class="fa-solid fa-bookmark"></i> 스크랩</div>
 			</div>
 			<div class="contents">
@@ -261,7 +261,7 @@
 				<!-- 메뉴1. 레시피목록 -->
 				<div class="recipe-contents flex">
 					<c:if test="${ empty rList }">
-						<div style="margin: 0 auto; margin-top: 40px; margin-bottom: 40px; font-size: 18px;">등록한 레시피가 없습니다.</div>
+						<div style="margin: 85px; width: 100%; text-align: center; color: gray;">등록한 레시피가 없습니다.</div>
 					</c:if>
 					<c:if test="${ !empty rList }">
 						<c:forEach items="${ rList }" var="r">
@@ -289,41 +289,29 @@
 						<table>
 							<thead>
 								<tr class="thead">
-									<th>작성 글</th>
-									<th>댓글</th>
+									<th class="board-info">작성 글</th>
+									<th class="board-reply">댓글</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="tbody">
-									<td class="board-info">
-										더운날엔 역시 냉면을 먹어줘야하는거 아니겠습니까ㅎㅎㅎㅎㅎㅎㅎㅎㅎ
-										<p class="date-count">2023-06-17 ∣ 조회 16</p>
-									</td>
-									<td class="board-reply"><div class="reply-count">3</div></td>
-								</tr>
-								<tr class="tbody">
-									<td class="board-info">
-										오늘 날씨 진짜 더움요
-										<p class="date-count">2023-06-17 ∣ 조회 16</p>
-									</td>
-									<td class="board-reply"><div class="reply-count">315</div></td>
-								</tr>
-								<tr class="tbody">
-									<td class="board-info">
-										아니..주말동안 서버 안되는거 에바 아닌가요?
-										<p class="date-count">2023-06-17 ∣ 조회 16</p>
-									</td>
-									<td class="board-reply"><div class="reply-count">999</div></td>
-								</tr>
-								<tr class="tbody">
-									<td class="board-info">
-										우왕🤡💀👺👹👿😈🤓🤥☠️👻👽👾🤖💩🤠🥹😇🤧🤮🤢🤒🦒🦊🐮🐈🥗🥩🎉🔫
-										<p class="date-count">2023-06-17 ∣ 조회 16</p>
-									</td>
-									<td class="board-reply"><div class="reply-count">999</div></td>
-								</tr>
+								<c:if test="${ !empty boList }">
+									<c:forEach items="${ boList }" var="bo">
+										<c:if test="${ user.usersNo == bo.usersNo }">
+											<tr class="tbody" onclick="location.href='${contextPath}/selectFreeBoard.bo?'">
+												<td class="board-info">
+													${ bo.boardTitle }
+													<p class="date-count"><fmt:formatDate value="${ bo.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ bo.boardCount }</p>
+												</td>
+												<td class="board-reply"><div class="reply-count">3</div></td> <!-- 해당 글번호에대한 댓글 카운트해야함... -->
+											</tr>
+										</c:if>
+									</c:forEach>
+								</c:if>
 							</tbody>
 						</table>
+						<c:if test="${ empty boList }">
+							<div style="margin: 90px; text-align: center; color: gray;">작성한 글이 없습니다.</div>
+						</c:if>
 					</div>
 				</div>
 				
@@ -333,11 +321,28 @@
 						<table>
 							<thead>
 								<tr class="thead">
-									<th>작성 댓글</th>
-									<th>댓글</th>
+									<th class="board-info">작성 댓글</th>
+									<th class="board-reply">댓글</th>
 								</tr>
 							</thead>
 							<tbody>
+<%-- 								<c:forEach items="${ rvList }" var="rv"> --%>
+<!-- 									<tr class="tbody"> -->
+<!-- 										<td class="board-info"> -->
+<%-- 											<c:forEach items="${ boList }" var="bo"> --%>
+<%-- 												<c:if test="${ bo.boardTitle == rv.orderNo }"> --%>
+<%-- 													<p class="date-count">${ rv.reviewContext }</p> --%>
+<%-- 													<p class="date-count">${ bo.usersNo } ∣ ${ bo.boardDate } ∣ 조회 ${ bo.boardCount }</p> --%>
+<!-- 													<div class="reply-content"> -->
+<!-- 														<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div> -->
+<!-- 													 	<div>말도안되는 소리 하지마세요....</div> -->
+<!-- 													</div> -->
+<%-- 												</c:if> --%>
+<%-- 											</c:forEach> --%>
+<!-- 										</td> -->
+<!-- 										<td class="board-reply"><div class="reply-count">3</div></td> -->
+<!-- 									</tr> -->
+<%-- 								</c:forEach> --%>
 								<tr class="tbody">
 									<td class="board-info">
 										<p class="date-count">더운날엔 역시 냉면을 먹어줘야하는거 아니겠습니까ㅎㅎㅎㅎㅎㅎㅎㅎㅎ</p>
@@ -376,48 +381,85 @@
 					</div>
 				</div>
 				
-				<!-- 메뉴4. 작성 레시피 후기글 목록 -->
+				<!-- 메뉴4. 작성 후기 목록 -->
 				<div class="recipe-review-contents">
-					<div class="recipe-review-content">
-						<div class="recipe-review-img-div"><img class="recipe-review-img" src="resources/images/food5.jpeg"></div>
-						<div class="recipe-review-content-div">
-						<div class="flex">
-							<div class="recipe-review-name">고기가득 맛나는 짜파구리</div>
-							<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-						</div>
-							<div class="recipe-review-cate">글쓴사람닉넴 ∣ 채소<i class="bi bi-dot lightgray"></i>비건<i class="bi bi-dot lightgray"></i>면</div>
-							<div class="review-content">
-							여기에 리뷰 내용이 들어갑니다~~ 고기가 많이들어가서 완전 맛있어요!! 레시피 순서대로 하나씩 따라서 해보니 별로 어렵지도 않고 요리초보도 간단하게 만들수 있더라구요!
-							뭔가 기생충 생각도 나고...ㅎㅎ 다들 따라해보셔요~
+					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
+					${ user.usersId }
+					<c:forEach items="${ rvList }" var="rv">
+						<c:if test="${ rv.reviewWriter == user.usersId }">
+						
+						</c:if>
+					</c:forEach>
+						<c:if test="${ empty rvList }"> <!-- 작성한 리뷰리스트... 이중에서 레시피 후기(orderNo가 foodNo에 있으면...?)인거만 가져와야함 -->
+							<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
+						</c:if>
+						
+						
+						<c:forEach items="${ rvList }" var="rv">
+							<div class="recipe-review-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
+								<c:forEach items="${ aList }" var="a">
+									<c:if test="${ rv.orderNo == a.foodNo }">
+										<c:forEach items="${ recipeImageList }" var="rImg">
+											<c:if test="${ rImg.imageDivideNo == rv.orderNo }">
+												<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ rImg.imageRenameName }"></div>
+											</c:if>
+										</c:forEach>
+										<div class="recipe-review-content-div">
+										<div class="flex">
+											<div class="recipe-review-name">${ a.recipeName }</div>
+											<c:if test="${ rv.reviewScore == 5 }">
+												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+											</c:if>
+											<c:if test="${ rv.reviewScore == 4 }">
+												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+											</c:if>
+											<c:if test="${ rv.reviewScore == 3 }">
+												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+											</c:if>
+											<c:if test="${ rv.reviewScore == 2 }">
+												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+											</c:if>
+											<c:if test="${ rv.reviewScore == 1 }">
+												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+											</c:if>
+											<c:if test="${ rv.reviewScore == 0 }">
+												<div class="review-star"><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+											</c:if>
+										</div>
+											<c:forEach items="${ hList }" var="h">
+												<c:if test="${ h.usersNo == a.usersNo }">
+													<div class="recipe-review-cate">${ h.nickName } ∣ ${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
+												</c:if>
+											</c:forEach>
+											
+											<div class="review-content">
+												${ rv.reviewContent }
+											</div>
+										</div>
+									</c:if>
+								</c:forEach>
 							</div>
-						</div>
-					</div>
-					<div class="recipe-review-content">
-						<div class="recipe-review-img-div"><img class="recipe-review-img" src="resources/images/food7.jpg"></div>
-						<div class="recipe-review-content-div">
-						<div class="flex">
-							<div class="recipe-review-name">뜨끈한 국물이 맛나는 우~~동</div>
-							<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
-						</div>
-							<div class="recipe-review-cate">글쓴사람닉넴 ∣ 채소<i class="bi bi-dot lightgray"></i>비건<i class="bi bi-dot lightgray"></i>면</div>
-							<div class="review-content">
-							생각보다 별로에요...생생우동 끓여 먹으세요
-							</div>
-						</div>
-					</div>
+						</c:forEach>
+					<br>
+					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
+					<br>	
+					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
+					<c:if test="${ empty rvList }">
+						<div style="margin: 50px; text-align: center; color: gray;">작성한 식단 후기가 없습니다.</div>
+					</c:if>
 				</div>
 				
 				<!-- 메뉴5. 북마크 목록 -->
 				<div class="bookmark-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
+					<c:if test="${ rCount == 0 }">
+						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 레시피가 없습니다.</div>
+					</c:if>
 					<div style="display: flex;">
-						<c:if test="${ rCount == 0 }">
-							<div style="margin: 0 auto; margin-top: 25px; margin-bottom: 30px;">스크랩한 레시피가 없습니다.</div>
-						</c:if>
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
-									<div class="recipe-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
+									<div class="recipe-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ users.usersNo }' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
 										<c:forEach items="${ recipeImageList}" var="ri">
 											<c:if test="${ ri.imageDivideNo == a.foodNo }">
 												<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${ri.imageRenameName}"></div>
@@ -439,13 +481,17 @@
 							</c:forEach>
 						</c:forEach>
 					</div>
+					
+					<br>
+					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
 					<br>
 					
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
+					
+					<c:if test="${ mCount == 0 }">
+						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 식단이 없습니다.</div>
+					</c:if>
 					<div style="display: flex;">
-						<c:if test="${ mCount == 0 }">
-							<div style="margin: 0 auto;  margin-top: 25px; margin-bottom: 30px;">스크랩한 식단이 없습니다.</div>
-						</c:if>
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.productNo }">

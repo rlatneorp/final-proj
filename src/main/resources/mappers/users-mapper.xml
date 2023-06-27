@@ -167,14 +167,55 @@
 	</select>
 	
 	<select id="myBookMarkList" resultType="map">
-		select DIVISION_NO, NUMBER_TYPE, image_renamename, nickname, recipe_modify_date, recipe_name, menu_name
+		select DIVISION_NO, NUMBER_TYPE, i.image_renamename recipe_image, u.nickname, r.recipe_modify_date, r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, im.image_renamename menu_image
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
+		     left join healther h on (m.users_no = h.users_no)
+		     left join product p on (m.product_no = p.product_no)
 		     left join recipe r on (b.division_no = r.food_no)
 		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO)
+		     left join image im on (m.product_no = im.image_divide_no)
 		     left join users u on (u.users_no = r.users_no)
-		where b.users_no = ${usersNo}
+		where b.users_no = #{usersNo}
 		order by bookmark_no desc
 	</select>
+	
+	<!-- 좋아요 조회 -->
+	<!-- 식단, 식품, 상품(도구) 조회 -->
+	<select id="myFoodLikeList" resultType="map">
+		select number_type, name, menu_name, product_modify_date, food_name, food_type, image_renamename product_image, product_type, tool_name, product_price
+		from likes l 
+		   left join menu m on (l.division_no = m.product_no)
+		   left join product p on (l.division_no = p.product_no)
+		   left join healther h on (p.users_no = h.users_no)
+		   left join food f on (l.division_no = f.product_no)
+		   left join tool t on (p.product_no = t.product_no)
+		   left join ingredient g on (l.division_no = g.product_no)
+		   left join image i on (l.division_no = i.image_divide_no)
+		where l.users_no = #{usersNo} and number_type = 2 and product_type in (1,2,4) and image_level = 1
+		order by like_no desc
+   </select>
+   
+   <!-- 레시피 조회 -->
+   <select id="myRecipeLikeList" resultType="map">
+		select number_type, recipe_name, recipe_modify_date, nickname, image_renamename recipe_image
+		from likes l
+		     left join recipe r on (l.division_no = r.food_no)
+		     left join users u on (r.users_no = u.users_no)
+		     left join image i on (l.division_no = i.image_divide_no)
+		where l.users_no = #{usersNo} and image_level = 0 and number_type = 1
+		order by like_no desc
+   </select>
+   
+   <!-- 상품(식재료) 조회 -->
+   <select id="myProductLikeList" resultType="map">
+		select number_type, ingredient_name, product_type, product_price, image_renamename food_image
+		from likes l
+		     left join product p on (l.division_no = p.product_no)
+		     left join ingredient g on (l.division_no = g.product_no)
+		     left join image i on (l.division_no = i.image_divide_no)
+		where l.users_no = #{usersNo} and image_level = 0 and number_type = 2 and product_type = 3
+		order by like_no desc
+   </select>
 	
 </mapper>

@@ -377,6 +377,7 @@
 			</if>
 		</if>
 <!-- 		여기 문제생길 각인데?  'where' 이 두번 반복될수도-->
+<!--		그치만 둘을 같이 쓰는 경우를 안만들었음 (아직) -->
 		<if test="type != 0">
 			where food_type = ${type}
 			<if test="kind != 0">
@@ -395,10 +396,31 @@
 		</if>
 	</select>
 	
+	<select id="selectFoodListNotD" resultMap="foodResultSet">
+		select *
+		from food
+		where food_no in (select food_no
+						  from food
+						  group by food_no
+						  having count(*) = 1)
+		<if test="kind != 0">
+			and food_kind = #{kind}
+		</if>	
+		<if test="type != 0">
+			and food_type = #{type}
+		</if>
+		order by food_name
+	</select>
+	
 	<select id="selectFood" resultMap="foodResultSet">
 		select * 
 		from food
-		where product_no = #{productNo}
+		<if test="type == 1">
+			where product_no = #{no}
+		</if>
+		<if test="type == 2">
+			where food_no = #{no}
+		</if>
 	</select>
 	
 	<update id="updateFood">
@@ -411,8 +433,15 @@
 	</update>
 	
 	<insert id="insertFood">
-		insert into food(product_no, food_name, food_kind, food_type, food_content)
-		values(#{productNo}, #{foodName}, #{foodKind}, #{foodType}, #{foodContent})
+		insert into food(product_no, food_no, food_name, food_kind, food_type, food_content)
+		values(#{productNo}, 
+		<if test="foodNo == 0">
+			seq_food_no.nextval,
+		</if>
+		<if test="foodNo != 0">
+			#{foodNo},
+		</if>
+		#{foodName}, #{foodKind}, #{foodType}, #{foodContent})
 	</insert>
 	
 	<select id="deleteableFood" resultType="string">
@@ -617,6 +646,7 @@
 	
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Food" id="foodResultSet">
 		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="FOOD_NO" property="foodNo" />
 		<result column="FOOD_NAME" property="foodName"/>
 		<result column="FOOD_KIND" property="foodKind"/>
 		<result column="FOOD_TYPE" property="foodType"/>

@@ -321,13 +321,19 @@ public class UsersController {
 		
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		
-		ArrayList<HashMap<String, Object>> lList = uService.myLikeList(usersNo, pi);
-		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, pi);
-		System.out.println(lList);
-		System.out.println(fList);
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		
-		model.addAttribute("lList", lList);
-		model.addAttribute("fList", fList);
+		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, pi); // 식단, 식품, 상품도구
+		ArrayList<HashMap<String, Object>> rList = uService.myRecipeLikeList(usersNo, pi); // 레시피
+		ArrayList<HashMap<String, Object>> pList = uService.myProductLikeList(usersNo, pi); // 식재료
+		
+		list.addAll(fList);
+		list.addAll(rList);
+		list.addAll(pList);
+		
+		System.out.println(list);
+		
+		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 		
 		return "myPage_MyFavorite";

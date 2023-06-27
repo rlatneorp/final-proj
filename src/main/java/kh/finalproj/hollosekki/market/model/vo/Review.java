@@ -99,23 +99,6 @@ public class Review extends Image{
 	public void setReviewStar(String reviewStar) {
 		this.reviewStar = reviewStar;
 	}
-	
-	public Date getReviewDate() {
-		return reviewDate;
-	}
-	
-	public void setReviewDate(Date reviewDate) {
-		this.reviewDate = reviewDate;
-	}
-	
-	public String getReviewWriter() {
-		return reviewWriter;
-	}
-	
-	public void setReviewWriter(String reviewWriter) {
-		this.reviewWriter = reviewWriter;
-	}
-
 
 	public Date getReviewDate() {
 		return reviewDate;

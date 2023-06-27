@@ -29,12 +29,14 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.ReviewPagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeElement;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 @SessionAttributes("loginUser")
@@ -109,6 +111,8 @@ public class RecipeController {
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
 		ArrayList<Review> reList = rService.selectReviewList(rpi, foodNo);
 		
+		System.out.println(reList);
+		
 		if(recipe != null) {
 			mv.addObject("recipe", recipe);
 			mv.addObject("orderList", orderList);
@@ -127,10 +131,14 @@ public class RecipeController {
 	
 //	레시피 작성 창으로
 	@RequestMapping("recipeWrite.rc")
-	public String recipeWrite(HttpSession session) {
+	public String recipeWrite(HttpSession session, Model model) {
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		
+		ArrayList<Ingredient> iList = rService.selectIngredient();
+		
 		if(loginUser != null) {
+			model.addAttribute("iList", iList);
+			
 			return "recipeWrite";
 		} else {
 			throw new RecipeException("레시피 작성을 할 수 없습니다.");
@@ -144,6 +152,7 @@ public class RecipeController {
 							  @RequestParam("thum") MultipartFile thum,
 							  @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
 							  @RequestParam("comPic") ArrayList<MultipartFile> comFiles,
+							  @ModelAttribute Ingredient ing, @ModelAttribute RecipeElement reel,
 							  @ModelAttribute RecipeOrder rc) {
 		
 		Users user =(Users)request.getSession().getAttribute("loginUser");
@@ -152,12 +161,25 @@ public class RecipeController {
 		
 		String id = user.getUsersId();
 		
+		ArrayList<RecipeElement> reelList = new ArrayList<>();
+		String[] ingName = ing.getIngredientName().split(",");
+		String[] quantity = reel.getElementQuantity().split(",");
+		
+		for(int i = 0; i < ingName.length; i++) {
+			if(!ingName[i].equals("") && !quantity[i].equals("")) {
+				Ingredient ingr = new Ingredient();
+				ingr.setIngredientName(ingName[i]);
+			}
+		}
+		
 		int result1 = 0;
 		int result2 = 0;
 		int result3 = 0;
 		int result4 = 0;
 		
 		result1 =rService.insertRecipe(r);
+		
+//		rService.insertIngredient();
 		
 //		썸네일 이미지
 		ArrayList<Image> thumImgList = new ArrayList<>();
@@ -662,6 +684,7 @@ public class RecipeController {
 		
 		rService.reviewWrite(re);
 		ArrayList<Review> reList = rService.selectReview(Integer.parseInt(foodNo));
+		
 		
 		response.setContentType("application/json; charset=UTF-8");
 		

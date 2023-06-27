@@ -400,7 +400,7 @@
    <div class="page_nation">
       <!-- 		이전 페이지로	 -->
 		<c:url var="goBack" value="${loc }">
-			<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+			<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage > 1 }">
 			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
@@ -409,7 +409,7 @@
 <!-- 		페이지 -->
 		<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
-				<c:param name="page" value="${p }"></c:param>
+				<c:param name="repage" value="${p }"></c:param>
 			</c:url>
 			<c:if test="${ rpi.currentPage eq p }">
 				<a class="active">${p }</a>
@@ -420,10 +420,10 @@
 		</c:forEach>
 		
 		<c:url var="goNext" value="${loc }">
-			<c:param name="page" value="${rpi.currentPage + 1 }"></c:param>
+			<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage < rpi.endPage }">
-			<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
+			<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
 		</c:if>
    </div>
 </div>

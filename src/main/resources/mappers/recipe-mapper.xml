@@ -215,6 +215,10 @@
 		from review
 		where product_no=0 and order_no=#{foodNo}
 	</select>
+	
+	<select id="selectIngredient" resultMap="ingredientResultSet">
+		select * from ingredient
+	</select>
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
@@ -266,5 +270,16 @@
 		<result column="REVIEW_STATUS" property="reviewStatus"/>
 		<result column="REVIEW_DATE" property="reviewDate"/>
 		<result column="REVIEW_WRITER" property="reviewWriter"/>
+	</resultMap>
+	
+	<resultMap type="Ingredient" id="ingredientResultSet">
+		<id column="INGREDIENT_NO" property="ingredientNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="INGREDIENT_NAME" property="ingredientName"/>
+		<result column="INGREDIENT_TYPE" property="ingredientType"/>
+		<result column="INGREDIENT_CONTENT" property="ingredientContent"/>
+		<result column="IS_ACCEPT" property="isAccept"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="INGREDIENT_STATUS" property="ingredientStatus"/>
 	</resultMap>
 </mapper>

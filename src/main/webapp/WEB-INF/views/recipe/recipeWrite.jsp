@@ -27,6 +27,10 @@
 	.categoryItem{width: 100px;}
 	#time{width: 150px;}
 	.term{height: 35px;}
+	.recipeIngredient{height: 30px; }
+	.ingredientNum{width: 50px; height: 30px;}
+	.hiddenText{width: 148px;height: 30px;}
+	
 	
 /* 	레시피 설명 */
 	.recipeInformationBox{width: 1000px; padding: 0 5px;}
@@ -97,7 +101,6 @@
 			
 			<div id="place"></div>
 			
-			
 <!-- 			레시피 명, 카테고리 등등 -->
 			<div class="d-inline-block insertInfo">
 				<div class="d-inline-block beforeInput">레시피 명</div><input type="text" id="title" placeholder=" 제목을 입력해주세요." name="recipeName" maxlength="30">
@@ -146,9 +149,63 @@
 			
 <!-- 			재료 -->
 			<div class="recipeInformationBox">
-				<div class="beforeInput">재료</div>
-				<textarea class="recipeInformation" placeholder=" 재료를 적어주세요." name="recipeIngredient" maxlength=300;></textarea>
+				<div class="beforeInput d-inline-block">재료 |</div><div class="d-inline-block" style="width: 500px;">최소 4개 작성</div>
+				<div></div>
+				<div style="padding: 5px; display: inline-block;">
+					<select name="ingredientName" class="recipeIngredient" onchange="change(this)" >
+						<option selected disabled>재료 선택</option>
+						<c:forEach items="${iList}" var="i">
+							<option value="${i.ingredientNo}">${i.ingredientName}</option>
+						</c:forEach>
+						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+					</select>
+					<input type="text" name="reciepIngredient" class="hiddenText" style="display:none;">
+					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
+				</div>
+				|
+				<div style="padding: 5px; display: inline-block;">
+					<select name="ingredientName" class="recipeIngredient" onchange="change(this)">
+						<option selected disabled>재료 선택</option>
+						<c:forEach items="${iList}" var="i">
+							<option value="${i.ingredientNo}">${i.ingredientName}</option>
+						</c:forEach>
+						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+					</select>
+					<input type="text" name="reciepIngredient" class="hiddenText" style="display:none;">
+					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
+				</div>
+				|
+				<div style="padding: 5px; display: inline-block;">
+					<select name="ingredientName" class="recipeIngredient" onchange="change(this)" >
+						<option selected disabled>재료 선택</option>
+						<c:forEach items="${iList}" var="i">
+							<option value="${i.ingredientNo}">${i.ingredientName}</option>
+						</c:forEach>
+						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+					</select>
+					<input type="text" name="reciepIngredient" class="hiddenText" style="display:none;">
+					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
+				</div>
+				|
+				<div style="padding: 5px; display: inline-block;" id="ingCopy" class="ingCopyC">
+					<select name="ingredientName" class="recipeIngredient" onchange="change(this)">
+						<option selected disabled>재료 선택</option>
+						<c:forEach items="${iList}" var="i">
+							<option value="${i.ingredientNo}">${i.ingredientName}</option>
+						</c:forEach>
+						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+					</select>
+					<input type="text" name="reciepIngredient" class="hiddenText" style="display:none;">
+					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
+				<div style="padding: 0 1px 0 5px; display:inline-block">|</div>
+				</div>
+				
+				<div id="ingredientAdd"></div>
 			</div>
+			
+			<button type="button" id="plusBtn" onclick="ingredientPlus()">+ 재료 추가하기</button>
+			<span> / </span>
+			<button type="button" id="minusBtn" onclick="ingredientRemove()">- 재료 삭제하기</button>
 			
 			<br><br>
 			
@@ -248,6 +305,37 @@ function setThumbnail(event){
 	}
 	console.log(document.getElementById('insertBtn').value);
 }
+
+// 재료 임의로 변경시 input으로 변경
+function change(element){
+	if(element.value=="임의"){
+		element.style.display = "none";
+		element.nextElementSibling.style.display = "inline-block";
+		element.remove();
+	}
+}
+
+// 재료 추가
+const ingredientAdd = document.querySelector('#ingredientAdd');
+const ingCopy = document.querySelector('#ingCopy');
+var ingCount = 4;
+function ingredientPlus(){
+	ingredientAdd.appendChild(ingCopy.cloneNode(true));
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3].value = "";
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3].style.display = "none";
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[1].style.display="inline-block";
+	ingCount++;
+}
+
+// 재료 삭제
+function ingredientRemove(){
+	if(ingCount > 4){
+		document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].remove();
+		ingCount--;		
+	}
+	
+}
+
 
 // 레시피 순서
 function orderImage(obj){

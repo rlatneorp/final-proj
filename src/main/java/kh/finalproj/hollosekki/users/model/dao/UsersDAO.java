@@ -83,6 +83,10 @@ public class UsersDAO {
 	public int recipeLikeCount(SqlSessionTemplate sqlSession, int foodNo) {
 		return sqlSession.selectOne("usersMapper.recipeLikeCount", foodNo);
 	}
+	
+	public int getBookListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("usersMapper.getBookListCount");
+	}
 
 	public ArrayList<HashMap<String, Object>> myBookMarkList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
@@ -90,17 +94,31 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.myBookMarkList", usersNo, rowBounds);
 	}
 
-	public ArrayList<HashMap<String, Object>> myLikeList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+	public ArrayList<HashMap<String, Object>> myFoodLikeList(SqlSessionTemplate sqlSession, int usersNo, int selectType, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("usersMapper.myLikeList", usersNo, rowBounds);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("selectType", selectType);
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.myFoodLikeList", map, rowBounds);
 	}
 
-	public ArrayList<HashMap<String, Object>> myFoodLikeList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+	public ArrayList<HashMap<String, Object>> myRecipeLikeList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("usersMapper.myFoodLikeList", usersNo, rowBounds);
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.myRecipeLikeList", usersNo, rowBounds);
 	}
+
+	public ArrayList<HashMap<String, Object>> myProductLikeList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.myProductLikeList", usersNo, rowBounds);
+	}
+
 
 
 }

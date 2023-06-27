@@ -36,81 +36,81 @@ public class Review extends Image{
 		this.reviewStar = reviewStar;
 	}
 
-	public int getProductNo() {
-		return productNo;
-	}
+   public int getProductNo() {
+      return productNo;
+   }
 
-	public void setProductNo(int productNo) {
-		this.productNo = productNo;
-	}
+   public void setProductNo(int productNo) {
+      this.productNo = productNo;
+   }
 
-	public int getOrderNo() {
-		return orderNo;
-	}
+   public int getOrderNo() {
+      return orderNo;
+   }
 
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
-	}
+   public void setOrderNo(int orderNo) {
+      this.orderNo = orderNo;
+   }
 
-	public int getReviewNo() {
-		return reviewNo;
-	}
+   public int getReviewNo() {
+      return reviewNo;
+   }
 
-	public void setReviewNo(int reviewNo) {
-		this.reviewNo = reviewNo;
-	}
+   public void setReviewNo(int reviewNo) {
+      this.reviewNo = reviewNo;
+   }
 
-	public String getReviewTitle() {
-		return reviewTitle;
-	}
+   public String getReviewTitle() {
+      return reviewTitle;
+   }
 
-	public void setReviewTitle(String reviewTitle) {
-		this.reviewTitle = reviewTitle;
-	}
+   public void setReviewTitle(String reviewTitle) {
+      this.reviewTitle = reviewTitle;
+   }
 
-	public String getReviewContent() {
-		return reviewContent;
-	}
+   public String getReviewContent() {
+      return reviewContent;
+   }
 
-	public void setReviewContent(String reviewContent) {
-		this.reviewContent = reviewContent;
-	}
+   public void setReviewContent(String reviewContent) {
+      this.reviewContent = reviewContent;
+   }
 
-	public int getReviewScore() {
-		return reviewScore;
-	}
+   public int getReviewScore() {
+      return reviewScore;
+   }
 
-	public void setReviewScore(int reviewScore) {
-		this.reviewScore = reviewScore;
-	}
+   public void setReviewScore(int reviewScore) {
+      this.reviewScore = reviewScore;
+   }
 
-	public String getReviewStatus() {
-		return reviewStatus;
-	}
+   public String getReviewStatus() {
+      return reviewStatus;
+   }
 
-	public void setReviewStatus(String reviewStatus) {
-		this.reviewStatus = reviewStatus;
-	}
+   public void setReviewStatus(String reviewStatus) {
+      this.reviewStatus = reviewStatus;
+   }
 
-	public Date getReviewDate() {
-		return reviewDate;
-	}
+   public Date getReviewDate() {
+      return reviewDate;
+   }
 
-	public void setReviewDate(Date reviewDate) {
-		this.reviewDate = reviewDate;
-	}
+   public void setReviewDate(Date reviewDate) {
+      this.reviewDate = reviewDate;
+   }
 
-	public String getReviewWriter() {
-		return reviewWriter;
-	}
+   public String getReviewWriter() {
+      return reviewWriter;
+   }
 
-	public void setReviewWriter(String reviewWriter) {
-		this.reviewWriter = reviewWriter;
-	}
+   public void setReviewWriter(String reviewWriter) {
+      this.reviewWriter = reviewWriter;
+   }
 
-	public String getReviewStar() {
-		return reviewStar;
-	}
+   public String getReviewStar() {
+      return reviewStar;
+   }
 
 	public void setReviewStar(String reviewStar) {
 		this.reviewStar = reviewStar;

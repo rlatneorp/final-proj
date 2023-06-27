@@ -23,10 +23,10 @@
 	
 /* 	재료 */
 	#ingredient{width: 1100px; height: 300px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
-	#ingrTitle{font-size: 23px; text-align: center; width: 100px; margin-left: 500px; margin-right: 500px; padding-top: 20px; height: 50px;}
-	#ingrList{width: 500px; height: 220px; margin-left: 300px; margin-right: 300px;}
+	#ingrTitle{font-size: 23px; text-align: center; width: 100px; margin-left: 500px; margin-right: 500px; padding-top: 20px; height: 50px; position: relative;}
+	#ingrList{width: 900px; height: 220px; margin-left: 100px; margin-right: 100px;}
 	.ingrElem{padding-top: 10px; padding-bottom: 10px;}
-	.listE{width: 200px;}
+	.recipeElement{width: 200px; height: 30px; display: inline-block; padding: 10px 5px 5px 5px;}
 	
 /* 	중간선 */
 	.mid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 30px; margin: 5px 0px; font-weight: bold;}
@@ -209,23 +209,14 @@
 	</div>
 	
 	<div id="ingredient">
-		<div id="ingrTitle">재료</div>
-		<div id="ingrList" class="text-center">
-			<ul class="d-inline-block listE">
-				<li class="ingrElem">재rkskekffkakkee</li>
-				<li class="ingrElem">재료1</li>
-				<li class="ingrElem">재료2</li>
-				<li class="ingrElem">재료2</li>
-				<li class="ingrElem">재료2</li>
-			</ul>
-			
-			<ul class="d-inline-block listE">
-				<li class="ingrElem">재료</li>
-				<li class="ingrElem">재료1</li>
-				<li class="ingrElem">재료2</li>
-				<li class="ingrElem">재료2</li>
-				<li class="ingrElem">재료2</li>
-			</ul>
+		<div id="ingrTitle">
+			재료
+			<i class="bi bi-pin-fill" style="position: absolute; top: -35px; left: 30px; font-size: 40px;"></i>
+		</div>
+		<div id="ingrList">
+			<c:forEach items="${eleList}" var="ele">
+				<div class="recipeElement">${ele.elementName} : ${ele.elementQuantity} |</div>
+			</c:forEach>
 		</div>
 	</div>
 	
@@ -400,7 +391,7 @@
    <div class="page_nation">
       <!-- 		이전 페이지로	 -->
 		<c:url var="goBack" value="${loc }">
-			<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+			<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage > 1 }">
 			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
@@ -409,7 +400,7 @@
 <!-- 		페이지 -->
 		<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
-				<c:param name="page" value="${p }"></c:param>
+				<c:param name="repage" value="${p }"></c:param>
 			</c:url>
 			<c:if test="${ rpi.currentPage eq p }">
 				<a class="active">${p }</a>
@@ -420,10 +411,10 @@
 		</c:forEach>
 		
 		<c:url var="goNext" value="${loc }">
-			<c:param name="page" value="${rpi.currentPage + 1 }"></c:param>
+			<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage < rpi.endPage }">
-			<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
+			<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
 		</c:if>
    </div>
 </div>

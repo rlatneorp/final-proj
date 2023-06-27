@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.board.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -22,7 +24,7 @@ import kh.finalproj.hollosekki.board.model.service.BoardService;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
-import kh.finalproj.hollosekki.common.model.vo.Users;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 
 @Controller
@@ -72,19 +74,32 @@ public class BoardController {
 		
 	}
 	
-//	@RequestMapping("insertReply.bo")
-//	public void insertReply(@ModelAttribute Review r,HttpServletResponse response) {
-//		bService.insertReply(r);
-//		ArrayList<Review> list = bService.selectReply(r.getRefBoardId());
-//		
-//		Gson gson = new Gson();
-//		try {
-//			gson.toJson(list, response.getWriter());
-//		} catch (JsonIOException | IOException e) {
-//			e.printStackTrace();
-//		}
-//		
-//	}
+	@RequestMapping("insertReply.bo")
+	public void insertReply(HttpSession session, @ModelAttribute Review r,
+			HttpServletResponse response) {
+		Users u = (Users)session.getAttribute("loginUser");
+		String reviewWriter = "";
+		if(u != null) {
+			reviewWriter = u.getUsersId();
+		}
+		
+		
+		response.setContentType("application/json; charset=UTF-8");
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("reviewWriter", reviewWriter); 
+		map.put("r", r); 
+		bService.insertReply(map);
+		
+		ArrayList<Review> list = bService.selectReply(map);
+		System.out.println(list);
+		
+		Gson gson = new Gson();
+		try {
+			gson.toJson(list, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@RequestMapping("freeBoardWrite.bo")
 	public String freeBoardWrite() {

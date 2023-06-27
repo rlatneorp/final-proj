@@ -261,7 +261,7 @@
 				<!-- 메뉴1. 레시피목록 -->
 				<div class="recipe-contents flex">
 					<c:if test="${ empty rList }">
-						<div style="margin: 0 auto; margin-top: 40px; margin-bottom: 40px; font-size: 18px;">등록한 레시피가 없습니다.</div>
+						<div style="margin: 85px; width: 100%; text-align: center; color: gray;">등록한 레시피가 없습니다.</div>
 					</c:if>
 					<c:if test="${ !empty rList }">
 						<c:forEach items="${ rList }" var="r">
@@ -289,24 +289,29 @@
 						<table>
 							<thead>
 								<tr class="thead">
-									<th>작성 글</th>
-									<th>댓글</th>
+									<th class="board-info">작성 글</th>
+									<th class="board-reply">댓글</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${ boList }" var="bo">
-									<c:if test="${ user.usersNo == bo.usersNo }">
-										<tr class="tbody" onclick="location.href='${contextPath}/selectFreeBoard.bo?'">
-											<td class="board-info">
-												${ bo.boardTitle }
-												<p class="date-count"><fmt:formatDate value="${ bo.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ bo.boardCount }</p>
-											</td>
-											<td class="board-reply"><div class="reply-count">3</div></td> <!-- 해당 글번호에대한 댓글 카운트해야함... -->
-										</tr>
-									</c:if>
-								</c:forEach>
+								<c:if test="${ !empty boList }">
+									<c:forEach items="${ boList }" var="bo">
+										<c:if test="${ user.usersNo == bo.usersNo }">
+											<tr class="tbody" onclick="location.href='${contextPath}/selectFreeBoard.bo?'">
+												<td class="board-info">
+													${ bo.boardTitle }
+													<p class="date-count"><fmt:formatDate value="${ bo.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ bo.boardCount }</p>
+												</td>
+												<td class="board-reply"><div class="reply-count">3</div></td> <!-- 해당 글번호에대한 댓글 카운트해야함... -->
+											</tr>
+										</c:if>
+									</c:forEach>
+								</c:if>
 							</tbody>
 						</table>
+						<c:if test="${ empty boList }">
+							<div style="margin: 90px; text-align: center; color: gray;">작성한 글이 없습니다.</div>
+						</c:if>
 					</div>
 				</div>
 				
@@ -316,8 +321,8 @@
 						<table>
 							<thead>
 								<tr class="thead">
-									<th>작성 댓글</th>
-									<th>댓글</th>
+									<th class="board-info">작성 댓글</th>
+									<th class="board-reply">댓글</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -379,6 +384,17 @@
 				<!-- 메뉴4. 작성 후기 목록 -->
 				<div class="recipe-review-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
+					${ user.usersId }
+					<c:forEach items="${ rvList }" var="rv">
+						<c:if test="${ rv.reviewWriter == user.usersId }">
+						
+						</c:if>
+					</c:forEach>
+						<c:if test="${ empty rvList }"> <!-- 작성한 리뷰리스트... 이중에서 레시피 후기(orderNo가 foodNo에 있으면...?)인거만 가져와야함 -->
+							<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
+						</c:if>
+						
+						
 						<c:forEach items="${ rvList }" var="rv">
 							<div class="recipe-review-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
 								<c:forEach items="${ aList }" var="a">
@@ -428,15 +444,18 @@
 					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
 					<br>	
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
+					<c:if test="${ empty rvList }">
+						<div style="margin: 50px; text-align: center; color: gray;">작성한 식단 후기가 없습니다.</div>
+					</c:if>
 				</div>
 				
 				<!-- 메뉴5. 북마크 목록 -->
 				<div class="bookmark-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
+					<c:if test="${ rCount == 0 }">
+						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 레시피가 없습니다.</div>
+					</c:if>
 					<div style="display: flex;">
-						<c:if test="${ rCount == 0 }">
-							<div style="margin: 0 auto; margin-top: 25px; margin-bottom: 30px;">스크랩한 레시피가 없습니다.</div>
-						</c:if>
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
@@ -462,14 +481,17 @@
 							</c:forEach>
 						</c:forEach>
 					</div>
+					
 					<br>
 					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
 					<br>
+					
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
+					
+					<c:if test="${ mCount == 0 }">
+						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 식단이 없습니다.</div>
+					</c:if>
 					<div style="display: flex;">
-						<c:if test="${ mCount == 0 }">
-							<div style="margin: 0 auto;  margin-top: 25px; margin-bottom: 30px;">스크랩한 식단이 없습니다.</div>
-						</c:if>
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.productNo }">

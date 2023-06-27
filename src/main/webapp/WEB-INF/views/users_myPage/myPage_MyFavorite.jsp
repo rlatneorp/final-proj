@@ -102,10 +102,13 @@ th:first-child, td:first-child {
 				<br><br>
 				<div class="search" style="margin: 0 auto; left: 480px;">
 					<select style="width: 100px">
-						<option>최신순</option>
-						<option>레시피</option>
-						<option>식단</option>
-						<option>상품</option>
+						<option>--------</option>
+						<option value="0">전체</option>
+						<option value="1">레시피</option>
+						<option value="2">식단</option>
+						<option value="3">식품</option>
+						<option value="4">식재료</option>
+						<option value="5">상품</option>
 					</select>
 				</div>
 				<br>
@@ -119,19 +122,75 @@ th:first-child, td:first-child {
 								<th>종류</th>
 								<th>제목</th>
 								<th>작성자</th>
-								<th>작성날짜</th>
+								<th>가격</th>
 								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<tr>
-								<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
-								<td>레시피</td>
-								<td>${ l.RECIPE_NAME }</td>
-								<td>${ l.NICKNAME }</td>
-								<td>${ fn:split(l.RECIPE_MODIFY_DATE, ' ')[0] }</td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
+							<c:forEach items="${ list }" var="l">
+								<c:if test="${ l.NUMBER_TYPE == 1 }">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'">
+										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
+										<td>레시피</td>
+										<td>${ l.RECIPE_NAME }</td>
+										<td>${ l.NICKNAME }</td>
+										<td>-</td>
+										<td><input type="checkbox" class="delete"></td>
+									</tr>
+								</c:if>
+								<c:if test="${ l.NUMBER_TYPE == 2 }">
+									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 2 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>식품 - 밀키트</td>
+											<td>${ l.FOOD_NAME }</td>
+											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 1 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>식품 - 식재료</td>
+											<td>${ l.FOOD_NAME }</td>
+											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+									<c:if test="${ l.PRODUCT_TYPE == 2 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>식단</td>
+											<td>${ l.MENU_NAME }</td>
+											<td>${ l.NAME }</td>
+											<td>-</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+									<c:if test="${ l.PRODUCT_TYPE == 3 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.FOOD_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>식재료</td>
+											<td>${ l.INGREDIENT_NAME }</td>
+											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+									<c:if test="${ l.PRODUCT_TYPE == 4 }">
+										<tr>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td>상품</td>
+											<td>${ l.TOOL_NAME }</td>
+											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }</td>
+											<td><input type="checkbox" class="delete"></td>
+										</tr>
+									</c:if>
+								</c:if>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -219,6 +278,29 @@ th:first-child, td:first-child {
 			    });
 			
 		})
+		
+		// 옵션 선택
+		const selectElement = document.querySelector("select");
+
+	    selectElement.addEventListener("change", function() {
+	        const value = this.value; // 선택된 값 출력
+	        console.log(value);
+
+	        // 선택된 값에 따라 URL을 생성하여 페이지 이동
+	        if(value == 0){
+	        	location.href = "${contextPath}/myPage_MyFavorite.me?searchType=0";
+	        } else if (value == 1) { // 전체
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=1";
+	        } else if (value == 2) { // 레시피
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=2";
+	        } else if (value == 3) { // 식단
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=3";
+	        } else if (value == 4) { // 식품
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=4";
+	        } else if (value == 5) { // 식재료
+	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=5";
+	        }
+	    });
 	</script>
 	
 	

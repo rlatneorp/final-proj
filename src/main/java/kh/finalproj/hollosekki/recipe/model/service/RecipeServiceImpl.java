@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.dao.RecipeDAO;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeElement;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 @Service
@@ -179,5 +181,30 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public ArrayList<Review> selectReviewList(PageInfo rpi, int foodNo) {
 		return rDAO.selectReivewList(sqlSession, rpi, foodNo);
+	}
+	
+	@Override
+	public ArrayList<Ingredient> selectIngredient() {
+		return rDAO.selectIngredient(sqlSession);
+	}
+	
+	@Override
+	public void insertIngredient(ArrayList<RecipeElement> reelList) {
+		rDAO.insertIngredient(sqlSession, reelList);
+	}
+	
+	@Override
+	public void insertNewIngredient(String newI) {
+		rDAO.insertNewIngredient(sqlSession, newI);
+	}
+	
+	@Override
+	public Ingredient selectNewIngredient(String newI) {
+		return rDAO.selectNewIngredient(sqlSession, newI);
+	}
+	
+	@Override
+	public ArrayList<RecipeElement> selectRecipeElement(int foodNo) {
+		return rDAO.selectRecipeElement(sqlSession, foodNo);
 	}
 }

@@ -150,6 +150,9 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.myProductLikeList(sqlSession, usersNo, selectTitle, pi);
 	}
 	
-	
+	@Override
+	public int deleteBookMark(int divisionNo) {
+		return uDAO.deleteBookMark(sqlSession, divisionNo);
+	}
 	
 }

@@ -330,5 +330,11 @@
 		</if>
 		order by like_no desc
    </select>
+   
+	<!-- 스크랩, 좋아요 삭제 -->
+	<delete id="deleteBookMark">
+		delete from bookmark
+		where division_no = #{divisionNo} and number_type = 1
+	</delete>
 	
 </mapper>

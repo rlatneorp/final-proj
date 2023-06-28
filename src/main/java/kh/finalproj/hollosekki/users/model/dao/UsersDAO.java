@@ -146,6 +146,10 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.myProductLikeList", map, rowBounds);
 	}
 
+	public int deleteBookMark(SqlSessionTemplate sqlSession, int divisionNo) {
+		return sqlSession.delete("usersMapper.deleteBookMark", divisionNo);
+	}
+
 
 
 

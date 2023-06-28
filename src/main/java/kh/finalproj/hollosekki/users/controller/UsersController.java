@@ -279,7 +279,7 @@ public class UsersController {
 		}
 		
 		int listCount = uService.getMyRecipeListCount(usersNo);
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -390,6 +390,16 @@ public class UsersController {
 		}
 		
 		return "myPage_MyFavorite";
+	}
+	
+	// 스크랩, 좋아요 삭제
+	@RequestMapping("myPage_deleteBookLike.me")
+	@ResponseBody
+	public String myPage_deleteBookLike(@RequestParam("divisionNo") int divisionNo) {
+		System.out.println(divisionNo);
+		int result = uService.deleteBookMark(divisionNo);
+		
+		return result == 1 ? "yes" : "no";
 	}
 	
 	@RequestMapping("myPage_MyOrder.me")

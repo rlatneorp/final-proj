@@ -271,10 +271,15 @@
 						    <div class="followDiv">
 						    	<div onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.FOLLOWING_USER_NO }' + '&page=' + '${page}'" style="cursor: pointer;">
 						    		<c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
-						    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+					    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
 						    		</c:if>
 						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-						    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+						    			<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+											<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+										</c:if>
+										<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage" onerror="this.src='${ f.SOCIAL_PROFILE_IMG }';"/>
+										</c:if>
 						    		</c:if>
 							    	<input type="hidden" value="${ f.FOLLOWING_USER_NO }" class="followingsNo">
 							    	<label class="followName">${f.NICKNAME}</label>
@@ -310,7 +315,12 @@
 						    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
 						    		</c:if>
 						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-						    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+						    			<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+											<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+										</c:if>
+										<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage" onerror="this.src='${ f.SOCIAL_PROFILE_IMG }';"/>
+										</c:if>
 						    		</c:if>
 								    <input type="hidden" value="${ f.USERS_NO }" class="followersNo">
 								    <label class="followName">${f.NICKNAME}</label>

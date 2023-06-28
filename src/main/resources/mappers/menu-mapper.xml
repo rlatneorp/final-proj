@@ -32,7 +32,7 @@
 		where image_divide_no=#{mNo} and image_type=4
 	</select>
 	
-	<select id="menuDetailMenu" resultMap="imageListResultSet">
+	<select id="menuDetailMenu" resultMap="menuListResultSet">
 		select *
 		from menu_list
 		where product_no=#{mNO}
@@ -58,7 +58,7 @@
 		<result column="IMAGE_LEVEL" property="imageLevel"/>
 	</resultMap>
 	
-	<resultMap type="ImageList" id="imageListResultSet">
+	<resultMap type="MenuList" id="menuListResultSet">
 		<id column="menu_list_no" property="menuListNo"/>
 		<result column="product_no" property="productNo"/>
 		<result column="food_product_no" property="foodProductNo"/>

@@ -399,7 +399,7 @@ p b {
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg">
+			<img src="${contextPath}/resources/uploadFiles/${thum.imageRenameName}">
 			<br>
 			<br>
 			<div id="userInfo">
@@ -416,7 +416,7 @@ p b {
 				<div style="margin: auto; text-align: center;">
 				<br>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						9,900원
+						${menu.productPrice}
 					</h2>
 					&nbsp;&nbsp;
 					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7;">♡</h4>
@@ -455,7 +455,7 @@ p b {
 						<div id="productResult">
 							<div>
 								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
-									총 상품 가격 : 1,000,000원
+									총 상품 가격 : <label>1,000,000원</label>
 								</h4>
 							</div>
 							

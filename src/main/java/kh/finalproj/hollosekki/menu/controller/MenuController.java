@@ -65,7 +65,7 @@ public class MenuController {
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
-		
+		System.out.println(menu);
 		if(menu != null) {
 			mv.addObject("menu", menu);
 			mv.addObject("thum", thum);

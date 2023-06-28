@@ -20,9 +20,10 @@
 		where image_type = 4 and image_level = 1
 	</select>
 	
-	<select id="menuDetail" resultMap="menuResultMap">
+	<select id="menuDetail" resultMap="menuResultSet">
 		select *
 		from menu
+			 left join product using(product_no)
 		where product_no=#{mNO}
 	</select>
 	

@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
 import kh.finalproj.hollosekki.board.exception.BoardException;
@@ -25,7 +25,6 @@ import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
-import kh.finalproj.hollosekki.market.model.vo.Review;
 
 @Controller
 public class BoardController {
@@ -43,14 +42,17 @@ public class BoardController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		ArrayList<Board> list = bService.freeBoardView(b, pi);
+		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		
 		return "freeBoard";
 	}
 	
-	@RequestMapping("selectFreeBoard.bo")
-	public ModelAndView selectFreeBoard(ModelAndView mv, HttpSession session,@RequestParam("bId") int bId, @RequestParam("writer") String writer, @RequestParam("page") int page) {
+	@RequestMapping("detailFreeBoard.bo")
+	public String selectFreeBoard(Model model,HttpSession session, 
+			@RequestParam("bId") int bId, @RequestParam("writer") String writer, 
+			@RequestParam("page") int page) {
 		Users u = (Users)session.getAttribute("loginUser");
 		String login = null;
 		if(u != null) {
@@ -60,46 +62,49 @@ public class BoardController {
 		if(!writer.equals(login)) {
 			yn = true;
 		}
-		
-		Board b = bService.selectBoard(bId, yn);	
-		if(b != null) {
-			mv.addObject("b", b);
-			mv.addObject("page", page);
-			mv.setViewName("detailFreeBoard");
+		ArrayList<Board> list = bService.selectReply(bId);
+		Board blist = bService.selectBoard(bId, yn);	
+		if(blist != null) {
+			model.addAttribute("blist", blist);
+			model.addAttribute("list", list);
+			model.addAttribute("page", page);
+			model.addAttribute("login", login);
 
-			return mv;
+			return "detailFreeBoard";
 		} else {
-			throw new BoardException("ï¿½Ô½Ã±ï¿½ ï¿½ó¼¼ºï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+			throw new BoardException("°Ô½Ã±Û Á¶È¸¿¡ ½ÇÆÐÇÏ¿´½À´Ï´Ù.");
 		}
 		
 	}
 	
 	@RequestMapping("insertReply.bo")
-	public void insertReply(HttpSession session, @ModelAttribute Review r,
-			HttpServletResponse response) {
-		Users u = (Users)session.getAttribute("loginUser");
-		String reviewWriter = "";
-		if(u != null) {
-			reviewWriter = u.getUsersId();
-		}
+	public void insertReply(HttpServletResponse response, @ModelAttribute Board b) {
 		
-		
+		bService.insertReply(b);
+		ArrayList<Board> rlist = bService.selectReply(b.getProductNo());
+		System.out.println(rlist);
 		response.setContentType("application/json; charset=UTF-8");
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		map.put("reviewWriter", reviewWriter); 
-		map.put("r", r); 
-		bService.insertReply(map);
-		
-		ArrayList<Review> list = bService.selectReply(map);
-		System.out.println(list);
-		
-		Gson gson = new Gson();
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
+		Gson gson = gb.create();
 		try {
-			gson.toJson(list, response.getWriter());
+			gson.toJson(rlist, response.getWriter());
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
+		
+	}	
+	
+	@RequestMapping("replyDelete.bo")
+	@ResponseBody
+	public String replyDelete(@ModelAttribute Board b) {
+		
+//		Board replyNo = bService.selectDelReply(b);
+		
+		int result = bService.replyDelete(b);
+		
+		return result == 1 ? "success" : "fail";
 	}
+		
 	
 	@RequestMapping("freeBoardWrite.bo")
 	public String freeBoardWrite() {

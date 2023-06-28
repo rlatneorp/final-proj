@@ -38,11 +38,16 @@ public class BoardService {
 	}
 
 	
-	public void insertReply(HashMap<Object, Object> map) {
-		bDAO.insertReply(sqlSession, map);
+	public void insertReply(Board b) {
+		bDAO.insertReply(sqlSession, b);
 	}
 
-	public ArrayList<Review> selectReply(HashMap<Object, Object> map) {
-		return bDAO.selectReply(sqlSession, map);
-	}	
+	public ArrayList<Board> selectReply(int bId) {
+		return bDAO.selectReply(sqlSession, bId);
+	}
+
+	public int replyDelete(Board b) {
+		return bDAO.replyDelete(sqlSession, b);
+	}
+
 }

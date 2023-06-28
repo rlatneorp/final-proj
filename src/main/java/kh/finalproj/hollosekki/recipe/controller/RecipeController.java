@@ -694,8 +694,8 @@ public class RecipeController {
 							@RequestParam("foodNo") String foodNo, HttpServletResponse response) {
 		Review re = new Review();
 		
-		re.setProductNo(0);
-		re.setOrderNo(Integer.parseInt(foodNo));
+		re.setProductNo(Integer.parseInt(foodNo));
+		re.setOrderNo(0);
 		re.setReviewContent(content);
 		re.setReviewWriter(id);
 		

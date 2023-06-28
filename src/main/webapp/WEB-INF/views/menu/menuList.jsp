@@ -199,23 +199,27 @@
 	
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-5 g-2">
 			
-			<c:forEach begin="1" end="5">
-				<div class="col">
-					<div class="card shadow-sm">
-					<a href="menuDetail.mn">
-						<img src="resources/images/chicken1.png" style="width: 100%; height: 100%;">
-					</a>
-						<div class="card-body cardColor">
-							<h5>고단백 / 영양사C</h5>
-							<div class="d-inline-block" style="width: 130px; height: 50px;"></div>
-							<a class="likeBtn" role="button">
-								<input type="hidden" value="off">
-								<i class='bi bi-heart d-inline-block iconMar'></i>
-							</a>&nbsp;
-							<p class="d-inline-block likeNum">1000</p>
+			<c:forEach items="${mList}" var="m">
+				<c:forEach items="${iList}" var="i">
+					<c:if test="${m.foodProductNo eq i.imageDivideNo}">
+						<div class="col">
+							<div class="card shadow-sm">
+							<a href="menuDetail.mn">
+								<img src="${contextPath }/resources/images/${i.imageRenameName}" style="width: 100%; height: 100%;">
+							</a>
+								<div class="card-body cardColor">
+									<h5>${m.menuName } / ${m.menuType }</h5>
+									<div class="d-inline-block" style="width: 130px; height: 50px;"></div>
+									<a class="likeBtn" role="button">
+										<input type="hidden" value="off">
+										<i class='bi bi-heart d-inline-block iconMar'></i>
+									</a>&nbsp;
+									<p class="d-inline-block likeNum">1000</p>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
+					</c:if>
+				</c:forEach>
 			</c:forEach>
 		</div>
 	</div>

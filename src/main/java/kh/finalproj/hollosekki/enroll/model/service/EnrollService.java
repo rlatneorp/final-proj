@@ -76,6 +76,12 @@ public interface EnrollService {
 	
 	ArrayList<Review> reviewList(String usersId);
 
+	ArrayList<Review> menuReviewList(String usersId);
+
+	ArrayList<Image> menuReviewImageList();
+
+	ArrayList<Review> replyList();
+
 
 
 

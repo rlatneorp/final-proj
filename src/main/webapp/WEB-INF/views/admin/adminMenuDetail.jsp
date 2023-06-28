@@ -79,9 +79,6 @@
 /* 	기타 */
 	.border-none tr th{border:none;}
 	.border-none tr td{border:none;}
-/* 	table tr th{border:none;} */
-/* 	table tr td{border:none;} */
-/* 	table tr{border: 1px solid gray;} */
 	
 </style>
 </head>
@@ -103,13 +100,27 @@
 						<input type="text" name="menuName" style="font-size: 20px; margin-right: 360px;" placeholder="식단 이름을 적어주세요." value="${m.menuName}">
 						<a href="#"><i class="bi bi-bookmark " style="font-size: 20px;"></i></a>
 					</div>
-					<div id="category" style="margin-bottom: 200px;">
+					<div id="category" style="margin-bottom: 20px;">
 						아이콘 식단 카테고리 선택
-						<select name="menuType">
-							<option value="1" <c:if test="${m.menuType==1}">selected</c:if>>다이어트</option>
-							<option value="2" <c:if test="${m.menuType==2}">selected</c:if>>육류</option>
-							<option value="3" <c:if test="${m.menuType==3}">selected</c:if>>해산물</option>
+						<select name="menuKind">
+							<option value="1" <c:if test="${m.menuKind==1}">selected</c:if>>다이어트</option>
+							<option value="2" <c:if test="${m.menuKind==2}">selected</c:if>>육류</option>
+							<option value="3" <c:if test="${m.menuKind==3}">selected</c:if>>해산물</option>
 						</select>
+					</div>
+					
+<!--				밀키트/식재료 여부 -->
+					<div>
+						<div class="row pe-4">
+							<div class="col-12" style="margin-bottom: 150px; text-align: center;">
+								<input type="hidden" name="menuType" value="${m.menuType}">
+								<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">
+									<c:if test="${m.menuType eq 1}">식재료</c:if>
+									<c:if test="${m.menuType eq 2}">밀키트</c:if>
+								</button>
+<!-- 								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button> -->
+							</div>
+						</div>
 					</div>
 					
 					<div id="userInfo">
@@ -216,7 +227,7 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0" readonly>
+									<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productPrice}" min="0" readonly>
 								</td>
 								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">원 - </td>
 								<td>

@@ -6,13 +6,19 @@ public class AdminBasic {
 	private String searchType;
 	private String searchText;
 	private int type;
-	private int kind;
+	private Integer kind;
 	private String duplication;
+	private Integer number;
+//	           	  type		kind
+//  <리뷰>
+//	레시피후기 		:			0    
+//	게시판댓글		: 			-1   
+//	상품후기		: 			null	
 	
 	public AdminBasic() {}
 
-	public AdminBasic(Integer page, Integer pageCount, String searchType, String searchText, int type, int kind,
-			String duplication) {
+	public AdminBasic(Integer page, Integer pageCount, String searchType, String searchText, int type, Integer kind,
+			String duplication, Integer number) {
 		super();
 		this.page = page;
 		this.pageCount = pageCount;
@@ -21,6 +27,7 @@ public class AdminBasic {
 		this.type = type;
 		this.kind = kind;
 		this.duplication = duplication;
+		this.number = number;
 	}
 
 	public Integer getPage() {
@@ -63,11 +70,11 @@ public class AdminBasic {
 		this.type = type;
 	}
 
-	public int getKind() {
+	public Integer getKind() {
 		return kind;
 	}
 
-	public void setKind(int kind) {
+	public void setKind(Integer kind) {
 		this.kind = kind;
 	}
 
@@ -79,10 +86,19 @@ public class AdminBasic {
 		this.duplication = duplication;
 	}
 
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
 	@Override
 	public String toString() {
 		return "AdminBasic [page=" + page + ", pageCount=" + pageCount + ", searchType=" + searchType + ", searchText="
-				+ searchText + ", type=" + type + ", kind=" + kind + ", duplication=" + duplication + "]";
+				+ searchText + ", type=" + type + ", kind=" + kind + ", duplication=" + duplication + ", number="
+				+ number + "]";
 	}
-	
+		
 }

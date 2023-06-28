@@ -1,4 +1,4 @@
-package kh.finalproj.hollosekki.menu.exception;
+package kh.finalproj.hollosekki.menu.model.exception;
 
 public class MenuException extends RuntimeException{
 	public MenuException() {}

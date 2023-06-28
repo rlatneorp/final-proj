@@ -469,7 +469,7 @@ p b {
 									<div class="row pe-4 text-end">
 										<span style="font-size: 12px;">*기존 등록한 음식의 '등록하지 않은 식재료/밀키트'를 등록할 수 있습니다.</span>
 										<span style="font-size: 12px;">*아래의 버튼을 통해, 등록 가능한 리스트를 조회할 수 있습니다.</span>
-										<span style="font-size: 12px;">ex) 제육볶음(6)-밀키트 등록완료 -> 제육볶음(5)-식재료 등록가능</span>
+										<span style="font-size: 12px;">ex) 제육볶음-밀키트 등록완료 -> 제육볶음-식재료 등록가능</span>
 									</div>
 								</td>
 							</tr>

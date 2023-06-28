@@ -215,12 +215,20 @@ public class MarketController {
       ArrayList<Options> options = mkService.selectOptionsSet(productNo);
       Product p = mkService.selectProductSet(productNo);
       
-      
+      ArrayList<Image> mainImage = selectImagList(productNo, 6, 1);
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);
       int reviewCount = mkService.selectReviewCount(productNo);
       
-      System.out.println(imglist);
+      
+      
+	System.out.println(mainImage);
+	System.out.println(imglist);
+      
+      
+      if(mainImage != null) {
+    	  model.addAttribute("mainImage", mainImage);
+      }
       
       if(list != null) {
          model.addAttribute("list", list);
@@ -229,6 +237,10 @@ public class MarketController {
       if(imglist != null) {
          model.addAttribute("imglist", imglist);
       }
+      
+      
+      
+      
       
       model.addAttribute("reviewCount", reviewCount);
       
@@ -239,16 +251,8 @@ public class MarketController {
       return "market_detail";
    }
    
-   private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
-      HashMap<String, Integer> map = new HashMap<String, Integer>();
-      map.put("imageDivideNo", imageDivideNo);
-      map.put("imageType", imageType);
-      map.put("imageLevel", imageLevel);
-      ArrayList<Image> imageList = mkService.selectImagList(map);
-      return imageList;
-   }
-   
-   @GetMapping("createqna.ma")
+
+@GetMapping("createqna.ma")
    public String createqna() {
       return "createQnA";
    }
@@ -272,34 +276,11 @@ public class MarketController {
       
       int result = mkService.insertReview(r);
       
-//      System.out.println(imageFiles);
-      
        
       if(result > 0) {
          model.addAttribute("productNo", productNo);
          model.addAttribute("review", r);
       }
-      
-      
-      
-      
-//      for(MultipartFile imageFile : imageFiles) {
-//         Image image = new Image();
-//         if(imageFile != null && !imageFile.isEmpty()) {
-//            String[] returnArr = saveFile(imageFile, request);
-//            if(returnArr[1] != null) {
-//               image.setImageDivideNo(r.getReviewNo());
-//               image.setImageType(7); /*리뷰는 7번*/
-//               image.setImagePath(returnArr[0]);
-//               image.setImageOriginalName(imageFile.getOriginalFilename());
-//               image.setImageRenameName(returnArr[1]);
-//               image.setImageLevel(0);
-//               if(i==0) {
-//                  image.setImageLevel(1);
-//      if(result > 0) {
-//         model.addAttribute("productNo", productNo);
-//         model.addAttribute("review", r);
-//      }
       
    
       if(imageFiles != null) {   
@@ -585,5 +566,25 @@ public class MarketController {
       
       return result >= 0 ? "yes" : "no";
    }
+   
+   @RequestMapping("foodMaterialMarcket.ma")
+   public String foodMaterialMarcket() {
+	   return"market_detail_foodMaterial";
+   }
+   
+   
+   private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
+	      HashMap<String, Integer> map = new HashMap<String, Integer>();
+	      map.put("imageDivideNo", imageDivideNo);
+	      map.put("imageType", imageType);
+	      map.put("imageLevel", imageLevel);
+	      ArrayList<Image> imageList = mkService.selectImagList(map);
+	      return imageList;
+	   }
+   
+   
+   
+   
+   
    
 }

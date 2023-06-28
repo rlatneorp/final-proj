@@ -32,12 +32,17 @@ public class BoardDAO {
 		return sqlSession.selectOne("boardMapper.selectBoard", bId);
 	}
 
-	public void insertReply(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
-		sqlSession.insert("boardMapper.insertReply", map);
+	public void insertReply(SqlSessionTemplate sqlSession, Board b) {
+		sqlSession.insert("boardMapper.insertReply", b);
 	}
 
-	public ArrayList<Review> selectReply(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
-		return (ArrayList)sqlSession.selectList("boardMapper.selectReply",map);
+	public ArrayList<Board> selectReply(SqlSessionTemplate sqlSession, int bId) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectReply",bId);
 	}
+
+	public int replyDelete(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.update("boardMapper.replyDelete", b);
+	}
+
 	
 }

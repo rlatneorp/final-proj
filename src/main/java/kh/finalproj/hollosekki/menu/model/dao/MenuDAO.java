@@ -1,4 +1,4 @@
-package kh.finalproj.hollosekki.menu.dao;
+package kh.finalproj.hollosekki.menu.model.dao;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 @Repository
 public class MenuDAO {
@@ -26,6 +27,18 @@ public class MenuDAO {
 
 	public ArrayList<Image> selectMenuImage(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("menuMapper.selectMenuImage");
+	}
+
+	public Menu menuDetail(SqlSessionTemplate sqlSession, int mNo) {
+		return sqlSession.selectOne("menuMapper.menuDetail", mNo);
+	}
+
+	public Image menuDetailThum(SqlSessionTemplate sqlSession, int mNo) {
+		return sqlSession.selectOne("menuMapper.menuDetailThum", mNo);
+	}
+
+	public ArrayList<MenuList> menuDetailMenu(SqlSessionTemplate sqlSession, int mNo) {
+		return (ArrayList)sqlSession.selectList("menuMapper.menuDetailMenu", mNo);
 	}
 
 }

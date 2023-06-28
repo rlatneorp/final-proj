@@ -2,8 +2,10 @@ package kh.finalproj.hollosekki.common.model.vo;
 
 public class Menu extends Product{
 	private String menuName;
-	private int menuType;	
+	private int menuNo;
 // 1: 다이어트 2: 육류 3: 해산물
+	private int menuKind;
+	private int menuType;
 	private String menuContent;
 	private String foodProductNo;
 	private String menuTarget;
@@ -16,10 +18,12 @@ public class Menu extends Product{
 		super();
 	}
 
-	public Menu(String menuName, int menuType, String menuContent, String foodProductNo, String menuTarget,
-			String nutrient, int menuKind, int menuNo, int productPrice) {
+	public Menu(String menuName, int menuNo, int menuKind, int menuType, String menuContent, String foodProductNo,
+			String menuTarget, String nutrient) {
 		super();
 		this.menuName = menuName;
+		this.menuNo = menuNo;
+		this.menuKind = menuKind;
 		this.menuType = menuType;
 		this.menuContent = menuContent;
 		this.foodProductNo = foodProductNo;
@@ -36,6 +40,22 @@ public class Menu extends Product{
 
 	public void setMenuName(String menuName) {
 		this.menuName = menuName;
+	}
+
+	public int getMenuNo() {
+		return menuNo;
+	}
+
+	public void setMenuNo(int menuNo) {
+		this.menuNo = menuNo;
+	}
+
+	public int getMenuKind() {
+		return menuKind;
+	}
+
+	public void setMenuKind(int menuKind) {
+		this.menuKind = menuKind;
 	}
 
 	public int getMenuType() {
@@ -104,8 +124,8 @@ public class Menu extends Product{
 
 	@Override
 	public String toString() {
-		return "Menu [menuName=" + menuName + ", menuType=" + menuType + ", menuContent=" + menuContent
-				+ ", foodProductNo=" + foodProductNo + ", menuTarget=" + menuTarget + ", nutrient=" + nutrient
-				+ ", menuKind=" + menuKind + ", menuNo=" + menuNo + ", productPrice=" + productPrice + "]";
+		return "Menu [menuName=" + menuName + ", menuNo=" + menuNo + ", menuKind=" + menuKind + ", menuType=" + menuType
+				+ ", menuContent=" + menuContent + ", foodProductNo=" + foodProductNo + ", menuTarget=" + menuTarget
+				+ ", nutrient=" + nutrient + "]";
 	}
 }

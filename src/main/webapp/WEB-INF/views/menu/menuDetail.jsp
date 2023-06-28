@@ -399,7 +399,7 @@ p b {
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg">
+			<img src="${contextPath}/resources/uploadFiles/${thum.imageRenameName}">
 			<br>
 			<br>
 			<div id="userInfo">
@@ -411,12 +411,12 @@ p b {
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center">
-					 <h3 style="font-weight: 400; font-size: 42px;">식단명 들어가는 곳</h3>
+					 <h3 style="font-weight: 400; font-size: 42px;">${menu.menuName}</h3>
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						9,900원
+						<fmt:formatNumber value="${menu.productPrice}"/>원
 					</h2>
 					&nbsp;&nbsp;
 					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7;">♡</h4>
@@ -445,7 +445,7 @@ p b {
 						<div id="period" class="inputBox">
 							<label for="first">식단 명 </label>
 							<button type="button" id="decrease" onclick="decreaseClick()">-</button>
-							<div id="quantity" style="display: inline-block;">0</div>
+							<div id="quantity" style="display: inline-block;">1</div>
 							<button type="button" id="increase" onclick="increaseClick()">+</button>
 						</div>
 						
@@ -455,7 +455,7 @@ p b {
 						<div id="productResult">
 							<div>
 								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
-									총 상품 가격 : 1,000,000원
+									총 상품 가격 : <label id="total"><fmt:formatNumber value="${menu.productPrice}"/>원</label>
 								</h4>
 							</div>
 							
@@ -790,14 +790,13 @@ p b {
 <%@ include file="../common/footer.jsp" %>
 
 <script>
-	
-
-	
+// <fmt:formatNumber value="${menu.productPrice}"/>원
 	function decreaseClick(){
 		var quantity = document.getElementById('quantity');
 		var parseQuan = parseInt(quantity.innerText);
-		
-		if(parseQuan >= 1){
+// 		var total = document.getElementById('total');
+		if(parseQuan >= 2){
+			console.log(total);
 			quantity.innerText = parseQuan - 1;
 		}
 	}
@@ -805,6 +804,7 @@ p b {
 	function increaseClick(){
 		var quantity = document.getElementById('quantity');
 		var parseQuan = parseInt(quantity.innerText);
+// 		var total = document.getElementById('total');
 		
 		quantity.innerText = parseQuan + 1;
 		console.log(parseQuan);

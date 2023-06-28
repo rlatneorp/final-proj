@@ -110,6 +110,27 @@
 	 
 }
 
+#reBtn{
+	width: 47px; height: 28px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	font-size: 14px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 2px; 
+}
+#xBtn{
+	width: 47px; height: 28px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	font-size: 14px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 2px; 
+}
+
 </style>
 
 </head>
@@ -125,42 +146,54 @@
 	<script src="resources/summernotes/summernote-lite.js"></script>
 	<script src="resources/summernotes/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
+	
 	<div id="parentDiv">
 		<div class="intro form-floating mb-3">
-		   <input readonly type="text" class="form-control" id="floatingInput" value="${ b.boardTitle }">
+		   <input readonly type="text" class="form-control" id="floatingInput" value="${ blist.boardTitle }">
 		   <label>제목</label>
 		</div>
 		<div class="row text-center">
-			<p class="d-inline text-start col-5">작성자 : ${b.nickName }</p>
-			<p class="d-inline col-3">조회수 : ${b.boardCount } </p>
-			<p class="d-inline col-4">작성날짜 : <fmt:formatDate value="${b.boardDate }" pattern="yyyy년 MM월 dd일 HH시 mm분"/></p>
+			<p class="d-inline text-start col-5">작성자 : ${blist.nickName }</p>
+			<p class="d-inline col-3">조회수 : ${blist.boardCount } </p>
+			<p class="d-inline col-4">작성날짜 : <fmt:formatDate value="${blist.boardDate }" pattern="yyyy년 MM월 dd일 HH시 mm분"/></p>
 		</div>
+		<input type="hidden" id="hdnBoardNo" value="${blist.boardNo}">
 		<br>
 		<div class="intro form-floating text-start text-wrap">
-		   <textarea name="content" style="resize: none;" readonly class="form-control" id="floatingText">${b.boardContent}</textarea>
+		   <textarea name="content" style="resize: none;" readonly class="form-control" id="floatingText">${blist.boardContent}</textarea>
 		   <label>내용</label>
 		</div>
 	</div><br>
 		<div class="comment text-start">
-			<div class="intro form-floating">
-				<table class="form-control" id="commentContent">
-				<c:if test="${!empty list.reviewContent}">
-				<tbody> 
-					<tr>
-						<td scope="row">${list.reviewContent} </td>
-						<td scope="row">${list.boardCommentNickName }</td>
-						<td scope="row">${list.reviewDate }</td>
-						<td scope="row">
-							<button type="button" id="xBtn">삭제</button>
-						</td>
-						<td scope="row">
-							<button type="button" id="reBtn">수정</button>
-						</td>
-					</tr>
-				</tbody>	
-				</c:if>
+			<div class="intro">
+				<label>댓글 내용</label>
+				<table class="table text-center">
+					<thead>
+						<tr>
+							<th class="col-6">댓글내용</th>
+							<th class="col-2">작성자</th>
+							<th class="col-2">작성일</th>
+							<th class="col-1">수정</th>
+							<th class="col-1">삭제</th>
+						</tr>
+					</thead>
+					<tbody> 
+					<c:forEach items="${list }" var="r" varStatus="var"> 
+						<tr>	
+							<td>${r.reviewContent}</td>
+							<td>${r.reviewWriter }</td>
+							<td><fmt:formatDate value="${r.reviewDate }" pattern="yyyy-MM-dd HH:mm"/></td>
+							<td>
+								<button type="button" class="reBtn" id="reBtn">수정</button>
+							</td>
+							<td>
+								<button type="button" class="xBtn" id="xBtn">삭제</button>
+								<input type="hidden" id="hdnReplyNo" value="${r.reviewNo}">
+							</td>
+						</tr>
+					</c:forEach>	
+					</tbody>
 				</table>
-				<label for="commentContent">댓글 내용</label>
 			</div><br>
 			<div class="intro form-floating">
 				<input type="text" name="commentWrite" id="commentWrite" class="form-control">
@@ -170,7 +203,6 @@
 				<a id="replySubmit" class="btn-3d blue position-absolute end-0">작성하기</a>
 			</div>
 		</div>
-		<input type="hidden" id="hdnBoardNo" value="${b.boardNo}">
 	<!-- 작성 버튼 -->
 	<br><br><br><br><br><br><br><br><br><br><br><br>
 	
@@ -186,7 +218,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">예</button>
-	        <button type="button" class="btn btn-primary">아니요</button>
+	        <button type="button" class="btn btn-primary deleteYes">아니요</button>
 	      </div>
 	    </div>
 	  </div>
@@ -199,30 +231,64 @@
 
 window.onload=()=>{
 	const deleteModal = document.getElementById('deleteModal');
-	const xBtn = document.getElementById('xBtn');
+	const xBtn = document.querySelectorAll('.xBtn');
 	const replySubmit = document.getElementById('replySubmit');
-	const boardNo = document.getElementById('hdnBoardNo').value;
+	const deleteYes = document.getElementsByClassName("deleteYes");
 	
-	console.log(boardNo);
-// 	xBtn.addEventListener('click', ()=>{
-// 		 deleteModal.modal('show');
-	
-
-
-// 	});
-	replySubmit.addEventListener('click', ()=>{
 		
+	$('.xBtn').each(function(index, item){
+		$(this).click(function(e){
+			e.preventDefault();
+			console.log(index);
+			$('#deleteModal').modal("show");
+			
+		 	for(const yes of deleteYes){
+		 		yes.addEventListener('click', ()=>{
+		 			const hdnBoardNo = document.querySelector('#hdnBoardNo');
+		 			const hdnReplyNo = document.getElementById('hdnReplyNo');
+	 				$.ajax({
+	 					url: 'replyDelete.bo',
+	 					data:{
+	 						reviewNo: hdnReplyNo.value,
+	 						reviewWriter: '${login}',
+	 						productNo: hdnBoardNo.value
+	 					},
+	 					success: data=>{
+	 						console.log(data);
+	 						if(data == 'success'){
+	 							const trs = document.querySelectorAll('tr');
+	 							trs[index].innerHTML = '';
+	 						}else{
+	 							alert("오류로 인해 삭제가 되지 않았습니다.");
+	 							location.reload();
+	 						}
+	 					}
+	 				});
+	 			
+		 		})
+		 	};
+			
+		})
+	});
+	
+	replySubmit.addEventListener('click', ()=>{
+		const hdnBoardNo = document.querySelector('#hdnBoardNo');
+		const reviewCon = document.getElementById('commentWrite');
 		$.ajax({
-			url: '${contextPath}/insertReply.bo',
+			url: 'insertReply.bo',
+			dataType: 'json',
 			data: {
-					productNo: boardNo,
-					reviewContent: document.getElementById('commentWrite').value,
+					productNo: hdnBoardNo.value,
+					reviewContent: reviewCon.value,
+					reviewWriter: '${login}'
 			},
 			success: data =>{
 				console.log(data);
 				const tbody = document.querySelector('tbody');
+				tbody.innerHTML = '';
 				
 				for(const r of data){
+					
 					const tr = document.createElement('tr');
 					
 					const contentTd = document.createElement('td');
@@ -231,19 +297,28 @@ window.onload=()=>{
 					const writerTd = document.createElement('td');
 					writerTd.innerText = r.reviewWriter;
 					
-					
 					const dateTd = document.createElement('td');
 					dateTd.innerText = r.reviewDate;
+					
+					const modifyBtn = document.createElement('td');
+					modifyBtn.innerHTML = '<button type="button" id="reBtn">수정</button>';
+					
+					const deleteBtn = document.createElement('td');
+					deleteBtn.innerHTML = '<button type="button" id="xBtn">삭제</button>';
+					
 					
 					tr.append(contentTd);
 					tr.append(writerTd);
 					tr.append(dateTd);
+					tr.append(modifyBtn);
+					tr.append(deleteBtn);
 					
 					tbody.append(tr);
 					
 					
 				}
 				document.getElementById('commentWrite').value = '';
+					
 			},
 			error: data =>{
 				console.log(data);

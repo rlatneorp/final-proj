@@ -203,10 +203,9 @@
 				<c:forEach items="${iList}" var="i">
 					<c:if test="${m.foodProductNo eq i.imageDivideNo}">
 						<div class="col">
+							<input type="hidden" value="${m.foodProductNo}">
 							<div class="card shadow-sm">
-							<a href="menuDetail.mn">
 								<img src="${contextPath }/resources/images/${i.imageRenameName}" style="width: 100%; height: 100%;">
-							</a>
 								<div class="card-body cardColor">
 									<h5>${m.menuName } / ${m.menuType }</h5>
 									<div class="d-inline-block" style="width: 130px; height: 50px;"></div>
@@ -227,13 +226,33 @@
 
 <div class="page_wrap">
    <div class="page_nation">
-      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-      <a href="#" class="active">1</a>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">4</a>
-      <a href="#">5</a>
-      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+      <!-- 		이전 페이지로	 -->
+		<c:url var="goBack" value="${loc }">
+			<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+		</c:url>
+		<c:if test="${pi.currentPage > 1 }">
+			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
+		</c:if>
+		
+<!-- 		페이지 -->
+		<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+			<c:url var="goNum" value="${loc }">
+				<c:param name="page" value="${p }"></c:param>
+			</c:url>
+			<c:if test="${ pi.currentPage eq p }">
+				<a class="active">${p }</a>
+			</c:if>
+			<c:if test="${ !(pi.currentPage eq p) }">
+				<a href="${goNum }">${p }</a>
+			</c:if>
+		</c:forEach>
+		
+		<c:url var="goNext" value="${loc }">
+			<c:param name="page" value="${pi.currentPage + 1 }"></c:param>
+		</c:url>
+		<c:if test="${pi.currentPage < pi.endPage }">
+			<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
+		</c:if>
    </div>
 </div>
 
@@ -259,6 +278,17 @@
 			
 		})
 	}
+	const cols = document.querySelectorAll('.col');
+
+	for(const col of cols){
+		col.addEventListener('click', function(){
+			const mNo = this.childNodes[1].value;
+			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
+// 			console.log(this.childNodes[1]);
+		})
+		
+	}
+	
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

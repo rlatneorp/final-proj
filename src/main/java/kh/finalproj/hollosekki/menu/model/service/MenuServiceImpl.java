@@ -1,4 +1,4 @@
-package kh.finalproj.hollosekki.menu.service;
+package kh.finalproj.hollosekki.menu.model.service;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
-import kh.finalproj.hollosekki.menu.dao.MenuDAO;
+import kh.finalproj.hollosekki.menu.model.dao.MenuDAO;
+import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 @Service
 public class MenuServiceImpl implements MenuService{
@@ -32,5 +33,20 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public ArrayList<Image> selectMenuImage() {
 		return mDAO.selectMenuImage(sqlSession);
+	}
+	
+	@Override
+	public Menu menuDetail(int mNo) {
+		return mDAO.menuDetail(sqlSession, mNo);
+	}
+	
+	@Override
+	public Image menuDetailThum(int mNo) {
+		return mDAO.menuDetailThum(sqlSession, mNo);
+	}
+	
+	@Override
+	public ArrayList<MenuList> menuDetailMenu(int mNo) {
+		return mDAO.menuDetailMenu(sqlSession, mNo);
 	}
 }

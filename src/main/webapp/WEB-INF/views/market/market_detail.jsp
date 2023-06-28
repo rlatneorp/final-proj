@@ -737,7 +737,10 @@ p b {
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;">
+			<c:forEach items="${mainImage}" var="main">
+				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
+			</c:forEach>
+<!-- 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
 		</div>
 		<div class="right">
 			<!-- 상품 정보 -->
@@ -779,74 +782,33 @@ p b {
 								<hr style="margin: 0px;">
 						
 					<c:forEach items="${options}" var="op" varStatus="vs">
-						<c:if test="${vs.index == 0}">
-							<label for="productOptionSet">${op.optionName}</label>
-							<select class='productOptionSet'  required>
-								<option value="">옵션을 선택해주세요</option>
+							<c:if test="${vs.index == 0}">
+								<label for="productOptionSet">${op.optionName}</label>
+								<select class='productOptionSet'  required>
+									<option value="">옵션을 선택해주세요</option>
+									<option value="${op.optionNo}">${op.optionValue}</option>
+							</c:if>
+							<c:if test="${op.optionName eq options[vs.index-1].optionName}">
 								<option value="${op.optionNo}">${op.optionValue}</option>
-						</c:if>
-						<c:if test="${op.optionName eq options[vs.index-1].optionName}">
-							<option value="${op.optionNo}">${op.optionValue}</option>
-						</c:if>
-						<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
-							</select>
-							
-							<label for="productOption2Set">${op.optionName}</label>
-							<select class='productOption2Set'  required>
-								<option class='productOption2Set' >옵션을 선택해주세요.</option>
-								<option value="${op.optionNo}">${op.optionValue}</option>
-						</c:if>
-						<c:if test="${vs.last}">
-							</select>
+							</c:if>
+							<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
+								</select>
+								
+								<label for="productOption2Set">${op.optionName}</label>
+								<select class='productOption2Set'  required>
+									<option class='productOption2Set' >옵션을 선택해주세요.</option>
+									<option value="${op.optionNo}">${op.optionValue}</option>
+							</c:if>
+							<c:if test="${vs.last}">
+								</select>
 						</c:if>
 					</c:forEach>
-						
-<!-- 					<label for="productOption">색상</label> -->
-<!-- 					<select class='productOption'  required> -->
-<!-- 						사이즈 선택 창  -->
-<!-- 						<option value="">옵션을 선택해주세요</option> -->
-<!-- 						<option value="Black">black</option> -->
-<!-- 						<option value="silver">silver</option> -->
-<!-- 						<option value="gray">gray</option> -->
-<!-- 						<option value="light-gray">light-gray</option> -->
-<!-- 					</select> -->
-					
-<!-- 					<label for="productOption2">사이즈</label> -->
-<!-- 					<select class='productOption2' required> -->
-<!-- 						사이즈 선택 창 -->
-<!-- 						<option class='productOption2Set' >옵션을 선택해주세요.</option> -->
-<!-- 					</select> -->
-
-
-<!-- 					<div id="productResult" class="productResultSet"> -->
-<!-- 						사이즈 선택시 내려오는 창 -->
-<!-- 						<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
-<!-- 							캠핑용 후라이팬 <span class="op1">black</span> <span class="op2">S</span> -->
-<!-- 							<input type="hidden" name="productNo" value="134"> -->
-<!-- 							<input type="hidden" name="productName" value="캠핑용 후라이팬"> -->
-<%-- 							<input type="hidden" name="productPrice" value="${p.productPrice}"> --%>
-<!-- 						</h4> -->
-<!-- 						<div style=""> -->
-<!-- 							<span class="btnbox" style=" margin: 0 0 0 -1px;"> -->
-<!-- 								<button class="decrease" type="button">-</button> -->
-<!-- 								<input type="number" class="cartCount" -->
-<!-- 									 value="1" name="cartCount" min="1" readonly> -->
-									
-<!-- 								<button class="increase" type="button">+</button> -->
-								
-<!-- 							</span> -->
-<!-- 							<button class="removeProudct" type="button" style="float: right;"> -->
-<!-- 								<img src="resources/images/close.png" style="width: 10px;"> -->
-<!-- 							</button> -->
-<!-- 							<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
-<%-- 						<input type="hidden" name="discountRate" value="${p.discountRate}"> --%>
-<!-- 						</div> -->
-<!-- 						 <br> -->
-<!-- 					</div> -->
 					
 				</div>
 					</div>
 			</div>
+							<div class="totalPrice"></div>
+							<br>
 						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 <!-- 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
@@ -900,7 +862,10 @@ p b {
 <!-- 						</ul> -->
 <!-- 					</div> -->
 
+			<span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span>
+			<span class="review_star_desc" style="font-size: 500;">별점순</span>
 			</div>
+		
 			
 					<c:set var="reviewCount" value="${reviewCount}" />
 					   <c:if test="${reviewCount eq 0}">
@@ -937,17 +902,16 @@ p b {
 								</ul>
 							</div>
 							
-<%-- 						<c:forEach items="${imglist}" var="img"> --%>
-<%-- 							<c:if test ="${img.imageDivideNo eq r.reviewNo}"> --%>
 								<div style="display: inline-block; width: 100%;">
+<%-- 									<c:forEach items="${imglist}" var="img" > --%>
 <%-- 										<c:if test ="${img.imageDivideNo ep r.reviewNo}" > --%>
-										<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-												${r.reviewContent}  
-										</div>
-<%-- 									</c:if> --%>
+											<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+													${r.reviewContent}  
+											</div>
+<%-- 									</c:if> --%> 
+<%-- 									</c:forEach> --%>
 								</div>
 <%-- 							</c:if> --%>
-<%-- 						</c:forEach> --%>
 			</div>
 		</c:forEach>
 			<div class="moreView">더보기</div>
@@ -1035,11 +999,11 @@ p b {
 					</li>
 				</ul>
 				<li id="page-qna" class="accordion_i_li">
-                <a class="accordion_i_tit3">문의<span>(2)</span></a>
-                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
-                    <div id="ajax-goods-goodsqa-list">
-                    
-              	<ul class="goods_accordion_qna">
+	                <a class="accordion_i_tit3">문의<span>(2)</span></a>
+	                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
+	                    <div id="ajax-goods-goodsqa-list">
+	                    
+	              	<ul class="goods_accordion_qna">
               	
         <!--  반복 될 부분 -->      	
              <li class="accordion_q_li js_data_row" >
@@ -1159,32 +1123,37 @@ p b {
 	   const productSet = document.querySelector(".productSet");
 	   const increase = document.querySelectorAll(".increase");	
 	   const reviewStar = document.querySelectorAll(".reviewStar");
-	  
-		
+	   const total = document.querySelector('.totalPrice');
+	   let totalPriceSet = document.querySelectorAll(".totalPriceSet");
+	   const productPrice = document.querySelectorAll(".productPrice");
+	   const cartCount = document.querySelectorAll(".cartCount");
 			$(document).on("click",".btnbox",function(e){
 				const increBtn = this.childNodes[2]; //증가버튼
 				const decreBtn = this.childNodes[0]; //감소버튼
 				const cartNum = this.childNodes[1];  //카트수량 
-				
 				e.stopPropagation();    //이벤트 버블링 막기
-			
 				if(e.target == increBtn){
-					this.childNodes[1].value++;
+					totalPrice1 = this.childNodes[1].value*${total}+${total};
+				this.childNodes[1].value++;
 				} 
 				if(e.target == decreBtn){
-					cartNum.value--;
+					totalPrice1 = cartNum.value * ${total}-${total};
+					 cartNum.value--;
+					 priceSet--;
 					if(cartNum.value < 1){
 						cartNum.value=1;
 					}
+					
 				}
 				
 				if(e.target == this.childNodes[3] || e.target ==this.childNodes[3].childNodes[0]){ //x버튼을 클릭하거나 x이미지를 클릭하거나 상품옵션창을 삭제한다.
 					this.parentNode.parentNode.remove();
 				}
-		
 			})
-		
-	   
+			
+			
+			
+			
 	      like.addEventListener("click", function() {
 		    if(like.innerText === '♡') {
 		        like.innerText = '♥';
@@ -1210,7 +1179,6 @@ p b {
 	                let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
 	                if ( result != "") { 
 						o = productOp;
-						console.log(productOp);
 		                }else if(result == ""){
 		                	o = ["옵션을 선택해주세요."];
 			             }
@@ -1224,25 +1192,22 @@ p b {
 	                  }
 	    	})
 	    	
+	    	
 	        productOption2Set.addEventListener("change", function(){
 	             const select =  $('.productOptionSet option:selected');
 	             const select2 = $('.productOption2Set option:selected');
-	             
-	             
+	             cartCount.value = 1;
 	      		let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
 	      		const opSearch = document.getElementsByClassName('opSearch');
-	
 	      		let YN = "Y";
 	      		for(let k=0; k<opSearch.length; k++){
 	      			if(opSearch[k].innerText == optionName){
-	      				let cartCount = document.querySelectorAll(".cartCount");
 	      				alert("이미 선택한 옵션입니다.");
 	      				YN = "N";
-	      				
 	      			}
 	      			
 	      		}
-	      		
+
 		      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
 							productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 			 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
@@ -1256,29 +1221,25 @@ p b {
 									 						+'</h4>'
 									 						+'<div>'
 									 							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-									 							+'<button class="decrease" type="button">-</button>'
-									 							+'<input type="number" class="cartCount"'
-									 							+'	value="1" name="cartCount" min="1" readonly>'
-									 							+'<button class="increase" type="button">+</button>'
+									 								+'<button class="decrease" type="button">-</button>'
+									 								+'<input type="number" class="cartCount"'
+									 								+'	value="1" name="cartCount" min="1" readonly>'
+									 								+'<button class="increase" type="button">+</button>'
 									 								+'<button class="removeProudct" type="button" style="float: right;">'
-									 								+'<img src="resources/images/close.png" style="width: 10px;">'
-									 								+'<span>'
+									 									+'<img src="resources/images/close.png" style="width: 10px;">'
+									 							+'<span>'
 									 							+'</button>'
 									 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-									 						+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+									 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
 									 						+'</div>'
 									 						 +'<br>'
 									 					+'</div>');
-								console.log(select.val());
-								console.log(select2.val());
+						
 		      			}
 			  					
 	      	})
-	        		
-	    	
 	      	
-	      	
-	   function priceToString(productPrice) {
+	   function priceToString() {
 	       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	   }
 	   
@@ -1294,10 +1255,6 @@ p b {
 		    });
 	});
 	
-	
-
-
-
 		
 		$(document).ready(function() {
 			
@@ -1314,8 +1271,6 @@ p b {
 	        var productOption2Values=[];
 	        var usersNoValues=[];
 	        
-	    
-	        	
 	        
 	        var allData ={
 	        		"productNo":productNoValues, 
@@ -1345,7 +1300,6 @@ p b {
 	        $("input[name='usersNo']").each(function(){
 	        	usersNoValues.push($(this).val());
 	        })
-	        
 	        
 	        
 	        let count = 0;

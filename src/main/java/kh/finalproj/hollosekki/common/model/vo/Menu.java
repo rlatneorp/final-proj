@@ -2,26 +2,36 @@ package kh.finalproj.hollosekki.common.model.vo;
 
 public class Menu extends Product{
 	private String menuName;
-	private int menuType;	
+	private int menuNo;
 // 1: 다이어트 2: 육류 3: 해산물
+	private int menuKind;
+	private int menuType;
 	private String menuContent;
 	private String foodProductNo;
 	private String menuTarget;
 	private String nutrient;
+	private int menuKind;
+	private int menuNo;
+	private int productPrice;
 	
 	public Menu() {
 		super();
 	}
 
-	public Menu(String menuName, int menuType, String menuContent, String foodProductNo, String menuTarget,
-			String nutrient) {
+	public Menu(String menuName, int menuNo, int menuKind, int menuType, String menuContent, String foodProductNo,
+			String menuTarget, String nutrient) {
 		super();
 		this.menuName = menuName;
+		this.menuNo = menuNo;
+		this.menuKind = menuKind;
 		this.menuType = menuType;
 		this.menuContent = menuContent;
 		this.foodProductNo = foodProductNo;
 		this.menuTarget = menuTarget;
 		this.nutrient = nutrient;
+		this.menuKind= menuKind;
+		this.menuNo = menuNo;
+		this.productPrice = productPrice;
 	}
 
 	public String getMenuName() {
@@ -30,6 +40,22 @@ public class Menu extends Product{
 
 	public void setMenuName(String menuName) {
 		this.menuName = menuName;
+	}
+
+	public int getMenuNo() {
+		return menuNo;
+	}
+
+	public void setMenuNo(int menuNo) {
+		this.menuNo = menuNo;
+	}
+
+	public int getMenuKind() {
+		return menuKind;
+	}
+
+	public void setMenuKind(int menuKind) {
+		this.menuKind = menuKind;
 	}
 
 	public int getMenuType() {
@@ -71,11 +97,35 @@ public class Menu extends Product{
 	public void setNutrient(String nutrient) {
 		this.nutrient = nutrient;
 	}
+	
+	public int getProductPrice() {
+		return productPrice;
+	}
+	
+	public void setProductPrice(int productPrice) {
+		this.productPrice = productPrice;
+	}
+	
+	public int getMenuKind() {
+		return menuKind;
+	}
+	
+	public void setMenuKind(int menuKind) {
+		this.menuKind = menuKind;
+	}
+	
+	public int getMenuNo() {
+		return menuNo;
+	}
+	
+	public void setMenuNo(int menuNo) {
+		this.menuNo = menuNo;
+	}
 
 	@Override
 	public String toString() {
-		return "Menu [menuName=" + menuName + ", menuType=" + menuType + ", menuContent=" + menuContent
-				+ ", foodProductNo=" + foodProductNo + ", menuTarget=" + menuTarget + ", nutrient=" + nutrient + "]";
+		return "Menu [menuName=" + menuName + ", menuNo=" + menuNo + ", menuKind=" + menuKind + ", menuType=" + menuType
+				+ ", menuContent=" + menuContent + ", foodProductNo=" + foodProductNo + ", menuTarget=" + menuTarget
+				+ ", nutrient=" + nutrient + "]";
 	}
-
 }

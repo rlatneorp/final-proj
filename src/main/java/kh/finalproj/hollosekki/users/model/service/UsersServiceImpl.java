@@ -91,8 +91,13 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	@Override
-	public ArrayList<Recipe> selectMyRecipe(int usersNo, PageInfo pi) {
-		return uDAO.selectMyRecipe(sqlSession, usersNo, pi);
+	public int getMyRecipeListCount(int usersNo) {
+		return uDAO.getMyRecipeListCount(sqlSession, usersNo);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> selectMyRecipe(HashMap<String, Object> map, PageInfo pi) {
+		return uDAO.selectMyRecipe(sqlSession, map, pi);
 	}
 	
 	@Override
@@ -106,22 +111,48 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	@Override
-	public ArrayList<HashMap<String, Object>> myBookMarkList(int usersNo, PageInfo pi) {
-		return uDAO.myBookMarkList(sqlSession, usersNo, pi);
+	public int getBookListCount(int usersNo) {
+		return uDAO.getBookListCount(sqlSession, usersNo);
 	}
 	
 	@Override
-	public ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, PageInfo pi) {
-		return uDAO.myFoodLikeList(sqlSession, usersNo, pi);
+	public ArrayList<HashMap<String, Object>> myBookMarkList(HashMap<String, Object> map, PageInfo pi) {
+		return uDAO.myBookMarkList(sqlSession, map, pi);
 	}
 	
 	@Override
-	public ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, PageInfo pi) {
-		return uDAO.myRecipeLikeList(sqlSession, usersNo, pi);
+	public int getFoodListCount(int usersNo) {
+		return uDAO.getFoodListCount(sqlSession, usersNo);
 	}
 	
 	@Override
-	public ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, PageInfo pi) {
-		return uDAO.myProductLikeList(sqlSession, usersNo, pi);
+	public int getRecipeListCount(int usersNo) {
+		return uDAO.getRecipeListCount(sqlSession, usersNo);
 	}
+	
+	@Override
+	public int getingredientListCount(int usersNo) {
+		return uDAO.getingredientListCount(sqlSession, usersNo);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, int selectType, String selectTitle, PageInfo pi) {
+		return uDAO.myFoodLikeList(sqlSession, usersNo, selectType, selectTitle, pi);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, String selectTitle, PageInfo pi) {
+		return uDAO.myRecipeLikeList(sqlSession, usersNo, selectTitle, pi);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, String selectTitle, PageInfo pi) {
+		return uDAO.myProductLikeList(sqlSession, usersNo, selectTitle, pi);
+	}
+	
+	@Override
+	public int deleteBookMark(int divisionNo) {
+		return uDAO.deleteBookMark(sqlSession, divisionNo);
+	}
+	
 }

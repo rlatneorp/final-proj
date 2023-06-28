@@ -152,50 +152,51 @@
 				<div class="beforeInput d-inline-block">재료 |</div><div class="d-inline-block" style="width: 500px;">최소 4개 작성</div>
 				<div></div>
 				<div style="padding: 5px; display: inline-block;">
-					<select name="ingredientName" class="recipeIngredient" onchange="change(this)" >
+					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)" >
 						<option selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
-							<option value="${i.ingredientNo}">${i.ingredientName}</option>
+							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
 						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
 					</select>
-					<input type="text" name="reciepIngredient" class="hiddenText" style="display:none;">
+					<input type="text" name="newIngredient" class="hiddenText" style="display:none;">
 					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
 				</div>
 				|
 				<div style="padding: 5px; display: inline-block;">
-					<select name="ingredientName" class="recipeIngredient" onchange="change(this)">
+					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)">
 						<option selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
-							<option value="${i.ingredientNo}">${i.ingredientName}</option>
+							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
 						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
 					</select>
-					<input type="text" name="reciepIngredient" class="hiddenText" style="display:none;">
+					<input type="text" name="newIngredient" class="hiddenText" style="display:none;">
 					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
+					<input type="hidden" name="elementNo" value="${i.ingredientNo }">
 				</div>
 				|
 				<div style="padding: 5px; display: inline-block;">
-					<select name="ingredientName" class="recipeIngredient" onchange="change(this)" >
+					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)" >
 						<option selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
-							<option value="${i.ingredientNo}">${i.ingredientName}</option>
+							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
 						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
 					</select>
-					<input type="text" name="reciepIngredient" class="hiddenText" style="display:none;">
+					<input type="text" name="newIngredient" class="hiddenText" style="display:none;">
 					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
 				</div>
 				|
 				<div style="padding: 5px; display: inline-block;" id="ingCopy" class="ingCopyC">
-					<select name="ingredientName" class="recipeIngredient" onchange="change(this)">
+					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)">
 						<option selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
-							<option value="${i.ingredientNo}">${i.ingredientName}</option>
+							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
 						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
 					</select>
-					<input type="text" name="reciepIngredient" class="hiddenText" style="display:none;">
+					<input type="text" name="newIngredient" class="hiddenText" style="display:none;">
 					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
 				<div style="padding: 0 1px 0 5px; display:inline-block">|</div>
 				</div>
@@ -275,8 +276,8 @@
 	</div>
 	
 	<div id="buttonBox">
-		<button type="button" id="can">취소</button> <!-- 뒤로 가기 추가 -->
 		<button type="submit" id="sub">등록</button>
+		<button type="button" id="can" onclick="history.back()">취소</button> <!-- 뒤로 가기 추가 -->
 	</div>
 </form>
 
@@ -308,6 +309,7 @@ function setThumbnail(event){
 
 // 재료 임의로 변경시 input으로 변경
 function change(element){
+	console.log(element.value);
 	if(element.value=="임의"){
 		element.style.display = "none";
 		element.nextElementSibling.style.display = "inline-block";

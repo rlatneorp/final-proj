@@ -362,9 +362,71 @@
         select *
         from image join review on review_no = image_divide_no
         where image_type = 7
-                  and product_no = #{productNo}   
+                  and product_no = #{productNo}
         order by review_no
+	</select>
    
+   <select id="selectImagList" resultMap="imageResultSet">
+		select *
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != -1">
+			  and image_level = #{imageLevel}
+			  </if>
+	</select>
+	
+	<!-- 배송지 삭제 -->
+	<delete id="delShipping">
+		DELETE FROM shipping_address
+		WHERE shipping_no = #{shippingNo}
+	</delete>
+	
+	
+	<insert	 id="insertReview">
+		insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date, review_writer)
+		values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
+		<selectKey keyProperty="reviewNo" resultType="int" order="AFTER" >
+			select seq_review_no.currval from dual
+		</selectKey>
+	
+	</insert>
+	
+	<select	 id="selectReview" resultMap="reviewResultSet">
+		select *
+		from (select *
+			  from review
+			  order by review_date desc)	
+		where product_no = #{productNo}
+	</select>
+	
+	<select id="selectImageList" resultMap="imageResultSet">
+		select *
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != -1">
+			  and image_level = #{imageLevel}
+		</if>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	<!-- 포인트 조회  -->
+	<select id="selectPoint" resultType="_int">
+		select point from users where users_no = #{usersNo}
+	</select>
+	
+	<!-- 장바구니 상품에 대한 이미지 조회 -->
+	<select id="selectImg" resultType="String">
+		select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
+	</select>
    </select>
    
    <!-- 배송지 삭제 -->

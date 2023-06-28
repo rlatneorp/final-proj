@@ -164,6 +164,18 @@ public class EnrollDAO {
 		return (ArrayList)sqlSession.selectList("enrollMapper.reviewList", usersId);
 	}
 
+	public ArrayList<Review> menuReviewList(SqlSessionTemplate sqlSession, String usersId) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.menuReviewList", usersId);
+	}
+
+	public ArrayList<Image> menuReviewImageList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.menuReviewImageList");
+	}
+
+	public ArrayList<Review> replyList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.replyList");
+	}
+
 
 
 

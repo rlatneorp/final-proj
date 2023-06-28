@@ -248,7 +248,6 @@ if(loginUser != ''){
 		type: 'post',
 		url: 'point.ma',
 		success: function(info){
-			console.log(info);
 			let topP = document.querySelector('#topP');
 			topP.innerHTML = info.point;
 		}

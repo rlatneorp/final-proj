@@ -279,8 +279,8 @@
 	</div>
 	
 	<div id="buttonBox">
-		<button type="button" id="can">취소</button> <!-- 뒤로 가기 추가 -->
 		<button type="submit" id="sub">수정</button>
+		<button type="button" id="can" onclick="history.back()">취소</button> <!-- 뒤로 가기 추가 -->
 	</div>
 </form>
 

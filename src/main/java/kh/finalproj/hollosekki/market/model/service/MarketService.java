@@ -33,9 +33,9 @@ public class MarketService {
    @Autowired
    private MarketDAO mkDAO;
 
-   public int insertCart(HashMap<String, String> result) {
-      return mkDAO.insertCart(sqlSession,result);
-   }
+//   public int insertCart(HashMap<String, String> result) {
+//      return mkDAO.insertCart(sqlSession,result);
+//   }
 
    public void attendanceCheck(HashMap<String, String> map) {
       mkDAO.attendanceCheck(sqlSession, map);
@@ -209,45 +209,45 @@ public class MarketService {
       return mkDAO.insertCart(sqlSession, c);
    }
 
-   public int delShipping(int shippingNo) {
-      return mkDAO.delShipping(sqlSession, shippingNo);
-   }
+	public int delShipping(int shippingNo) {
+		return mkDAO.delShipping(sqlSession, shippingNo);
+	}
 
-   public int insertImage(Image image) {
-      return mkDAO.insertImage(sqlSession, image);
-   }
-   
-   public ArrayList<Review> selectReview(int productNo) {
-      return mkDAO.selectReview(sqlSession,productNo);
-   }
-
-   public int insertReview(Review r) {
-      return mkDAO.insertReview(sqlSession, r);
-   }
+	public int insertImage(Image image) {
+		return mkDAO.insertImage(sqlSession, image);
+	}
+	
+	public ArrayList<Review> selectReview(int productNo) {
+		return mkDAO.selectReview(sqlSession,productNo);
+	}
 
    public int selectReviewCount(int productNo) {
       return mkDAO.selectReviewCount(sqlSession, productNo);
    }
 
-   public ArrayList<String> selectImgList(int productNo) {
-      return mkDAO.selectImgList(sqlSession, productNo);
-   }
-   //장바구니 상품에 대한 이미지 조회 
-   public String selectImg(int productNo, int i) {
-      return mkDAO.selectImg(sqlSession, productNo, i);
-   }
+	public ArrayList<String> selectImgList(int productNo) {
+		return mkDAO.selectImgList(sqlSession, productNo);
+	}
+	//장바구니 상품에 대한 이미지 조회 
+	public String selectImg(int productNo, int i) {
+		return mkDAO.selectImg(sqlSession, productNo, i);
+	}
 
-   public ArrayList<Image> selectImagList(HashMap<String, Integer> map) {
-      return mkDAO.selectImageList(sqlSession, map);
-   }
-   
-   public int selectPoint(int usersNo) {
-      return mkDAO.selectPoint(sqlSession, usersNo);
-   }
-//   public ShippingAddress selectShippingForUpdate(int shippingNo) {
-//      // TODO Auto-generated method stub
-//      return null;
-//   }
+	public ArrayList<Image> selectImagList(HashMap<String, Integer> map) {
+		return mkDAO.selectImageList(sqlSession, map);
+	}
+	
+	public int selectPoint(int usersNo) {
+		return mkDAO.selectPoint(sqlSession, usersNo);
+	}
+//	public ShippingAddress selectShippingForUpdate(int shippingNo) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+	public int insertReview(Review r) {
+		return mkDAO.insertReview(sqlSession, r);
+	}
 
 	public int insertPay(Orders orders) {
 		return mkDAO.insertPay(sqlSession, orders);
@@ -265,8 +265,7 @@ public class MarketService {
 
 
 
-   
-   
+	
 
 
 

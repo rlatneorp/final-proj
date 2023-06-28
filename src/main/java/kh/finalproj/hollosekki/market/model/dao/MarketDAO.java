@@ -26,9 +26,9 @@ import kh.finalproj.hollosekki.market.model.vo.Tool;
 @Repository
 public class MarketDAO {
 
-   public int insertCart(SqlSessionTemplate sqlSession, HashMap<String, String> result) {
-      return sqlSession.insert("marketMapper.insertCart",result);
-   }
+//   public int insertCart(SqlSessionTemplate sqlSession, HashMap<String, String> result) {
+//      return sqlSession.insert("marketMapper.insertCart",result);
+//   }
 
    public void attendanceCheck(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
       sqlSession.update("marketMapper.attendanceCheck", map);
@@ -226,46 +226,47 @@ public class MarketDAO {
       return sqlSession.delete("marketMapper.delShipping", shippingNo);
    }
 
-   public int insertReview(SqlSessionTemplate sqlSession, Review r) {
-      sqlSession.insert("marketMapper.insertReview", r);
-      return r.getReviewNo();
-   }
+	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
+		sqlSession.insert("marketMapper.insertReview", r);
+		return r.getReviewNo();
+	}
 
 
-//   public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, Review review, int productNo) {
-//      Map<String, Object> map = new HashMap<>();
-//      map.put("review", review);
-//      map.put("productNo", productNo);
-//      return (ArrayList)sqlSession.selectList("marketMapper.selectReview", map);
-//   }
-   
-   public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {
-      return (ArrayList)sqlSession.selectList("marketMapper.selectReview", productNo);
-   }
-   
-   public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
-      return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
-   }
-   
-   public ArrayList<Image> selectImageList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
-      return (ArrayList)sqlSession.selectList("marketMapper.selectImageList", map);
-   }
+//	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, Review review, int productNo) {
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("review", review);
+//		map.put("productNo", productNo);
+//		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", map);
+//	}
+	
+	public ArrayList<Review> selectReview(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectReview", productNo);
+	}
+	
+	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
+	}
+	
+	public ArrayList<Image> selectImageList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectImageList", map);
+	}
 
-   public int selectReviewCount(SqlSessionTemplate sqlSession, int productNo) {
-      return sqlSession.selectOne("marketMapper.selectReviewCount", productNo);
-   }
+	public int selectReviewCount(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectReviewCount", productNo);
+	}
 
-   public ArrayList<String> selectImgList(SqlSessionTemplate sqlSession, int productNo) {
-      return (ArrayList)sqlSession.selectList("marketMapper.selectImgList", productNo);
-   }
-   
-   public String selectImg(SqlSessionTemplate sqlSession, int productNo, int i) {
-      Map<Object, Object> map = new HashMap<>();
-      map.put("productNo", productNo);
-      map.put("imgType", i);
-      
-      return sqlSession.selectOne("marketMapper.selectImg", map);
-   }
+	public ArrayList<String> selectImgList(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectImgList", productNo);
+	}
+	
+	public String selectImg(SqlSessionTemplate sqlSession, int productNo, int i) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("productNo", productNo);
+		map.put("imgType", i);
+		
+		return sqlSession.selectOne("marketMapper.selectImg", map);
+	}
+
 
    public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
 		return sqlSession.insert("marketMapper.insertPay", orders);

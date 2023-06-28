@@ -37,20 +37,34 @@ public interface UsersService {
 	int deleteFollow(HashMap<String, Object> map);
 
 	int insertFollow(HashMap<String, Object> map);
+	
+	int getMyRecipeListCount(int usersNo);
 
-	ArrayList<Recipe> selectMyRecipe(int usersNo, PageInfo pi);
+	ArrayList<HashMap<String, Object>> selectMyRecipe(HashMap<String, Object> map, PageInfo pi);
 
 	int recipeBookCount(int foodNo);
 
 	int recipeLikeCount(int foodNo);
+	
+	int getBookListCount(int usersNo);
+	
+	ArrayList<HashMap<String, Object>> myBookMarkList(HashMap<String, Object> map, PageInfo pi);
 
-	ArrayList<HashMap<String, Object>> myBookMarkList(int usersNo, PageInfo pi);
+	int getFoodListCount(int usersNo);
+	
+	int getRecipeListCount(int usersNo);
+	
+	int getingredientListCount(int usersNo);
 
-	ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, PageInfo pi);
+	ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, int selectType, String selectTitle, PageInfo pi);
 
-	ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, PageInfo pi);
+	ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, String selectTitle, PageInfo pi);
 
-	ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, PageInfo pi);
+	ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, String selectTitle, PageInfo pi);
+
+	int deleteBookMark(int divisionNo);
+
+
 
 	
 }

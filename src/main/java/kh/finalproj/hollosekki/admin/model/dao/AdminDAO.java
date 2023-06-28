@@ -17,6 +17,7 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -163,6 +164,7 @@ public class AdminDAO {
 			menu.setFoodProductNo(i);
 			result += sqlSession.insert("adminMapper.insertMenuList", menu);
 		}
+		
 		return result;
 	}
 
@@ -289,6 +291,37 @@ public class AdminDAO {
 
 	public ArrayList<AdminMain> adminMainWeek(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("adminMapper.adminMainWeek");
+	}
+
+	public int getReviewCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getReviewCount", ab);
+	}
+
+	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectReviewList", ab, rowBounds);
+	}
+
+	public Review selectReview(SqlSessionTemplate sqlSession, Integer reviewNo) {
+		
+		Review r1 = sqlSession.selectOne("adminMapper.selectReview", reviewNo);
+		
+		AdminBasic ab = new AdminBasic();
+		
+		Product pd = null;
+//		상품일때 타입 가져오기
+		if(r1.getOrderNo() != 0 && r1.getOrderNo() != -1) {
+			pd = selectProduct(sqlSession, r1.getProductNo());
+			ab.setType(pd.getProductType());
+		}
+		ab.setKind(r1.getOrderNo());
+		ab.setNumber(r1.getReviewNo());
+		
+		Review r2 = (Review)((ArrayList)sqlSession.selectList("adminMapper.selectReviewList", ab)).get(0);
+		System.out.println(r2);
+		
+		return r2;
 	}
 
 

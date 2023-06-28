@@ -737,10 +737,7 @@ p b {
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<c:forEach items="${mainImage}" var="main">
-				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
-			</c:forEach>
-<!-- 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
+			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;">
 		</div>
 		<div class="right">
 			<!-- 상품 정보 -->
@@ -782,25 +779,25 @@ p b {
 								<hr style="margin: 0px;">
 						
 					<c:forEach items="${options}" var="op" varStatus="vs">
-							<c:if test="${vs.index == 0}">
-								<label for="productOptionSet">${op.optionName}</label>
-								<select class='productOptionSet'  required>
-									<option value="">옵션을 선택해주세요</option>
-									<option value="${op.optionNo}">${op.optionValue}</option>
-							</c:if>
-							<c:if test="${op.optionName eq options[vs.index-1].optionName}">
+						<c:if test="${vs.index == 0}">
+							<label for="productOptionSet">${op.optionName}</label>
+							<select class='productOptionSet'  required>
+								<option value="">옵션을 선택해주세요</option>
 								<option value="${op.optionNo}">${op.optionValue}</option>
-							</c:if>
-							<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
-								</select>
-								
-								<label for="productOption2Set">${op.optionName}</label>
-								<select class='productOption2Set'  required>
-									<option class='productOption2Set' >옵션을 선택해주세요.</option>
-									<option value="${op.optionNo}">${op.optionValue}</option>
-							</c:if>
-							<c:if test="${vs.last}">
-								</select>
+						</c:if>
+						<c:if test="${op.optionName eq options[vs.index-1].optionName}">
+							<option value="${op.optionNo}">${op.optionValue}</option>
+						</c:if>
+						<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
+							</select>
+							
+							<label for="productOption2Set">${op.optionName}</label>
+							<select class='productOption2Set'  required>
+								<option class='productOption2Set' >옵션을 선택해주세요.</option>
+								<option value="${op.optionNo}">${op.optionValue}</option>
+						</c:if>
+						<c:if test="${vs.last}">
+							</select>
 						</c:if>
 					</c:forEach>
 					
@@ -1067,7 +1064,7 @@ p b {
 	        			</div>
 	        			<div class="modal-body">
 	        				<i class="bi bi-check-circle-fill"></i><br>
-	        				<h3>${ tool.toolName} </h3><br>
+	        				<h3>${ p.productName} </h3><br>
 	        				상품이 장바구니에 담겼습니다.
 	
 	        			</div>
@@ -1191,6 +1188,7 @@ p b {
 	                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
 	                  }
 	    	})
+	    	
 	    	
 	    	
 	        productOption2Set.addEventListener("change", function(){

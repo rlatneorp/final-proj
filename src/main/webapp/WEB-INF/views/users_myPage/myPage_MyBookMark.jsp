@@ -102,9 +102,11 @@ th:first-child, td:first-child {
 				<br><br>
 				<div class="search" style="margin: 0 auto; left: 480px;">
 					<select style="width: 100px">
-						<option>최신순</option>
-						<option>레시피</option>
-						<option>식단</option>
+						<option>--------</option>
+						<option value="0">최신순</option>
+						<option value="1">오래된순</option>
+						<option value="2">레시피</option>
+						<option value="3">식단</option>
 					</select>
 				</div>
 				<br>
@@ -176,7 +178,7 @@ th:first-child, td:first-child {
 				</div>
 				<br>
 				<div style="display: flex; width:300px; position: relative; margin: 0 auto;">
-					<input type="text" placeholder="검색어 입력" id="search"> 
+					<input type="text" placeholder="검색어 입력 (제목)" id="search"> 
 					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="searchIcon">
 				</div>
 			</div>
@@ -199,24 +201,22 @@ th:first-child, td:first-child {
 	        }); 
 	   }
 	   
+	   const search = () => {
+		   const searchTitle = searchInput.value;
+		   console.log(searchTitle);
+		   location.href="${contextPath}/myPage_MyBookMark.me?searchTitle=" + searchTitle;
+	   }
+	   
 	   //검색 img 클릭했을 때
 	   const searchInput = document.getElementById('search');
 	   document.getElementById('searchIcon').addEventListener('click', function() {
-	      //여기에 ajax
-	      searchInput.value = '';
-	      
+	      search();
 	   })
 	   
 	   //검색어 입력 엔터 기능 
-	   
-	
 	   searchInput.addEventListener('keyup', function(event) {
 	     if (event.key === 'Enter') {
-	       const searchText = searchInput.value
-	       //여기에 ajax로 searchText 넘기기 
-	       
-	       console.log('검색어:', searchText);
-	       searchInput.value = '';
+	       search();
 	     }
 	   });
 	   
@@ -230,10 +230,23 @@ th:first-child, td:first-child {
 			
 		})
 		
-		// 상세페이지
-// 		const tbody = document.querySelector('tbody');
-// 		const tds = tbody.querySelectorAll('td');
-// 		console.log(tds);
+		// 옵션 선택
+		const selectElement = document.querySelector("select");
+
+	    selectElement.addEventListener("change", function() {
+	        const value = this.value; // 선택된 값 출력
+
+	        // 선택된 값에 따라 URL을 생성하여 페이지 이동
+	        if(value == 0){ // 최신순
+	        	location.href = "${contextPath}/myPage_MyBookMark.me?searchType=0";
+	        } else if (value == 1) { // 오래된순
+	            location.href = "${contextPath}/myPage_MyBookMark.me?searchType=1";
+	        } else if (value == 2) { // 레시피
+	            location.href = "${contextPath}/myPage_MyBookMark.me?searchType=2";
+	        } else if (value == 3) { // 식단
+	            location.href = "${contextPath}/myPage_MyBookMark.me?searchType=3";
+	        }
+	    });
 	</script>
 	
 	<br><br><br><br><br><br><br><br>

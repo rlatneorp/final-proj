@@ -90,7 +90,7 @@ public class RecipeController {
 //	레시피 상세조회
 	@RequestMapping("recipeDetail.rc")
 	public ModelAndView recipeDetail(@RequestParam("rId") String usersId, @RequestParam("rNo") int foodNo,
-							   @RequestParam("page") int page, HttpSession session, ModelAndView mv) {
+							   @RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv) {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		String loginId = null;
@@ -694,8 +694,8 @@ public class RecipeController {
 							@RequestParam("foodNo") String foodNo, HttpServletResponse response) {
 		Review re = new Review();
 		
-		re.setProductNo(0);
-		re.setOrderNo(Integer.parseInt(foodNo));
+		re.setProductNo(Integer.parseInt(foodNo));
+		re.setOrderNo(0);
 		re.setReviewContent(content);
 		re.setReviewWriter(id);
 		

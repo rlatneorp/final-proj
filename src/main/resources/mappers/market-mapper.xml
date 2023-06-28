@@ -362,9 +362,19 @@
         select *
         from image join review on review_no = image_divide_no
         where image_type = 7
-                  and product_no = #{productNo}   
+                  and product_no = #{productNo}
         order by review_no
-	
+	</select>
+   
+   <select id="selectImagList" resultMap="imageResultSet">
+		select *
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != -1">
+			  and image_level = #{imageLevel}
+			  </if>
 	</select>
 	
 	<!-- 배송지 삭제 -->

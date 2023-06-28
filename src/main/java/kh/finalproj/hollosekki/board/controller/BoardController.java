@@ -72,7 +72,7 @@ public class BoardController {
 
 			return "detailFreeBoard";
 		} else {
-			throw new BoardException("°Ô½Ã±Û Á¶È¸¿¡ ½ÇÆÐÇÏ¿´½À´Ï´Ù.");
+			throw new BoardException("ï¿½Ô½Ã±ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 		
 	}

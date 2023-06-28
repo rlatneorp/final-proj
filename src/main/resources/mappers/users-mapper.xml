@@ -131,11 +131,37 @@
 		where users_no = #{usersNo}
 	</select>
 	
-	<select id="selectMyRecipe" resultMap="recipeResultSet">
-		select *
+	<select id="getMyRecipeListCount" resultType="_int">
+		select count(*)
 		from recipe
 		where users_no = #{usersNo} and recipe_status = 'Y'
+	</select>
+	
+	<select id="selectMyRecipe" resultType="map">
+		SELECT r.food_no, r.recipe_name, r.recipe_modify_date, r.recipe_count, COUNT(rb.division_no) AS recipeBookCount, COUNT(rl.division_no) AS recipeLikeCount
+		FROM recipe r
+		LEFT JOIN bookmark rb ON (r.food_no = rb.division_no)
+		LEFT JOIN likes rl ON (r.food_no = rl.division_no)
+		WHERE r.users_no = 22 AND r.recipe_status = 'Y'
+		<if test="selectTitle != null">
+			and recipe_name like '%${selectTitle}%'
+		</if>
+		GROUP BY r.food_no, r.recipe_name, r.recipe_modify_date, r.recipe_count
+		<if test="selectType == 0">
 		order by food_no desc
+		</if>
+		<if test="selectType == 1">
+		order by food_no
+		</if>
+		<if test="selectType == 2">
+		order by recipe_count desc
+		</if>
+		<if test="selectType == 3">
+		order by recipeBookCount desc
+		</if>
+		<if test="selectType == 4">
+		order by recipeLikeCount desc
+		</if>
 	</select>
 	
 	<resultMap type="Recipe" id="recipeResultSet">
@@ -191,8 +217,59 @@
 		     left join image im on (m.product_no = im.image_divide_no)
 		     left join users u on (u.users_no = r.users_no)
 		where b.users_no = #{usersNo}
+		<if test="selectTitle != null">
+			and (recipe_name like '%${selectTitle}%' or menu_name like '%${selectTitle}%')
+		</if>
+		<if test="selectType == null || selectType == 0">
 		order by bookmark_no desc
+		</if>
+		<if test="selectType == 1">
+		order by bookmark_no
+		</if>
+		<if test="selectType == 2">
+			and number_type = 1
+		order by bookmark_no desc
+		</if>
+		<if test="selectType == 3">
+			and number_type = 2
+		order by bookmark_no desc
+		</if>
 	</select>
+	
+	<!-- 좋아요 개수 조회 -->
+	<!-- 식단, 식품, 상품 -->
+	<select id="getFoodListCount" resultType="_int">
+		select count(*)
+		from likes l 
+		   left join menu m on (l.division_no = m.product_no)
+		   left join product p on (l.division_no = p.product_no)
+		   left join healther h on (p.users_no = h.users_no)
+		   left join food f on (l.division_no = f.product_no)
+		   left join tool t on (p.product_no = t.product_no)
+		   left join ingredient g on (l.division_no = g.product_no)
+		   left join image i on (l.division_no = i.image_divide_no)
+		where l.users_no = #{usersNo} and number_type = 2 and image_level = 1 and product_type in (1,2,4)
+   </select>
+	
+	<!-- 레시피 -->
+	<select id="getRecipeListCount" resultType="_int">
+		select count(*)
+		from likes l
+		     left join recipe r on (l.division_no = r.food_no)
+		     left join users u on (r.users_no = u.users_no)
+		     left join image i on (l.division_no = i.image_divide_no)
+		where l.users_no = #{usersNo} and image_level = 0 and number_type = 1
+   	</select>
+   	
+	<!-- 식재료 -->
+	<select id="getingredientListCount" resultType="_int">
+		select count(*)
+		from likes l
+		     left join product p on (l.division_no = p.product_no)
+		     left join ingredient g on (l.division_no = g.product_no)
+		     left join image i on (l.division_no = i.image_divide_no)
+		where l.users_no = #{usersNo} and image_level = 0 and number_type = 2 and product_type = 3
+   	</select>
 	
 	<!-- 좋아요 조회 -->
 	<!-- 식단, 식품, 상품(도구) 조회 -->
@@ -220,6 +297,9 @@
 		<if test="selectType == 5">
 			and product_type = 4
 		</if>
+		<if test="selectTitle != null">
+			and (menu_name like '%${selectTitle}%' or food_name like '%${selectTitle}%' or tool_name like '%${selectTitle}%')
+		</if>
 		order by like_no desc
    </select>
    
@@ -231,6 +311,9 @@
 		     left join users u on (r.users_no = u.users_no)
 		     left join image i on (l.division_no = i.image_divide_no)
 		where l.users_no = #{usersNo} and image_level = 0 and number_type = 1
+		<if test="selectTitle != null">
+			and recipe_name like '%${selectTitle}%'
+		</if>
 		order by like_no desc
    </select>
    
@@ -242,6 +325,9 @@
 		     left join ingredient g on (l.division_no = g.product_no)
 		     left join image i on (l.division_no = i.image_divide_no)
 		where l.users_no = #{usersNo} and image_level = 0 and number_type = 2 and product_type = 3
+		<if test="selectTitle != null">
+			and ingredient_name like '%${selectTitle}%'
+		</if>
 		order by like_no desc
    </select>
 	

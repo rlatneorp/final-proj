@@ -2,4 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="menuMapper"> 
 	
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from menu
+	</select>
+	
+	<select id="selectMenuList" resultMap="menuResultSet">
+		select *
+		from menu
+			 left join product using(product_no)
+		order by product_no desc
+	</select>
+	
+	<select id="selectMenuImage" resultMap="imageResultSet">
+		select *
+		from image
+		where image_type = 4 and image_level = 1
+	</select>
+	
+	<select id="menuDetail" resultMap="menuResultMap">
+		select *
+		from menu
+		where product_no=#{mNO}
+	</select>
+	
+	<select id="menuDetailThum" resultMap="imageResultSet">
+		select *
+		from image
+		where image_divide_no=#{mNo} and image_type=4
+	</select>
+	
+	<select id="menuDetailMenu" resultMap="menuListResultSet">
+		select *
+		from menu_list
+		where product_no=#{mNO}
+	</select>
+	
+	<resultMap type="Menu" id="menuResultSet">
+		<id column="product_no" property="foodProductNo"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="MENU_TYPE" property="menuType"/>
+		<result column="MENU_CONTENT" property="menuContent"/>
+		<result column="MENU_KIND" property="menuKind"/>
+		<result column="MENU_NO" property="menuNo"/>
+		<result column="product_price" property="productPrice"/>
+	</resultMap>
+	
+	<resultMap type="Image" id="imageResultSet">
+		<id column="IMAGE_NO" property="imageNo"/>
+		<result column="IMAGE_DIVIDE_NO" property="imageDivideNo"/>
+		<result column="IMAGE_TYPE" property="imageType"/>
+		<result column="IMAGE_ORIGINALNAME" property="imageOriginalName"/>
+		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
+		<result column="IMAGE_PATH" property="imagePath"/>
+		<result column="IMAGE_LEVEL" property="imageLevel"/>
+	</resultMap>
+	
+	<resultMap type="MenuList" id="menuListResultSet">
+		<id column="menu_list_no" property="menuListNo"/>
+		<result column="product_no" property="productNo"/>
+		<result column="food_product_no" property="foodProductNo"/>
+	</resultMap>
 </mapper>

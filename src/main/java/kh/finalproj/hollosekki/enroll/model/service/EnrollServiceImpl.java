@@ -182,5 +182,20 @@ public class EnrollServiceImpl implements EnrollService{
 		return eDAO.reviewList(sqlSession, usersId);
 	}
 
+	@Override
+	public ArrayList<Review> menuReviewList(String usersId) {
+		return eDAO.menuReviewList(sqlSession, usersId);
+	}
+
+	@Override
+	public ArrayList<Image> menuReviewImageList() {
+		return eDAO.menuReviewImageList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Review> replyList() {
+		return eDAO.replyList(sqlSession);
+	}
+
 	
 }

@@ -261,6 +261,7 @@ p b {
 	.board{border-collapse: collapse; }
 	.boardTop{background-color: #B0DAFF;}
 	.line{border-bottom: 1px solid black; border-top: 1px solid black;}
+	.lineAll{height: 50px;}
 	.lineAll:hover{background-color: #19A7CE; color: white;}
 	
 /* 	입력 박스 */
@@ -398,7 +399,7 @@ p b {
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg">
+			<img src="${contextPath}/resources/uploadFiles/${thum.imageRenameName}">
 			<br>
 			<br>
 			<div id="userInfo">
@@ -415,7 +416,7 @@ p b {
 				<div style="margin: auto; text-align: center;">
 				<br>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						9,900원
+						${menu.productPrice}
 					</h2>
 					&nbsp;&nbsp;
 					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7;">♡</h4>
@@ -440,143 +441,30 @@ p b {
 						
 						<br>	
 						
-						<label>[필수] 기간을 선택해주세요.</label><br>
+						<label>[필수] 수량을 선택해주세요.</label><br>
 						<div id="period" class="inputBox">
-							<label for="first">1주</label><input type="radio" name="period" value="1st" id="first" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
-							<label for="second">2주</label><input type="radio" name="period" value="2nd" id="second" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
-							<label for="third">3주</label><input type="radio" name="period" value="3rd" id="third" class="selectPeriod" onchange="show()">&nbsp;&nbsp;&nbsp;
-							<label for="fourth">4주</label><input type="radio" name="period" value="4th" id="fourth" class="selectPeriod" onchange="show()">
+							<label for="first">식단 명 </label>
+							<button type="button" id="decrease" onclick="decreaseClick()">-</button>
+							<div id="quantity" style="display: inline-block;">0</div>
+							<button type="button" id="increase" onclick="increaseClick()">+</button>
 						</div>
 						
 						<br>
 						
-						<label class="select1st">식단과 수량을 선택해주세요.</label>
-						<div class="menuBox select1st">
-							<div class="menuSelect">
-								<label>1주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-						</div>
-						
-						<label class="select2nd">식단과 수량을 선택해주세요.</label>
-						<div class="menuBox select2nd">
-							<div class="menuSelect">
-								<label>1주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-							<div class="menuSelect">
-								<label>2주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-						</div>
-						
-						<label class="select3rd">식단과 수량을 선택해주세요.</label>
-						<div class="menuBox select3rd">
-							<div class="menuSelect">
-								<label>1주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-							<div class="menuSelect">
-								<label>2주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-							<div class="menuSelect">
-								<label>3주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-						</div>
-						
-						<label class="select4th">식단과 수량을 선택해주세요.</label>
-						<div class="menuBox select4th">
-							<div class="menuSelect">
-								<label>1주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-							<div class="menuSelect">
-								<label>2주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-							<div class="menuSelect">
-								<label>3주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-							<div class="menuSelect">
-								<label>4주차 식단 : </label>
-								<select>
-									<option>식단A(9,900원)</option>
-									<option>식단B(10,900원)</option>
-									<option>식단C(9,900원)</option>
-									<option>식단D(10,900원)</option>
-								</select>
-							</div>
-						</div>
 						
 						<div id="productResult">
-							<!-- 사이즈 선택시 내려오는 창 -->
 							<div>
 								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
-									총 상품 가격 : 1,000,000원
+									총 상품 가격 : <label>1,000,000원</label>
 								</h4>
 							</div>
 							
-<!-- 							<div style="display: inline-block; margin-top: 12px; font-weight: 200;"></div> -->
-							<strong class="productPrice" style="display: inline-block; margin-top: 12px; position: right; font-weight: 200;">
-								<input type="hidden" name="productPrice" value="${p.productPrice}">
-								<input type="hidden" name="discountRate" value="${p.discountRate}">
-								<input type="hidden" name="productMainPic" value="${p.productMainPic}">
-							</strong>
 							<br>
 						</div>
 					
 					</div>
 					
 					<button type="button" id="buybtn" style="display: inline-block; width: 60%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> <!-- 결제 창으로 -->
-<!-- 					<button type="button" id="buybtn" style="display: inline-block; width: 60%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> -->
 					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
 				</div>
 			</div>
@@ -902,101 +790,28 @@ p b {
 <%@ include file="../common/footer.jsp" %>
 
 <script>
-	function show(){
-		const check = document.querySelector('input[name="period"]:checked');
-		const first = document.getElementById('first');
-		const second = document.getElementById('second');
-		const third = document.getElementById('third');
-		const fourth = document.getElementById('fourth');
-		const sel1sts = document.getElementsByClassName('select1st');
-		const sel2nds = document.getElementsByClassName('select2nd');
-		const sel3rds = document.getElementsByClassName('select3rd');
-		const sel4ths = document.getElementsByClassName('select4th');
+	
+
+	
+	function decreaseClick(){
+		var quantity = document.getElementById('quantity');
+		var parseQuan = parseInt(quantity.innerText);
 		
-		const one = document.getElementsByClassName('oneWeek');
-		const two = document.getElementsByClassName('twoWeek');
-		const three = document.getElementsByClassName('threeWeek');
-		const four = document.getElementsByClassName('fourWeek');
-		
-		for(const sel1st of sel1sts){
-			if(check && check.id == "first"){
-				sel1st.style.display = 'block';
-			} else{
-				sel1st.style.display = 'none';
-				for(const o of one){
-					o.value = 0;
-				}
-			}
-		}
-		for(const sel2nd of sel2nds){
-			if(check && check.id == "second"){
-				sel2nd.style.display = 'block';
-			} else{
-				sel2nd.style.display = 'none';
-				for(const t of two){
-					t.value = 0;
-				}
-			}
-		}
-		for(const sel3rd of sel3rds){
-			if(check && check.id == "third"){
-				sel3rd.style.display = 'block';
-			} else{
-				sel3rd.style.display = 'none';
-				for(const th of three){
-					th.value = 0;					
-				}
-			}
-		}
-		for(const sel4th of sel4ths){
-			if(check && check.id == "fourth"){
-				sel4th.style.display = 'block';
-			} else{
-				sel4th.style.display = 'none';
-				for(const f of four){
-					f.value = 0;
-				}
-			}
+		if(parseQuan >= 1){
+			quantity.innerText = parseQuan - 1;
 		}
 	}
 	
-	
-	$('.accordion_i_tit').click(function(){
-		$('.accordion_i_cont').toggle(400);
-	})
-	$('.accordion_i_tit2').click(function(){
-		$('.accordion_i_cont2').toggle(400);
-	})
-	$('.accordion_i_tit3').click(function(){
-		$('.accordion_i_cont3').toggle(400);
-	})
+	function increaseClick(){
+		var quantity = document.getElementById('quantity');
+		var parseQuan = parseInt(quantity.innerText);
+		
+		quantity.innerText = parseQuan + 1;
+		console.log(parseQuan);
+	}
 
-   const productName = document.getElementsByClassName("productName")[1]; // 드롭박스에 적힐 상품명
-   
-   const option = document.getElementsByClassName("options"); //사이즈 선택 창
-   
-   let buyCount = document.getElementsByClassName("buyCount")[0]; // 상품 수량 
-   const decrease = document.getElementById("decrease"); // 상품 수량 감소 버튼
-   const increase = document.getElementById("increase"); // 상품 수량 증가 버튼
-   let productPrice = document.getElementsByClassName("productPrice")[0];
-   const buyBtn = document.getElementById("buyBtn");
-   const result = document.getElementById("productResult");
-   const like = document.querySelector(".like");
-   
-      like.addEventListener("click", function() {
-	    if(like.innerText === '♡') {
-	        like.innerText = '♥';
-	    } else like.innerText ='♡';
-	});
-   
-   
-   function priceToString(productPrice) {
-       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-   }
-   
-//    console.log(option);
 	
-
+	
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {
 //         var productNo = $("input[name='productNo']").val();

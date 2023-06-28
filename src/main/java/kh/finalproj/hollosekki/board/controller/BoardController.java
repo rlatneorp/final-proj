@@ -50,7 +50,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("selectFreeBoard.bo")
-	public ModelAndView selectFreeBoard(ModelAndView mv, HttpSession session,@RequestParam("bId") int bId, @RequestParam("writer") String writer, @RequestParam("page") int page) {
+	public ModelAndView selectFreeBoard(ModelAndView mv, HttpSession session,@RequestParam("bId") int bId, @RequestParam("writer") String writer, @RequestParam(value="page",required=false) Integer page) {
 		Users u = (Users)session.getAttribute("loginUser");
 		String login = null;
 		if(u != null) {

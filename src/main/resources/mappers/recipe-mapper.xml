@@ -200,20 +200,20 @@
 	</select>
 	
 	<insert id="reviewWrite">
-		insert into review values(0, #{orderNo}, seq_review_no.nextval, null, #{reviewContent}, 5, default, sysdate, #{reviewWriter})
+		insert into review values(#{orderNo}, 0, seq_review_no.nextval, null, #{reviewContent}, 5, default, sysdate, #{reviewWriter})
 	</insert>
 	
 	<select id="selectReview" resultMap="reviewResultSet">
 		select *
 		from review
-		where product_no = 0 and order_no =#{foodNo}
+		where product_no = #{foodNo} and order_no =0
 		order by review_no desc
 	</select>
 	
 	<select id="getReviewCount" resultType="_int">
 		select count(*)
 		from review
-		where product_no=0 and order_no=#{foodNo}
+		where product_no=#{foodNo} and order_no=0
 	</select>
 	
 	<select id="selectIngredient" resultMap="ingredientResultSet">

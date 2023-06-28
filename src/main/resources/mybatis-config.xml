@@ -22,6 +22,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.Recipe" alias="Recipe"/>
 		<typeAlias type="kh.finalproj.hollosekki.customer.model.vo.Customer" alias="Customer"/>
 		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder" alias="RecipeOrder"/>
+		<typeAlias type="kh.finalproj.hollosekki.recipe.model.vo.RecipeElement" alias="RecipeElement"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Follow" alias="Follow"/>
 		<typeAlias type="kh.finalproj.hollosekki.enroll.model.vo.SocialLogin" alias="SocialLogin"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.BookMark" alias="BookMark"/>
@@ -44,6 +45,7 @@
 		<mapper resource="mappers/recipe-mapper.xml"/>
 		<mapper resource="mappers/customer-mapper.xml"/>
 		<mapper resource="mappers/board-mapper.xml"/>
+		<mapper resource="mappers/menu-mapper.xml"/>
 	</mappers>
 	
 </configuration>

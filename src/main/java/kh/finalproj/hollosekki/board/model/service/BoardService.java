@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.board.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,12 @@ public class BoardService {
 		return b;
 	}
 
-	public void insertReply(Review r) {
-		bDAO.insertReply(sqlSession, r);
+	
+	public void insertReply(HashMap<Object, Object> map) {
+		bDAO.insertReply(sqlSession, map);
+	}
+
+	public ArrayList<Review> selectReply(HashMap<Object, Object> map) {
+		return bDAO.selectReply(sqlSession, map);
 	}	
 }

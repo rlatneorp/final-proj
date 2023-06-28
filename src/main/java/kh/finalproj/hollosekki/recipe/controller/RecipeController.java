@@ -110,6 +110,7 @@ public class RecipeController {
 		Image thum = rService.recipeDetailThum(foodNo);
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
 		ArrayList<Review> reList = rService.selectReviewList(rpi, foodNo);
+		ArrayList<RecipeElement> eleList = rService.selectRecipeElement(foodNo);
 		
 		System.out.println(reList);
 		
@@ -121,6 +122,7 @@ public class RecipeController {
 			mv.addObject("reList", reList);
 			mv.addObject("page", page);
 			mv.addObject("rpi", rpi);
+			mv.addObject("eleList", eleList);
 			mv.setViewName("recipeDetail");
 			
 			return mv;
@@ -152,7 +154,8 @@ public class RecipeController {
 							  @RequestParam("thum") MultipartFile thum,
 							  @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
 							  @RequestParam("comPic") ArrayList<MultipartFile> comFiles,
-							  @ModelAttribute Ingredient ing, @ModelAttribute RecipeElement reel,
+							  @RequestParam("elementQuantity") String elementQuantity, @RequestParam(value="newIngredient", required=false) ArrayList<String> newIng,
+							  @RequestParam("elementIngredient") ArrayList<String> elementIngredient,
 							  @ModelAttribute RecipeOrder rc) {
 		
 		Users user =(Users)request.getSession().getAttribute("loginUser");
@@ -160,18 +163,6 @@ public class RecipeController {
 		r.setUsersNo(userNo);
 		
 		String id = user.getUsersId();
-		
-		ArrayList<RecipeElement> reelList = new ArrayList<>();
-		String[] ingName = ing.getIngredientName().split(",");
-		String[] quantity = reel.getElementQuantity().split(",");
-		
-		for(int i = 0; i < ingName.length; i++) {
-			if(!ingName[i].equals("") && !quantity[i].equals("")) {
-				Ingredient ingr = new Ingredient();
-				ingr.setIngredientName(ingName[i]);
-			}
-		}
-		
 		int result1 = 0;
 		int result2 = 0;
 		int result3 = 0;
@@ -179,7 +170,33 @@ public class RecipeController {
 		
 		result1 =rService.insertRecipe(r);
 		
-//		rService.insertIngredient();
+		ArrayList<RecipeElement> reelList = new ArrayList<>();
+		String[] quantity = elementQuantity.split(",");
+		
+		for(int i = 0; i < elementIngredient.size(); i++) {
+			if(!quantity[i].equals("") && !elementIngredient.get(i).isEmpty()) {
+				RecipeElement reel = new RecipeElement();
+				reel.setElementQuantity(quantity[i]);
+				reel.setElementName(elementIngredient.get(i).split("-")[0]);
+				reel.setElementNo(Integer.parseInt(elementIngredient.get(i).split("-")[1]));
+				
+				reelList.add(reel);
+			} else if(!newIng.isEmpty()){
+				RecipeElement reel = new RecipeElement();
+				String newI = newIng.get(i);
+				rService.insertNewIngredient(newI);
+				Ingredient ing = rService.selectNewIngredient(newI);
+				
+				reel.setElementName(ing.getIngredientName());
+				reel.setElementNo(ing.getIngredientNo());
+				reel.setElementQuantity(quantity[i]);
+				
+				reelList.add(reel);
+			}
+		}
+		
+		rService.insertIngredient(reelList);
+		
 		
 //		썸네일 이미지
 		ArrayList<Image> thumImgList = new ArrayList<>();

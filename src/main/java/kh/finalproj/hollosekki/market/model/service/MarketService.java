@@ -32,9 +32,9 @@ public class MarketService {
    @Autowired
    private MarketDAO mkDAO;
 
-   public int insertCart(HashMap<String, String> result) {
-      return mkDAO.insertCart(sqlSession,result);
-   }
+//   public int insertCart(HashMap<String, String> result) {
+//      return mkDAO.insertCart(sqlSession,result);
+//   }
 
    public void attendanceCheck(HashMap<String, String> map) {
       mkDAO.attendanceCheck(sqlSession, map);
@@ -244,8 +244,11 @@ public class MarketService {
 //		return null;
 //	}
 
+	public int insertReview(Review r) {
+		return mkDAO.insertReview(sqlSession, r);
+	}
 
-	
+
 	
 
 

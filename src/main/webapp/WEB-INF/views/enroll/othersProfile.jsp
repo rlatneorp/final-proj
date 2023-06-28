@@ -297,12 +297,18 @@
 								<c:if test="${ !empty boList }">
 									<c:forEach items="${ boList }" var="bo">
 										<c:if test="${ user.usersNo == bo.usersNo }">
-											<tr class="tbody" onclick="location.href='${contextPath}/selectFreeBoard.bo?'">
+											<tr class="tbody" onclick="location.href='${contextPath}/selectFreeBoard.bo?bId=' + '${ bo.boardNo }' + '&writer=' + '${ user.nickName }' + '&page='">
 												<td class="board-info">
 													${ bo.boardTitle }
 													<p class="date-count"><fmt:formatDate value="${ bo.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ bo.boardCount }</p>
 												</td>
-												<td class="board-reply"><div class="reply-count">3</div></td> <!-- 해당 글번호에대한 댓글 카운트해야함... -->
+												<c:set var="count" value="0" />
+												<c:forEach items="${replyList}" var="rp">
+													<c:if test="${rp.productNo eq bo.boardNo}">
+														<c:set var="count" value="${count + 1}" />
+													</c:if>
+												</c:forEach>
+												<td class="board-reply"><div class="reply-count">${ count }</div></td>
 											</tr>
 										</c:if>
 									</c:forEach>
@@ -326,23 +332,32 @@
 								</tr>
 							</thead>
 							<tbody>
-<%-- 								<c:forEach items="${ rvList }" var="rv"> --%>
-<!-- 									<tr class="tbody"> -->
-<!-- 										<td class="board-info"> -->
-<%-- 											<c:forEach items="${ boList }" var="bo"> --%>
-<%-- 												<c:if test="${ bo.boardTitle == rv.orderNo }"> --%>
-<%-- 													<p class="date-count">${ rv.reviewContext }</p> --%>
-<%-- 													<p class="date-count">${ bo.usersNo } ∣ ${ bo.boardDate } ∣ 조회 ${ bo.boardCount }</p> --%>
-<!-- 													<div class="reply-content"> -->
-<!-- 														<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div> -->
-<!-- 													 	<div>말도안되는 소리 하지마세요....</div> -->
-<!-- 													</div> -->
-<%-- 												</c:if> --%>
-<%-- 											</c:forEach> --%>
-<!-- 										</td> -->
-<!-- 										<td class="board-reply"><div class="reply-count">3</div></td> -->
-<!-- 									</tr> -->
-<%-- 								</c:forEach> --%>
+							
+								<c:if test="${ !empty replyList }">
+									<c:forEach items="${replyList}" var="rp"> <!-- 모든 댓글 리스트 -->
+										<c:forEach items="${ boList }" var="bo"> <!-- 모든 게시글리스트 -->
+											<c:if test="${rp.productNo eq bo.boardNo}"> <!-- 해당게시글의 댓글가져옴.. -->
+												<c:if test="${rp.reviewWriter eq user.usersId }"> <!-- 해당 유저가 작성한 댓글만 가져와야하니까.... -->
+													<tr class="tbody">
+														<td class="board-info">
+															<p class="date-count">${ bo.boardTitle }</p>
+															<c:forEach items="${ hList }" var="h">
+																<c:if test="${ bo.usersNo eq h.usersNo }">
+																	<p class="date-count">${ h.nickName } ∣ <fmt:formatDate value="${ bo.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ bo.boardCount }</p>
+																</c:if>
+															</c:forEach>
+															<div class="reply-content">
+																<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div>
+															 	<div>${ rp.reviewContent }</div>
+															</div>
+														</td>
+													</tr>
+												</c:if>
+												
+											</c:if>
+										</c:forEach>
+									</c:forEach>
+								</c:if>
 								<tr class="tbody">
 									<td class="board-info">
 										<p class="date-count">더운날엔 역시 냉면을 먹어줘야하는거 아니겠습니까ㅎㅎㅎㅎㅎㅎㅎㅎㅎ</p>
@@ -354,6 +369,9 @@
 									</td>
 									<td class="board-reply"><div class="reply-count">3</div></td>
 								</tr>
+								
+								
+								
 								<tr class="tbody">
 									<td class="board-info">
 										<p class="date-count">오늘 날씨 진짜 더움요</p>
@@ -384,69 +402,106 @@
 				<!-- 메뉴4. 작성 후기 목록 -->
 				<div class="recipe-review-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
-					${ user.usersId }
+					
+					<c:if test="${ empty rvList }">
+						<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
+					</c:if>
+						
 					<c:forEach items="${ rvList }" var="rv">
-						<c:if test="${ rv.reviewWriter == user.usersId }">
-						
-						</c:if>
-					</c:forEach>
-						<c:if test="${ empty rvList }"> <!-- 작성한 리뷰리스트... 이중에서 레시피 후기(orderNo가 foodNo에 있으면...?)인거만 가져와야함 -->
-							<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
-						</c:if>
-						
-						
-						<c:forEach items="${ rvList }" var="rv">
-							<div class="recipe-review-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
-								<c:forEach items="${ aList }" var="a">
-									<c:if test="${ rv.orderNo == a.foodNo }">
-										<c:forEach items="${ recipeImageList }" var="rImg">
-											<c:if test="${ rImg.imageDivideNo == rv.orderNo }">
-												<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ rImg.imageRenameName }"></div>
+						<div class="recipe-review-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
+							<c:forEach items="${ aList }" var="a">
+								<c:if test="${ rv.orderNo == a.foodNo }">
+									<c:forEach items="${ recipeImageList }" var="rImg">
+										<c:if test="${ rImg.imageDivideNo == rv.orderNo }">
+											<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ rImg.imageRenameName }"></div>
+										</c:if>
+									</c:forEach>
+									<div class="recipe-review-content-div">
+									<div class="flex">
+										<div class="recipe-review-name">${ a.recipeName }</div>
+										<c:if test="${ rv.reviewScore == 5 }">
+											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+										</c:if>
+										<c:if test="${ rv.reviewScore == 4 }">
+											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+										</c:if>
+										<c:if test="${ rv.reviewScore == 3 }">
+											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+										</c:if>
+										<c:if test="${ rv.reviewScore == 2 }">
+											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+										</c:if>
+										<c:if test="${ rv.reviewScore == 1 }">
+											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+										</c:if>
+										<c:if test="${ rv.reviewScore == 0 }">
+											<div class="review-star"><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+										</c:if>
+									</div>
+										<c:forEach items="${ hList }" var="h">
+											<c:if test="${ h.usersNo == a.usersNo }">
+												<div class="recipe-review-cate">${ h.nickName } ∣ ${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
 											</c:if>
 										</c:forEach>
-										<div class="recipe-review-content-div">
-										<div class="flex">
-											<div class="recipe-review-name">${ a.recipeName }</div>
-											<c:if test="${ rv.reviewScore == 5 }">
-												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-											</c:if>
-											<c:if test="${ rv.reviewScore == 4 }">
-												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
-											</c:if>
-											<c:if test="${ rv.reviewScore == 3 }">
-												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
-											</c:if>
-											<c:if test="${ rv.reviewScore == 2 }">
-												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
-											</c:if>
-											<c:if test="${ rv.reviewScore == 1 }">
-												<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
-											</c:if>
-											<c:if test="${ rv.reviewScore == 0 }">
-												<div class="review-star"><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
-											</c:if>
+										
+										<div class="review-content">
+											${ rv.reviewContent }
 										</div>
-											<c:forEach items="${ hList }" var="h">
-												<c:if test="${ h.usersNo == a.usersNo }">
-													<div class="recipe-review-cate">${ h.nickName } ∣ ${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
-												</c:if>
-											</c:forEach>
-											
-											<div class="review-content">
-												${ rv.reviewContent }
-											</div>
-										</div>
-									</c:if>
-								</c:forEach>
-							</div>
-						</c:forEach>
+									</div>
+								</c:if>
+							</c:forEach>
+						</div>
+					</c:forEach>
+						
 					<br>
 					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
 					<br>	
+					
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
-					<c:if test="${ empty rvList }">
+					
+					<c:if test="${ empty mrList }">
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 식단 후기가 없습니다.</div>
 					</c:if>
+					
+					<c:forEach items="${ mrList }" var="mr">
+						<div class="recipe-review-content">
+							<c:forEach items="${ menuReviewImageList }" var="mrImg">
+								<c:if test="${ mrImg.imageDivideNo == mr.REVIEW_NO }">
+									<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ mrImg.imageRenameName }"></div>
+								</c:if>
+							</c:forEach>
+							<div class="recipe-review-content-div">
+								<div class="flex">
+									<div class="recipe-review-name">${ mr.MENU_NAME }</div>
+									<c:if test="${ mr.REVIEW_SCORE == 5 }">
+										<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+									</c:if>
+									<c:if test="${ mr.REVIEW_SCORE == 4 }">
+										<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+									</c:if>
+									<c:if test="${ mr.REVIEW_SCORE == 3 }">
+										<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+									</c:if>
+									<c:if test="${ mr.REVIEW_SCORE == 2 }">
+										<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+									</c:if>
+									<c:if test="${ mr.REVIEW_SCORE == 1 }">
+										<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+									</c:if>
+									<c:if test="${ mr.REVIEW_SCORE == 0 }">
+										<div class="review-star"><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+									</c:if>
+								</div>
+								<c:forEach items="${ hList }" var="h">
+									<c:if test="${ h.usersNo== mr.USERS_NO }">
+										<div class="recipe-review-cate">${ h.nickName }</div>
+									</c:if>
+								</c:forEach>
+								<div class="review-content">${ mr.REVIEW_CONTENT }</div>
+							</div>
+						</div>
+					</c:forEach>
+					
 				</div>
 				
 				<!-- 메뉴5. 북마크 목록 -->
@@ -473,7 +528,6 @@
 										<c:forEach items="${ hList }" var="h">
 											<c:if test="${ h.usersNo == a.usersNo }">
 												<div style="margin: 10px;">${ h.usersName }</div>
-												<div class="recipe-date">${ a.recipeCreateDate }</div>
 											</c:if>
 										</c:forEach>
 									</div>
@@ -504,20 +558,17 @@
 										<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
 										<div class="recipe-name">${ m.menuName }</div>
 										<div>
-											<c:if test="${ m.menuType == 1 }"><a>다이어트</a></c:if>
-											<c:if test="${ m.menuType == 2 }"><a>몸보신</a></c:if>
-											<c:if test="${ m.menuType == 3 }"><a>든든밥상</a></c:if>
-											<c:if test="${ m.menuType == 4 }"><a>고단백</a></c:if>
-											<c:if test="${ m.menuType == 5 }"><a>채식</a></c:if>
+											<c:if test="${ m.menuType == 1 }"><a>🏋다이어트</a></c:if>
+											<c:if test="${ m.menuType == 2 }"><a>🤒몸보신</a></c:if>
+											<c:if test="${ m.menuType == 3 }"><a>💪든든밥상</a></c:if>
+											<c:if test="${ m.menuType == 4 }"><a>🥩고단백</a></c:if>
+											<c:if test="${ m.menuType == 5 }"><a>🥗채식</a></c:if>
 										</div>
 										<c:forEach items="${ pList }" var="p">
 											<c:if test="${ p.productNo == m.productNo }">
 												<c:forEach items="${ hList }" var="h">
 													<c:if test="${ h.usersNo == p.usersNo }">
 														<div style="margin: 10px;">${ h.usersName }</div>
-														<div class="recipe-date">
-															<fmt:formatDate value="${ p.productCreateDate }" pattern="yyyy-MM-dd"/>
-														</div>
 													</c:if>
 												</c:forEach>
 											</c:if>

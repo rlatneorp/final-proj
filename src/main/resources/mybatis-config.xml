@@ -32,7 +32,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Review" alias="Review"/>
 		<typeAlias type="kh.finalproj.hollosekki.customer.model.vo.Qna" alias="Qna"/>
 		<typeAlias type="kh.finalproj.hollosekki.board.model.vo.Board" alias="Board"/>
-		
+		<typeAlias type="kh.finalproj.hollosekki.menu.model.vo.MenuList" alias="MenuList"/>
 	</typeAliases>
 	
 

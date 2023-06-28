@@ -10,6 +10,9 @@ public class Menu extends Product{
 	private String foodProductNo;
 	private String menuTarget;
 	private String nutrient;
+	private int menuKind;
+	private int menuNo;
+	private int productPrice;
 	
 	public Menu() {
 		super();
@@ -26,6 +29,9 @@ public class Menu extends Product{
 		this.foodProductNo = foodProductNo;
 		this.menuTarget = menuTarget;
 		this.nutrient = nutrient;
+		this.menuKind= menuKind;
+		this.menuNo = menuNo;
+		this.productPrice = productPrice;
 	}
 
 	public String getMenuName() {
@@ -91,6 +97,30 @@ public class Menu extends Product{
 	public void setNutrient(String nutrient) {
 		this.nutrient = nutrient;
 	}
+	
+	public int getProductPrice() {
+		return productPrice;
+	}
+	
+	public void setProductPrice(int productPrice) {
+		this.productPrice = productPrice;
+	}
+	
+	public int getMenuKind() {
+		return menuKind;
+	}
+	
+	public void setMenuKind(int menuKind) {
+		this.menuKind = menuKind;
+	}
+	
+	public int getMenuNo() {
+		return menuNo;
+	}
+	
+	public void setMenuNo(int menuNo) {
+		this.menuNo = menuNo;
+	}
 
 	@Override
 	public String toString() {
@@ -98,5 +128,4 @@ public class Menu extends Product{
 				+ ", menuContent=" + menuContent + ", foodProductNo=" + foodProductNo + ", menuTarget=" + menuTarget
 				+ ", nutrient=" + nutrient + "]";
 	}
-
 }

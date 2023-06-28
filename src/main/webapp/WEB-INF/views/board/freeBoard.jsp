@@ -145,7 +145,7 @@
 					<tr>
 						<td>${b.boardNo }</td>
 						<td>${b.nickName }
-						<td>${b.boardTitle }[]</td>
+						<td>${b.boardTitle }</td>
 						<td><fmt:formatDate value="${b.boardDate }" pattern="yyyy-MM-dd"/></td>
 						<td>${b.boardCount }</td>
 					</tr>
@@ -206,7 +206,7 @@
 			const trTd = this.children;
 			const boardId = trTd[0].innerText;
 			const boardWriter = trTd[1].innerText;
-			location.href = '${contextPath}/selectFreeBoard.bo?bId=' + boardId + '&writer=' + boardWriter + '&page=' + ${pi.currentPage};
+			location.href = '${contextPath}/detailFreeBoard.bo?bId=' + boardId + '&writer=' + boardWriter + '&page=' + ${pi.currentPage};
 		})
 		
 		 tr.addEventListener('mouseenter', function() {

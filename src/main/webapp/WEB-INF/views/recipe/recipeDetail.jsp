@@ -67,6 +67,7 @@
 	.board{border-collapse: collapse;}
 	.boardTop{background-color: #B0DAFF;}
 	.line{border-bottom: 1px solid black; border-top: 1px solid black;}
+	.lineAll{height: 50px;}
 	.lineAll:hover{background-color: #19A7CE; color: white;}
 	
 /* 	입력 박스 */

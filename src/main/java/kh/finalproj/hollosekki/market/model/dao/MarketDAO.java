@@ -25,9 +25,9 @@ import kh.finalproj.hollosekki.market.model.vo.Tool;
 @Repository
 public class MarketDAO {
 
-   public int insertCart(SqlSessionTemplate sqlSession, HashMap<String, String> result) {
-      return sqlSession.insert("marketMapper.insertCart",result);
-   }
+//   public int insertCart(SqlSessionTemplate sqlSession, HashMap<String, String> result) {
+//      return sqlSession.insert("marketMapper.insertCart",result);
+//   }
 
    public void attendanceCheck(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
       sqlSession.update("marketMapper.attendanceCheck", map);

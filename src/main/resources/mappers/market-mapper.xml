@@ -417,4 +417,20 @@
    <select id="selectImg" resultType="String">
       select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
    </select>
+   
+   <select id="selectStock" resultType="_int">
+   	  select PRODUCT_STOCK from product where product_no = #{productNo}
+   </select>
+   
+   <!-- 결제 시 insert -->
+   <insert id="insertPay">
+   	  insert into orders (ORDER_NO, PRODUCT_NO, USERS_NO, ORDER_COUNT, ORDER_TOTAL_PRICE, ORDER_DATE, ORDER_STATUS, ORDER_ADDRESS, ORDER_STOCK, ORDER_DELIVERY_COMMENT,ORDER_INFO )
+   	  values (SEQ_ORDER_NO.nextval, #{productNo}, #{usersNo}, #{orderCount}, #{totalPrice}, sysdate, default, #{orderAddress}, 'R', #{orderDeliveryComment}, #{orderInfo})
+   </insert>
+   
+   <update id="updatePoint">
+   	  update users
+      set point = #{point}
+      where users_id = #{usersId}
+   </update>
 </mapper>

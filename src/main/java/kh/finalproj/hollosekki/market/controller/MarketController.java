@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +37,7 @@ import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -124,7 +124,6 @@ public class MarketController {
 
    @RequestMapping("payDetail.ma")
    public String payDetail(HttpSession session, Model model, @RequestParam("optNos") String optNos) {
-      
       
       Users users = (Users)session.getAttribute("loginUser");
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
@@ -231,7 +230,6 @@ public class MarketController {
       }
       
       model.addAttribute("reviewCount", reviewCount);
-      
       
       model.addAttribute("tool", tool);
       model.addAttribute("p", p);
@@ -387,8 +385,22 @@ public class MarketController {
    }
    
    @RequestMapping("paySuccess.ma")
-   public String paySuccess(HttpSession session, Model model) {
+   public String paySuccess(HttpSession session, Model model, @RequestParam("use") String use, @RequestParam("plus") int plus) {
+	   
+	  System.out.println("use : " + use);
+//	  if()
+	  int usePoint = Integer.parseInt(use.split("원")[0]); //사용 포인트 
+	  
+	  System.out.println("plus : " + plus);
+	  
       Users users = (Users)session.getAttribute("loginUser");
+      int currentPoint = mkService.selectPoint(users.getUsersNo()); //보유 포인트 
+      
+      int minusPoint = currentPoint - usePoint; //보유 포인트 - 사용 포인트
+      int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트 
+      users.setPoint(resultPoint);
+      mkService.updatePoint(users); //변경 된 포인트 반영 
+      
       model.addAttribute("users", users);
       return "paySuccess";
    }
@@ -580,10 +592,30 @@ public class MarketController {
    @RequestMapping("delShipping.ma")
    @ResponseBody
    public String delShipping(@RequestParam("shippingNo") int shippingNo) {
-      System.out.println("sn : " + shippingNo);
       int result = mkService.delShipping(shippingNo);
-      
       return result >= 0 ? "yes" : "no";
    }
    
+   @RequestMapping("insertPay.ma")
+   @ResponseBody
+   public String insertPay(@ModelAttribute Orders orders) {
+	  
+//	   int stock = mkService.selectStock(orders.getProductNo());
+//	   int remainStock = stock-orders.getOrderCount();
+//	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
+//	   if(remainStock <= -1) {
+//		   return "stStock";
+//	   } else {
+		   int result = mkService.insertPay(orders);
+		   
+//		   return "success";
+//	   }
+		   
+		   if(result >= 1) {
+			   return "success";
+		   } else {
+			   return "fail";
+		   }
+	   
+   }
 }

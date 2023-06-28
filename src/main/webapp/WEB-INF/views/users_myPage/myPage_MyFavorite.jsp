@@ -145,7 +145,7 @@ th:first-child, td:first-child {
 											<td>식품 - 밀키트</td>
 											<td>${ l.FOOD_NAME }</td>
 											<td>-</td>
-											<td>${ l.PRODUCT_PRICE }</td>
+											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -155,7 +155,7 @@ th:first-child, td:first-child {
 											<td>식품 - 식재료</td>
 											<td>${ l.FOOD_NAME }</td>
 											<td>-</td>
-											<td>${ l.PRODUCT_PRICE }</td>
+											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -165,7 +165,7 @@ th:first-child, td:first-child {
 											<td>식단</td>
 											<td>${ l.MENU_NAME }</td>
 											<td>${ l.NAME }</td>
-											<td>-</td>
+											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -175,7 +175,7 @@ th:first-child, td:first-child {
 											<td>식재료</td>
 											<td>${ l.INGREDIENT_NAME }</td>
 											<td>-</td>
-											<td>${ l.PRODUCT_PRICE }</td>
+											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -185,7 +185,7 @@ th:first-child, td:first-child {
 											<td>상품</td>
 											<td>${ l.TOOL_NAME }</td>
 											<td>-</td>
-											<td>${ l.PRODUCT_PRICE }</td>
+											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -225,7 +225,7 @@ th:first-child, td:first-child {
 				</div>
 				<br>
 				<div style="display: flex; width:300px; position: relative; margin: 0 auto;">
-					<input type="text" placeholder="검색어 입력" id="search"> 
+					<input type="text" placeholder="검색어 입력 (제목)" id="search"> 
 					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="searchIcon">
 				</div>
 			</div>
@@ -248,24 +248,22 @@ th:first-child, td:first-child {
 	        }); 
 	   }
 	   
+	   const search = () => {
+		   const searchTitle = searchInput.value;
+		   console.log(searchTitle);
+		   location.href="${contextPath}/myPage_MyFavorite.me?searchTitle=" + searchTitle;
+	   }
+	   
 	   //검색 img 클릭했을 때
 	   const searchInput = document.getElementById('search');
 	   document.getElementById('searchIcon').addEventListener('click', function() {
-	      //여기에 ajax
-	      searchInput.value = '';
-	      
+	      search();
 	   })
 	   
 	   //검색어 입력 엔터 기능 
-	   
-	
 	   searchInput.addEventListener('keyup', function(event) {
 	     if (event.key === 'Enter') {
-	       const searchText = searchInput.value
-	       //여기에 ajax로 searchText 넘기기 
-	       
-	       console.log('검색어:', searchText);
-	       searchInput.value = '';
+	       search();
 	     }
 	   });
 	   
@@ -284,7 +282,6 @@ th:first-child, td:first-child {
 
 	    selectElement.addEventListener("change", function() {
 	        const value = this.value; // 선택된 값 출력
-	        console.log(value);
 
 	        // 선택된 값에 따라 URL을 생성하여 페이지 이동
 	        if(value == 0){

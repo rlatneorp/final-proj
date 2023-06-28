@@ -260,29 +260,35 @@ public class UsersController {
 
 	// 내 레시피 조회
 	@RequestMapping("myPage_MyRecipe.me")
-	public String myPage_MyRecipe(Model model, @RequestParam(value = "page", required = false) Integer page) {
+	public String myPage_MyRecipe(Model model, @RequestParam(value = "page", required = false) Integer page,
+								  @RequestParam(value="searchType", required=false) Integer searchType,
+								  @RequestParam(value="searchTitle", required=false) String searchTitle) {
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
 		}
-		int listCount = rService.getListCount();
+		
+		int selectType = 0; // 최신/오래된/조회/스크랩/좋아요
+		if(searchType != null) {
+			selectType = searchType;
+		}
+		String selectTitle = null;
+		if(searchTitle != null) {
+			selectTitle = searchTitle;
+		}
+		
+		int listCount = uService.getMyRecipeListCount(usersNo);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
-		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		
-		ArrayList<Recipe> list = uService.selectMyRecipe(usersNo, pi);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("selectType", selectType);
+		map.put("selectTitle", selectTitle);
 		
-		int recipeBookCount = 0;
-		int recipeLikeCount = 0;
-		for(Recipe r : list) {
-			int foodNo = r.getFoodNo();
-			
-			recipeBookCount = uService.recipeBookCount(foodNo);
-			recipeLikeCount = uService.recipeLikeCount(foodNo);
-			
-			r.setRecipeBookCount(recipeBookCount); // 필드에 얘네를 추가해서 set해주기 그럼 list에 들어감
-			r.setRecipeLikeCount(recipeLikeCount);
-		}
+		ArrayList<HashMap<String, Object>> list = uService.selectMyRecipe(map, pi);
+		System.out.println(list);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
@@ -291,18 +297,33 @@ public class UsersController {
 	}
 	
 	@RequestMapping("myPage_MyBookMark.me")
-	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page) {
+	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page,
+									@RequestParam(value="searchType", required=false) Integer searchType,
+									@RequestParam(value="searchTitle", required=false) String searchTitle) {
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
 		}
-		int listCount = uService.getBookListCount();
-		System.out.println(listCount);
+		
+		int selectType = 0; // 최신/오래된/레시피/식단
+		if(searchType != null) {
+			selectType = searchType;
+		}
+		String selectTitle = null;
+		if(searchTitle != null) {
+			selectTitle = searchTitle;
+		}
+		
+		int listCount = uService.getBookListCount(usersNo);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
-		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("selectType", selectType);
+		map.put("selectTitle", selectTitle);
 		
-		ArrayList<HashMap<String, Object>> list = uService.myBookMarkList(usersNo, pi);
+		ArrayList<HashMap<String, Object>> list = uService.myBookMarkList(map, pi);
 		System.out.println(list);
 		
 		model.addAttribute("list", list);
@@ -313,53 +334,60 @@ public class UsersController {
 	
 	@RequestMapping("myPage_MyFavorite.me")
 	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page,
-									@RequestParam(value="searchType", required=false) Integer searchType) {
+									@RequestParam(value="searchType", required=false) Integer searchType,
+									@RequestParam(value="searchTitle", required=false) String searchTitle) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
 		}
-		System.out.println(searchType);
-		int selectType = 0;
+		
+		int selectType = 0; // 전체/레시피/식단/식품/식재료/상품
 		if(searchType != null) {
 			selectType = searchType;
 		}
-		
-		int listCount = rService.getListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+		String selectTitle = null;
+		if(searchTitle != null) {
+			selectTitle = searchTitle;
+		}
 		
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		// 좋아요 리스트 개수...
+		int product = uService.getFoodListCount(usersNo);
+		int recipe = uService.getRecipeListCount(usersNo);
+		int ingredient = uService.getingredientListCount(usersNo);
+		
+		int listCount = product + recipe + ingredient;
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		
-		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, selectType, pi); // 식단, 식품, 상품도구
-		ArrayList<HashMap<String, Object>> rList = uService.myRecipeLikeList(usersNo, pi); // 레시피
-		ArrayList<HashMap<String, Object>> pList = uService.myProductLikeList(usersNo, pi); // 식재료
+		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, selectType, selectTitle, pi); // 식단, 식품, 상품도구
+		ArrayList<HashMap<String, Object>> rList = uService.myRecipeLikeList(usersNo, selectTitle, pi); // 레시피
+		ArrayList<HashMap<String, Object>> pList = uService.myProductLikeList(usersNo,selectTitle, pi); // 식재료
 		
 		if(searchType == null || selectType == 0) {
 			list.addAll(fList);
 			list.addAll(rList);
 			list.addAll(pList);
+			
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
 		} else if(selectType == 1) {
-			list.addAll(rList);
+			model.addAttribute("list", rList);
+			model.addAttribute("pi", pi);
 		} else if(selectType == 2) {
-			list.addAll(fList);
+			model.addAttribute("list", fList);
+			model.addAttribute("pi", pi);
 		} else if(selectType == 3) {
-			list.addAll(fList);
+			model.addAttribute("list", fList);
+			model.addAttribute("pi", pi);
 		} else if(selectType == 4) {
-			list.addAll(pList);
+			model.addAttribute("list", pList);
+			model.addAttribute("pi", pi);
 		} else if(selectType == 5) {
-			list.addAll(fList);
+			model.addAttribute("list", fList);
+			model.addAttribute("pi", pi);
 		}
-		
-		System.out.println("list : " + list.size());
-//		list.addAll(fList);
-//		list.addAll(rList);
-//		list.addAll(pList);
-		
-		System.out.println(list);
-		
-		model.addAttribute("list", list);
-		model.addAttribute("pi", pi);
 		
 		return "myPage_MyFavorite";
 	}

@@ -48,7 +48,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("selectFreeBoard.bo")
-	public ModelAndView selectFreeBoard(ModelAndView mv, HttpSession session,@RequestParam("bId") int bId, @RequestParam("writer") String writer, @RequestParam("page") int page) {
+	public ModelAndView selectFreeBoard(ModelAndView mv, HttpSession session,@RequestParam("bId") int bId, @RequestParam("writer") String writer, @RequestParam(value="page",required=false) Integer page) {
 		Users u = (Users)session.getAttribute("loginUser");
 		String login = null;
 		if(u != null) {
@@ -67,7 +67,7 @@ public class BoardController {
 
 			return mv;
 		} else {
-			throw new BoardException("°Ô½Ã±Û »ó¼¼º¸±â¸¦ ½ÇÆÐÇÏ¿´½À´Ï´Ù.");
+			throw new BoardException("ï¿½Ô½Ã±ï¿½ ï¿½ó¼¼ºï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 		
 	}

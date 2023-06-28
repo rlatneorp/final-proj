@@ -386,13 +386,22 @@ public class EnrollController {
 			ArrayList<Board> board = eService.boardList(usersNo);
 			model.addAttribute("boList", board);
 //			int replyCount = eService.replyCount(); // 댓글카운트.. -> 해당 글에대한 댓글만 카운트 해야함!
+			ArrayList<Review> replyList = eService.replyList();
+			System.out.println("리뷰리스트 : "+replyList);
+			model.addAttribute("replyList", replyList);
 			
 			// 작성 댓글 목록
 			
-			// 리뷰 목록
+			// 레시피 리뷰 목록
 			String usersId = user.getUsersId();
-			ArrayList<Review> reviewList = eService.reviewList(usersId);
-			model.addAttribute("rvList", reviewList);
+			ArrayList<Review> recipeReviewList = eService.reviewList(usersId);
+			model.addAttribute("rvList", recipeReviewList);
+			
+			// 식단 리뷰 목록
+			ArrayList<Review> menuReviewList = eService.menuReviewList(usersId);
+			model.addAttribute("mrList", menuReviewList);
+			ArrayList<Image> menuReviewImageList = eService.menuReviewImageList();
+			model.addAttribute("menuReviewImageList", menuReviewImageList);
 			
 			// 북마크 목록
 			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo);

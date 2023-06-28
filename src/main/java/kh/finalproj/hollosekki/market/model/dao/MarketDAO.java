@@ -218,7 +218,6 @@ public class MarketDAO {
 	}	
 	//배송지 삭제 
 	
-	//諛곗넚吏� �궘�젣 
 	
 	//獄쏄퀣�꽊筌욑옙 占쎄텣占쎌젫 
 	public int delShipping(SqlSessionTemplate sqlSession, int shippingNo) {
@@ -243,11 +242,27 @@ public class MarketDAO {
 	
 	public int selectPoint(SqlSessionTemplate sqlSession, int usersNo) {
 		return sqlSession.selectOne("marketMapper.selectPoint", usersNo);
+	}
+	
+	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
+		return sqlSession.insert("marketMapper.insertReview", r);
+	}
 
 	public ArrayList<Image> selectImageList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectImageList", map);
 	}
 
+	public int selectReviewCount(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectReviewCount", productNo);
+	}
+
+	public ArrayList<String> selectImgList(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectImgList", productNo);
+	}
+
+	public String selectImg(SqlSessionTemplate sqlSession, int productNo, int i) {
+		return null;
+	}
 
 	
 

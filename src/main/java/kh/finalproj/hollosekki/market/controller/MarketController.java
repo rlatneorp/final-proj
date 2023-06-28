@@ -122,89 +122,89 @@ public class MarketController {
 		return "basket";
 	}
 
-	@RequestMapping("payDetail.ma")
-	public String payDetail(HttpSession session, Model model, @RequestParam("optNos") String optNos) {
-		
-		
-		Users users = (Users)session.getAttribute("loginUser");
-		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
-		ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
-		ArrayList<Product> productInfo = new ArrayList<>();
-		ArrayList<Cart> checkedCart = new ArrayList<>();
-		ArrayList<Cart> checkedCartList = new ArrayList<>();
-		
-		//옵션 
-		ArrayList<Cart> optionNos = new ArrayList<>();
-		ArrayList<Options> optValues = new ArrayList<>();
-		
-		
-		String[] optNo = optNos.split(",");
-		int[] intOptionNo = new int[optNo.length];
-		
-		for(int i=0; i<optNo.length; i++) {
-			intOptionNo[i] = Integer.parseInt(optNo[i]);
-			System.out.println("intOptionNo : " + intOptionNo[i]);
-			int preorderNo = intOptionNo[i];
-			
-			//주문번호로 cartList 조회 
-			checkedCart = mkService.checkCartList(users.getUsersNo(),preorderNo);
-			
-			for(Cart checCart : checkedCart) { 
-				int productNo = checCart.getProductNo();
-				
-				Options opt = mkService.selectOptionInfo(checCart.getProductNo(), checCart.getProductOption()); //옵션 넘버 보내서 조회
-				optValues.add(opt);
-				
-				foods = mkService.selectFood(productNo);
-				tools = mkService.selectTool(productNo);
-				igs = mkService.selectIngrdient(productNo);
-				menus = mkService.selectMenu(productNo);
-				
-				productInfo = mkService.selectProductInfo(productNo);
-				int price = 0; int sum = 0; int sale = 0;
-				for (Product product : productInfo) {
-				    price = product.getProductPrice();
-				    checCart.setProductPrice(price); 
-				    checCart.setSale(product.getProductSale());
-				}
-				int size = mkService.plusResultCount(productNo);
-				sum = size * price;
-				checCart.setSum(sum);
-				
-				if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
-					checCart.setProductName(foods.getFoodName());
-					String imgName = mkService.selectImg(productNo, 3);
-					checCart.setImgName(imgName);
-			    }
-			    if (tools != null) { //이미지 타입 : 6 ( 주방도구)
-			    	checCart.setProductName(tools.getToolName());
-			    	String imgName = mkService.selectImg(productNo, 6);
-					checCart.setImgName(imgName);
-			    }
-			    if (igs != null) { //이미지 타입 : 5 (식재료) 
-			    	checCart.setProductName(igs.getIngredientName());
-			    	String imgName = mkService.selectImg(productNo, 5);
-					checCart.setImgName(imgName);
-			    }
-			    if (menus != null) { //이미지 타입 : 4 (식단)
-			    	checCart.setProductName(menus.getMenuName());
-			    	String imgName = mkService.selectImg(productNo, 4);
-					checCart.setImgName(imgName);
-			    }
-			    checkedCartList.add(checCart);
-			}
-		}
-		int point = mkService.selectPoint(users.getUsersNo());
-		
-		
-		model.addAttribute("point", point);
-		model.addAttribute("checkedCartList", checkedCartList );
-		System.out.println("cc : " + checkedCartList);
-		model.addAttribute("optValues", optValues);
-		return "payDetail";
-	}
+//	@RequestMapping("payDetail.ma")
+//	public String payDetail(HttpSession session, Model model, @RequestParam("optNos") String optNos) {
+//		
+//		
+//		Users users = (Users)session.getAttribute("loginUser");
+//		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
+//		ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
+//		ArrayList<Product> productInfo = new ArrayList<>();
+//		ArrayList<Cart> checkedCart = new ArrayList<>();
+//		ArrayList<Cart> checkedCartList = new ArrayList<>();
+//		
+//		//옵션 
+//		ArrayList<Cart> optionNos = new ArrayList<>();
+//		ArrayList<Options> optValues = new ArrayList<>();
+//		
+//		
+//		String[] optNo = optNos.split(",");
+//		int[] intOptionNo = new int[optNo.length];
+//		
+//		for(int i=0; i<optNo.length; i++) {
+//			intOptionNo[i] = Integer.parseInt(optNo[i]);
+//			System.out.println("intOptionNo : " + intOptionNo[i]);
+//			int preorderNo = intOptionNo[i];
+//			
+//			//주문번호로 cartList 조회 
+//			checkedCart = mkService.checkCartList(users.getUsersNo(),preorderNo);
+//			
+//			for(Cart checCart : checkedCart) { 
+//				int productNo = checCart.getProductNo();
+//				
+//				Options opt = mkService.selectOptionInfo(checCart.getProductNo(), checCart.getProductOption()); //옵션 넘버 보내서 조회
+//				optValues.add(opt);
+//				
+//				foods = mkService.selectFood(productNo);
+//				tools = mkService.selectTool(productNo);
+//				igs = mkService.selectIngrdient(productNo);
+//				menus = mkService.selectMenu(productNo);
+//				
+//				productInfo = mkService.selectProductInfo(productNo);
+//				int price = 0; int sum = 0; int sale = 0;
+//				for (Product product : productInfo) {
+//				    price = product.getProductPrice();
+//				    checCart.setProductPrice(price); 
+//				    checCart.setSale(product.getProductSale());
+//				}
+//				int size = mkService.plusResultCount(productNo);
+//				sum = size * price;
+//				checCart.setSum(sum);
+//				
+//				if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+//					checCart.setProductName(foods.getFoodName());
+//					String imgName = mkService.selectImg(productNo, 3);
+//					checCart.setImgName(imgName);
+//			    }
+//			    if (tools != null) { //이미지 타입 : 6 ( 주방도구)
+//			    	checCart.setProductName(tools.getToolName());
+//			    	String imgName = mkService.selectImg(productNo, 6);
+//					checCart.setImgName(imgName);
+//			    }
+//			    if (igs != null) { //이미지 타입 : 5 (식재료) 
+//			    	checCart.setProductName(igs.getIngredientName());
+//			    	String imgName = mkService.selectImg(productNo, 5);
+//					checCart.setImgName(imgName);
+//			    }
+//			    if (menus != null) { //이미지 타입 : 4 (식단)
+//			    	checCart.setProductName(menus.getMenuName());
+//			    	String imgName = mkService.selectImg(productNo, 4);
+//					checCart.setImgName(imgName);
+//			    }
+//			    checkedCartList.add(checCart);
+//			}
+//		}
+//		int point = mkService.selectPoint(users.getUsersNo());
+//		
+//		
+//		model.addAttribute("point", point);
+//		model.addAttribute("checkedCartList", checkedCartList );
+//		System.out.println("cc : " + checkedCartList);
+//		model.addAttribute("optValues", optValues);
+//		return "payDetail";
+//	}
 	
-	private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
+	private ArrayList<Image> selectImagList1(int imageDivideNo, int imageType, int imageLevel) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("imageDivideNo", imageDivideNo);
 		map.put("imageType", imageType);
@@ -258,7 +258,7 @@ public class MarketController {
 		map.put("imageDivideNo", imageDivideNo);
 		map.put("imageType", imageType);
 		map.put("imageLevel", imageLevel);
-		ArrayList<Image> imageList = mkService.selectImageList(map);
+		ArrayList<Image> imageList = mkService.selectImagList(map);
 		return imageList;
 	}
 	
@@ -288,33 +288,19 @@ public class MarketController {
 		
 //		System.out.println(imageFiles);
 		
+		ArrayList<Image> imgList = selectImagList(productNo, 7, 1);
+		
+		if(imgList != null) {
+			model.addAttribute("imgList", imgList);
+		}
+		
+		
  		
 		if(result > 0) {
 			model.addAttribute("productNo", productNo);
 			model.addAttribute("review", r);
 		}
-		
-		
-		
-		
-		for(MultipartFile imageFile : imageFiles) {
-			Image image = new Image();
-			if(imageFile != null && !imageFile.isEmpty()) {
-				String[] returnArr = saveFile(imageFile, request);
-				if(returnArr[1] != null) {
-					image.setImageDivideNo(r.getReviewNo());
-					image.setImageType(7); /*리뷰는 7번*/
-					image.setImagePath(returnArr[0]);
-					image.setImageOriginalName(imageFile.getOriginalFilename());
-					image.setImageRenameName(returnArr[1]);
-					image.setImageLevel(0);
-					if(i==0) {
-						image.setImageLevel(1);
-		if(result > 0) {
-			model.addAttribute("productNo", productNo);
-			model.addAttribute("review", r);
-		}
-		
+	
 	
 		if(imageFiles != null) {	
 			int i = 0;
@@ -337,6 +323,8 @@ public class MarketController {
 						resultImg += mkService.insertImage(image);
 						i++;
 					}
+					resultImg += mkService.insertImage(image);
+					i++;
 				}
 			}
 			
@@ -346,10 +334,9 @@ public class MarketController {
 			}
 			
 		}
+		
 		return "redirect:market_detail.ma";
 	}
-	
-
 	
 	
 	

@@ -20,7 +20,7 @@ public class Review extends Image{
 	public Review() {
 		super();
 	}
-
+	
 	public Review(int productNo, int orderNo, int reviewNo, String reviewTitle, String reviewContent, int reviewScore,
 			String reviewStatus, String reviewStar, Date reviewDate, String reviewWriter) {
 		super();
@@ -35,6 +35,8 @@ public class Review extends Image{
 		this.reviewDate = reviewDate;
 		this.reviewWriter = reviewWriter;
 	}
+
+
 
 	public int getProductNo() {
 		return productNo;
@@ -96,34 +98,9 @@ public class Review extends Image{
 		return reviewStar;
 	}
 
-	public void setReviewDate(Date reviewDate) {
-		this.reviewDate = reviewDate;
+	public void setReviewStar(String reviewStar) {
+		this.reviewStar = reviewStar;
 	}
-
-	public String getReviewWriter() {
-		return reviewWriter;
-	}
-
-	public void setReviewWriter(String reviewWriter) {
-		this.reviewWriter = reviewWriter;
-	}
-	
-	public Date getReviewDate() {
-		return reviewDate;
-	}
-	
-	public void setReviewDate(Date reviewDate) {
-		this.reviewDate = reviewDate;
-	}
-	
-	public String getReviewWriter() {
-		return reviewWriter;
-	}
-	
-	public void setReviewWriter(String reviewWriter) {
-		this.reviewWriter = reviewWriter;
-	}
-
 
 	public Date getReviewDate() {
 		return reviewDate;
@@ -148,5 +125,7 @@ public class Review extends Image{
 				+ reviewStatus + ", reviewStar=" + reviewStar + ", reviewDate=" + reviewDate + ", reviewWriter="
 				+ reviewWriter + "]";
 	}
+
+	
 	
 }

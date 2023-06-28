@@ -67,24 +67,24 @@ public class BoardController {
 
 			return mv;
 		} else {
-			throw new BoardException("°Ô½Ã±Û »ó¼¼º¸±â¸¦ ½ÇÆÐÇÏ¿´½À´Ï´Ù.");
+			throw new BoardException("ï¿½Ô½Ã±ï¿½ ï¿½ó¼¼ºï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 		
 	}
 	
-	@RequestMapping("insertReply.bo")
-	public void insertReply(@ModelAttribute Review r,HttpServletResponse response) {
-		bService.insertReply(r);
-		ArrayList<Review> list = bService.selectReply(r.getRefBoardId());
-		
-		Gson gson = new Gson();
-		try {
-			gson.toJson(list, response.getWriter());
-		} catch (JsonIOException | IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
+//	@RequestMapping("insertReply.bo")
+//	public void insertReply(@ModelAttribute Review r,HttpServletResponse response) {
+//		bService.insertReply(r);
+//		ArrayList<Review> list = bService.selectReply(r.getRefBoardId());
+//		
+//		Gson gson = new Gson();
+//		try {
+//			gson.toJson(list, response.getWriter());
+//		} catch (JsonIOException | IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//	}
 	
 	@RequestMapping("freeBoardWrite.bo")
 	public String freeBoardWrite() {

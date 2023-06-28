@@ -434,15 +434,23 @@
 		where product_no = #{productNo}
 	</select>
 	
+<!-- 	<select id="selectImageList" resultMap="imageResultSet"> -->
+<!-- 		select * -->
+<!-- 		from (select * -->
+<!-- 			  from image -->
+<!-- 			  order by image_no asc)	 -->
+<!-- 		where image_divide_no = #{imageDivideNo} and image_type = #{imageType} -->
+<!-- 		<if test="imageLevel != -1"> -->
+<!-- 			  and image_level = #{imageLevel} -->
+<!-- 		</if> -->
+<!-- 	</select> -->
+	
 	<select id="selectImageList" resultMap="imageResultSet">
 		select *
 		from (select *
 			  from image
 			  order by image_no asc)	
-		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
-		<if test="imageLevel != -1">
-			  and image_level = #{imageLevel}
-		</if>
+		where image_type = 7;
 	</select>
 	
 	

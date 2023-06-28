@@ -291,7 +291,7 @@ ul li {
           </div>
           
           <div class="productList">
-    		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+    		<a href="foodMaterialMarcket.ma?productNo=168"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>

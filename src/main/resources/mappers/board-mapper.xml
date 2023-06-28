@@ -36,7 +36,7 @@
 		<result column="BOARD_COUNT" property="boardCount"/>
 	</resultMap>
 	
-		<resultMap type="Review" id="reviewResultSet">
+	<resultMap type="Review" id="reviewResultSet">
 		<id column="review_No" property="reviewNo"/>
 		<result column="orderNo" property="orderNo" />
 		<result column="review_no" property="reviewNo" />

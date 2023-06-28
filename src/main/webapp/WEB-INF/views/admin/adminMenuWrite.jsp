@@ -79,6 +79,15 @@
 	.border-none tr th{border:none;}
 	.border-none tr td{border:none;}
 	
+/* 	select */
+/* 	select { */
+/* 		width: 50%; */
+/* 		text-align: center; */
+/* 		height: 30px; */
+/* 		border: 1px solid #4485d7; */
+/* 		border-radius: 5px; */
+/* 		margin-top: 10px; */
+/* 	}	 */
 </style>
 </head>
 <body>
@@ -97,28 +106,43 @@
 						<input type="text" name="menuName" style="font-size: 20px; margin-right: 360px;" placeholder="식단 이름을 적어주세요.">
 						<a href="#"><i class="bi bi-bookmark " style="font-size: 20px;"></i></a>
 					</div>
-					<div id="category" style="margin: 50px 0px 20px 0px; width: 100%;">
+
+<!--				밀키트/식재료 여부 -->
+					<div>
+						<div class="row">
+							<div class="col-12 text-end" style="margin: 80px 0px;">
+								<input type="hidden" name="menuType" value="1">
+								<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button>
+								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button>
+<!-- 								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 120px; height: 40px; font-size: 14px; font-weight: bold;">식재료/밀키트</button> -->
+							</div>
+						</div>
+					</div>
+<!-- 					<div class="row p-0"> -->
+<!-- 						<div class="col-4"></div> -->
+<!-- 						<div class="col-8" style="text-align: right;"> -->
+<!-- 							<select name="menuNo" style="width: 100%;"> -->
+<!-- 								<option>a</option> -->
+<!-- 							</select> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					<div class="text-end mb-4"> -->
+<!-- 						<p style="font-size: 12px; margin-bottom: 0px;">*기존 등록한 식단의 '등록하지 않은 식재료/밀키트'를 등록할 수 있습니다.</p> -->
+<!-- 						<p style="font-size: 12px; margin-bottom: 0px;">*아래의 버튼을 통해, 등록 가능한 리스트를 조회할 수 있습니다.</p> -->
+<!-- 						<p style="font-size: 12px; margin-bottom: 0px;">ex) 건강한식단-밀키트 등록완료 -> 건강한식단-식재료 등록가능</p> -->
+<!-- 					</div> -->
+					<div id="category" style="margin: 50px 0px 20px 0px; width: 100%; text-align: right;">
 						아이콘 식단 카테고리 선택
-						<select name="menuType">
+						<select name="menuKind">
 							<option value="1">다이어트</option>
 							<option value="2">육류</option>
 							<option value="3">해산물</option>
 						</select>
 					</div>
-<!--				밀키트/식재료 여부 -->
 					<div>
-						<div class="row pe-4">
-							<div class="col-12" style="margin-bottom: 150px; text-align: center;">
-								<input type="hidden" name="foodType" value="1">
-								<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button>
-								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button>
-							</div>
-						</div>
-					</div>
-					<div id="userInfo">
 						<textarea name="menuContent" rows="6" cols="80" placeholder="식단에 대한 설명을 입력해주세요."></textarea>
 					</div>
-					
+
 					<br><br>
 					
 				</div>
@@ -326,7 +350,7 @@
 			}
 			
 // 			밀키트/식재료 버튼 이벤트
-			const foodType = document.getElementsByName('foodType')[0];
+			const foodType = document.getElementsByName('menuType')[0];
 			const foodTypeBtns = document.getElementsByClassName('foodTypeBtn');
 			
 			// 식재료 메뉴 버튼
@@ -334,6 +358,7 @@
 				foodType.value="1";
 				foodTypeBtns[0].style.backgroundColor="#19A7CE";
 				foodTypeBtns[1].style.backgroundColor="gray";
+// 				foodTypeBtns[2].style.backgroundColor="gray";
 				getFoodList();
 				for(const sel of document.getElementsByClassName('foodSelector')){
 					reset(sel);
@@ -344,11 +369,23 @@
 				foodType.value="2";
 				foodTypeBtns[1].style.backgroundColor="#19A7CE";
 				foodTypeBtns[0].style.backgroundColor="gray";
+// 				foodTypeBtns[2].style.backgroundColor="gray";
 				getFoodList();
 				for(const sel of document.getElementsByClassName('foodSelector')){
 					reset(sel);
 				}
 			});
+			// 식재료/밀키트 메뉴 버튼
+// 			foodTypeBtns[2].addEventListener('click', ()=>{
+// 				foodType.value="3";
+// 				foodTypeBtns[2].style.backgroundColor="#19A7CE";
+// 				foodTypeBtns[0].style.backgroundColor="gray";
+// 				foodTypeBtns[1].style.backgroundColor="gray";
+// 				getFoodList();
+// 				for(const sel of document.getElementsByClassName('foodSelector')){
+// 					reset(sel);
+// 				}
+// 			});
 			
 // 			메뉴 정보 불러오기 이벤트(ajax)
 			const selectors = document.getElementsByClassName('foodSelector');
@@ -422,9 +459,9 @@
 	
 		
 		
-// 		메인/서브, 식재료/밀키트 버튼선택에 따른 식품리스트 조회 ajax
+// 		메인/서브, 식재료/밀키트/식재료-밀키트 버튼선택에 따른 식품리스트 조회 ajax
 		function getFoodList(){
-			const type = document.getElementsByName('foodType')[0].value;
+			const type = document.getElementsByName('menuType')[0].value;
 			const foodSelectors = document.getElementsByClassName('foodSelector');
 			
 			$.ajax({
@@ -464,6 +501,9 @@
 				}
 			})
 		}
+		
+// 		function getMenuList(){
+// 		}
 		
 // 		값 초기화 함수
 		function reset(obj){

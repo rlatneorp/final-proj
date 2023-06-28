@@ -224,10 +224,6 @@ public class MarketService {
       return mkDAO.selectReviewCount(sqlSession, productNo);
    }
 
-	public int selectReviewCount(int productNo) {
-		return mkDAO.selectReviewCount(sqlSession, productNo);
-	}
-
 	public ArrayList<String> selectImgList(int productNo) {
 		return mkDAO.selectImgList(sqlSession, productNo);
 	}

@@ -10,13 +10,12 @@
 <!-- 				4 : 주방도구  -->
 <!-- 				5 : 회원  -->
 <!-- 				6 : 레시피  -->
-		<if test="dataType != 5">
-			<if test="dataType != 6">
+<!-- 				7 : 리뷰 -->
+		<if test="dataType == 1 or dataType == 2 or dataType == 3 or dataType == 4">
 			update product
 			set product_status = #{dataStatus}
 			where product_type = #{dataType} 
 				  and product_no = #{dataNo}
-			</if>
 		</if>
 		<if test="dataType == 5">
 			update users
@@ -27,6 +26,11 @@
 			update recipe
 			set recipe_status = #{dataStatus}
 			where food_no = #{dataNo}
+		</if>
+		<if test="dataType == 7">
+			update review
+			set review_status = #{dataStatus}
+			where review_no = #{dataNo}
 		</if>
 	</update>
 	
@@ -117,9 +121,73 @@
 	</delete>
 
 
-<!--Admin-관리자페이지 -->
-	<select id="">
+<!--Review -->
+	<select id="getReviewCount" resultType="_int">
+		select count(*)
+		from review
+		<if test="kind == 0 or kind == -1">
+			where order_no = ${kind}
+		</if>
+		<if test="kind == null">
+			where not order_no in (0, -1)
+		</if>
+	</select>
 	
+	<select id="selectReviewList" resultMap="reviewResultSet">
+<!-- 	review 조건 -->
+<!-- 	레시피후기					kind = 0	 -->
+<!-- 	게시판댓글					kind = -1 -->
+<!-- 	전체상품후기				kind = null -->
+<!-- 	식품상품후기	type = 1 	kind = null -->
+<!-- 	메뉴상품후기	type = 2 	kind = null -->
+<!-- 	식재료상품후기	type = 3 	kind = null -->
+<!-- 	도구상품후기	type = 4 	kind = null -->
+<!--  +	검색 			-->
+		select *
+		from review
+		<if test="kind == 0">
+				join recipe on(product_no = food_no)
+			where order_no = ${kind}
+		</if>
+		<if test="kind == -1">
+				join board on(product_no = board_no)
+			where order_no = ${kind}
+		</if>
+		<if test="kind == null">
+			<if test="type == 1">
+				join food using(product_no)
+			</if>
+			<if test="type == 2">
+				join menu using(product_no)
+			</if>
+			<if test="type == 3">
+				join ingredient using(product_no)
+			</if>
+			<if test="type == 4">
+				join tool using(product_no)
+			</if>
+			where not order_no in (0, -1)
+			<if test="type == 1 or type == 2 or type == 3 or type == 4">
+				and product_type = ${type}
+			</if>
+		</if>
+		<if test="searchText != null">
+			<if test='searchType == "name"'>
+				and users_name like '%${searchText}%'
+			</if>
+			<if test='searchType == "id"'>
+				and users_id like '%${searchText}%'
+			</if>
+		</if>
+		<if test="number != null">
+			and review_no = ${number}
+		</if>
+	</select>
+	
+	<select id="selectReview" resultMap="reviewResultSet">
+		select *
+		from review
+		where review_no = ${reviewNo}
 	</select>
 
 
@@ -263,6 +331,7 @@
 		update menu
 		set menu_name = #{menuName},
 			menu_type = #{menuType},
+			menu_kind = #{menuKind},
 			menu_content = #{menuContent}
 		where product_no = #{productNo}
 	</update>
@@ -273,8 +342,8 @@
 	</delete>
 
 	<insert id="insertMenu">
-		insert into menu(product_no, menu_name, menu_type, menu_content)
-		values(#{productNo}, #{menuName}, #{menuType}, #{menuContent})
+		insert into menu(product_no, menu_name, menu_type, menu_kind, menu_content, menu_no)
+		values(#{productNo}, #{menuName}, #{menuType}, ${menuKind}, #{menuContent}, seq_menu_no.nextval)
 	</insert>
 	
 	<insert id="insertMenuList">
@@ -367,31 +436,45 @@
 	</select>
 	
 	<select id="selectFoodList" resultMap="foodResultSet">
-		select *
-		from (select * 
-			  from food
-			  order by product_no desc) 
-		<if test="searchText != null">
-			<if test='searchType == "name"'>
-				where food_name like '%${searchText}%'
+		<if test="type == 3">
+			select *
+			from food
+			where food_no in (select food_no
+							  from food
+							  group by food_no
+							  having count(*) = 2)
+				and food_type = 1
+				<if test="kind != null">
+					and food_kind = #{kind} 
+				</if>
+		</if>		
+		<if test="type != 3">
+			select *
+			from (select * 
+				  from food
+				  order by product_no desc) 
+			<if test="searchText != null">
+				<if test='searchType == "name"'>
+					where food_name like '%${searchText}%'
+				</if>
 			</if>
-		</if>
 <!-- 		여기 문제생길 각인데?  'where' 이 두번 반복될수도-->
 <!--		그치만 둘을 같이 쓰는 경우를 안만들었음 (아직) -->
-		<if test="type != 0">
-			where food_type = ${type}
-			<if test="kind != 0">
-				and food_kind = ${kind}
-				order by food_name
+			<if test="type != 0">
+				where food_type = ${type}
+				<if test="kind != null">
+					and food_kind = ${kind}
+					order by food_name
+				</if>
+				<if test="kind == null">
+					order by food_name
+				</if>
 			</if>
-			<if test="kind == 0">
-				order by food_name
-			</if>
-		</if>
-		<if test="type == 0">
-			<if test="kind != 0">
-				where food_kind = ${kind}
-				order by food_name
+			<if test="type == 0">
+				<if test="kind != null">
+					where food_kind = ${kind}
+					order by food_name
+				</if>
 			</if>
 		</if>
 	</select>
@@ -403,7 +486,7 @@
 						  from food
 						  group by food_no
 						  having count(*) = 1)
-		<if test="kind != 0">
+		<if test="kind != null">
 			and food_kind = #{kind}
 		</if>	
 		<if test="type != 0">
@@ -566,7 +649,10 @@
 		</foreach>
 	</delete>
 
+
+
 <!--ResultSet -->
+<!-- ㅡ공용 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">
 		<id column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_TYPE" property="productType"/>
@@ -590,6 +676,26 @@
 		<result column="image_level" property="imageLevel"/>
 	</resultMap>
 	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Review" id="reviewResultSet">
+		<id column="REVIEW_NO" property="reviewNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="REVIEW_TITLE" property="reviewTitle"/>
+		<result column="REVIEW_CONTENT" property="reviewContent"/>
+		<result column="REVIEW_SCORE" property="reviewScore"/>
+		<result column="REVIEW_STATUS" property="reviewStatus"/>
+		<result column="REVIEW_DATE" property="reviewDate"/>
+		<result column="REVIEW_WRITER" property="reviewWriter"/>
+		
+		<result column="FOOD_NO" property="foodNo"/>
+		<result column="RECIPE_NAME" property="recipeName"/>
+
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		
+		<result column="PRODUCT_NAME" property="productName"/>
+	</resultMap>
+	
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Options" id="optionsResultSet">
 		<id column="OPTION_NO" property="optionNo"/>
 		<result column="PRODUCT_NO" property="productNo"/>
@@ -597,6 +703,8 @@
 		<result column="OPTION_VALUE" property="optionValue"/>
 	</resultMap>
 	
+	
+<!-- ㅡnot 공용 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	
 	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
@@ -630,7 +738,9 @@
 		<id column="PRODUCT_NO" property="productNo"/>
 		<result column="MENU_NAME" property="menuName"/>
 		<result column="MENU_TYPE" property="menuType"/>
+		<result column="MENU_KIND" property="menuKind"/>
 		<result column="MENU_CONTENT" property="menuContent"/>
+		<result column="MENU_NO" property="menuNo"/>
 	</resultMap>
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">

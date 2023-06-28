@@ -42,7 +42,7 @@
 						<td>${rp.foodNo}
 							<input type="hidden" name="foodNo" value="${rp.foodNo}"></td>
 						<td>
-							<a href="${contextPath}/adminRecipeDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&foodNo=${rp.foodNo}&usersId=${rp.usersId}">${rp.recipeName}</a>
+							<a href="${contextPath}/adminRecipeDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&foodNo=${rp.foodNo}">${rp.recipeName}</a>
 						</td>
 						<td>${rp.categoryIngredient}</td>
 						<td>${rp.categorySituation}</td>
@@ -75,6 +75,8 @@
 		<jsp:include page="../common/adminSearchForm.jsp"/>
 		
 		<jsp:include page="../common/adminPaging.jsp"/>
+		
+		
 		
 	</div>
 
@@ -161,6 +163,9 @@
 				}
 			}
 		}
+		
+		
+		
 	</script>
 	
 	

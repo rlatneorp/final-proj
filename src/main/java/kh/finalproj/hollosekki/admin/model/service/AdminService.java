@@ -18,6 +18,7 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -250,6 +251,20 @@ public class AdminService {
 
 	public ArrayList<AdminMain> adminMainWeek() {
 		return aDAO.adminMainWeek(sqlSession);
+	}
+
+	
+//	Review-리뷰
+	public int getReviewCount(AdminBasic ab) {
+		return aDAO.getReviewCount(sqlSession, ab);
+	}
+
+	public ArrayList<Review> selectReviewList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectReviewList(sqlSession, pi, ab);
+	}
+
+	public Review selectReview(Integer reviewNo) {
+		return aDAO.selectReview(sqlSession, reviewNo);
 	}
 
 

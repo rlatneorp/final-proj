@@ -270,15 +270,15 @@ public class MarketController {
       r.setReviewScore(r.getReviewScore());
       r.setReviewWriter(users.getNickName());
       
-      int result = mkService.insertReview(r);
-      
-//      System.out.println(imageFiles);
-      
-       
-      if(result > 0) {
-         model.addAttribute("productNo", productNo);
-         model.addAttribute("review", r);
-      }
+//      int result = mkService.insertReview(r);
+//      
+////      System.out.println(imageFiles);
+//      
+//       
+//      if(result > 0) {
+//         model.addAttribute("productNo", productNo);
+//         model.addAttribute("review", r);
+//      }
       
       
       

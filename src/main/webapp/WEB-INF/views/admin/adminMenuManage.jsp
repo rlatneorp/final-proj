@@ -24,15 +24,16 @@
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>
 					<th style="width: 19%">식단이름</th>
-					<th style="width: 9%">분류</th>
+					<th style="width: 8%">분류</th>
+					<th style="width: 8%">타입</th>
 					<th style="width: 9%">가격</th>
-					<th style="width: 8%">할인률</th>
-					<th style="width: 8%">재고</th>
-					<th style="width: 8%">구매자</th>
-					<th style="width: 8%">조회수</th>
-					<th style="width: 8%">좋아요</th>
-					<th style="width: 10%">상태</th>
-					<th style="width: 7%">
+					<th style="width: 7%">할인률</th>
+					<th style="width: 7%">재고</th>
+					<th style="width: 7%">구매자</th>
+					<th style="width: 7%">조회수</th>
+					<th style="width: 7%">좋아요</th>
+					<th style="width: 9%">상태</th>
+					<th style="width: 6%">
 						<button type="button" class="allSelect" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 45px; height: 25px; font-size: 12px; font-weight: bold;">전체</button>
 					</th>
 				</tr>
@@ -46,9 +47,13 @@
 							<a href="${contextPath}/adminMenuDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&productNo=${m.productNo}">${m.menuName}</a>
 						</td>
 						<td>
-							<c:if test="${m.menuType eq 1}">다이어트</c:if>
-							<c:if test="${m.menuType eq 2}">육류</c:if>
-							<c:if test="${m.menuType eq 3}">해산물</c:if>
+							<c:if test="${m.menuKind eq 1}">다이어트</c:if>
+							<c:if test="${m.menuKind eq 2}">육류</c:if>
+							<c:if test="${m.menuKind eq 3}">해산물</c:if>
+						</td>
+						<td>
+							<c:if test="${m.menuType eq 1}">식재료</c:if>
+							<c:if test="${m.menuType eq 2}">밀키트</c:if>
 						</td>
 						<td>
 							<fmt:formatNumber pattern="###,###,###" value="${m.productPrice}"/>원

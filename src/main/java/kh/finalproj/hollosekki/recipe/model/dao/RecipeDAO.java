@@ -7,9 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeElement;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 @Repository
@@ -144,6 +146,26 @@ public class RecipeDAO {
 		int offset = (rpi.getCurrentPage() - 1) * rpi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, rpi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("recipeMapper.selectReview", foodNo, rowBounds);
+	}
+
+	public ArrayList<Ingredient> selectIngredient(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.selectIngredient");
+	}
+
+	public void insertIngredient(SqlSessionTemplate sqlSession, ArrayList<RecipeElement> reelList) {
+		sqlSession.insert("recipeMapper.insertIngredient", reelList);
+	}
+
+	public void insertNewIngredient(SqlSessionTemplate sqlSession, String newI) {
+		sqlSession.insert("recipeMapper.insertNewIngredient", newI);
+	}
+
+	public Ingredient selectNewIngredient(SqlSessionTemplate sqlSession, String newI) {
+		return sqlSession.selectOne("recipeMapper.selectNewIngredient", newI);
+	}
+
+	public ArrayList<RecipeElement> selectRecipeElement(SqlSessionTemplate sqlSession, int foodNo) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.selectRecipeElement", foodNo);
 	}
 
 

@@ -3,9 +3,11 @@ package kh.finalproj.hollosekki.recipe.model.service;
 import java.util.ArrayList;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeElement;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 public interface RecipeService {
@@ -69,6 +71,16 @@ public interface RecipeService {
 	int getReviewCount(int foodNo);
 
 	ArrayList<Review> selectReviewList(PageInfo rpi, int foodNo);
+
+	ArrayList<Ingredient> selectIngredient();
+
+	void insertIngredient(ArrayList<RecipeElement> reelList);
+
+	void insertNewIngredient(String newI);
+
+	Ingredient selectNewIngredient(String newI);
+
+	ArrayList<RecipeElement> selectRecipeElement(int foodNo);
 
 
 }

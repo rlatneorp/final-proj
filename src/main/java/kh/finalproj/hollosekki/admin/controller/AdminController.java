@@ -36,6 +36,7 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -65,6 +66,7 @@ public class AdminController {
 	public String adminSalesDetail() {
 		return "adminSalesDetail";
 	}
+	
 	
 //	order-주문 관리
 	@GetMapping("adminOrderManage.ad")
@@ -223,22 +225,23 @@ public class AdminController {
 	}
 	@GetMapping("adminMenuDetail.ad")
 	public String adminMenuDetail(
-//			@ModelAttribute AdminBasic ab,
 								  @RequestParam("productNo") int pNo,
 							 	  Model model) {
+		Menu m = aService.selectMenu(pNo);
 		
 		PageInfo pi = new PageInfo();
 		AdminBasic ab1 = new AdminBasic();
 		AdminBasic ab2 = new AdminBasic();
 		pi.setCurrentPage(1);
 		pi.setBoardLimit(100000);
-		ab1.setKind(1);
+		ab1.setKind(1);  // 메인메뉴
+		ab1.setType(m.getMenuType());  // 식재료/밀키트 타입
+		ab2.setKind(2);  // 서브메뉴
+		ab2.setType(m.getMenuType());  // 식재료/밀키트 타입
 		ArrayList<Food> fList1 = aService.selectFoodList(pi, ab1); 
-		ab2.setKind(2);
 		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
 		
 //		ab.setKind(0);
-		Menu m = aService.selectMenu(pNo);
 		ArrayList<String> fNoArr = aService.selectFoodProductNo(pNo);
 		String str = "";
 		for(int i = 0; i<fNoArr.size(); i++) {
@@ -250,10 +253,6 @@ public class AdminController {
 		m.setFoodProductNo(str);
 		
 		m = (Menu)selectProduct(m);
-//		HashMap<String, Integer> map = new HashMap<String, Integer>();
-//		map.put("imageDivideNo", pNo);
-//		map.put("imageType", 4);
-//		Image img = aService.selectAllImageList(map).get(0);
 		Image img = selectAllImageList(pNo, 4, 1).get(0);
 		
 		if(m != null) {
@@ -414,12 +413,6 @@ public class AdminController {
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
 				if(returnArr[1] != null) {
-//					image.setImageDivideNo(resultPd);
-//					image.setImageType(4);
-//					image.setImagePath(returnArr[0]);
-//					image.setImageOriginalName(imageFile.getOriginalFilename());
-//					image.setImageRenameName(returnArr[1]);
-//					image.setImageLevel(1);
 					image = setImage(resultPd, 4, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 1);
 				}
 			}
@@ -1285,10 +1278,12 @@ public class AdminController {
 	}
 	@GetMapping("adminRecipeDetail.ad")
 	public String adminRecipeDetail(Model model,
+									HttpSession session,
 									@ModelAttribute Recipe r) {
+		Users user = (Users)session.getAttribute("loginUser");
 		
-		model.addAttribute("page", 1);
-		model.addAttribute("rId", r.getUsersId());
+//		model.addAttribute("page", 1);
+		model.addAttribute("rId", user.getUsersId());
 		model.addAttribute("rNo", r.getFoodNo());
 		return "redirect:recipeDetail.rc";
 	}
@@ -1331,11 +1326,39 @@ public class AdminController {
 			throw new AdminException("레시피 삭제 실패");
 		}
 	}
+
+
+//	Review-리뷰 Detail
+	@GetMapping("adminReviewDetail.ad")
+	public String adminReviewDetail(@RequestParam("reviewNo") Integer reviewNo,
+									Model model) {
+
+		Review r = aService.selectReview(reviewNo);
+		
+		model.addAttribute("r", r);
+		return "adminReviewDetail";
+	}
+	
+	
 	
 //	RecipeReview-레시피후기 관리
 	@GetMapping("adminRecipeReviewManage.ad")
-	public String adminRecipeReviewManage() {
-		return "adminRecipeReviewManage";
+	public String adminRecipeReviewManage(HttpServletRequest request,
+										  Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		ab.setKind(0);
+
+		int listCount = aService.getReviewCount(ab);
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Review> rprList = aService.selectReviewList(pi, ab);
+		
+		if(rprList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("rprList", rprList);
+			return "adminRecipeReviewManage";
+		}else {
+			throw new AdminException("레시피 목록 조회에 실패하였습니다.");
+		}
 	}
 	@GetMapping("adminRecipeReviewDetail.ad")
 	public String adminRecipeReviewDetail() {
@@ -1428,6 +1451,7 @@ public class AdminController {
 //		dataType = 
 //		5	-> users	status 업데이트
 //		6	-> recipe	status 업데이트
+//		7	-> review	status 업데이트
 		
 		int result = aService.updateStatus(map);
 		String msg = "msg";

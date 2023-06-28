@@ -150,12 +150,12 @@ input[type="text"] {
 
 /* 결제 div */
 .payElement{
-	padding-top: 40px; text-align: center; margin: 0 10px; border: 2px solid black; 
-	width: 250px; height: 150px; border-radius: 2em
+	padding-top: 40px; text-align: center; margin: 0 10px; border: 4px solid black; 
+	width: 250px; height: 165px; border-radius: 2em; 
 }
 
 .payElement:hover{
-	cursor:pointer;
+	cursor:pointer; background-color:#B0DAFF; border:5px solid black;
 }
 
 .popup {
@@ -463,8 +463,8 @@ input[type="text"] {
 	<br>
 	<div style="display: flex; justify-content: center;">
     <div class="payElement"  onclick="requestPay()" id="requestPay">
-   		<div  style="margin-left:40%; background:#B0DAFF; padding-top:8px; border-radius:2em; width:45px; height:45px; "><i class="bi bi-credit-card" style="font-size: 30px;"></i></div>
-    	<div>신용카드 결제</div>
+   		<div style="margin:0 auto;border-radius:2em; width:60px; height:60px; "><i class="bi bi-credit-card" style="font-size: 50px;"></i></div>
+    	<div><b style="font-size:25px;">결제</b></div>
     </div>
 </div>
 
@@ -1193,57 +1193,6 @@ input[type="text"] {
 	var IMP = window.IMP;
 	IMP.init("imp02384108"); 
 	
-	const parentNo = document.getElementsByClassName('imgTab');
-	const orderInfo = []; /* 상품 단가, 할인률?, 적립금, 포인트 사용 금액 */
-	const orderAddress = [];
-// 	for(pn of parentNo) {
-// 		const productNo = pn.firstChild.nextSibling.value;
-// 		const usersNo = '${loginUser.usersId}';
-// 		const count = document.getElementById('size-' + productNo).innerText;
-// 		const sum = parseInt(document.getElementById('sum-' + productNo).innerText.replace(/,/g, ''));
-// 		const price = document.getElementById('originP-' + productNo);
-// 		const sale = document.getElementById('sale-' + productNo);
-// 		if(price != null) {
-// 			orderInfo.push(price.innerText);
-// 		}
-// 		if(sale != null) {
-// 			orderInfo.push(sale.innerText);
-// 		}
-		
-// 		const plusPoint = document.getElementById('point-' + productNo).innerText;
-// 		const usePoint = document.getElementById('inputPoint').innerText;
-		
-		
-// 		orderInfo.push(plusPoint);
-// 		orderInfo.push(usePoint);
-		
-// 		const orderDate ='';
-// 		const postcode = document.getElementById('sample6_postcode').innerText;
-// 		const address = document.getElementById('sample6_address').innerText;
-// 		const detailAddress = document.getElementById('sample6_detailAddress').innerText;
-// 		orderAddress.push(postcode);
-// 		orderAddress.push(address);
-// 		orderAddress.push(detailAddress);
-		
-// 		const deliveryComment = document.getElementById('shippingAsk').innerText
-// 	}
-// 	console.log('oa : ' + orderAddress);
-// 	console.log('oi : ' + orderInfo);
-	
-	
-	
-	//1. 주문명 
-	//2. 개수 
-	//3. 합계금액
-	//
-	
-	
-	
-	
-	
-	
-	
-	
 	const payContent = document.getElementsByClassName('payContent');
 	requestPay = () => {
 		
@@ -1259,43 +1208,181 @@ input[type="text"] {
 			}
 		}
 		
-		IMP.request_pay({
-	        pg: 'html5_inicis', 
-	        pay_method: 'card',
-	        name: '주문명:결제테스트',
-	        amount: 100,
-	        //가격
-	//	        buyer_email: 'iamport@siot.do',
-	//	        buyer_name: '구매자이름',
-	//	        buyer_tel: '010-1234-5678',
-	//	        buyer_addr: '서울특별시 강남구 삼성동',
-	//	        buyer_postcode: '123-456',
-	//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
-	//         m_redirect_url: 'humanentec.iptime.org'
-	        /*
-	        모바일 결제시,
-	        결제가 끝나고 랜딩되는 URL을 지정
-	        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
-	        */
-	    }, function (rsp) {
-	        if (rsp.success) {
-	            var msg = '결제가 완료되었습니다.';
-	            location.href='${contextPath}/paySuccess.ma';
-	            //ajax !!!!! 
+		const parentNo = document.getElementsByClassName('imgTab');
+		const orderInfo = []; /* 상품 단가, 할인률?, 적립금, 포인트 사용 금액 */
+		
+		const shipSum = parseInt(document.getElementById('shipSum').innerText.replace(/,/g, '')); //총합 금액 
+		const postcode = document.getElementById('sample6_postcode').value;
+		const address = document.getElementById('sample6_address').value;
+		const detailAddress = document.getElementById('sample6_detailAddress').value;
+		const deliveryComment = document.getElementById('shippingAsk').value; //필요 
+		
+		const orderAddress = []; //필요 
+		orderAddress.push(postcode);
+		orderAddress.push(address);
+		orderAddress.push(detailAddress);
+		
+		for(pn of parentNo) {
+			orderInfo.length = 0; //배열 비우기 
+			//상품 list 구매내역 테이블에 담기 
+			//insert 시 필요 데이터 : 
+			//productNo, users_no, orderCount, totalPrice(개별 합계), orderAddress, orderStock(일단null), orderComment
+			const productNo = pn.firstChild.nextSibling.value; 
+			const usersNo = ${loginUser.usersNo};
+			const count = document.getElementById('size-' + productNo).innerText;
+			const sum = parseInt(document.getElementById('sum-' + productNo).innerText.replace(/,/g, ''));
+			
+			/* 상품 단가, 할인률, 적립금, 포인트 사용 금액 */
+			const price = document.getElementById('originP-' + productNo); //단가
+			const sale = document.getElementById('sale-' + productNo); //할인률
+			if(price != null) {
+				orderInfo.push('가격 : ' + price.innerText);
+			} else { //null이면 
+				orderInfo.push('가격 : ' + sum);
+			}
+			if(sale != null) {
+				orderInfo.push('할인가 : ' + sale.innerText);
+			} else {
+				orderInfo.push('할인가 없음');
+			}
+			
+			const plusPoint = document.getElementById('point-' + productNo).innerText; //해당 상품에 대한 포인트 적립  
+			const usePoint = document.getElementById('inputPoint').value; //포인트 차감 (동일)
+			
+			orderInfo.push('적립금 : ' + plusPoint);
+			if(usePoint != '') {
+				orderInfo.push('차감적립 : ' + usePoint);
+			} else {
+				orderInfo.push('차감적립 : ' + 0);
+			}
+			orderInfo.push('/');
+			const join = orderInfo.join(',');
+			const orderInfos = join.replace(/,\/,/g, '/').replace(/,\/$/, '');
+// 			console.log('-----------------------------------')
+// 			console.log('productNo : ' + productNo);
+// 			console.log('usersNo : ' + usersNo);
+// 			console.log('orderCount : ' + count);
+// 			console.log('sum : ' + sum);
+// 			console.log('orderAddress : ' + orderAddress);
+// 			console.log('deliveryComment : ' + deliveryComment);
+// 			console.log('orderInfos : ' + orderInfos);
+			
+			$.ajax({
+				url:'${contextPath}/insertPay.ma',
+				data:{
+					productNo:productNo,
+					usersNo:usersNo,
+					orderCount:count,
+					totalPrice:sum,
+					orderAddress:orderAddress,
+					orderDeliveryComment:deliveryComment,
+					orderInfo:orderInfos,
+				},
+				success: data => {
+// 					console.log(data); 
+// 					location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + plusPoint;
+					if(data == "success") {
+						IMP.request_pay({
+					        pg: 'html5_inicis', 
+					        pay_method: 'card',
+					        name: '주문명:결제테스트',
+// 					        amount:shipSum,
+							amount:100,
+//				 	        buyer_name:
+					        //가격
+					//	        buyer_email: 'iamport@siot.do',
+					//	        buyer_name: '구매자이름',
+					//	        buyer_tel: '010-1234-5678',
+					//	        buyer_addr: '서울특별시 강남구 삼성동',
+					//	        buyer_postcode: '123-456',
+					//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
+					//         m_redirect_url: 'humanentec.iptime.org'
+					        /*
+					        모바일 결제시,
+					        결제가 끝나고 랜딩되는 URL을 지정
+					        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
+					        */
+					    }, function (rsp) {
+					        if (rsp.success) {
+					            var msg = '결제가 완료되었습니다.';
+//				 	          
+					            //usePoint, plusPoint 반영 
+				 	            location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + plusPoint;
+					            
+					            
+					            
+					            
+					            
+					//             msg += '고유ID : ' + rsp.imp_uid;
+					//             msg += '상점 거래ID : ' + rsp.merchant_uid;
+					//             msg += '결제 금액 : ' + rsp.paid_amount;
+					//             msg += '카드 승인번호 : ' + rsp.apply_num;
+					        } else {
+					            var msg = '결제에 실패하였습니다.';
+					//             msg += '에러내용 : ' + rsp.error_msg;
+					        }
+					        alert(msg);
+					    });
+					}else {
+						console.log(data);
+						alert('결제 실패 : ');
+					}
+										
+				},
+				error: data =>{
+					console.log(data);
+				}
+			})
+		}
+		
+		const join = orderInfo.join(',');
+// 		const orderInfos = join.replace(/,\/,/g, '/').replace(/,\/$/, '');
+// 		console.log('orderInfos : ' + orderInfos)
+		
+// 		IMP.request_pay({
+// 	        pg: 'html5_inicis', 
+// 	        pay_method: 'card',
+// 	        name: '주문명:결제테스트',
+// 	        amount:shipSum,
+// // 	        buyer_name:
+// 	        //가격
+// 	//	        buyer_email: 'iamport@siot.do',
+// 	//	        buyer_name: '구매자이름',
+// 	//	        buyer_tel: '010-1234-5678',
+// 	//	        buyer_addr: '서울특별시 강남구 삼성동',
+// 	//	        buyer_postcode: '123-456',
+// 	//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
+// 	//         m_redirect_url: 'humanentec.iptime.org'
+// 	        /*
+// 	        모바일 결제시,
+// 	        결제가 끝나고 랜딩되는 URL을 지정
+// 	        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
+// 	        */
+// 	    }, function (rsp) {
+// 	        if (rsp.success) {
+// 	            var msg = '결제가 완료되었습니다.';
+// // 	            $.ajax({
+// // 	            	url:'${contextPath}/insertPay.ma',
+// // 	            })
+	            
+	            
+	            
+// // 	            location.href='${contextPath}/paySuccess.ma';
+	          
 	            
 	            
 	            
 	            
-	//             msg += '고유ID : ' + rsp.imp_uid;
-	//             msg += '상점 거래ID : ' + rsp.merchant_uid;
-	//             msg += '결제 금액 : ' + rsp.paid_amount;
-	//             msg += '카드 승인번호 : ' + rsp.apply_num;
-	        } else {
-	            var msg = '결제에 실패하였습니다.';
-	//             msg += '에러내용 : ' + rsp.error_msg;
-	        }
-	        alert(msg);
-	    });
+// 	//             msg += '고유ID : ' + rsp.imp_uid;
+// 	//             msg += '상점 거래ID : ' + rsp.merchant_uid;
+// 	//             msg += '결제 금액 : ' + rsp.paid_amount;
+// 	//             msg += '카드 승인번호 : ' + rsp.apply_num;
+// 	        } else {
+// 	            var msg = '결제에 실패하였습니다.';
+// 	//             msg += '에러내용 : ' + rsp.error_msg;
+// 	        }
+// 	        alert(msg);
+// 	    });
 	} // requestPay 끝
 	
 

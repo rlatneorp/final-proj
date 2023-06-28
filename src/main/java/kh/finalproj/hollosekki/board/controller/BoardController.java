@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.board.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,9 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
 import kh.finalproj.hollosekki.board.exception.BoardException;
@@ -22,8 +24,7 @@ import kh.finalproj.hollosekki.board.model.service.BoardService;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
-import kh.finalproj.hollosekki.common.model.vo.Users;
-import kh.finalproj.hollosekki.market.model.vo.Review;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
 @Controller
 public class BoardController {
@@ -41,14 +42,17 @@ public class BoardController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		ArrayList<Board> list = bService.freeBoardView(b, pi);
+		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		
 		return "freeBoard";
 	}
 	
-	@RequestMapping("selectFreeBoard.bo")
-	public ModelAndView selectFreeBoard(ModelAndView mv, HttpSession session,@RequestParam("bId") int bId, @RequestParam("writer") String writer, @RequestParam("page") int page) {
+	@RequestMapping("detailFreeBoard.bo")
+	public String selectFreeBoard(Model model,HttpSession session, 
+			@RequestParam("bId") int bId, @RequestParam("writer") String writer, 
+			@RequestParam("page") int page) {
 		Users u = (Users)session.getAttribute("loginUser");
 		String login = null;
 		if(u != null) {
@@ -58,33 +62,49 @@ public class BoardController {
 		if(!writer.equals(login)) {
 			yn = true;
 		}
-		
-		Board b = bService.selectBoard(bId, yn);	
-		if(b != null) {
-			mv.addObject("b", b);
-			mv.addObject("page", page);
-			mv.setViewName("detailFreeBoard");
+		ArrayList<Board> list = bService.selectReply(bId);
+		Board blist = bService.selectBoard(bId, yn);	
+		if(blist != null) {
+			model.addAttribute("blist", blist);
+			model.addAttribute("list", list);
+			model.addAttribute("page", page);
+			model.addAttribute("login", login);
 
-			return mv;
+			return "detailFreeBoard";
 		} else {
-			throw new BoardException("�Խñ� �󼼺��⸦ �����Ͽ����ϴ�.");
+			throw new BoardException("�Խñ� ��ȸ�� �����Ͽ����ϴ�.");
 		}
 		
 	}
 	
-//	@RequestMapping("insertReply.bo")
-//	public void insertReply(@ModelAttribute Review r,HttpServletResponse response) {
-//		bService.insertReply(r);
-//		ArrayList<Review> list = bService.selectReply(r.getRefBoardId());
-//		
-//		Gson gson = new Gson();
-//		try {
-//			gson.toJson(list, response.getWriter());
-//		} catch (JsonIOException | IOException e) {
-//			e.printStackTrace();
-//		}
-//		
-//	}
+	@RequestMapping("insertReply.bo")
+	public void insertReply(HttpServletResponse response, @ModelAttribute Board b) {
+		
+		bService.insertReply(b);
+		ArrayList<Board> rlist = bService.selectReply(b.getProductNo());
+		System.out.println(rlist);
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
+		Gson gson = gb.create();
+		try {
+			gson.toJson(rlist, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}	
+	
+	@RequestMapping("replyDelete.bo")
+	@ResponseBody
+	public String replyDelete(@ModelAttribute Board b) {
+		
+//		Board replyNo = bService.selectDelReply(b);
+		
+		int result = bService.replyDelete(b);
+		
+		return result == 1 ? "success" : "fail";
+	}
+		
 	
 	@RequestMapping("freeBoardWrite.bo")
 	public String freeBoardWrite() {

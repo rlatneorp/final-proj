@@ -29,12 +29,14 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.ReviewPagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
+import kh.finalproj.hollosekki.recipe.model.vo.RecipeElement;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 
 @SessionAttributes("loginUser")
@@ -88,7 +90,7 @@ public class RecipeController {
 //	레시피 상세조회
 	@RequestMapping("recipeDetail.rc")
 	public ModelAndView recipeDetail(@RequestParam("rId") String usersId, @RequestParam("rNo") int foodNo,
-							   @RequestParam("page") int page, HttpSession session, ModelAndView mv) {
+							   @RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv) {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		String loginId = null;
@@ -108,6 +110,9 @@ public class RecipeController {
 		Image thum = rService.recipeDetailThum(foodNo);
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
 		ArrayList<Review> reList = rService.selectReviewList(rpi, foodNo);
+		ArrayList<RecipeElement> eleList = rService.selectRecipeElement(foodNo);
+		
+		System.out.println(reList);
 		
 		if(recipe != null) {
 			mv.addObject("recipe", recipe);
@@ -117,6 +122,7 @@ public class RecipeController {
 			mv.addObject("reList", reList);
 			mv.addObject("page", page);
 			mv.addObject("rpi", rpi);
+			mv.addObject("eleList", eleList);
 			mv.setViewName("recipeDetail");
 			
 			return mv;
@@ -127,10 +133,14 @@ public class RecipeController {
 	
 //	레시피 작성 창으로
 	@RequestMapping("recipeWrite.rc")
-	public String recipeWrite(HttpSession session) {
+	public String recipeWrite(HttpSession session, Model model) {
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		
+		ArrayList<Ingredient> iList = rService.selectIngredient();
+		
 		if(loginUser != null) {
+			model.addAttribute("iList", iList);
+			
 			return "recipeWrite";
 		} else {
 			throw new RecipeException("레시피 작성을 할 수 없습니다.");
@@ -144,6 +154,8 @@ public class RecipeController {
 							  @RequestParam("thum") MultipartFile thum,
 							  @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
 							  @RequestParam("comPic") ArrayList<MultipartFile> comFiles,
+							  @RequestParam("elementQuantity") String elementQuantity, @RequestParam(value="newIngredient", required=false) ArrayList<String> newIng,
+							  @RequestParam("elementIngredient") ArrayList<String> elementIngredient,
 							  @ModelAttribute RecipeOrder rc) {
 		
 		Users user =(Users)request.getSession().getAttribute("loginUser");
@@ -151,13 +163,40 @@ public class RecipeController {
 		r.setUsersNo(userNo);
 		
 		String id = user.getUsersId();
-		
 		int result1 = 0;
 		int result2 = 0;
 		int result3 = 0;
 		int result4 = 0;
 		
 		result1 =rService.insertRecipe(r);
+		
+		ArrayList<RecipeElement> reelList = new ArrayList<>();
+		String[] quantity = elementQuantity.split(",");
+		
+		for(int i = 0; i < elementIngredient.size(); i++) {
+			if(!quantity[i].equals("") && !elementIngredient.get(i).isEmpty()) {
+				RecipeElement reel = new RecipeElement();
+				reel.setElementQuantity(quantity[i]);
+				reel.setElementName(elementIngredient.get(i).split("-")[0]);
+				reel.setElementNo(Integer.parseInt(elementIngredient.get(i).split("-")[1]));
+				
+				reelList.add(reel);
+			} else if(!newIng.isEmpty()){
+				RecipeElement reel = new RecipeElement();
+				String newI = newIng.get(i);
+				rService.insertNewIngredient(newI);
+				Ingredient ing = rService.selectNewIngredient(newI);
+				
+				reel.setElementName(ing.getIngredientName());
+				reel.setElementNo(ing.getIngredientNo());
+				reel.setElementQuantity(quantity[i]);
+				
+				reelList.add(reel);
+			}
+		}
+		
+		rService.insertIngredient(reelList);
+		
 		
 //		썸네일 이미지
 		ArrayList<Image> thumImgList = new ArrayList<>();
@@ -655,13 +694,14 @@ public class RecipeController {
 							@RequestParam("foodNo") String foodNo, HttpServletResponse response) {
 		Review re = new Review();
 		
-		re.setProductNo(0);
-		re.setOrderNo(Integer.parseInt(foodNo));
+		re.setProductNo(Integer.parseInt(foodNo));
+		re.setOrderNo(0);
 		re.setReviewContent(content);
 		re.setReviewWriter(id);
 		
 		rService.reviewWrite(re);
 		ArrayList<Review> reList = rService.selectReview(Integer.parseInt(foodNo));
+		
 		
 		response.setContentType("application/json; charset=UTF-8");
 		

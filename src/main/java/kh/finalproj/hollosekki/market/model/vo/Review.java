@@ -13,16 +13,16 @@ public class Review extends Image{
 	private String reviewContent;
 	private int reviewScore;
 	private String reviewStatus;
-	private String reviewStar;
 	private Date reviewDate;
 	private String reviewWriter;
+	private String reviewStar;
 	
 	public Review() {
 		super();
 	}
 	
 	public Review(int productNo, int orderNo, int reviewNo, String reviewTitle, String reviewContent, int reviewScore,
-			String reviewStatus, String reviewStar, Date reviewDate, String reviewWriter) {
+			String reviewStatus, Date reviewDate, String reviewWriter, String reviewStar) {
 		super();
 		this.productNo = productNo;
 		this.orderNo = orderNo;
@@ -31,9 +31,9 @@ public class Review extends Image{
 		this.reviewContent = reviewContent;
 		this.reviewScore = reviewScore;
 		this.reviewStatus = reviewStatus;
-		this.reviewStar = reviewStar;
 		this.reviewDate = reviewDate;
 		this.reviewWriter = reviewWriter;
+		this.reviewStar = reviewStar;
 	}
 
 
@@ -42,61 +42,61 @@ public class Review extends Image{
 		return productNo;
 	}
 
-	public void setProductNo(int productNo) {
-		this.productNo = productNo;
-	}
+   public void setProductNo(int productNo) {
+      this.productNo = productNo;
+   }
 
-	public int getOrderNo() {
-		return orderNo;
-	}
+   public int getOrderNo() {
+      return orderNo;
+   }
 
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
-	}
+   public void setOrderNo(int orderNo) {
+      this.orderNo = orderNo;
+   }
 
-	public int getReviewNo() {
-		return reviewNo;
-	}
+   public int getReviewNo() {
+      return reviewNo;
+   }
 
-	public void setReviewNo(int reviewNo) {
-		this.reviewNo = reviewNo;
-	}
+   public void setReviewNo(int reviewNo) {
+      this.reviewNo = reviewNo;
+   }
 
-	public String getReviewTitle() {
-		return reviewTitle;
-	}
+   public String getReviewTitle() {
+      return reviewTitle;
+   }
 
-	public void setReviewTitle(String reviewTitle) {
-		this.reviewTitle = reviewTitle;
-	}
+   public void setReviewTitle(String reviewTitle) {
+      this.reviewTitle = reviewTitle;
+   }
 
-	public String getReviewContent() {
-		return reviewContent;
-	}
+   public String getReviewContent() {
+      return reviewContent;
+   }
 
-	public void setReviewContent(String reviewContent) {
-		this.reviewContent = reviewContent;
-	}
+   public void setReviewContent(String reviewContent) {
+      this.reviewContent = reviewContent;
+   }
 
-	public int getReviewScore() {
-		return reviewScore;
-	}
+   public int getReviewScore() {
+      return reviewScore;
+   }
 
-	public void setReviewScore(int reviewScore) {
-		this.reviewScore = reviewScore;
-	}
+   public void setReviewScore(int reviewScore) {
+      this.reviewScore = reviewScore;
+   }
 
-	public String getReviewStatus() {
-		return reviewStatus;
-	}
+   public String getReviewStatus() {
+      return reviewStatus;
+   }
 
-	public void setReviewStatus(String reviewStatus) {
-		this.reviewStatus = reviewStatus;
-	}
+   public void setReviewStatus(String reviewStatus) {
+      this.reviewStatus = reviewStatus;
+   }
 
-	public String getReviewStar() {
-		return reviewStar;
-	}
+   public Date getReviewDate() {
+      return reviewDate;
+   }
 
 	public void setReviewStar(String reviewStar) {
 		this.reviewStar = reviewStar;
@@ -122,8 +122,8 @@ public class Review extends Image{
 	public String toString() {
 		return "Review [productNo=" + productNo + ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle="
 				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
-				+ reviewStatus + ", reviewStar=" + reviewStar + ", reviewDate=" + reviewDate + ", reviewWriter="
-				+ reviewWriter + "]";
+				+ reviewStatus + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + ", reviewStar="
+				+ reviewStar + "]";
 	}
 
 	

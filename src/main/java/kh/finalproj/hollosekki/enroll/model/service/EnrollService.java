@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.enroll.model.service;
 
 import java.util.ArrayList;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -9,6 +10,7 @@ import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 public interface EnrollService {
@@ -69,6 +71,16 @@ public interface EnrollService {
 	int recipeBookMarkList(int usersNo);
 
 	int menuBookMarkList(int usersNo);
+
+	ArrayList<Board> boardList(int usersNo);
+	
+	ArrayList<Review> reviewList(String usersId);
+
+	ArrayList<Review> menuReviewList(String usersId);
+
+	ArrayList<Image> menuReviewImageList();
+
+	ArrayList<Review> replyList();
 
 
 

@@ -12,18 +12,23 @@ public class Board {
 	private Date boardDate;
 	private char boardStatus;
 	private String boardType;
-	private String boardComment;
-	private int boardCommentNo;
-	private Date boardCommentDate;
-	private String boardCommentNickName;
-	private char boardCommentStatus;
 	private int boardCount;
+	private int productNo;
+	private int orderNo;
+	private int reviewNo;
+	private String reviewTitle;
+	private String reviewContent;
+	private int reviewScore;
+	private char reviewStatus;
+	private Date reviewDate;
+	private String reviewWriter;
 	
 	public Board() {}
 
 	public Board(int boardNo, int usersNo, String nickName, String boardTitle, String boardContent, Date boardDate,
-			char boardStatus, String boardType, String boardComment, int boardCommentNo, Date boardCommentDate,
-			String boardCommentNickName, char boardCommentStatus, int boardCount) {
+			char boardStatus, String boardType, int boardCount, int productNo, int orderNo, int reviewNo,
+			String reviewTitle, String reviewContent, int reviewScore, char reviewStatus, Date reviewDate,
+			String reviewWriter) {
 		super();
 		this.boardNo = boardNo;
 		this.usersNo = usersNo;
@@ -33,12 +38,16 @@ public class Board {
 		this.boardDate = boardDate;
 		this.boardStatus = boardStatus;
 		this.boardType = boardType;
-		this.boardComment = boardComment;
-		this.boardCommentNo = boardCommentNo;
-		this.boardCommentDate = boardCommentDate;
-		this.boardCommentNickName = boardCommentNickName;
-		this.boardCommentStatus = boardCommentStatus;
 		this.boardCount = boardCount;
+		this.productNo = productNo;
+		this.orderNo = orderNo;
+		this.reviewNo = reviewNo;
+		this.reviewTitle = reviewTitle;
+		this.reviewContent = reviewContent;
+		this.reviewScore = reviewScore;
+		this.reviewStatus = reviewStatus;
+		this.reviewDate = reviewDate;
+		this.reviewWriter = reviewWriter;
 	}
 
 	public int getBoardNo() {
@@ -105,46 +114,6 @@ public class Board {
 		this.boardType = boardType;
 	}
 
-	public String getBoardComment() {
-		return boardComment;
-	}
-
-	public void setBoardComment(String boardComment) {
-		this.boardComment = boardComment;
-	}
-
-	public int getBoardCommentNo() {
-		return boardCommentNo;
-	}
-
-	public void setBoardCommentNo(int boardCommentNo) {
-		this.boardCommentNo = boardCommentNo;
-	}
-
-	public Date getBoardCommentDate() {
-		return boardCommentDate;
-	}
-
-	public void setBoardCommentDate(Date boardCommentDate) {
-		this.boardCommentDate = boardCommentDate;
-	}
-
-	public String getBoardCommentNickName() {
-		return boardCommentNickName;
-	}
-
-	public void setBoardCommentNickName(String boardCommentNickName) {
-		this.boardCommentNickName = boardCommentNickName;
-	}
-
-	public char getBoardCommentStatus() {
-		return boardCommentStatus;
-	}
-
-	public void setBoardCommentStatus(char boardCommentStatus) {
-		this.boardCommentStatus = boardCommentStatus;
-	}
-
 	public int getBoardCount() {
 		return boardCount;
 	}
@@ -153,14 +122,86 @@ public class Board {
 		this.boardCount = boardCount;
 	}
 
+	public int getProductNo() {
+		return productNo;
+	}
+
+	public void setProductNo(int productNo) {
+		this.productNo = productNo;
+	}
+
+	public int getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public int getReviewNo() {
+		return reviewNo;
+	}
+
+	public void setReviewNo(int reviewNo) {
+		this.reviewNo = reviewNo;
+	}
+
+	public String getReviewTitle() {
+		return reviewTitle;
+	}
+
+	public void setReviewTitle(String reviewTitle) {
+		this.reviewTitle = reviewTitle;
+	}
+
+	public String getReviewContent() {
+		return reviewContent;
+	}
+
+	public void setReviewContent(String reviewContent) {
+		this.reviewContent = reviewContent;
+	}
+
+	public int getReviewScore() {
+		return reviewScore;
+	}
+
+	public void setReviewScore(int reviewScore) {
+		this.reviewScore = reviewScore;
+	}
+
+	public char getReviewStatus() {
+		return reviewStatus;
+	}
+
+	public void setReviewStatus(char reviewStatus) {
+		this.reviewStatus = reviewStatus;
+	}
+
+	public Date getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+	public String getReviewWriter() {
+		return reviewWriter;
+	}
+
+	public void setReviewWriter(String reviewWriter) {
+		this.reviewWriter = reviewWriter;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [boardNo=" + boardNo + ", usersNo=" + usersNo + ", nickName=" + nickName + ", boardTitle="
 				+ boardTitle + ", boardContent=" + boardContent + ", boardDate=" + boardDate + ", boardStatus="
-				+ boardStatus + ", boardType=" + boardType + ", boardComment=" + boardComment + ", boardCommentNo="
-				+ boardCommentNo + ", boardCommentDate=" + boardCommentDate + ", boardCommentNickName="
-				+ boardCommentNickName + ", boardCommentStatus=" + boardCommentStatus + ", boardCount=" + boardCount
-				+ "]";
+				+ boardStatus + ", boardType=" + boardType + ", boardCount=" + boardCount + ", productNo=" + productNo
+				+ ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle=" + reviewTitle
+				+ ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus=" + reviewStatus
+				+ ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + "]";
 	}
 
 	

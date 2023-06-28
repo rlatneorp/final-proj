@@ -7,6 +7,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -14,6 +15,7 @@ import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
@@ -152,6 +154,26 @@ public class EnrollDAO {
 
 	public int menuBookMarkList(SqlSessionTemplate sqlSession, int usersNo) {
 		return sqlSession.selectOne("enrollMapper.menuBookMarkList", usersNo);
+	}
+
+	public ArrayList<Board> boardList(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.boardList", usersNo);
+	}
+
+	public ArrayList<Review> reviewList(SqlSessionTemplate sqlSession, String usersId) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.reviewList", usersId);
+	}
+
+	public ArrayList<Review> menuReviewList(SqlSessionTemplate sqlSession, String usersId) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.menuReviewList", usersId);
+	}
+
+	public ArrayList<Image> menuReviewImageList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.menuReviewImageList");
+	}
+
+	public ArrayList<Review> replyList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.replyList");
 	}
 
 

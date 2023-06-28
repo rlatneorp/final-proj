@@ -211,12 +211,14 @@
 						chevron_right
 						</span></a><br>
 						<table style="margin-left: 10px;">
-						<tr>
-						<td>
-						<i class="bi bi-currency-dollar dollars"></i>
-						</td>
-						<td style="font-size: 18px; color: rgb(52, 152, 219);"><p class="d-inline" id="myP" style="font-weight: bold;">P</p></td>
-						</tr>
+							<tr>
+								<td>
+									<i class="bi bi-currency-dollar dollars"></i>
+								</td>
+								<td style="font-size: 18px; color: rgb(52, 152, 219);">
+									<p class="d-inline" id="myP" style="font-weight: bold;">P</p>
+								</td>
+							</tr>
 						</table>
 						<p style="font-size: 13px;">소멸 예정 포인트 0원</p>
 					</div>
@@ -269,10 +271,15 @@
 						    <div class="followDiv">
 						    	<div onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.FOLLOWING_USER_NO }' + '&page=' + '${page}'" style="cursor: pointer;">
 						    		<c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
-						    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+					    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
 						    		</c:if>
 						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-						    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+						    			<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+											<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+										</c:if>
+										<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage" onerror="this.src='${ f.SOCIAL_PROFILE_IMG }';"/>
+										</c:if>
 						    		</c:if>
 							    	<input type="hidden" value="${ f.FOLLOWING_USER_NO }" class="followingsNo">
 							    	<label class="followName">${f.NICKNAME}</label>
@@ -308,7 +315,12 @@
 						    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
 						    		</c:if>
 						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-						    			<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+						    			<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+											<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
+										</c:if>
+										<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage" onerror="this.src='${ f.SOCIAL_PROFILE_IMG }';"/>
+										</c:if>
 						    		</c:if>
 								    <input type="hidden" value="${ f.USERS_NO }" class="followersNo">
 								    <label class="followName">${f.NICKNAME}</label>

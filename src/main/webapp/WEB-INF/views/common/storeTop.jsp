@@ -254,7 +254,6 @@
 				type: 'post',
 				url: 'point.ma',
 				success: function(info){
-					console.log(info);
 					let storeP = document.querySelector('#storeP');
 					storeP.innerHTML = info.point;
 				}

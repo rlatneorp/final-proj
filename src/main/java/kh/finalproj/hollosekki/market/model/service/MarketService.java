@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -19,7 +20,7 @@ import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
-import kh.finalproj.hollosekki.market.model.vo.Orders;
+//import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -253,9 +254,9 @@ public class MarketService {
 		return mkDAO.insertReview(sqlSession, r);
 	}
 
-	public int insertPay(Orders orders) {
-		return mkDAO.insertPay(sqlSession, orders);
-	}
+//	public int insertPay(Orders orders) {
+//		return mkDAO.insertPay(sqlSession, orders);
+//	}
 	
 	//재고 조회
 	public int selectStock(int productNo) {
@@ -264,6 +265,23 @@ public class MarketService {
 	//포인트 update 
 	public void updatePoint(Users users) {
 		mkDAO.updatePoint(sqlSession, users);
+	}
+
+	public int reviewAvg(int productNo) {
+		return mkDAO.reviewAvg(sqlSession, productNo);
+	}
+
+	public ArrayList<Review> reviewAvgDesc(int productNo) {
+		return mkDAO.reviewAvgDesc(sqlSession, productNo);
+		
+	}
+	//구매 후 장바구니에서 제거
+	public void deleteFromCart(int preorderNo) {
+		mkDAO.deleteFromCart(sqlSession, preorderNo);
+	}
+
+	public int selectProductType(int productNo) {
+		return mkDAO.selectProductType(sqlSession, productNo);
 	}
 
 

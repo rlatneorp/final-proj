@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -16,7 +17,7 @@ import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
-import kh.finalproj.hollosekki.market.model.vo.Orders;
+//import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -268,9 +269,9 @@ public class MarketDAO {
 	}
 
 
-   public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
-		return sqlSession.insert("marketMapper.insertPay", orders);
-   }
+//   public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
+//		return sqlSession.insert("marketMapper.insertPay", orders);
+//   }
 
 	public int selectStock(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectStock", productNo);
@@ -278,6 +279,23 @@ public class MarketDAO {
 	
 	public void updatePoint(SqlSessionTemplate sqlSession, Users users) {
 		sqlSession.update("marketMapper.updatePoint", users);
+	}
+
+	public int reviewAvg(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.reviewAvg",productNo);
+	}
+
+	public ArrayList<Review> reviewAvgDesc(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.reviewAvgDesc", productNo);
+	
+	}
+	public void deleteFromCart(SqlSessionTemplate sqlSession, int preorderNo) {
+		sqlSession.delete("marketMapper.deleteFromCart", preorderNo);
+	}
+	
+	//주문한 상품에 대한 productType 조회 
+	public int selectProductType(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectProductType", productNo) ;
 	}
 
 

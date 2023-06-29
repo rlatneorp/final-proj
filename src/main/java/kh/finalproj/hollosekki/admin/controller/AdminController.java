@@ -27,6 +27,7 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -53,7 +54,7 @@ public class AdminController {
 		return "adminMain";
 	}
 	
-//	sales-留ㅼ텧 愿�由�
+//	sales-매출 관리
 	@GetMapping("adminSalesManage.ad")
 	public String adminSalesManage() {
 		return "adminSalesManage";
@@ -68,7 +69,7 @@ public class AdminController {
 	}
 	
 	
-//	order-二쇰Ц 愿�由�
+//	order-주문 관리
 	@GetMapping("adminOrderManage.ad")
 	public String adminOrderManage() {
 		return "adminOrderManage";
@@ -83,7 +84,7 @@ public class AdminController {
 	}
 	
 	
-//	Users-�쉶�썝 愿�由�
+//	Users-회원 관리
 	@GetMapping("adminUsersManage.ad")
 	public String adminUsersManage(
 //								   @ModelAttribute AdminBasic ab,
@@ -103,7 +104,7 @@ public class AdminController {
 			model.addAttribute("uList", uList);
 			return "adminUsersManage";
 		}else {
-			throw new AdminException("�떇�옱猷� 議고쉶瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식재료 조회를 실패하였습니다.");
 		}
 	}
 	@GetMapping("adminUsersDetail.ad")
@@ -137,7 +138,7 @@ public class AdminController {
 			model.addAttribute("uri", uri);
 			return "adminUsersDetail";
 		}else {
-			throw new AdminException("�쉶�썝 �긽�꽭議고쉶�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("회원 상세조회에 실패하였습니다.");
 		}
 	}
 	@PostMapping("adminUsersUpdate.ad")
@@ -166,12 +167,12 @@ public class AdminController {
 				return "redirect:"+uri;
 			}
 		}else {
-			throw new AdminException("usersUpdate�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("usersUpdate에 실패하였습니다.");
 		}
 	}
 	
 	
-//	Point-�룷�씤�듃 愿�由�
+//	Point-포인트 관리
 	@GetMapping("adminPointManage.ad")
 	public String adminPointManage(
 //			@ModelAttribute AdminBasic ab,
@@ -192,12 +193,12 @@ public class AdminController {
 			model.addAttribute("uri", uri);
 			return "adminPointManage";
 		}else {
-			throw new AdminException("�룷�씤�듃愿�由� �럹�씠吏� 濡쒕뱶�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("포인트관리 페이지 로드에 실패하였습니다.");
 		}
 	}
 	
 	
-//	Menu-�떇�떒 愿�由�
+//	Menu-식단 관리
 	@GetMapping("adminMenuManage.ad")
 	public String adminMenuManage(
 //			@ModelAttribute AdminBasic ab,
@@ -219,7 +220,7 @@ public class AdminController {
 			model.addAttribute("mList", mList);
 			return "adminMenuManage";
 		}else {
-			throw new AdminException("�떇�떒 議고쉶瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식단 조회를 실패하였습니다.");
 		}
 		
 	}
@@ -234,10 +235,10 @@ public class AdminController {
 		AdminBasic ab2 = new AdminBasic();
 		pi.setCurrentPage(1);
 		pi.setBoardLimit(100000);
-		ab1.setKind(1);  // 硫붿씤硫붾돱
-		ab1.setType(m.getMenuType());  // �떇�옱猷�/諛��궎�듃 ���엯
-		ab2.setKind(2);  // �꽌釉뚮찓�돱
-		ab2.setType(m.getMenuType());  // �떇�옱猷�/諛��궎�듃 ���엯
+		ab1.setKind(1);  // 메인메뉴
+		ab1.setType(m.getMenuType());  // 식재료/밀키트 타입
+		ab2.setKind(2);  // 서브메뉴
+		ab2.setType(m.getMenuType());  // 식재료/밀키트 타입
 		ArrayList<Food> fList1 = aService.selectFoodList(pi, ab1); 
 		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
 		
@@ -262,7 +263,7 @@ public class AdminController {
 			model.addAttribute("img", img);
 			return "adminMenuDetail";
 		}else {
-			throw new AdminException("硫붾돱 議고쉶瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("메뉴 조회를 실패하였습니다.");
 		}
 	}
 	@PostMapping("adminMenuUpdate.ad")
@@ -287,7 +288,7 @@ public class AdminController {
 		resultPd = aService.updateProduct(m);
 		
 		if(resultM1 + resultM2 + resultM3 + resultPd == (1+28+28+1) && imageFile != null && !imageFile.isEmpty()) {
-//			�뜲�씠�꽣 �꽌踰� �씠誘몄� �궘�젣
+//			데이터 서버 이미지 삭제
 //			HashMap<String, Integer> map = new HashMap<String, Integer>();
 //			map.put("imageDivideNo", m.getProductNo());
 //			map.put("imageType", 4);
@@ -295,10 +296,10 @@ public class AdminController {
 			Image img = selectAllImageList(m.getProductNo(), 4, 1).get(0);
 			deleteFile(img.getImageRenameName(), request);
 			
-//			DB�꽌踰� �씠誘몄� �궘�젣
+//			DB서버 이미지 삭제
 			resultImgDel = aService.deleteImage(img);
 			
-//			�씠誘몄� ���옣
+//			이미지 저장
 			Image image = new Image();
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
@@ -322,7 +323,7 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminMenuManage.ad";
 		}else {
-			throw new AdminException("硫붾돱 �닔�젙�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("메뉴 수정에 실패하였습니다.");
 		}
 		
 	}
@@ -337,7 +338,7 @@ public class AdminController {
 		
 		ArrayList<Image> imgList = null;
 		for(int i = 0; i < selDeletes.length; i++) {
-//			�뜲�씠�꽣 �꽌踰� �씠誘몄� �궘�젣
+//			데이터 서버 이미지 삭제
 //			HashMap<String, Integer> map = new HashMap<String, Integer>();
 //			map.put("imageDivideNo", Integer.parseInt(selDeletes[i]));
 //			map.put("imageType", 4);
@@ -346,7 +347,7 @@ public class AdminController {
 			
 			for(Image img:imgList) {
 				deleteFile(img.getImageRenameName(), request);
-//				DB�꽌踰� �씠誘몄� �궘�젣
+//				DB서버 이미지 삭제
 				resultImg += aService.deleteImage(img);
 			}
 		}
@@ -360,7 +361,7 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminFoodManage.ad";
 		}else {
-			throw new AdminException("�떇�옱猷� �궘�젣 �떎�뙣");
+			throw new AdminException("식재료 삭제 실패");
 		}
 	}
 	@GetMapping("adminMenuWrite.ad")
@@ -379,7 +380,7 @@ public class AdminController {
 			model.addAttribute("fList2", fList2);
 			return "adminMenuWrite";
 		}else {
-			throw new AdminException("�떇�떒 �벑濡� �럹�씠吏� �젒�냽�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식단 등록 페이지 접속에 실패하였습니다.");
 		}
 	}
 	@PostMapping("adminMenuInsert.ad")
@@ -406,9 +407,9 @@ public class AdminController {
 			resultMl = aService.insertMenuList(m);
 		}
 		
-//		insertMenu媛� �떎�뙣�븯吏� �븡�� 寃쎌슦(!= 0)
+//		insertMenu가 실패하지 않은 경우(!= 0)
 		if(resultM != 0) {
-//			�씠誘몄� ���옣
+//			이미지 저장
 			Image image = new Image();
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
@@ -425,7 +426,7 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminMenuManage.ad";
 		}else {
-			throw new AdminException("硫붾돱 �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("메뉴 등록에 실패하였습니다.");
 		}
 	}
 	@GetMapping("adminGetFoodList.ad")
@@ -438,7 +439,7 @@ public class AdminController {
 		
 		ArrayList<Food> fList = aService.selectFoodList(pi, ab);
 		
-//		product�젙蹂� �엯�젰 硫붿냼�뱶
+//		product정보 입력 메소드
 		for(Food f: fList) {
 			f = (Food)selectProduct(f);
 		}
@@ -466,8 +467,6 @@ public class AdminController {
 		map.put("no", no);
 		map.put("type", type);
 		
-		System.out.println(map);
-		System.out.println(food);
 		if(no != 0) {
 			food = aService.selectFood(map);
 			food = (Food)selectProduct(food);
@@ -507,7 +506,7 @@ public class AdminController {
 	}
 	
 	
-//	Ingredient-�떇�옱猷� 愿�由�
+//	Ingredient-식재료 관리
 	@GetMapping("adminIngredientManage.ad")
 	public String adminIngredientManage(
 //			@ModelAttribute AdminBasic ab,
@@ -520,7 +519,7 @@ public class AdminController {
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Ingredient> igdList = aService.selectIngredientList(pi, ab);
 		
-//		product�뿉 �벑濡앸맂 Ingredient�뿉 �븳�빐 product�젙蹂� �엯�젰 硫붿냼�뱶 �떎�뻾
+//		product에 등록된 Ingredient에 한해 product정보 입력 메소드 실행
 		for(int i = 0; i < igdList.size(); i++) {
 			Ingredient igd = igdList.get(i);
 			if( igd.getProductNo() > 0) {
@@ -535,7 +534,7 @@ public class AdminController {
 			model.addAttribute("igdList", igdList);
 			return "adminIngredientManage";
 		}else {
-			throw new AdminException("�떇�옱猷� 議고쉶瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식재료 조회를 실패하였습니다.");
 		}
 	}
 	@GetMapping("adminIngredientDetail.ad")
@@ -559,7 +558,7 @@ public class AdminController {
 			model.addAttribute("img", img);
 			return "adminIngredientDetail";
 		}else {
-			throw new AdminException("�떇�옱猷� �긽�꽭蹂닿린瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식재료 상세보기를 실패하였습니다.");
 		}
 		
 	}
@@ -573,15 +572,15 @@ public class AdminController {
 									 	Model model) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		
-		int resultPd = -1;		// �꽑�깮�궗�빆�씠硫댁꽌, ProductNo�씠 1�씪 �닔 �엳�쑝誘�濡� -1
-		int resultIgd = 0;		// �븘�닔�궗�빆�씠誘�濡� 0
-		int resultImgDel = 1;	// �꽑�깮�궗�빆�씠誘�濡� 1
-		int resultImgSave = 1;	// �꽑�깮�궗�빆�씠誘�濡� 1
-//		�긽�뭹�벑濡앺븳 �쟻�씠 �엳�떎硫�(productNo != 0) (status 臾닿�)
+		int resultPd = -1;		// 선택사항이면서, ProductNo이 1일 수 있으므로 -1
+		int resultIgd = 0;		// 필수사항이므로 0
+		int resultImgDel = 1;	// 선택사항이므로 1
+		int resultImgSave = 1;	// 선택사항이므로 1
+//		상품등록한 적이 있다면(productNo != 0) (status 무관)
 		if(igd.getProductNo() != 0) {
 			resultPd = aService.updateProduct(igd);
-//		�긽�뭹�벑濡앺븳 �쟻�씠 �뾾吏�留�(productNo == 0) Status媛� Y�씪�븣
-//		(�깉濡� �긽�뭹�벑濡�)
+//		상품등록한 적이 없지만(productNo == 0) Status가 Y일때
+//		(새로 상품등록)
 		}else if(igd.getProductNo() == 0 && igd.getProductStatus().equals("Y")) {
 			igd.setProductType(3);
 			igd.setProductOption("N");
@@ -593,7 +592,7 @@ public class AdminController {
 			
 		if(resultPd != 0 && resultIgd != 0 && imageChange.equals("Y")) {
 			
-//			�뜲�씠�꽣 �꽌踰� �씠誘몄� �궘�젣
+//			데이터 서버 이미지 삭제
 //			HashMap<String, Integer> map = new HashMap<String, Integer>();
 //			map.put("imageDivideNo", igd.getIngredientNo());
 //			map.put("imageType", 5);
@@ -601,10 +600,10 @@ public class AdminController {
 			Image img = selectAllImageList(igd.getIngredientNo(), 5, 0).get(0);
 			deleteFile(img.getImageRenameName(), request);
 			
-//			DB�꽌踰� �씠誘몄� �궘�젣
+//			DB서버 이미지 삭제
 			resultImgDel = aService.deleteImage(img);
 			
-//			�씠誘몄� ���옣
+//			이미지 저장
 			Image image = new Image();
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
@@ -627,7 +626,7 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminIngredientManage.ad";
 		}else {
-			throw new AdminException("�떇�옱猷� �닔�젙�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식재료 수정에 실패하였습니다.");
 		}
 	}
 	@GetMapping("adminIngredientUpdateIsAccept.ad")
@@ -674,7 +673,7 @@ public class AdminController {
 				pCount++;
 			}
 			
-//			�뜲�씠�꽣 �꽌踰� �씠誘몄� �궘�젣
+//			데이터 서버 이미지 삭제
 //			HashMap<String, Integer> map = new HashMap<String, Integer>();
 //			map.put("imageDivideNo", Integer.parseInt(deletes[0]));
 //			map.put("imageType", 5);
@@ -684,7 +683,7 @@ public class AdminController {
 //				Image img = aService.selectAllImageList(map).get(0);
 				Image img = iList.get(0);
 				deleteFile(img.getImageRenameName(), request);
-//				DB�꽌踰� �씠誘몄� �궘�젣
+//				DB서버 이미지 삭제
 				resultImg += aService.deleteImage(img);
 			}
 		}
@@ -700,7 +699,7 @@ public class AdminController {
 				return "redirect:adminIngredientManage.ad";
 			}
 		}
-		throw new AdminException("�떇�옱猷� �궘�젣 �떎�뙣");
+		throw new AdminException("식재료 삭제 실패");
 	}
 	@GetMapping("adminIngredientWrite.ad")
 	public String adminIngredientWrite() {
@@ -726,13 +725,13 @@ public class AdminController {
 			igd.setProductOption("N");
 			resultPd = aService.insertProduct(igd);
 		}
-//		insertProduct媛� �떎�뙣�븯吏� �븡�� 寃쎌슦 (!= 0)
+//		insertProduct가 실패하지 않은 경우 (!= 0)
 		if(resultPd != 0) {
 			resultIgd = aService.insertIngredient(igd);
 		}
-//		insertIngredient媛� �떎�뙣�븯吏� �븡�� 寃쎌슦(!= 0)
+//		insertIngredient가 실패하지 않은 경우(!= 0)
 		if(resultIgd != 0) {
-//			�씠誘몄� ���옣
+//			이미지 저장
 			Image image = new Image();
 			if(imageFile != null && !imageFile.isEmpty()) {
 				String[] returnArr = saveFile(imageFile, request);
@@ -755,12 +754,12 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminIngredientManage.ad";
 		}else {
-			throw new AdminException("�떇�옱猷� �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식재료 등록에 실패하였습니다.");
 		}
 	}
 	
 	
-//	Food-�떇�뭹 愿�由�
+//	Food-식품 관리
 	@GetMapping("adminFoodManage.ad")
 	public String adminFoodManage(
 //			@ModelAttribute AdminBasic ab,
@@ -772,7 +771,7 @@ public class AdminController {
 		
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Food> fList = aService.selectFoodList(pi, ab);
-//		product�젙蹂� �엯�젰 硫붿냼�뱶
+//		product정보 입력 메소드
 		for(Food f: fList) {
 			f = (Food)selectProduct(f);
 		}
@@ -782,7 +781,7 @@ public class AdminController {
 			model.addAttribute("fList", fList);
 			return "adminFoodManage";
 		}else{
-			throw new AdminException("�떇�뭹 議고쉶瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식품 조회를 실패하였습니다.");
 		}
 	}
 	@GetMapping("adminFoodDetail.ad")
@@ -818,7 +817,7 @@ public class AdminController {
 			model.addAttribute("imgList", imgList);
 			return "adminFoodDetail";
 		}else {
-			throw new AdminException("�떇�뭹 �긽�꽭蹂닿린瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식품 상세보기를 실패하였습니다.");
 		}
 	}
 	@PostMapping("adminFoodUpdate.ad")
@@ -842,7 +841,7 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminFoodManage.ad";
 		}else {
-			throw new AdminException("�떇�뭹 �닔�젙�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식품 수정에 실패하였습니다.");
 		}
 	}
 	@PostMapping("adminFoodDeletes.ad")
@@ -857,7 +856,7 @@ public class AdminController {
 		
 		ArrayList<Image> imgList = null;
 		for(int i = 0; i < selDeletes.length; i++) {
-//			�뜲�씠�꽣 �꽌踰� �씠誘몄� �궘�젣
+//			데이터 서버 이미지 삭제
 //			HashMap<String, Integer> map = new HashMap<String, Integer>();
 //			map.put("imageDivideNo", Integer.parseInt(selDeletes[i]));
 //			map.put("imageType", 3);
@@ -866,7 +865,7 @@ public class AdminController {
 			
 			for(Image img:imgList) {
 				deleteFile(img.getImageRenameName(), request);
-//				DB�꽌踰� �씠誘몄� �궘�젣
+//				DB서버 이미지 삭제
 				resultImg += aService.deleteImage(img);
 			}
 		}
@@ -880,7 +879,7 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminFoodManage.ad";
 		}else {
-			throw new AdminException("�떇�옱猷� �궘�젣 �떎�뙣");
+			throw new AdminException("식재료 삭제 실패");
 		}
 	}
 	@GetMapping("adminFoodDeleteable.ad")
@@ -916,10 +915,10 @@ public class AdminController {
 		Users user = (Users)session.getAttribute("loginUser");
 		f.setUsersNo(user.getUsersNo());
 		
-//		foodContent媛� �빀移섍린
+//		foodContent값 합치기
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
 
-//		food 湲곕낯媛� �꽕�젙
+//		food 기본값 설정
 		f.setProductType(1);
 		f.setProductOption("N");
 		f.setProductStatus("Y");
@@ -936,7 +935,7 @@ public class AdminController {
 		
 		if(resultPd != 0 && resultF != 0) {
 			
-//			�씠誘몄� ���옣
+//			이미지 저장
 			int i = 0;
 			for(MultipartFile imageFile: imageFiles) {
 				Image image = new Image();
@@ -968,7 +967,7 @@ public class AdminController {
 				return "redirect:adminFoodManage.ad";
 			}
 		}
-		throw new AdminException("�떇�뭹 �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
+		throw new AdminException("식품 등록에 실패하였습니다.");
 	}
 	@GetMapping("adminGetFoodListNotD.ad")
 	public void adminGetFoodListNotD(@ModelAttribute AdminBasic ab,
@@ -992,8 +991,7 @@ public class AdminController {
 	}
 	
 	
-	
-//	Tool-�긽�뭹 愿�由�
+//	Tool-상품 관리
 	@GetMapping("adminToolManage.ad")
 	public String adminToolManage(
 //			@ModelAttribute AdminBasic ab,
@@ -1004,7 +1002,7 @@ public class AdminController {
 		int listCount = aService.getToolCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Tool> tList = aService.selectToolList(pi, ab);
-//		product�젙蹂� �엯�젰 硫붿냼�뱶
+//		product정보 입력 메소드
 		for(Tool t: tList) {
 			t = (Tool)selectProduct(t);
 		}
@@ -1014,7 +1012,7 @@ public class AdminController {
 			model.addAttribute("tList", tList);
 			return "adminToolManage";
 		}else{
-			throw new AdminException("�긽�뭹 議고쉶瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("상품 조회를 실패하였습니다.");
 		}
 		
 	}
@@ -1031,7 +1029,7 @@ public class AdminController {
 //		ArrayList<Image> imgList = aService.selectAllImageList(map);
 		ArrayList<Image> imgList = selectAllImageList(toolNo, 6, -1);
 
-//		�샃�뀡�씠 �뾾�뒗 寃쎌슦(opList == null)瑜� �럹�씠吏��뿉�꽌 議곌굔�쑝濡� �궗�슜�븿
+//		옵션이 없는 경우(opList == null)를 페이지에서 조건으로 사용함
 		ArrayList<Options> opList = aService.selectOptions(toolNo);
 
 		Image thumbnail = null;
@@ -1051,7 +1049,7 @@ public class AdminController {
 			model.addAttribute("opList", opList);
 			return "adminToolDetail";
 		}else {
-			throw new AdminException("�떇�뭹 �긽�꽭蹂닿린瑜� �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("식품 상세보기를 실패하였습니다.");
 		}
 	}
 	@PostMapping("adminToolUpdate.ad")
@@ -1098,7 +1096,7 @@ public class AdminController {
 			for(int i = 0; i < imageFiles.size(); i++) {
 				if(imageFiles.get(i) != null && !imageFiles.get(i).isEmpty()) {
 					upImageCount++;
-//					�뜲�씠�꽣 �꽌踰� �씠誘몄� �궘�젣
+//					데이터 서버 이미지 삭제
 //					HashMap<String, Integer> map = new HashMap<String, Integer>();
 //					map.put("imageDivideNo", t.getProductNo());
 //					map.put("imageType", 6);
@@ -1110,10 +1108,10 @@ public class AdminController {
 					
 					deleteFile(img.getImageRenameName(), request);
 							
-//					DB�꽌踰� �씠誘몄� �궘�젣
+//					DB서버 이미지 삭제
 					resultImgDel += aService.deleteImage(img);
 					
-//					�씠誘몄� ���옣
+//					이미지 저장
 					Image image = new Image();
 					String[] returnArr = saveFile(imageFiles.get(i), request);
 					if(returnArr[1] != null) {
@@ -1138,10 +1136,10 @@ public class AdminController {
 				model.addAttribute("searchText", ab.getSearchText());
 				return "redirect:adminToolManage.ad";
 			}else {
-				throw new AdminException("�긽�뭹 �닔�젙�뿉 �떎�뙣�븯���뒿�땲�떎.");
+				throw new AdminException("상품 수정에 실패하였습니다.");
 			}
 		}else {
-			throw new AdminException("�긽�뭹 �닔�젙�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("상품 수정에 실패하였습니다.");
 		}
 	}
 	@PostMapping("adminToolDeletes.ad")
@@ -1157,7 +1155,7 @@ public class AdminController {
 		
 		ArrayList<Image> imgList = null;
 		for(int i = 0; i < selDeletes.length; i++) {
-//			�뜲�씠�꽣 �꽌踰� �씠誘몄� �궘�젣
+//			데이터 서버 이미지 삭제
 //			HashMap<String, Integer> map = new HashMap<String, Integer>();
 //			map.put("imageDivideNo", Integer.parseInt(selDeletes[i]));
 //			map.put("imageType", 6);
@@ -1165,7 +1163,7 @@ public class AdminController {
 			imgList = selectAllImageList(Integer.parseInt(selDeletes[i]), 6, -1);
 			for(Image img:imgList) {
 				deleteFile(img.getImageRenameName(), request);
-//				DB�꽌踰� �씠誘몄� �궘�젣
+//				DB서버 이미지 삭제
 				resultImg += aService.deleteImage(img);
 			}
 		}
@@ -1179,7 +1177,7 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminToolManage.ad";
 		}else {
-			throw new AdminException("�룄援ъ긽�뭹 �궘�젣 �떎�뙣");
+			throw new AdminException("도구상품 삭제 실패");
 		}
 	}
 	@GetMapping("adminToolWrite.ad")
@@ -1226,7 +1224,7 @@ public class AdminController {
 		
 		if(resultPd != 0 && resultT != 0 && resultOp == oList.size()) {
 			
-//			�씠誘몄� ���옣
+//			이미지 저장
 			int i = 0;
 			for(MultipartFile imageFile: imageFiles) {
 				if(imageFile != null && !imageFile.isEmpty()) {
@@ -1254,11 +1252,11 @@ public class AdminController {
 				return "redirect:adminToolManage.ad";
 			}
 		}
-		throw new AdminException("�떇�뭹 �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
+		throw new AdminException("식품 등록에 실패하였습니다.");
 	}
 	
 
-//	Recipe-�젅�떆�뵾 愿�由�
+//	Recipe-레시피 관리
 	@GetMapping("adminRecipeManage.ad")
 	public String adminRecipeManage(HttpServletRequest request,
 									Model model) {
@@ -1273,7 +1271,7 @@ public class AdminController {
 			model.addAttribute("rpList", rpList);
 			return "adminRecipeManage";
 		}else {
-			throw new AdminException("�젅�떆�뵾 紐⑸줉 議고쉶�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("레시피 목록 조회에 실패하였습니다.");
 		}
 	}
 	@GetMapping("adminRecipeDetail.ad")
@@ -1296,7 +1294,7 @@ public class AdminController {
 		return "adminRecipeWrite";
 	}
 	@PostMapping("adminRecipeDeletes.ad")
-	public String adminRecipedDeletes(@RequestParam("selectDelete") String[] selDeletes,
+	public String adminRecipeDeletes(@RequestParam("selectDelete") String[] selDeletes,
 									HttpServletRequest request,
 									Model model) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
@@ -1308,11 +1306,11 @@ public class AdminController {
 		
 		ArrayList<Image> imgList = null;
 		for(int i = 0; i < selDeletes.length; i++) {
-//			�뜲�씠�꽣 �꽌踰� �씠誘몄� �궘�젣
+//			데이터 서버 이미지 삭제
 			imgList = selectAllImageList(Integer.parseInt(selDeletes[i]), 2, -1);
 			for(Image img:imgList) {
 				deleteFile(img.getImageRenameName(), request);
-//				DB�꽌踰� �씠誘몄� �궘�젣
+//				DB서버 이미지 삭제
 				resultImg += aService.deleteImage(img);
 			}
 		}
@@ -1323,84 +1321,203 @@ public class AdminController {
 			model.addAttribute("searchText", ab.getSearchText());
 			return "redirect:adminRecipeManage.ad";
 		}else {
-			throw new AdminException("�젅�떆�뵾 �궘�젣 �떎�뙣");
+			throw new AdminException("레시피 삭제 실패");
 		}
 	}
 
 
-//	Review-由щ럭 Detail
-	@GetMapping("adminReviewDetail.ad")
-	public String adminReviewDetail(@RequestParam("reviewNo") Integer reviewNo,
-									Model model) {
+//	Board-게시판 관리
+	@GetMapping("adminBoardManage.ad")
+	public String adminBoardManage(HttpServletRequest request,
+								   Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 
-		Review r = aService.selectReview(reviewNo);
+		int listCount = aService.getBoardCount(ab);
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Board> bList = aService.selectBoardList(pi, ab);
 		
-		model.addAttribute("r", r);
-		return "adminReviewDetail";
+		if(bList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("bList", bList);
+			return "adminBoardManage";
+		}else {
+			throw new AdminException("게시글 목록 조회에 실패하였습니다.");
+		}
+	}
+	@GetMapping("adminBoardDetail.ad")
+	public String adminBoardDetail(@ModelAttribute Board board,
+								   Model model) {
+		AdminBasic ab = new AdminBasic();
+		ab.setKind(-1);
+		ab.setNumber(board.getBoardNo());
+		ab.setDuplication("Y");
+		Board b = aService.selectBoard(board.getBoardNo());
+		ArrayList<Review> rList = aService.selectReviewList(null, ab);
+		
+		if(b != null) {
+			model.addAttribute("b", b);
+			model.addAttribute("rList", rList);
+			return "adminBoardDetail";
+		}else{
+			throw new AdminException("게시글 상세보기에 실패하였습니다.");
+		}
+	}
+	@PostMapping("adminBoardDeletes.ad")
+	public String adminBoardDeletes(@RequestParam("selectDelete") String[] selDeletes,
+									HttpServletRequest request,
+									Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
+//		int resultImg = 0;
+		int resultR = 0;
+		int resultB = 0;
+		
+		resultB = aService.deletesBoard(selDeletes);
+		
+//		ArrayList<Image> imgList = null;
+//		for(int i = 0; i < selDeletes.length; i++) {
+////			데이터 서버 이미지 삭제
+//			imgList = selectAllImageList(Integer.parseInt(selDeletes[i]), 2, -1);
+//			for(Image img:imgList) {
+//				deleteFile(img.getImageRenameName(), request);
+////				DB서버 이미지 삭제
+//				resultImg += aService.deleteImage(img);
+//			}
+//		}
+		
+//		if(resultB != 0 && resultImg == imgList.size()) {
+		if(resultB != 0) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
+			return "redirect:adminBoardManage.ad";
+		}else {
+			throw new AdminException("게시판 삭제 실패");
+		}
 	}
 	
 	
-	
-//	RecipeReview-�젅�떆�뵾�썑湲� 愿�由�
-	@GetMapping("adminRecipeReviewManage.ad")
-	public String adminRecipeReviewManage(HttpServletRequest request,
-										  Model model) {
+//	Review-리뷰
+	@GetMapping("adminReviewManage.ad")
+	public String adminReviewManage(HttpServletRequest request,
+									Model model) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-		ab.setKind(0);
-
+		System.out.println(ab);
 		int listCount = aService.getReviewCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
-		ArrayList<Review> rprList = aService.selectReviewList(pi, ab);
+		ArrayList<Review> rList = aService.selectReviewList(pi, ab);
 		
-		if(rprList != null) {
+		if(rList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("rprList", rprList);
-			return "adminRecipeReviewManage";
+			model.addAttribute("rList", rList);
+			return "adminReviewManage";
 		}else {
-			throw new AdminException("�젅�떆�뵾 紐⑸줉 議고쉶�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new AdminException("게시글 목록 조회에 실패하였습니다.");
 		}
 	}
-	@GetMapping("adminRecipeReviewDetail.ad")
-	public String adminRecipeReviewDetail() {
-		return "adminRecipeReviewDetail";
+	@GetMapping("adminSelectReview.ad")
+	public void adminSelectReview(@RequestParam("rNo") Integer rNo,
+								  HttpServletResponse response) {
+		
+		Review r = aService.selectReview(rNo);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(r, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
 	}
-	@PostMapping("adminRecipeReviewUpdate.ad")
-	public String adminRecipeReviewUpdate() {
-		return "redirect:adminRecipeReviewManage.ad";
-	}
-	
-	
-//	MenuReview-硫붾돱�썑湲� 愿�由�
-	@GetMapping("adminMenuReviewManage.ad")
-	public String adminMenuReviewManage() {
-		return "adminMenuReviewManage";
-	}
-	@GetMapping("adminMenuReviewDetail.ad")
-	public String adminMenuReviewDetail() {
-		return "adminMenuReviewDetail";
-	}
-	@PostMapping("adminMenuReviewUpdate.ad")
-	public String adminMenuReviewUpdate() {
-		return "redirect:adminMenuReviewManage.ad";
-	}
-	
-	
-//	ProductReview-�긽�뭹�썑湲� 愿�由�
-	@GetMapping("adminProductReviewManage.ad")
-	public String adminProductReviewManage() {
-		return "adminProductReviewManage";
-	}
-	@GetMapping("adminProductReviewDetail.ad")
-	public String adminProductReviewDetail() {
-		return "adminProductReviewDetail";
-	}
-	@PostMapping("adminProductReviewUpdate.ad")
-	public String adminProductReviewUpdate() {
-		return "redirect:adminProductReviewManage.ad";
+	@GetMapping("adminSelectReviewImage.ad")
+	public void adminSelectReviewImage(@RequestParam("rNo") Integer rNo,
+									   HttpServletResponse response) {
+		
+		ArrayList<Image> iList = selectAllImageList(rNo, 7, -1);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(iList, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
+//	@GetMapping("adminReviewDetail.ad")
+//	public String adminReviewDetail(@RequestParam("reviewNo") Integer reviewNo,
+//									Model model) {
+//
+//		Review r = aService.selectReview(reviewNo);
+//		
+//		model.addAttribute("r", r);
+//		return "adminReviewDetail";
+//	}
+		
+//	RecipeReview-레시피후기 관리
+//	@GetMapping("adminRecipeReviewManage.ad")
+//	public String adminRecipeReviewManage(HttpServletRequest request,
+//										  Model model) {
+//		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+//		ab.setKind(0);
+//
+//		int listCount = aService.getReviewCount(ab);
+//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+//		ArrayList<Review> rprList = aService.selectReviewList(pi, ab);
+//		
+//		if(rprList != null) {
+//			model.addAttribute("pi", pi);
+//			model.addAttribute("rprList", rprList);
+//			return "adminRecipeReviewManage";
+//		}else {
+//			throw new AdminException("레시피 목록 조회에 실패하였습니다.");
+//		}
+//	}
+//	@GetMapping("adminRecipeReviewDetail.ad")
+//	public String adminRecipeReviewDetail() {
+//		return "adminRecipeReviewDetail";
+//	}
+//	@PostMapping("adminRecipeReviewUpdate.ad")
+//	public String adminRecipeReviewUpdate() {
+//		return "redirect:adminRecipeReviewManage.ad";
+//	}
 	
-//	FAQ-�옄二쇰Щ�뒗吏덈Ц 愿�由�
+	
+//	MenuReview-메뉴후기 관리
+//	@GetMapping("adminMenuReviewManage.ad")
+//	public String adminMenuReviewManage() {
+//		return "adminMenuReviewManage";
+//	}
+//	@GetMapping("adminMenuReviewDetail.ad")
+//	public String adminMenuReviewDetail() {
+//		return "adminMenuReviewDetail";
+//	}
+//	@PostMapping("adminMenuReviewUpdate.ad")
+//	public String adminMenuReviewUpdate() {
+//		return "redirect:adminMenuReviewManage.ad";
+//	}
+	
+	
+//	ProductReview-상품후기 관리
+//	@GetMapping("adminProductReviewManage.ad")
+//	public String adminProductReviewManage() {
+//		return "adminProductReviewManage";
+//	}
+//	@GetMapping("adminProductReviewDetail.ad")
+//	public String adminProductReviewDetail() {
+//		return "adminProductReviewDetail";
+//	}
+//	@PostMapping("adminProductReviewUpdate.ad")
+//	public String adminProductReviewUpdate() {
+//		return "redirect:adminProductReviewManage.ad";
+//	}
+	
+	
+//	FAQ-자주묻는질문 관리
 	@GetMapping("adminFAQManage.ad")
 	public String adminFAQManage() {
 		return "adminFAQManage";
@@ -1423,7 +1540,7 @@ public class AdminController {
 	}
 	
 	
-//	QNA-1:1臾몄쓽 愿�由�	
+//	QNA-1:1문의 관리	
 	@GetMapping("adminQNAManage.ad")
 	public String adminQNAManage() {
 		return "adminQNAManage";
@@ -1438,7 +1555,7 @@ public class AdminController {
 	}
 	
 	
-//	怨듭슜
+//	공용
 	@GetMapping("adminUpdateStatus.ad")
 	public void adminUpdateStatus(@RequestParam("dataNo") String dataNo,
 								  @RequestParam("dataStatus") String dataStatus,
@@ -1449,9 +1566,10 @@ public class AdminController {
 		map.put("dataStatus", dataStatus);
 		map.put("dataType", dataType);
 //		dataType = 
-//		5	-> users	status �뾽�뜲�씠�듃
-//		6	-> recipe	status �뾽�뜲�씠�듃
-//		7	-> review	status �뾽�뜲�씠�듃
+//		5	-> users	status 업데이트
+//		6	-> recipe	status 업데이트
+//		7	-> review	status 업데이트
+//		8	-> board	status 업데이트
 		
 		int result = aService.updateStatus(map);
 		String msg = "msg";
@@ -1472,22 +1590,22 @@ public class AdminController {
 	}
 	
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
-//		�뙆�씪 ���옣�냼 吏��젙
-		String root = request.getSession().getServletContext().getRealPath("resources");	// webapp-resources �뤃�뜑 �쓽誘�
-//								  �뵆 String�뿉�꽌 �뿭�뒳�옒�돩瑜� �몴�쁽�븯湲� �쐞�빐 '\\' �씪怨� �쟻�쓬  
+//		파일 저장소 지정
+		String root = request.getSession().getServletContext().getRealPath("resources");	// webapp-resources 폴더 의미
+//								  ┌ String에서 역슬래쉬를 표현하기 위해 '\\' 라고 적음  
 		String savePath = root + "\\uploadFiles";
 		File folder = new File(savePath);
 		if(!folder.exists()) {
 			folder.mkdirs();
 		}
 		
-//		�뙆�씪 �씠由� 蹂�寃� �삎�떇 吏��젙
+//		파일 이름 변경 형식 지정
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		int ranNum = (int)(Math.random()*100000);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum 
 								+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 		
-//		蹂�寃쎈맂 �씠由꾩쓽 �뙆�씪�쓣 ���옣
+//		변경된 이름의 파일을 저장
 		String renamePath = folder + "\\" + renameFileName;
 		try {
 			file.transferTo(new File(renamePath));
@@ -1536,15 +1654,15 @@ public class AdminController {
 //			ab.setPage(currentPage);
 //		}
 //		int pageCount = 10;
-//	//	�꽭�뀡�뿉 媛� X ab�뿉 媛� X	-> 珥덇린媛� �룞�씪 �꽕�젙
+//	//	세션에 값 X ab에 값 X	-> 초기값 동일 설정
 //		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
 //			ab.setPageCount(pageCount);
 //			session.setAttribute("pageCount", pageCount);
-//	//	�꽭�뀡�뿉 媛� X ab�뿉 媛� O	(遺덇��뒫)
-//	//	�꽭�뀡�뿉 媛� O ab�뿉 媛� X	-> �꽭�뀡媛� ab�뿉 �엯�젰
+//	//	세션에 값 X ab에 값 O	(불가능)
+//	//	세션에 값 O ab에 값 X	-> 세션값 ab에 입력
 //		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
 //			ab.setPageCount((int)session.getAttribute("pageCount"));
-//	//	�꽭�뀡�뿉 媛� O ab�뿉 媛� O	-> ab媛� �꽭�뀡�뿉 �엯�젰
+//	//	세션에 값 O ab에 값 O	-> ab값 세션에 입력
 //		}else {
 //			session.setAttribute("pageCount", ab.getPageCount());
 //		}
@@ -1553,6 +1671,7 @@ public class AdminController {
 //	}
 
 	private ArrayList<Image> selectAllImageList(int imageDivideNo, int imageType, int imageLevel) {
+//		모든 imageLevel	-> 	imageLevel = -1		
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("imageDivideNo", imageDivideNo);
 		map.put("imageType", imageType);

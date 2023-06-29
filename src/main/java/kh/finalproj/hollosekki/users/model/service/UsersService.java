@@ -8,6 +8,7 @@ import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
@@ -63,6 +64,16 @@ public interface UsersService {
 
 	ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, String selectTitle, PageInfo pi);
 
+	int deleteBookMark(int divisionNo);
+	
+	//주문 리스트 조회 
+	ArrayList<Orders> selectOrderList(int usersNo, PageInfo pi);
+	
+	//페이징~
+	int orderListCount(int usersNo);
+	
+	//주문 상세 페이지 조회 
+	Orders selectDetailOrder(int orderNo);
 	int deleteBookMark(int bookmarkNo);
 
 	int deleteLike(int likeNo);

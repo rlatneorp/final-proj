@@ -94,13 +94,14 @@ public class Review extends Image{
       this.reviewStatus = reviewStatus;
    }
 
-   public Date getReviewDate() {
-      return reviewDate;
-   }
 
 	public void setReviewStar(String reviewStar) {
 		this.reviewStar = reviewStar;
 	}
+
+//	public Date getReviewDate() {
+//		return reviewDate;
+//	}
 
 	public void setReviewDate(Date reviewDate) {
 		this.reviewDate = reviewDate;

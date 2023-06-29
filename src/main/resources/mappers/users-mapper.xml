@@ -337,6 +337,36 @@
 		where bookmark_no = #{bookmarkNo}
 	</delete>
 	
+	<!-- 주문한 리스트 조회  -->
+	<select id="selectOrderList" resultMap="OrdersResultSet">
+		select * from orders where users_no = #{usersNo}
+	</select>
+	
+	<select id="orderListCount" resultType="_int">
+		select count(*) from orders where users_no = #{usersNo}
+	</select>
+	
+	<resultMap type="Orders" id="OrdersResultSet">
+      <id column="ORDER_NO" property="orderNo"/>
+      <result column="PRODUCT_NO" property="productNo"/>
+      <result column="USERS_NO" property="usersNo"/>
+      <result column="PRODUCT_TYPE" property="productType"/>
+      <result column="ORDER_COUNT" property="orderCount"/>
+      <result column="ORDER_TOTAL_PRICE" property="totalPrice"/>
+      <result column="ORDER_DATE" property="orderDate"/>
+      <result column="ORDER_STATUS" property="orderStatus"/>
+      <result column="ORDER_ADDRESS" property="orderAddress"/>
+      <result column="ORDER_DELIVERY_DATE" property="orderDeliveryDate"/>
+      <result column="ORDER_STOCK" property="orderStock"/>
+      <result column="ORDER_DELIVERY_COMMENT" property="orderDeliveryComment"/>
+      <result column="ORDER_INFO" property="orderInfo"/>
+      <result column="SHIP_PRICE" property="shipPrice"/>
+      <result column="OPTIONS" property="options"/>
+   </resultMap>
+	
+	<select id="selectDetailOrder" resultMap="OrdersResultSet">
+		select * from orders where order_no = #{orderNo}
+	</select>	
 	<delete id="deleteLike">
 		delete from likes
 		where like_no = #{likeNo}

@@ -207,7 +207,7 @@
 	
 	<select id="myBookMarkList" resultType="map">
 		select DIVISION_NO, NUMBER_TYPE, i.image_renamename recipe_image, u.nickname, r.recipe_modify_date, 
-			   r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, im.image_renamename menu_image, food_no
+			   r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, im.image_renamename menu_image, food_no, bookmark_no
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
 		     left join product p on (m.product_no = p.product_no)
@@ -275,7 +275,7 @@
 	<!-- 식단, 식품, 상품(도구) 조회 -->
 	<select id="myFoodLikeList" resultType="map">
 		select number_type, name, menu_name, product_modify_date, food_name, food_type, image_renamename product_image, 
-			   product_type, tool_name, product_price, p.product_no
+			   product_type, tool_name, product_price, p.product_no, like_no
 		from likes l 
 		   left join menu m on (l.division_no = m.product_no)
 		   left join product p on (l.division_no = p.product_no)
@@ -305,7 +305,7 @@
    
    <!-- 레시피 조회 -->
    <select id="myRecipeLikeList" resultType="map">
-		select number_type, recipe_name, recipe_modify_date, nickname, image_renamename recipe_image, food_no
+		select number_type, recipe_name, recipe_modify_date, nickname, image_renamename recipe_image, food_no, like_no
 		from likes l
 		     left join recipe r on (l.division_no = r.food_no)
 		     left join users u on (r.users_no = u.users_no)
@@ -319,7 +319,7 @@
    
    <!-- 상품(식재료) 조회 -->
    <select id="myProductLikeList" resultType="map">
-		select number_type, ingredient_name, product_type, product_price, image_renamename food_image, p.product_no
+		select number_type, ingredient_name, product_type, product_price, image_renamename food_image, p.product_no, like_no
 		from likes l
 		     left join product p on (l.division_no = p.product_no)
 		     left join ingredient g on (l.division_no = g.product_no)
@@ -334,7 +334,18 @@
 	<!-- 스크랩, 좋아요 삭제 -->
 	<delete id="deleteBookMark">
 		delete from bookmark
-		where division_no = #{divisionNo} and number_type = 1
+		where bookmark_no = #{bookmarkNo}
 	</delete>
+	
+	<delete id="deleteLike">
+		delete from likes
+		where like_no = #{likeNo}
+	</delete>
+	
+	<update id="updateAddress">
+		update shipping_address 
+		set RECIPIENT=#{recipient}, ADDRESS=#{address}, PHONE=#{phone}, SHIPPING_NAME=#{shippingName}
+		where SHIPPING_NO = #{shippingNo}
+	</update>
 	
 </mapper>

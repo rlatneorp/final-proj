@@ -13,6 +13,7 @@ import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.dao.UsersDAO;
 
@@ -151,8 +152,18 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	@Override
-	public int deleteBookMark(int divisionNo) {
-		return uDAO.deleteBookMark(sqlSession, divisionNo);
+	public int deleteBookMark(int bookmarkNo) {
+		return uDAO.deleteBookMark(sqlSession, bookmarkNo);
+	}
+	
+	@Override
+	public int deleteLike(int likeNo) {
+		return uDAO.deleteLike(sqlSession, likeNo);
+	}
+	
+	@Override
+	public int updateAddress(ShippingAddress sa) {
+		return uDAO.updateAddress(sqlSession, sa);
 	}
 	
 }

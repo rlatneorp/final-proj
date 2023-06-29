@@ -55,41 +55,37 @@
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
 				<br><br>
 				<p class="orderInfo">배송지 정보</p>
-					<table>
-						<tr>
-							<td class="detail">배송지명</td>
-							<td><input type="text" style="width: 400px; margin-left: 15px" name="payName"></td>
-						</tr>
-						<tr>
-							<td class="detail">받으시는분</td>
-							<td>
-								<input type="text" style="width: 400px; margin-left: 15px" name="payName">
-							</td>
-						</tr>
-						<tr>
-							<td class="detail">주소</td>
-							<td>
-								<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="sample6_postcode" placeholder="우편번호">
-								<input type="button" style="border-radius: 10; height: 35px;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-								<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소"><br> 
-								<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소"><br>
-							</td>
-						</tr>
-						<tr>
-							<td class="detail">일반전화</td>
-							<td><input type="text" style="width: 400px; margin-left: 15px" name="payName"></td>
-						</tr>
-						<tr>
-							<td class="detail">휴대전화</td>
-							<td><input type="text" style="width: 400px; margin-left: 15px" name="payName"></td>
-						</tr>
-						<tr>
-							<td class="detail">기본 배송지 설정</td>
-							<td><input type="radio" style="margin-left: 15px;" name="payName"></td>
-						</tr>
-					</table>
-				<br><br>
-				<button id="btn">등록하기</button>
+					<form action="${ contextPath }/myPage_editAddress.me" method="post">
+						<input type="hidden" value="${ loginUser.usersNo }" name="usersNo">
+						<input type="hidden" value="${ sa.shippingNo }" name="shippingNo">
+						<table>
+							<tr>
+								<td class="detail">배송지명</td>
+								<td><input type="text" style="width: 400px; margin-left: 15px" name="shippingName" value="${ sa.shippingName }"></td>
+							</tr>
+							<tr>
+								<td class="detail">받으시는분</td>
+								<td>
+									<input type="text" style="width: 400px; margin-left: 15px" name="recipient" value="${ sa.recipient }">
+								</td>
+							</tr>
+							<tr>
+								<td class="detail">주소</td>
+								<td>
+									<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="sample6_postcode" placeholder="우편번호" name="postcode" value="${ sa.address }">
+									<input type="button" style="border-radius: 10; height: 35px;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+									<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소" name="addressInfo"><br> 
+									<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소" name="detailAddress"><br>
+								</td>
+							</tr>
+							<tr>
+								<td class="detail">휴대전화</td>
+								<td><input type="text" style="width: 400px; margin-left: 15px" name="phone" value="${ sa.phone }"></td>
+							</tr>
+						</table>
+					<br><br>
+					<button id="btn">수정하기</button>
+				</form>
 			</div>
 		</div>
 	</div>

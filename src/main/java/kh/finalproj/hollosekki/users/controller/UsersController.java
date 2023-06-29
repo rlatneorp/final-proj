@@ -69,7 +69,6 @@ public class UsersController {
 		// 이미지 조회
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		Image image = uService.selectImage(usersNo);
-		System.out.println(image);
 		model.addAttribute("image", image);
 
 		int following = eService.following(usersNo);
@@ -585,7 +584,7 @@ public class UsersController {
 		if (result > 0) {
 			return "redirect:myPage_MyAddress.me";
 		} else {
-			throw new UsersException("배송지 추가 실패");
+			throw new UsersException("배송지 수정 실패");
 		}
 	}
 

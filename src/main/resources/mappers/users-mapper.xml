@@ -206,14 +206,14 @@
 	</select>
 	
 	<select id="myBookMarkList" resultType="map">
-		select DIVISION_NO, NUMBER_TYPE, i.image_renamename recipe_image, u.nickname, r.recipe_modify_date, 
+		select DIVISION_NO, NUMBER_TYPE, i.image_renamename recipe_image, i.image_level, u.nickname, r.recipe_modify_date, 
 			   r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, im.image_renamename menu_image, food_no, bookmark_no
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
 		     left join product p on (m.product_no = p.product_no)
              left join healther h on (p.users_no = h.users_no)
 		     left join recipe r on (b.division_no = r.food_no)
-		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO)
+		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO) AND i.image_level = 0
 		     left join image im on (m.product_no = im.image_divide_no)
 		     left join users u on (u.users_no = r.users_no)
 		where b.users_no = #{usersNo}
@@ -337,6 +337,11 @@
 		where bookmark_no = #{bookmarkNo}
 	</delete>
 	
+	<delete id="deleteLike">
+		delete from likes
+		where like_no = #{likeNo}
+	</delete>
+	
 	<!-- 주문한 리스트 조회  -->
 	<select id="selectOrderList" resultMap="OrdersResultSet">
 		select * from orders where users_no = #{usersNo}
@@ -366,11 +371,7 @@
 	
 	<select id="selectDetailOrder" resultMap="OrdersResultSet">
 		select * from orders where order_no = #{orderNo}
-	</select>	
-	<delete id="deleteLike">
-		delete from likes
-		where like_no = #{likeNo}
-	</delete>
+	</select>
 	
 	<update id="updateAddress">
 		update shipping_address 

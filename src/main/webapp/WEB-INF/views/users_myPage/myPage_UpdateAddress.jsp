@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 배송지 수정</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 	table {
 	   text-align: left;
@@ -55,32 +56,32 @@
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
 				<br><br>
 				<p class="orderInfo">배송지 정보</p>
-					<form action="${ contextPath }/myPage_editAddress.me" method="post">
+					<form method="post" id="form">
 						<input type="hidden" value="${ loginUser.usersNo }" name="usersNo">
 						<input type="hidden" value="${ sa.shippingNo }" name="shippingNo">
 						<table>
 							<tr>
 								<td class="detail">배송지명</td>
-								<td><input type="text" style="width: 400px; margin-left: 15px" name="shippingName" value="${ sa.shippingName }"></td>
+								<td><input type="text" style="width: 400px; margin-left: 15px" name="shippingName" value="${ sa.shippingName }" id="shippingName"></td>
 							</tr>
 							<tr>
 								<td class="detail">받으시는분</td>
 								<td>
-									<input type="text" style="width: 400px; margin-left: 15px" name="recipient" value="${ sa.recipient }">
+									<input type="text" style="width: 400px; margin-left: 15px" name="recipient" value="${ sa.recipient }" id="recipient">
 								</td>
 							</tr>
 							<tr>
 								<td class="detail">주소</td>
 								<td>
-									<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="sample6_postcode" placeholder="우편번호" name="postcode" value="${ sa.address }">
+									<input type="text" style="width: 150px; margin-bottom: 10px; margin-left: 15px;" id="sample6_postcode" placeholder="우편번호" name="postcode" value="${ fn:replace(fn:split(sa.address, ',')[0], '[', '').trim() }">
 									<input type="button" style="border-radius: 10; height: 35px;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-									<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소" name="addressInfo"><br> 
-									<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소" name="detailAddress"><br>
+									<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소" name="addressInfo" value="${ fn:replace(fn:split(sa.address, ',')[1], '[', '').trim() }"><br> 
+									<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소" name="detailAddress" value="${ fn:replace(fn:split(sa.address, ',')[2], ']', '').trim() }"><br>
 								</td>
 							</tr>
 							<tr>
 								<td class="detail">휴대전화</td>
-								<td><input type="text" style="width: 400px; margin-left: 15px" name="phone" value="${ sa.phone }"></td>
+								<td><input type="text" style="width: 400px; margin-left: 15px" name="phone" value="${ sa.phone }" id="phone"></td>
 							</tr>
 						</table>
 					<br><br>
@@ -116,6 +117,37 @@
 	            }
 	        }).open();
 	    }
+	   
+	   const editBtn = document.getElementById('btn');
+	   const form = document.getElementById('form');
+		
+		editBtn.addEventListener('click', (e) => {
+			const shippingName = document.getElementById('shippingName').value;
+			const recipient = document.getElementById('recipient').value;
+			const postcode = document.getElementById('sample6_postcode').value;
+			const addressInfo = document.getElementById('sample6_address').value;
+			const detailAddress = document.getElementById('sample6_detailAddress').value;
+			const phone = document.getElementById('phone').value;
+			
+			if (
+				shippingName.trim() === '' ||
+				recipient.trim() === '' ||
+				postcode.trim() === '' ||
+				addressInfo.trim() === '' ||
+				detailAddress.trim() === '' ||
+				phone.trim() === ''
+			) {
+				swal({
+					text: '모든 입력값은 필수사항입니다.',
+					icon: 'error',
+					button: '확인',
+				});
+				e.preventDefault();
+			} else {
+				form.action = '${ contextPath }/myPage_updateAddress.me';
+				form.submit();
+			}
+		});
 	</script>
 	
 	

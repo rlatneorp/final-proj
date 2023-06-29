@@ -157,7 +157,7 @@ public class UsersDAO {
 	}
 
 	public int updateAddress(SqlSessionTemplate sqlSession, ShippingAddress sa) {
-		return sqlSession.update("usersMapper.deleteLike", sa);
+		return sqlSession.update("usersMapper.updateAddress", sa);
 	}
 
 	public ArrayList<Orders> selectOrderList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {

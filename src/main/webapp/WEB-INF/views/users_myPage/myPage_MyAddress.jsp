@@ -75,12 +75,17 @@ th:first-child, td:first-child {
 	box-shadow: none;
 	width: 20px; height: 20px;
 }
+#selectAllCheckBox{
+	box-shadow: none;
+	width: 20px; height: 20px;
+}
 #trash{
 	font-size: 30px;
 }
+#trash:hover{cursor: pointer;}
 #delete{ 
 	font-size: 18px;
-	margin-left: 802px;
+	margin-left: 806px;
 }
 #tbody tr {height: 70px;}
 .edit{
@@ -156,7 +161,7 @@ th:first-child, td:first-child {
 								<th>휴대전화</th>
 								<th>주소</th>
 								<th>수정</th>
-								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
+								<th><input type="checkbox" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
@@ -165,7 +170,7 @@ th:first-child, td:first-child {
 									<td>${ s.shippingName }</td>
 									<td>${ s.recipient }</td>
 									<td>${ s.phone }</td>
-									<td>${ s.address }</td>
+									<td>${ fn:replace(fn:replace(s.address, '[', ''), ']', '') }</td>
 									<td><input type="button" value="수정" class="edit" onclick="location.href='${contextPath}/myPage_editAddress.me?shippingNo=' + ${ s.shippingNo }"></td>
 									<td><input type="checkbox" class="delete"></td>
 								</tr>

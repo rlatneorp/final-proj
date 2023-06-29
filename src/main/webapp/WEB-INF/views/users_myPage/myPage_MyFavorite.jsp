@@ -125,7 +125,7 @@ th:first-child, td:first-child {
 								<th>제목</th>
 								<th>작성자</th>
 								<th>가격</th>
-								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
+								<th><input type="checkbox" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">

@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 스크랩</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 	table {
 	   text-align: left;
@@ -55,17 +56,17 @@
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
 				<br><br>
 				<p class="orderInfo">배송지 정보</p>
-					<form action="${ contextPath }/myPage_addAddress.me" method="post">
+					<form method="post" id="form">
 						<input type="hidden" value="${ loginUser.usersNo }" name="usersNo">
 						<table>
 							<tr>
 								<td class="detail">배송지명</td>
-								<td><input type="text" style="width: 400px; margin-left: 15px" name="shippingName"></td>
+								<td><input type="text" style="width: 400px; margin-left: 15px" name="shippingName" id="shippingName"></td>
 							</tr>
 							<tr>
 								<td class="detail">받으시는분</td>
 								<td>
-									<input type="text" style="width: 400px; margin-left: 15px" name="recipient">
+									<input type="text" style="width: 400px; margin-left: 15px" name="recipient" id="recipient">
 								</td>
 							</tr>
 							<tr>
@@ -79,7 +80,7 @@
 							</tr>
 							<tr>
 								<td class="detail">휴대전화</td>
-								<td><input type="text" style="width: 400px; margin-left: 15px" name="phone"></td>
+								<td><input type="text" style="width: 400px; margin-left: 15px" name="phone" id="phone"></td>
 							</tr>
 						</table>
 					<br><br>
@@ -115,6 +116,37 @@
 	            }
 	        }).open();
 	    }
+	   
+	   const editBtn = document.getElementById('btn');
+	   const form = document.getElementById('form');
+		
+		editBtn.addEventListener('click', (e) => {
+			const shippingName = document.getElementById('shippingName').value;
+			const recipient = document.getElementById('recipient').value;
+			const postcode = document.getElementById('sample6_postcode').value;
+			const addressInfo = document.getElementById('sample6_address').value;
+			const detailAddress = document.getElementById('sample6_detailAddress').value;
+			const phone = document.getElementById('phone').value;
+			
+			if (
+				shippingName.trim() === '' ||
+				recipient.trim() === '' ||
+				postcode.trim() === '' ||
+				addressInfo.trim() === '' ||
+				detailAddress.trim() === '' ||
+				phone.trim() === ''
+			) {
+				swal({
+					text: '모든 입력값은 필수사항입니다.',
+					icon: 'error',
+					button: '확인',
+				});
+				e.preventDefault();
+			} else {
+				form.action = '${ contextPath }/myPage_addAddress.me';
+				form.submit();
+			}
+		});
 	</script>
 	
 	

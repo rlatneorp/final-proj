@@ -357,32 +357,24 @@
       where product_no = #{productNo}      
    </select>
    
-   <select id="selectImgList" resultMap="imageResultSet">
-        select *
-        from image join review on review_no = image_divide_no
-        where image_type = 7
-                  and product_no = #{productNo}
-        order by review_no
-   </select>
-   
    <select id="selectImagList" resultMap="imageResultSet">
-      select *
-      from (select *
-           from image
-           order by image_no asc)   
-      where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
-      <if test="imageLevel != -1">
-           and image_level = #{imageLevel}
-           </if>
-   </select>
-   
-   <!-- 배송지 삭제 -->
-   <delete id="delShipping">
-      DELETE FROM shipping_address
-      WHERE shipping_no = #{shippingNo}
-   </delete>
-   
-   <insert    id="insertReview">
+		select *
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != -1">
+			  and image_level = #{imageLevel}
+			  </if>
+	</select>
+	
+	<!-- 배송지 삭제 -->
+	<delete id="delShipping">
+		DELETE FROM shipping_address
+		WHERE shipping_no = #{shippingNo}
+	</delete>
+	
+   <insert  id="insertReview">
       insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date, review_writer)
       values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
       <selectKey keyProperty="reviewNo" resultType="int" order="AFTER" >
@@ -390,6 +382,28 @@
       </selectKey>
    
    </insert>
+   
+      <select id="selectImgList" resultMap="imageResultSet">
+        select *
+        from image join review on review_no = image_divide_no
+        where image_type = 7
+                  and product_no = #{productNo}	
+        order by review_no
+	</select>
+   
+   <select id="reviewAvg" resultType="_int">
+	  select round(avg(review_Score))
+	  from review 
+	  where product_no = #{productNo}
+   </select>
+   
+   <select id="reviewAvgDesc" resultMap="reviewResultSet">
+   	  select *
+      from review
+      where product_no = #{productNo}
+      order by review_score desc, review_no asc
+   </select>
+   
    
    <select    id="selectReview" resultMap="reviewResultSet">
       select *

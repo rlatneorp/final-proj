@@ -435,7 +435,6 @@
 	<select id="selectImg" resultType="String">
 		select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
 	</select>
-   </select>
    
    <!-- 배송지 삭제 -->
    <delete id="delShipping">

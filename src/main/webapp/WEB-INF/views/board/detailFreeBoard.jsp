@@ -153,7 +153,11 @@
 		   <label>제목</label>
 		</div>
 		<div class="row text-center">
-			<p class="d-inline text-start col-5">작성자 : ${blist.nickName }</p>
+			<c:forEach items="${ aList }" var="a">
+				<c:if test="${ a.usersNo eq blist.usersNo }">
+					<p style="cursor: pointer;" class="d-inline text-start col-5" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page='">작성자 : ${blist.nickName }</p>
+				</c:if>
+			</c:forEach>
 			<p class="d-inline col-3">조회수 : ${blist.boardCount } </p>
 			<p class="d-inline col-4">작성날짜 : <fmt:formatDate value="${blist.boardDate }" pattern="yyyy년 MM월 dd일 HH시 mm분"/></p>
 		</div>
@@ -177,11 +181,16 @@
 							<th class="col-1">삭제</th>
 						</tr>
 					</thead>
-					<tbody> 
+					<tbody>
 					<c:forEach items="${list }" var="r" varStatus="var"> 
-						<tr>	
+						<tr>
 							<td>${r.reviewContent}</td>
-							<td>${r.reviewWriter }</td>
+							<c:forEach items="${ aList }" var="a">
+								<c:if test="${ r.reviewWriter eq a.nickName }">
+									<td style="cursor: pointer;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page=' ">${r.reviewWriter }</td>
+								</c:if>
+							</c:forEach>
+							
 							<td><fmt:formatDate value="${r.reviewDate }" pattern="yyyy-MM-dd HH:mm"/></td>
 							<td>
 								<button type="button" class="reBtn" id="reBtn">수정</button>

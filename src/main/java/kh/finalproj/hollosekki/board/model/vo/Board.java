@@ -10,7 +10,7 @@ public class Board {
 	private String boardTitle;
 	private String boardContent;
 	private Date boardDate;
-	private char boardStatus;
+	private String boardStatus;
 	private String boardType;
 	private int boardCount;
 	private int productNo;
@@ -26,7 +26,7 @@ public class Board {
 	public Board() {}
 
 	public Board(int boardNo, int usersNo, String nickName, String boardTitle, String boardContent, Date boardDate,
-			char boardStatus, String boardType, int boardCount, int productNo, int orderNo, int reviewNo,
+			String boardStatus, String boardType, int boardCount, int productNo, int orderNo, int reviewNo,
 			String reviewTitle, String reviewContent, int reviewScore, char reviewStatus, Date reviewDate,
 			String reviewWriter) {
 		super();
@@ -98,11 +98,11 @@ public class Board {
 		this.boardDate = boardDate;
 	}
 
-	public char getBoardStatus() {
+	public String getBoardStatus() {
 		return boardStatus;
 	}
 
-	public void setBoardStatus(char boardStatus) {
+	public void setBoardStatus(String boardStatus) {
 		this.boardStatus = boardStatus;
 	}
 
@@ -203,8 +203,5 @@ public class Board {
 				+ ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus=" + reviewStatus
 				+ ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + "]";
 	}
-
-	
-		
 	
 }

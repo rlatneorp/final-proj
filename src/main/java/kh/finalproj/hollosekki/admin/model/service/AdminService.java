@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.admin.model.dao.AdminDAO;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -265,6 +266,24 @@ public class AdminService {
 
 	public Review selectReview(Integer reviewNo) {
 		return aDAO.selectReview(sqlSession, reviewNo);
+	}
+
+	
+//	Board-게시판
+	public int getBoardCount(AdminBasic ab) {
+		return aDAO.getBoardCount(sqlSession, ab);
+	}
+
+	public ArrayList<Board> selectBoardList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectBoardList(sqlSession, pi, ab);
+	}
+
+	public Board selectBoard(int boardNo) {
+		return aDAO.selectBoard(sqlSession, boardNo);
+	}
+
+	public int deletesBoard(String[] selDeletes) {
+		return aDAO.deletesBoard(sqlSession, selDeletes);
 	}
 
 

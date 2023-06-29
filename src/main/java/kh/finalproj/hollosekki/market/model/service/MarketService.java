@@ -19,7 +19,7 @@ import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
-import kh.finalproj.hollosekki.market.model.vo.Orders;
+//import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -253,9 +253,9 @@ public class MarketService {
 		return mkDAO.insertReview(sqlSession, r);
 	}
 
-	public int insertPay(Orders orders) {
-		return mkDAO.insertPay(sqlSession, orders);
-	}
+//	public int insertPay(Orders orders) {
+//		return mkDAO.insertPay(sqlSession, orders);
+//	}
 	
 	//재고 조회
 	public int selectStock(int productNo) {

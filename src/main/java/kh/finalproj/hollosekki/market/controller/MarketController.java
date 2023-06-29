@@ -37,7 +37,7 @@ import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
-import kh.finalproj.hollosekki.market.model.vo.Orders;
+//import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -592,26 +592,26 @@ public class MarketController {
 	      return imageList;
 	   }
    
-   @RequestMapping("insertPay.ma")
-   @ResponseBody
-   public String insertPay(@ModelAttribute Orders orders) {
-	  
-//	   int stock = mkService.selectStock(orders.getProductNo());
-//	   int remainStock = stock-orders.getOrderCount();
-//	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
-//	   if(remainStock <= -1) {
-//		   return "stStock";
-//	   } else {
-		   int result = mkService.insertPay(orders);
-		   
-//		   return "success";
-//	   }
-		   
-		   if(result >= 1) {
-			   return "success";
-		   } else {
-			   return "fail";
-		   }
-	   
-   }
+//   @RequestMapping("insertPay.ma")
+//   @ResponseBody
+//   public String insertPay(@ModelAttribute Orders orders) {
+//	  
+////	   int stock = mkService.selectStock(orders.getProductNo());
+////	   int remainStock = stock-orders.getOrderCount();
+////	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
+////	   if(remainStock <= -1) {
+////		   return "stStock";
+////	   } else {
+//		   int result = mkService.insertPay(orders);
+//		   
+////		   return "success";
+////	   }
+//		   
+//		   if(result >= 1) {
+//			   return "success";
+//		   } else {
+//			   return "fail";
+//		   }
+//	   
+//   }
 }

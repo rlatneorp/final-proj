@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -37,7 +38,7 @@ import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
-import kh.finalproj.hollosekki.market.model.vo.Orders;
+//import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -213,17 +214,24 @@ public class MarketController {
       Tool tool = mkService.selectTool(productNo);
       ArrayList<Options> options = mkService.selectOptionsSet(productNo);
       Product p = mkService.selectProductSet(productNo);
+      r.setProductNo(productNo);
+//      r.setReviewScore();
+   
+      
+      
       
       ArrayList<Image> mainImage = selectImagList(productNo, 6, 1);
       ArrayList<Review> list = mkService.selectReview(productNo);
-      ArrayList<String> imglist = mkService.selectImgList(productNo);
+      ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
       int reviewCount = mkService.selectReviewCount(productNo);
       
       
+      int starAvg = mkService.reviewAvg(productNo);
       
-	System.out.println(mainImage);
-	System.out.println(imglist);
-      
+//      
+//     System.out.println(result);
+//	System.out.println(mainImage);
+//	System.out.println(imglist);
       
       if(mainImage != null) {
     	  model.addAttribute("mainImage", mainImage);
@@ -231,14 +239,12 @@ public class MarketController {
       
       if(list != null) {
          model.addAttribute("list", list);
+         model.addAttribute("starAvg", starAvg);
       }
       
       if(imglist != null) {
          model.addAttribute("imglist", imglist);
       }
-      
-      
-      
       
       
       model.addAttribute("reviewCount", reviewCount);
@@ -274,7 +280,6 @@ public class MarketController {
       
       int result = mkService.insertReview(r);
       
-       
       if(result > 0) {
          model.addAttribute("productNo", productNo);
          model.addAttribute("review", r);
@@ -290,7 +295,7 @@ public class MarketController {
             if(imageFile != null && !imageFile.isEmpty()) {
                String[] returnArr = saveFile(imageFile, request);
                if(returnArr[1] != null) {
-                  image.setImageDivideNo(productNo);
+                  image.setImageDivideNo(r.getReviewNo());
                   image.setImageType(7); /*리뷰는 7번*/
                   image.setImagePath(returnArr[0]);
                   image.setImageOriginalName(imageFile.getOriginalFilename());
@@ -312,9 +317,6 @@ public class MarketController {
       }
       return "redirect:market_detail.ma";
    }
-   
-
-   
    
    
    
@@ -592,26 +594,37 @@ public class MarketController {
 	      return imageList;
 	   }
    
-   @RequestMapping("insertPay.ma")
+//   @RequestMapping("insertPay.ma")
+//   @ResponseBody
+//   public String insertPay(@ModelAttribute Orders orders) {
+//	  
+////	   int stock = mkService.selectStock(orders.getProductNo());
+////	   int remainStock = stock-orders.getOrderCount();
+////	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
+////	   if(remainStock <= -1) {
+////		   return "stStock";
+////	   } else {
+//		   int result = mkService.insertPay(orders);
+//		   
+////		   return "success";
+////	   }
+//		   
+//		   if(result >= 1) {
+//			   return "success";
+//		   } else {
+//			   return "fail";
+//		   }
+//	   
+//   }
+   
+   @PostMapping("reviewAvgDesc.ma")
    @ResponseBody
-   public String insertPay(@ModelAttribute Orders orders) {
-	  
-//	   int stock = mkService.selectStock(orders.getProductNo());
-//	   int remainStock = stock-orders.getOrderCount();
-//	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
-//	   if(remainStock <= -1) {
-//		   return "stStock";
-//	   } else {
-		   int result = mkService.insertPay(orders);
-		   
-//		   return "success";
-//	   }
-		   
-		   if(result >= 1) {
-			   return "success";
-		   } else {
-			   return "fail";
-		   }
+   public String reviewAvgDesc(@RequestParam ("productNo") int productNo, HttpServletRequest request, Model model) {
+	   	
+	   	ArrayList<Review> result = mkService.reviewAvgDesc(productNo);
+	   	model.addAttribute("result",result);
+	   	
 	   
+	   return "market_detail";
    }
 }

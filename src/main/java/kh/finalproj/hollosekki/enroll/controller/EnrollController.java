@@ -383,24 +383,27 @@ public class EnrollController {
 			model.addAttribute("page", page);
 			
 			// 작성 글 목록
-			ArrayList<Board> board = eService.boardList(usersNo);
+			ArrayList<Board> board = eService.boardList(usersNo); // 작성 글
 			model.addAttribute("boList", board);
-//			int replyCount = eService.replyCount(); // 댓글카운트.. -> 해당 글에대한 댓글만 카운트 해야함!
-			ArrayList<Review> replyList = eService.replyList();
-			System.out.println("리뷰리스트 : "+replyList);
-			model.addAttribute("replyList", replyList);
+			ArrayList<Board> allBoardList = eService.allBoardList(); // 전체 글
+			model.addAttribute("allBoardList", allBoardList);
 			
 			// 작성 댓글 목록
+			ArrayList<Review> replyList = eService.replyList(); // 전체댓글
+			model.addAttribute("replyList", replyList);
+			String nickName = user.getNickName();
+			ArrayList<Review> userReplyList = eService.userReplyList(nickName);
+			model.addAttribute("userRList", userReplyList);
 			
 			// 레시피 리뷰 목록
 			String usersId = user.getUsersId();
-			ArrayList<Review> recipeReviewList = eService.reviewList(usersId);
+			ArrayList<Review> recipeReviewList = eService.reviewList(usersId); // 작성 레시피 리뷰
 			model.addAttribute("rvList", recipeReviewList);
 			
 			// 식단 리뷰 목록
-			ArrayList<Review> menuReviewList = eService.menuReviewList(usersId);
+			ArrayList<Review> menuReviewList = eService.menuReviewList(usersId); // 작성 식단리뷰
 			model.addAttribute("mrList", menuReviewList);
-			ArrayList<Image> menuReviewImageList = eService.menuReviewImageList();
+			ArrayList<Image> menuReviewImageList = eService.menuReviewImageList(); // 전체 식단리뷰 이미지
 			model.addAttribute("menuReviewImageList", menuReviewImageList);
 			
 			// 북마크 목록
@@ -411,15 +414,14 @@ public class EnrollController {
 			int menuBookMarkList = eService.menuBookMarkList(usersNo);
 			model.addAttribute("mCount", menuBookMarkList);
 			
-			
-//			// 북마크 - 레시피목록
+			// 북마크 - 레시피목록
 			ArrayList<Recipe> allRecipeList = eService.allRecipeList();
 			model.addAttribute("aList", allRecipeList);
 			
 			ArrayList<Image> allRecipeImageList = eService.allRecipeImageList();
 			model.addAttribute("recipeImageList", allRecipeImageList);
 			
-//			// 북마크 - 식단목록...모든 식단목록 가져와서....
+			// 북마크 - 식단목록...모든 식단목록 가져와서....
 			ArrayList<Menu> allMenuList = eService.menuList();
 			model.addAttribute("mList", allMenuList);
 			
@@ -428,8 +430,10 @@ public class EnrollController {
 			
 			ArrayList<Product> productList = eService.productList(); // 영양사정보 가져오기
 			model.addAttribute("pList", productList);
-			ArrayList<Users> healtherList = eService.healtherList();
-			model.addAttribute("hList", healtherList);
+			ArrayList<Users> AllUsersList = eService.AllUsersList();
+			model.addAttribute("hList", AllUsersList);
+			
+			
 			
 			
 			return "othersProfile";

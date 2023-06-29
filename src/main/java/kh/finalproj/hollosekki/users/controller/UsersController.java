@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,19 +22,27 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import kh.finalproj.hollosekki.common.Pagination;
-import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.service.MarketService;
+import kh.finalproj.hollosekki.market.model.vo.Food;
+import kh.finalproj.hollosekki.market.model.vo.Options;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.Tool;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
-import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.exception.UsersException;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
 @SessionAttributes({"loginUser", "image"})
 @Controller
 public class UsersController {
+	
+	@Autowired
+	private MarketService mkService;
 	
 	@Autowired
 	private EnrollService eService;
@@ -403,12 +412,74 @@ public class UsersController {
 	}
 	
 	@RequestMapping("myPage_MyOrder.me")
-	public String myPage_MyOrder() {
+	public String myPage_MyOrder(HttpSession session, Model model,@RequestParam(value="page", required=false) Integer currentPage ) {
+		
+		if(currentPage == null) {
+			currentPage = 1;
+		}
+		//주문한 전체 내역 조회 
+		Users users = (Users)session.getAttribute("loginUser");
+		int usersNo = users.getUsersNo();
+		
+		int listCount = uService.orderListCount(usersNo);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+		ArrayList<Orders> orderList = uService.selectOrderList(usersNo, pi);
+		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
+		for(Orders order :orderList) {
+			//productName 가져오기
+			int productNo = order.getProductNo();
+			foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
+			if (foods != null) { 
+				order.setProductName(foods.getFoodName());
+			}
+			if (tools != null) {
+				order.setProductName(tools.getToolName());
+			}
+			if (igs != null) {
+				order.setProductName(igs.getIngredientName());
+			}
+			if (menus != null) {
+				order.setProductName(menus.getMenuName());
+			}
+		}
+		model.addAttribute("pi", pi);
+		model.addAttribute("orderList", orderList);
+		
+		
+		
 		return "myPage_MyOrder";
 	}
 	
 	@RequestMapping("myPage_MyOrderDetail.me")
-	public String myPage_MyOrderDetail() {
+	public String myPage_MyOrderDetail(int orderNo, Model model) {
+		
+		Orders orders = uService.selectDetailOrder(orderNo);
+		int productNo = orders.getProductNo();
+		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
+		foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
+		if (foods != null) { 
+			orders.setProductName(foods.getFoodName());
+		}
+		if (tools != null) {
+			orders.setProductName(tools.getToolName());
+		}
+		if (igs != null) {
+			orders.setProductName(igs.getIngredientName());
+		}
+		if (menus != null) {
+			orders.setProductName(menus.getMenuName());
+		}
+		
+		ArrayList<Options> optValues = new ArrayList<>();
+		//그냥 옵션은 스트링 자체로 저장해버리는 게 나을 거 같음 
+//		Options opt = mkService.selectOptionInfo(productNo);
+		//사진 뽑아 와야 해...
+		//옵션도....흑흑
+		
+		
+		
+		model.addAttribute("orders", orders);
+		System.out.println("orders : " + orders);
 		return "myPage_MyOrderDetail";
 	}
 	

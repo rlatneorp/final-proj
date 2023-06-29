@@ -10,8 +10,6 @@ public class Menu extends Product{
 	private String foodProductNo;
 	private String menuTarget;
 	private String nutrient;
-	private int menuKind;
-	private int menuNo;
 	private int productPrice;
 	
 	public Menu() {
@@ -104,22 +102,6 @@ public class Menu extends Product{
 	
 	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
-	}
-	
-	public int getMenuKind() {
-		return menuKind;
-	}
-	
-	public void setMenuKind(int menuKind) {
-		this.menuKind = menuKind;
-	}
-	
-	public int getMenuNo() {
-		return menuNo;
-	}
-	
-	public void setMenuNo(int menuNo) {
-		this.menuNo = menuNo;
 	}
 
 	@Override

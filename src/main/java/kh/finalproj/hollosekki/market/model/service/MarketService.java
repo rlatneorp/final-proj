@@ -262,6 +262,15 @@ public class MarketService {
 		mkDAO.updatePoint(sqlSession, users);
 	}
 
+	//구매 후 장바구니에서 제거
+	public void deleteFromCart(int preorderNo) {
+		mkDAO.deleteFromCart(sqlSession, preorderNo);
+	}
+
+	public int selectProductType(int productNo) {
+		return mkDAO.selectProductType(sqlSession, productNo);
+	}
+
 
 
 

@@ -280,6 +280,15 @@ public class MarketDAO {
 		sqlSession.update("marketMapper.updatePoint", users);
 	}
 
+	public void deleteFromCart(SqlSessionTemplate sqlSession, int preorderNo) {
+		sqlSession.delete("marketMapper.deleteFromCart", preorderNo);
+	}
+	
+	//주문한 상품에 대한 productType 조회 
+	public int selectProductType(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectProductType", productNo) ;
+	}
+
 
 
 }

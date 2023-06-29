@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -107,20 +109,10 @@ th:first-child, td:first-child {
 				<br>
 				<div id="orderSelect">
 					<div class="search" style="margin: 0 auto;">
-						<select style="width: 180px;">
-							<option>전체 주문처리상태</option>
-							<option>입금전</option>
-							<option>배송준비중</option>
-							<option>배송중</option>
-							<option>배송완료</option>
-							<option>취소</option>
-							<option>교환</option>
-							<option>반품</option>
-						</select>&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="button" name="today" value="오늘" class="term">
-						<input type="button" value="1개월" class="term">
-						<input type="button" value="3개월" class="term">
-						<input type="button" value="6개월" class="term">
+						<input type="button" name="today" value="오늘" class="term" id="today">
+						<input type="button" value="1개월" class="term" id="1month">
+						<input type="button" value="3개월" class="term" id="3month">
+						<input type="button" value="6개월" class="term" id="6month">
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						<input type="date" class="date">~
 						<input type="date" class="date">
@@ -142,58 +134,29 @@ th:first-child, td:first-child {
 								<th>상품 명</th>
 								<th>주문 날짜</th>
 								<th>총 주문금액</th>
-								<th>주문 상태</th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me'">
-								<td>1</td>
-								<td>식품</td>
-								<td>다이어트 식단</td>
-								<td>2020-0620</td>
-								<td>25000</td>
-								<td>결제 확인중</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>식품</td>
-								<td>당근 외 2개</td>
-								<td>2020-0620</td>
-								<td>10000</td>
-								<td>결제 완료</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>상품</td>
-								<td>냄비</td>
-								<td>2020-0620</td>
-								<td>25000</td>
-								<td>배송중</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>식품</td>
-								<td>몸보신 식단</td>
-								<td>2020-0620</td>
-								<td>25000</td>
-								<td>주문 취소</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>상품</td>
-								<td>튀김기</td>
-								<td>2020-0620</td>
-								<td>25000</td>
-								<td>배송완료</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>식품</td>
-								<td>고단백 식단</td>
-								<td>2020-0620</td>
-								<td>25000</td>
-								<td>배송완료</td>
-							</tr>
+							<c:forEach items="${orderList }" var="ol">
+								<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me?orderNo='+${ol.orderNo}">
+									<td>${ol.orderNo }</td>
+									<c:if test="${ol.productType eq 1 }">
+										<td>식품</td>
+									</c:if>
+									<c:if test="${ol.productType eq 2 }">
+										<td>식단</td>
+									</c:if>
+									<c:if test="${ol.productType eq 3 }">
+										<td>식재료</td>
+									</c:if>
+									<c:if test="${ol.productType eq 4 }">
+										<td>주방도구</td>
+									</c:if>
+									<td>${ol.productName }</td>
+									<td>${ol.orderDate }</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

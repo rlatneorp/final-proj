@@ -13,6 +13,7 @@ import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.dao.UsersDAO;
 
@@ -155,4 +156,19 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.deleteBookMark(sqlSession, divisionNo);
 	}
 	
+	//주문 리스트 조회
+	@Override
+	public ArrayList<Orders> selectOrderList(int usersNo, PageInfo pi) {
+		return uDAO.selectOrderList(sqlSession, usersNo, pi);
+	}
+	
+	@Override
+	public int orderListCount(int usersNo) {
+		return uDAO.orderListCount(sqlSession, usersNo);
+	}
+	
+	@Override
+	public Orders selectDetailOrder(int orderNo) {
+		return uDAO.selectDetailOrder(sqlSession, orderNo);
+	}
 }

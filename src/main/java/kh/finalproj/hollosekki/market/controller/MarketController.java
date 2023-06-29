@@ -202,7 +202,6 @@ public class MarketController {
       model.addAttribute("optValues", optValues);
       return "payDetail";
    }
-   
 
    @GetMapping("market_detail.ma")
    public String marketdetail(@RequestParam("productNo") int productNo,
@@ -366,21 +365,19 @@ public class MarketController {
    }
    
    @RequestMapping("paySuccess.ma")
-   public String paySuccess(HttpSession session, Model model, @RequestParam("use") String use, @RequestParam("plus") int plus) {
-	   
-	  System.out.println("use : " + use);
-//	  if()
+   public String paySuccess(HttpSession session, Model model, @RequestParam("use") String use, @RequestParam("preNo") int preorderNo, @RequestParam("plus") int plus) {
+	  
 	  int usePoint = Integer.parseInt(use.split("원")[0]); //사용 포인트 
-	  
-	  System.out.println("plus : " + plus);
-	  
       Users users = (Users)session.getAttribute("loginUser");
-      int currentPoint = mkService.selectPoint(users.getUsersNo()); //보유 포인트 
       
+      int currentPoint = mkService.selectPoint(users.getUsersNo()); //보유 포인트 
       int minusPoint = currentPoint - usePoint; //보유 포인트 - 사용 포인트
       int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트 
       users.setPoint(resultPoint);
       mkService.updatePoint(users); //변경 된 포인트 반영 
+      
+      //장바구니에서 제거 
+      mkService.deleteFromCart(preorderNo);
       
       model.addAttribute("users", users);
       return "paySuccess";
@@ -584,34 +581,27 @@ public class MarketController {
    
    
    private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
-	      HashMap<String, Integer> map = new HashMap<String, Integer>();
-	      map.put("imageDivideNo", imageDivideNo);
-	      map.put("imageType", imageType);
-	      map.put("imageLevel", imageLevel);
-	      ArrayList<Image> imageList = mkService.selectImagList(map);
-	      return imageList;
-	   }
+      HashMap<String, Integer> map = new HashMap<String, Integer>();
+      map.put("imageDivideNo", imageDivideNo);
+      map.put("imageType", imageType);
+      map.put("imageLevel", imageLevel);
+      ArrayList<Image> imageList = mkService.selectImagList(map);
+      return imageList;
+   }
    
    @RequestMapping("insertPay.ma")
    @ResponseBody
    public String insertPay(@ModelAttribute Orders orders) {
-	  
-//	   int stock = mkService.selectStock(orders.getProductNo());
-//	   int remainStock = stock-orders.getOrderCount();
-//	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
-//	   if(remainStock <= -1) {
-//		   return "stStock";
-//	   } else {
-		   int result = mkService.insertPay(orders);
-		   
-//		   return "success";
-//	   }
-		   
-		   if(result >= 1) {
-			   return "success";
-		   } else {
-			   return "fail";
-		   }
+	   
+	   int selectProductType = mkService.selectProductType(orders.getProductNo());
+	   orders.setProductType(selectProductType);
+	   int result = mkService.insertPay(orders);
+	   
+	   if(result >= 1) {
+		   return "success";
+	   } else {
+		   return "fail";
+	   }
 	   
    }
 }

@@ -47,8 +47,6 @@ import kh.finalproj.hollosekki.users.model.service.UsersService;
 @SessionAttributes({ "loginUser", "image" })
 @Controller
 public class UsersController {
-	@Autowired
-	private MarketService mkService;
 	
 
 	@Autowired

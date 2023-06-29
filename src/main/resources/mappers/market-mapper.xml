@@ -382,7 +382,7 @@
          select seq_review_no.currval from dual
       </selectKey>
    
-<!--    </insert> -->
+   </insert>
    
       <select id="selectImgList" resultMap="imageResultSet">
         select *

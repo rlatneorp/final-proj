@@ -633,11 +633,25 @@
 	<select id="getReviewCount" resultType="_int">
 		select count(*)
 		from review
-		<if test="kind == 0 or kind == -1">
+		     left join recipe on(product_no = food_no)
+			 left join board on(product_no = board_no)
+			 left join product using(product_no)
+		     left join food using(product_no)
+		     left join menu using(product_no)
+		     left join ingredient using(product_no)
+		     left join tool using(product_no)
+		<if test="kind == -1">
 			where order_no = ${kind}
 		</if>
-		<if test="kind == null">
-			where not order_no in (0, -1)
+		<if test="kind != -1">
+			where not order_no = -1
+			<if test="kind == 0">
+				and order_no = 0
+			</if>
+			<if test="kind == 1 and type != 0">
+				and not order_no = 0
+				and product_type = ${type}
+			</if>
 		</if>
 	</select>
 	<select id="selectReviewListAll" resultMap="reviewResultSet">
@@ -651,7 +665,7 @@
 <!--    레시피후기, 전체상품후기		kind = null -->
 
 <!-- 	게시판댓글					kind = -1 -->
-<!-- 	레시피후기					kind = 0	 -->
+<!-- 	레시피후기					kind = 0 -->
 <!-- 	전체상품후기				kind = 1 -->
 <!-- 	식품상품후기	type = 1 	kind = 1 -->
 <!-- 	메뉴상품후기	type = 2 	kind = 1 -->

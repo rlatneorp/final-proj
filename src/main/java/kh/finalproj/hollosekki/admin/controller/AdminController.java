@@ -1402,8 +1402,8 @@ public class AdminController {
 	public String adminReviewManage(HttpServletRequest request,
 									Model model) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-		System.out.println(ab);
 		int listCount = aService.getReviewCount(ab);
+		
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Review> rList = aService.selectReviewList(pi, ab);
 		

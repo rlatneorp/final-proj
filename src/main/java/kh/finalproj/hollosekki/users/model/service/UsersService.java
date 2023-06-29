@@ -64,7 +64,7 @@ public interface UsersService {
 
 	ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, String selectTitle, PageInfo pi);
 
-	int deleteBookMark(int divisionNo);
+//	int deleteBookMark(int divisionNo);
 	
 	//주문 리스트 조회 
 	ArrayList<Orders> selectOrderList(int usersNo, PageInfo pi);

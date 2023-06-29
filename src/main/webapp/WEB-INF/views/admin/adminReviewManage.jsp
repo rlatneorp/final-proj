@@ -23,6 +23,15 @@
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>		
 		
+		<div class="mb-3">
+			<button onclick="selectReviewType(-1)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 38px; font-size: 14px; font-weight: bold;">전체</button>
+			<button onclick="selectReviewType(0)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">레시피</button>
+			<button onclick="selectReviewType(1)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">식단</button>
+			<button onclick="selectReviewType(2)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">식품</button>
+			<button onclick="selectReviewType(3)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">식재료</button>
+			<button onclick="selectReviewType(4)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">도구</button>
+		</div>
+		
 		<form id="deleteForm" action="${contextPath}/adminReviewDeletes.ad" method="post">
 			<table class="w-100 text-center mb-3">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
@@ -48,10 +57,10 @@
 						<td>
 							<c:if test="${r.foodNo ne 0 && r.orderNo eq 0}">레시피</c:if>
 							<c:if test="${!(r.foodNo ne 0 && r.orderNo eq 0)}">
-								<c:if test="${r.productType eq 1}">식단</c:if>
-								<c:if test="${r.productType eq 2}">식품</c:if>
-								<c:if test="${r.productType eq 3}">식재료</c:if>
-								<c:if test="${r.productType eq 4}">도구</c:if>
+								<c:if test="${r.productType eq 1}">식품 상품</c:if>
+								<c:if test="${r.productType eq 2}">식단 상품</c:if>
+								<c:if test="${r.productType eq 3}">식재료 상품</c:if>
+								<c:if test="${r.productType eq 4}">도구 상품</c:if>
 							</c:if>
 						</td>
 						<td>
@@ -82,12 +91,6 @@
 		
 	</div>
 	
-	
-	<!-- Button trigger modal -->
-<!-- 	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal"> -->
-<!-- 		Launch demo modal -->
-<!-- 	</button> -->
-	
 	<!-- Modal -->
 	<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
@@ -98,6 +101,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="row" style="font-size:14px;">
+						<input type="hidden" name="modalReviewNo" value="0">
 						<p class="mb-0 pe-0 col-2" >글번호 :</p>
 						<p class="modalReviewNo mb-0 pe-0 col-10">100</p>
 						<p class="mb-0 pe-0 col-2">작성자 :</p>
@@ -105,12 +109,15 @@
 						<p class="pe-0 col-2">작성날짜 :</p>
 						<p class="modalDate mb-0 col-10">2023-05-00</p>
 					</div>
+					<div class="modalImageBox">
+					</div>
+					<hr>
 					<p class="modalContent">modalContent</p>
 						
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btns statusBtn" style="background-color: gray;">Y</button>
-					<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">N</button>
+					<button type="button" class="btns modalStatusBtn" style="background-color: gray;">Y</button>
+					<button type="button" class="btns modalStatusBtn" style="background-color: #19A7CE;">N</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>
 			</div>
@@ -129,53 +136,114 @@
 				contents[i].addEventListener('click', function(){
 					const reviewNo = this.parentElement.children[0].children[1].value;
 					
+					let modalReviewNo_Hd = document.getElementsByName('modalReviewNo')[0];
 					const modalTitle = document.getElementsByClassName('modal-title')[0];
 					const modalReviewNo = document.getElementsByClassName('modalReviewNo')[0];
 					const modalWriter = document.getElementsByClassName('modalWriter')[0];
 					const modalDate = document.getElementsByClassName('modalDate')[0];
 					const modalContent = document.getElementsByClassName('modalContent')[0];
 					
+					const modalBtns = document.getElementsByClassName('modalStatusBtn');
+					
+// 					선택된 댓글내용에 따라 review정보 불러오기 ajax
 					$.ajax({
 						url: '${contextPath}/adminSelectReview.ad',
 						data: {rNo:reviewNo},
 						success: r => {
-							let date = r.reviewDate.getFullYear() + "-" + (r.reviewDate.getMonth()+1) + "-" + r.reviewDate.getDate();
+							let day = new Date(r.reviewDate);
+							let date = day.getFullYear() + 
+							'-' + ( (day.getMonth()+1) < 9 ? "0" + (day.getMonth()+1) : (day.getMonth()+1) ) +
+							'-' + ( (day.getDate()) < 9 ? "0" + (day.getDate()) : (day.getDate()) );
 							
-							let dateFormat2 = r.reviewDate.getFullYear() +
-							'-' + ( (today.getMonth()+1) < 9 ? "0" + (today.getMonth()+1) : (today.getMonth()+1) )+
-							'-' + ( (today.getDate()) < 9 ? "0" + (today.getDate()) : (today.getDate()) );
+							if(r.orderNo == 0 ){
+								modalTitle.innerText = "("+r.foodNo+") "+r.recipeName;
+							}else if(r.orderNo != -1){
+								modalTitle.innerText = "("+r.productNo+") "+r.productName;
+							}
 							
-							modalTitle.innerText = "레시피이름 / 식단이름../ 식품/ //...";
+							if(r.reviewStatus == 'Y'){
+								modalBtns[0].style.background = "#19A7CE";
+								modalBtns[1].style.background = "gray";
+							}else{
+								modalBtns[0].style.background = "gray";
+								modalBtns[1].style.background = "#19A7CE";
+							}
+							
+							modalReviewNo_Hd.value = r.reviewNo;
 							modalReviewNo.innerText = r.reviewNo;
 							modalWriter.innerText = r.reviewWriter;
-							modalDate.innerText = r.reviewDate;
-							console.log(date);
+							modalDate.innerText = date;
 							
 							modalContent.innerText = r.reviewContent;
-							console.log(r);
 							
 						},
 						error: data =>{
 							console.log(data);
 						}
 					})
+					
+// 					선택된 댓글내용에 따라 review정보 불러오기 ajax
+					const modalImageBox = document.getElementsByClassName('modalImageBox')[0];
 					$.ajax({
 						url: '${contextPath}/adminSelectReviewImage.ad',
 						data: {rNo:reviewNo},
 						success: iList => {
+							modalImageBox.innerHTML = ''; 
 							if(iList.length != 0){
-								console.log("사진있음");
+								for(let i = 0; i < iList.length; i++){
+									if(i != 0){
+										modalImageBox.innerHTML += "<br>"; 
+									}
+									modalImageBox.innerHTML += "<img src='${contextPath}/resources/uploadFiles/"+iList[i].imageRenameName+"' width='100%'><br>"; 
+								}
+								
 							}
 						},
 						error: data =>{
 							console.log(data);
 						}
 					})
-					
-					
+					for(let i = 0; i < modalBtns.length; i++){
+						modalBtns[i].addEventListener('click', function(){
+							$.ajax({
+								url: '${contextPath}/adminUpdateStatus.ad',
+								data: {dataNo:modalReviewNo_Hd.value,
+									   dataStatus:this.innerText,
+									   dataType:7},
+								success: data =>{
+									if(data == "success"){
+										if(i == 0){
+											modalBtns[0].style.background = "#19A7CE";
+											modalBtns[1].style.background = "gray";
+										}else{
+											modalBtns[0].style.background = "gray";
+											modalBtns[1].style.background = "#19A7CE";
+										}
+									}else{
+										alert("상태 변경에 실패하였습니다.");
+									}
+								},
+								error: data => {
+									console.log(data);
+								}
+							})
+							const reviewNo = document.getElementsByName('reviewNo');
+							const statusBtns = document.getElementsByClassName('statusBtn');
+							for(let j = 0; j < reviewNo.length; j++){
+								if(modalReviewNo_Hd.value == reviewNo[j].value){
+									if(this.innerText == 'Y'){
+										statusBtns[j*2].style.background = "#19A7CE";
+										statusBtns[j*2+1].style.background = "gray";
+									}else{
+										statusBtns[j*2].style.background = "gray";
+										statusBtns[j*2+1].style.background = "#19A7CE";
+									}
+									
+								}
+							}
+						})
+					}
 				})
-				
-				
 			}
 			
 			
@@ -224,7 +292,6 @@
 // 			상태 버튼 이벤트
 			const statusBtns = document.getElementsByClassName('statusBtn');
 			const Nos = document.getElementsByName('reviewNo');
-			console.log(Nos);
 			for(const i in statusBtns){
 				if(i<statusBtns.length){
 					let j = Math.floor(i/2);
@@ -260,6 +327,18 @@
 			}
 		}
 		
+// 		후기 타입 선택버튼 함수
+		function selectReviewType(i){
+			if(i == -1){
+				location.href="${contextPath}/adminReviewManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}";
+			}else if(i == 0){
+				location.href="${contextPath}/adminReviewManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}"
+								+"&kind=0";
+			}else{
+				location.href="${contextPath}/adminReviewManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}"
+								+"&kind=1&type="+i;
+			}
+		}
 		
 		
 	</script>

@@ -2,9 +2,9 @@ package kh.finalproj.hollosekki.common.model.vo;
 
 public class Menu extends Product{
 	private String menuName;
-//	private int menuNo;
-// 1: �떎�씠�뼱�듃 2: �쑁瑜� 3: �빐�궛臾�
-//	private int menuKind;
+	private int menuNo;
+// 1: 다이어트 2: 육류 3: 해산물
+	private int menuKind;
 	private int menuType;
 	private String menuContent;
 	private String foodProductNo;
@@ -38,21 +38,21 @@ public class Menu extends Product{
 		this.menuName = menuName;
 	}
 
-//	public int getMenuNo() {
-//		return menuNo;
-//	}
-//
-//	public void setMenuNo(int menuNo) {
-//		this.menuNo = menuNo;
-//	}
-//
-//	public int getMenuKind() {
-//		return menuKind;
-//	}
-//
-//	public void setMenuKind(int menuKind) {
-//		this.menuKind = menuKind;
-//	}
+	public int getMenuNo() {
+		return menuNo;
+	}
+
+	public void setMenuNo(int menuNo) {
+		this.menuNo = menuNo;
+	}
+
+	public int getMenuKind() {
+		return menuKind;
+	}
+
+	public void setMenuKind(int menuKind) {
+		this.menuKind = menuKind;
+	}
 
 	public int getMenuType() {
 		return menuType;

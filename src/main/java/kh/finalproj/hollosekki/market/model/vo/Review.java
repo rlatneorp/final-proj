@@ -102,10 +102,6 @@ public class Review extends Image{
 		this.reviewStar = reviewStar;
 	}
 
-	public Date getReviewDate() {
-		return reviewDate;
-	}
-
 	public void setReviewDate(Date reviewDate) {
 		this.reviewDate = reviewDate;
 	}

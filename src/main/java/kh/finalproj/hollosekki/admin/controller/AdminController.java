@@ -27,6 +27,7 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -466,8 +467,6 @@ public class AdminController {
 		map.put("no", no);
 		map.put("type", type);
 		
-		System.out.println(map);
-		System.out.println(food);
 		if(no != 0) {
 			food = aService.selectFood(map);
 			food = (Food)selectProduct(food);
@@ -992,7 +991,6 @@ public class AdminController {
 	}
 	
 	
-	
 //	Tool-상품 관리
 	@GetMapping("adminToolManage.ad")
 	public String adminToolManage(
@@ -1296,7 +1294,7 @@ public class AdminController {
 		return "adminRecipeWrite";
 	}
 	@PostMapping("adminRecipeDeletes.ad")
-	public String adminRecipedDeletes(@RequestParam("selectDelete") String[] selDeletes,
+	public String adminRecipeDeletes(@RequestParam("selectDelete") String[] selDeletes,
 									HttpServletRequest request,
 									Model model) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
@@ -1328,76 +1326,195 @@ public class AdminController {
 	}
 
 
-//	Review-리뷰 Detail
-	@GetMapping("adminReviewDetail.ad")
-	public String adminReviewDetail(@RequestParam("reviewNo") Integer reviewNo,
-									Model model) {
-
-		Review r = aService.selectReview(reviewNo);
-		
-		model.addAttribute("r", r);
-		return "adminReviewDetail";
-	}
-	
-	
-	
-//	RecipeReview-레시피후기 관리
-	@GetMapping("adminRecipeReviewManage.ad")
-	public String adminRecipeReviewManage(HttpServletRequest request,
-										  Model model) {
+//	Board-게시판 관리
+	@GetMapping("adminBoardManage.ad")
+	public String adminBoardManage(HttpServletRequest request,
+								   Model model) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-		ab.setKind(0);
 
-		int listCount = aService.getReviewCount(ab);
+		int listCount = aService.getBoardCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
-		ArrayList<Review> rprList = aService.selectReviewList(pi, ab);
+		ArrayList<Board> bList = aService.selectBoardList(pi, ab);
 		
-		if(rprList != null) {
+		if(bList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("rprList", rprList);
-			return "adminRecipeReviewManage";
+			model.addAttribute("bList", bList);
+			return "adminBoardManage";
 		}else {
-			throw new AdminException("레시피 목록 조회에 실패하였습니다.");
+			throw new AdminException("게시글 목록 조회에 실패하였습니다.");
 		}
 	}
-	@GetMapping("adminRecipeReviewDetail.ad")
-	public String adminRecipeReviewDetail() {
-		return "adminRecipeReviewDetail";
+	@GetMapping("adminBoardDetail.ad")
+	public String adminBoardDetail(@ModelAttribute Board board,
+								   Model model) {
+		AdminBasic ab = new AdminBasic();
+		ab.setKind(-1);
+		ab.setNumber(board.getBoardNo());
+		ab.setDuplication("Y");
+		Board b = aService.selectBoard(board.getBoardNo());
+		ArrayList<Review> rList = aService.selectReviewList(null, ab);
+		
+		if(b != null) {
+			model.addAttribute("b", b);
+			model.addAttribute("rList", rList);
+			return "adminBoardDetail";
+		}else{
+			throw new AdminException("게시글 상세보기에 실패하였습니다.");
+		}
 	}
-	@PostMapping("adminRecipeReviewUpdate.ad")
-	public String adminRecipeReviewUpdate() {
-		return "redirect:adminRecipeReviewManage.ad";
+	@PostMapping("adminBoardDeletes.ad")
+	public String adminBoardDeletes(@RequestParam("selectDelete") String[] selDeletes,
+									HttpServletRequest request,
+									Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
+//		int resultImg = 0;
+		int resultR = 0;
+		int resultB = 0;
+		
+		resultB = aService.deletesBoard(selDeletes);
+		
+//		ArrayList<Image> imgList = null;
+//		for(int i = 0; i < selDeletes.length; i++) {
+////			데이터 서버 이미지 삭제
+//			imgList = selectAllImageList(Integer.parseInt(selDeletes[i]), 2, -1);
+//			for(Image img:imgList) {
+//				deleteFile(img.getImageRenameName(), request);
+////				DB서버 이미지 삭제
+//				resultImg += aService.deleteImage(img);
+//			}
+//		}
+		
+//		if(resultB != 0 && resultImg == imgList.size()) {
+		if(resultB != 0) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
+			return "redirect:adminBoardManage.ad";
+		}else {
+			throw new AdminException("게시판 삭제 실패");
+		}
 	}
+	
+	
+//	Review-리뷰
+	@GetMapping("adminReviewManage.ad")
+	public String adminReviewManage(HttpServletRequest request,
+									Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		System.out.println(ab);
+		int listCount = aService.getReviewCount(ab);
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Review> rList = aService.selectReviewList(pi, ab);
+		
+		if(rList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("rList", rList);
+			return "adminReviewManage";
+		}else {
+			throw new AdminException("게시글 목록 조회에 실패하였습니다.");
+		}
+	}
+	@GetMapping("adminSelectReview.ad")
+	public void adminSelectReview(@RequestParam("rNo") Integer rNo,
+								  HttpServletResponse response) {
+		
+		Review r = aService.selectReview(rNo);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(r, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	@GetMapping("adminSelectReviewImage.ad")
+	public void adminSelectReviewImage(@RequestParam("rNo") Integer rNo,
+									   HttpServletResponse response) {
+		
+		ArrayList<Image> iList = selectAllImageList(rNo, 7, -1);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(iList, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+//	@GetMapping("adminReviewDetail.ad")
+//	public String adminReviewDetail(@RequestParam("reviewNo") Integer reviewNo,
+//									Model model) {
+//
+//		Review r = aService.selectReview(reviewNo);
+//		
+//		model.addAttribute("r", r);
+//		return "adminReviewDetail";
+//	}
+		
+//	RecipeReview-레시피후기 관리
+//	@GetMapping("adminRecipeReviewManage.ad")
+//	public String adminRecipeReviewManage(HttpServletRequest request,
+//										  Model model) {
+//		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+//		ab.setKind(0);
+//
+//		int listCount = aService.getReviewCount(ab);
+//		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+//		ArrayList<Review> rprList = aService.selectReviewList(pi, ab);
+//		
+//		if(rprList != null) {
+//			model.addAttribute("pi", pi);
+//			model.addAttribute("rprList", rprList);
+//			return "adminRecipeReviewManage";
+//		}else {
+//			throw new AdminException("레시피 목록 조회에 실패하였습니다.");
+//		}
+//	}
+//	@GetMapping("adminRecipeReviewDetail.ad")
+//	public String adminRecipeReviewDetail() {
+//		return "adminRecipeReviewDetail";
+//	}
+//	@PostMapping("adminRecipeReviewUpdate.ad")
+//	public String adminRecipeReviewUpdate() {
+//		return "redirect:adminRecipeReviewManage.ad";
+//	}
 	
 	
 //	MenuReview-메뉴후기 관리
-	@GetMapping("adminMenuReviewManage.ad")
-	public String adminMenuReviewManage() {
-		return "adminMenuReviewManage";
-	}
-	@GetMapping("adminMenuReviewDetail.ad")
-	public String adminMenuReviewDetail() {
-		return "adminMenuReviewDetail";
-	}
-	@PostMapping("adminMenuReviewUpdate.ad")
-	public String adminMenuReviewUpdate() {
-		return "redirect:adminMenuReviewManage.ad";
-	}
+//	@GetMapping("adminMenuReviewManage.ad")
+//	public String adminMenuReviewManage() {
+//		return "adminMenuReviewManage";
+//	}
+//	@GetMapping("adminMenuReviewDetail.ad")
+//	public String adminMenuReviewDetail() {
+//		return "adminMenuReviewDetail";
+//	}
+//	@PostMapping("adminMenuReviewUpdate.ad")
+//	public String adminMenuReviewUpdate() {
+//		return "redirect:adminMenuReviewManage.ad";
+//	}
 	
 	
 //	ProductReview-상품후기 관리
-	@GetMapping("adminProductReviewManage.ad")
-	public String adminProductReviewManage() {
-		return "adminProductReviewManage";
-	}
-	@GetMapping("adminProductReviewDetail.ad")
-	public String adminProductReviewDetail() {
-		return "adminProductReviewDetail";
-	}
-	@PostMapping("adminProductReviewUpdate.ad")
-	public String adminProductReviewUpdate() {
-		return "redirect:adminProductReviewManage.ad";
-	}
+//	@GetMapping("adminProductReviewManage.ad")
+//	public String adminProductReviewManage() {
+//		return "adminProductReviewManage";
+//	}
+//	@GetMapping("adminProductReviewDetail.ad")
+//	public String adminProductReviewDetail() {
+//		return "adminProductReviewDetail";
+//	}
+//	@PostMapping("adminProductReviewUpdate.ad")
+//	public String adminProductReviewUpdate() {
+//		return "redirect:adminProductReviewManage.ad";
+//	}
 	
 	
 //	FAQ-자주묻는질문 관리
@@ -1452,6 +1569,7 @@ public class AdminController {
 //		5	-> users	status 업데이트
 //		6	-> recipe	status 업데이트
 //		7	-> review	status 업데이트
+//		8	-> board	status 업데이트
 		
 		int result = aService.updateStatus(map);
 		String msg = "msg";
@@ -1553,6 +1671,7 @@ public class AdminController {
 //	}
 
 	private ArrayList<Image> selectAllImageList(int imageDivideNo, int imageType, int imageLevel) {
+//		모든 imageLevel	-> 	imageLevel = -1		
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("imageDivideNo", imageDivideNo);
 		map.put("imageType", imageType);

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -280,6 +281,14 @@ public class MarketDAO {
 		sqlSession.update("marketMapper.updatePoint", users);
 	}
 
+	public int reviewAvg(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.reviewAvg",productNo);
+	}
+
+	public ArrayList<Review> reviewAvgDesc(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.reviewAvgDesc", productNo);
+	
+	}
 
 
 }

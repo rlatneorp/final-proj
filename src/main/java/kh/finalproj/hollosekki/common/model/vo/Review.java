@@ -19,6 +19,7 @@ public class Review {
 	private int boardNo;
 	private String boardTitle;
 	
+	private int productType;
 	private String productName;
 
 	public Review() {
@@ -27,7 +28,7 @@ public class Review {
 
 	public Review(int productNo, int orderNo, int reviewNo, String reviewTitle, String reviewContent, int reviewScore,
 			String reviewStatus, Date reviewDate, String reviewWriter, int foodNo, String recipeName, int boardNo,
-			String boardTitle, String productName) {
+			String boardTitle, int productType, String productName) {
 		super();
 		this.productNo = productNo;
 		this.orderNo = orderNo;
@@ -42,6 +43,7 @@ public class Review {
 		this.recipeName = recipeName;
 		this.boardNo = boardNo;
 		this.boardTitle = boardTitle;
+		this.productType = productType;
 		this.productName = productName;
 	}
 
@@ -149,6 +151,14 @@ public class Review {
 		this.boardTitle = boardTitle;
 	}
 
+	public int getProductType() {
+		return productType;
+	}
+
+	public void setProductType(int productType) {
+		this.productType = productType;
+	}
+
 	public String getProductName() {
 		return productName;
 	}
@@ -163,7 +173,7 @@ public class Review {
 				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
 				+ reviewStatus + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + ", foodNo=" + foodNo
 				+ ", recipeName=" + recipeName + ", boardNo=" + boardNo + ", boardTitle=" + boardTitle
-				+ ", productName=" + productName + "]";
+				+ ", productType=" + productType + ", productName=" + productName + "]";
 	}
-	
+
 }

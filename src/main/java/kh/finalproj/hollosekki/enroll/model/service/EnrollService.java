@@ -56,7 +56,7 @@ public interface EnrollService {
 
 	ArrayList<Product> productList();
 
-	ArrayList<Users> healtherList();
+	ArrayList<Users> AllUsersList();
 
 	ArrayList<Recipe> allRecipeList();
 
@@ -81,6 +81,10 @@ public interface EnrollService {
 	ArrayList<Image> menuReviewImageList();
 
 	ArrayList<Review> replyList();
+
+	ArrayList<Board> allBoardList();
+
+	ArrayList<Review> userReplyList(String nickName);
 
 
 

@@ -737,10 +737,10 @@ p b {
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<c:forEach items="${mainImage}" var="main">
-				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
-			</c:forEach>
-<!-- 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
+<%-- 			<c:forEach items="${mainImage}" var="main"> --%>
+<%-- 				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;"> --%>
+<%-- 			</c:forEach> --%>
+			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;">
 		</div>
 		<div class="right">
 			<!-- 상품 정보 -->
@@ -764,54 +764,64 @@ p b {
 					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
 					</h2>
 				</div>
-			<div>
-					<div class="productSet">
-                        <dl class="info_delivery">
-                            <dt style="font-size: 20px; padding:5px; height:45px">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;배송
-                            </dt>
-                                </dl>
-                         		<hr style="margin: 0px;">
-                                <dl class="info_point" style="margin: 0px;">
-                            <dt style="font-size: 20px; padding: 5px; height:45px"">
-                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
-                            </dt>
-                                </dl>
-								<hr style="margin: 0px;">
+					<div>
+						<div class="productSet">
+							<div style="text-align: center">
+								<span style="font-size: 40px; font-weight: 400; color:#4485d7; class="reviewStar">
+									<c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
+									<c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
+									<c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>
+									<c:if test="${starAvg  eq  2 }" >★★☆☆☆&nbsp&nbsp(2)</c:if>
+									<c:if test="${starAvg  eq  1 }" >★☆☆☆☆&nbsp&nbsp(1)</c:if>
+									<c:if test="${starAvg  eq  0 }" >☆☆☆☆☆&nbsp&nbsp(0)</c:if>
+								</span>
+							</div>
+	                        <dl class="info_delivery">
+	                            <dt style="font-size: 20px; padding:5px; height:45px">
+	                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
+	                            	&nbsp;배송
+	                            </dt>
+	                                </dl>
+	                         		<hr style="margin: 0px;">
+	                                <dl class="info_point" style="margin: 0px;">
+	                            <dt style="font-size: 20px; padding: 5px; height:45px"">
+	                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
+	                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
+	                            </dt>
+	                                </dl>
+									<hr style="margin: 0px;">
+							
+						<c:forEach items="${options}" var="op" varStatus="vs">
+								<c:if test="${vs.index == 0}">
+									<label for="productOptionSet">${op.optionName}</label>
+									<select class='productOptionSet'  required>
+										<option value="">옵션을 선택해주세요</option>
+										<option value="${op.optionNo}">${op.optionValue}</option>
+								</c:if>
+								<c:if test="${op.optionName eq options[vs.index-1].optionName}">
+									<option value="${op.optionNo}">${op.optionValue}</option>
+								</c:if>
+								<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
+									</select>
+									
+									<label for="productOption2Set">${op.optionName}</label>
+									<select class='productOption2Set'  required>
+										<option class='productOption2Set' >옵션을 선택해주세요.</option>
+										<option value="${op.optionNo}">${op.optionValue}</option>
+								</c:if>
+								<c:if test="${vs.last}">
+									</select>
+							</c:if>
+						</c:forEach>
 						
-					<c:forEach items="${options}" var="op" varStatus="vs">
-							<c:if test="${vs.index == 0}">
-								<label for="productOptionSet">${op.optionName}</label>
-								<select class='productOptionSet'  required>
-									<option value="">옵션을 선택해주세요</option>
-									<option value="${op.optionNo}">${op.optionValue}</option>
-							</c:if>
-							<c:if test="${op.optionName eq options[vs.index-1].optionName}">
-								<option value="${op.optionNo}">${op.optionValue}</option>
-							</c:if>
-							<c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
-								</select>
-								
-								<label for="productOption2Set">${op.optionName}</label>
-								<select class='productOption2Set'  required>
-									<option class='productOption2Set' >옵션을 선택해주세요.</option>
-									<option value="${op.optionNo}">${op.optionValue}</option>
-							</c:if>
-							<c:if test="${vs.last}">
-								</select>
-						</c:if>
-					</c:forEach>
-					
-				</div>
 					</div>
-			</div>
-							<div class="totalPrice"></div>
-							<br>
-						<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-<!-- 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
-						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+						</div>
+				</div>
+								<div class="totalPrice"></div>
+								<br>
+							<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+	<!-- 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
+							<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
 
 		</div>
 	</main>
@@ -863,7 +873,7 @@ p b {
 <!-- 					</div> -->
 
 			<span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span>
-			<span class="review_star_desc" style="font-size: 500;">별점순</span>
+			<span class="review_stardesc" style="font-size: 500;">별점순</span>
 			</div>
 		
 			
@@ -896,22 +906,16 @@ p b {
 								<ul>
 									<c:forEach items="${imglist}" var="img" >
 										<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
-											<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}"></li>
+											<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
 										</c:if>
 									</c:forEach>
 								</ul>
 							</div>
-							
 								<div style="display: inline-block; width: 100%;">
-<%-- 									<c:forEach items="${imglist}" var="img" > --%>
-<%-- 										<c:if test ="${img.imageDivideNo ep r.reviewNo}" > --%>
 											<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
 													${r.reviewContent}  
 											</div>
-<%-- 									</c:if> --%> 
-<%-- 									</c:forEach> --%>
 								</div>
-<%-- 							</c:if> --%>
 			</div>
 		</c:forEach>
 			<div class="moreView">더보기</div>
@@ -999,7 +1003,7 @@ p b {
 					</li>
 				</ul>
 				<li id="page-qna" class="accordion_i_li">
-	                <a class="accordion_i_tit3">문의<span>(2)</span></a>
+	                <a class="accordion_i_tit3">문의<span>(1)</span></a>
 	                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
 	                    <div id="ajax-goods-goodsqa-list">
 	                    
@@ -1013,7 +1017,7 @@ p b {
                         상품문의 입니다.
                     </div>
                         <span class="writer" style="margin-right: 60px">조단</span>
-                        <span class="rv_cont_date" style="margin-right: 60px">2023.01.31</span>
+                        <span class="rv_cont_date" style="margin-right: 60px">2023.06.29</span>
                         <span class="qna_result" style="float: right;">답변완료</span>
                     
                 
@@ -1021,22 +1025,6 @@ p b {
                 <div class="js_detail accordion_q_cont"></div>
             </li>
             <!-- 여기 까지 반복 -->
-            
-            <li class="accordion_q_li js_data_row" >
-                <div class="accordion_q_tit1">
-                   
-                    <div class="qna">
-                        상품문의 입니다.
-                    </div>
-                        <span class="writer" style="margin-right: 60px">조단</span>
-                        <span class="rv_cont_date" style="margin-right: 60px">2023.01.31</span>
-                        <span class="qna_result" style="float: right;">답변완료</span>
-                    
-                
-                </div>
-                <div class="js_detail accordion_q_cont"></div>
-            </li>
-            
             
 			</ul>
 				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
@@ -1257,9 +1245,9 @@ p b {
 	
 		
 		$(document).ready(function() {
-			
+			var productNo = null;
 	    $("#cartbtn").click(function() {
-	        var productNo = $("input[name='productNo']").val();
+	        productNo = $("input[name='productNo']").val();
 	        var cartCount = $(".cartCount").val();
 	        var productOption = $(".productOption").val();
 	        var productOption2 = $(".productOption2").val();
@@ -1271,15 +1259,6 @@ p b {
 	        var productOption2Values=[];
 	        var usersNoValues=[];
 	        
-	        
-	        var allData ={
-	        		"productNo":productNoValues, 
-		        	"cartCount":cartCountValues,
-		        	"productOption":productOptionValues, 
-		        	"productOption2":productOption2Values,
-		        	"usersNo":usersNoValues,
-		        	"preorderNo":preorderNo
-		        	};
 	        
 	        $("input[name='productNo']").each(function(){
 	        	productNoValues.push($(this).val());
@@ -1333,6 +1312,36 @@ p b {
 	        	}
 	        	
 	    })
+	    
+	    	    $(".review_stardesc").click(function(){
+		    	
+			    	$.ajax({
+			    		url:"reviewAvgDesc.ma",
+			    		type:"post",
+			    		dataType:"json",
+			    		data:{productNo:${p.productNo}},
+			    		success: function(result){
+			    			console.log(result.reviewNo);
+			    			$(".textbox").html(result);
+			    			
+			    		}
+			    	})
+		    	
+
+	   			})
+
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 		
 		})
 	}

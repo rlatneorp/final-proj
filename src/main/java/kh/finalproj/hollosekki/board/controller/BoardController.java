@@ -69,7 +69,6 @@ public class BoardController {
 			model.addAttribute("list", list);
 			model.addAttribute("page", page);
 			model.addAttribute("login", login);
-
 			return "detailFreeBoard";
 		} else {
 			throw new BoardException("�Խñ� ��ȸ�� �����Ͽ����ϴ�.");
@@ -82,7 +81,6 @@ public class BoardController {
 		
 		bService.insertReply(b);
 		ArrayList<Board> rlist = bService.selectReply(b.getProductNo());
-		System.out.println(rlist);
 		response.setContentType("application/json; charset=UTF-8");
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
 		Gson gson = gb.create();
@@ -91,17 +89,13 @@ public class BoardController {
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
-		
 	}	
 	
 	@RequestMapping("replyDelete.bo")
 	@ResponseBody
 	public String replyDelete(@ModelAttribute Board b) {
 		
-//		Board replyNo = bService.selectDelReply(b);
-		
 		int result = bService.replyDelete(b);
-		
 		return result == 1 ? "success" : "fail";
 	}
 		

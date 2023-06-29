@@ -188,7 +188,7 @@
 							</td>
 							<td>
 								<button type="button" class="xBtn" id="xBtn">삭제</button>
-								<input type="hidden" id="hdnReplyNo" value="${r.reviewNo}">
+								<input type="hidden" class="hdnReplyNo" value="${r.reviewNo}">
 							</td>
 						</tr>
 					</c:forEach>	
@@ -217,8 +217,8 @@
 	        <p>댓글을 삭제하시겠습니까?</p>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">예</button>
-	        <button type="button" class="btn btn-primary deleteYes">아니요</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
+	        <button type="button" class="btn btn-primary deleteYes">예(엔터)</button>
 	      </div>
 	    </div>
 	  </div>
@@ -232,44 +232,56 @@
 window.onload=()=>{
 	const deleteModal = document.getElementById('deleteModal');
 	const xBtn = document.querySelectorAll('.xBtn');
-	const replySubmit = document.getElementById('replySubmit');
 	const deleteYes = document.getElementsByClassName("deleteYes");
+	const replySubmit = document.getElementById('replySubmit');
 	
-		
-	$('.xBtn').each(function(index, item){
-		$(this).click(function(e){
-			e.preventDefault();
-			console.log(index);
-			$('#deleteModal').modal("show");
-			
-		 	for(const yes of deleteYes){
-		 		yes.addEventListener('click', ()=>{
-		 			const hdnBoardNo = document.querySelector('#hdnBoardNo');
-		 			const hdnReplyNo = document.getElementById('hdnReplyNo');
-	 				$.ajax({
-	 					url: 'replyDelete.bo',
-	 					data:{
-	 						reviewNo: hdnReplyNo.value,
-	 						reviewWriter: '${login}',
-	 						productNo: hdnBoardNo.value
-	 					},
-	 					success: data=>{
-	 						console.log(data);
-	 						if(data == 'success'){
-	 							const trs = document.querySelectorAll('tr');
-	 							trs[index].innerHTML = '';
-	 						}else{
-	 							alert("오류로 인해 삭제가 되지 않았습니다.");
-	 							location.reload();
-	 						}
+	
+	
+	xDel();
+	
+	function xDel(){
+		$('.xBtn').each(function(index, item){
+			$(this).click(function(e){
+				e.preventDefault();
+				$('#deleteModal').modal("show");
+				 
+	 			const hdnBoardNo = document.querySelector('#hdnBoardNo');
+	 			const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
+	 			for(const yes of deleteYes){
+	 				yes.focus();
+	 				yes.addEventListener('keydown', function(event){
+	 					if(event.keyCode == 13){
+	 						yes.click();
 	 					}
-	 				});
-	 			
-		 		})
-		 	};
+	 				})
+			 		yes.addEventListener('click', ()=>{
+						$.ajax({
+							url: 'replyDelete.bo',
+							data:{
+								reviewNo: hdnReplyNo[index].value,
+								reviewWriter: '${login}',
+								productNo: hdnBoardNo.value
+							},
+							success: data=>{
+								console.log(data);
+								if(data == 'success'){
+									const tbody = document.querySelector('tbody');
+		 							const trs = tbody.querySelectorAll('tr');
+		 							trs[index].innerHTML = '';
+		 							$('#deleteModal').modal("hide");
+								}else{
+									alert("오류로 인해 삭제가 되지 않았습니다.");
+									location.reload();
+								}
+							}
+						});
+					})
+				}	
+	 		})
 			
 		})
-	});
+	}
+	
 	
 	replySubmit.addEventListener('click', ()=>{
 		const hdnBoardNo = document.querySelector('#hdnBoardNo');
@@ -304,8 +316,7 @@ window.onload=()=>{
 					modifyBtn.innerHTML = '<button type="button" id="reBtn">수정</button>';
 					
 					const deleteBtn = document.createElement('td');
-					deleteBtn.innerHTML = '<button type="button" id="xBtn">삭제</button>';
-					
+					deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>	<input type="hidden" id="hdnReplyNo" value="${r.reviewNo}">';
 					
 					tr.append(contentTd);
 					tr.append(writerTd);
@@ -313,9 +324,9 @@ window.onload=()=>{
 					tr.append(modifyBtn);
 					tr.append(deleteBtn);
 					
+					deleteBtn.querySelector('#xBtn').className = 'xBtn';
 					tbody.append(tr);
-					
-					
+					xDel();
 				}
 				document.getElementById('commentWrite').value = '';
 					
@@ -325,17 +336,11 @@ window.onload=()=>{
 			}
 		});
 	})		
+
+}	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-}
 
 </script>
 </html>

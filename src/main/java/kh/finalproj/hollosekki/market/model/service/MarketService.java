@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -264,6 +265,14 @@ public class MarketService {
 	//포인트 update 
 	public void updatePoint(Users users) {
 		mkDAO.updatePoint(sqlSession, users);
+	}
+
+	public int reviewAvg(int productNo) {
+		return mkDAO.reviewAvg(sqlSession, productNo);
+	}
+
+	public ArrayList<Review> reviewAvgDesc(int productNo) {
+		return mkDAO.reviewAvgDesc(sqlSession, productNo);
 	}
 
 

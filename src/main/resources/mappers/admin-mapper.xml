@@ -38,7 +38,44 @@
 			set board_status = #{dataStatus}
 			where board_no = #{dataNo}
 		</if>
+		<if test="dataType == 9">
+			update faq
+			set faq_status = #{dataStatus}
+			where faq_no = #{dataNo}
+		</if>
+		<if test="dataType == 10">
+			update qna
+			set qna_status = #{dataStatus}
+			where qna_no = #{dataNo}
+		</if>
 	</update>
+	
+	<delete id="deleteSelects">
+<!-- 	type	-->
+<!-- 	1 : 식품 -->
+<!-- 	2 : 식단 -->
+<!-- 	3 : 식재료 -->
+<!-- 	4 : 주방도구  -->
+<!-- 	5 : 상품  -->
+<!-- 	6 : 레시피  -->
+<!-- 	7 : 리뷰(Review) -->
+<!-- 	8 : 게시판(Board) -->
+<!-- 	9 : FAQ -->
+<!-- 	10 : QNA -->
+		<if test="type == 1">delete food 		where product_no in</if>
+		<if test="type == 2">delete menu 		where product_no in</if>
+		<if test="type == 3">delete ingredient 	where ingredient_no in</if>
+		<if test="type == 4">delete tool 		where product_no in</if>
+		<if test="type == 5">delete product 	where product_no in</if>
+		<if test="type == 6">delete recipe 		where food_no in</if>
+		<if test="type == 7">delete review 		where review_no in</if>
+		<if test="type == 8">delete board 		where board_no in</if>
+		<if test="type == 9">delete faq			where faq_no in</if>
+		<if test="type == 10">delete qna		where qna_no in</if>
+		<foreach collection="selDeletes" item="item" open="(" separator="," close=")">
+			${item}
+		</foreach>
+	</delete>
 	
 	<insert id="insertOptions">
 		insert into options(option_no, product_no, option_name, option_value)
@@ -629,7 +666,7 @@
 	</delete>
 
 
-<!--Review -->
+<!--Review-리뷰 -->
 	<select id="getReviewCount" resultType="_int">
 		select count(*)
 		from review
@@ -666,6 +703,7 @@
 
 <!-- 	게시판댓글					kind = -1 -->
 <!-- 	레시피후기					kind = 0 -->
+<!-- 	레시피-후기리스트				kind = 0	number != 0 duplication = 'Y' -->
 <!-- 	전체상품후기				kind = 1 -->
 <!-- 	식품상품후기	type = 1 	kind = 1 -->
 <!-- 	메뉴상품후기	type = 2 	kind = 1 -->
@@ -674,52 +712,6 @@
 <!-- 	리뷰-번호조회							number != 0 duplication = null -->
 <!-- 	게시글-댓글리스트				kind = -1	number != 0 duplication = 'Y' -->
 <!--  +	검색 			-->
-
-<!-- 		select * -->
-<!-- 		from review -->
-<!-- 		<if test="kind == 0"> -->
-<!-- 				join recipe on(product_no = food_no) -->
-<!-- 			where order_no = ${kind} -->
-<!-- 		</if> -->
-<!-- 		<if test="kind == -1"> -->
-<!-- 				join board on(product_no = board_no) -->
-<!-- 			where order_no = ${kind} -->
-<!-- 		</if> -->
-<!-- 		<if test="kind == null"> -->
-<!-- 			<if test="type == 1"> -->
-<!-- 				join food using(product_no) -->
-<!-- 			</if> -->
-<!-- 			<if test="type == 2"> -->
-<!-- 				join menu using(product_no) -->
-<!-- 			</if> -->
-<!-- 			<if test="type == 3"> -->
-<!-- 				join ingredient using(product_no) -->
-<!-- 			</if> -->
-<!-- 			<if test="type == 4"> -->
-<!-- 				join tool using(product_no) -->
-<!-- 			</if> -->
-<!-- 			where not order_no in (0, -1) -->
-<!-- 			<if test="type == 1 or type == 2 or type == 3 or type == 4"> -->
-<!-- 				and product_type = ${type} -->
-<!-- 			</if> -->
-<!-- 		</if> -->
-<!-- 		<if test="searchText != null"> -->
-<!-- 			<if test='searchType == "writer"'> -->
-<!-- 				and review_writer like '%${searchText}%' -->
-<!-- 			</if> -->
-<!-- 			<if test='searchType == "content"'> -->
-<!-- 				and review_content like '%${searchText}%' -->
-<!-- 			</if> -->
-<!-- 		</if> -->
-<!-- 		<if test="number != null and duplication == null"> -->
-<!-- 				and review_no = ${number} -->
-<!-- 		</if> -->
-<!-- 		<if test='number != null and duplication == "Y"'> -->
-<!-- 				and product_no = ${number} -->
-<!-- 		</if> -->
-		
-<!-- 		order by review_no desc -->
-
 		select *
 		from review
 		     left join recipe on(product_no = food_no)
@@ -792,6 +784,53 @@
 			where review_no = ${number}
 		</if>
 	</delete>
+	<delete id="deletesReview">
+		<if test="type == 7">
+			delete review
+			where review_no in
+		</if>
+		<foreach collection="selDeletes" item="item" index="i" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+
+<!--FAQ-자주묻는질문 -->
+	<select id="getFAQCount" resultType="_int">
+		select count(*)
+		from faq
+		<if test="searchText != null">
+			<if test='searchType == "writer"'>
+				where users_id like '%${searchText}%'
+			</if>
+			<if test='searchType == "title"'>
+				where board_title like '%${searchText}%'
+			</if>
+		</if>
+		order by faq_no desc
+	</select>
+	
+	<select id="selectFAQList" resultMap="faqResultSet">
+		select *
+		from faq
+		<if test="searchText != null">
+			<if test='searchType == "writer"'>
+				where users_id like '%${searchText}%'
+			</if>
+			<if test='searchType == "title"'>
+				where board_title like '%${searchText}%'
+			</if>
+		</if>
+		order by faq_no desc
+	</select>
+	
+	<select id="selectFAQ" resultMap="faqResultSet">
+		select *
+		from faq
+		where faq_no = ${faqNo}
+	</select>
+
 
 
 <!--ResultSet -->
@@ -818,31 +857,7 @@
 		<result column="image_path" property="imagePath"/>
 		<result column="image_level" property="imageLevel"/>
 	</resultMap>
-	
-	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Review" id="reviewResultSet">
-		<id column="REVIEW_NO" property="reviewNo"/>
-		<result column="PRODUCT_NO" property="productNo"/>
-		<result column="ORDER_NO" property="orderNo"/>
-		<result column="REVIEW_TITLE" property="reviewTitle"/>
-		<result column="REVIEW_CONTENT" property="reviewContent"/>
-		<result column="REVIEW_SCORE" property="reviewScore"/>
-		<result column="REVIEW_STATUS" property="reviewStatus"/>
-		<result column="REVIEW_DATE" property="reviewDate"/>
-		<result column="REVIEW_WRITER" property="reviewWriter"/>
-		
-		<result column="FOOD_NO" property="foodNo"/>
-		<result column="RECIPE_NAME" property="recipeName"/>
 
-		<result column="BOARD_NO" property="boardNo"/>
-		<result column="BOARD_TITLE" property="boardTitle"/>
-		
-		<result column="PRODUCT_TYPE" property="productType"/>
-		<result column="MENU_NAME" property="productName"/>
-		<result column="FOOD_NAME" property="productName"/>
-		<result column="INGREDIENT_NAME" property="productName"/>
-		<result column="TOOL_NAME" property="productName"/>
-	</resultMap>
-	
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Options" id="optionsResultSet">
 		<id column="OPTION_NO" property="optionNo"/>
 		<result column="PRODUCT_NO" property="productNo"/>
@@ -947,5 +962,41 @@
 		<result column="BOARD_TYPE" property="boardType"/>
 		<result column="BOARD_COUNT" property="boardCount"/>
 	</resultMap>
+	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Review" id="reviewResultSet">
+		<id column="REVIEW_NO" property="reviewNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="REVIEW_TITLE" property="reviewTitle"/>
+		<result column="REVIEW_CONTENT" property="reviewContent"/>
+		<result column="REVIEW_SCORE" property="reviewScore"/>
+		<result column="REVIEW_STATUS" property="reviewStatus"/>
+		<result column="REVIEW_DATE" property="reviewDate"/>
+		<result column="REVIEW_WRITER" property="reviewWriter"/>
+		
+		<result column="FOOD_NO" property="foodNo"/>
+		<result column="RECIPE_NAME" property="recipeName"/>
+
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="MENU_NAME" property="productName"/>
+		<result column="FOOD_NAME" property="productName"/>
+		<result column="INGREDIENT_NAME" property="productName"/>
+		<result column="TOOL_NAME" property="productName"/>
+	</resultMap>
+	
+	<resultMap type="FAQ" id="faqResultSet">
+		<id column="FAQ_NO" property="faqNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="FAQ_TITLE" property="faqTitle"/>
+		<result column="FAQ_CONTENT" property="faqContent"/>
+		<result column="FAQ_ANSWER" property="faqAnswer"/>
+		<result column="FAQ_DATE" property="faqDate"/>
+		<result column="FAQ_STATUS" property="faqStatus"/>
+		<result column="FAQ_TYPE" property="faqType"/>
+	</resultMap>
+	
 	
 </mapper>

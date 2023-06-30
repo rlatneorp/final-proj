@@ -84,4 +84,17 @@
 			and order_no = -1
 	</update>
 	
+	<update id="reReply">
+		update review
+		set review_content = #{reviewContent}
+		where review_writer = #{reviewWriter}
+			and review_no = #{reviewNo}
+			and product_no = #{productNo}
+			and review_status = 'Y'
+			and order_no = -1
+	</update>
+	
+	
+	
+	
 </mapper>

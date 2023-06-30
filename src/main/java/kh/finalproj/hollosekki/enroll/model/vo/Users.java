@@ -25,13 +25,15 @@ public class Users {
 	private int enrollRecipe;
 	private int bookmarkCount;
 	private int likeCount;
+	private String imageRenameName;
+	private String socialProfileImg;
 	
 	public Users() {}
 
 	public Users(int usersNo, String usersId, String usersPw, String usersName, String nickName, String email,
 			String phone, Date enrollDate, Date exitDate, String status, int checkDay, int point, String isAdmin,
 			String attendanceDate, String attendanceDay, String usersAddress, String usersSelfIntro, int following,
-			int follower, int enrollRecipe, int bookmarkCount, int likeCount) {
+			int follower, int enrollRecipe, int bookmarkCount, int likeCount, String imageRenameName, String socialProfileImg) {
 		super();
 		this.usersNo = usersNo;
 		this.usersId = usersId;
@@ -55,6 +57,8 @@ public class Users {
 		this.enrollRecipe = enrollRecipe;
 		this.bookmarkCount = bookmarkCount;
 		this.likeCount = likeCount;
+		this.imageRenameName = imageRenameName;
+		this.socialProfileImg = socialProfileImg;
 	}
 
 	public int getUsersNo() {
@@ -232,6 +236,22 @@ public class Users {
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
 	}
+	
+	public String getImageRenameName() {
+		return imageRenameName;
+	}
+
+	public void setImageRenameName(String imageRenameName) {
+		this.imageRenameName = imageRenameName;
+	}
+
+	public String getSocialProfileImg() {
+		return socialProfileImg;
+	}
+
+	public void setSocialProfileImg(String socialProfileImg) {
+		this.socialProfileImg = socialProfileImg;
+	}
 
 	@Override
 	public String toString() {
@@ -241,7 +261,8 @@ public class Users {
 				+ point + ", isAdmin=" + isAdmin + ", attendanceDate=" + attendanceDate + ", attendanceDay="
 				+ attendanceDay + ", usersAddress=" + usersAddress + ", usersSelfIntro=" + usersSelfIntro
 				+ ", following=" + following + ", follower=" + follower + ", enrollRecipe=" + enrollRecipe
-				+ ", bookmarkCount=" + bookmarkCount + ", likeCount=" + likeCount + "]";
+				+ ", bookmarkCount=" + bookmarkCount + ", likeCount=" + likeCount + ", imageRenameName="
+				+ imageRenameName + ", socialProfileImg=" + socialProfileImg + "]";
 	}
-	
+
 }

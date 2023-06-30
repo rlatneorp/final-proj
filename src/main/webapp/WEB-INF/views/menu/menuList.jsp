@@ -260,6 +260,12 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
+	const search = document.getElementById('searchBtn');
+	search.addEventListener('click', function(){
+		const text = document.getElementById('inputText').value;
+		location.href="${contextPath}/searchMenu.mn?word="+text;
+	})
+
 	const likeBtns = document.getElementsByClassName('likeBtn');
 	for(const likeBtn of likeBtns){
 		likeBtn.addEventListener('click', function(){
@@ -275,7 +281,6 @@
 				this.querySelector('i').classList.replace("bi-heart-fill", "bi-heart");
 				this.nextElementSibling.innerText = num - 1;
 			}
-			
 		})
 	}
 	const cols = document.querySelectorAll('.col');

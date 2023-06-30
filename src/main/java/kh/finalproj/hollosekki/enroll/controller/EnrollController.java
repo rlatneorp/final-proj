@@ -414,9 +414,9 @@ public class EnrollController {
 			// 북마크 목록
 			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo); // 사용자 북마크 List
 			model.addAttribute("bList", bookMarkList);
-			int recipeBookMarkList = eService.recipeBookMarkList(usersNo); // 사용자 레시피 북마크 List
+			ArrayList<BookMark> recipeBookMarkList = eService.recipeBookMarkList(usersNo); // 사용자 레시피 북마크-레시피 목록에있는것들 List
 			model.addAttribute("rCount" ,recipeBookMarkList);
-			int menuBookMarkList = eService.menuBookMarkList(usersNo); // 사용자 식단 북마크 List
+			int menuBookMarkList = eService.menuBookMarkList(usersNo); // 사용자 식단 북마크 count
 			model.addAttribute("mCount", menuBookMarkList);
 			
 			// 북마크 - 레시피목록

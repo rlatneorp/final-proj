@@ -141,15 +141,15 @@ public class EnrollDAO {
 	}
 
 	public ArrayList<Follow> followingLsit(SqlSessionTemplate sqlSession, int usersNo) {
-		return (ArrayList)sqlSession.selectList("enrollMapper.followList", usersNo);
+		return (ArrayList)sqlSession.selectList("enrollMapper.followingLsit", usersNo);
 	}
 
 	public ArrayList<Follow> loginUserFollowingList(SqlSessionTemplate sqlSession, int usersNo) {
 		return (ArrayList)sqlSession.selectList("enrollMapper.loginUserFollowingList", usersNo);
 	}
 
-	public int recipeBookMarkList(SqlSessionTemplate sqlSession, int usersNo) {
-		return sqlSession.selectOne("enrollMapper.recipeBookMarkList", usersNo);
+	public ArrayList<BookMark> recipeBookMarkList(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.recipeBookMarkList", usersNo);
 	}
 
 	public int menuBookMarkList(SqlSessionTemplate sqlSession, int usersNo) {

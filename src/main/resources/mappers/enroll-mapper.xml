@@ -154,9 +154,11 @@
 		order by follow_create_date desc
 	</select>
 	
-	<select id="recipeBookMarkList" resultType="_int">
-		select count(*) from bookmark
-		where users_no = ${ usersNo } and number_type = 1
+	<select id="recipeBookMarkList" resultMap="recipeResultSet">
+		select * 
+		from bookmark
+			 join recipe on(bookmark.division_no = recipe.food_no)
+		where bookmark.users_no = ${ usersNo } and number_type = 1
 	</select>
 	
 	<select id="menuBookMarkList" resultType="_int">
@@ -195,8 +197,14 @@
 		order by board_no desc
 	</select>
 	
+<!-- 	<select id="userReplyList" resultMap="reviewResultSet"> -->
+<!-- 		select * from review -->
+<!-- 		where review_writer = #{nickName} and review_status = 'Y' and order_no = '-1' -->
+<!-- 	</select> -->
+
 	<select id="userReplyList" resultMap="reviewResultSet">
-		select * from review
+		select * 
+		from review
 		where review_writer = #{nickName} and review_status = 'Y' and order_no = '-1'
 	</select>
 	

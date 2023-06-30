@@ -163,7 +163,7 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public int recipeBookMarkList(int usersNo) {
+	public ArrayList<BookMark> recipeBookMarkList(int usersNo) {
 		return eDAO.recipeBookMarkList(sqlSession, usersNo);
 	}
 

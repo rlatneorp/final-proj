@@ -423,39 +423,7 @@
 						</div>
 					</div>
 					
-<!-- 					페이징 -->
-<!-- 					<div class="pageFreeBoard" >  -->
-<!-- 						<nav aria-label="Page navigation example"> -->
-<!-- 							<ul class="pageFreeBoard pagination justify-content-center"> -->
-<%-- 							    <c:if test="${ pi.currentPage > 1 }"> --%>
-<!-- 							    <li class="page-item"> -->
-<%-- 							    	<c:url var="goBack" value="${ loc }"> --%>
-<%-- 										<c:param name="page" value="${ pi.currentPage-1 }"></c:param> --%>
-<%-- 									</c:url> --%>
-<%-- 									<a class="page-link" href="${ goBack }" aria-label="Previous"> --%>
-<!-- 										<span aria-hidden="true">&laquo;</span> -->
-<!-- 									</a>	 -->
-<!-- 								</li> -->
-<%-- 								</c:if> --%>
-<%-- 								<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p"> --%>
-<%-- 								   	<c:url var="goNum" value="${ loc }"> --%>
-<%-- 										<c:param name="page" value="${ p }"></c:param> --%>
-<%-- 									</c:url> --%>
-<%-- 								  	<li class="page-item pageFreeBoard"><a class="page-link" href="${ goNum }">${ p }</a></li> --%>
-<%-- 								</c:forEach> --%>
-<%-- 								<c:if test="${ pi.currentPage < pi.maxPage }"> --%>
-<!-- 								<li class="page-item"> -->
-<%-- 									<c:url var="goNext" value="${ loc }"> --%>
-<%-- 										<c:param name="page" value="${ pi.currentPage+1 }"></c:param> --%>
-<%-- 									</c:url> --%>
-<%-- 									<a class="page-link" href="${ goNext }" aria-label="Next"> --%>
-<!-- 										<span aria-hidden="true">&raquo;</span> -->
-<!-- 									</a> -->
-<!-- 								</li> -->
-<%-- 								</c:if> --%>
-<!-- 							</ul> -->
-<!-- 						</nav>	 -->
-<!-- 					</div> -->
+				<!-- 페이징 -->
 					
 					
 				</div>
@@ -567,9 +535,11 @@
 				<!-- 메뉴5. 북마크 목록 -->
 				<div class="bookmark-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
-					<c:if test="${ rCount == 0 }">
+					
+					<c:if test="${ empty rCount }">
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 레시피가 없습니다.</div>
 					</c:if>
+					
 					<div style="display: flex;">
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
@@ -809,7 +779,7 @@
 			$('.write-reply-contents').hide();
 			$('.recipe-review-contents').hide();
 			$('.bookmark-contents').hide();
-		})
+		}) 
 		
 		$('#write-list').on('click', function(){
 			$('#write-list').addClass('select');

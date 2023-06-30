@@ -470,7 +470,7 @@
 		    }
 		});
 		
-		var loginUser = '${loginUser.socialProfileImg}';
+		var loginUserP = '${loginUser.socialProfileImg}';
 		
 		// 기본이미지
 		function profileImg() {
@@ -485,7 +485,7 @@
 
 			    reader.readAsDataURL(file);
 			  } else {
-				  if (loginUser) {
+				  if (loginUserP) {
 				      profile.src = loginUser;
 				    } else {
 				      profile.src = "https://botsitivity.org/static/media/noprofile.c3f94521.png";
@@ -509,13 +509,13 @@
 			});
 		}
 		
-// 		var loginUser = '${loginUser}';
+		var loginUser = '${loginUser}';
 		if(loginUser != ''){
 			$.ajax({
 				url: 'point.ma',
 				success: function(info){
 					let myP = document.querySelector('#myP');
-					myP.innerHTML = info.point;
+					myP.innerHTML = info.point + 'P';
 				}
 				
 			});

@@ -63,13 +63,9 @@ public class UsersController {
 
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
-		// 이미지 조회
+		// 이미지 조회 - 로그인 조회할때 이미지 리네임, 소셜이미지 조인해서 가져옴
 		Users u = (Users) model.getAttribute("loginUser");
-//		Image image = uService.selectImage(usersNo);
-//		System.out.println(image);
-//		model.addAttribute("image", image);
 		Users loginUser = eService.login(u);
-		System.out.println(loginUser);
 		model.addAttribute("loginUser", loginUser);
 
 		int following = eService.following(loginUser.getUsersNo());

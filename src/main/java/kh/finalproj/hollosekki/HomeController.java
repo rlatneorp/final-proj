@@ -47,9 +47,10 @@ public class HomeController {
 		Users loginUsers = (Users)model.getAttribute("loginUser");
 		if(loginUsers != null) {
 			Users u = (Users)model.getAttribute("loginUser");
+			
 			Users loginUser = eService.login(u);
-			System.out.println(loginUser);
 			model.addAttribute("loginUser", loginUser);
+			
 			Image image = uService.selectImage(loginUser.getUsersNo());
 			model.addAttribute("image", image);
 			

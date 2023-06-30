@@ -168,7 +168,7 @@
 				</div>
 			</div>
 			<div class="logo">
-				<a href="${ contextPath }"><img class="logo-img" src="${ contextPath }/resources/images/storeLogo.png"></a>
+				<a href="${ contextPath }/home.do"><img class="logo-img" src="${ contextPath }/resources/images/storeLogo.png"></a>
 			</div>
 			<div style="margin-top: 20px;">
 				<div class="menus">
@@ -203,10 +203,20 @@
 								<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 									<div class="profile-img-div">
 										<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-											<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img">
+											<c:if test="${ empty loginUser.imageRenameName }">
+												<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="profile-img"/>
+											</c:if>
+											<c:if test="${ !empty loginUser.imageRenameName }">
+												<img src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }" class="profile-img"/>
+											</c:if>
 										</c:if>
 										<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-											<img src="${ socialUser.socialProfileImg }" class="profile-img">
+											<c:if test="${ empty loginUser.imageRenameName }">
+												<img src="${ loginUser.socialProfileImg }" class="profile-img">
+											</c:if>
+											<c:if test="${ !empty loginUser.imageRenameName }">
+												<img src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }" class="profile-img"/>
+											</c:if>
 										</c:if>
 									</div>
 						  			<div class="userName">

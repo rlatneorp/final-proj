@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -593,43 +594,63 @@ public class MarketController {
    
    
    @PostMapping("reviewAvgDesc.ma")
-   @ResponseBody
-   public String reviewAvgDesc(@RequestParam ("productNo") int productNo, HttpServletRequest request, Model model) {
+   public void reviewAvgDesc(@RequestParam ("productNo") int productNo, HttpServletResponse response, Model model) {
 	   	
 	   	ArrayList<Review> result = mkService.reviewAvgDesc(productNo);
-	   	model.addAttribute("result",result);
+	   	ArrayList<String> imgList = mkService.selectImgList(productNo);
 	   	
-	   	return "market_detail";
+	   	HashMap<String, Object> map = new HashMap<String, Object>();
+	   	map.put("result", result);
+	   	map.put("imgList", imgList);
+	   	
+	    response.setContentType("application/json; charset=UTF-8");
+	      GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+	      Gson gson = gb.create();
+	      try {
+	         gson.toJson(map, response.getWriter());
+	      } catch (JsonIOException | IOException e) {
+	         e.printStackTrace();
+	      }
+	   	
+	   	
+	   	
    }
-	
    
+   @PostMapping("reviewDesc.ma")
+   public void reviewDesc(@RequestParam ("productNo") int productNo, HttpServletResponse response, Model model) {
+	   
+	   ArrayList<Review> result = mkService.reviewDesc(productNo);
+	   ArrayList<String> imgList = mkService.selectImgList(productNo);
+	   
+	   HashMap<String, Object> map = new HashMap<String, Object>();
+	   map.put("result", result);
+	   map.put("imgList", imgList);
+	   
+	   response.setContentType("application/json; charset=UTF-8");
+	   GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+	   Gson gson = gb.create();
+	   try {
+		   gson.toJson(map, response.getWriter());
+	   } catch (JsonIOException | IOException e) {
+		   e.printStackTrace();
+	   }
+	   
+	   
+	   
+   }
+		   	
 //   public String insertPay(@ModelAttribute Orders orders) {
+//	   
 //	   int selectProductType = mkService.selectProductType(orders.getProductNo());
 //	   orders.setProductType(selectProductType);
-//	   int result = mkService.insertPay(orders);
-//	   
-//	   if(result >= 1) {
-//		   return "success";
-//	   } else {
-//		   return "fail";
-//	   }
-//	   
+////	   int result = mkService.insertPay(orders);
+////	   
+////	   if(result >= 1) {
+////		   return "success";
+////	   } else {
+////		   return "fail";
+////	   }
+////	   
 //	   return "market_detail";
 //   }
-   
-   @RequestMapping("insertPay.ma")
-   @ResponseBody
-   public String insertPay(@ModelAttribute Orders orders) {
-	   int selectProductType = mkService.selectProductType(orders.getProductNo());
-	   orders.setProductType(selectProductType);
-	   int result = mkService.insertPay(orders);
-   
-	   if(result >= 1) {
-		   return "success";
-	   } else {
-		   return "fail";
-	   }
-   
-   }
-   
 }

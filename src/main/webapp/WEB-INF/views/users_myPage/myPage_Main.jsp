@@ -233,20 +233,20 @@
 				<br>
 				<i class="bi bi-gear-fill" style="margin-left: 580px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#profileModal"></i>
 				<br>
-				<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-					<c:if test="${ empty image }">
-						<img src="${ socialUser.socialProfileImg }" id="pImg">
-					</c:if>
-					<c:if test="${ !empty image and image.imageType == 1 }">
-						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="pImg" onerror="this.src='${ socialUser.socialProfileImg }';"/>
-					</c:if>
-				</c:if>
 				<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-					<c:if test="${ empty image }">
+					<c:if test="${ empty loginUser.imageRenameName }">
 						<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" id="pImg"/>
 					</c:if>
-					<c:if test="${ !empty image and image.imageType == 1 }">
-						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" id="pImg"/>
+					<c:if test="${ !empty loginUser.imageRenameName }">
+						<img src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }" id="pImg"/>
+					</c:if>
+				</c:if>
+				<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
+					<c:if test="${ empty loginUser.imageRenameName }">
+						<img src="${ loginUser.socialProfileImg }" id="pImg">
+					</c:if>
+					<c:if test="${ !empty loginUser.imageRenameName }">
+						<img src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }" id="pImg"/>
 					</c:if>
 				</c:if>
 				<p style="font-size: 20px; font-weight: bold; margin-left: 440px;">${ loginUser.usersName }</p>
@@ -278,14 +278,19 @@
 						    <div class="followDiv">
 						    	<div onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.FOLLOWING_USER_NO }' + '&page=' + '${page}'" style="cursor: pointer;">
 						    		<c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
-					    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+						    			<c:if test="${ empty f.IMAGE_RENAMENAME }">
+						    				<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="followImage"/>
+										</c:if>
+										<c:if test="${ !empty f.IMAGE_RENAMENAME }">
+											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage"/>
+										</c:if>
 						    		</c:if>
 						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
 						    			<c:if test="${ empty f.IMAGE_RENAMENAME }">
 											<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
 										</c:if>
 										<c:if test="${ !empty f.IMAGE_RENAMENAME }">
-											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage" onerror="this.src='${ f.SOCIAL_PROFILE_IMG }';"/>
+											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage"/>
 										</c:if>
 						    		</c:if>
 							    	<input type="hidden" value="${ f.FOLLOWING_USER_NO }" class="followingsNo">
@@ -319,14 +324,19 @@
 							<div class="followDiv">
 								<div onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${f.USERS_ID}' + '&uNo=' + '${ f.USERS_NO }' + '&page=' + '${page}'" style="cursor: pointer;">
 								    <c:if test="${ fn:contains(f.USERS_PW, '$2a$') }">
-						    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
+						    			<c:if test="${ empty f.IMAGE_RENAMENAME }">
+						    				<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" class="followImage"/>
+										</c:if>
+										<c:if test="${ !empty f.IMAGE_RENAMENAME }">
+											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage"/>
+										</c:if>
 						    		</c:if>
 						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
 						    			<c:if test="${ empty f.IMAGE_RENAMENAME }">
 											<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
 										</c:if>
 										<c:if test="${ !empty f.IMAGE_RENAMENAME }">
-											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage" onerror="this.src='${ f.SOCIAL_PROFILE_IMG }';"/>
+											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage"/>
 										</c:if>
 						    		</c:if>
 								    <input type="hidden" value="${ f.USERS_NO }" class="followersNo">
@@ -360,11 +370,11 @@
 					<h1 class="modal-title fs-5" id="followingLabel">프로필 수정</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<c:if test="${ empty image }">
+				<c:if test="${ empty loginUser.imageRenameName }">
 					<form action="myPage_InsertProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-							<img src="${ socialUser.socialProfileImg }" id="modalP" onerror="this.src='${ socialUser.socialProfileImg }';">
+							<img src="${ loginUser.socialProfileImg }" id="modalP">
 						</c:if>
 						<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
 							<img id="modalP" src="https://botsitivity.org/static/media/noprofile.c3f94521.png"/>
@@ -382,18 +392,18 @@
 					</div>
 					</form>
 				</c:if>
-				<c:if test="${ !empty image and image.imageType == 1 }">
+				<c:if test="${ !empty loginUser.imageRenameName }">
 					<form action="myPage_UpdateProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-							<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="modalP" onerror="this.src='${ socialUser.socialProfileImg }';">
+							<img src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }" id="modalP">
 						</c:if>
 						<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-							<img id="modalP" src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"/>
+							<img id="modalP" src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }"/>
 						</c:if>
 						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
 						<br>
-						<button type="button" class="base" id="delete-${ image.imageRenameName }">기본 이미지</button>
+						<button type="button" class="base" id="delete-${ loginUser.imageRenameName }">기본 이미지</button>
 						<input type="hidden" name="deletePicture" value="none">
 						<br><br><hr><br>
 						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
@@ -460,7 +470,7 @@
 		    }
 		});
 		
-		const socialUser = '${socialUser}';
+		var loginUser = '${loginUser.socialProfileImg}';
 		
 		// 기본이미지
 		function profileImg() {
@@ -475,8 +485,8 @@
 
 			    reader.readAsDataURL(file);
 			  } else {
-				  if (socialUser) {
-				      profile.src = socialUser.socialProfileImg;
+				  if (loginUser) {
+				      profile.src = loginUser;
 				    } else {
 				      profile.src = "https://botsitivity.org/static/media/noprofile.c3f94521.png";
 				    }
@@ -499,7 +509,7 @@
 			});
 		}
 		
-		var loginUser = '${loginUser}';
+// 		var loginUser = '${loginUser}';
 		if(loginUser != ''){
 			$.ajax({
 				url: 'point.ma',

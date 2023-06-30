@@ -97,6 +97,7 @@ public class EnrollController {
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
 			Users loginUser = eService.login(u);
+			System.out.println(loginUser);
 			if(loginUser == null) {
 				int num = 1;
 				model.addAttribute("login", num);

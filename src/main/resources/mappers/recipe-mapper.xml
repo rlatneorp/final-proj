@@ -200,7 +200,7 @@
 	</select>
 	
 	<insert id="reviewWrite">
-		insert into review values(#{orderNo}, 0, seq_review_no.nextval, null, #{reviewContent}, 5, default, sysdate, #{reviewWriter})
+		insert into review values(#{productNo}, 0, seq_review_no.nextval, null, #{reviewContent}, 5, default, sysdate, #{reviewWriter})
 	</insert>
 	
 	<select id="selectReview" resultMap="reviewResultSet">

@@ -20,9 +20,6 @@
 	
 	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-0">후기관리</h4>
-		
-		<jsp:include page="../common/adminPageCountForm.jsp"/>		
-		
 		<div class="mb-3">
 			<button onclick="selectReviewType(-1)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 38px; font-size: 14px; font-weight: bold;">전체</button>
 			<button onclick="selectReviewType(0)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">레시피</button>
@@ -32,7 +29,12 @@
 			<button onclick="selectReviewType(4)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">도구</button>
 		</div>
 		
-		<form id="deleteForm" action="${contextPath}/adminReviewDeletes.ad" method="post">
+		<jsp:include page="../common/adminPageCountForm.jsp"/>		
+		
+<%-- 		<form id="deleteForm" action="${contextPath}/adminReviewDeletes.ad" method="post"> --%>
+		<form id="deleteForm" action="${contextPath}/adminDeleteSelects.ad" method="post">
+			<input type="hidden" name="type" value="7">
+			<input type="hidden" name="url" value="adminReviewManage.ad">
 			<table class="w-100 text-center mb-3">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>

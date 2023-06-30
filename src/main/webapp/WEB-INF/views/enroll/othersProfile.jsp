@@ -243,7 +243,7 @@
 							<img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" >
 						</c:if>
 						<c:if test="${ userImage ne null }"> <!-- 일반유저-프사있을때 -->
-							<img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ userImage.imageRenameName }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';">
+							<img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ userImage.imageRenameName }">
 						</c:if>
 					</c:if>
 					<c:if test="${ social ne null }"> <!-- 소셜유저일때 -->
@@ -251,7 +251,7 @@
 							<img class="profile-img" src="${ social.socialProfileImg }" />
 						</c:if>
 						<c:if test="${ userImage.imageDivideNo == user.usersNo and userImage.imageType == '1' }">
-							<img class="profile-img" src="${contextPath}/resources/uploadFiles/${ userImage.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"/>
+							<img class="profile-img" src="${contextPath}/resources/uploadFiles/${ userImage.imageRenameName }"/>
 						</c:if>	
 					</c:if>
 				</div>

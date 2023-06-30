@@ -67,19 +67,22 @@ public class UsersController {
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
 		// 이미지 조회
-		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
-		Image image = uService.selectImage(usersNo);
-		System.out.println(image);
-		model.addAttribute("image", image);
+		Users u = (Users) model.getAttribute("loginUser");
+//		Image image = uService.selectImage(usersNo);
+//		System.out.println(image);
+//		model.addAttribute("image", image);
+		Users loginUser = eService.login(u);
+		System.out.println(loginUser);
+		model.addAttribute("loginUser", loginUser);
 
-		int following = eService.following(usersNo);
-		int follower = eService.follow(usersNo);
+		int following = eService.following(loginUser.getUsersNo());
+		int follower = eService.follow(loginUser.getUsersNo());
 		model.addAttribute("following", following);
 		model.addAttribute("follower", follower);
 
 		// 팔로잉 팔로워 리스트 조회
-		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(usersNo);
-		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(usersNo);
+		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(loginUser.getUsersNo());
+		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(loginUser.getUsersNo());
 
 		model.addAttribute("followingList", followingList);
 		model.addAttribute("followerList", followerList);

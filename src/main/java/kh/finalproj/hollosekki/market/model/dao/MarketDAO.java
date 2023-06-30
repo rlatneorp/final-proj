@@ -307,7 +307,7 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.orderSearchCount", prop);
 	}
 
-	public ArrayList<Orders> orderSearch(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
+	public ArrayList<Map<String, Object>> orderSearch(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
 		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
@@ -318,7 +318,7 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.orderPeriodSearchCount", prop);
 	}
 
-	public ArrayList<Orders> orderPeriodSearchList(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
+	public ArrayList<Map<String, Object>> orderPeriodSearchList(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
 		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		

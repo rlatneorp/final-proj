@@ -35,15 +35,22 @@
 	
 	<select id="menuDetailMenu" resultMap="menuListResultSet">
 		select *
-		from menu_list
-			 left join food on(food_product_no = product_no)
-		where product_no=#{mNO}
+		from menu_list ml
+			 left join food f on(ml.food_product_no = f.product_no)
+		where ml.product_no=#{mNO}
+		order by menu_list_no asc
 	</select>
 	
 	<select id="menuDetailImage" resultMap="imageResultSet">
 		select *
 		from image
-		where image_divide_no=#{mNo} and image_type=3 and image_level=1
+		where image_type=3 and image_level=1
+	</select>
+	
+	<select id="selectList" resultMap="menuResultSet">
+		select *
+		from menu
+		where menu_name like '%${word}%'
 	</select>
 	
 	<resultMap type="Menu" id="menuResultSet">

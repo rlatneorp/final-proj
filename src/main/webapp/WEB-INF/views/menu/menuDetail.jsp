@@ -279,7 +279,8 @@ p b {
 
 /* 	모달 */
 	.modal-body{text-align: center;}
-	.bi-check-circle-fill{font-size: 60px; color: #B0DAFF;}
+	.bi-cart-check-fill{font-size: 60px; color: #B0DAFF;}
+	.bi-cart-plus-fill{font-size: 60px; color: #B0DAFF;}
 	.btn-n{background: lightgray; color: white;}
 	.btn-n:hover{background: darkgray; color: black;}
 	.btn-y{background: rgba(255, 170, 0, 0.5); color: white;}
@@ -444,7 +445,7 @@ p b {
 						
 						<label>[필수] 수량을 선택해주세요.</label><br>
 						<div id="period" class="inputBox">
-							<label for="first">식단 명 </label>
+							<label for="first">${menu.menuName} : </label>
 							<button type="button" id="decrease" onclick="decreaseClick()">-</button>
 							<div id="quantity" style="display: inline-block;">1</div>
 							<button type="button" id="increase" onclick="increaseClick()">+</button>
@@ -452,19 +453,15 @@ p b {
 						
 						<br>
 						
-						
 						<div id="productResult">
 							<div>
 								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
 									총 상품 가격 : <label id="total"><fmt:formatNumber value="${menu.productPrice}"/>원</label>
 								</h4>
 							</div>
-							
 							<br>
 						</div>
-					
 					</div>
-					
 					<button type="button" id="buybtn" style="display: inline-block; width: 60%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> <!-- 결제 창으로 -->
 					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
 				</div>
@@ -517,24 +514,379 @@ p b {
 	
 	<p class="mid">식단</p>
 	
+	<c:set var="value" value="${mlList }"/>
 	
-	<c:forEach items="${mlList}" var="ml" varStatus="vs">
-		<c:if test="${(vs.index)%4 == 0 }">
-		<div class="menuABCD">
-			<h2>${fn:substring(vs.index/4+1,0,1) }일차</h2>
-			<div style="margin: 0 40px;">
-				<div class="menuMiniPic">
-					<img src="resources/images/chicken1.png" width=150px; height=100%; style="border-radius: 5px;">
-					<div class="d-inline-block">
-						<h5>식단 이름</h5>
-						<br>
-						<p>식단 내용 식단 내용 식단 내용 식단 내용</p>
-					</div>
+	<div class="menuABCD">
+		<h2>1일차</h2>
+		<div style="margin: 0 40px;">
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[0].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[0].foodName}</h5>
+					<br>
+					<p>${fn:split(value[0].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[1].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[1].foodName}</h5>
+					<br>
+					<p>${fn:split(value[1].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[2].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[2].foodName}</h5>
+					<br>
+					<p>${fn:split(value[2].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[3].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[3].foodName}</h5>
+					<br>
+					<p>${fn:split(value[3].foodContent, "@")[0]}</p>
 				</div>
 			</div>
 		</div>
-		</c:if>
-	</c:forEach>
+	</div>
+	<div class="menuABCD">
+		<h2>2일차</h2>
+		<div style="margin: 0 40px;">
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[4].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[4].foodName}</h5>
+					<br>
+					<p>${fn:split(value[4].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[5].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[5].foodName}</h5>
+					<br>
+					<p>${fn:split(value[5].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[6].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[6].foodName}</h5>
+					<br>
+					<p>${fn:split(value[6].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[7].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[7].foodName}</h5>
+					<br>
+					<p>${fn:split(value[7].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menuABCD">
+		<h2>3일차</h2>
+		<div style="margin: 0 40px;">
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[8].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[8].foodName}</h5>
+					<br>
+					<p>${fn:split(value[8].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[9].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[9].foodName}</h5>
+					<br>
+					<p>${fn:split(value[9].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[10].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[10].foodName}</h5>
+					<br>
+					<p>${fn:split(value[10].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[11].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[11].foodName}</h5>
+					<br>
+					<p>${fn:split(value[11].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menuABCD">
+		<h2>4일차</h2>
+		<div style="margin: 0 40px;">
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[12].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[12].foodName}</h5>
+					<br>
+					<p>${fn:split(value[12].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[13].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[13].foodName}</h5>
+					<br>
+					<p>${fn:split(value[13].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[14].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[14].foodName}</h5>
+					<br>
+					<p>${fn:split(value[14].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[15].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[15].foodName}</h5>
+					<br>
+					<p>${fn:split(value[15].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menuABCD">
+		<h2>5일차</h2>
+		<div style="margin: 0 40px;">
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[16].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[16].foodName}</h5>
+					<br>
+					<p>${fn:split(value[16].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[17].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[17].foodName}</h5>
+					<br>
+					<p>${fn:split(value[17].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[18].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[18].foodName}</h5>
+					<br>
+					<p>${fn:split(value[18].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[19].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[19].foodName}</h5>
+					<br>
+					<p>${fn:split(value[19].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menuABCD">
+		<h2>6일차</h2>
+		<div style="margin: 0 40px;">
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[20].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[20].foodName}</h5>
+					<br>
+					<p>${fn:split(value[20].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[21].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[21].foodName}</h5>
+					<br>
+					<p>${fn:split(value[21].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[22].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[22].foodName}</h5>
+					<br>
+					<p>${fn:split(value[22].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[23].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[23].foodName}</h5>
+					<br>
+					<p>${fn:split(value[23].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menuABCD">
+		<h2>7일차</h2>
+		<div style="margin: 0 40px;">
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[24].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[24].foodName}</h5>
+					<br>
+					<p>${fn:split(value[24].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[25].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[25].foodName}</h5>
+					<br>
+					<p>${fn:split(value[25].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[26].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[26].foodName}</h5>
+					<br>
+					<p>${fn:split(value[26].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+			<div class="menuMiniPic">
+				<c:forEach items="${miList}" var="mi">
+					<c:if test="${value[27].foodProductNo eq mi.imageDivideNo}">
+						<img src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}" width=150px; height=100%; style="border-radius: 5px;">
+					</c:if>
+				</c:forEach>
+				<div class="d-inline-block" style="width: 900px; position: absolute; margin-left: 30px;">
+					<h5>${value[27].foodName}</h5>
+					<br>
+					<p>${fn:split(value[27].foodContent, "@")[0]}</p>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<br>
 	
@@ -719,20 +1071,18 @@ p b {
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">구독하시겠습니까?</h1>
+				<h1 class="modal-title fs-5" id="exampleModalLabel">구매하시겠습니까?</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
-				<i class="bi bi-check-circle-fill"></i><br>
-				<h3>식단 명</h3><br>
-				1주차 식단 : 식단A<br>
-				2주차 식단 : 식단B<br>
-				3주차 식단 : 식단C<br>
-				4주차 식단 : 식단D
+			<div class="modal-body" id="">
+				<i class="bi bi-cart-check-fill"></i><br>
+				<h3>${menu.menuName }</h3><br>
+				수량 : <label id="buyMenuCount">0</label>개<br>
+				가격 : <label id="buyMenuPrice">0</label>
 			</div>
 			<div class="footer">
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="button btn-y" id="subscribe">구독하기</button>
+				<button type="button" class="button btn-y" id="subscribe">구매하기</button>
 			</div>
 		</div>
 	</div>
@@ -746,12 +1096,10 @@ p b {
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<i class="bi bi-check-circle-fill"></i><br>
-				<h3>식단 명</h3><br>
-				1주차 식단 : 식단A<br>
-				2주차 식단 : 식단B<br>
-				3주차 식단 : 식단C<br>
-				4주차 식단 : 식단D
+				<i class="bi bi-cart-plus-fill"></i><br>
+				<h3>${menu.menuName}</h3><br>
+				수량 : <label id="cartMenuCount">0</label>개<br>
+				가격 : <label id="cartMenuPrice">0</label>
 			</div>
 			<div class="footer">
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속<br>쇼핑하기</button>
@@ -790,6 +1138,29 @@ p b {
 		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
 
+	const buybtn = document.getElementById('buybtn');
+	buybtn.addEventListener('click', function(){
+		const quantity = document.getElementById('quantity');
+		const buyMenuCount =document.getElementById('buyMenuCount');
+		
+		const buyMenuPrice = document.getElementById('buyMenuPrice');
+		const total = document.getElementById('total');
+		
+		buyMenuCount.innerText = quantity.innerText;
+		buyMenuPrice.innerText = total.innerText;
+	})
+	
+	const cartbtn = document.getElementById('cartbtn');
+	cartbtn.addEventListener('click', function(){
+		const quantity = document.getElementById('quantity');
+		const cartMenuCount =document.getElementById('cartMenuCount');
+		
+		const cartMenuPrice = document.getElementById('cartMenuPrice');
+		const total = document.getElementById('total');
+		
+		cartMenuCount.innerText = quantity.innerText;
+		cartMenuPrice.innerText = total.innerText;
+	})
 	
 	
 // 	$(document).ready(function() {

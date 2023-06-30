@@ -29,7 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
-import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -38,6 +37,7 @@ import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 //import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
@@ -620,6 +620,8 @@ public class MarketController {
 	   	
 	   	ArrayList<Review> result = mkService.reviewAvgDesc(productNo);
 	   	model.addAttribute("result",result);
+	   	
+	   	return null;
    }
 		   	
    public String insertPay(@ModelAttribute Orders orders) {

@@ -380,4 +380,24 @@
 		where SHIPPING_NO = #{shippingNo}
 	</update>
 	
+	<select id="selectPeriodOrders" resultMap="OrdersResultSet">
+		<![CDATA[
+			SELECT *
+			FROM orders
+			WHERE TRUNC(ORDER_DATE) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(ORDER_DATE) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+			  AND USERS_NO = #{usersNo}
+		]]>
+	</select>
+	
+	<select id="orderPeriodCount" resultType="_int">
+		<![CDATA[
+			SELECT count(*)
+			FROM orders
+			WHERE TRUNC(ORDER_DATE) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(ORDER_DATE) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+			  AND users_no = #{usersNo}
+		]]>
+	</select>
+	
 </mapper>

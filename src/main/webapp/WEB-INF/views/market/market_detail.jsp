@@ -525,6 +525,26 @@ p b {
     padding: 22px 18px 24px;
 }
 
+.review_desc:active{
+	font-weight: 600;
+	color: #4485d7;
+}
+.review_desc:hover{
+	font-weight: 600;
+	color: #4485d7;
+	cursor: pointer;
+}
+.review_stardesc:active{
+	font-weight: 600;
+	color: #4485d7;
+}
+.review_stardesc:hover{
+	font-weight: 600;
+	color: #4485d7;
+	cursor: pointer;
+}
+
+
 /* .productPageInfo .accordion_i_tit:after { */
 /*     width: 12px; */
 /*     height: 12px; */
@@ -872,7 +892,7 @@ p b {
 <!-- 						</ul> -->
 <!-- 					</div> -->
 
-			<span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span>
+			<span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
 			<span class="review_stardesc" style="font-size: 500;">별점순</span>
 			</div>
 		
@@ -885,24 +905,25 @@ p b {
 					       <p style="margin:auto; text-align:center; font-weight: 400; color: #999999; font-size: 15px">등록된 후기가 없습니다.</p>
 					  </c:if>
 					  
-		<c:forEach items="${ list }" var="r">
-				<div class="textbox" >
-						<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 400;">${r.reviewWriter}</div>
-						<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar">
-							<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
-							<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
-							<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
-							<c:if test="${r.reviewScore  eq  2 }" >★★☆☆☆</c:if>
-							<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
-							<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
-						</span>
-						<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
-						
+		
+				<div class="textbox" id="textbox">
+					<c:forEach items="${ list }" var="r">
+						<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>${r.reviewWriter}
+							<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>
+								<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
+								<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
+								<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
+								<c:if test="${r.reviewScore  eq  2 }" >★★☆☆☆</c:if>
+								<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
+								<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
+							</span>
+							<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
+						</div>
 						
 <%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
 		
 				
-							<div class="reviewPhoto">
+							<div class="reviewPhoto" style="padding-left:10px"">
 								<ul>
 									<c:forEach items="${imglist}" var="img" >
 										<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
@@ -916,8 +937,9 @@ p b {
 													${r.reviewContent}  
 											</div>
 								</div>
+				</c:forEach>
 			</div>
-		</c:forEach>
+		
 			<div class="moreView">더보기</div>
 				
 	<div class="productBox">
@@ -1232,20 +1254,26 @@ p b {
 	   }
 	   
 	    
-	$(function(){
-		    $(".textbox").slice(0, 3).show(); // 초기갯수
-		    $(".moreView").click(function(e){ // 클릭시 more
-		        e.preventDefault();
-		        $(".textbox").wrapAll().show(); // 클릭시 more 갯수 지저정
-		        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
-		        }
-		    });
-	});
-	
 		
 		$(document).ready(function() {
 			var productNo = null;
+			
+			$(function(){
+				console.log($(".textbox").slice(0, 3));
+				
+			    $(".textbox").slice(1, 3).show(); // 초기갯수
+			    $(".moreView").click(function(e){ // 클릭시 more
+			        e.preventDefault();
+			        $(".textbox").wrapAll().show(); // 클릭시 more 갯수 지저정
+			        if($(".textbox:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+			        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
+			        }
+			    });
+		});
+			
+			
+			
+			
 	    $("#cartbtn").click(function() {
 	        productNo = $("input[name='productNo']").val();
 	        var cartCount = $(".cartCount").val();
@@ -1314,19 +1342,122 @@ p b {
 	    })
 	    
 	    	    $(".review_stardesc").click(function(){
-		    	
+	    	    	let star='';
+	    	    	let result = '';
+	    	    	let result2 = '';
 			    	$.ajax({
 			    		url:"reviewAvgDesc.ma",
 			    		type:"post",
-			    		dataType:"json",
 			    		data:{productNo:${p.productNo}},
-			    		success: function(result){
-			    			console.log(result.reviewNo);
-			    			$(".textbox").html(result);
+			    		success: data =>{
+			    			$('.textbox').html('');
+			    				for(let rev  of data.result ){
+		    						switch(rev.reviewScore){
+		    						case 0 : star = '☆☆☆☆☆'; break;
+		    						case 1 : star = '★☆☆☆☆'; break;
+		    						case 2 : star = '★★☆☆☆'; break;
+		    						case 3 : star = '★★★☆☆'; break;
+		    						case 4 : star = '★★★★☆'; break;
+		    						case 5 : star = '★★★★★'; break;
+	    						}
+		    						
+									result = '<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>'+rev.reviewWriter
+					+				'<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>'
+					+		star+'&nbsp'
+					+	'</span>'
+					+	'<span style="font-size: 15px; font-weight: 200;">'+rev.reviewDate+'</span>'
+					
+					+	'</div>'
+					+	'<div class="reviewPhoto" style="padding-left:10px"">'
+					+		'<ul>'
+					+			'<input type="hidden" name="reviewNo" value="'+rev.reviewNo+'">'
+					+		'</ul>'
+					+	'</div>'
+					+		'<div style="display: inline-block; width: 100%;">'
+					+				'<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">'
+					+							rev.reviewContent
+					+					'</div>'
+					+		'</div>';
+					$('.textbox').append(result);
+			    					for(let img  of data.imgList){
+			    						if(rev.reviewNo == img.imageDivideNo){
+				    					let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
+				    					let reviewNos = document.getElementsByName("reviewNo");
+				    					
+					    					for(const revNo of reviewNos){
+					    						if(revNo.value == rev.reviewNo){
+					    							revNo.parentElement.innerHTML +=result2;
+					    						}
+					    					}
+			    						}
+				    				}
+			    				}
 			    			
-			    		}
+			    		},
+			    		error:function(){
+			                alert("통신실패");
+			            }
 			    	})
-		    	
+
+	   			})
+	   			
+	   			
+	   			$(".review_desc").click(function(){
+	    	    	let star='';
+	    	    	let result = '';
+	    	    	let result2 = '';
+			    	$.ajax({
+			    		url:"reviewDesc.ma",
+			    		type:"post",
+			    		data:{productNo:${p.productNo}},
+			    		success: data =>{
+			    			$('.textbox').html('');
+			    				for(let rev  of data.result ){
+		    						switch(rev.reviewScore){
+		    						case 0 : star = '☆☆☆☆☆'; break;
+		    						case 1 : star = '★☆☆☆☆'; break;
+		    						case 2 : star = '★★☆☆☆'; break;
+		    						case 3 : star = '★★★☆☆'; break;
+		    						case 4 : star = '★★★★☆'; break;
+		    						case 5 : star = '★★★★★'; break;
+	    						}
+		    						
+									result = '<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>'+rev.reviewWriter
+					+				'<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>'
+					+		star+'&nbsp'
+					+	'</span>'
+					+	'<span style="font-size: 15px; font-weight: 200;">'+rev.reviewDate+'</span>'
+					
+					+	'</div>'
+					+	'<div class="reviewPhoto" style="padding-left:10px"">'
+					+		'<ul>'
+					+			'<input type="hidden" name="reviewNo" value="'+rev.reviewNo+'">'
+					+		'</ul>'
+					+	'</div>'
+					+		'<div style="display: inline-block; width: 100%;">'
+					+				'<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">'
+					+							rev.reviewContent
+					+					'</div>'
+					+		'</div>';
+					$('.textbox').append(result);
+			    					for(let img  of data.imgList){
+			    						if(rev.reviewNo == img.imageDivideNo){
+				    					let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
+				    					let reviewNos = document.getElementsByName("reviewNo");
+				    					
+					    					for(const revNo of reviewNos){
+					    						if(revNo.value == rev.reviewNo){
+					    							revNo.parentElement.innerHTML +=result2;
+					    						}
+					    					}
+			    						}
+				    				}
+			    				}
+			    		},
+			    		error:function(){
+			                alert("통신실패");
+			            }
+			    	})
 
 	   			})
 
@@ -1334,16 +1465,9 @@ p b {
 	    
 	    
 	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
 		
 		})
+		
 	}
 	 </script> 
 </body>

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head profile="http://www.w3.org/2005/10/profile">
@@ -229,7 +230,7 @@ p b {
 /* 	식단 설명 */
 	.menuABCD{
 		width: 65%;
-		height: 290px;
+		height: 780px;
 		background-color: lightgray;
 		margin: 25px auto;
 		border-radius: 10px;
@@ -237,14 +238,14 @@ p b {
 	}
 	
 	.menuABCD h2{
-		padding: 30px 60px; 
+		padding: 30px 60px 10px 60px; 
 	}
 	
 	.menuMiniPic{
-		width: 150px;
+		border: 1px solid black;
+		border-radius: 10px;
 		height: 150px;
-		display: inline-block;
-		margin: 0px 5px;
+		margin: 20px 5px;
 	}
 
 /* 	중간선 */
@@ -517,49 +518,23 @@ p b {
 	<p class="mid">식단</p>
 	
 	
-	<div class="menuABCD">
-		<h2>식단A</h2>
-		<div style="margin: 0 40px;">
-			<c:forEach begin="1" end="7">
+	<c:forEach items="${mlList}" var="ml" varStatus="vs">
+		<c:if test="${(vs.index)%4 == 0 }">
+		<div class="menuABCD">
+			<h2>${fn:substring(vs.index/4+1,0,1) }일차</h2>
+			<div style="margin: 0 40px;">
 				<div class="menuMiniPic">
-					<img src="resources/images/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
+					<img src="resources/images/chicken1.png" width=150px; height=100%; style="border-radius: 5px;">
+					<div class="d-inline-block">
+						<h5>식단 이름</h5>
+						<br>
+						<p>식단 내용 식단 내용 식단 내용 식단 내용</p>
+					</div>
 				</div>
-			</c:forEach>
+			</div>
 		</div>
-	</div>
-	
-	<div class="menuABCD">
-		<h2>식단B</h2>
-		<div style="margin: 0 40px;">
-			<c:forEach begin="1" end="7">
-				<div class="menuMiniPic">
-					<img src="resources/images/chicken2.jpg" width=100%; height=100%; style="border-radius: 5px;">
-				</div>
-			</c:forEach>
-		</div>
-	</div>
-	
-	<div class="menuABCD">
-		<h2>식단C</h2>
-		<div style="margin: 0 40px;">
-			<c:forEach begin="1" end="7">
-				<div class="menuMiniPic">
-					<img src="resources/images/pork.JPG" width=100%; height=100%; style="border-radius: 5px;">
-				</div>
-			</c:forEach>
-		</div>
-	</div>
-	
-	<div class="menuABCD">
-		<h2>식단D</h2>
-		<div style="margin: 0 40px;">
-			<c:forEach begin="1" end="7">
-				<div class="menuMiniPic">
-					<img src="resources/images/chicken1.png" width=100%; height=100%; style="border-radius: 5px;">
-				</div>
-			</c:forEach>
-		</div>
-	</div>
+		</c:if>
+	</c:forEach>
 	
 	<br>
 	
@@ -779,7 +754,7 @@ p b {
 				4주차 식단 : 식단D
 			</div>
 			<div class="footer">
-				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
+				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속<br>쇼핑하기</button>
 				<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
 			</div>
 		</div>
@@ -790,24 +765,29 @@ p b {
 <%@ include file="../common/footer.jsp" %>
 
 <script>
-// <fmt:formatNumber value="${menu.productPrice}"/>원
 	function decreaseClick(){
 		var quantity = document.getElementById('quantity');
 		var parseQuan = parseInt(quantity.innerText);
-// 		var total = document.getElementById('total');
+		var total = document.getElementById('total');
+		
 		if(parseQuan >= 2){
 			console.log(total);
 			quantity.innerText = parseQuan - 1;
+			var result = ${menu.productPrice} * quantity.innerText;
+			
+			total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 		}
 	}
 	
 	function increaseClick(){
 		var quantity = document.getElementById('quantity');
 		var parseQuan = parseInt(quantity.innerText);
-// 		var total = document.getElementById('total');
+		var total = document.getElementById('total');
 		
 		quantity.innerText = parseQuan + 1;
-		console.log(parseQuan);
+		var result = ${menu.productPrice} * quantity.innerText;
+		
+		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
 
 	

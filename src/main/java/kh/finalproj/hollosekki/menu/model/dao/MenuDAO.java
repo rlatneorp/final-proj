@@ -41,4 +41,8 @@ public class MenuDAO {
 		return (ArrayList)sqlSession.selectList("menuMapper.menuDetailMenu", mNo);
 	}
 
+	public ArrayList<Image> menuDetailImage(SqlSessionTemplate sqlSession, int mNo) {
+		return (ArrayList)sqlSession.selectList("menuMapper.menuDetailImage", mNo);
+	}
+
 }

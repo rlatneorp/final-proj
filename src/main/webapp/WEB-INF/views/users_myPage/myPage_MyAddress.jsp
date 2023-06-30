@@ -165,6 +165,14 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
+							<c:if test="${ empty list }">
+								<tr>
+									<td colspan="6" height="330">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										배송지가 없습니다.
+									</td>
+								</tr>
+							</c:if>
 							<c:forEach items="${ list }" var="s">
 								<tr data-shippingNo-no="${ s.shippingNo }">
 									<td>${ s.shippingName }</td>
@@ -243,7 +251,6 @@ th:first-child, td:first-child {
 			    buttons: ["취소", "삭제하기"]
 			}).then((YES) => {
 			    if (YES) {
-			      	console.log('ㅎㅇㄴ');
 			      	$.ajax({
 						url : '${contextPath}/myPage_deleteAddress.me',
 						data : {shippingNo : JSON.stringify(selectedShippingNos)},

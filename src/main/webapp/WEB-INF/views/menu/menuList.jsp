@@ -205,7 +205,7 @@
 						<div class="col">
 							<input type="hidden" value="${m.foodProductNo}">
 							<div class="card shadow-sm">
-								<img src="${contextPath }/resources/images/${i.imageRenameName}" style="width: 100%; height: 100%;">
+								<img src="${contextPath }/resources/uploadFiles/${i.imageRenameName}" style="width: 100%; height: 100%;">
 								<div class="card-body cardColor">
 									<h5>${m.menuName } / ${m.menuType }</h5>
 									<div class="d-inline-block" style="width: 130px; height: 50px;"></div>

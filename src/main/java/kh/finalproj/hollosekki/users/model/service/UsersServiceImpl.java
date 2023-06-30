@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.users.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
 import org.apache.ibatis.session.SqlSessionManager;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -181,5 +182,26 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public Orders selectDetailOrder(int orderNo) {
 		return uDAO.selectDetailOrder(sqlSession, orderNo);
+	}
+	
+	//기간 별 주문 리스트 조회 
+	@Override
+	public ArrayList<Orders> selectPeriodOrders(Properties prop, PageInfo pi) {
+		return uDAO.selectPeriodOrders(sqlSession, prop, pi);
+	}	
+	
+	@Override
+	public int orderPeriodCount(Properties prop) {
+		return uDAO.orderPeriodCount(sqlSession, prop);
+	}
+	
+	@Override
+	public int orderSearchCount(Properties prop) {
+		return uDAO.orderSearchCount(sqlSession, prop);
+	}
+	
+	@Override
+	public ArrayList<Orders> orderSearch(Properties prop, PageInfo pi) {
+		return uDAO.orderSearch(sqlSession, prop, pi);
 	}
 }

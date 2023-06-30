@@ -20,12 +20,14 @@ public class Orders {
 	private String options;
 	
 	private String productName;
+	private String imgName;
 	
 	public Orders() {}
 
 	public Orders(int orderNo, int productNo, int usersNo, int productType, int orderCount, int totalPrice,
 			Date orderDate, String orderStatus, String orderAddress, Date orderDeliveryDate, String orderStock,
-			String orderDeliveryComment, String orderInfo, String shipPrice, String options, String productName) {
+			String orderDeliveryComment, String orderInfo, String shipPrice, String options, String productName,
+			String imgName) {
 		super();
 		this.orderNo = orderNo;
 		this.productNo = productNo;
@@ -43,6 +45,7 @@ public class Orders {
 		this.shipPrice = shipPrice;
 		this.options = options;
 		this.productName = productName;
+		this.imgName = imgName;
 	}
 
 	public int getOrderNo() {
@@ -173,6 +176,14 @@ public class Orders {
 		this.productName = productName;
 	}
 
+	public String getImgName() {
+		return imgName;
+	}
+
+	public void setImgName(String imgName) {
+		this.imgName = imgName;
+	}
+
 	@Override
 	public String toString() {
 		return "Orders [orderNo=" + orderNo + ", productNo=" + productNo + ", usersNo=" + usersNo + ", productType="
@@ -180,10 +191,9 @@ public class Orders {
 				+ ", orderStatus=" + orderStatus + ", orderAddress=" + orderAddress + ", orderDeliveryDate="
 				+ orderDeliveryDate + ", orderStock=" + orderStock + ", orderDeliveryComment=" + orderDeliveryComment
 				+ ", orderInfo=" + orderInfo + ", shipPrice=" + shipPrice + ", options=" + options + ", productName="
-				+ productName + "]";
+				+ productName + ", imgName=" + imgName + "]";
 	}
 
-	
 	
 	
 }

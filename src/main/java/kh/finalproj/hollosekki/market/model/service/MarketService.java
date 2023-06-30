@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,14 @@ import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 //import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
@@ -254,9 +257,9 @@ public class MarketService {
 		return mkDAO.insertReview(sqlSession, r);
 	}
 
-//	public int insertPay(Orders orders) {
-//		return mkDAO.insertPay(sqlSession, orders);
-//	}
+	public int insertPay(Orders orders) {
+		return mkDAO.insertPay(sqlSession, orders);
+	}
 	
 	//재고 조회
 	public int selectStock(int productNo) {
@@ -284,7 +287,28 @@ public class MarketService {
 		return mkDAO.selectProductType(sqlSession, productNo);
 	}
 
+	public ArrayList<Review> reviewDesc(int productNo) {
+		return mkDAO.reviewDesc(sqlSession,productNo);
+	}
 
+	public int orderSearchCount(Properties prop) {
+		return mkDAO.orderSearchCount(sqlSession, prop);
+	}
+
+	public ArrayList<Orders> orderSearch(Properties prop, PageInfo pi) {
+		return mkDAO.orderSearch(sqlSession, prop, pi);
+	}
+
+	public int orderPeriodSearchCount(Properties prop) {
+		return mkDAO.orderPeriodSearchCount(sqlSession, prop);
+	}
+
+	public ArrayList<Orders> orderPeriodSearchList(Properties prop, PageInfo pi) {
+		return mkDAO.orderPeriodSearchList(sqlSession, prop, pi);
+	}
+
+
+	
 
 
 	

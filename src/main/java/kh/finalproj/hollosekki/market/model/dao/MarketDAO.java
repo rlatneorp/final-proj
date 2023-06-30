@@ -3,7 +3,9 @@ package kh.finalproj.hollosekki.market.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,11 +14,13 @@ import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 //import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
@@ -269,9 +273,6 @@ public class MarketDAO {
 	}
 
 
-//   public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
-//		return sqlSession.insert("marketMapper.insertPay", orders);
-//   }
 
 	public int selectStock(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectStock", productNo);
@@ -296,6 +297,37 @@ public class MarketDAO {
 	//주문한 상품에 대한 productType 조회 
 	public int selectProductType(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectProductType", productNo) ;
+	}
+
+	public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
+		return sqlSession.insert("marketMapper.insertPay", orders);
+   }
+
+	public int orderSearchCount(SqlSessionTemplate sqlSession, Properties prop) {
+		return sqlSession.selectOne("marketMapper.orderSearchCount", prop);
+	}
+
+	public ArrayList<Orders> orderSearch(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("marketMapper.orderSearchList", prop, rowBounds);
+	}
+
+	public int orderPeriodSearchCount(SqlSessionTemplate sqlSession, Properties prop) {
+		return sqlSession.selectOne("marketMapper.orderPeriodSearchCount", prop);
+	}
+
+	public ArrayList<Orders> orderPeriodSearchList(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("marketMapper.orderPeriodSearchList", prop, rowBounds);
+	}
+
+
+	public ArrayList<Review> reviewDesc(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.reviewDesc", productNo);
 	}
 
 

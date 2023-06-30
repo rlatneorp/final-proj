@@ -3,6 +3,7 @@ package kh.finalproj.hollosekki.users.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -174,6 +175,34 @@ public class UsersDAO {
 	public Orders selectDetailOrder(SqlSessionTemplate sqlSession, int orderNo) {
 		return sqlSession.selectOne("usersMapper.selectDetailOrder", orderNo);
 	}
+
+	public ArrayList<Orders> selectPeriodOrders(SqlSessionTemplate sqlSession, Properties prop) {
+		return (ArrayList)sqlSession.selectList("usersMapper.selectPeriodOrders", prop);
+	}
+
+	public int orderPeriodCount(SqlSessionTemplate sqlSession, Properties prop) {
+		return sqlSession.selectOne("usersMapper.orderPeriodCount", prop);
+	}
+
+	public ArrayList<Orders> selectPeriodOrders(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.selectPeriodOrders", prop, rowBounds);
+	}
+
+	public int orderSearchCount(SqlSessionTemplate sqlSession, Properties prop) {
+		return sqlSession.selectOne("usersMapper.orderSearchCount", prop);
+	}
+
+	public ArrayList<Orders> orderSearch(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.orderSearch", prop, rowBounds);
+	}
+	
+	
 
 
 

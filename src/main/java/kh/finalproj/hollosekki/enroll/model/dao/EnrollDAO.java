@@ -141,6 +141,7 @@ public class EnrollDAO {
 	}
 
 	public ArrayList<Follow> followingLsit(SqlSessionTemplate sqlSession, int usersNo) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.followList", usersNo);
 	}
 
 	public ArrayList<Follow> loginUserFollowingList(SqlSessionTemplate sqlSession, int usersNo) {
@@ -177,10 +178,6 @@ public class EnrollDAO {
 
 	public ArrayList<Review> userReplyList(SqlSessionTemplate sqlSession, String nickName) {
 		return (ArrayList)sqlSession.selectList("enrollMapper.userReplyList", nickName);
-	}
-
-	public int getListCount(SqlSessionTemplate sqlSession, int i) {
-		return sqlSession.;
 	}
 
 

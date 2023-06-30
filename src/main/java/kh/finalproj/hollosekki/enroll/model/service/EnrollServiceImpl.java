@@ -202,10 +202,6 @@ public class EnrollServiceImpl implements EnrollService{
 		return eDAO.userReplyList(sqlSession, nickName);
 	}
 
-	@Override
-	public int getListCount(int i) {
-		return eDAO.getListCount(sqlSession, i);
-	}
 
 	
 }

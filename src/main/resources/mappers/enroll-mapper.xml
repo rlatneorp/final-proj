@@ -225,12 +225,6 @@
 		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
 	</resultMap>
 	
-	<select id="getListCount">
-		select count(*)
-		from review
-		where product_no = 1 and review_status = 'Y'
-	</select>
-	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

@@ -7,25 +7,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
 
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
@@ -38,8 +35,8 @@ import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
-import kh.finalproj.hollosekki.market.model.vo.Tool;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
+import kh.finalproj.hollosekki.market.model.vo.Tool;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.users.model.exception.UsersException;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
@@ -491,8 +488,11 @@ public class UsersController {
 	}
 
 	@RequestMapping("myPage_MyOrderDetail.me")
-	public String myPage_MyOrderDetail(int orderNo, Model model) {
+	public String myPage_MyOrderDetail(int orderNo, Model model, @RequestParam(value="page", required=false) Integer currentPage) {
 		
+		if(currentPage == null) {
+			currentPage = 1;
+		}
 		Orders orders = uService.selectDetailOrder(orderNo);
 		int productNo = orders.getProductNo();
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
@@ -688,4 +688,144 @@ public class UsersController {
 		}
 	}
 
+//	@RequestMapping("selectPeriodOrders.me")
+//	public void selectPeriodOrders(String start, String end, HttpServletResponse response) {
+//		
+//		Properties prop = new Properties();
+//		prop.setProperty("start", start);
+//		prop.setProperty("end", end);
+//		
+//		ArrayList<Orders> periodSelec = uService.selectPeriodOrders(prop);
+//		//이름 가져오기 
+//		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
+//		
+//		for(Orders ps : periodSelec) {
+//			int productNo = ps.getProductNo();
+//			foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
+//			if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+//				ps.setProductName(foods.getFoodName());
+//			}
+//			if (tools != null) {//이미지 타입 : 6 ( 주방도구)
+//				ps.setProductName(tools.getToolName());
+//			}
+//			if (igs != null) {//이미지 타입 :5 (식재료) 
+//				ps.setProductName(igs.getIngredientName());
+//			}
+//			if (menus != null) {//이미지 타입 : 4 (식단)
+//				ps.setProductName(menus.getMenuName());
+//			}
+//		}
+//		
+//		response.setContentType("application/json; charset=UTF-8");
+//        GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd"); 
+//        Gson gson = gb.create();
+//        try {
+//            gson.toJson(periodSelec, response.getWriter()); 
+//         } catch (JsonIOException | IOException e) {
+//            e.printStackTrace();
+//         }
+//	}
+	
+	@RequestMapping("selectPeriodOrders.me")
+	public String selectPeriodOrders(String start, String end, Model model, @RequestParam(value="page", required=false) Integer currentPage) {
+		
+		if(currentPage == null) {
+			currentPage = 1;
+		}
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		Properties prop = new Properties();
+		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
+		String userNo = String.valueOf(usersNo);
+		
+		prop.setProperty("start", start);
+		prop.setProperty("end", end);
+		prop.setProperty("usersNo", userNo);
+		
+		int listCount = uService.orderPeriodCount(prop); //기간에 따른 개수 세기 
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+		
+		ArrayList<Orders> periodSelec = uService.selectPeriodOrders(prop, pi);
+//		//이름 가져오기 
+		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
+//		
+		for(Orders ps : periodSelec) {
+			int productNo = ps.getProductNo();
+			foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
+			if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+				ps.setProductName(foods.getFoodName());
+			}
+			if (tools != null) {//이미지 타입 : 6 ( 주방도구)
+				ps.setProductName(tools.getToolName());
+			}
+			if (igs != null) {//이미지 타입 :5 (식재료) 
+				ps.setProductName(igs.getIngredientName());
+			}
+			if (menus != null) {//이미지 타입 : 4 (식단)
+				ps.setProductName(menus.getMenuName());
+			}
+		}
+		
+		model.addAttribute("start", start);
+		model.addAttribute("end", end);
+		
+		model.addAttribute("pi", pi);
+		System.out.println("ps : " + periodSelec);
+		model.addAttribute("orderList", periodSelec);
+		
+		return "myPage_MyOrder";
+		
+	}
+	
+	@GetMapping("searchWord.me")
+	public String searchWord(String start, String end, String word, Model model,  @RequestParam(value="page", required=false) Integer currentPage) {
+		System.out.println("들오와!!start : " + start);
+		System.out.println("들오와!!end : " + end);
+		
+		if(currentPage == null) {
+			currentPage = 1;
+		}
+		System.out.println("word : " + word);
+		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
+		String userNo = String.valueOf(usersNo);
+		
+		Properties prop = new Properties();
+		prop.setProperty("word", word);
+		prop.setProperty("usersNo", userNo);
+		
+		//당연히 페이징을.... 
+		int listCount = 0; PageInfo pi = null; ArrayList<Orders> orderSearchList = null;
+		if(start == null) { //전체 조회 
+			listCount = mkService.orderSearchCount(prop); //단어 있는 것 중, 전체 조회 
+			System.out.println("lc : " + listCount);
+			pi = Pagination.getPageInfo(currentPage, listCount, 5);
+			orderSearchList = mkService.orderSearch(prop, pi); //단어 있는 것 중 페이징처리하여 전체 조회
+			System.out.println("orderSearchList" + orderSearchList);
+		} else { //기간이 들어오면,
+			prop.setProperty("start", start);
+			prop.setProperty("end", end);
+			listCount = mkService.orderPeriodSearchCount(prop);
+			System.out.println("검새ㄱlistCount + " + listCount);
+			pi = Pagination.getPageInfo(currentPage, listCount, 5);
+			orderSearchList = mkService.orderPeriodSearchList(prop, pi);
+			System.out.println("검새ㄱorderSearchList + " + orderSearchList);
+		}
+		 
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("orderSearchList", orderSearchList);
+		
+		
+		
+//		ArrayList<Orders> searchList = mkService.selectSearchWord(prop);
+		
+		
+//		uService.searchWord(wo)
+		
+		return "";
+	}
+	
+	
 }

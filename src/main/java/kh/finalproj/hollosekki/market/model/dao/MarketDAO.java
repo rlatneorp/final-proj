@@ -114,16 +114,16 @@ public class MarketDAO {
       return (ArrayList)sqlSession.selectList("marketMapper.selectProductInfo", productNo);
    }
 
-   public int plusCount(SqlSessionTemplate sqlSession, int productNo) {
-      return sqlSession.update("marketMapper.plusCount", productNo);
+   public int plusCount(SqlSessionTemplate sqlSession, int preorderNo) {
+      return sqlSession.update("marketMapper.plusCount", preorderNo);
    }
 
-   public int plusResultCount(SqlSessionTemplate sqlSession, int productNo) {
-      return sqlSession.selectOne("marketMapper.plusResultCount", productNo);
+   public int plusResultCount(SqlSessionTemplate sqlSession, int preorderNo) {
+      return sqlSession.selectOne("marketMapper.plusResultCount", preorderNo);
    }
 
-   public void minusCount(SqlSessionTemplate sqlSession, int productNo) {
-      sqlSession.update("marketMapper.minusCount", productNo);
+   public void minusCount(SqlSessionTemplate sqlSession, int preorderNo) {
+      sqlSession.update("marketMapper.minusCount", preorderNo);
    }
 
    public ArrayList<Cart> checkCartList(SqlSessionTemplate sqlSession, int usersNo, int preorderNo) {
@@ -328,6 +328,10 @@ public class MarketDAO {
 
 	public ArrayList<Review> reviewDesc(SqlSessionTemplate sqlSession, int productNo) {
 		return (ArrayList)sqlSession.selectList("marketMapper.reviewDesc", productNo);
+	}
+
+	public ArrayList<Options> selectOptionInfo(SqlSessionTemplate sqlSession, int preorderNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionInfo", preorderNo);
 	}
 
 

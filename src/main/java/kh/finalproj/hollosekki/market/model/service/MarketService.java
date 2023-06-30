@@ -121,16 +121,16 @@ public class MarketService {
       return mkDAO.selectProductInfo(sqlSession, productNo);
    }
 
-   public int plusCount(int productNo) {
-      return mkDAO.plusCount(sqlSession, productNo);
+   public int plusCount(int preorderNo) {
+      return mkDAO.plusCount(sqlSession, preorderNo);
    }
 
-   public int plusResultCount(int productNo) {
-      return mkDAO.plusResultCount(sqlSession, productNo);
+   public int plusResultCount(int preorderNo) {
+      return mkDAO.plusResultCount(sqlSession, preorderNo);
    }
 
-   public void minusCount(int productNo) {
-      mkDAO.minusCount(sqlSession, productNo);
+   public void minusCount(int preorderNo) {
+      mkDAO.minusCount(sqlSession, preorderNo);
    }
 
    public ArrayList<Cart> checkCartList(int usersNo, int preorderNo) {
@@ -305,6 +305,11 @@ public class MarketService {
 
 	public ArrayList<Map<String, Object>> orderPeriodSearchList(Properties prop, PageInfo pi) {
 		return mkDAO.orderPeriodSearchList(sqlSession, prop, pi);
+	}
+	
+	//주문번호에 대한 option 조회 
+	public ArrayList<Options> selectOptionInfo(int preorderNo) {
+		return mkDAO.selectOptionInfo(sqlSession, preorderNo);
 	}
 
 

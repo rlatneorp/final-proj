@@ -63,12 +63,20 @@ public class MarketController {
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       
       ArrayList<Cart> optionNos = new ArrayList<>();
-      ArrayList<Options> optValues = new ArrayList<>();
+      
       for(Cart cart : cartList) {
+    	  ArrayList<Options> optValues = new ArrayList<>();
          int productNo = cart.getProductNo();
          System.out.println("productNo : " + productNo);
-         Options opt = mkService.selectOptionInfo(cart.getProductNo(), cart.getProductOption()); //옵션 넘버 보내서 조회
-         optValues.add(opt);
+         
+         //주문 번호에 대한 optionNo 조회 
+         ArrayList<Options> o = mkService.selectOptionInfo(cart.getPreorderNo());
+         System.out.println("주문번호에 해당 되는 옵션 정보는?? : " + o);
+         
+         cart.setOptionName(o);
+        
+         
+         
          
          ArrayList<Options> options = mkService.selectOptions(productNo);
          
@@ -92,7 +100,7 @@ public class MarketController {
              cart.setProductPrice(price);
              cart.setSale(sale);
          }
-         int size = mkService.plusResultCount(productNo);
+         int size = mkService.plusResultCount(cart.getPreorderNo());
          sum = size * price;
          cart.setSum(sum);
          
@@ -118,7 +126,8 @@ public class MarketController {
              cart.setImgName(imgName);
           }
       }
-      model.addAttribute("optValues", optValues);
+//      System.out.println("optValues " + optValues);
+//      model.addAttribute("optValues", optValues);
       System.out.println("cartList : " + cartList);
       model.addAttribute("cartList", cartList);
       return "basket";
@@ -470,10 +479,11 @@ public class MarketController {
    
    
    @RequestMapping(value="plusCount.ma", produces="application/json; charset=UTF-8")
-   public void plusCount(@RequestParam("productNo") int productNo, @RequestParam("price") int price, HttpServletResponse response) {
-      mkService.plusCount(productNo);
+   public void plusCount(@RequestParam("preorderNo") int preorderNo, @RequestParam("price") int price, HttpServletResponse response) {
+      mkService.plusCount(preorderNo);
       
-      int size = mkService.plusResultCount(productNo);
+      int size = mkService.plusResultCount(preorderNo);
+      System.out.println("size : " + size);
       int sum = size * price;
       System.out.println("sum : " + sum);
       response.setContentType("application/json; charset=UTF-8");
@@ -487,9 +497,10 @@ public class MarketController {
    }
    
    @RequestMapping(value="minusCount.ma", produces="application/json; charset=UTF-8")
-   public void minusCount(@RequestParam("productNo") int productNo, @RequestParam("price") int price, HttpServletResponse response) {
-      mkService.minusCount(productNo);
-      int size = mkService.plusResultCount(productNo);
+   public void minusCount(@RequestParam("preorderNo") int preorderNo, @RequestParam("price") int price, HttpServletResponse response) {
+      System.out.println("minus : " + preorderNo);
+	   mkService.minusCount(preorderNo);
+      int size = mkService.plusResultCount(preorderNo);
       int sum = size * price;
       response.setContentType("application/json; charset=UTF-8");
         GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd"); 
@@ -638,7 +649,22 @@ public class MarketController {
 	   
 	   
    }
-		   	
+   
+   @RequestMapping("insertPay.ma")
+   @ResponseBody
+   public String insertPay(@ModelAttribute Orders orders) {
+	   
+	   int selectProductType = mkService.selectProductType(orders.getProductNo());
+	   orders.setProductType(selectProductType);
+	   int result = mkService.insertPay(orders);
+	   
+	   if(result >= 1) {
+		   return "success";
+	   } else {
+		   return "fail";
+	   }
+   }
+	
 //   public String insertPay(@ModelAttribute Orders orders) {
 //	   
 //	   int selectProductType = mkService.selectProductType(orders.getProductNo());

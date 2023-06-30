@@ -133,7 +133,8 @@ public class AdminService {
 		return aDAO.selectMenu(sqlSession, pNo);
 	}
 
-	public ArrayList<String> selectFoodProductNo(int pNo) {
+//	public ArrayList<String> selectFoodProductNo(int pNo) {
+	public ArrayList<Integer> selectFoodProductNo(int pNo) {
 		return aDAO.selectFoodProductNo(sqlSession, pNo);
 	}
 	
@@ -309,6 +310,10 @@ public class AdminService {
 
 	public FAQ selectFAQ(Integer faqNo) {
 		return aDAO.selectFAQ(sqlSession, faqNo);
+	}
+
+	public int updateFAQ(FAQ faq) {
+		return aDAO.updateFAQ(sqlSession, faq);
 	}
 
 

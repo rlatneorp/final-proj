@@ -28,7 +28,10 @@
 				<option value="writer" <c:if test="${ab.searchType eq 'writer'}">selected</c:if>>작성자</option>
 				<option value="title" <c:if test="${ab.searchType eq 'title'}">selected</c:if>>제목</option>
 			</select>
-			
+			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
+				<option value="title" <c:if test="${ab.searchType eq 'title'}">selected</c:if>>제목</option>
+				<option value="content" <c:if test="${ab.searchType eq 'content'}">selected</c:if>>내용</option>
+			</select>
 			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
 				<option value="name" <c:if test="${ab.searchType eq 'name'}">selected</c:if>>이름</option>
 			</select>
@@ -61,8 +64,10 @@
 				aliveType = 2;
 			}else if(location.pathname == "/hollosekki/adminBoardManage.ad"){
 				aliveType = 3;
-			}else{
+			}else if(location.pathname == "/hollosekki/adminFAQManage.ad"){
 				aliveType = 4;
+			}else{
+				aliveType = 5;
 			}
 			const types = document.getElementsByClassName('searchSelect');
 			document.getElementsByClassName('searchBox')[0].innerHTML 

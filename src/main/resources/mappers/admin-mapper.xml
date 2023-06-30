@@ -12,6 +12,8 @@
 <!-- 				6 : 레시피  -->
 <!-- 				7 : 리뷰(Review) -->
 <!-- 				8 : 게시판(Board) -->
+<!-- 				9 : faq -->
+<!-- 				10 : qna -->
 		<if test="dataType == 1 or dataType == 2 or dataType == 3 or dataType == 4">
 			update product
 			set product_status = #{dataStatus}
@@ -293,7 +295,8 @@
 		where product_no = #{pNo}
 	</select>
 
-	<select id="selectFoodProductNo" resultType="string">
+<!-- 	<select id="selectFoodProductNo" resultType="string"> -->
+	<select id="selectFoodProductNo" resultType="_int">
 		select food_product_no
 		from menu_list
 		where product_no = #{pNo}
@@ -801,11 +804,11 @@
 		select count(*)
 		from faq
 		<if test="searchText != null">
-			<if test='searchType == "writer"'>
-				where users_id like '%${searchText}%'
-			</if>
 			<if test='searchType == "title"'>
-				where board_title like '%${searchText}%'
+				where faq_title like '%${searchText}%'
+			</if>
+			<if test='searchType == "content"'>
+				where faq_content like '%${searchText}%'
 			</if>
 		</if>
 		order by faq_no desc
@@ -815,11 +818,11 @@
 		select *
 		from faq
 		<if test="searchText != null">
-			<if test='searchType == "writer"'>
-				where users_id like '%${searchText}%'
-			</if>
 			<if test='searchType == "title"'>
-				where board_title like '%${searchText}%'
+				where faq_title like '%${searchText}%'
+			</if>
+			<if test='searchType == "content"'>
+				where faq_content like '%${searchText}%'
 			</if>
 		</if>
 		order by faq_no desc
@@ -831,6 +834,15 @@
 		where faq_no = ${faqNo}
 	</select>
 
+	<update id="updateFAQ">
+		update faq
+		set faq_title = #{faqTitle},
+			faq_content = #{faqContent},
+			faq_answer = #{faqAnswer},
+			faq_date = sysdate,
+			faq_type = #{faqType}
+		where faq_no = ${faqNo}
+	</update>
 
 
 <!--ResultSet -->

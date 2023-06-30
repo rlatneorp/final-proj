@@ -223,8 +223,6 @@ th:first-child, td:first-child {
 	   })
 	   
 	   //검색어 입력 엔터 기능 
-	   
-	
 	   searchInput.addEventListener('keyup', function(event) {
 	     if (event.key === 'Enter') {
 	       const searchText = searchInput.value
@@ -234,6 +232,31 @@ th:first-child, td:first-child {
 	       searchInput.value = '';
 	     }
 	   });
+	   
+	   //기간 클릭 시 원하는 데이터 조회 
+	   //1. 현재 날짜 
+	   let currentDate = new Date();
+	   //2. 1개월 전 날짜 계산
+	   let oneMonthAgo = new Date();
+	   oneMonthAgo.setMonth(oneMonthAgo.getMongh() -1);
+	   //3. 3개월 전 날짜 계산
+	   let threeMonthsAgo = new Date();
+	   threeMonthsAgo.setMonth(threeMonthsAgo.getMongh() -3);
+	   //6. 6개월 전 날짜 계산
+	   let sixMonthsAgo = new Date();
+	   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() -6);
+	   
+	   //게시글 조회하는 함수 호출 
+	   getBoardList(oneMonthAgo, currentDate); //1개월 전부터 현재시점까지 게시글 조회 
+	   getBoardList(threeMonthsAgo, currentDate); //1개월 전부터 현재시점까지 게시글 조회 
+	   getBoardList(sixMonthsAgo, currentDate); //1개월 전부터 현재시점까지 게시글 조회 
+	   
+	   console.log(currentDate);
+	   
+	   
+	   
+	   
+	   
 	</script>
 	
 	

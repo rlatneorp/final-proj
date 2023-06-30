@@ -498,17 +498,25 @@ public class UsersController {
 		int productNo = orders.getProductNo();
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
-		if (foods != null) { 
+		if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
 			orders.setProductName(foods.getFoodName());
+			String imgName = mkService.selectImg(productNo, 3);
+			orders.setImgName(imgName);
 		}
-		if (tools != null) {
+		if (tools != null) {//이미지 타입 : 6 ( 주방도구)
 			orders.setProductName(tools.getToolName());
+			String imgName = mkService.selectImg(productNo, 6);
+			orders.setImgName(imgName);
 		}
-		if (igs != null) {
+		if (igs != null) {//이미지 타입 :5 (식재료) 
 			orders.setProductName(igs.getIngredientName());
+			String imgName = mkService.selectImg(productNo, 5);
+			orders.setImgName(imgName);
 		}
-		if (menus != null) {
+		if (menus != null) {//이미지 타입 : 4 (식단)
 			orders.setProductName(menus.getMenuName());
+			String imgName = mkService.selectImg(productNo, 4);
+			orders.setImgName(imgName);
 		}
 		
 		ArrayList<Options> optValues = new ArrayList<>();
@@ -516,7 +524,6 @@ public class UsersController {
 //		Options opt = mkService.selectOptionInfo(productNo);
 		//사진 뽑아 와야 해...
 		//옵션도....흑흑
-		
 		
 		
 		model.addAttribute("orders", orders);

@@ -427,9 +427,9 @@
    
    
    <!-- 포인트 조회  -->
-<!--    <select id="selectPoint" resultType="_int"> -->
-<!--       select point from users where users_no = #{usersNo} -->
-<!--    </select> -->
+   <select id="selectPoint" resultType="_int">
+      select point from users where users_no = #{usersNo}
+   </select>
    
    <!-- 장바구니 상품에 대한 이미지 조회 -->
    <select id="selectImg" resultType="String">

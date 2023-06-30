@@ -591,39 +591,19 @@ public class MarketController {
       return imageList;
    }
    
-//   @RequestMapping("insertPay.ma")
-//   @ResponseBody
-//   public String insertPay(@ModelAttribute Orders orders) {
-//	  
-////	   int stock = mkService.selectStock(orders.getProductNo());
-////	   int remainStock = stock-orders.getOrderCount();
-////	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
-////	   if(remainStock <= -1) {
-////		   return "stStock";
-////	   } else {
-//		   int result = mkService.insertPay(orders);
-//		   
-////		   return "success";
-////	   }
-//		   
-//		   if(result >= 1) {
-//			   return "success";
-//		   } else {
-//			   return "fail";
-//		   }
-//	   
-//   }
    
-//   @PostMapping("reviewAvgDesc.ma")
-//   @ResponseBody
-//   public String reviewAvgDesc(@RequestParam ("productNo") int productNo, HttpServletRequest request, Model model) {
-//	   	
-//	   	ArrayList<Review> result = mkService.reviewAvgDesc(productNo);
-//	   	model.addAttribute("result",result);
-//   }
-		   	
+   @PostMapping("reviewAvgDesc.ma")
+   @ResponseBody
+   public String reviewAvgDesc(@RequestParam ("productNo") int productNo, HttpServletRequest request, Model model) {
+	   	
+	   	ArrayList<Review> result = mkService.reviewAvgDesc(productNo);
+	   	model.addAttribute("result",result);
+	   	
+	   	return "market_detail";
+   }
+	
+   
 //   public String insertPay(@ModelAttribute Orders orders) {
-//	   
 //	   int selectProductType = mkService.selectProductType(orders.getProductNo());
 //	   orders.setProductType(selectProductType);
 //	   int result = mkService.insertPay(orders);
@@ -636,4 +616,20 @@ public class MarketController {
 //	   
 //	   return "market_detail";
 //   }
+   
+   @RequestMapping("insertPay.ma")
+   @ResponseBody
+   public String insertPay(@ModelAttribute Orders orders) {
+	   int selectProductType = mkService.selectProductType(orders.getProductNo());
+	   orders.setProductType(selectProductType);
+	   int result = mkService.insertPay(orders);
+   
+	   if(result >= 1) {
+		   return "success";
+	   } else {
+		   return "fail";
+	   }
+   
+   }
+   
 }

@@ -188,11 +188,6 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public ArrayList<Image> menuReviewImageList() {
-		return eDAO.menuReviewImageList(sqlSession);
-	}
-
-	@Override
 	public ArrayList<Review> replyList() {
 		return eDAO.replyList(sqlSession);
 	}
@@ -205,6 +200,11 @@ public class EnrollServiceImpl implements EnrollService{
 	@Override
 	public ArrayList<Review> userReplyList(String nickName) {
 		return eDAO.userReplyList(sqlSession, nickName);
+	}
+
+	@Override
+	public int getListCount(int i) {
+		return eDAO.getListCount(sqlSession, i);
 	}
 
 	

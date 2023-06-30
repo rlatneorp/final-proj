@@ -61,7 +61,8 @@
 		box-shadow: 5px 5px 10px rgba(0,0,0,0.10), 0 5px 5px rgba(0,0,0,0.22); transform: translateY(-2px); transition: all 0.2s ease 0s;
 		}
 		
-	.more, .more2, .more3{width: 100%; margin:10px; margin-right: 30px; text-align: center;}
+	.more, .more2, .more3, .more4, .more5{width: 100px; text-align: center; cursor: pointer; margin: 0 auto; margin-top: 20px; margin-bottom: 20px;}
+	.more:hover, .more2:hover, .more3:hover, .more4:hover, .more5:hover{font-weight: bold;}
 		
 		
 	/* 1. 작성한 레시피 */
@@ -394,10 +395,9 @@
 																		<p class="date-count">${ h.nickName } ∣ <fmt:formatDate value="${ ab.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ ab.boardCount }</p>
 																	</c:if>
 																</c:forEach>
-																
 																<div class="reply-content">
 																	<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div>
-																 	<div>${ rp.reviewContent }</div> <!-- 같은게시글의 댓글은 한꺼번에 뜨게 해야함.. -->
+																 	<div>${ rp.reviewContent }</div>
 																</div>
 															</td>
 															<c:set var="count" value="0" />
@@ -423,38 +423,39 @@
 						</div>
 					</div>
 					
-<!-- 					<div class="page_wrap"> -->
-<!-- 						<div class="page_nation"> -->
-						
-<!-- 							이전 페이지로 -->
-<%-- 							<c:url var="goBack" value="${ loc }"> --%>
-<%-- 								<c:param name="page" value="${ pi.currentPage - 1 }"></c:param> --%>
-<%-- 							</c:url> --%>
-<%-- 							<c:if test="${ pi.currentPage > 1 }"> --%>
-<%-- 								<a class="arrow prev" href="${ goBack }"><i class="bi bi-chevron-left"></i></a> --%>
-<%-- 							</c:if> --%>
-							
-<!-- 							페이지 -->
-<%-- 							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p"> --%>
-<%-- 								<c:url var="goNum" value="${loc }"> --%>
-<%-- 									<c:param name="page" value="${p }"></c:param> --%>
-<%-- 								</c:url> --%>
-<%-- 								<c:if test="${ pi.currentPage eq p }"> --%>
-<%-- 									<a class="active">${p }</a> --%>
-<%-- 								</c:if> --%>
-<%-- 								<c:if test="${ !(pi.currentPage eq p) }"> --%>
-<%-- 									<a href="${ goNum }">${p }</a> --%>
-<%-- 								</c:if> --%>
-<%-- 							</c:forEach> --%>
-							
-<%-- 							<c:url var="goNext" value="${loc }"> --%>
-<%-- 								<c:param name="page" value="${ pi.currentPage + 1 }"></c:param> --%>
-<%-- 							</c:url> --%>
-<%-- 							<c:if test="${ pi.currentPage < pi.endPage }"> --%>
-<%-- 								<a class="arrow next" href="${ goNext }"><i class="bi bi-chevron-right"></i></a> --%>
-<%-- 							</c:if> --%>
-<!-- 						</div> -->
-<!-- 					</div> -->
+					<!-- 페이징 -->
+					<div class="pageFreeBoard" > 
+						<nav aria-label="Page navigation example">
+							<ul class="pageFreeBoard pagination justify-content-center">
+							    <c:if test="${ pi.currentPage > 1 }">
+							    <li class="page-item">
+							    	<c:url var="goBack" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goBack }" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>	
+								</li>
+								</c:if>
+								<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+								   	<c:url var="goNum" value="${ loc }">
+										<c:param name="page" value="${ p }"></c:param>
+									</c:url>
+								  	<li class="page-item pageFreeBoard"><a class="page-link" href="${ goNum }">${ p }</a></li>
+								</c:forEach>
+								<c:if test="${ pi.currentPage < pi.maxPage }">
+								<li class="page-item">
+									<c:url var="goNext" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goNext }" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</li>
+								</c:if>
+							</ul>
+						</nav>	
+					</div>
 					
 					
 				</div>
@@ -466,13 +467,12 @@
 					<c:if test="${ empty rvList }">
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
 					</c:if>
-						
 					<c:forEach items="${ rvList }" var="rv">
-						<div class="recipe-review-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
+						<div class="recipe-review-content div-box4" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
 							<c:forEach items="${ aList }" var="a">
-								<c:if test="${ rv.orderNo == a.foodNo }">
+								<c:if test="${ rv.productNo == a.foodNo }">
 									<c:forEach items="${ recipeImageList }" var="rImg">
-										<c:if test="${ rImg.imageDivideNo == rv.orderNo }">
+										<c:if test="${ rImg.imageDivideNo == rv.productNo }">
 											<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ rImg.imageRenameName }"></div>
 										</c:if>
 									</c:forEach>
@@ -512,6 +512,7 @@
 							</c:forEach>
 						</div>
 					</c:forEach>
+					<div class="more4"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 						
 					<br>
 					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
@@ -522,10 +523,10 @@
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 식단 후기가 없습니다.</div>
 					</c:if>
 					<c:forEach items="${ mrList }" var="mr">
-						<div class="recipe-review-content" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ mr.PRODUCT_NO }' + 'page='">
-							<c:forEach items="${ menuReviewImageList }" var="mrImg">
-								<c:if test="${ mrImg.imageDivideNo == mr.REVIEW_NO }">
-									<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ mrImg.imageRenameName }"></div>
+						<div class="recipe-review-content div-box5" style="display: none;" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ mr.PRODUCT_NO }' + 'page='">
+							<c:forEach items="${ menuImageList }" var="mImg">
+								<c:if test="${ mImg.imageDivideNo == mr.PRODUCT_NO }">
+									<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ mImg.imageRenameName }"></div>
 								</c:if>
 							</c:forEach>
 							<div class="recipe-review-content-div">
@@ -559,6 +560,7 @@
 							</div>
 						</div>
 					</c:forEach>
+					<div class="more5"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 					
 				</div>
 				
@@ -617,11 +619,11 @@
 										<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
 										<div class="recipe-name">${ m.menuName }</div>
 										<div>
-											<c:if test="${ m.menuType == 1 }"><a>🏋다이어트</a></c:if>
+											<c:if test="${ m.menuType == 1 }"><a>🥗다이어트</a></c:if>
 											<c:if test="${ m.menuType == 2 }"><a>🤒몸보신</a></c:if>
 											<c:if test="${ m.menuType == 3 }"><a>💪든든밥상</a></c:if>
 											<c:if test="${ m.menuType == 4 }"><a>🥩고단백</a></c:if>
-											<c:if test="${ m.menuType == 5 }"><a>🥗채식</a></c:if>
+											<c:if test="${ m.menuType == 5 }"><a>🥬채식</a></c:if>
 										</div>
 										<c:forEach items="${ pList }" var="p">
 											<c:if test="${ p.productNo == m.foodProductNo }">
@@ -899,12 +901,13 @@
 			    }
 			});
 		}
-		// 작성 레시피 더보기
+		// 1. 작성 레시피 더보기
 		$(function(){
 		    $(".div-box").slice(0, 8).show(); // 초기갯수
-			    if($(".div-box:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".more").hide(); // 컨텐츠 없을시 버튼숨기기
-		        }
+// 		    console.log('div-box: ' + $(".div-box:hidden").length);
+		    if($(".div-box:hidden").length == 0){ 
+	        	$(".more").hide(); 
+	        }
 		    $(".more").click(function(e){ // 클릭시 more
 		        e.preventDefault();
 		        $(".div-box:hidden").slice(0, 8).show();
@@ -913,32 +916,65 @@
 		        }
 		    });
 		});
-	
-		// 북마크-레시피 더보기
+		
+		// 4-1. 레시피 후기 더보기
 		$(function(){
-		    $(".div-box2").slice(0, 1).show(); // 초기갯수
-			    if($(".div-box2:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".more2").hide(); // 컨텐츠 없을시 버튼숨기기
+		    $(".div-box4").slice(0, 5).show(); // 초기갯수
+// 		    console.log('div-box4: ' + $(".div-box4:hidden").length);
+		    if($(".div-box4:hidden").length <= 5){ // 컨텐츠 남아있는지 확인
+	        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
+	        }
+		    $(".more4").click(function(e){ // 클릭시 more
+		        e.preventDefault();
+		        $(".div-box4:hidden").slice(0, 5).show();
+		        if($(".div-box4:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+		        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
 		        }
+		    });
+		});
+		
+		// 4-2. 식단 후기 더보기
+		$(function(){
+		    $(".div-box5").slice(0, 5).show(); // 초기갯수
+// 		    console.log('div-box5: ' + $(".div-box5:hidden").length);
+		    if($(".div-box5:hidden").length <= 5){ // 컨텐츠 남아있는지 확인
+	        	$(".more5").hide(); // 컨텐츠 없을시 버튼숨기기
+	        }
+		    $(".more5").click(function(e){ // 클릭시 more
+		        e.preventDefault();
+		        $(".div-box5:hidden").slice(0, 5).show();
+		        if($(".div-box5:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+		        	$(".more5").hide(); // 컨텐츠 없을시 버튼숨기기
+		        }
+		    });
+		});
+	
+		// 5-1 .북마크-레시피 더보기
+		$(function(){
+		    $(".div-box2").slice(0, 8).show(); // 초기갯수
+// 		    console.log('div-box2: ' + $(".div-box2:hidden").length);
+		    if($(".div-box2:hidden").length <= 8){
+	        	$(".more2").hide(); 
+	        }
 		    $(".more2").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box2:hidden").slice(0, 1).show();
+		        $(".div-box2:hidden").slice(0, 8).show();
 		        if($(".div-box2:hidden").length == 0){ // 컨텐츠 남아있는지 확인
 		        	$(".more2").hide(); // 컨텐츠 없을시 버튼숨기기
 		        }
 		    });
 		});
 		
-		// 북마크-식단 더보기
+		// 5-2. 북마크-식단 더보기
 		$(function(){
-		    $(".div-box3").slice(0, 1).show(); // 초기갯수
-		    console.log($(".div-box3:hidden").length);
-			    if($(".div-box3:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
-		        }
+		    $(".div-box3").slice(0, 8).show(); // 초기갯수
+// 		    console.log('div-box3: ' + $(".div-box3:hidden").length);
+		    if($(".div-box3:hidden").length <= 8){ // 컨텐츠 남아있는지 확인
+	        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
+	        }
 		    $(".more3").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box3:hidden").slice(0, 1).show();
+		        $(".div-box3:hidden").slice(0, 8).show();
 		        if($(".div-box3:hidden").length == 0){ // 컨텐츠 남아있는지 확인
 		        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
 		        }

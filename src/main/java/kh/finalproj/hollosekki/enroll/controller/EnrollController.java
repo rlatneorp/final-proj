@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import kh.finalproj.hollosekki.board.model.vo.Board;
+import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.exception.EnrollException;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
@@ -352,6 +354,15 @@ public class EnrollController {
 			Users user = eService.socialLoginUpdate(id);
 			model.addAttribute("user", user);
 			
+			// 페이징
+			if(page == null) {
+				page = 1;
+			}
+			int listCount = eService.getListCount(0);
+			
+			PageInfo pi = Pagination.getPageInfo(page, listCount, 10);
+			
+			
 			// 팔로우 정보
 			int follow = eService.follow(usersNo);
 			int following = eService.following(usersNo);
@@ -403,15 +414,17 @@ public class EnrollController {
 			// 식단 리뷰 목록
 			ArrayList<Review> menuReviewList = eService.menuReviewList(usersId); // 작성 식단리뷰
 			model.addAttribute("mrList", menuReviewList);
-			ArrayList<Image> menuReviewImageList = eService.menuReviewImageList(); // 전체 식단리뷰 이미지
-			model.addAttribute("menuReviewImageList", menuReviewImageList);
+			
+			// 모든 식단 이미지
+			ArrayList<Image> menuImageList = eService.menuImageList();
+			model.addAttribute("menuImageList", menuImageList);
 			
 			// 북마크 목록
-			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo);
+			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo); // 사용자 북마크 List
 			model.addAttribute("bList", bookMarkList);
-			int recipeBookMarkList = eService.recipeBookMarkList(usersNo);
+			int recipeBookMarkList = eService.recipeBookMarkList(usersNo); // 사용자 레시피 북마크 List
 			model.addAttribute("rCount" ,recipeBookMarkList);
-			int menuBookMarkList = eService.menuBookMarkList(usersNo);
+			int menuBookMarkList = eService.menuBookMarkList(usersNo); // 사용자 식단 북마크 List
 			model.addAttribute("mCount", menuBookMarkList);
 			
 			// 북마크 - 레시피목록
@@ -425,12 +438,10 @@ public class EnrollController {
 			ArrayList<Menu> allMenuList = eService.menuList();
 			model.addAttribute("mList", allMenuList);
 			
-			ArrayList<Image> menuImageList = eService.menuImageList();
-			model.addAttribute("menuImageList", menuImageList);
 			
 			ArrayList<Product> productList = eService.productList(); // 영양사정보 가져오기
 			model.addAttribute("pList", productList);
-			ArrayList<Users> AllUsersList = eService.AllUsersList();
+			ArrayList<Users> AllUsersList = eService.AllUsersList(); // 모든유저 List
 			model.addAttribute("hList", AllUsersList);
 			
 			

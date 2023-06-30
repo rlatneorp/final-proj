@@ -17,6 +17,7 @@ import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 //import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
@@ -269,9 +270,6 @@ public class MarketDAO {
 	}
 
 
-//   public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
-//		return sqlSession.insert("marketMapper.insertPay", orders);
-//   }
 
 	public int selectStock(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectStock", productNo);
@@ -297,6 +295,10 @@ public class MarketDAO {
 	public int selectProductType(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectProductType", productNo) ;
 	}
+
+	public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
+		return sqlSession.insert("marketMapper.insertPay", orders);
+   }
 
 
 

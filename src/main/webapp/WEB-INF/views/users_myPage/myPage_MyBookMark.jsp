@@ -130,8 +130,16 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
+							<c:if test="${ empty list }">
+								<tr>
+									<td colspan="5" height="260">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										스크랩 내역이 없습니다.
+									</td>
+								</tr>
+							</c:if>
 							<c:forEach items="${ list }" var="l">
-								<c:if test="${ l.NUMBER_TYPE == 1 }">
+								<c:if test="${ l.NUMBER_TYPE == 1 and !empty l.RECIPE_NAME }">
 									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
@@ -270,7 +278,6 @@ th:first-child, td:first-child {
 			    buttons: ["취소", "삭제하기"]
 			}).then((YES) => {
 			    if (YES) {
-			      	console.log('ㅎㅇㄴ');
 			      	$.ajax({
 						url : '${contextPath}/myPage_deleteBookMark.me',
 						data : {bookmarkNo : JSON.stringify(selectedBookmarkNos)},

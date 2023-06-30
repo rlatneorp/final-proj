@@ -295,7 +295,7 @@ public class MarketService {
 		return mkDAO.orderSearchCount(sqlSession, prop);
 	}
 
-	public ArrayList<Orders> orderSearch(Properties prop, PageInfo pi) {
+	public ArrayList<Map<String, Object>> orderSearch(Properties prop, PageInfo pi) {
 		return mkDAO.orderSearch(sqlSession, prop, pi);
 	}
 
@@ -303,7 +303,7 @@ public class MarketService {
 		return mkDAO.orderPeriodSearchCount(sqlSession, prop);
 	}
 
-	public ArrayList<Orders> orderPeriodSearchList(Properties prop, PageInfo pi) {
+	public ArrayList<Map<String, Object>> orderPeriodSearchList(Properties prop, PageInfo pi) {
 		return mkDAO.orderPeriodSearchList(sqlSession, prop, pi);
 	}
 

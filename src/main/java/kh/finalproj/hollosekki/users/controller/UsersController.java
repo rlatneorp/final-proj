@@ -3,10 +3,12 @@ package kh.finalproj.hollosekki.users.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -785,8 +787,6 @@ public class UsersController {
 	
 	@GetMapping("searchWord.me")
 	public String searchWord(String start, String end, String word, Model model,  @RequestParam(value="page", required=false) Integer currentPage) {
-		System.out.println("들오와!!start : " + start);
-		System.out.println("들오와!!end : " + end);
 		
 		if(currentPage == null) {
 			currentPage = 1;
@@ -800,7 +800,7 @@ public class UsersController {
 		prop.setProperty("usersNo", userNo);
 		
 		//당연히 페이징을.... 
-		int listCount = 0; PageInfo pi = null; ArrayList<Orders> orderSearchList = null;
+		int listCount = 0; PageInfo pi = null; ArrayList<Map<String, Object>> orderSearchList = null;
 		if(start == null) { //전체 조회 
 			listCount = mkService.orderSearchCount(prop); //단어 있는 것 중, 전체 조회 
 			System.out.println("lc : " + listCount);
@@ -811,24 +811,41 @@ public class UsersController {
 			prop.setProperty("start", start);
 			prop.setProperty("end", end);
 			listCount = mkService.orderPeriodSearchCount(prop);
-			System.out.println("검새ㄱlistCount + " + listCount);
 			pi = Pagination.getPageInfo(currentPage, listCount, 5);
 			orderSearchList = mkService.orderPeriodSearchList(prop, pi);
-			System.out.println("검새ㄱorderSearchList + " + orderSearchList);
+			
+			model.addAttribute("start", start);
+			model.addAttribute("end", end);
 		}
-		 
+		
+		ArrayList<Orders> orderList = new ArrayList<>();
+		for(Map<String, Object>  order : orderSearchList) {
+			//필요 데이터 : 주문번호, 주문타입, 상품명, 주문날짜, 총 주문금액 
+			Orders orders = new Orders();
+			orders.setOrderNo(Integer.parseInt(order.get("ORDER_NO").toString()));
+			orders.setProductType(Integer.parseInt(order.get("PRODUCT_TYPE").toString()));
+			if (order.containsKey("TOOL_NAME")) {
+				orders.setProductName(order.get("TOOL_NAME").toString());
+			} else if (order.containsKey("FOOD_NAME")) {
+				orders.setProductName(order.get("FOOD_NAME").toString());
+			} else if (order.containsKey("MENU_NAME")) {
+				orders.setProductName(order.get("MENU_NAME").toString());
+			} else if (order.containsKey("INGREDIENT_NAME")) {
+				orders.setProductName(order.get("INGREDIENT_NAME").toString());
+			}
+			Timestamp orderTimestamp = (Timestamp) order.get("ORDER_DATE");
+			Date orderDate = new Date(orderTimestamp.getTime());
+			orders.setOrderDate(orderDate);
+			orders.setTotalPrice(Integer.parseInt(order.get("ORDER_TOTAL_PRICE").toString()));
+			
+			orderList.add(orders);
+		}
+		
 		
 		model.addAttribute("pi", pi);
-		model.addAttribute("orderSearchList", orderSearchList);
+		model.addAttribute("orderList", orderList);
 		
-		
-		
-//		ArrayList<Orders> searchList = mkService.selectSearchWord(prop);
-		
-		
-//		uService.searchWord(wo)
-		
-		return "";
+		return "myPage_MyOrder";
 	}
 	
 	

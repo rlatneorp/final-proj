@@ -245,7 +245,7 @@ th:first-child, td:first-child {
 			   const url = '${contextPath}/searchWord.me?start=' + start + '&end=' + end + '&word=' + searchWord;
 			   window.location.href = url;
 		   }
-	      searchInput.value = '';
+// 	      searchInput.value = '';
 	   })
 	   
 	   //검색어 입력 엔터 기능 

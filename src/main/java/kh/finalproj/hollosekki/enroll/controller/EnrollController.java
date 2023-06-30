@@ -354,14 +354,6 @@ public class EnrollController {
 			Users user = eService.socialLoginUpdate(id);
 			model.addAttribute("user", user);
 			
-			// 페이징
-			if(page == null) {
-				page = 1;
-			}
-			int listCount = eService.getListCount(0);
-			
-			PageInfo pi = Pagination.getPageInfo(page, listCount, 10);
-			
 			
 			// 팔로우 정보
 			int follow = eService.follow(usersNo);

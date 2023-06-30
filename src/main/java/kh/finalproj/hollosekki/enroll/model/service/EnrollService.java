@@ -84,7 +84,6 @@ public interface EnrollService {
 
 	ArrayList<Review> userReplyList(String nickName);
 
-	int getListCount(int i);
 
 
 

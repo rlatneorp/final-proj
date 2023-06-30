@@ -84,8 +84,8 @@
 </head>
 <body>
 	<%@ include file="../common/top.jsp" %>
-	<div class="mainBox">
-		<form id="menuUpdateForm" action="${contextPath}/adminMenuUpdate.ad" method="post" enctype="multipart/form-data">
+	<form id="menuUpdateForm" action="${contextPath}/adminMenuUpdate.ad" method="post" enctype="multipart/form-data">
+		<div class="mainBox">
 			<input type="hidden" name="productNo" value="${m.productNo}">
 			<input type="hidden" name="foodPNoAll" value="${m.foodProductNo}">
 			<input type="hidden" name="productStatus" value="${m.productStatus}">
@@ -132,7 +132,6 @@
 				</div>
 			</div>
 		
-			
 			<div class="mid">
 				식단 종류
 			</div>
@@ -141,9 +140,9 @@
 			
 			<div id="order">
 				<div id="orderList">
-						<c:forEach items="${m.foodProductNo.split(',')}" var="fNo" varStatus="vs">
+					<c:forEach items="${m.foodProductNo.split(',')}" var="fNo" varStatus="vs">
 							<c:if test="${(vs.index)%4 == 0}">
-							<div style="margin-bottom: 30px; border: 3px solid rgba(0,0,0,0.7); border-radius: 5px; box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.3);">
+								<div style="margin-bottom: 30px; border: 3px solid rgba(0,0,0,0.7); border-radius: 5px; box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.3);">
 								<table id="menuTable${vs.index}"style="width:100%">
 							</c:if>
 									<tr>
@@ -186,118 +185,116 @@
 									</table>
 								</c:if>
 								
-								<c:if test="${(vs.index)%4 == 3}">
-									<table class="infoTableDay border-none" style="width:1120px; margin: 10px 0px 15px 0px; text-align: center;">
-										<tr>
-											<th>칼로리</th>
-											<th>탄수화물</th>
-											<th>단백질</th>
-											<th>지방</th>
-											<th>트랜스지방</th>
-											<th>포화지방</th>
-											<th>나트륨</th>
-											<th>당류</th>
-											<th>콜레스테롤</th>
-										</tr>
-										<tr class="infoContentDay">
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>kcal</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>mg</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>mg</td>
-										</tr>
-									</table>
-								</c:if>
-							</div>
-						</c:forEach>
-					
-					<p style="font-size: 22px; font-weight: bold; text-align: right;">총계</p>
-					<div class="d-flex justify-content-end">
-						<table class="d-flex text-center border-none">
-							<tr>
-								<th>단가</th>
-								<th></th>
-								<th>할인율</th>
-								<th></th>
-								<th colspan="2">최종가격</th>
-							</tr>
-							<tr>
-								<td>
-									<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productPrice}" min="0" readonly>
-								</td>
-								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">원 - </td>
-								<td>
-									<input type="number" name="productSale" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productSale}" min="0" max="99.9">
-								</td>
-								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">% =</td>
-								<td>
-									<input type="number" class="totalPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" readonly>
-								</td>
-								<td style="width: 30px; font-size: 16px; font-weight: bold; text-align: left;">원</td>
-							</tr>
-							<tr>
-								<td colspan="2">재고</td>
-								<td colspan="4">
-									<input type="number" name="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productStock}" min="0">
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
-			
-			<br><br><br>
-			
-			<div class="mid">
-				영양 정보
-			</div>
-			
-			<br><br>
-			
-			<table id="infoTable">
-				<tr id="infoTop">
-					<th>분류</th>
-					<th>칼로리</th>
-					<th>탄수화물</th>
-					<th>단백질</th>
-					<th>지방</th>
-					<th>트랜스지방</th>
-					<th>포화지방</th>
-					<th>나트륨</th>
-					<th>당류</th>
-					<th>콜레스테롤</th>
-				</tr>
-				<c:forEach begin="1" end="7" varStatus="i">
-					<tr class="infoContent">
-						<td class="text-center">${i.index}일차</td>
-						<td><input type="number" min="0" value="0" readonly>kcal</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>mg</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>mg</td>
-					</tr>
+							<c:if test="${(vs.index)%4 == 3}">
+								<table class="infoTableDay border-none" style="width:1120px; margin: 10px 0px 15px 0px; text-align: center;">
+									<tr>
+										<th>칼로리</th>
+										<th>탄수화물</th>
+										<th>단백질</th>
+										<th>지방</th>
+										<th>트랜스지방</th>
+										<th>포화지방</th>
+										<th>나트륨</th>
+										<th>당류</th>
+										<th>콜레스테롤</th>
+									</tr>
+									<tr class="infoContentDay">
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>kcal</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>mg</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>mg</td>
+									</tr>
+								</table>
+							</c:if>
+						</div>
 				</c:forEach>
-				
-			</table>
-			
-			<br><br>	
-			
-			<div class="d-flex justify-content-center mb-5">
-				<div class="d-flex">
-					<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
-					<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+					
+				<p style="font-size: 22px; font-weight: bold; text-align: right;">총계</p>
+				<div class="d-flex justify-content-end">
+					<table class="d-flex text-center border-none">
+						<tr>
+							<th>단가</th>
+							<th></th>
+							<th>할인율</th>
+							<th></th>
+							<th colspan="2">최종가격</th>
+						</tr>
+						<tr>
+							<td>
+								<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productPrice}" min="0" readonly>
+							</td>
+							<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">원 - </td>
+							<td>
+								<input type="number" name="productSale" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productSale}" min="0" max="99.9">
+							</td>
+							<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">% =</td>
+							<td>
+								<input type="number" class="totalPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" readonly>
+							</td>
+							<td style="width: 30px; font-size: 16px; font-weight: bold; text-align: left;">원</td>
+						</tr>
+						<tr>
+							<td colspan="2">재고</td>
+							<td colspan="4">
+								<input type="number" name="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productStock}" min="0">
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
-		</form>
-	</div>
+		</div>
+			
+		<br><br><br>
+		<div class="mid">
+			영양 정보
+		</div>
+		
+		<br><br>
+		
+		<table id="infoTable">
+			<tr id="infoTop">
+				<th>분류</th>
+				<th>칼로리</th>
+				<th>탄수화물</th>
+				<th>단백질</th>
+				<th>지방</th>
+				<th>트랜스지방</th>
+				<th>포화지방</th>
+				<th>나트륨</th>
+				<th>당류</th>
+				<th>콜레스테롤</th>
+			</tr>
+			<c:forEach begin="1" end="7" varStatus="i">
+				<tr class="infoContent">
+					<td class="text-center">${i.index}일차</td>
+					<td><input type="number" min="0" value="0" readonly>kcal</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>mg</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>mg</td>
+				</tr>
+			</c:forEach>
+			
+		</table>
+		
+		<br><br>	
+			
+		<div class="d-flex justify-content-center mb-5">
+			<div class="d-flex">
+				<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
+				<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+			</div>
+		</div>
+	</form>
 	
 	<br><br><br><br>
 	<%@ include file="../common/footer.jsp" %>

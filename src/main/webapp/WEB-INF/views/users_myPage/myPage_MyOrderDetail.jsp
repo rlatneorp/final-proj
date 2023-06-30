@@ -105,7 +105,7 @@
 					<br><br>
 					<table>
 						<tr style="border-bottom: 1px solid black;">
-							<td class="order"><img src="resources/images/food3.jpg"/></td>
+							<td class="order"><img src="${contextPath }/resources/uploadFiles/${orders.imgName}"/></td>
 							<td>
 								${orders.productName }<br>
 								<fmt:formatNumber type="number" maxFractionDigits="3" pattern="'\ '#,###" value="${orders.totalPrice }"/> (${orders.orderCount }개)<br><br>

@@ -113,6 +113,14 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
+							<c:if test="${ empty list }">
+								<tr>
+									<td colspan="6" height="305">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										레시피가 없습니다.
+									</td>
+								</tr>
+							</c:if>
 							<c:forEach items="${ list }" var="l">
 								<tr onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'">
 									<td>${ l.FOOD_NO }</td>

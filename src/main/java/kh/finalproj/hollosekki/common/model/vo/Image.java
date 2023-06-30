@@ -7,13 +7,12 @@ public class Image {
 	private String imageOriginalName;
 	private String imageRenameName;
 	private String imagePath;
-	private int imageLevel;
+	private Integer imageLevel;
 	
 	public Image() {}
 
 	public Image(int imageNo, int imageDivideNo, int imageType, String imageOriginalName, String imageRenameName,
-			String imagePath, int imageLevel) {
-		super();
+			String imagePath, Integer imageLevel) {
 		this.imageNo = imageNo;
 		this.imageDivideNo = imageDivideNo;
 		this.imageType = imageType;
@@ -71,11 +70,11 @@ public class Image {
 		this.imagePath = imagePath;
 	}
 
-	public int getImageLevel() {
+	public Integer getImageLevel() {
 		return imageLevel;
 	}
 
-	public void setImageLevel(int imageLevel) {
+	public void setImageLevel(Integer imageLevel) {
 		this.imageLevel = imageLevel;
 	}
 

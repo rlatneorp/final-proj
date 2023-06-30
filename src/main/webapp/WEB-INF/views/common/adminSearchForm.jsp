@@ -40,6 +40,18 @@
 	</form>
 	
 	<script>
+			if(location.pathname == "/hollosekki/adminFAQManage.ad"){
+			}else{
+				if(document.getElementsByClassName('allSelect')[0] != null){
+					document.getElementsByClassName('allSelect')[0].parentElement.style.display="none";
+				}
+				const selectDeletes = document.getElementsByName('selectDelete')
+				for(const sd of selectDeletes){
+					sd.parentElement.style.display="none";
+				}
+			}
+	
+	
 			let aliveType = 0;
 			if(location.pathname == "/hollosekki/adminUsersManage.ad"){
 				aliveType = 0;

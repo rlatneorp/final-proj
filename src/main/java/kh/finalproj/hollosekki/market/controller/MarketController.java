@@ -30,7 +30,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
-import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -593,28 +592,6 @@ public class MarketController {
       return imageList;
    }
    
-//   @RequestMapping("insertPay.ma")
-//   @ResponseBody
-//   public String insertPay(@ModelAttribute Orders orders) {
-//	  
-////	   int stock = mkService.selectStock(orders.getProductNo());
-////	   int remainStock = stock-orders.getOrderCount();
-////	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
-////	   if(remainStock <= -1) {
-////		   return "stStock";
-////	   } else {
-//		   int result = mkService.insertPay(orders);
-//		   
-////		   return "success";
-////	   }
-//		   
-//		   if(result >= 1) {
-//			   return "success";
-//		   } else {
-//			   return "fail";
-//		   }
-//	   
-//   }
    
    @PostMapping("reviewAvgDesc.ma")
    public void reviewAvgDesc(@RequestParam ("productNo") int productNo, HttpServletResponse response, Model model) {

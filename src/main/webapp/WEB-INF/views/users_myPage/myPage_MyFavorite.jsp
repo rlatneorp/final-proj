@@ -88,6 +88,10 @@ th:first-child, td:first-child {
 }
 #tbody tr {height: 150px;}
 #tbody tr img {width: 50%;}
+#selectAllCheckBox{
+	box-shadow: none;
+	width: 20px; height: 20px;
+}
 </style>
 </head>
 <body>
@@ -129,6 +133,14 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
+							<c:if test="${ empty list }">
+								<tr>
+									<td colspan="6" height="260">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										좋아요 내역이 없습니다.
+									</td>
+								</tr>
+							</c:if>
 							<c:forEach items="${ list }" var="l">
 								<c:if test="${ l.NUMBER_TYPE == 1 }">
 									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-like-no="${ l.LIKE_NO }">
@@ -312,7 +324,6 @@ th:first-child, td:first-child {
 			    buttons: ["취소", "삭제하기"]
 			}).then((YES) => {
 			    if (YES) {
-			      	console.log('ㅎㅇㄴ');
 			      	$.ajax({
 						url : '${contextPath}/myPage_deleteLike.me',
 						data : {likeNo : JSON.stringify(selectedLikeNos)},

@@ -21,4 +21,6 @@ public interface MenuService {
 
 	ArrayList<MenuList> menuDetailMenu(int mNo);
 
+	ArrayList<Image> menuDetailImage(int mNo);
+
 }

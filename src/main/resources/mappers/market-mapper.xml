@@ -434,14 +434,14 @@
    
    
    <!-- 포인트 조회  -->
-<!--    <select id="selectPoint" resultType="_int"> -->
-<!--       select point from users where users_no = #{usersNo} -->
-<!--    </select> -->
+   <select id="selectPoint" resultType="_int">
+      select point from users where users_no = #{usersNo}
+   </select>
    
    <!-- 장바구니 상품에 대한 이미지 조회 -->
-<!--    <select id="selectImg" resultType="String"> -->
-<!--       select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType} -->
-<!--    </select> -->
+   <select id="selectImg" resultType="String">
+      select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
+   </select>
    
    <select id="selectStock" resultType="_int">
         select PRODUCT_STOCK from product where product_no = #{productNo}
@@ -468,4 +468,67 @@
    <select id="selectProductType" resultType="_int">
    		select product_type from product where product_no = #{productNo}
    </select>
+   
+   <select id="orderSearchCount" resultType="_int">
+		SELECT count(*)
+		FROM orders o
+		LEFT JOIN food f ON o.product_no = f.product_no
+		LEFT JOIN ingredient i ON o.product_no = i.product_no
+		LEFT JOIN menu m ON o.product_no = m.product_no
+		LEFT JOIN tool t ON o.product_no = t.product_no
+		WHERE o.users_no = #{usersNo} AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+   </select>
+   
+   <select id="orderSearchList" resultType="map">
+   		SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name
+		FROM orders o
+		LEFT JOIN food f ON o.product_no = f.product_no
+		LEFT JOIN ingredient i ON o.product_no = i.product_no
+		LEFT JOIN menu m ON o.product_no = m.product_no
+		LEFT JOIN tool t ON o.product_no = t.product_no
+		WHERE o.users_no = #{usersNo} AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+   </select>
+   
+   <select id="orderPeriodSearchCount" resultType="_int">
+   		<![CDATA[
+	   		SELECT count(*)
+			FROM orders o
+			LEFT JOIN food f ON o.product_no = f.product_no
+			LEFT JOIN ingredient i ON o.product_no = i.product_no
+			LEFT JOIN menu m ON o.product_no = m.product_no
+			LEFT JOIN tool t ON o.product_no = t.product_no
+			WHERE o.users_no = #{usersNo}
+			  AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+			  AND TRUNC(o.order_date) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(o.order_date) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+   		]]>
+   </select>
+   
+   <select id="orderPeriodSearchList" resultType="map">
+   		<![CDATA[
+	   		SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name
+			FROM orders o
+			LEFT JOIN food f ON o.product_no = f.product_no
+			LEFT JOIN ingredient i ON o.product_no = i.product_no
+			LEFT JOIN menu m ON o.product_no = m.product_no
+			LEFT JOIN tool t ON o.product_no = t.product_no
+			WHERE o.users_no = #{usersNo}
+			  AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+			  AND TRUNC(o.order_date) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(o.order_date) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+   		]]>
+   </select>
+   
+<!--    <select id="" resultType="map"> -->
+<!--    SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name -->
+<!-- 	FROM orders o -->
+<!-- 	LEFT JOIN food f ON o.product_no = f.product_no -->
+<!-- 	LEFT JOIN ingredient i ON o.product_no = i.product_no -->
+<!-- 	LEFT JOIN menu m ON o.product_no = m.product_no -->
+<!-- 	LEFT JOIN tool t ON o.product_no = t.product_no -->
+<!-- 	WHERE o.users_no = 23 -->
+<!-- 	  AND (f.food_name LIKE '%펜%' OR i.ingredient_name LIKE '%펜%' OR m.menu_name LIKE '%펜%' OR t.tool_name LIKE '%펜%') -->
+<!-- 	  AND TRUNC(o.order_date) >= TO_DATE('2023-05-30', 'YYYY-MM-DD') -->
+<!-- 	  AND TRUNC(o.order_date) <= TO_DATE('2023-06-29', 'YYYY-MM-DD') -->
+<!--   </select> -->
 </mapper>

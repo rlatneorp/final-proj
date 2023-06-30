@@ -78,13 +78,12 @@ public interface EnrollService {
 
 	ArrayList<Review> menuReviewList(String usersId);
 
-	ArrayList<Image> menuReviewImageList();
-
 	ArrayList<Review> replyList();
 
 	ArrayList<Board> allBoardList();
 
 	ArrayList<Review> userReplyList(String nickName);
+
 
 
 

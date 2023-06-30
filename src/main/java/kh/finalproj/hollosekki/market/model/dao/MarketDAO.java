@@ -298,6 +298,10 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectProductType", productNo) ;
 	}
 
+	public ArrayList<Review> reviewDesc(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.reviewDesc", productNo);
+	}
+
 
 
 }

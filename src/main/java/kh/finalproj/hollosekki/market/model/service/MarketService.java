@@ -284,6 +284,10 @@ public class MarketService {
 		return mkDAO.selectProductType(sqlSession, productNo);
 	}
 
+	public ArrayList<Review> reviewDesc(int productNo) {
+		return mkDAO.reviewDesc(sqlSession,productNo);
+	}
+
 
 
 

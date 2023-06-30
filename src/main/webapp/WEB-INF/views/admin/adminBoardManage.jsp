@@ -19,7 +19,10 @@
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>		
 		
-		<form id="deleteForm" action="${contextPath}/adminBoardDeletes.ad" method="post">
+<%-- 		<form id="deleteForm" action="${contextPath}/adminBoardDeletes.ad" method="post"> --%>
+		<form id="deleteForm" action="${contextPath}/adminDeleteSelects.ad" method="post">
+			<input type="hidden" name="type" value="8">
+			<input type="hidden" name="url" value="adminBoardManage.ad">
 			<table class="w-100 text-center mb-3">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>

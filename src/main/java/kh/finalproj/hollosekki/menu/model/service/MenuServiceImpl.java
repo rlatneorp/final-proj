@@ -49,4 +49,9 @@ public class MenuServiceImpl implements MenuService{
 	public ArrayList<MenuList> menuDetailMenu(int mNo) {
 		return mDAO.menuDetailMenu(sqlSession, mNo);
 	}
+	
+	@Override
+	public ArrayList<Image> menuDetailImage(int mNo) {
+		return mDAO.menuDetailImage(sqlSession, mNo);
+	}
 }

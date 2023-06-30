@@ -15,7 +15,7 @@ import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
-import kh.finalproj.hollosekki.common.model.vo.Users;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.menu.model.exception.MenuException;
 import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
@@ -65,11 +65,13 @@ public class MenuController {
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
+		ArrayList<Image> miList = mService.menuDetailImage(mNo);
 		System.out.println(menu);
 		if(menu != null) {
 			mv.addObject("menu", menu);
 			mv.addObject("thum", thum);
 			mv.addObject("mlList", mlList);
+			mv.addObject("miList", miList);
 			mv.setViewName("menuDetail");
 			
 			return mv;

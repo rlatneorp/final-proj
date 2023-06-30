@@ -138,6 +138,13 @@
 		background: #B0DAFF;
 		margin-left: 35px; margin-top: 10px;
     }
+    #base{
+    	border: none; border-radius: 5px;
+		font-weight: bold; font-size: 12px;
+		width: 80px; height: 40px;
+		background: #B0DAFF;
+		margin-left: 35px; margin-top: 10px;
+    }
     #pImg{
     	width: 150px; height: 150px;
     	border-radius: 50%;
@@ -227,18 +234,18 @@
 				<i class="bi bi-gear-fill" style="margin-left: 580px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#profileModal"></i>
 				<br>
 				<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
-					<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+					<c:if test="${ empty image }">
 						<img src="${ socialUser.socialProfileImg }" id="pImg">
 					</c:if>
-					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+					<c:if test="${ !empty image and image.imageType == 1 }">
 						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" id="pImg" onerror="this.src='${ socialUser.socialProfileImg }';"/>
 					</c:if>
 				</c:if>
 				<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
-					<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+					<c:if test="${ empty image }">
 						<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" id="pImg"/>
 					</c:if>
-					<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+					<c:if test="${ !empty image and image.imageType == 1 }">
 						<img src="${ contextPath }/resources/uploadFiles/${ image.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" id="pImg"/>
 					</c:if>
 				</c:if>
@@ -274,10 +281,10 @@
 					    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
 						    		</c:if>
 						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-						    			<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+						    			<c:if test="${ empty f.IMAGE_RENAMENAME }">
 											<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
 										</c:if>
-										<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+										<c:if test="${ !empty f.IMAGE_RENAMENAME }">
 											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage" onerror="this.src='${ f.SOCIAL_PROFILE_IMG }';"/>
 										</c:if>
 						    		</c:if>
@@ -315,10 +322,10 @@
 						    				<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';" class="followImage"/>
 						    		</c:if>
 						    		<c:if test="${ !fn:contains(f.USERS_PW, '$2a$') }">
-						    			<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+						    			<c:if test="${ empty f.IMAGE_RENAMENAME }">
 											<img src="${f.SOCIAL_PROFILE_IMG}" class="followImage"/>
 										</c:if>
-										<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+										<c:if test="${ !empty f.IMAGE_RENAMENAME }">
 											<img src="${contextPath}/resources/uploadFiles/${f.IMAGE_RENAMENAME}" class="followImage" onerror="this.src='${ f.SOCIAL_PROFILE_IMG }';"/>
 										</c:if>
 						    		</c:if>
@@ -353,7 +360,7 @@
 					<h1 class="modal-title fs-5" id="followingLabel">프로필 수정</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<c:if test="${ image.imageDivideNo != loginUser.usersNo }">
+				<c:if test="${ empty image }">
 					<form action="myPage_InsertProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
@@ -364,7 +371,7 @@
 						</c:if>
 						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
 						<br>
-						<button class="base" type="button">기본 이미지</button>
+						<button type="button" id="base">기본 이미지</button>
 						<br><br><hr><br>
 						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
@@ -375,7 +382,7 @@
 					</div>
 					</form>
 				</c:if>
-				<c:if test="${ image.imageDivideNo == loginUser.usersNo and image.imageType == '1' }">
+				<c:if test="${ !empty image and image.imageType == 1 }">
 					<form action="myPage_UpdateProfile.me" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
@@ -386,7 +393,8 @@
 						</c:if>
 						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
 						<br>
-						<button class="base" type="button">기본 이미지</button>
+						<button type="button" class="base" id="delete-${ image.imageRenameName }">기본 이미지</button>
+						<input type="hidden" name="deletePicture" value="none">
 						<br><br><hr><br>
 						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
@@ -452,6 +460,8 @@
 		    }
 		});
 		
+		const socialUser = '${socialUser}';
+		
 		// 기본이미지
 		function profileImg() {
 			const file = fileInput.files[0];
@@ -465,69 +475,27 @@
 
 			    reader.readAsDataURL(file);
 			  } else {
-				  $.ajax({
-					type : 'POST',
-					url : '${contextPath}/myPage_DeleteImage.me',
-					data : {usersNo : ${loginUser.usersNo}},
-					success : data => {
-						console.log(data);
-						if(data == 'yes'){
-							profile.src = "https://botsitivity.org/static/media/noprofile.c3f94521.png";
-						} else {
-							console.log('nop');
-						}
-					},
-					error : data => {
-						console.log("실패");
-					}
-				});
-			    
+				  if (socialUser) {
+				      profile.src = socialUser.socialProfileImg;
+				    } else {
+				      profile.src = "https://botsitivity.org/static/media/noprofile.c3f94521.png";
+				    }
 			  }
 		}
 		
-		const baseBtn = document.getElementsByClassName('base')[1];
-		const kakaoBtn = document.getElementsByClassName('base')[0];
+		// deletePicture name에 삭제할 이미지 넣기
+		const deleteBtn = document.querySelector('.base');
 		
-		if(baseBtn){
-			baseBtn.addEventListener('click', () => {
-				fileInput.value = null;
+		if(deleteBtn != null){
+			deleteBtn.addEventListener('click', function() {
 				profileImg();
-			});
-		}
-		
-		if(kakaoBtn){
-			kakaoBtn.addEventListener('click', () => {
-				fileInput.value = null;
-				
-				const file = fileInput.files[0];
-	
-				  if (file) {
-				    const reader = new FileReader();
-	
-				    reader.onload = function(e) {
-				      profile.src = e.target.result;
-				    };
-	
-				    reader.readAsDataURL(file);
-				  } else {
-					  $.ajax({
-						type : 'POST',
-						url : '${contextPath}/myPage_DeleteImage.me',
-						data : {usersNo : ${loginUser.usersNo}},
-						success : data => {
-							console.log(data);
-							if(data == 'yes'){
-								profile.src = "${ socialUser.socialProfileImg }";
-							} else {
-								console.log('nop');
-							}
-						},
-						error : data => {
-							console.log("실패");
-						}
-					});
-				    
-				  }
+				const nextHidden = this.nextElementSibling;
+				console.log(nextHidden.value);
+				if(nextHidden.value == 'none'){
+					nextHidden.value = this.id.split('-')[1];
+				} else {
+					nextHidden.value = 'none';
+				}
 			});
 		}
 		
@@ -543,13 +511,7 @@
 			});
 		}
 		
-// 		const unFollowBtn = document.getElementsByClassName('modalFollow')[0]; // 팔로잉 모달의 언팔
-// 		const unFollowerBtn = document.getElementsByClassName('modalFollow')[1]; // 팔로우 모달의 언팔
-// 		const unfollowDiv = document.getElementsByClassName('unfollowDiv');
-// 		const followBtn = document.getElementById('modalFollower');
 		const usersNo = ${loginUser.usersNo};
-// 		const followingsNo = document.getElementsByClassName('followingsNo'); // 내가 팔로잉한 사람의 No
-// 		const followersNo = document.getElementsByClassName('followersNo'); // 나를 팔로우한 사람의 No
 		
 		// 팔로잉 모달
 		// 언팔

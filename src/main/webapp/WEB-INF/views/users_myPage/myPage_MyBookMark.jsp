@@ -81,9 +81,10 @@ th:first-child, td:first-child {
 #trash{
 	font-size: 30px;
 }
+#trash:hover{cursor: pointer;}
 #delete{ 
 	font-size: 18px;
-	margin-left: 791px;
+	margin-left: 785px;
 }
 #tbody tr {height: 150px;}
 #tbody tr img {width: 50%;}
@@ -131,7 +132,7 @@ th:first-child, td:first-child {
 						<tbody id="tbody">
 							<c:forEach items="${ list }" var="l">
 								<c:if test="${ l.NUMBER_TYPE == 1 }">
-									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-division-no="${l.DIVISION_NO}">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
@@ -140,7 +141,7 @@ th:first-child, td:first-child {
 									</tr>
 								</c:if>
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
-									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-division-no="${l.DIVISION_NO}">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.MENU_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>식단</td>
 										<td>${ l.MENU_NAME }</td>
@@ -212,6 +213,20 @@ th:first-child, td:first-child {
 		   location.href="${contextPath}/myPage_MyBookMark.me?searchTitle=" + searchTitle;
 	   }
 	   
+	   
+	   //검색 img 클릭했을 때
+	   const searchInput = document.getElementById('search');
+	   document.getElementById('searchIcon').addEventListener('click', function() {
+	      search();
+	   })
+	   
+	   //검색어 입력 엔터 기능 
+	   searchInput.addEventListener('keyup', function(event) {
+	     if (event.key === 'Enter') {
+	       search();
+	     }
+	   });
+	   
 		//전체 체크박스
 		let allCheck = document.getElementsByClassName('delete');
 		//체크 된 체크박스 
@@ -243,50 +258,37 @@ th:first-child, td:first-child {
 		
 		trash.addEventListener('click', () => {
 			let checked = document.querySelectorAll('input.delete:checked');
-			const selectedDivisionNos = [];
+			const selectedBookmarkNos = [];
+			let bookmarkNo = 0;
 			checked.forEach((checkbox) => {
-				const divisionNo = checkbox.closest('tr').getAttribute('data-division-no');
-				selectedDivisionNos.push(divisionNo);
-				swal({
-				    text: '정말 삭제하시겠습니까?',
-				    icon: 'warning',
-				    buttons: ["취소", "삭제하기"]
-				}).then((YES) => {
-				    if (YES) {
-				      	console.log('ㅎㅇㄴ');
-				      	$.ajax({
-							url : '${contextPath}/myPage_deleteBookLike.me',
-							data : {divisionNo : selectedDivisionNos},
-							success : data => {
-								console.log(data);
-								if(data == 'yes'){
-									location.reload();
-								} else {
-									swal('', '삭제를 실패하였습니다.', 'error');
-								}
-							},
-							error : data => {
-								console.log(data);
-							}
-						});
-				    }
-				});
+				bookmarkNo = checkbox.closest('tr').getAttribute('data-bookMark-no');
+				selectedBookmarkNos.push(bookmarkNo);
  			});
+			swal({
+			    text: '정말 삭제하시겠습니까?',
+			    icon: 'warning',
+			    buttons: ["취소", "삭제하기"]
+			}).then((YES) => {
+			    if (YES) {
+			      	console.log('ㅎㅇㄴ');
+			      	$.ajax({
+						url : '${contextPath}/myPage_deleteBookMark.me',
+						data : {bookmarkNo : JSON.stringify(selectedBookmarkNos)},
+						success : data => {
+							console.log(data);
+							if(data == 'yes'){
+								location.reload();
+							} else {
+								swal('', '삭제를 실패하였습니다.', 'error');
+							}
+						},
+						error : data => {
+							console.log(data);
+						}
+					});
+			    }
+			});
 		});
-	   
-	   //검색 img 클릭했을 때
-	   const searchInput = document.getElementById('search');
-	   document.getElementById('searchIcon').addEventListener('click', function() {
-	      search();
-	   })
-	   
-	   //검색어 입력 엔터 기능 
-	   searchInput.addEventListener('keyup', function(event) {
-	     if (event.key === 'Enter') {
-	       search();
-	     }
-	   });
-	   
 		
 		// 옵션 선택
 		const selectElement = document.querySelector("select");

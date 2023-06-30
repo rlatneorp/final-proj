@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지 - 좋아요</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 
 .search {
@@ -80,12 +81,13 @@ th:first-child, td:first-child {
 #trash{
 	font-size: 30px;
 }
- #delete{ 
- 	font-size: 18px;
- 	margin-left: 758px;
- }
- #tbody tr {height: 150px;}
- #tbody tr img {width: 50%;}
+#trash:hover{cursor: pointer;}
+#delete{ 
+	font-size: 18px;
+	margin-left: 808px;
+}
+#tbody tr {height: 150px;}
+#tbody tr img {width: 50%;}
 </style>
 </head>
 <body>
@@ -123,13 +125,13 @@ th:first-child, td:first-child {
 								<th>제목</th>
 								<th>작성자</th>
 								<th>가격</th>
-								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
+								<th><input type="checkbox" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
 							<c:forEach items="${ list }" var="l">
 								<c:if test="${ l.NUMBER_TYPE == 1 }">
-									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-like-no="${ l.LIKE_NO }">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
@@ -140,7 +142,7 @@ th:first-child, td:first-child {
 								</c:if>
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
 									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 2 }">
-										<tr>
+										<tr data-like-no="${ l.LIKE_NO }">
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
 											<td>식품 - 밀키트</td>
 											<td>${ l.FOOD_NAME }</td>
@@ -150,7 +152,7 @@ th:first-child, td:first-child {
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 1 }">
-										<tr>
+										<tr data-like-no="${ l.LIKE_NO }">
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
 											<td>식품 - 식재료</td>
 											<td>${ l.FOOD_NAME }</td>
@@ -160,7 +162,7 @@ th:first-child, td:first-child {
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 2 }">
-										<tr>
+										<tr data-like-no="${ l.LIKE_NO }">
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
 											<td>식단</td>
 											<td>${ l.MENU_NAME }</td>
@@ -170,7 +172,7 @@ th:first-child, td:first-child {
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 3 }">
-										<tr>
+										<tr data-like-no="${ l.LIKE_NO }">
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.FOOD_IMAGE}" style="width: 100%; height: 100%"/></td>
 											<td>식재료</td>
 											<td>${ l.INGREDIENT_NAME }</td>
@@ -180,7 +182,7 @@ th:first-child, td:first-child {
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 4 }">
-										<tr>
+										<tr data-like-no="${ l.LIKE_NO }">
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
 											<td>상품</td>
 											<td>${ l.TOOL_NAME }</td>
@@ -267,15 +269,68 @@ th:first-child, td:first-child {
 	     }
 	   });
 	   
-	 //전체 선택 체크 
+		//전체 체크박스
+		let allCheck = document.getElementsByClassName('delete');
+		//체크 된 체크박스 
+		let checked = document.querySelectorAll('input.delete:checked');
+		//select all 체크박스 
+		let selectAll = document.getElementById('selectAllCheckBox');
+		
+		//전체 선택 해제 및 적용
+		changeCheckBox = (checkbox) => {
+			if(allCheck.length === checked.length) {
+				selectAll.checked = true;
+			} else if(selectAll.checked) {
+				selectAll.checked = false;
+			}
+		}
+		
+		// 전체 선택 클릭시 전체 선택
 		const selAllChec = document.getElementById('selectAllCheckBox');
+		
 		selAllChec.addEventListener('change', function() { //속성이 변할 때마다 이벤트 발생 
 			const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 			checkboxes.forEach(function(checkbox) { //모든 checkbox를 순회 
 			      checkbox.checked = selAllChec.checked; //selAllChec의 체크 속성을 대입 (항상 같이 움직이게)
-			    });
-			
-		})
+			});
+		});
+		
+		// 쓰레기통 클릭했을 때 해당 정보 지우기 - ajax
+		const trash = document.getElementById('trash');
+		
+		trash.addEventListener('click', () => {
+			let checked = document.querySelectorAll('input.delete:checked');
+			const selectedLikeNos = [];
+			let likeNo = 0;
+			checked.forEach((checkbox) => {
+				likeNo = checkbox.closest('tr').getAttribute('data-like-no');
+				selectedLikeNos.push(likeNo);
+			});
+			swal({
+			    text: '정말 삭제하시겠습니까?',
+			    icon: 'warning',
+			    buttons: ["취소", "삭제하기"]
+			}).then((YES) => {
+			    if (YES) {
+			      	console.log('ㅎㅇㄴ');
+			      	$.ajax({
+						url : '${contextPath}/myPage_deleteLike.me',
+						data : {likeNo : JSON.stringify(selectedLikeNos)},
+						success : data => {
+							console.log(data);
+							if(data == 'yes'){
+								location.reload();
+							} else {
+								swal('', '삭제를 실패하였습니다.', 'error');
+							}
+						},
+						error : data => {
+							console.log(data);
+						}
+					});
+			    }
+			});
+		});
 		
 		// 옵션 선택
 		const selectElement = document.querySelector("select");

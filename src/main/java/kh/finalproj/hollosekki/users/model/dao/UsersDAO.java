@@ -13,6 +13,8 @@ import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
@@ -146,8 +148,31 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.myProductLikeList", map, rowBounds);
 	}
 
-	public int deleteBookMark(SqlSessionTemplate sqlSession, int divisionNo) {
-		return sqlSession.delete("usersMapper.deleteBookMark", divisionNo);
+	public int deleteBookMark(SqlSessionTemplate sqlSession, int bookmarkNo) {
+		return sqlSession.delete("usersMapper.deleteBookMark", bookmarkNo);
+	}
+
+	public int deleteLike(SqlSessionTemplate sqlSession, int likeNo) {
+		return sqlSession.delete("usersMapper.deleteLike", likeNo);
+	}
+
+	public int updateAddress(SqlSessionTemplate sqlSession, ShippingAddress sa) {
+		return sqlSession.update("usersMapper.updateAddress", sa);
+	}
+
+	public ArrayList<Orders> selectOrderList(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.selectOrderList", usersNo, rowBounds);
+	}
+
+	public int orderListCount(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("usersMapper.orderListCount", usersNo);
+	}
+
+	public Orders selectDetailOrder(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.selectOne("usersMapper.selectDetailOrder", orderNo);
 	}
 
 

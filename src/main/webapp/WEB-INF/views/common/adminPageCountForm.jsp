@@ -17,6 +17,8 @@
 				<input type="hidden" name="page" value="${ab.page}">
 				<input type="hidden" name="searchType" value="${ab.searchType}">
 				<input type="hidden" name="searchText" value="${ab.searchText}">
+				<input type="hidden" name="type" value="${ab.type}">
+				<input type="hidden" name="kind" value="${ab.kind}">
 				<input type="hidden" name="pageCountStart" value="Y">
 				<select name="pageCount" style="font-size: 14px; height:25px">
 					<option value="10" <c:if test="${pageCount eq 10}">selected</c:if>>10개씩 보기</option>

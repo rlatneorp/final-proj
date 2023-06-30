@@ -28,8 +28,6 @@ public class Menu extends Product{
 		this.foodProductNo = foodProductNo;
 		this.menuTarget = menuTarget;
 		this.nutrient = nutrient;
-		this.menuKind= menuKind;
-		this.menuNo = menuNo;
 		this.productPrice = productPrice;
 		this.productSale = productSale;
 	}
@@ -97,11 +95,11 @@ public class Menu extends Product{
 	public void setNutrient(String nutrient) {
 		this.nutrient = nutrient;
 	}
-	
+
 	public int getProductPrice() {
 		return productPrice;
 	}
-	
+
 	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
 	}
@@ -120,4 +118,5 @@ public class Menu extends Product{
 				+ ", menuContent=" + menuContent + ", foodProductNo=" + foodProductNo + ", menuTarget=" + menuTarget
 				+ ", nutrient=" + nutrient + ", productPrice=" + productPrice + ", productSale=" + productSale + "]";
 	}
+
 }

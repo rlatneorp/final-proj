@@ -133,8 +133,8 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public ArrayList<Users> healtherList() {
-		return eDAO.healtherList(sqlSession);
+	public ArrayList<Users> AllUsersList() {
+		return eDAO.AllUsersList(sqlSession);
 	}
 
 	@Override
@@ -188,13 +188,23 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public ArrayList<Image> menuReviewImageList() {
-		return eDAO.menuReviewImageList(sqlSession);
+	public ArrayList<Review> replyList() {
+		return eDAO.replyList(sqlSession);
 	}
 
 	@Override
-	public ArrayList<Review> replyList() {
-		return eDAO.replyList(sqlSession);
+	public ArrayList<Board> allBoardList() {
+		return eDAO.allBoardList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Review> userReplyList(String nickName) {
+		return eDAO.userReplyList(sqlSession, nickName);
+	}
+
+	@Override
+	public int getListCount(int i) {
+		return eDAO.getListCount(sqlSession, i);
 	}
 
 	

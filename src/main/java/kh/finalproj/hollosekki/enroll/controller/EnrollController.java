@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import kh.finalproj.hollosekki.board.model.vo.Board;
+import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.exception.EnrollException;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
@@ -352,6 +354,15 @@ public class EnrollController {
 			Users user = eService.socialLoginUpdate(id);
 			model.addAttribute("user", user);
 			
+			// 페이징
+			if(page == null) {
+				page = 1;
+			}
+			int listCount = eService.getListCount(0);
+			
+			PageInfo pi = Pagination.getPageInfo(page, listCount, 10);
+			
+			
 			// 팔로우 정보
 			int follow = eService.follow(usersNo);
 			int following = eService.following(usersNo);
@@ -383,53 +394,57 @@ public class EnrollController {
 			model.addAttribute("page", page);
 			
 			// 작성 글 목록
-			ArrayList<Board> board = eService.boardList(usersNo);
+			ArrayList<Board> board = eService.boardList(usersNo); // 작성 글
 			model.addAttribute("boList", board);
-//			int replyCount = eService.replyCount(); // 댓글카운트.. -> 해당 글에대한 댓글만 카운트 해야함!
-			ArrayList<Review> replyList = eService.replyList();
-			System.out.println("리뷰리스트 : "+replyList);
-			model.addAttribute("replyList", replyList);
+			ArrayList<Board> allBoardList = eService.allBoardList(); // 전체 글
+			model.addAttribute("allBoardList", allBoardList);
 			
 			// 작성 댓글 목록
+			ArrayList<Review> replyList = eService.replyList(); // 전체댓글
+			model.addAttribute("replyList", replyList);
+			String nickName = user.getNickName();
+			ArrayList<Review> userReplyList = eService.userReplyList(nickName);
+			model.addAttribute("userRList", userReplyList);
 			
 			// 레시피 리뷰 목록
 			String usersId = user.getUsersId();
-			ArrayList<Review> recipeReviewList = eService.reviewList(usersId);
+			ArrayList<Review> recipeReviewList = eService.reviewList(usersId); // 작성 레시피 리뷰
 			model.addAttribute("rvList", recipeReviewList);
 			
 			// 식단 리뷰 목록
-			ArrayList<Review> menuReviewList = eService.menuReviewList(usersId);
+			ArrayList<Review> menuReviewList = eService.menuReviewList(usersId); // 작성 식단리뷰
 			model.addAttribute("mrList", menuReviewList);
-			ArrayList<Image> menuReviewImageList = eService.menuReviewImageList();
-			model.addAttribute("menuReviewImageList", menuReviewImageList);
+			
+			// 모든 식단 이미지
+			ArrayList<Image> menuImageList = eService.menuImageList();
+			model.addAttribute("menuImageList", menuImageList);
 			
 			// 북마크 목록
-			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo);
+			ArrayList<BookMark> bookMarkList = eService.bookMarkList(usersNo); // 사용자 북마크 List
 			model.addAttribute("bList", bookMarkList);
-			int recipeBookMarkList = eService.recipeBookMarkList(usersNo);
+			int recipeBookMarkList = eService.recipeBookMarkList(usersNo); // 사용자 레시피 북마크 List
 			model.addAttribute("rCount" ,recipeBookMarkList);
-			int menuBookMarkList = eService.menuBookMarkList(usersNo);
+			int menuBookMarkList = eService.menuBookMarkList(usersNo); // 사용자 식단 북마크 List
 			model.addAttribute("mCount", menuBookMarkList);
 			
-			
-//			// 북마크 - 레시피목록
+			// 북마크 - 레시피목록
 			ArrayList<Recipe> allRecipeList = eService.allRecipeList();
 			model.addAttribute("aList", allRecipeList);
 			
 			ArrayList<Image> allRecipeImageList = eService.allRecipeImageList();
 			model.addAttribute("recipeImageList", allRecipeImageList);
 			
-//			// 북마크 - 식단목록...모든 식단목록 가져와서....
+			// 북마크 - 식단목록...모든 식단목록 가져와서....
 			ArrayList<Menu> allMenuList = eService.menuList();
 			model.addAttribute("mList", allMenuList);
 			
-			ArrayList<Image> menuImageList = eService.menuImageList();
-			model.addAttribute("menuImageList", menuImageList);
 			
 			ArrayList<Product> productList = eService.productList(); // 영양사정보 가져오기
 			model.addAttribute("pList", productList);
-			ArrayList<Users> healtherList = eService.healtherList();
-			model.addAttribute("hList", healtherList);
+			ArrayList<Users> AllUsersList = eService.AllUsersList(); // 모든유저 List
+			model.addAttribute("hList", AllUsersList);
+			
+			
 			
 			
 			return "othersProfile";

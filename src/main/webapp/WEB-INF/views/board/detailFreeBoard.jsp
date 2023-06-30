@@ -109,6 +109,10 @@
 	vertical-align: top;
 	 
 }
+#loginPlz{
+	display: inline-block;
+	vertical-align: baseline;
+}
 
 #reBtn{
 	width: 47px; height: 28px;
@@ -130,11 +134,30 @@
 	background-color: #B0DAFF;
 	padding: 2px; 
 }
+#xBtn:active{
+	width: 47px; height: 28px;
+	border: 2px solid black;
+	border-radius: 20px;
+	font-size: 14px;
+	font-weight: 500;
+	background-color: white;
+	padding: 2px; 
+}
+
+.reBox{
+	width:500px; height: 25px;
+	text-align: center;
+	border: 2px solid black;
+	box-shadow: 0px 1px black;
+	border-radius: 20px;
+	background-color: lighgray;
+}
+
 
 </style>
 
 </head>
-<body>
+<body id="detailFreeBoardBody">
 	
 	<%@include file="../common/top.jsp"%>
 	<br><br><br><br><br><br><br><br><br><br><br>
@@ -153,7 +176,11 @@
 		   <label>제목</label>
 		</div>
 		<div class="row text-center">
-			<p class="d-inline text-start col-5">작성자 : ${blist.nickName }</p>
+			<c:forEach items="${ aList }" var="a">
+				<c:if test="${ a.usersNo eq blist.usersNo }">
+					<p style="cursor: pointer;" class="d-inline text-start col-5" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page='">작성자 : ${blist.nickName }</p>
+				</c:if>
+			</c:forEach>
 			<p class="d-inline col-3">조회수 : ${blist.boardCount } </p>
 			<p class="d-inline col-4">작성날짜 : <fmt:formatDate value="${blist.boardDate }" pattern="yyyy년 MM월 dd일 HH시 mm분"/></p>
 		</div>
@@ -177,24 +204,41 @@
 							<th class="col-1">삭제</th>
 						</tr>
 					</thead>
-					<tbody> 
+					<tbody>
 					<c:forEach items="${list }" var="r" varStatus="var"> 
-						<tr>	
+						<tr>
 							<td>${r.reviewContent}</td>
-							<td>${r.reviewWriter }</td>
+							<c:forEach items="${ aList }" var="a">
+								<c:if test="${ r.reviewWriter eq a.nickName }">
+									<td style="cursor: pointer;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page=' ">${r.reviewWriter }</td>
+								</c:if>
+							</c:forEach>
+							
 							<td><fmt:formatDate value="${r.reviewDate }" pattern="yyyy-MM-dd HH:mm"/></td>
 							<td>
-								<button type="button" class="reBtn" id="reBtn">수정</button>
+								<c:if test="${loginUser.nickName eq r.reviewWriter }">
+									<button type="button" class="reBtn" id="reBtn">수정</button>
+								</c:if>
+								<c:if test="${loginUser.nickName ne r.reviewWriter }">
+									<button type="button" class="reBtn" id="reBtn" disabled>수정</button>
+								</c:if>
 							</td>
 							<td>
-								<button type="button" class="xBtn" id="xBtn">삭제</button>
-								<input type="hidden" class="hdnReplyNo" value="${r.reviewNo}">
+								<c:if test="${loginUser.nickName eq r.reviewWriter }">
+									<button type="button" class="xBtn" id="xBtn">삭제</button>
+									<input type="hidden" class="hdnReplyNo" value="${r.reviewNo}">
+								</c:if>
+								<c:if test="${loginUser.nickName ne r.reviewWriter }">
+									<button type="button" class="xBtn" id="xBtn" disabled>삭제</button>
+								</c:if>
 							</td>
 						</tr>
 					</c:forEach>	
 					</tbody>
 				</table>
 			</div><br>
+			<input id="hiddenNickName" type="hidden" value="${ loginUser.nickName }">
+			<c:if test="${!empty loginUser }">
 			<div class="intro form-floating">
 				<input type="text" name="commentWrite" id="commentWrite" class="form-control">
 				<label for="commentWrite">댓글 작성</label>
@@ -202,8 +246,15 @@
 			<div class="position-relative">
 				<a id="replySubmit" class="btn-3d blue position-absolute end-0">작성하기</a>
 			</div>
+			</c:if>
+			<c:if test="${empty loginUser }">
+			<div class="text-center">
+				<label>로그인을 하셔야 댓글을 달 수 있습니다</label>
+				<a id="loginPlz" class="btn-3d blue" onclick="location.href='${contextPath}/login.en'">로그인 하기</a>
+			</div>
+			</c:if>
 		</div>
-	<!-- 작성 버튼 -->
+	
 	<br><br><br><br><br><br><br><br><br><br><br><br>
 	
 	<div class="modal" id="deleteModal" tabindex="-1">
@@ -234,17 +285,17 @@ window.onload=()=>{
 	const xBtn = document.querySelectorAll('.xBtn');
 	const deleteYes = document.getElementsByClassName("deleteYes");
 	const replySubmit = document.getElementById('replySubmit');
-	
-	
+	const reBtns = document.querySelectorAll('.reBtn');
 	
 	xDel();
+	reReply();
 	
 	function xDel(){
 		$('.xBtn').each(function(index, item){
 			$(this).click(function(e){
 				e.preventDefault();
 				$('#deleteModal').modal("show");
-				 
+				
 	 			const hdnBoardNo = document.querySelector('#hdnBoardNo');
 	 			const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
 	 			for(const yes of deleteYes){
@@ -269,6 +320,7 @@ window.onload=()=>{
 		 							const trs = tbody.querySelectorAll('tr');
 		 							trs[index].innerHTML = '';
 		 							$('#deleteModal').modal("hide");
+		 							
 								}else{
 									alert("오류로 인해 삭제가 되지 않았습니다.");
 									location.reload();
@@ -282,10 +334,45 @@ window.onload=()=>{
 		})
 	}
 	
+	function reReply(){
+		let beforeData = null;
+		const tbody = document.querySelector('tbody');
+		const trs = tbody.querySelectorAll('tr');
+		for(let i = 0; i < reBtn.length; i++){
+			reBtn[i].addEventListener('click', function(){
+				const tds = trs[i].querySelectorAll('td');
+				beforeData = tds[0].innerText;
+				tds[0].innerHTML = '<input type="text" value="' + beforeData + '" class="reBox">'; 
+				
+				if(tds[i].children != undefined && tds[i].children.value != undefined){
+					trs[i].innerHTML = '<td>' + tds[0].innerHTML + '</td>';
+				}
+			
+			
+			})	
+		}
+		document.querySelector('#detailFreeBoardBody').addEventListener('click', (event)=>{
+			for(let j = 0; j < reBtn.length; j++){
+				const tds = trs[j].querySelectorAll('td');
+				if(tds[0].children[0] != undefined && tds[0].children[0].value != undefined){
+					if(event.target.value == undefined){
+						tds[0].innerHTML = '<td>' + beforeData + '</td>';
+					}
+				}
+				
+				
+			}
+		})
+	}
+	
+		
+	
+	
 	
 	replySubmit.addEventListener('click', ()=>{
 		const hdnBoardNo = document.querySelector('#hdnBoardNo');
 		const reviewCon = document.getElementById('commentWrite');
+		console.log(hiddenNickName);
 		$.ajax({
 			url: 'insertReply.bo',
 			dataType: 'json',
@@ -297,6 +384,7 @@ window.onload=()=>{
 			success: data =>{
 				console.log(data);
 				const tbody = document.querySelector('tbody');
+				const hiddenNickName = document.getElementById('hiddenNickName').value;
 				tbody.innerHTML = '';
 				
 				for(const r of data){
@@ -313,17 +401,25 @@ window.onload=()=>{
 					dateTd.innerText = r.reviewDate;
 					
 					const modifyBtn = document.createElement('td');
-					modifyBtn.innerHTML = '<button type="button" id="reBtn">수정</button>';
-					
+					if(hiddenNickName == r.reivewWriter){
+						modifyBtn.innerHTML = '<button type="button" class="reBtn" id="reBtn">수정</button>';
+					}else{
+						modifyBtn.innerHTML = '<button type="button" class="reBtn" id="reBtn" disabled>수정</button>';
+					}
+										 
 					const deleteBtn = document.createElement('td');
-					deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>	<input type="hidden" id="hdnReplyNo" value="${r.reviewNo}">';
+					if(hiddenNickName == r.reivewWriter){
+						deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>	<input type="hidden" id="hdnReplyNo" value="${r.reviewNo}">';
+					}else{
+						deleteBtn.innerHTML = '<button type="button" class="" id="xBtn" disabled>삭제</button><input type="hidden" id="hdnReplyNo" value="${r.reviewNo}">';	
+					}
 					
 					tr.append(contentTd);
 					tr.append(writerTd);
 					tr.append(dateTd);
 					tr.append(modifyBtn);
 					tr.append(deleteBtn);
-					
+			
 					deleteBtn.querySelector('#xBtn').className = 'xBtn';
 					tbody.append(tr);
 					xDel();

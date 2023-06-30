@@ -60,6 +60,11 @@
 	.recipe-content:hover, .bookmark-content:hover, .recipe-review-content:hover{
 		box-shadow: 5px 5px 10px rgba(0,0,0,0.10), 0 5px 5px rgba(0,0,0,0.22); transform: translateY(-2px); transition: all 0.2s ease 0s;
 		}
+		
+	.more, .more2, .more3, .more4, .more5{width: 100px; text-align: center; cursor: pointer; margin: 0 auto; margin-top: 20px; margin-bottom: 20px;}
+	.more:hover, .more2:hover, .more3:hover, .more4:hover, .more5:hover{font-weight: bold;}
+		
+		
 	/* 1. 작성한 레시피 */
 	.recipe-content{
 		width: 200px;
@@ -192,6 +197,37 @@
 		background: white;
 		margin-top: 10px;
 	}
+	
+	
+	/* 	페이지 */
+	.page_wrap {
+		text-align:center;
+		font-size:0;
+		}
+	.page_nation {display:inline-block;}
+	.page_nation .none {display:none;}
+	.page_nation a {
+		display:block;
+		margin:0 3px;
+		float:left;
+		width:28px;
+		height:28px;
+		line-height:28px;
+		text-align:center;
+		background-color:#fff;
+		font-size:13px;
+		color:#999999;
+		text-decoration:none;
+		}
+	.page_nation .arrow {margin-top: 8px;}
+	.page_nation .prev {background:white;}
+	.page_nation .next {background:white;}
+	.page_nation a.active {
+		background-color:#B0DAFF;
+		color:white;
+		border:1px solid #B0DAFF;
+		border-radius: 100%;
+		}
 </style>
 </head>
 
@@ -211,12 +247,24 @@
 						</c:if>
 					</c:if>
 					<c:if test="${ social ne null }"> <!-- 소셜유저일때 -->
-						<img class="profile-img" src="${ social.socialProfileImg }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';">
+						<c:if test="${ userImage.imageDivideNo != user.usersNo }">
+							<img class="profile-img" src="${ social.socialProfileImg }" />
+						</c:if>
+						<c:if test="${ userImage.imageDivideNo == user.usersNo and userImage.imageType == '1' }">
+							<img class="profile-img" src="${contextPath}/resources/uploadFiles/${ userImage.imageRenameName }" onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"/>
+						</c:if>	
 					</c:if>
 				</div>
 			</div>
 			<div class="users-nickname">${ user.nickName }</div>
-			<div class="users-id">(${ user.usersId })</div><br>
+			
+			<c:if test="${ social eq null }">
+				<div class="users-id">(${ user.usersId })</div><br>
+			</c:if>
+			<c:if test="${ social ne null }">
+				<div class="users-id">(소셜로그인 유저입니다)</div><br>
+			</c:if>
+			
 			<c:if test="${ user.usersSelfIntro eq null }">
 				<div class="users-intro" style="color:gray;">자기소개글이 없습니다.</div><br>
 			</c:if>
@@ -267,7 +315,7 @@
 						<c:forEach items="${ rList }" var="r">
 							<c:forEach items="${ recipeImageList}" var="ri">
 								<c:if test="${ r.foodNo eq ri.imageDivideNo }">
-									<div class="recipe-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ r.foodNo }' + '&page=' + '${ page }'">
+									<div class="recipe-content div-box" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ r.foodNo }' + '&page=' + '${ page }'">
 										<c:if test="${ ri.imageDivideNo == r.foodNo }">
 											<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${ri.imageRenameName}"></div>
 										</c:if>	
@@ -280,6 +328,7 @@
 								</c:if>
 							</c:forEach>
 						</c:forEach>
+						<div class="more"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 					</c:if>
 				</div>
 				
@@ -297,7 +346,7 @@
 								<c:if test="${ !empty boList }">
 									<c:forEach items="${ boList }" var="bo">
 										<c:if test="${ user.usersNo == bo.usersNo }">
-											<tr class="tbody" onclick="location.href='${contextPath}/selectFreeBoard.bo?bId=' + '${ bo.boardNo }' + '&writer=' + '${ user.nickName }' + '&page='">
+											<tr class="tbody" onclick="location.href='${contextPath}/detailFreeBoard.bo?bId=' + '${ bo.boardNo }' + '&writer=' + '${ user.nickName }' + '&page='">
 												<td class="board-info">
 													${ bo.boardTitle }
 													<p class="date-count"><fmt:formatDate value="${ bo.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ bo.boardCount }</p>
@@ -322,81 +371,93 @@
 				</div>
 				
 				<!-- 메뉴3. 작성댓글 목록 -->
-				<div class="write-reply-contents flex">
-					<div class="write-replt-content">
-						<table>
-							<thead>
-								<tr class="thead">
-									<th class="board-info">작성 댓글</th>
-									<th class="board-reply">댓글</th>
-								</tr>
-							</thead>
-							<tbody>
-							
-								<c:if test="${ !empty replyList }">
-									<c:forEach items="${replyList}" var="rp"> <!-- 모든 댓글 리스트 -->
-										<c:forEach items="${ boList }" var="bo"> <!-- 모든 게시글리스트 -->
-											<c:if test="${rp.productNo eq bo.boardNo}"> <!-- 해당게시글의 댓글가져옴.. -->
-												<c:if test="${rp.reviewWriter eq user.usersId }"> <!-- 해당 유저가 작성한 댓글만 가져와야하니까.... -->
-													<tr class="tbody">
-														<td class="board-info">
-															<p class="date-count">${ bo.boardTitle }</p>
-															<c:forEach items="${ hList }" var="h">
-																<c:if test="${ bo.usersNo eq h.usersNo }">
-																	<p class="date-count">${ h.nickName } ∣ <fmt:formatDate value="${ bo.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ bo.boardCount }</p>
+				<div class="write-reply-contents">
+					<div class="flex">
+						<div class="write-replt-content">
+							<table>
+								<thead>
+									<tr class="thead">
+										<th class="board-info">작성 댓글</th>
+										<th class="board-reply">댓글</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:if test="${ !empty userRList }">
+										<c:forEach items="${replyList}" var="rp"> <!-- 모든 댓글 리스트 -->
+											<c:forEach items="${ allBoardList }" var="ab"> <!-- 모든 게시글리스트 가져와야함..! -->
+												<c:if test="${rp.productNo eq ab.boardNo}"> <!-- 해당게시글의 댓글가져옴.. -->
+													<c:if test="${rp.reviewWriter eq user.nickName }"> <!-- 해당 유저가 작성한 댓글만 가져와야하니까.... -->
+														<tr class="tbody" onclick="location.href='${contextPath}/detailFreeBoard.bo?bId=' + '${ ab.boardNo }' + '&writer=' + '${ user.nickName }' + '&page='">
+															<td class="board-info">
+																<p class="date-count">글제목 : ${ ab.boardTitle }</p>
+																<c:forEach items="${ hList }" var="h">
+																	<c:if test="${ ab.usersNo eq h.usersNo }">
+																		<p class="date-count">${ h.nickName } ∣ <fmt:formatDate value="${ ab.boardDate }" pattern="yyyy-MM-dd"/> ∣ 조회 ${ ab.boardCount }</p>
+																	</c:if>
+																</c:forEach>
+																<div class="reply-content">
+																	<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div>
+																 	<div>${ rp.reviewContent }</div>
+																</div>
+															</td>
+															<c:set var="count" value="0" />
+															<c:forEach items="${replyList}" var="rp">
+																<c:if test="${rp.productNo eq ab.boardNo}">
+																	<c:set var="count" value="${count + 1}" />
 																</c:if>
 															</c:forEach>
-															<div class="reply-content">
-																<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div>
-															 	<div>${ rp.reviewContent }</div>
-															</div>
-														</td>
-													</tr>
+															<td class="board-reply"><div class="reply-count">${ count }</div></td>
+														</tr>
+													</c:if>
+													
 												</c:if>
-												
-											</c:if>
+											</c:forEach>
 										</c:forEach>
-									</c:forEach>
-								</c:if>
-								<tr class="tbody">
-									<td class="board-info">
-										<p class="date-count">더운날엔 역시 냉면을 먹어줘야하는거 아니겠습니까ㅎㅎㅎㅎㅎㅎㅎㅎㅎ</p>
-										<p class="date-count">글쓴사람닉넴 ∣ 2023-06-17 ∣ 조회 16</p>
-										<div class="reply-content">
-											<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div>
-										 	<div>말도안되는 소리 하지마세요....</div>
-										</div>
-									</td>
-									<td class="board-reply"><div class="reply-count">3</div></td>
-								</tr>
+									</c:if>
 								
-								
-								
-								<tr class="tbody">
-									<td class="board-info">
-										<p class="date-count">오늘 날씨 진짜 더움요</p>
-										<p class="date-count">글쓴사람닉넴 ∣ 2023-06-17 ∣ 조회 16</p>
-										<div class="reply-content">
-											<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div>
-										 	<div>댓글 엄청 길게 남겨도 여기에 잘 나옵니다.....엔터도 가능하게 만들어야하나요....??? 댓글을 구구절절 왕길게 써보세요 </div>
-										</div>
-									</td>
-									<td class="board-reply"><div class="reply-count">315</div></td>
-								</tr>
-								<tr class="tbody">
-									<td class="board-info">
-										<p class="date-count">아니..주말동안 서버 안되는거 에바 아닌가요?</p>
-										<p class="date-count">글쓴사람닉넴 ∣ 2023-06-17 ∣ 조회 16</p>
-										<div class="reply-content">
-											<div style="margin-right: 10px;"><i class="fa-solid fa-arrow-right-long"></i></div>
-										 	<div>어쩔수 없시 쉬어야 겠네요~~~ 그냥 맘편하세 쉬세요</div>
-										</div>
-									</td>
-									<td class="board-reply"><div class="reply-count">999</div></td>
-								</tr>
-							</tbody>
-						</table>
+								</tbody>
+							</table>
+							<c:if test="${ empty userRList }">
+								<div style="margin: 90px; text-align: center; color: gray;">작성한 댓글이 없습니다.</div>
+							</c:if>
+						</div>
 					</div>
+					
+					<!-- 페이징 -->
+					<div class="pageFreeBoard" > 
+						<nav aria-label="Page navigation example">
+							<ul class="pageFreeBoard pagination justify-content-center">
+							    <c:if test="${ pi.currentPage > 1 }">
+							    <li class="page-item">
+							    	<c:url var="goBack" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goBack }" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>	
+								</li>
+								</c:if>
+								<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+								   	<c:url var="goNum" value="${ loc }">
+										<c:param name="page" value="${ p }"></c:param>
+									</c:url>
+								  	<li class="page-item pageFreeBoard"><a class="page-link" href="${ goNum }">${ p }</a></li>
+								</c:forEach>
+								<c:if test="${ pi.currentPage < pi.maxPage }">
+								<li class="page-item">
+									<c:url var="goNext" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goNext }" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</li>
+								</c:if>
+							</ul>
+						</nav>	
+					</div>
+					
+					
 				</div>
 				
 				<!-- 메뉴4. 작성 후기 목록 -->
@@ -406,13 +467,12 @@
 					<c:if test="${ empty rvList }">
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
 					</c:if>
-						
 					<c:forEach items="${ rvList }" var="rv">
-						<div class="recipe-review-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
+						<div class="recipe-review-content div-box4" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
 							<c:forEach items="${ aList }" var="a">
-								<c:if test="${ rv.orderNo == a.foodNo }">
+								<c:if test="${ rv.productNo == a.foodNo }">
 									<c:forEach items="${ recipeImageList }" var="rImg">
-										<c:if test="${ rImg.imageDivideNo == rv.orderNo }">
+										<c:if test="${ rImg.imageDivideNo == rv.productNo }">
 											<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ rImg.imageRenameName }"></div>
 										</c:if>
 									</c:forEach>
@@ -452,22 +512,21 @@
 							</c:forEach>
 						</div>
 					</c:forEach>
+					<div class="more4"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 						
 					<br>
 					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
 					<br>	
 					
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
-					
 					<c:if test="${ empty mrList }">
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 식단 후기가 없습니다.</div>
 					</c:if>
-					
 					<c:forEach items="${ mrList }" var="mr">
-						<div class="recipe-review-content">
-							<c:forEach items="${ menuReviewImageList }" var="mrImg">
-								<c:if test="${ mrImg.imageDivideNo == mr.REVIEW_NO }">
-									<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ mrImg.imageRenameName }"></div>
+						<div class="recipe-review-content div-box5" style="display: none;" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ mr.PRODUCT_NO }' + 'page='">
+							<c:forEach items="${ menuImageList }" var="mImg">
+								<c:if test="${ mImg.imageDivideNo == mr.PRODUCT_NO }">
+									<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ mImg.imageRenameName }"></div>
 								</c:if>
 							</c:forEach>
 							<div class="recipe-review-content-div">
@@ -501,6 +560,7 @@
 							</div>
 						</div>
 					</c:forEach>
+					<div class="more5"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 					
 				</div>
 				
@@ -514,7 +574,7 @@
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
-									<div class="recipe-content" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ users.usersNo }' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
+									<div class="recipe-content div-box2" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ users.usersNo }' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
 										<c:forEach items="${ recipeImageList}" var="ri">
 											<c:if test="${ ri.imageDivideNo == a.foodNo }">
 												<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${ri.imageRenameName}"></div>
@@ -535,37 +595,38 @@
 							</c:forEach>
 						</c:forEach>
 					</div>
+					<div class="more2"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 					
 					<br>
 					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
 					<br>
 					
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 식단</div>
-					
 					<c:if test="${ mCount == 0 }">
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 식단이 없습니다.</div>
 					</c:if>
 					<div style="display: flex;">
+					
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
-								<c:if test="${ b.divisionNo == m.productNo }">
-									<div class="recipe-content">
+								<c:if test="${ b.divisionNo == m.foodProductNo }">
+									<div class="recipe-content div-box3" style="display: none;" onclick="location.href='${ contextPath }/menuDetail.mn?mNo=' + '${ m.foodProductNo }' + '&page=' + '${ page }'">
 										<c:forEach items="${ menuImageList}" var="mi">
-											<c:if test="${ mi.imageDivideNo == m.productNo }">
+											<c:if test="${ mi.imageDivideNo == m.foodProductNo }">
 												<div class="recipe-img-div"><img class="recipe-img" src="${contextPath}/resources/uploadFiles/${mi.imageRenameName}"></div>
 											</c:if>
 										</c:forEach>
 										<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
 										<div class="recipe-name">${ m.menuName }</div>
 										<div>
-											<c:if test="${ m.menuType == 1 }"><a>🏋다이어트</a></c:if>
+											<c:if test="${ m.menuType == 1 }"><a>🥗다이어트</a></c:if>
 											<c:if test="${ m.menuType == 2 }"><a>🤒몸보신</a></c:if>
 											<c:if test="${ m.menuType == 3 }"><a>💪든든밥상</a></c:if>
 											<c:if test="${ m.menuType == 4 }"><a>🥩고단백</a></c:if>
-											<c:if test="${ m.menuType == 5 }"><a>🥗채식</a></c:if>
+											<c:if test="${ m.menuType == 5 }"><a>🥬채식</a></c:if>
 										</div>
 										<c:forEach items="${ pList }" var="p">
-											<c:if test="${ p.productNo == m.productNo }">
+											<c:if test="${ p.productNo == m.foodProductNo }">
 												<c:forEach items="${ hList }" var="h">
 													<c:if test="${ h.usersNo == p.usersNo }">
 														<div style="margin: 10px;">${ h.usersName }</div>
@@ -577,7 +638,9 @@
 								</c:if>
 							</c:forEach>
 						</c:forEach>
+						
 					</div>
+					<div class="more3"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 				</div>
 			</div>
 		</div>
@@ -614,9 +677,13 @@
 										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'"><img class="profile-img" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" ></div>
 									</c:if>
 								</c:if>
-								
 								<c:if test="${ !fn:contains(ing.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 -->
-									<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ ing.SOCIAL_PROFILE_IMG }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
+									<c:if test="${ ing.IMAGE_DIVIDE_NO == null  }">
+										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ ing.SOCIAL_PROFILE_IMG }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
+									</c:if>
+									<c:if test="${ ing.IMAGE_DIVIDE_NO != null  }">
+										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ ing.IMAGE_RENAMENAME }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
+									</c:if>
 								</c:if>
 								
 								<div><label class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'">${ ing.NICKNAME }</label></div>
@@ -637,7 +704,7 @@
 							    </c:forEach>
 							    <c:if test="${not follow}">
 							    	<c:if test="${ ing.NICKNAME eq loginUser.nickName }">
-					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+					                	<div class="unfollowDiv"><button class="modalUsers">(나)</button></div>
 					                </c:if>
 					                <c:if test="${ ing.NICKNAME ne loginUser.nickName }">
 					                	 <div class="unfollowDiv" data-user-no="${ing.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
@@ -679,8 +746,13 @@
 									</c:if>
 								</c:if>
 								
-								<c:if test="${ !fn:contains(wo.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 -->
-									<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ wo.SOCIAL_PROFILE_IMG }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
+								<c:if test="${ !fn:contains(wo.USERS_PW, '$2a$')}"> <!-- 소셜 유저면 --> <!-- 프사 등록한거 있으면 등록한 프사 나오게 해야함, 없으면 소셜프사 나오게 해야함 -->
+									<c:if test="${ wo.IMAGE_DIVIDE_NO == null  }">
+										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ wo.SOCIAL_PROFILE_IMG }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
+									</c:if>
+									<c:if test="${ wo.IMAGE_DIVIDE_NO != null  }">
+										<div class="follwing-profile" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'"><img class="profile-img" src="${ contextPath }/resources/uploadFiles/${ wo.IMAGE_RENAMENAME }"  onerror="this.src='https://botsitivity.org/static/media/noprofile.c3f94521.png';"></div>
+									</c:if>
 								</c:if>
 								
 								<div><label class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'">${ wo.NICKNAME }</label></div>
@@ -702,7 +774,7 @@
 							    </c:forEach>
 							    <c:if test="${not following}">
 							    	<c:if test="${ wo.NICKNAME eq loginUser.nickName }">
-					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
+					                	<div class="unfollowDiv"><button class="modalUsers">(나)</button></div>
 					                </c:if>
 					                <c:if test="${ wo.NICKNAME ne loginUser.nickName }">
 					                	 <div class="unfollowDiv" data-user-no="${wo.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
@@ -785,7 +857,7 @@
 	})
 	
 	
-	const usersNo = '${loginUser.usersNo}'; // 얘 어케 수정함~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	const usersNo = '${loginUser.usersNo}'; 
 		
 		// 팔로잉 모달
 		// 언팔
@@ -810,7 +882,7 @@
 			});
 		}
 		
-		// 팔로
+		// 팔
 		function followUser(button) {
 			var userNo = button.parentNode.dataset.userNo;
 				console.log(userNo);
@@ -829,7 +901,85 @@
 			    }
 			});
 		}
+		// 1. 작성 레시피 더보기
+		$(function(){
+		    $(".div-box").slice(0, 8).show(); // 초기갯수
+// 		    console.log('div-box: ' + $(".div-box:hidden").length);
+		    if($(".div-box:hidden").length == 0){ 
+	        	$(".more").hide(); 
+	        }
+		    $(".more").click(function(e){ // 클릭시 more
+		        e.preventDefault();
+		        $(".div-box:hidden").slice(0, 8).show();
+		        if($(".div-box:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+		        	$(".more").hide(); // 컨텐츠 없을시 버튼숨기기
+		        }
+		    });
+		});
+		
+		// 4-1. 레시피 후기 더보기
+		$(function(){
+		    $(".div-box4").slice(0, 5).show(); // 초기갯수
+// 		    console.log('div-box4: ' + $(".div-box4:hidden").length);
+		    if($(".div-box4:hidden").length <= 5){ // 컨텐츠 남아있는지 확인
+	        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
+	        }
+		    $(".more4").click(function(e){ // 클릭시 more
+		        e.preventDefault();
+		        $(".div-box4:hidden").slice(0, 5).show();
+		        if($(".div-box4:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+		        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
+		        }
+		    });
+		});
+		
+		// 4-2. 식단 후기 더보기
+		$(function(){
+		    $(".div-box5").slice(0, 5).show(); // 초기갯수
+// 		    console.log('div-box5: ' + $(".div-box5:hidden").length);
+		    if($(".div-box5:hidden").length <= 5){ // 컨텐츠 남아있는지 확인
+	        	$(".more5").hide(); // 컨텐츠 없을시 버튼숨기기
+	        }
+		    $(".more5").click(function(e){ // 클릭시 more
+		        e.preventDefault();
+		        $(".div-box5:hidden").slice(0, 5).show();
+		        if($(".div-box5:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+		        	$(".more5").hide(); // 컨텐츠 없을시 버튼숨기기
+		        }
+		    });
+		});
 	
+		// 5-1 .북마크-레시피 더보기
+		$(function(){
+		    $(".div-box2").slice(0, 8).show(); // 초기갯수
+// 		    console.log('div-box2: ' + $(".div-box2:hidden").length);
+		    if($(".div-box2:hidden").length <= 8){
+	        	$(".more2").hide(); 
+	        }
+		    $(".more2").click(function(e){ // 클릭시 more
+		        e.preventDefault();
+		        $(".div-box2:hidden").slice(0, 8).show();
+		        if($(".div-box2:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+		        	$(".more2").hide(); // 컨텐츠 없을시 버튼숨기기
+		        }
+		    });
+		});
+		
+		// 5-2. 북마크-식단 더보기
+		$(function(){
+		    $(".div-box3").slice(0, 8).show(); // 초기갯수
+// 		    console.log('div-box3: ' + $(".div-box3:hidden").length);
+		    if($(".div-box3:hidden").length <= 8){ // 컨텐츠 남아있는지 확인
+	        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
+	        }
+		    $(".more3").click(function(e){ // 클릭시 more
+		        e.preventDefault();
+		        $(".div-box3:hidden").slice(0, 8).show();
+		        if($(".div-box3:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+		        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
+		        }
+		    });
+		});
 </script>
 </body>
 </html>

@@ -8,7 +8,11 @@
 	</insert>
 	
 	<select id="login" resultMap="usersResultSet">
-		select * from users
+		select users_no, users_id, users_pw, users_name, nickname, email, phone, enroll_date, exit_date, status, 
+			   check_day, point, is_admin, users_address, users_selfintro, image_renamename, social_profile_img
+		from users
+		     left join image on(users_no = image_divide_no)
+		     left join social_login on (users_id = social_id)
 		where users_id = #{usersId} and status = 'Y'
 	</select>
 
@@ -218,6 +222,8 @@
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 		<result column="USERS_ADDRESS" property="usersAddress"/>
 		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
+		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
+		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
 	</resultMap>
 		
 	<resultMap type="SocialLogin" id="socialResultSet">

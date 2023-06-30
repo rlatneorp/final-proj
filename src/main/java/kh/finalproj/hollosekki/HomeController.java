@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
@@ -29,6 +30,9 @@ public class HomeController {
 	@Autowired
 	private UsersService uService;
 	
+	@Autowired
+	private EnrollService eService;
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -40,10 +44,13 @@ public class HomeController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
-		Users loginUser = (Users)model.getAttribute("loginUser");
-		if(loginUser != null) {
-			int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
-			Image image = uService.selectImage(usersNo);
+		Users loginUsers = (Users)model.getAttribute("loginUser");
+		if(loginUsers != null) {
+			Users u = (Users)model.getAttribute("loginUser");
+			Users loginUser = eService.login(u);
+			System.out.println(loginUser);
+			model.addAttribute("loginUser", loginUser);
+			Image image = uService.selectImage(loginUser.getUsersNo());
 			model.addAttribute("image", image);
 			
 			return "home";

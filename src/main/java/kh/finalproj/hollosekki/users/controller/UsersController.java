@@ -41,7 +41,7 @@ import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.users.model.exception.UsersException;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
-@SessionAttributes({ "loginUser", "image" })
+@SessionAttributes({"loginUser"})
 @Controller
 public class UsersController {
 	
@@ -66,6 +66,7 @@ public class UsersController {
 		// 이미지 조회
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		Image image = uService.selectImage(usersNo);
+		System.out.println(image);
 		model.addAttribute("image", image);
 
 		int following = eService.following(usersNo);
@@ -402,7 +403,7 @@ public class UsersController {
 			model.addAttribute("list", fList);
 			model.addAttribute("pi", pi);
 		}
-
+		System.out.println(list);
 		return "myPage_MyFavorite";
 	}
 

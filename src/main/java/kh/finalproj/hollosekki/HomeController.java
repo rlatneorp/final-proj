@@ -20,7 +20,7 @@ import kh.finalproj.hollosekki.users.model.service.UsersService;
 /**
  * Handles requests for the application home page.
  */
-@SessionAttributes({"loginUser", "image"})
+@SessionAttributes({"loginUser"})
 @Controller
 public class HomeController {
 	

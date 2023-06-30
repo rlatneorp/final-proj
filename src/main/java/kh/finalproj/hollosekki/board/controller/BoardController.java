@@ -106,6 +106,22 @@ public class BoardController {
 		return result == 1 ? "success" : "fail";
 	}
 		
+	@RequestMapping("reReply.bo")
+	public void reReply(@ModelAttribute Board b,HttpServletResponse response) {
+		
+		bService.reReply(b);
+		ArrayList<Board> relist = bService.selectReply(b.getProductNo());
+		
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
+		Gson gson = gb.create();
+		try {
+			gson.toJson(relist, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	@RequestMapping("freeBoardWrite.bo")
 	public String freeBoardWrite() {

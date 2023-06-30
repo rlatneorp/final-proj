@@ -202,6 +202,7 @@
 							<th class="col-2">작성일</th>
 							<th class="col-1">수정</th>
 							<th class="col-1">삭제</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -213,7 +214,6 @@
 									<td style="cursor: pointer;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page=' ">${r.reviewWriter }</td>
 								</c:if>
 							</c:forEach>
-							
 							<td><fmt:formatDate value="${r.reviewDate }" pattern="yyyy-MM-dd HH:mm"/></td>
 							<td>
 								<c:if test="${loginUser.nickName eq r.reviewWriter }">
@@ -226,11 +226,13 @@
 							<td>
 								<c:if test="${loginUser.nickName eq r.reviewWriter }">
 									<button type="button" class="xBtn" id="xBtn">삭제</button>
-									<input type="hidden" class="hdnReplyNo" value="${r.reviewNo}">
 								</c:if>
 								<c:if test="${loginUser.nickName ne r.reviewWriter }">
 									<button type="button" class="xBtn" id="xBtn" disabled>삭제</button>
 								</c:if>
+							</td>
+							<td>
+								<input type="hidden" class="hdnReplyNo" value="${r.reviewNo}">
 							</td>
 						</tr>
 					</c:forEach>	
@@ -240,7 +242,7 @@
 			<input id="hiddenNickName" type="hidden" value="${ loginUser.nickName }">
 			<c:if test="${!empty loginUser }">
 			<div class="intro form-floating">
-				<input type="text" name="commentWrite" id="commentWrite" class="form-control">
+				<input type="text" id="commentWrite" class="form-control">
 				<label for="commentWrite">댓글 작성</label>
 			</div>
 			<div class="position-relative">
@@ -280,23 +282,35 @@
 </body>
 <script>
 
+
 window.onload=()=>{
-	const deleteModal = document.getElementById('deleteModal');
-	const xBtn = document.querySelectorAll('.xBtn');
-	const deleteYes = document.getElementsByClassName("deleteYes");
-	const replySubmit = document.getElementById('replySubmit');
-	const reBtns = document.querySelectorAll('.reBtn');
 	
+	replySubSuccess();
 	xDel();
 	reReply();
 	
+	
+	
+}	
+
+const deleteModal = document.getElementById('deleteModal');
+const xBtn = document.querySelectorAll('.xBtn');
+const deleteYes = document.getElementsByClassName('deleteYes');
+const replySubmit = document.getElementById('replySubmit');
+const reBtns = document.querySelectorAll('.reBtn');
+const reviewCont = document.querySelector('#commentWrite');
+const hdnBoardNo = document.querySelector('#hdnBoardNo');
+let beforeData = null;
+let beforeText = null;
+let ind = null;
+
+
 	function xDel(){
 		$('.xBtn').each(function(index, item){
 			$(this).click(function(e){
 				e.preventDefault();
 				$('#deleteModal').modal("show");
-				
-	 			const hdnBoardNo = document.querySelector('#hdnBoardNo');
+				ind = index;
 	 			const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
 	 			for(const yes of deleteYes){
 	 				yes.focus();
@@ -335,106 +349,147 @@ window.onload=()=>{
 	}
 	
 	function reReply(){
-		let beforeData = null;
 		const tbody = document.querySelector('tbody');
 		const trs = tbody.querySelectorAll('tr');
-		for(let i = 0; i < reBtn.length; i++){
-			reBtn[i].addEventListener('click', function(){
-				const tds = trs[i].querySelectorAll('td');
-				beforeData = tds[0].innerText;
-				tds[0].innerHTML = '<input type="text" value="' + beforeData + '" class="reBox">'; 
-				
-				if(tds[i].children != undefined && tds[i].children.value != undefined){
-					trs[i].innerHTML = '<td>' + tds[0].innerHTML + '</td>';
-				}
-			
-			
-			})	
-		}
-		document.querySelector('#detailFreeBoardBody').addEventListener('click', (event)=>{
-			for(let j = 0; j < reBtn.length; j++){
-				const tds = trs[j].querySelectorAll('td');
-				if(tds[0].children[0] != undefined && tds[0].children[0].value != undefined){
-					if(event.target.value == undefined){
-						tds[0].innerHTML = '<td>' + beforeData + '</td>';
-					}
-				}
-				
-				
-			}
-		})
-	}
-	
 		
-	
-	
-	
-	replySubmit.addEventListener('click', ()=>{
-		const hdnBoardNo = document.querySelector('#hdnBoardNo');
-		const reviewCon = document.getElementById('commentWrite');
-		console.log(hiddenNickName);
-		$.ajax({
-			url: 'insertReply.bo',
-			dataType: 'json',
-			data: {
-					productNo: hdnBoardNo.value,
-					reviewContent: reviewCon.value,
-					reviewWriter: '${login}'
-			},
-			success: data =>{
-				console.log(data);
-				const tbody = document.querySelector('tbody');
-				const hiddenNickName = document.getElementById('hiddenNickName').value;
-				tbody.innerHTML = '';
-				
-				for(const r of data){
-					
-					const tr = document.createElement('tr');
-					
-					const contentTd = document.createElement('td');
-					contentTd.innerText = r.reviewContent;
-					
-					const writerTd = document.createElement('td');
-					writerTd.innerText = r.reviewWriter;
-					
-					const dateTd = document.createElement('td');
-					dateTd.innerText = r.reviewDate;
-					
-					const modifyBtn = document.createElement('td');
-					if(hiddenNickName == r.reivewWriter){
-						modifyBtn.innerHTML = '<button type="button" class="reBtn" id="reBtn">수정</button>';
-					}else{
-						modifyBtn.innerHTML = '<button type="button" class="reBtn" id="reBtn" disabled>수정</button>';
-					}
-										 
-					const deleteBtn = document.createElement('td');
-					if(hiddenNickName == r.reivewWriter){
-						deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>	<input type="hidden" id="hdnReplyNo" value="${r.reviewNo}">';
-					}else{
-						deleteBtn.innerHTML = '<button type="button" class="" id="xBtn" disabled>삭제</button><input type="hidden" id="hdnReplyNo" value="${r.reviewNo}">';	
-					}
-					
-					tr.append(contentTd);
-					tr.append(writerTd);
-					tr.append(dateTd);
-					tr.append(modifyBtn);
-					tr.append(deleteBtn);
-			
-					deleteBtn.querySelector('#xBtn').className = 'xBtn';
-					tbody.append(tr);
-					xDel();
+		for(let i = 0; i < reBtns.length; i++){
+			const tds = trs[i].querySelectorAll('td');
+			beforeText = tds[0].innerText;
+			reBtns[i].addEventListener('keydown', function(event){
+				if(event.keyCode == 13){
+					reBtns[i].click();
 				}
-				document.getElementById('commentWrite').value = '';
+			})
+			reBtns[i].addEventListener('click', ()=>{
+				console.log(tds[0]);
+				console.log(beforeText);
+				if(beforeText != ''){
+					tds[0].innerHTML = '<input type="text" class="reBox" value="' + beforeText + '">';
+				}
+				
+				const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
+				$.ajax({
+					url: 'reReply.bo',
+					dataType: 'json',
+					data: {
+						reviewContent: beforeText,
+						reviewWriter: '${login}',
+						productNo: hdnBoardNo.value,
+						reviewNo: hdnReplyNo[i].value
+					},
+					success: data=>{
+						console.log(data);
+						for(const da of data){
+							if(da.reviewNo == hdnBoardNo.value){
+								tds[0].value = da.reviewContent;
+							}
+						}
+						console.log(tds[0]);
+					},
+					error: data=>{
+						alert("댓글 수정 중 오류가 발생했습니다.");
+						location.reload();
+					}
 					
-			},
-			error: data =>{
-				console.log(data);
-			}
-		});
-	})		
-
-}	
+				});
+			 	
+			})
+		}	
+		
+	}
+	function replySubSuccess (){
+		
+		replySubmit.addEventListener('click', ()=>{
+			const hdnBoardNo = document.querySelector('#hdnBoardNo');
+			const tbody = document.querySelector('tbody');
+			const thead = document.querySelector('thead');
+			const table = document.querySelector('table');
+			beforeData = tbody.innerHTML;
+			$.ajax({
+				url: 'insertReply.bo',
+				dataType: 'json',
+				data: {
+						productNo: hdnBoardNo.value,
+						reviewContent: reviewCont.value,
+						reviewWriter: '${login}'
+				},
+				success: data =>{
+					console.log(data);
+					const hiddenNickName = document.getElementById('hiddenNickName').value;
+					const trs = tbody.querySelectorAll('tr');
+					tbody.innerHTML = '';
+					
+					const tbodied = document.createElement('tbody');
 	
+					for(const r of data){
+						
+						const tr = document.createElement('tr');
+						
+						const contentTd = document.createElement('td');
+						contentTd.innerText = r.reviewContent;
+						
+						const writerTd = document.createElement('td');
+						writerTd.innerHTML = r.reviewWriter;
+						
+						const dateTd = document.createElement('td');
+						dateTd.innerText = r.reviewDate;
+						
+						const modifyBtn = document.createElement('td');
+						if(r.reviewWriter == '${login}'){
+							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn">수정</button>';
+						} else{
+							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn" disabled>수정</button>'
+						}
+											 
+						const deleteBtn = document.createElement('td');
+						if(r.reviewWriter == '${login}'){
+							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>';
+						}else{
+							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn" disabled>삭제</button>';
+						}
+						
+						const reviewNoTd = document.createElement('td');
+						reviewNoTd.innerHTML = '<input type="hidden" id="hdnReplyNo">';
+						
+						tr.append(contentTd);
+						tr.append(writerTd);
+						tr.append(dateTd);
+						tr.append(modifyBtn);
+						tr.append(deleteBtn);
+						tr.append(reviewNoTd);
+				
+						modifyBtn.querySelector('#reBtn').className = 'reBtn';
+						deleteBtn.querySelector('#xBtn').className = 'xBtn';
+						reviewNoTd.querySelector('#hdnReplyNo').value = r.reviewNo;
+	
+						tbody.append(tr);
+						
+						//아직 비동기식으로 c태그를 어떻게 담을지 모르겠음
+						location.reload();
+					}
+					document.getElementById('commentWrite').value = '';
+					
+					for(const tr of trs){
+						const tds = tr.querySelectorAll('td');
+						tds[1].addEventListener('click', function(){
+							
+							$.ajax({
+								url: 'detailFreeBoard.bo',
+								success: data=>{
+									if(data.nickName == tds[1].innerText){
+										location.href='${contextPath}/otherUsersProfile.en?uId=' + data.usersId + '&uNo=' + data.usersNo + '&page=';
+									}
+								}
+							})
+						})
+					}	
+				},
+				error: data =>{
+					console.log(data);
+				}
+			});
+		})		
+	}
 	
 	
 

@@ -79,16 +79,13 @@
 /* 	기타 */
 	.border-none tr th{border:none;}
 	.border-none tr td{border:none;}
-/* 	table tr th{border:none;} */
-/* 	table tr td{border:none;} */
-/* 	table tr{border: 1px solid gray;} */
 	
 </style>
 </head>
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="mainBox">
-		<form id="menuUpdateForm" action="${contextPath}/adminMenuUpdate.ad" method="post" enctype="multipart/form-data">
+	<%@ include file="../common/top.jsp" %>
+	<form id="menuUpdateForm" action="${contextPath}/adminMenuUpdate.ad" method="post" enctype="multipart/form-data">
+		<div class="mainBox">
 			<input type="hidden" name="productNo" value="${m.productNo}">
 			<input type="hidden" name="foodPNoAll" value="${m.foodProductNo}">
 			<input type="hidden" name="productStatus" value="${m.productStatus}">
@@ -103,13 +100,27 @@
 						<input type="text" name="menuName" style="font-size: 20px; margin-right: 360px;" placeholder="식단 이름을 적어주세요." value="${m.menuName}">
 						<a href="#"><i class="bi bi-bookmark " style="font-size: 20px;"></i></a>
 					</div>
-					<div id="category" style="margin-bottom: 200px;">
+					<div id="category" style="margin-bottom: 20px;">
 						아이콘 식단 카테고리 선택
-						<select name="menuType">
-							<option value="1" <c:if test="${m.menuType==1}">selected</c:if>>다이어트</option>
-							<option value="2" <c:if test="${m.menuType==2}">selected</c:if>>육류</option>
-							<option value="3" <c:if test="${m.menuType==3}">selected</c:if>>해산물</option>
+						<select name="menuKind">
+							<option value="1" <c:if test="${m.menuKind==1}">selected</c:if>>다이어트</option>
+							<option value="2" <c:if test="${m.menuKind==2}">selected</c:if>>육류</option>
+							<option value="3" <c:if test="${m.menuKind==3}">selected</c:if>>해산물</option>
 						</select>
+					</div>
+					
+<!--				밀키트/식재료 여부 -->
+					<div>
+						<div class="row pe-4">
+							<div class="col-12" style="margin-bottom: 150px; text-align: center;">
+								<input type="hidden" name="menuType" value="${m.menuType}">
+								<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">
+									<c:if test="${m.menuType eq 1}">식재료</c:if>
+									<c:if test="${m.menuType eq 2}">밀키트</c:if>
+								</button>
+<!-- 								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button> -->
+							</div>
+						</div>
 					</div>
 					
 					<div id="userInfo">
@@ -121,7 +132,6 @@
 				</div>
 			</div>
 		
-			
 			<div class="mid">
 				식단 종류
 			</div>
@@ -130,10 +140,9 @@
 			
 			<div id="order">
 				<div id="orderList">
-<%-- 					<c:forEach begin="1" end="7" varStatus="vs"> --%>
-						<c:forEach items="${m.foodProductNo.split(',')}" var="fNo" varStatus="vs">
+					<c:forEach items="${m.foodProductNo.split(',')}" var="fNo" varStatus="vs">
 							<c:if test="${(vs.index)%4 == 0}">
-							<div style="margin-bottom: 30px; border: 3px solid rgba(0,0,0,0.7); border-radius: 5px; box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.3);">
+								<div style="margin-bottom: 30px; border: 3px solid rgba(0,0,0,0.7); border-radius: 5px; box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.3);">
 								<table id="menuTable${vs.index}"style="width:100%">
 							</c:if>
 									<tr>
@@ -172,179 +181,123 @@
 											<input type="number" class="priceBox pb${vs.index}" readonly style="width:80%" value="0"><span style="width:20%">원</span>
 										</td>
 									</tr>
-									
-<!-- 									<tr> -->
-<!-- 										<td class="no" rowspan="4" style="width:5%; font-size: 18px; font-weight: bold;"> -->
-<%-- 											${vs.index}일차 --%>
-<!-- 											</td> -->
-<!-- 										<td class="imageTd" style="width:20%; text-align: center;"> -->
-<!-- 											<input type="hidden" name="productNo" value=""> -->
-<!-- 											<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0"> -->
-<%-- 											<input type="hidden" class="index" value="${vs.index-1}"> --%>
-<%-- 											<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="메인메뉴사진"> --%>
-<!-- 										</td> -->
-<!-- 										<td class="content align-top p-3" style="width:40%"> -->
-<!-- 											<p style="font-size: 18px;">식품 이름</p> -->
-<!-- 											<p>식품 내용</p> -->
-<!-- 										</td> -->
-<!-- 										<td style="width:25%"> -->
-<!-- 											<select name="foodProductNo" class="foodSelector" style="width: 100%; height: 40px; font-size: 16px;"> -->
-<!-- 												<option value="0">-- 메인메뉴 --</option> -->
-<%-- 												<c:forEach items="${fList1}" var="f"> --%>
-<%-- 													<option value="${f.productNo}">${f.foodName}</option> --%>
-<%-- 												</c:forEach> --%>
-<!-- 											</select> -->
-<!-- 										</td> -->
-<!-- 										<td style="width:10%; text-align: center"> -->
-<%-- 											<input type="number" class="priceBox pb${vs.index}" readonly style="width:80%" value="0"><span style="width:20%">원</span> --%>
-<!-- 										</td> -->
-<!-- 									</tr> -->
-									
-<%-- 									<c:forEach begin="1" end="3"> --%>
-<!-- 										<tr> -->
-<!-- 											<td class="imageTd" style="width:20%; text-align: center;"> -->
-<!-- 												<input type="hidden" name="productNo" value=""> -->
-<!-- 												<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0"> -->
-<%-- 												<input type="hidden" class="index" value="${vs.index-1}"> --%>
-<%-- 												<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="서브메뉴사진"> --%>
-<!-- 											</td> -->
-<!-- 											<td class="content align-top p-3" style="width:40%"> -->
-<!-- 												<p style="font-size: 18px;">식품 이름</p> -->
-<!-- 												<p>식품 내용</p> -->
-<!-- 											</td> -->
-<!-- 											<td style="width:25%"> -->
-<!-- 												<select name="foodProductNo" class="foodSelector" style="width: 100%; height: 40px; font-size: 16px;"> -->
-<!-- 													<option value="0">-- 서브메뉴 --</option> -->
-<%-- 													<c:forEach items="${fList2}" var="f"> --%>
-<%-- 														<option value="${f.productNo}">${f.foodName}</option> --%>
-<%-- 													</c:forEach> --%>
-<!-- 												</select> -->
-<!-- 											</td> -->
-<!-- 											<td style="width:10%; text-align: center"> -->
-<%-- 												<input type="number" class="priceBox pb${vs.index}" readonly style="width:80%" value="0"><span style="width:20%">원</span> --%>
-<!-- 											</td> -->
-<!-- 										</tr> -->
-<%-- 									</c:forEach> --%>
 								<c:if test="${(vs.index)%4 == 3}">
 									</table>
 								</c:if>
 								
-								<c:if test="${(vs.index)%4 == 3}">
-									<table class="infoTableDay border-none" style="width:1120px; margin: 10px 0px 15px 0px; text-align: center;">
-										<tr>
-											<th>칼로리</th>
-											<th>탄수화물</th>
-											<th>단백질</th>
-											<th>지방</th>
-											<th>트랜스지방</th>
-											<th>포화지방</th>
-											<th>나트륨</th>
-											<th>당류</th>
-											<th>콜레스테롤</th>
-										</tr>
-										<tr class="infoContentDay">
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>kcal</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>mg</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
-											<td><input type="number" class="dayNutrient" min="0" value="0" readonly>mg</td>
-										</tr>
-									</table>
-								</c:if>
-							</div>
-						</c:forEach>
-<%-- 					</c:forEach>			 --%>
-					
-					<p style="font-size: 22px; font-weight: bold; text-align: right;">총계</p>
-					<div class="d-flex justify-content-end">
-						<table class="d-flex text-center border-none">
-							<tr>
-								<th>단가</th>
-								<th></th>
-								<th>할인율</th>
-								<th></th>
-								<th colspan="2">최종가격</th>
-							</tr>
-							<tr>
-								<td>
-									<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0" readonly>
-								</td>
-								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">원 - </td>
-								<td>
-									<input type="number" name="productSale" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productSale}" min="0" max="99.9">
-								</td>
-								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">% =</td>
-								<td>
-									<input type="number" class="totalPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" readonly>
-								</td>
-								<td style="width: 30px; font-size: 16px; font-weight: bold; text-align: left;">원</td>
-							</tr>
-							<tr>
-								<td colspan="2">재고</td>
-								<td colspan="4">
-									<input type="number" class="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productStock}" min="0">
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
-			
-			<br><br><br>
-			
-			<div class="mid">
-				영양 정보
-			</div>
-			
-			<br><br>
-			
-			<table id="infoTable">
-				<tr id="infoTop">
-					<th>분류</th>
-					<th>칼로리</th>
-					<th>탄수화물</th>
-					<th>단백질</th>
-					<th>지방</th>
-					<th>트랜스지방</th>
-					<th>포화지방</th>
-					<th>나트륨</th>
-					<th>당류</th>
-					<th>콜레스테롤</th>
-				</tr>
-				<c:forEach begin="1" end="7" varStatus="i">
-					<tr class="infoContent">
-						<td class="text-center">${i.index}일차</td>
-						<td><input type="number" min="0" value="0" readonly>kcal</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>mg</td>
-						<td><input type="number" min="0" value="0" readonly>g</td>
-						<td><input type="number" min="0" value="0" readonly>mg</td>
-					</tr>
+							<c:if test="${(vs.index)%4 == 3}">
+								<table class="infoTableDay border-none" style="width:1120px; margin: 10px 0px 15px 0px; text-align: center;">
+									<tr>
+										<th>칼로리</th>
+										<th>탄수화물</th>
+										<th>단백질</th>
+										<th>지방</th>
+										<th>트랜스지방</th>
+										<th>포화지방</th>
+										<th>나트륨</th>
+										<th>당류</th>
+										<th>콜레스테롤</th>
+									</tr>
+									<tr class="infoContentDay">
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>kcal</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>mg</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>g</td>
+										<td><input type="number" class="dayNutrient" min="0" value="0" readonly>mg</td>
+									</tr>
+								</table>
+							</c:if>
+						</div>
 				</c:forEach>
-				
-			</table>
-			
-			<br><br>	
-			
-			<div class="d-flex justify-content-center mb-5">
-				<div class="d-flex">
-					<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
-					<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+					
+				<p style="font-size: 22px; font-weight: bold; text-align: right;">총계</p>
+				<div class="d-flex justify-content-end">
+					<table class="d-flex text-center border-none">
+						<tr>
+							<th>단가</th>
+							<th></th>
+							<th>할인율</th>
+							<th></th>
+							<th colspan="2">최종가격</th>
+						</tr>
+						<tr>
+							<td>
+								<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productPrice}" min="0" readonly>
+							</td>
+							<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">원 - </td>
+							<td>
+								<input type="number" name="productSale" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productSale}" min="0" max="99.9">
+							</td>
+							<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">% =</td>
+							<td>
+								<input type="number" class="totalPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" readonly>
+							</td>
+							<td style="width: 30px; font-size: 16px; font-weight: bold; text-align: left;">원</td>
+						</tr>
+						<tr>
+							<td colspan="2">재고</td>
+							<td colspan="4">
+								<input type="number" name="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="${m.productStock}" min="0">
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
-		</form>
-	</div>
+		</div>
+			
+		<br><br><br>
+		<div class="mid">
+			영양 정보
+		</div>
+		
+		<br><br>
+		
+		<table id="infoTable">
+			<tr id="infoTop">
+				<th>분류</th>
+				<th>칼로리</th>
+				<th>탄수화물</th>
+				<th>단백질</th>
+				<th>지방</th>
+				<th>트랜스지방</th>
+				<th>포화지방</th>
+				<th>나트륨</th>
+				<th>당류</th>
+				<th>콜레스테롤</th>
+			</tr>
+			<c:forEach begin="1" end="7" varStatus="i">
+				<tr class="infoContent">
+					<td class="text-center">${i.index}일차</td>
+					<td><input type="number" min="0" value="0" readonly>kcal</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>mg</td>
+					<td><input type="number" min="0" value="0" readonly>g</td>
+					<td><input type="number" min="0" value="0" readonly>mg</td>
+				</tr>
+			</c:forEach>
+			
+		</table>
+		
+		<br><br>	
+			
+		<div class="d-flex justify-content-center mb-5">
+			<div class="d-flex">
+				<button onclick="checkSubmit()" type="button" class="me-4" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">수정하기</button>
+				<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">취소하기</button>
+			</div>
+		</div>
+	</form>
 	
 	<br><br><br><br>
-	
+	<%@ include file="../common/footer.jsp" %>
 	<script>
 	
 		window.onload = () =>{
@@ -430,7 +383,8 @@
 			}else{
 				$.ajax({
 					url: '${contextPath}/adminFoodSelector.ad',
-					data: {pNo:obj.value},
+					data: {no:obj.value,
+						   type:1},
 					success: data =>{
 						const tr = obj.parentElement.parentElement;
 						tr.querySelector('.content').querySelectorAll('p')[0].innerText = data.foodName;
@@ -442,7 +396,7 @@
 						
 						$.ajax({
 							url: '${contextPath}/adminFoodImageSelector.ad',
-							data: {pNo:obj.value},
+							data: {no:obj.value},
 							success: data =>{
 								tr.querySelector('.previewImage').src = "${contextPath}/resources/uploadFiles/"+data.imageRenameName;
 							}

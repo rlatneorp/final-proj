@@ -719,6 +719,7 @@ p b {
 <br>
 </span>
 	<form id="toolInsertForm" action="${contextPath}/adminToolInsert.ad" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="optionCount">
 		<main id="order-wrap">
 			<!-- 구매창 컨테이너 -->
 			<div class="left">
@@ -751,11 +752,11 @@ p b {
 							</tr>
 							<tr>
 								<td>
-									<input type="number" name="productPrice" class="cost" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0">
+									<input type="number" name="productPrice" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0">
 								</td>
 								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">원 - </td>
 								<td>
-									<input type="number" name="productSale" class="discount" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0" max="99.9">
+									<input type="number" name="productSale" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0" max="99.9">
 								</td>
 								<td style="width: 50px; font-size: 16px; font-weight: bold; text-align: left;">% =</td>
 								<td>
@@ -910,11 +911,13 @@ p b {
 				pOption.value = opBtns[0].innerText;
 				opBtns[0].style.background = "#19A7CE";
 				opBtns[1].style.background = "gray";
+				document.getElementsByClassName('optionBoxMain')[0].style.opacity = "1";
 			});
 			opBtns[1].addEventListener('click', () => {
 				pOption.value = opBtns[1].innerText;
 				opBtns[1].style.background = "#19A7CE";
 				opBtns[0].style.background = "gray";
+				document.getElementsByClassName('optionBoxMain')[0].style.opacity = "0.3";
 			});
 			
 			
@@ -995,9 +998,10 @@ p b {
 				const opHidden = optionBoxs[j].querySelector('.optionTotal');
 				opHidden.value = opName.value;
 				for(let i = 0; i<opVal.length; i++){
-					opHidden.value += ","+opVal[i].value;
+					opHidden.value += "@"+opVal[i].value;
 				}
 			}
+			document.getElementsByName('optionCount')[0].value = optionBoxs.length;
 		}
 		
 // 		submit 전 값 설정 및 검토

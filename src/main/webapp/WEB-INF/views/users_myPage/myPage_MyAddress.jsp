@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지 - 배송지 관리</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 
 .search {
@@ -74,12 +75,17 @@ th:first-child, td:first-child {
 	box-shadow: none;
 	width: 20px; height: 20px;
 }
+#selectAllCheckBox{
+	box-shadow: none;
+	width: 20px; height: 20px;
+}
 #trash{
 	font-size: 30px;
 }
+#trash:hover{cursor: pointer;}
 #delete{ 
 	font-size: 18px;
-	margin-left: 802px;
+	margin-left: 806px;
 }
 #tbody tr {height: 70px;}
 .edit{
@@ -155,62 +161,32 @@ th:first-child, td:first-child {
 								<th>휴대전화</th>
 								<th>주소</th>
 								<th>수정</th>
-								<th><input type="checkbox" class="delete" id="selectAllCheckBox"></th>
+								<th><input type="checkbox" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<tr>
-								<td>집</td>
-								<td>강건강</td>
-								<td>010-1111-2222</td>
-								<td>서울시 남대문로 머시기</td>
-								<td><input type="button" value="수정" class="edit" onclick="location.href='${contextPath}/myPage_UpdateAddress.me'"></td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td>집</td>
-								<td>강건강</td>
-								<td>010-1111-2222</td>
-								<td>서울시 남대문로 머시기</td>
-								<td><input type="button" value="수정" class="edit"></td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td>집</td>
-								<td>강건강</td>
-								<td>010-1111-2222</td>
-								<td>서울시 남대문로 머시기</td>
-								<td><input type="button" value="수정" class="edit"></td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td>집</td>
-								<td>강건강</td>
-								<td>010-1111-2222</td>
-								<td>서울시 남대문로 머시기</td>
-								<td><input type="button" value="수정" class="edit"></td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td>집</td>
-								<td>강건강</td>
-								<td>010-1111-2222</td>
-								<td>서울시 남대문로 머시기</td>
-								<td><input type="button" value="수정" class="edit"></td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
-							<tr>
-								<td>집</td>
-								<td>강건강</td>
-								<td>010-1111-2222</td>
-								<td>서울시 남대문로 머시기</td>
-								<td><input type="button" value="수정" class="edit"></td>
-								<td><input type="checkbox" class="delete"></td>
-							</tr>
+							<c:if test="${ empty list }">
+								<tr>
+									<td colspan="6" height="330">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										배송지가 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:forEach items="${ list }" var="s">
+								<tr data-shippingNo-no="${ s.shippingNo }">
+									<td>${ s.shippingName }</td>
+									<td>${ s.recipient }</td>
+									<td>${ s.phone }</td>
+									<td>${ fn:replace(fn:replace(s.address, '[', ''), ']', '') }</td>
+									<td><input type="button" value="수정" class="edit" onclick="location.href='${contextPath}/myPage_editAddress.me?shippingNo=' + ${ s.shippingNo }"></td>
+									<td><input type="checkbox" class="delete"></td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 					<br>
-					<a class="btn-3d blue" href="${ contextPath }/myPage_InsertAddress.me">추가하기</a>
+					<a class="btn-3d blue" id="add">추가하기</a>
 				</div>
 				<br><br>
 			</div>
@@ -232,36 +208,83 @@ th:first-child, td:first-child {
 	        }); 
 	   }
 	   
-	   //검색 img 클릭했을 때
-	   const searchInput = document.getElementById('search');
-	   document.getElementById('searchIcon').addEventListener('click', function() {
-	      //여기에 ajax
-	      searchInput.value = '';
-	      
-	   })
-	   
-	   //검색어 입력 엔터 기능 
-	   
-	
-	   searchInput.addEventListener('keyup', function(event) {
-	     if (event.key === 'Enter') {
-	       const searchText = searchInput.value
-	       //여기에 ajax로 searchText 넘기기 
-	       
-	       console.log('검색어:', searchText);
-	       searchInput.value = '';
-	     }
-	   });
-	   
-	 //전체 선택 체크 
+	 	//전체 체크박스
+		let allCheck = document.getElementsByClassName('delete');
+		//체크 된 체크박스 
+		let checked = document.querySelectorAll('input.delete:checked');
+		//select all 체크박스 
+		let selectAll = document.getElementById('selectAllCheckBox');
+		
+		//전체 선택 해제 및 적용
+		changeCheckBox = (checkbox) => {
+			if(allCheck.length === checked.length) {
+				selectAll.checked = true;
+			} else if(selectAll.checked) {
+				selectAll.checked = false;
+			}
+		}
+		
+		// 전체 선택 클릭시 전체 선택
 		const selAllChec = document.getElementById('selectAllCheckBox');
+		
 		selAllChec.addEventListener('change', function() { //속성이 변할 때마다 이벤트 발생 
 			const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 			checkboxes.forEach(function(checkbox) { //모든 checkbox를 순회 
 			      checkbox.checked = selAllChec.checked; //selAllChec의 체크 속성을 대입 (항상 같이 움직이게)
-			    });
-			
-		})
+			});
+		});
+		
+		// 쓰레기통 클릭했을 때 해당 정보 지우기 - ajax
+		const trash = document.getElementById('trash');
+		
+		trash.addEventListener('click', () => {
+			let checked = document.querySelectorAll('input.delete:checked');
+			const selectedShippingNos = [];
+			let bookmarkNo = 0;
+			checked.forEach((checkbox) => {
+				shippingNo = checkbox.closest('tr').getAttribute('data-shippingNo-no');
+				selectedShippingNos.push(shippingNo);
+			});
+			swal({
+			    text: '정말 삭제하시겠습니까?',
+			    icon: 'warning',
+			    buttons: ["취소", "삭제하기"]
+			}).then((YES) => {
+			    if (YES) {
+			      	$.ajax({
+						url : '${contextPath}/myPage_deleteAddress.me',
+						data : {shippingNo : JSON.stringify(selectedShippingNos)},
+						success : data => {
+							console.log(data);
+							if(data == 'yes'){
+								location.reload();
+							} else {
+								swal('', '삭제를 실패하였습니다.', 'error');
+							}
+						},
+						error : data => {
+							console.log(data);
+						}
+					});
+			    }
+			});
+		});
+		
+		// 배송지 추가 창 열기 버튼 클릭 이벤트 처리
+		const addBtn = document.getElementById('add');
+		
+		addBtn.addEventListener("click", function() {
+			if(document.getElementById('tbody').children.length >= 5) {
+				  swal({
+						 text: "배송지는 최대 5개만 등록 가능합니다.",
+						 icon: "error",
+						 button: "확인",
+						});
+				  return;
+			  } else {
+				  location.href = '${ contextPath }/myPage_InsertAddress.me';
+			  }
+		});
 	</script>
 	
 	

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,82 +65,98 @@
 					<table>
 						<tr>
 							<td class="detail">주문번호</td>
-							<td>20230604-00000094</td>
+							<td>${orders.orderNo}</td>
 						</tr>
 						<tr>
 							<td class="detail">주문날짜</td>
-							<td>2023-06-04 21:23:55</td>
+							<td>${orders.orderDate }</td>
 						</tr>
 						<tr>
 							<td class="detail">주문자</td>
-							<td>강건강</td>
-						</tr>
-						<tr>
-							<td class="detail">주문상태</td>
-							<td>결제확인중</td>
+							<td>${loginUser.usersName }</td>
 						</tr>
 					</table>
 					<br><br>
 					<p class="orderInfo">결제정보</p>
 					<table>
 						<tr>
-							<td class="detail">총 결제금액</td>
-							<td>₩25,000</td>
+							<td class="detail">배송비</td>
+							<td>${orders.shipPrice }원</td>
 						</tr>
 						<tr>
-							<td class="detail">결제수단</td>
-							<td>카드 결제</td>
-						</tr>
-					</table>
-					<br><br>
-					<label class="orderInfo">주문 상품 정보</label>&nbsp;<label>(총 1개 / ₩25,000)</label>
-					<br><br>
-					<table>
-						<tr style="border-bottom: 1px solid lightgray;">
-							<td class="order"><img src="resources/images/food3.jpg"/></td>
-							<td>
-								다이어트 식단<br>
-								₩25,000 (1개)<br><br>
-								[옵션: 1주일]
+							<td class="detail">원 금액</td>
+							<td id="originPrice">
+								<input type="hidden" id="price" value="${fn:split(orders.orderInfo, ',')[0]}">
 							</td>
 						</tr>
 						<tr>
-							<td class="order">결제수단</td>
-							<td>카드 결제</td>
+							<td class="detail">할인</td>
+							<td id="sale">
+								<input type="hidden" id="sal" value="${fn:split(orders.orderInfo, ',')[1]}">
+							</td>
+						</tr>
+						<tr>
+							<td class="detail">총 결제금액</td>
+							<td><b><fmt:formatNumber type="number" maxFractionDigits="3" value="${orders.totalPrice }"/>원</b></td>
 						</tr>
 					</table>
-					<div id="delivery">
-						<p style="margin-left: 20px;">
-							<br>
-							상품구매금액 25,000 + 배송비 0<br>합계 : <b>₩25,000</b>
-						</p>
-					</div>
+					<br><br>
+					<label class="orderInfo">주문 상품 정보</label>&nbsp;<label>(총 ${orders.orderCount }개 / <fmt:formatNumber type="number" maxFractionDigits="3" pattern="'\ '#,###" value="${orders.totalPrice }"/>)</label>
+					<br><br>
+					<table>
+						<tr style="border-bottom: 1px solid black;">
+							<td class="order"><img src="${contextPath }/resources/uploadFiles/${orders.imgName}"/></td>
+							<td>
+								${orders.productName }<br>
+								<fmt:formatNumber type="number" maxFractionDigits="3" pattern="'\ '#,###" value="${orders.totalPrice }"/> (${orders.orderCount }개)<br><br>
+								[옵션]<br>
+								<c:if test="${fn:contains(orders.options, ',')}">
+									<c:forEach var="option" items="${fn:split(orders.options, ',')}">
+		    							${option}<br>
+		  							</c:forEach>
+	  							</c:if>
+	  							<c:if test="${not fn:contains(orders.options, ',')}">
+								    ${orders.options}<br>
+								</c:if>
+							</td>
+						</tr>
+					</table>
+<!-- 					<div id="delivery"> -->
+<!-- 						<p style="margin-left: 20px;"> -->
+<!-- 							<br> -->
+<!-- 							상품구매금액 25,000 + 배송비 0<br>합계 : <b>₩25,000</b> -->
+<!-- 						</p> -->
+<!-- 					</div> -->
 					<br><br>
 					<p class="orderInfo">배송지 정보</p>
 					<table>
 						<tr>
-							<td class="detail">받으시는분</td>
-							<td>강건강</td>
+							<td class="detail">
+								받으시는분
+								<input type="hidden" id="addresses" value="${orders.orderAddress }">
+							</td>
+							<td id="recipient"></td>
+							
 						</tr>
 						<tr>
 							<td class="detail">우편번호</td>
-							<td>12544</td>
+							<td id="postCode"></td>
 						</tr>
 						<tr>
 							<td class="detail">주소</td>
-							<td>서울시 남대문로 머시기</td>
+							<td id="address"></td>
 						</tr>
 						<tr>
-							<td class="detail">일반전화</td>
-							<td></td>
+							<td class="detail">상세주소</td>
+							<td id="detailAddress"></td>
 						</tr>
 						<tr>
-							<td class="detail">휴대전화</td>
-							<td>010-7841-4511</td>
+							<td class="detail">전화번호</td>
+							<td id="phone"></td>
 						</tr>
 						<tr>
 							<td class="detail">배송 요청 사항</td>
-							<td></td>
+							<td id="detailAsk">${orders.orderDeliveryComment }</td>
 						</tr>
 					</table>
 				</div>
@@ -152,5 +170,35 @@
 	<br><br><br><br><br><br><br>
 	
 	<%@ include file="../common/footer.jsp" %>
+	
+	<script>
+		window.onload = () => {
+			
+			//결제 정보 - 원금액/할인
+			const originPrice = document.getElementById('originPrice');
+			const sale = document.getElementById('sale');
+			const price = parseInt(document.getElementById('price').value.split(':')[1]).toLocaleString();
+			const sal = document.getElementById('sal').value.split(':')[1];
+			
+			originPrice.innerText = price + '원';
+			sale.innerText = sal;
+			
+			//배송지 정보 
+			const recipient = document.getElementById('addresses').value.split(',')[0];
+			const phone = document.getElementById('addresses').value.split(',')[1];
+			const post = document.getElementById('addresses').value.split(',')[2];
+			const address = document.getElementById('addresses').value.split(',')[3];
+			const detail = document.getElementById('addresses').value.split(',')[4];
+			
+			document.getElementById('recipient').innerText = recipient;
+			document.getElementById('postCode').innerText = post;
+			document.getElementById('address').innerText = address;
+			document.getElementById('phone').innerText = phone;
+			document.getElementById('detailAddress').innerText = detail;
+			
+			console.log(addresses);
+			addresses.split
+		}
+	</script>
 </body>
 </html>

@@ -11,84 +11,87 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
   
-  <servlet>
-    <servlet-name>appServlet</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>appServlet</servlet-name>
-    <url-pattern>*.do</url-pattern>
-  </servlet-mapping>
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+	    <url-pattern>*.do</url-pattern>
+	</servlet-mapping>
   
-  <servlet>
-    <servlet-name>admin</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/spring/appServlet/admin-context.xml</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>admin</servlet-name>
-    <url-pattern>*.ad</url-pattern>
-  </servlet-mapping>
+	<servlet>
+		<servlet-name>admin</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				/WEB-INF/spring/appServlet/admin-context.xml
+				/WEB-INF/spring/appServlet/adminAspect-context.xml
+			</param-value>
+    	</init-param>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>admin</servlet-name>
+	    <url-pattern>*.ad</url-pattern>
+	</servlet-mapping>
   
-  <servlet>
-    <servlet-name>users</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/spring/appServlet/users-context.xml</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>users</servlet-name>
-    <url-pattern>*.me</url-pattern>
-  </servlet-mapping>
+	<servlet>
+		<servlet-name>users</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/users-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>users</servlet-name>
+		<url-pattern>*.me</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>market</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/market-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>market</servlet-name>
+		<url-pattern>*.ma</url-pattern>
+	</servlet-mapping>
   
-  <servlet>
-    <servlet-name>market</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/spring/appServlet/market-context.xml</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>market</servlet-name>
-    <url-pattern>*.ma</url-pattern>
-  </servlet-mapping>
+	<servlet>
+		<servlet-name>customer</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/customer-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>customer</servlet-name>
+		<url-pattern>*.cs</url-pattern>
+	</servlet-mapping>
   
-  <servlet>
-    <servlet-name>customer</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/spring/appServlet/customer-context.xml</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>customer</servlet-name>
-    <url-pattern>*.cs</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>enroll</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/spring/appServlet/enroll-context.xml</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>enroll</servlet-name>
-    <url-pattern>*.en</url-pattern>
-  </servlet-mapping>
+	<servlet>
+		<servlet-name>enroll</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/enroll-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>enroll</servlet-name>
+		<url-pattern>*.en</url-pattern>
+	</servlet-mapping>
 
 <!-- 	레시피 관련 -->
 	<servlet>
@@ -99,7 +102,6 @@
 			<param-value>/WEB-INF/spring/appServlet/recipe-context.xml</param-value>
 			</init-param>
 	</servlet>
-	
 	<servlet-mapping>
 		<servlet-name>recipeServlet</servlet-name>
 		<url-pattern>*.rc</url-pattern>
@@ -114,25 +116,24 @@
 			<param-value>/WEB-INF/spring/appServlet/menu-context.xml</param-value>
 			</init-param>
 	</servlet>
-	
 	<servlet-mapping>
 		<servlet-name>menuServlet</servlet-name>
 		<url-pattern>*.mn</url-pattern>
 	</servlet-mapping>
   
   
-   <servlet>
-    <servlet-name>board</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/spring/appServlet/board-context.xml</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>board</servlet-name>
-    <url-pattern>*.bo</url-pattern>
-  </servlet-mapping>
+	<servlet>
+		<servlet-name>board</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/board-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>board</servlet-name>
+		<url-pattern>*.bo</url-pattern>
+	</servlet-mapping>
   
 	
 	

@@ -53,8 +53,8 @@
 						</tr>
 						<tr>
 							<td><i class="bi bi-currency-dollar dollars" style="text-align: right;"></i></td>
-							<td style="font-size: 18px; color: rgb(52, 152, 219); text-align: left;"><b>1000 포인트</b></td>
-							<td style="font-size: 18px;">0 포인트</td>
+							<td style="font-size: 18px; color: rgb(52, 152, 219); text-align: left;"><b>${ loginUser.point } P</b></td>
+							<td style="font-size: 18px;">0 P</td>
 						</tr>
 					</table>
 				</div>

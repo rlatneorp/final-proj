@@ -6,12 +6,16 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
+import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.dao.EnrollDAO;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Service
@@ -84,8 +88,8 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public void socialInfoUpdate2(String id, String name) {
-		eDAO.socialInfoUpdate2(sqlSession, id, name);
+	public void socialInfoUpdate2(String id, String name, String nickName) {
+		eDAO.socialInfoUpdate2(sqlSession, id, name, nickName);
 	}
 
 	@Override
@@ -104,9 +108,100 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public ArrayList<Menu> menuList(int usersNo) {
-		return eDAO.menuList(sqlSession, usersNo);
+	public ArrayList<Menu> menuList() {
+		return eDAO.menuList(sqlSession);
 	}
+
+	@Override
+	public int follow(int usersNo) {
+		return eDAO.follow(sqlSession, usersNo);
+	}
+
+	@Override
+	public int following(int usersNo) {
+		return eDAO.following(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Image> menuImageList() {
+		return eDAO.menuImageList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Product> productList() {
+		return eDAO.productList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Users> AllUsersList() {
+		return eDAO.AllUsersList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Recipe> allRecipeList() {
+		return eDAO.allRecipeList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Image> allRecipeImageList() {
+		return eDAO.allRecipeImageList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Follow> followList(int usersNo) {
+		return eDAO.followList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Follow> followingLsit(int usersNo) {
+		return  eDAO.followingLsit(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Follow> loginUserFollowingList(int usersNo) {
+		return eDAO.loginUserFollowingList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<BookMark> recipeBookMarkList(int usersNo) {
+		return eDAO.recipeBookMarkList(sqlSession, usersNo);
+	}
+
+	@Override
+	public int menuBookMarkList(int usersNo) {
+		return eDAO.menuBookMarkList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Board> boardList(int usersNo) {
+		return eDAO.boardList(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<Review> reviewList(String usersId) {
+		return eDAO.reviewList(sqlSession, usersId);
+	}
+
+	@Override
+	public ArrayList<Review> menuReviewList(String usersId) {
+		return eDAO.menuReviewList(sqlSession, usersId);
+	}
+
+	@Override
+	public ArrayList<Review> replyList() {
+		return eDAO.replyList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Board> allBoardList() {
+		return eDAO.allBoardList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Review> userReplyList(String nickName) {
+		return eDAO.userReplyList(sqlSession, nickName);
+	}
+
 
 	
 }

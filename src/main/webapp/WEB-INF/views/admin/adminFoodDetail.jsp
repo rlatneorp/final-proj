@@ -402,8 +402,7 @@ p b {
 </style>
 <body>
 <span>
-<%@include file="../common/top.jsp" %>
-<jsp:include page="../common/adminSidebar.jsp"/>
+<%@ include file="../common/top.jsp" %>
 <br>
 </span>
 
@@ -412,6 +411,7 @@ p b {
 		<input type="hidden" name="productType" value="${f.productType}">
 		<input type="hidden" name="productOption" value="${f.productOption}">
 		<input type="hidden" name="productStatus" value="${f.productStatus}">
+		<input type="hidden" name="page" value="${ab.page}">
 		<main id="order-wrap">
 			<!-- 구매창 컨테이너 -->
 			<div class="left">
@@ -468,34 +468,42 @@ p b {
 								<td colspan="6">
 									<div class="row pe-4">
 										<div class="col-6">
-											<input type="hidden" name="foodKind" value="1">
+											<input type="hidden" name="foodKind" value="${f.foodKind}">
 										</div>
-										<div class="col-3">
-											<button type="button" class="foodKindBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
-										</div>
-										<div class="col-3">
-											<button type="button" class="foodKindBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button>
+										<div class="col-6">
+											<c:if test="${f.foodKind eq 1}">
+												<button type="button" class="foodKindBtn d-inline-block" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
+<!-- 												<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button> -->
+											</c:if>
+											<c:if test="${f.foodKind eq 2}">
+												<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
+<!-- 												<button type="button" class="foodKindBtn d-inline-block" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button> -->
+											</c:if>
 										</div>
 									</div>
 								</td>
 							</tr>
 <!-- 						밀키트/식재료 여부 -->
-<!-- 							<tr style="height:10px;"></tr> -->
-<!-- 							<tr> -->
-<!-- 								<td colspan="6"> -->
-<!-- 									<div class="row pe-4"> -->
-<!-- 										<div class="col-6"> -->
-<!-- 											<input type="hidden" name="foodType" value="1"> -->
-<!-- 										</div> -->
-<!-- 										<div class="col-3"> -->
-<!-- 											<button type="button" class="foodKindBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button> -->
-<!-- 										</div> -->
-<!-- 										<div class="col-3"> -->
-<!-- 											<button type="button" class="foodKindBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</td> -->
-<!-- 							</tr> -->
+							<tr style="height:10px;"></tr>
+							<tr>
+								<td colspan="6">
+									<div class="row pe-4">
+										<div class="col-6">
+											<input type="hidden" name="foodType" value="${f.foodType}">
+										</div>
+										<div class="col-6">
+											<c:if test="${f.foodType eq 1}">
+												<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button>
+<!-- 												<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button> -->
+											</c:if>
+											<c:if test="${f.foodType eq 2}">
+												<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button>
+<!-- 												<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button> -->
+											</c:if>
+										</div>
+									</div>
+								</td>
+							</tr>
 						</table>
 						<input type="hidden" name="foodType" value="1">
 					</div>
@@ -596,7 +604,8 @@ p b {
 											</td>
 											<td class="num" style="width: 5%; text-align: center">${fn:split(table,'-')[0]}</td>
 											<td style="width: 7%; text-align: center">
-												<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>
+<!-- 												삭제버튼 보류 -->
+<!-- 												<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button> -->
 											</td>
 										</tr>
 									</table>
@@ -629,12 +638,13 @@ p b {
 					<tr id="infoTop">
 						<th>칼로리</th>
 						<th>탄수화물</th>
+						<th>단백질</th>
 						<th>지방</th>
 						<th>트랜스지방</th>
 						<th>포화지방</th>
 						<th>나트륨</th>
 						<th>당류</th>
-						<th>콜레스테롤${fn:split(n,',')[0]}</th>
+						<th>콜레스테롤</th>
 					</tr>
 					<tr class="infoContent">
 					<c:set value="${fn:split(fn:split(f.foodContent,'@')[3], ',')}" var="n"></c:set>
@@ -661,6 +671,9 @@ p b {
 						</td>
 						<td>
 							<input type="number" name="nutrient" min="0" value="${n[7]}">mg
+						</td>
+						<td>
+							<input type="number" name="nutrient" min="0" value="${n[8]}">mg
 						</td>
 					</tr>
 				</table>
@@ -728,22 +741,42 @@ p b {
 				}
 			})
 			
-// 			메뉴 종류 버튼 이벤트
-			const foodKind = document.getElementsByName('foodKind')[0];
-			const foodKindBtns = document.getElementsByClassName('foodKindBtn');
+// // 			메뉴 종류 버튼 이벤트
+// 			const foodKind = document.getElementsByName('foodKind')[0];
+// 			const foodKindBtns = document.getElementsByClassName('foodKindBtn');
 			
-			// 메인메뉴 버튼
-			foodKindBtns[0].addEventListener('click', ()=>{
-				foodKind.value="1";
-				foodKindBtns[0].style.backgroundColor="#19A7CE";
-				foodKindBtns[1].style.backgroundColor="gray";
-			});
-			// 서브메뉴 버튼
-			foodKindBtns[1].addEventListener('click', ()=>{
-				foodKind.value="2";
-				foodKindBtns[1].style.backgroundColor="#19A7CE";
-				foodKindBtns[0].style.backgroundColor="gray";
-			});
+// 			// 메인메뉴 버튼
+// 			foodKindBtns[0].addEventListener('click', ()=>{
+// 				foodKind.value="1";
+// 				foodKindBtns[0].style.backgroundColor="#19A7CE";
+// 				foodKindBtns[1].style.backgroundColor="gray";
+// 			});
+// 			// 서브메뉴 버튼
+// 			foodKindBtns[1].addEventListener('click', ()=>{
+// 				foodKind.value="2";
+// 				foodKindBtns[1].style.backgroundColor="#19A7CE";
+// 				foodKindBtns[0].style.backgroundColor="gray";
+// 			});
+			
+			
+// // 			밀키트/식재료 버튼 이벤트
+// 			const foodType = document.getElementsByName('foodType')[0];
+// 			const foodTypeBtns = document.getElementsByClassName('foodTypeBtn');
+			
+// 			// 메인메뉴 버튼
+// 			foodTypeBtns[0].addEventListener('click', ()=>{
+// 				foodType.value="1";
+// 				foodTypeBtns[0].style.backgroundColor="#19A7CE";
+// 				foodTypeBtns[1].style.backgroundColor="gray";
+// 			});
+// 			// 서브메뉴 버튼
+// 			foodTypeBtns[1].addEventListener('click', ()=>{
+// 				foodType.value="2";
+// 				foodTypeBtns[1].style.backgroundColor="#19A7CE";
+// 				foodTypeBtns[0].style.backgroundColor="gray";
+// 			});
+			
+			
 			
 			const menuTable1 = 
 				'<div class="menuTable1">'
@@ -796,19 +829,19 @@ p b {
 			const addLeft = document.getElementById('addLeft');
 			const addRight = document.getElementById('addRight');
 			
-// 			왼쪽사진내용추가 버튼 이벤트
-			addLeft.addEventListener('click', () => {
-				detailBox.insertAdjacentHTML("beforeend", menuTable1);
-				numbering();
-				imageLoad();
-			})
+// // 			왼쪽사진내용추가 버튼 이벤트
+// 			addLeft.addEventListener('click', () => {
+// 				detailBox.insertAdjacentHTML("beforeend", menuTable1);
+// 				numbering();
+// 				imageLoad();
+// 			})
 			
-// 			오른쪽사진내용추가 버튼 이벤트
-			addRight.addEventListener('click', () => {
-				detailBox.insertAdjacentHTML("beforeend", menuTable2);
-				numbering();
-				imageLoad();
-			})
+// // 			오른쪽사진내용추가 버튼 이벤트
+// 			addRight.addEventListener('click', () => {
+// 				detailBox.insertAdjacentHTML("beforeend", menuTable2);
+// 				numbering();
+// 				imageLoad();
+// 			})
 		}
 		
 // 		가격 계산 함수

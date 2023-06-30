@@ -15,8 +15,8 @@
 </head>
 
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="mainBox d-inline-block align-top mt-5" style="width: 900px;">
+	<%@ include file="../common/top.jsp" %>
+	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-2">매출관리</h4>
 		<h5 class="mb-4 mb-2">일일 매출 현황</h5>
 		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>

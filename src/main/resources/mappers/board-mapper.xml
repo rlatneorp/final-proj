@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardMapper">
+
+	<select id="getFreeBoardListCount" resultType="_int">
+		select count(*)
+		from board
+                join users using(users_no)
+		where board_type = 0 and board_status = 'Y'
+	</select>
+
+	<select id="freeBoardView" resultMap="BoardResultSet">
+		select *
+		from board
+                join users using(users_no)
+		where board_type = 0 and board_status = 'Y'
+	</select>
+	
+	<resultMap id="BoardResultSet" type="Board">
+		<id column="BOARD_NO" property="boardNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_DATE" property="boardDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		<result column="BOARD_TYPE" property="boardType"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="REVIEW_NO" property="reviewNo"/>
+		<result column="REVIEW_TITLE" property="reviewTitle"/>
+		<result column="REVIEW_CONTENT" property="reviewContent"/>
+		<result column="REVIEW_SCORE" property="reviewScore"/>
+		<result column="REVIEW_STATUS" property="reviewStatus"/>
+		<result column="REVIEW_DATE" property="reviewDate"/>
+		<result column="REVIEW_WRITER" property="reviewWriter"/>
+	</resultMap>
+	
+	<resultMap type="Review" id="reviewResultSet">
+		<id column="review_No" property="reviewNo"/>
+		<result column="orderNo" property="orderNo" />
+		<result column="review_no" property="reviewNo" />
+		<result column="review_title" property="reviewTitle" />
+		<result column="review_content" property="reviewContent" />
+		<result column="review_score" property="reviewScore" />
+		<result column="review_status" property="reviewStatus" />
+	</resultMap>
+	
+	<update id="addCount">
+		update board
+		set board_count = board_count + 1
+		where board_no = #{bId}
+	</update>
+	
+	<select id="selectBoard" resultMap="BoardResultSet">
+		select *
+		from board
+			join users using(users_no)
+		where board_type = 0 and board_status = 'Y' and board_no = #{bId}	
+	</select>
+	
+	
+	<insert id="insertReply">
+		insert into review
+		values(#{productNo}, -1, seq_review_no.nextval, null, #{reviewContent}, 0, default, sysdate, #{reviewWriter})
+		
+	</insert>
+
+	<select id="selectReply" resultMap="BoardResultSet">
+		select *
+		from review
+			left join users on(review_writer = users_id)
+		where product_no = #{bId} and review_status = 'Y'
+		order by review_date
+	</select>
+	
+	<update id="replyDelete">
+		update review
+		set review_status = 'N'
+		where review_writer = #{reviewWriter}
+			and review_no = #{reviewNo}	
+			and product_no = #{productNo}	
+			and order_no = -1
+	</update>
+	
+	<update id="reReply">
+		update review
+		set review_content = #{reviewContent}
+		where review_writer = #{reviewWriter}
+			and review_no = #{reviewNo}
+			and product_no = #{productNo}
+			and review_status = 'Y'
+			and order_no = -1
+	</update>
+	
+	
+	
+	
+</mapper>

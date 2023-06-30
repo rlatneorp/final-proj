@@ -12,8 +12,9 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/adminSidebar.jsp"/>
-	<div class="mainBox d-inline-block align-top my-5 p-4 ps-5 rounded" style="width: 900px; height:1000px; border: 2px solid rgba(0,0,0,0.1);">
+	<%@ include file="../common/top.jsp" %>
+	
+	<div class="mainBox d-inline-block align-top p-4 ps-5 rounded" style="height:1000px; border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">식재료관리</h4>
 		
 		<form action="${contextPath}/adminIngredientUpdate.ad" method="post" enctype="multipart/form-data">
@@ -75,7 +76,7 @@
 				
 				<div class="col-6 ps-5">
 					<div class="border" style="margin-top:56px; width:360px; height:270px;">
-						<img class="previewImage" width="360px" height="270px" src="${contextPath}/resources/uploadFiles/${img.imageRenameName}">
+						<img class="previewImage" width="360px" height="270px" src="${contextPath}/resources/uploadFiles/${img[0].imageRenameName}">
 					</div>
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 					<input type="hidden" name="imageChange" value="N">

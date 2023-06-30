@@ -94,6 +94,7 @@
 <form action="updateRecipe.rc" method="post" enctype="multipart/form-data">
 	<input type="hidden" value="${recipe.foodNo }" name="foodNo">
 	<input type="hidden" value="${recipe.usersId}" name="usersId">
+	<input type="hidden" value="${page}" name="page">
 	<div id="mainBox">
 		<div id="contentBox">
 			<div id="thumImg" class="d-inline-block">
@@ -190,6 +191,8 @@
 									</span>
 									<input type="file" accept="image/*" class="form-control form-control-lg" name="orderFile" onchange="orderImage(this)" disabled>
 									<img class="orderImgPreview" src="${contextPath}/resources/uploadFiles/${oList.recipeRenameName}">
+									<input type="hidden" name="recipeOriginalName" value="${oList.recipeOriginalName}">
+									<input type="hidden" name="recipeRenameName" value="${oList.recipeRenameName}">
 								</div>
 							</div>
 						</div>
@@ -276,8 +279,8 @@
 	</div>
 	
 	<div id="buttonBox">
-		<button type="button" id="can">취소</button> <!-- 뒤로 가기 추가 -->
 		<button type="submit" id="sub">수정</button>
+		<button type="button" id="can" onclick="history.back()">취소</button> <!-- 뒤로 가기 추가 -->
 	</div>
 </form>
 

@@ -8,12 +8,211 @@
 	</insert>
 	
 	<select id="login" resultMap="usersResultSet">
-		select *
+		select users_no, users_id, users_pw, users_name, nickname, email, phone, enroll_date, exit_date, status, 
+			   check_day, point, is_admin, users_address, users_selfintro, image_renamename, social_profile_img
 		from users
+		     left join image on(users_no = image_divide_no)
+		     left join social_login on (users_id = social_id)
 		where users_id = #{usersId} and status = 'Y'
 	</select>
+
+	<select id="checkId" resultType="_int">
+		select count(*) from users
+		where users_id = #{id}
+	</select>
 	
-	<resultMap type="kh.finalproj.hollosekki.enroll.model.vo.Users" id="usersResultSet">
+	<select id="checkNickName" resultType="_int">
+		select count(*) from users
+		where nickName = #{nickName}
+	</select>
+	
+	<select id="checkEmail" resultType="_int">
+		select count(*) from users
+		where email = #{email}
+	</select>
+	
+	<select id="findIdResult" resultMap="usersResultSet">
+		select * from users
+		where users_name = #{name} and email = #{email}
+	</select>
+	
+	<select id="findPwdCheck" resultType="_int">
+		select count(*) from users
+		where users_id = #{id} and email = #{email}
+	</select>
+	
+	<update id="updatePwdResult">
+		update users set users_pw = #{usersPwd} where users_id=#{id}
+	</update>
+	
+	<select id="socialLogin" resultMap="socialResultSet">
+		select * from social_login
+		where social_id=#{id}
+	</select>
+	
+	<insert id="socialInsertUser">
+		insert into social_login
+		values(#{socialId}, #{socialProfileImg})
+	</insert>
+	
+	<select id="socialLoginUpdate" resultMap="usersResultSet">
+		select * from users
+		where users_id = #{id} and status = 'Y'
+	</select>
+	
+	<update id="socialInfoUpdate">
+		update social_login set social_profile_img = #{profileImg}
+		where social_id=#{id}
+	</update>
+	
+	<update id="socialInfoUpdate2">
+		update users set users_name = #{name}, nickname = #{nickName}
+		where users_id = #{id}
+	</update>
+	
+	<select id="recipeList" resultMap="recipeResultSet">
+		select * from recipe
+		where users_no=#{usersNo} and recipe_status = 'Y'
+		order by food_no desc
+	</select>
+	
+	<select id="recipeImageList" resultMap="imageResultSet">
+		select * from image
+		where image_divide_no = #{ foodNo } and image_level = 0
+		order by image_no desc
+	</select>
+	
+	<select id="bookMarkList" resultMap="bookmarkResultSet">
+		select * from bookmark
+		where users_no = #{usersNo}
+	</select>
+	
+	<select id="menuList" resultMap="menuResultSet">
+		select * from menu
+		order by product_no desc
+	</select>
+	
+	<select id="follow" resultType="_int">
+		select count(*) from follow
+		where following_user_no = #{usersNo}
+	</select>
+	
+	<select id="following" resultType="_int">
+		select count(*) from follow
+		where users_no = #{usersNo}
+	</select>
+	
+	<select id="menuImageList" resultMap="imageResultSet">
+		select * from image
+		where image_type=4
+		order by image_no desc
+	</select>
+	
+	<select id="productList" resultMap="productResultSet">
+		select * from product
+		where product_status = 'Y'
+		order by product_no desc
+	</select>
+	
+	<select id="AllUsersList" resultMap="usersResultSet">
+		select * from users
+		where status = 'Y'
+	</select>
+	
+	<select id="allRecipeList" resultMap="recipeResultSet">
+		select * from recipe
+		where recipe_status = 'Y'
+	</select>
+	
+	<select id="allRecipeImageList" resultMap="imageResultSet">
+		select * from image
+		where image_type=2 and image_level=0
+		order by image_no desc
+	</select>
+	
+	<select id="followList" resultType="map">
+		select *
+		from follow
+			 left join users on(following_user_no = users.users_no)
+			 left join image on(following_user_no = image.image_divide_no)
+			 left join social_login on(users.users_id = social_login.social_id)
+		where follow.users_no = #{usersNo}
+		order by follow_create_date desc
+	</select>
+	
+	<select id="followingLsit" resultType="map">
+		select *
+		from follow
+			 left join users on(follow.users_no = users.users_no)
+    		 left join image on(follow.users_no = image.image_divide_no)
+     		 left join social_login on(users.users_id = social_login.social_id)
+		where following_user_no = #{usersNo}
+		order by follow_create_date desc
+	</select>
+	
+	<select id="loginUserFollowingList" resultType="map">
+		select *
+		from follow
+			 left join users on(users.users_no = following_user_no)
+		where follow.users_no = #{usersNo}
+		order by follow_create_date desc
+	</select>
+	
+	<select id="recipeBookMarkList" resultMap="recipeResultSet">
+		select * 
+		from bookmark
+			 join recipe on(bookmark.division_no = recipe.food_no)
+		where bookmark.users_no = ${ usersNo } and number_type = 1
+	</select>
+	
+	<select id="menuBookMarkList" resultType="_int">
+		select count(*) from bookmark
+		where users_no = ${ usersNo } and number_type = 2
+	</select>
+	
+	<select id="boardList" resultMap="BoardResultSet">
+		select * from board
+		where users_No = #{ usersNo } and board_status = 'Y'
+	</select>
+	
+	<select id="reviewList" resultMap="reviewResultSet">
+		select *
+		from review
+			 join recipe on(review.product_no = recipe.food_no)
+		where review_writer = #{usersId} and review_status = 'Y'
+	</select>
+	
+	<select id="menuReviewList" resultType="map">
+		select *
+		from review
+			 join menu on(review.product_no = menu.product_no)
+		where review_writer = #{usersId} and review_status = 'Y'
+	</select>
+	
+	<select id="replyList" resultMap="reviewResultSet">
+		select * from review
+		where order_no = '-1' and review_status = 'Y'
+		order by review_no desc
+	</select>
+	
+	<select id="allBoardList" resultMap="BoardResultSet">
+		select * from board
+		where board_status = 'Y'
+		order by board_no desc
+	</select>
+	
+<!-- 	<select id="userReplyList" resultMap="reviewResultSet"> -->
+<!-- 		select * from review -->
+<!-- 		where review_writer = #{nickName} and review_status = 'Y' and order_no = '-1' -->
+<!-- 	</select> -->
+
+	<select id="userReplyList" resultMap="reviewResultSet">
+		select * 
+		from review
+		where review_writer = #{nickName} and review_status = 'Y' and order_no = '-1'
+	</select>
+	
+	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>
 		<result column="USERS_PW" property="usersPw"/>
@@ -31,80 +230,14 @@
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 		<result column="USERS_ADDRESS" property="usersAddress"/>
 		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
+		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
+		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
 	</resultMap>
-	
-	<select id="checkId" resultType="_int">
-		select count(*)
-		from users
-		where users_id = #{id}
-	</select>
-	
-	<select id="checkNickName" resultType="_int">
-		select count(*)
-		from users
-		where nickName = #{nickName}
-	</select>
-	
-	<select id="checkEmail" resultType="_int">
-		select count(*)
-		from users
-		where email = #{email}
-	</select>
-	
-	<select id="findIdResult" resultMap="usersResultSet">
-		select *
-		from users
-		where users_name = #{name} and email = #{email}
-	</select>
-	
-	<select id="findPwdCheck" resultType="_int">
-		select count(*)
-		from users
-		where users_id = #{id} and email = #{email}
-	</select>
-	
-	<update id="updatePwdResult">
-		update users set users_pw = #{usersPwd} where users_id=#{id}
-	</update>
-	
-	<select id="socialLogin" resultMap="socialResultSet">
-		select *
-		from social_login
-		where social_id=#{id}
-	</select>
-	
+		
 	<resultMap type="SocialLogin" id="socialResultSet">
 		<id column="SOCIAL_ID" property="socialId"/>
 		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
 	</resultMap>
-	
-	<insert id="socialInsertUser">
-		insert into social_login
-		values(#{socialId}, #{socialProfileImg})
-	</insert>
-	
-	<select id="socialLoginUpdate" resultMap="usersResultSet">
-		select *
-		from users
-		where users_id = #{id} and status = 'Y'
-	</select>
-	
-	<update id="socialInfoUpdate">
-		update social_login set social_profile_img = #{profileImg}
-		where social_id=#{id}
-	</update>
-	
-	<update id="socialInfoUpdate2">
-		update users set users_name = #{name}, nickname = #{name}
-		where users_id = #{id}
-	</update>
-	
-	<select id="recipeList" resultMap="recipeResultSet">
-		select *
-		from recipe
-		where users_no=#{usersNo} and recipe_status = 'Y'
-		order by food_no desc
-	</select>
 	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
@@ -122,13 +255,6 @@
 		<result column="RECIPE_STATUS" property="recipeStatus"/>
 	</resultMap>
 	
-	<select id="recipeImageList" resultMap="imageResultSet">
-		select *
-		from image
-		where image_divide_no = ${ foodNo } and image_level = 0
-		order by image_no desc
-	</select>
-	
 	<resultMap type="Image" id="imageResultSet">
 		<id column="IMAGE_NO" property="imageNo"/>
 		<result column="IMAGE_DIVIDE_NO" property="imageDivideNo"/>
@@ -139,12 +265,6 @@
 		<result column="IMAGE_LEVEL" property="imageLevel"/>
 	</resultMap>
 	
-	<select id="bookMarkList" resultMap="bookmarkResultSet">
-		select *
-		from bookmark
-		where users_no = ${usersNo}
-	</select>
-	
 	<resultMap type="BookMark" id="bookmarkResultSet">
 		<id column="BOOKMARK_NO" property="bookmarkNo"></id>
 		<result column="USERS_NO" property="usersNo"/>
@@ -152,16 +272,57 @@
 		<result column="NUMBER_TYPE" property="numberType"/>
 	</resultMap>
 	
-	<select id="menuList" resultMap="menuResultSet">
-		select *
-		from menu
-		order by product_no desc
-	</select>
-	
 	<resultMap type="Menu" id="menuResultSet">
-		<id column="PRODUCT_NO" property="productNo"/>
+		<id column="PRODUCT_NO" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>
 		<result column="MENU_TYPE" property="menuType"/>
 		<result column="MENU_CONTENT" property="menuContent"/>
+		<result column="MENU_KIND" property="menuKind"/>
+		<result column="MENU_NO" property="menuNo"/>
+	</resultMap>
+	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="PRODUCT_PRICE" property="productPrice"/>
+		<result column="PRODUCT_OPTION" property="productOption"/>
+		<result column="PRODUCT_STOCK" property="productStock"/>
+		<result column="PRODUCT_CREATE_DATE" property="productCreateDate"/>
+		<result column="PRODUCT_MODIFY_DATE" property="productModifyDate"/>
+		<result column="PRODUCT_SALE" property="productSale"/>
+		<result column="PRODUCT_COUNT" property="productCount"/>
+		<result column="PRODUCT_STATUS" property="productStatus"/>
+		<result column="USERS_NO" property="usersNo"/>
+	</resultMap>
+	
+	<resultMap type="Follow" id="followResultSet">
+		<id column="FOLLOW_NO" property="followNo"/>
+		<result column="FOLLOWING_USER_NO" property="followingUsersNo"/>
+		<result column="FOLLOW_CREATE_DATE" property="followCreateDate"/>
+		<result column="USERS_NO" property="usersNo"/>
+	</resultMap>
+	
+	<resultMap type="Board" id="BoardResultSet">
+		<id column="BOARD_NO" property="boardNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_DATE" property="boardDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		<result column="BOARD_TYPE" property="boardType"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+	</resultMap>
+	
+	<resultMap type="Review" id="reviewResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo" />
+		<result column="REVIEW_NO" property="reviewNo" />
+		<result column="REVIEW_TITLE" property="reviewTitle" />
+		<result column="REVIEW_CONTENT" property="reviewContent" />
+		<result column="REVIEW_SCORE" property="reviewScore" />
+		<result column="REVIEW_STATUS" property="reviewStatus" />
+		<result column="REVIEW_DATE" property="reviewDate" />
+		<result column="REVIEW_WRITER" property="reviewWriter" />
 	</resultMap>
 </mapper>

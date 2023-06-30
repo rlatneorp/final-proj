@@ -1,270 +1,534 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="marketMapper">
-	<update id="attendanceCheck">
-		update users
-		set attendance_date = #{attendanceDate}
-		where users_id = #{uId}
-	</update>
-	
-	<update id="aDateCheck">
-		update users
-		set check_day = (select count(dateStr)
-		                from attendance
-		                where users_id = #{u.usersId})
-		where users_id = #{u.usersId}
-	</update>
-	
-	<select id="sendPoint" resultMap="UsersResultSet">
-		select point
-		from users
-		where users_id = #{usersId}
-	</select>
-	
-	<select id="atTodayChecked" resultType="_int">
-		 select count(*)
-		 from attendance
-		 where users_id = #{usersId}
-		 	   and dateStr = checked
-		 	   and dateStr = to_char(sysdate, 'YYYY-MM-DD')
-	</select>
-	
-	
-	<resultMap type="Users" id="UsersResultSet">
-		<id column="USERS_NO" property="usersNo"/>
-		<result column="USERS_ID" property="usersId"/>
-		<result column="USERS_PW" property="usersPw"/>
-		<result column="USERS_NAME" property="usersName"/>
-		<result column="NICKNAME" property="nickname"/>
-		<result column="EMAIL" property="email"/>
-		<result column="PHONE" property="phone"/>
-		<result column="ENROLL_DATE" property="enrollDate"/>
-		<result column="EXIT_DATE" property="exitDate"/>
-		<result column="STATUS" property="status"/>
-		<result column="CHECK_DAY" property="checkDay"/>
-		<result column="POINT" property="point"/>
-		<result column="IS_ADMIN" property="isAdmin"/>
-		<result column="ATTENDANCE_DATE" property="attendanceDate"/>
-		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
-	</resultMap>
-	
-	<insert id="atInsert">
-	    insert into attendance (USERS_ID, DATE1, DATESTR, CHECKED, TITLE)
-	    values (#{u.usersId}, #{at.date}, #{at.dateStr}, to_char(sysdate, 'YYYY-MM-DD'), #{at.title})
-	</insert>
-	
-	
-	<insert id="insertShipping">
-  		insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
-  		values (#{usersNo}, #{recipient}, #{address}, #{homePhone}, #{phone}, SEQ_SHIPPING_ADDRESS.nextval, #{shippingName})
-	</insert>
-	
-	<insert id="insertCart">
-		INSERT INTO CART
-		VALUES (SEQ_CART_NO.NEXTVAL, ${usersNo}, ${pNo}, ${pOption}, ${cartCount}, null )
-	</insert>
-	
-	<select id="allAt" resultMap="AttendanceResultSet">
-		select
-		    *
-		from
-		    attendance
-		where
-		    users_id = #{usersId}
-	</select>
-	
-	<resultMap type="Attendance" id="AttendanceResultSet">
-		<id column="USERS_ID" property="usersId"/>
-		<result column="DATE1" property="date"/>
-		<result column="DATESTR" property="dateStr"/>
-		<result column="CHECKED" property="checked"/>
-		<result column="TITLE" property="title"/>
-		<result column="POINT" property="point"/>
-	</resultMap>
-	
-	<update id="gettedPoint">
-		update users
-		set point = #{u.point} + 10
-		where users_id = #{u.usersId}
-	</update>
-	
-	<update id="getMonthPoint">
-		update users
-		set point = #{u.point} + 1000
-		where users_id in (select users_id
+   <update id="aDateCheck">
+      update users
+      set check_day = (select count(dateStr)
+                      from attendance
+                      where users_id = #{u.usersId} and
+                         substr(dateStr,6,2) = to_char(last_day(sysdate),'MM'))
+      where users_id = #{u.usersId}
+   </update>
+   
+   <select id="sendPoint" resultMap="UsersResultSet">
+      select point
+      from users
+      where users_id = #{usersId}
+   </select>
+   
+   <select id="atTodayChecked" resultType="_int">
+       select count(*)
+       from attendance
+       where users_id = #{usersId}
+             and dateStr = checked
+             and dateStr = to_char(sysdate, 'YYYY-MM-DD')
+   </select>
+   
+   <resultMap type="Users" id="UsersResultSet">
+      <id column="USERS_NO" property="usersNo"/>
+      <result column="USERS_ID" property="usersId"/>
+      <result column="USERS_PW" property="usersPw"/>
+      <result column="USERS_NAME" property="usersName"/>
+      <result column="NICKNAME" property="nickname"/>
+      <result column="EMAIL" property="email"/>
+      <result column="PHONE" property="phone"/>
+      <result column="ENROLL_DATE" property="enrollDate"/>
+      <result column="EXIT_DATE" property="exitDate"/>
+      <result column="STATUS" property="status"/>
+      <result column="CHECK_DAY" property="checkDay"/>
+      <result column="POINT" property="point"/>
+      <result column="IS_ADMIN" property="isAdmin"/>
+      <result column="ATTENDANCE_DATE" property="attendanceDate"/>
+      <result column="ATTENDANCE_DAY" property="attendanceDay"/>
+   </resultMap>
+   
+   <insert id="atInsert">
+       insert into attendance (USERS_ID, DATE1, DATESTR, CHECKED, TITLE)
+       values (#{u.usersId}, #{at.date}, #{at.dateStr}, to_char(sysdate, 'YYYY-MM-DD'), #{at.title})
+   </insert>
+   
+   
+   <insert id="insertShipping">
+        insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
+        values (#{usersNo}, #{recipient}, #{address}, #{homePhone}, #{phone}, SEQ_SHIPPING_ADDRESS.nextval, #{shippingName})
+   </insert>
+
+   
+   <select id="allAt" resultMap="AttendanceResultSet">
+      select
+          *
+      from
+          attendance
+      where
+          users_id = #{usersId}
+   </select>
+   
+   <resultMap type="Attendance" id="AttendanceResultSet">
+      <id column="USERS_ID" property="usersId"/>
+      <result column="DATE1" property="date"/>
+      <result column="DATESTR" property="dateStr"/>
+      <result column="CHECKED" property="checked"/>
+      <result column="TITLE" property="title"/>
+      <result column="POINT" property="point"/>
+   </resultMap>
+   
+   <update id="gettedPoint">
+      update users
+      set point = #{u.point} + 10
+      where users_id = #{u.usersId}
+   </update>
+   
+   <update id="getMonthPoint">
+      update users
+      set point = #{u.point} + 1000,
+         check_day = 0
+      where users_id in (select users_id
                           from attendance
-                          		join users using(users_id)
+                                join users using(users_id)
                           where dateStr = to_char(sysdate, 'YYYY-MM-DD')
                               and users_id = #{u.usersId}
                               and check_day = to_char(last_day(sysdate),'dd')
-	         				  and sysdate = last_day(sysdate))
-	           
-	</update>
-	
-<!-- 	<select id="selectShipping" resultMap="shipAddress"> -->
-<!-- 		select * -->
-<!-- 		from shipping_address -->
-<!-- 		where users_no = #{usersNo} -->
-<!-- 	</select> -->
-	
-<!-- 	<resultMap type="ShippingAddress" id="shipAddress"> -->
-<!-- 		<result column="USERS_NO" property="usersNo"/> -->
-<!-- 		<result column="RECIPIENT" property="recipient"/> -->
-<!-- 		<result column="ADDRESS" property="address"/> -->
-<!-- 		<result column="HOME_PHONE" property="homePhone"/> -->
-<!-- 		<result column="PHONE" property="phone"/> -->
-<!-- 		<result column="SHIPPING_NO" property="shippingNo"/> -->
-<!-- 		<result column="SHIPPING_NAME" property="shippingName"/> -->
-		
-<!-- 	</resultMap> -->
-	
-	<select id="selectShipping" resultMap="shipAddress">
+                          and sysdate = last_day(sysdate))
+   </update>
+
+<!--    <select id="selectShipping" resultMap="shipAddress"> -->
+<!--       select * -->
+<!--       from shipping_address -->
+<!--       where users_no = #{usersNo} -->
+<!--    </select> -->
+   
+<!--    <resultMap type="ShippingAddress" id="shipAddress"> -->
+<!--       <result column="USERS_NO" property="usersNo"/> -->
+<!--       <result column="RECIPIENT" property="recipient"/> -->
+<!--       <result column="ADDRESS" property="address"/> -->
+<!--       <result column="HOME_PHONE" property="homePhone"/> -->
+<!--       <result column="PHONE" property="phone"/> -->
+<!--       <result column="SHIPPING_NO" property="shippingNo"/> -->
+<!--       <result column="SHIPPING_NAME" property="shippingName"/> -->
+      
+<!--    </resultMap> -->
+   
+   <select id="selectShipping" resultMap="shipAddress">
+      select *
+      from shipping_address
+      where users_no = #{usersNo}
+      order by shipping_no desc
+   </select>
+   
+   <resultMap type="ShippingAddress" id="shipAddress">
+      <result column="USERS_NO" property="usersNo"/>
+      <result column="RECIPIENT" property="recipient"/>
+      <result column="ADDRESS" property="address"/>
+      <result column="HOME_PHONE" property="homePhone"/>
+      <result column="PHONE" property="phone"/>
+      <result column="SHIPPING_NO" property="shippingNo"/>
+      <result column="SHIPPING_NAME" property="shippingName"/>
+   </resultMap>
+   
+   <select id="selectCartList" resultMap="cartList">
+      SELECT *
+      FROM cart
+      LEFT JOIN product on (cart.product_no = product.product_no)
+      WHERE cart.users_no = #{usersNo} AND product.PRODUCT_STATUS = 'Y'
+      ORDER BY cart.product_no
+   </select>
+   
+<!--    <select id="selectCartList" resultMap="cartList"> -->
+<!--       select * from cart where users_no = #{usersNo} -->
+<!--    </select> -->
+   
+   <resultMap type="Cart" id="cartList">
+      <id column="CART_NO" property="cartNo"/>
+      <result column="USERS_NO" property="usersNo"/>
+      <result column="PRODUCT_NO" property="productNo"/>
+      <result column="PRODUCT_OPTION" property="productOption"/>
+      <result column="CART_COUNT" property="cartCount"/>
+      <result column="PRE_ORDER_NO" property="preorderNo"/>
+   </resultMap>
+   
+   <resultMap type="Options" id="optionsList">
+      <id column="OPTION_NO" property="optionNo"/>
+      <result column="PRODUCT_NO" property="productNo"/>
+      <result column="OPTION_NAME" property="optionName"/>
+      <result column="OPTION_VALUE" property="optionValue"/>
+   </resultMap>
+   
+   <resultMap type="MarketProduct" id="productList">
+      <id column="PRODUCT_NO" property="productNo"/>
+      <result column="PRODUCT_TYPE" property="productType"/>
+      <result column="PRODUCT_PRICE" property="productPrice"/>
+      <result column="PRODUCT_OPTION" property="productOption"/>
+      <result column="PRODUCT_STOCK" property="productStock"/>
+      <result column="PRODUCT_CREATE_DATE" property="productCreateDate"/>
+      <result column="PRODUCT_MODIFY_DATE" property="productModifyDate"/>
+      <result column="PRODUCT_SALE" property="productSale"/>
+      <result column="PRODUCT_COUNT" property="productCount"/>
+      <result column="PRODUCT_STATUS" property="productStatus"/>
+   </resultMap>
+   
+   <resultMap type="Food" id="foodInfo">
+      <result column="PRODUCT_NO" property="productNo"/>
+      <result column="FOOD_NAME" property="foodName"/>
+      <result column="FOOD_KIND" property="foodKind"/>
+      <result column="FOOD_TYPE" property="foodType"/>
+   </resultMap>
+   
+   <resultMap type="Tool" id="toolInfo">
+      <result column="PRODUCT_NO" property="productNo"/>
+      <result column="TOOL_NAME" property="toolName"/>
+      <result column="TOOL_TYPE" property="toolType"/>
+      <result column="TOOL_CONTENT" property="toolContent"/>
+   </resultMap>
+   
+   <resultMap type="Ingredient" id="ingredientInfo">
+      <result column="INGREDIENT_NO" property="ingredientNo"/>
+      <result column="PRODUCT_NO" property="productNo"/>
+      <result column="INGREDIENT_NAME" property="ingredientName"/>
+      <result column="INGREDIENT_TYPE" property="ingredientType"/>
+      <result column="INGREDIENT_STATUS" property="ingredientStatus"/>
+   </resultMap>
+   
+   <select id="selectFood" resultMap="foodInfo">
+      select * from food where product_no = #{productNo}
+   </select>
+   
+   <select id="selectProductInfo" resultMap="productList">
+      select * from product where product_no = #{productNo}
+   </select>
+   
+   <select id="selectTool" resultMap="toolInfo">
+      select * from tool where product_no = #{productNo}
+   </select>
+   
+   <select id="selectIngrdient" resultMap="ingredientInfo">
+      select * from ingredient where product_no = #{productNo}
+   </select>
+   
+   <delete id="delBasket">
+      delete from cart where product_no = #{productNo}
+   </delete>
+   
+   <update id="plusCount">
+      update cart set cart_count = cart_count + 1 
+      where product_no = #{productNo}
+   </update>
+   
+   <select id="plusResultCount" resultType="_int">
+      <![CDATA[
+      SELECT cart_count
+      FROM (
+          SELECT cart_count
+          FROM cart
+          WHERE product_no = #{productNo}
+      )
+      WHERE ROWNUM = 1
+       ]]>
+   </select>
+   
+   <update id="minusCount">
+      update cart set cart_count = cart_count - 1 
+      where product_no = #{productNo}
+   </update>
+   
+   <select id="checkCartList" resultMap="cartList">
+      select * from cart where users_no = #{usersNo} and pre_order_no = #{preorderNo}
+   </select>
+   
+   <select id="selectOptions" resultMap="optionsList">
+      select * from options where option_no = #{optionNo} and product_no = #{productNo}
+   </select>
+   
+   <select id="selectOptionsSet" resultMap="optionsList">
+         select *
+      from (select *
+           from options
+           order by option_no)
+      where product_no = #{productNo}
+   </select>
+   
+   <select id="updateOptionNo" resultType="_int">
+      update cart set product_option = #{productOption} where product_no = #{productNo}
+   </select>
+   
+   <select id="selectOptionNo" resultMap="cartList">
+      select * from cart where product_no = #{productNo} and users_no = #{usersNo} and pre_order_no = #{preorderNo}
+   </select>
+   
+   <select id="selectOptionInfo" resultMap="optionsList">
+      select * from options where option_no = #{productOption} and product_no = #{productNo}
+   </select>
+   
+   <select id="selectProductSet" resultMap="productList">
+      select *
+      from product
+      where product_no = #{productNo}
+   </select>
+   
+<!--    <select   id="selectReview" resultMap ="reviewResultSet"> -->
+<!--       select * from review where product_no = #{productNo} -->
+<!--    </select> -->
+   
+   
+   
+   <insert id="insertCart">
+      <if test="preorderNo == 0">
+         insert all 
+         into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, seq_pre_no.nextval)
+           into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, seq_pre_no.currval)
+           select * from dual
+      </if>
+      <selectKey keyProperty="preorderNo" resultType="int" order="AFTER" >
+         select seq_pre_no.currval from dual
+      </selectKey>
+        <if test="preorderNo != 0">
+           insert all 
+         into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, #{preorderNo})
+           into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, #{preorderNo})
+           select * from dual
+        </if>   
+   </insert>
+   
+   
+   <select id="selectShippingForUpdate" resultMap="shipAddress">
+      select * from shipping_address where shipping_no = #{shippingNo}
+   </select>
+   
+   <update id="updateConfirmShipping">
+      update shipping_address set
+      RECIPIENT=#{recipient}, ADDRESS=#{address}, PHONE=#{phone}, SHIPPING_NAME=#{shippingName}
+      where SHIPPING_NO = #{shippingNo}
+   </update>
+   
+   <select id="selectChecShip" resultMap="shipAddress">
+      select * from shipping_address where shipping_no = #{shippingNo}
+   </select>
+   
+   <!-- productNo에 대한 menu 조회  -->
+   <select id="selectMenu" resultMap="menuInfo">
+      select * from menu where product_no = #{productNo}
+   </select>
+   
+   <resultMap type="Menu" id="menuInfo">
+      <result column="PRODUCT_NO" property="foodProductNo"/>
+      <result column="MENU_NAME" property="menuName"/>
+      <result column="MENU_TYPE" property="menuType"/>
+      <result column="MENU_CONTENT" property="menuContent"/>
+   </resultMap>
+   
+   <insert id="insertImage">
+      insert into image(image_no, image_divide_no, image_type, image_originalname, image_renamename, image_path, image_level)
+      values(seq_image_no.nextval, #{imageDivideNo}, #{imageType}, #{imageOriginalName}, #{imageRenameName}, #{imagePath}, #{imageLevel})
+   </insert>
+   
+   
+   <resultMap type="Image" id="imageResultSet">
+      <id column="image_no" property="imageNo"/>
+      <result column="image_divide_no" property="imageDivideNo"/>
+      <result column="image_type" property="imageType"/>
+      <result column="image_originalname" property="imageOriginalName"/>
+      <result column="image_renamename" property="imageRenameName"/>
+      <result column="image_path" property="imagePath"/>
+      <result column="image_level" property="imageLevel"/>
+   </resultMap>
+   
+   
+      <resultMap type="Review" id="reviewResultSet">
+      <id column="PRODUCT_NO" property="productNo"/>
+      <result column="ORDER_NO" property="orderNo"/>
+      <result column="REVIEW_NO" property="reviewNo"/>
+      <result column="REVIEW_TITLE" property="reviewTitle"/>
+      <result column="REVIEW_CONTENT" property="reviewContent"/>
+      <result column="REVIEW_SCORE" property="reviewScore"/>
+      <result column="REVIEW_STATUS" property="reviewStatus"/>
+      <result column="REVIEW_DATE" property="reviewDate"/>
+      <result column="REVIEW_WRITER" property="reviewWriter"/>
+      
+      <result column="image_divide_no" property="imageDivideNo"/>
+      <result column="image_type" property="imageType"/>
+      <result column="image_originalname" property="imageOriginalName"/>
+      <result column="image_renamename" property="imageRenameName"/>
+      <result column="image_path" property="imagePath"/>
+      <result column="image_level" property="imageLevel"/>
+   </resultMap>
+   
+   
+   <select id="selectReviewCount" resultType="int">
+      select count(*)
+      from review
+      where product_no = #{productNo}      
+   </select>
+   
+   <select id="selectImagList" resultMap="imageResultSet">
 		select *
-		from shipping_address
-		where users_no = #{usersNo}
+		from (select *
+			  from image
+			  order by image_no asc)	
+		where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+		<if test="imageLevel != -1">
+			  and image_level = #{imageLevel}
+			  </if>
 	</select>
 	
-	<resultMap type="ShippingAddress" id="shipAddress">
-		<result column="USERS_NO" property="usersNo"/>
-		<result column="RECIPIENT" property="recipient"/>
-		<result column="ADDRESS" property="address"/>
-		<result column="HOME_PHONE" property="homePhone"/>
-		<result column="PHONE" property="phone"/>
-		<result column="SHIPPING_NO" property="shippingNo"/>
-		<result column="SHIPPING_NAME" property="shippingName"/>
-	</resultMap>
-	
-	<select id="selectCartList" resultMap="cartList">
-		SELECT *
-		FROM cart
-		LEFT JOIN product on (cart.product_no = product.product_no)
-		WHERE cart.users_no = #{usersNo} AND product.PRODUCT_STATUS = 'Y'
-		ORDER BY cart.product_no
-	</select>
-	
-<!-- 	<select id="selectCartList" resultMap="cartList"> -->
-<!-- 		select * from cart where users_no = #{usersNo} -->
-<!-- 	</select> -->
-	
-	<resultMap type="Cart" id="cartList">
-		<id column="CART_NO" property="cartNo"/>
-		<result column="USERS_NO" property="usersNo"/>
-		<result column="PRODUCT_NO" property="productNo"/>
-		<result column="PRODUCT_OPTION" property="productOption"/>
-		<result column="CART_COUNT" property="cartCount"/>
-		<result column="PRE_ORDER_NO" property="preorderNo"/>
-	</resultMap>
-	
-	<resultMap type="Options" id="optionsList">
-		<id column="OPTION_NO" property="optionNo"/>
-		<result column="PRODUCT_NO" property="productNo"/>
-		<result column="OPTION_NAME" property="optionName"/>
-		<result column="OPTION_VALUE" property="optionValue"/>
-	</resultMap>
-	
-	<resultMap type="MarketProduct" id="productList">
-		<id column="PRODUCT_NO" property="productNo"/>
-		<result column="PRODUCT_TYPE" property="productType"/>
-		<result column="PRODUCT_PRICE" property="productPrice"/>
-		<result column="PRODUCT_OPTION" property="productOption"/>
-		<result column="PRODUCT_STOCK" property="productStock"/>
-		<result column="PRODUCT_CREATE_DATE" property="productCreateDate"/>
-		<result column="PRODUCT_MODIFY_DATE" property="productModifyDate"/>
-		<result column="PRODUCT_SALE" property="productSale"/>
-		<result column="PRODUCT_COUNT" property="productCount"/>
-		<result column="PRODUCT_STATUS" property="productStatus"/>
-	</resultMap>
-	
-	<resultMap type="Food" id="foodInfo">
-		<result column="PRODUCT_NO" property="productNo"/>
-		<result column="FOOD_NAME" property="foodName"/>
-		<result column="FOOD_KIND" property="foodKind"/>
-		<result column="FOOD_TYPE" property="foodType"/>
-	</resultMap>
-	
-	<resultMap type="Tool" id="toolInfo">
-		<result column="PRODUCT_NO" property="productNo"/>
-		<result column="TOOL_NAME" property="toolName"/>
-		<result column="TOOL_TYPE" property="toolType"/>
-		<result column="TOOL_CONTENT" property="toolContent"/>
-	</resultMap>
-	
-	<resultMap type="Ingredient" id="ingredientInfo">
-		<result column="INGREDIENT_NO" property="ingredientNo"/>
-		<result column="PRODUCT_NO" property="productNo"/>
-		<result column="INGREDIENT_NAME" property="ingredientName"/>
-		<result column="INGREDIENT_TYPE" property="ingredientType"/>
-		<result column="INGREDIENT_STATUS" property="ingredientStatus"/>
-	</resultMap>
-	
-	<select id="selectFood" resultMap="foodInfo">
-		select * from food where product_no = #{productNo}
-	</select>
-	
-	<select id="selectProductInfo" resultMap="productList">
-		select * from product where product_no = #{productNo}
-	</select>
-	
-	<select id="selectTool" resultMap="toolInfo">
-		select * from tool where product_no = #{productNo}
-	</select>
-	
-	<select id="selectIngrdient" resultMap="ingredientInfo">
-		select * from ingredient where product_no = #{productNo}
-	</select>
-	
-	<delete id="delBasket">
-		delete from cart where product_no = #{productNo}
+	<!-- 배송지 삭제 -->
+	<delete id="delShipping">
+		DELETE FROM shipping_address
+		WHERE shipping_no = #{shippingNo}
 	</delete>
 	
-	<update id="plusCount">
-		update cart set cart_count = cart_count + 1 
-		where product_no = #{productNo}
-	</update>
-	
-	<select id="plusResultCount" resultType="_int">
-		<![CDATA[
-		SELECT cart_count
-		FROM (
-		    SELECT cart_count
-		    FROM cart
-		    WHERE product_no = #{productNo}
-		)
-		WHERE ROWNUM = 1
-		 ]]>
+   <insert  id="insertReview">
+      insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date, review_writer)
+      values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
+      <selectKey keyProperty="reviewNo" resultType="int" order="AFTER" >
+         select seq_review_no.currval from dual
+      </selectKey>
+   
+   </insert>
+   
+      <select id="selectImgList" resultMap="imageResultSet">
+        select *
+        from image join review on review_no = image_divide_no
+        where image_type = 7
+                  and product_no = #{productNo}	
+        order by review_no
 	</select>
-	
-	<update id="minusCount">
-		update cart set cart_count = cart_count - 1 
-		where product_no = #{productNo}
-	</update>
-	
-	<select id="checkCartList" resultMap="cartList">
-		select * from cart where users_no = #{usersNo} and pre_order_no = #{preorderNo}
-	</select>
-	
-	<select id="selectOptions" resultMap="optionsList">
-		select * from options where option_no = #{optionNo} and product_no = #{productNo}
-	</select>
-	
-	<select id="selectOptionsSet" resultMap="optionsList">
-		select * from options where product_no = #{productNo}
-	</select>
-	
-	<select id="updateOptionNo" resultType="_int">
-		update cart set product_option = #{productOption} where product_no = #{productNo}
-	</select>
-	
-	<select id="selectOptionNo" resultMap="cartList">
-		select * from cart where product_no = #{productNo} and users_no = #{usersNo} and pre_order_no = #{preorderNo}
-	</select>
-	
-	<select id="selectOptionInfo" resultMap="optionsList">
-		select * from options where option_no = #{productOption} and product_no = #{productNo}
-	</select>
-	
-	<select id="selectShippingForUpdate" resultMap="shipAddress">
-		select * from shipping_address where shipping_no = #{shippingNo}
-	</select>
-	
+   
+   <select id="reviewAvg" resultType="_int">
+	  select round(avg(review_Score))
+	  from review 
+	  where product_no = #{productNo}
+   </select>
+   
+   <select id="reviewAvgDesc" resultMap="reviewResultSet">
+   	  select *
+      from review
+      where product_no = #{productNo}
+      order by review_score desc, review_no desc
+   </select>
+   
+   <select id="reviewDesc" resultMap="reviewResultSet">
+   	  select *
+      from review
+      where product_no = #{productNo}
+      order by review_no desc
+   </select>
+   
+   
+   <select    id="selectReview" resultMap="reviewResultSet">
+      select *
+      from (select *
+           from review
+           order by review_date desc)   
+      where product_no = #{productNo}
+   </select>
+   
+   <select id="selectImageList" resultMap="imageResultSet">
+      select *
+      from (select *
+           from image
+           order by image_no asc)   
+      where image_divide_no = #{imageDivideNo} and image_type = #{imageType}
+      <if test="imageLevel != -1">
+           and image_level = #{imageLevel}
+      </if>
+   </select>
+   
+   
+   <!-- 포인트 조회  -->
+   <select id="selectPoint" resultType="_int">
+      select point from users where users_no = #{usersNo}
+   </select>
+   
+   <!-- 장바구니 상품에 대한 이미지 조회 -->
+   <select id="selectImg" resultType="String">
+      select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
+   </select>
+   
+   <select id="selectStock" resultType="_int">
+        select PRODUCT_STOCK from product where product_no = #{productNo}
+   </select>
+   
+   <!-- 결제 시 insert -->
+   <insert id="insertPay">
+        insert into orders (ORDER_NO, PRODUCT_NO, USERS_NO, PRODUCT_TYPE, ORDER_COUNT, ORDER_TOTAL_PRICE, ORDER_DATE, ORDER_STATUS, ORDER_ADDRESS, ORDER_STOCK, ORDER_DELIVERY_COMMENT,ORDER_INFO, SHIP_PRICE, OPTIONS )
+        values (SEQ_ORDER_NO.nextval, #{productNo}, #{usersNo}, #{productType}, #{orderCount}, #{totalPrice}, sysdate, default, #{orderAddress}, 'R', #{orderDeliveryComment}, #{orderInfo}, #{shipPrice}, #{options})
+   </insert>
+   
+   <update id="updatePoint">
+      update users
+      set point = #{point}
+      where users_id = #{usersId}
+   </update>
+   
+   <!-- 결제 후 장바구니에서 해당 상품 제거 -->
+   <delete id="deleteFromCart">
+   		DELETE FROM cart
+		WHERE PRE_ORDER_NO = #{preorderNo}
+   </delete>
+   
+   <select id="selectProductType" resultType="_int">
+   		select product_type from product where product_no = #{productNo}
+   </select>
+   
+   <select id="orderSearchCount" resultType="_int">
+		SELECT count(*)
+		FROM orders o
+		LEFT JOIN food f ON o.product_no = f.product_no
+		LEFT JOIN ingredient i ON o.product_no = i.product_no
+		LEFT JOIN menu m ON o.product_no = m.product_no
+		LEFT JOIN tool t ON o.product_no = t.product_no
+		WHERE o.users_no = #{usersNo} AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+   </select>
+   
+   <select id="orderSearchList" resultType="map">
+   		SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name
+		FROM orders o
+		LEFT JOIN food f ON o.product_no = f.product_no
+		LEFT JOIN ingredient i ON o.product_no = i.product_no
+		LEFT JOIN menu m ON o.product_no = m.product_no
+		LEFT JOIN tool t ON o.product_no = t.product_no
+		WHERE o.users_no = #{usersNo} AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+   </select>
+   
+   <select id="orderPeriodSearchCount" resultType="_int">
+   		<![CDATA[
+	   		SELECT count(*)
+			FROM orders o
+			LEFT JOIN food f ON o.product_no = f.product_no
+			LEFT JOIN ingredient i ON o.product_no = i.product_no
+			LEFT JOIN menu m ON o.product_no = m.product_no
+			LEFT JOIN tool t ON o.product_no = t.product_no
+			WHERE o.users_no = #{usersNo}
+			  AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+			  AND TRUNC(o.order_date) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(o.order_date) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+   		]]>
+   </select>
+   
+   <select id="orderPeriodSearchList" resultType="map">
+   		<![CDATA[
+	   		SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name
+			FROM orders o
+			LEFT JOIN food f ON o.product_no = f.product_no
+			LEFT JOIN ingredient i ON o.product_no = i.product_no
+			LEFT JOIN menu m ON o.product_no = m.product_no
+			LEFT JOIN tool t ON o.product_no = t.product_no
+			WHERE o.users_no = #{usersNo}
+			  AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+			  AND TRUNC(o.order_date) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(o.order_date) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+   		]]>
+   </select>
+   
+<!--    <select id="" resultType="map"> -->
+<!--    SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name -->
+<!-- 	FROM orders o -->
+<!-- 	LEFT JOIN food f ON o.product_no = f.product_no -->
+<!-- 	LEFT JOIN ingredient i ON o.product_no = i.product_no -->
+<!-- 	LEFT JOIN menu m ON o.product_no = m.product_no -->
+<!-- 	LEFT JOIN tool t ON o.product_no = t.product_no -->
+<!-- 	WHERE o.users_no = 23 -->
+<!-- 	  AND (f.food_name LIKE '%펜%' OR i.ingredient_name LIKE '%펜%' OR m.menu_name LIKE '%펜%' OR t.tool_name LIKE '%펜%') -->
+<!-- 	  AND TRUNC(o.order_date) >= TO_DATE('2023-05-30', 'YYYY-MM-DD') -->
+<!-- 	  AND TRUNC(o.order_date) <= TO_DATE('2023-06-29', 'YYYY-MM-DD') -->
+<!--   </select> -->
 </mapper>

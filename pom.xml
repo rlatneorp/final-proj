@@ -39,7 +39,17 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>	
-		
+<!-- 		<dependency> -->
+<!-- 		    <groupId>org.aspectj</groupId> -->
+<!-- 		    <artifactId>aspectjrt</artifactId> -->
+<!-- 		    <version>1.8.6</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+	    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.8.6</version>
+		</dependency>
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -253,9 +263,24 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.12.3</version>
 		</dependency>
-		        
+		 
+		<!-- 아임포트 REST API연동 모듈 -->
+		<dependency>
+		    <groupId>com.github.iamport</groupId>
+		    <artifactId>iamport-rest-client-java</artifactId>
+		    <version>0.2.14</version>
+		</dependency>
 		        
 	</dependencies>
+	
+	<!-- 아임포트 REST API연동 모듈 -->
+		<repositories>
+		    <repository>
+		        <id>jitpack.io</id>
+		        <url>https://jitpack.io</url>
+		    </repository>  
+		</repositories>
+		
     <build>
         <plugins>
             <plugin>

@@ -8,18 +8,21 @@ public class Tool extends Product{
 	private String toolContent; 
 	private String toolTarget;
 	private String[] optionTotal;
+	private int optionCount;
 	
 	public Tool() {
 		super();
 	}
 
-	public Tool(String toolName, int toolType, String toolContent, String toolTarget, String[] optionTotal) {
+	public Tool(String toolName, int toolType, String toolContent, String toolTarget, String[] optionTotal,
+			int optionCount) {
 		super();
 		this.toolName = toolName;
 		this.toolType = toolType;
 		this.toolContent = toolContent;
 		this.toolTarget = toolTarget;
 		this.optionTotal = optionTotal;
+		this.optionCount = optionCount;
 	}
 
 	public String getToolName() {
@@ -62,10 +65,19 @@ public class Tool extends Product{
 		this.optionTotal = optionTotal;
 	}
 
+	public int getOptionCount() {
+		return optionCount;
+	}
+
+	public void setOptionCount(int optionCount) {
+		this.optionCount = optionCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Tool [toolName=" + toolName + ", toolType=" + toolType + ", toolContent=" + toolContent
-				+ ", toolTarget=" + toolTarget + ", optionTotal=" + Arrays.toString(optionTotal) + "]";
+				+ ", toolTarget=" + toolTarget + ", optionTotal=" + Arrays.toString(optionTotal) + ", optionCount="
+				+ optionCount + "]";
 	}
 	
 }

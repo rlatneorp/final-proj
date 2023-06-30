@@ -14,7 +14,7 @@
 	span{height:30px;}
 	
 /* 	식단 소개 */
-	#top{width: 1200px; height: 600px; position: relative; display: inline-block; margin-top: 100px;}
+	#top{width: 100%; height: 600px; position: relative; display: inline-block; margin-top: 100px;}
 	#thumImg{width: 500px; height: 500px; display: inline-block; position: absolute; border-radius: 5px;}
 	#imformation{width: 650px; height: 500px; display: inline-block; position: absolute; left: 550px;}
 	#title{border-bottom: 1px solid black; width: 630px;}
@@ -79,37 +79,70 @@
 	.border-none tr th{border:none;}
 	.border-none tr td{border:none;}
 	
+/* 	select */
+/* 	select { */
+/* 		width: 50%; */
+/* 		text-align: center; */
+/* 		height: 30px; */
+/* 		border: 1px solid #4485d7; */
+/* 		border-radius: 5px; */
+/* 		margin-top: 10px; */
+/* 	}	 */
 </style>
 </head>
 <body>
 	
-	<jsp:include page="../common/adminSidebar.jsp"/>
+	<%@ include file="../common/top.jsp" %>
 	<div class="mainBox">
 		<form id="menuInsertForm" action="${contextPath}/adminMenuInsert.ad" method="post" enctype="multipart/form-data">
 			<div id="top">
 				<div id="thumImg">
-					<img class="previewImage" src="${contextPath}/resources/images/Logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
+					<img class="previewImage" src="${contextPath}/resources/images/logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 				</div>
 				<div style="width: 50px; height: 500px; display: inline-block; position: absolute; left: 500px;"></div>
-				<div id="imformation">
+				<div id="imformation" >
 					<div id="title">
 						<input type="text" name="menuName" style="font-size: 20px; margin-right: 360px;" placeholder="식단 이름을 적어주세요.">
 						<a href="#"><i class="bi bi-bookmark " style="font-size: 20px;"></i></a>
 					</div>
-					<div id="category" style="margin-bottom: 200px;">
+
+<!--				밀키트/식재료 여부 -->
+					<div>
+						<div class="row">
+							<div class="col-12 text-end" style="margin: 80px 0px;">
+								<input type="hidden" name="menuType" value="1">
+								<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button>
+								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button>
+<!-- 								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 120px; height: 40px; font-size: 14px; font-weight: bold;">식재료/밀키트</button> -->
+							</div>
+						</div>
+					</div>
+<!-- 					<div class="row p-0"> -->
+<!-- 						<div class="col-4"></div> -->
+<!-- 						<div class="col-8" style="text-align: right;"> -->
+<!-- 							<select name="menuNo" style="width: 100%;"> -->
+<!-- 								<option>a</option> -->
+<!-- 							</select> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					<div class="text-end mb-4"> -->
+<!-- 						<p style="font-size: 12px; margin-bottom: 0px;">*기존 등록한 식단의 '등록하지 않은 식재료/밀키트'를 등록할 수 있습니다.</p> -->
+<!-- 						<p style="font-size: 12px; margin-bottom: 0px;">*아래의 버튼을 통해, 등록 가능한 리스트를 조회할 수 있습니다.</p> -->
+<!-- 						<p style="font-size: 12px; margin-bottom: 0px;">ex) 건강한식단-밀키트 등록완료 -> 건강한식단-식재료 등록가능</p> -->
+<!-- 					</div> -->
+					<div id="category" style="margin: 50px 0px 20px 0px; width: 100%; text-align: right;">
 						아이콘 식단 카테고리 선택
-						<select name="menuType">
+						<select name="menuKind">
 							<option value="1">다이어트</option>
 							<option value="2">육류</option>
 							<option value="3">해산물</option>
 						</select>
 					</div>
-					
-					<div id="userInfo">
+					<div>
 						<textarea name="menuContent" rows="6" cols="80" placeholder="식단에 대한 설명을 입력해주세요."></textarea>
 					</div>
-					
+
 					<br><br>
 					
 				</div>
@@ -135,7 +168,7 @@
 										<input type="hidden" name="productNo" value="">
 										<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0">
 										<input type="hidden" class="index" value="${vs.index-1}">
-										<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="메인메뉴사진">
+										<img class="previewImage" src="${contextPath}/resources/images/logo.png" width="200px" height="200px" alt="메인메뉴사진">
 									</td>
 									<td class="content align-top p-3" style="width:40%">
 										<p style="font-size: 18px;">식품 이름</p>
@@ -160,7 +193,7 @@
 											<input type="hidden" name="productNo" value="">
 											<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0">
 											<input type="hidden" class="index" value="${vs.index-1}">
-											<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="서브메뉴사진">
+											<img class="previewImage" src="${contextPath}/resources/images/logo.png" width="200px" height="200px" alt="서브메뉴사진">
 										</td>
 										<td class="content align-top p-3" style="width:40%">
 											<p style="font-size: 18px;">식품 이름</p>
@@ -235,7 +268,7 @@
 							<tr>
 								<td colspan="2">재고</td>
 								<td colspan="4">
-									<input type="number" class="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0">
+									<input type="number" name="productStock" style="width: 100px; font-size: 18px; font-weight: bold; text-align: right;" value="0" min="0">
 								</td>
 							</tr>
 						</table>
@@ -297,6 +330,7 @@
 	<script>
 	
 		window.onload = () =>{
+			getFoodList();
 // 			이미지 미리보기 함수, 이벤트 (기존값)
 			const imageFiles = document.getElementsByName('imageFile');
 			const previewImages = document.getElementsByClassName('previewImage');
@@ -315,25 +349,56 @@
 				}
 			}
 			
+// 			밀키트/식재료 버튼 이벤트
+			const foodType = document.getElementsByName('menuType')[0];
+			const foodTypeBtns = document.getElementsByClassName('foodTypeBtn');
+			
+			// 식재료 메뉴 버튼
+			foodTypeBtns[0].addEventListener('click', ()=>{
+				foodType.value="1";
+				foodTypeBtns[0].style.backgroundColor="#19A7CE";
+				foodTypeBtns[1].style.backgroundColor="gray";
+// 				foodTypeBtns[2].style.backgroundColor="gray";
+				getFoodList();
+				for(const sel of document.getElementsByClassName('foodSelector')){
+					reset(sel);
+				}
+			});
+			// 밀키트 메뉴 버튼
+			foodTypeBtns[1].addEventListener('click', ()=>{
+				foodType.value="2";
+				foodTypeBtns[1].style.backgroundColor="#19A7CE";
+				foodTypeBtns[0].style.backgroundColor="gray";
+// 				foodTypeBtns[2].style.backgroundColor="gray";
+				getFoodList();
+				for(const sel of document.getElementsByClassName('foodSelector')){
+					reset(sel);
+				}
+			});
+			// 식재료/밀키트 메뉴 버튼
+// 			foodTypeBtns[2].addEventListener('click', ()=>{
+// 				foodType.value="3";
+// 				foodTypeBtns[2].style.backgroundColor="#19A7CE";
+// 				foodTypeBtns[0].style.backgroundColor="gray";
+// 				foodTypeBtns[1].style.backgroundColor="gray";
+// 				getFoodList();
+// 				for(const sel of document.getElementsByClassName('foodSelector')){
+// 					reset(sel);
+// 				}
+// 			});
+			
 // 			메뉴 정보 불러오기 이벤트(ajax)
 			const selectors = document.getElementsByClassName('foodSelector');
 			for(const sel of selectors){
 				sel.addEventListener('change',function(){
 					if(sel.value==0){
-						const tr = this.parentElement.parentElement;
-						tr.querySelector('.content').querySelectorAll('p')[0].innerText = '식품 이름';
-						tr.querySelector('.content').querySelectorAll('p')[1].innerText = '식품 내용';
-						tr.querySelectorAll('.priceBox')[0].value = 0;
-						tr.querySelector('.previewImage').src = '${contextPath}/resources/images/Logo.png';
-						tr.querySelector('.imageTd').children[0].value = this.value;
-						tr.querySelector('.nutrient').value = "0,0,0,0,0,0,0,0,0,0";
-						dayNutrient(tr.querySelector('.index').value);
-
+						reset(this);
 						cal1();
 					}else{
 						$.ajax({
 							url: '${contextPath}/adminFoodSelector.ad',
-							data: {pNo:this.value},
+							data: {no:this.value,
+								   type:1},
 							success: data =>{
 								const tr = this.parentElement.parentElement;
 								tr.querySelector('.content').querySelectorAll('p')[0].innerText = data.foodName;
@@ -345,7 +410,7 @@
 								
 								$.ajax({
 									url: '${contextPath}/adminFoodImageSelector.ad',
-									data: {pNo:this.value},
+									data: {no:this.value},
 									success: data =>{
 										tr.querySelector('.previewImage').src = "${contextPath}/resources/uploadFiles/"+data.imageRenameName;
 									}
@@ -392,6 +457,66 @@
 			});
 		}
 	
+		
+		
+// 		메인/서브, 식재료/밀키트/식재료-밀키트 버튼선택에 따른 식품리스트 조회 ajax
+		function getFoodList(){
+			const type = document.getElementsByName('menuType')[0].value;
+			const foodSelectors = document.getElementsByClassName('foodSelector');
+			
+			$.ajax({
+				url:'${contextPath}/adminGetFoodList.ad',
+				data: {type:type,
+					   kind:1},
+				success: data => {
+					for(let i = 0; i < foodSelectors.length; i++){
+						if(i % 4 == 0){
+						foodSelectors[i].innerHTML = "<option value='0'>-- 메인메뉴 --</option>"; 
+							for(let j = 0; j < data.length; j++){
+								foodSelectors[i].innerHTML += "<option value='"+data[j].productNo+"'>"+data[j].foodName+"</option>"; 
+							}
+						}
+					}
+				},
+				error: data =>{
+					console.log(data);
+				}
+			})
+			$.ajax({
+				url:'${contextPath}/adminGetFoodList.ad',
+				data: {type:type,
+					   kind:2},
+				success: data => {
+					for(let i = 0; i < foodSelectors.length; i++){
+						if(i % 4 != 0){
+							foodSelectors[i].innerHTML = "<option value='0'>-- 서브메뉴 --</option>"; 
+							for(let j = 0; j < data.length; j++){
+								foodSelectors[i].innerHTML += "<option value='"+data[j].productNo+"'>"+data[j].foodName+"</option>"; 
+							}
+						}
+					}
+				},
+				error: data =>{
+					console.log(data);
+				}
+			})
+		}
+		
+// 		function getMenuList(){
+// 		}
+		
+// 		값 초기화 함수
+		function reset(obj){
+			const tr = obj.parentElement.parentElement;
+			tr.querySelector('.content').querySelectorAll('p')[0].innerText = '식품 이름';
+			tr.querySelector('.content').querySelectorAll('p')[1].innerText = '식품 내용';
+			tr.querySelectorAll('.priceBox')[0].value = 0;
+			tr.querySelector('.previewImage').src = '${contextPath}/resources/images/logo.png';
+			tr.querySelector('.imageTd').children[0].value = obj.value;
+			tr.querySelector('.nutrient').value = "0,0,0,0,0,0,0,0,0,0";
+			dayNutrient(tr.querySelector('.index').value);
+		}
+		
 // 		총 가격 계산 함수
 		function cal1(){
 			setTimeout(function() {
@@ -427,7 +552,6 @@
 			for(let j = 0; j < nutrients.length; j++){
 				for(let i = 0; i < 9; i++){
 					const nut = nutrients[j].value.split(',')[i];
-					console.log(nut);
 					arr[i] += Number(nut);
 				}
 			}

@@ -288,12 +288,16 @@ public class UsersController {
 		if (searchType != null) {
 			selectType = searchType;
 		}
+		
 		String selectTitle = null;
+		HashMap<String, Object> listMap = new HashMap<String, Object>();
+		listMap.put("usersNo", usersNo);
 		if (searchTitle != null) {
 			selectTitle = searchTitle;
+			listMap.put("selectTitle", selectTitle);
 		}
 
-		int listCount = uService.getMyRecipeListCount(usersNo);
+		int listCount = uService.getMyRecipeListCount(listMap);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -306,6 +310,8 @@ public class UsersController {
 
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchTitle", searchTitle);
 
 		return "myPage_MyRecipe";
 	}
@@ -314,6 +320,7 @@ public class UsersController {
 	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "searchType", required = false) Integer searchType,
 			@RequestParam(value = "searchTitle", required = false) String searchTitle) {
+		System.out.println(searchTitle);
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		int currentPage = 1;
 		if (page != null) {
@@ -324,12 +331,16 @@ public class UsersController {
 		if (searchType != null) {
 			selectType = searchType;
 		}
+		
 		String selectTitle = null;
+		HashMap<String, Object> listMap = new HashMap<String, Object>();
+		listMap.put("usersNo", usersNo);
 		if (searchTitle != null) {
 			selectTitle = searchTitle;
+			listMap.put("selectTitle", selectTitle);
 		}
-
-		int listCount = uService.getBookListCount(usersNo);
+		
+		int listCount = uService.getBookListCount(listMap);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -338,10 +349,12 @@ public class UsersController {
 		map.put("selectTitle", selectTitle);
 
 		ArrayList<HashMap<String, Object>> list = uService.myBookMarkList(map, pi);
-		System.out.println(list);
+		System.out.println("bookmark: " + list);
 
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchTitle", searchTitle);
 
 		return "myPage_MyBookMark";
 	}
@@ -359,6 +372,7 @@ public class UsersController {
 		if (searchType != null) {
 			selectType = searchType;
 		}
+		
 		String selectTitle = null;
 		if (searchTitle != null) {
 			selectTitle = searchTitle;
@@ -388,21 +402,33 @@ public class UsersController {
 
 			model.addAttribute("list", list);
 			model.addAttribute("pi", pi);
+			model.addAttribute("searchType", searchType);
+			model.addAttribute("searchTitle", searchTitle);
 		} else if (selectType == 1) {
 			model.addAttribute("list", rList);
 			model.addAttribute("pi", pi);
+			model.addAttribute("searchType", searchType);
+			model.addAttribute("searchTitle", searchTitle);
 		} else if (selectType == 2) {
 			model.addAttribute("list", fList);
 			model.addAttribute("pi", pi);
+			model.addAttribute("searchType", searchType);
+			model.addAttribute("searchTitle", searchTitle);
 		} else if (selectType == 3) {
 			model.addAttribute("list", fList);
 			model.addAttribute("pi", pi);
+			model.addAttribute("searchType", searchType);
+			model.addAttribute("searchTitle", searchTitle);
 		} else if (selectType == 4) {
 			model.addAttribute("list", pList);
 			model.addAttribute("pi", pi);
+			model.addAttribute("searchType", searchType);
+			model.addAttribute("searchTitle", searchTitle);
 		} else if (selectType == 5) {
 			model.addAttribute("list", fList);
 			model.addAttribute("pi", pi);
+			model.addAttribute("searchType", searchType);
+			model.addAttribute("searchTitle", searchTitle);
 		}
 		System.out.println(list);
 		return "myPage_MyFavorite";

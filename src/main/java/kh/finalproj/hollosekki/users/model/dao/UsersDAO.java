@@ -73,8 +73,8 @@ public class UsersDAO {
 		return sqlSession.insert("usersMapper.insertFollow", map);
 	}
 
-	public int getMyRecipeListCount(SqlSessionTemplate sqlSession, int usersNo) {
-		return sqlSession.selectOne("usersMapper.getMyRecipeListCount", usersNo);
+	public int getMyRecipeListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> listMap) {
+		return sqlSession.selectOne("usersMapper.getMyRecipeListCount", listMap);
 	}
 	
 	public ArrayList<HashMap<String, Object>> selectMyRecipe(SqlSessionTemplate sqlSession, HashMap<String, Object> map, PageInfo pi) {
@@ -84,16 +84,8 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.selectMyRecipe", map, rowBounds);
 	}
 
-	public int recipeBookCount(SqlSessionTemplate sqlSession, int foodNo) {
-		return sqlSession.selectOne("usersMapper.recipeBookCount", foodNo);
-	}
-
-	public int recipeLikeCount(SqlSessionTemplate sqlSession, int foodNo) {
-		return sqlSession.selectOne("usersMapper.recipeLikeCount", foodNo);
-	}
-
-	public int getBookListCount(SqlSessionTemplate sqlSession, int usersNo) {
-		return sqlSession.selectOne("usersMapper.getBookListCount", usersNo);
+	public int getBookListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> listMap) {
+		return sqlSession.selectOne("usersMapper.getBookListCount", listMap);
 	}
 	
 	public ArrayList<HashMap<String, Object>> myBookMarkList(SqlSessionTemplate sqlSession, HashMap<String, Object> map, PageInfo pi) {

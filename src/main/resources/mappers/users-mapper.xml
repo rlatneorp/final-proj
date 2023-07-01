@@ -135,6 +135,9 @@
 		select count(*)
 		from recipe
 		where users_no = #{usersNo} and recipe_status = 'Y'
+		<if test="selectTitle != null">
+			and recipe_name like '%${selectTitle}%'
+		</if>
 	</select>
 	
 	<select id="selectMyRecipe" resultType="map">
@@ -180,29 +183,22 @@
 		<result column="RECIPE_STATUS" property="recipeStatus"/>
 	</resultMap>
 	
-	<select id="recipeBookCount" resultType="_int">
-		select count(*)
-		from bookmark
-		where DIVISION_NO = #{foodNo} and number_type = 1
-	</select>
-	
-	<select id="recipeLikeCount" resultType="_int">
-		select count(*)
-		from likes
-		where DIVISION_NO = #{foodNo} and number_type = 1
-	</select>
-	
 	<select id="getBookListCount" resultType="_int">
 		select count(*)
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
-		     left join product p on (m.product_no = p.product_no)
-             left join healther h on (p.users_no = h.users_no)
+		     left join product p on (b.division_no = p.product_no)
+		     left join healther h on (p.users_no = h.users_no)
 		     left join recipe r on (b.division_no = r.food_no)
-		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO)
+		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO) AND i.image_level = 0
 		     left join image im on (m.product_no = im.image_divide_no)
 		     left join users u on (u.users_no = r.users_no)
-		where b.users_no = #{usersNo}
+		where b.users_no = 22
+		      AND (p.product_status = 'Y' OR p.product_status IS NULL)
+			  AND (r.recipe_name IS NOT NULL OR m.menu_name IS NOT NULL)
+		<if test="selectTitle != null">
+			and (recipe_name like '%${selectTitle}%' or menu_name like '%${selectTitle}%')
+		</if>
 	</select>
 	
 	<select id="myBookMarkList" resultType="map">

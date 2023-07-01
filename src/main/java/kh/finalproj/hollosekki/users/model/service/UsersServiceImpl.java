@@ -94,8 +94,8 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	@Override
-	public int getMyRecipeListCount(int usersNo) {
-		return uDAO.getMyRecipeListCount(sqlSession, usersNo);
+	public int getMyRecipeListCount(HashMap<String, Object> listMap) {
+		return uDAO.getMyRecipeListCount(sqlSession, listMap);
 	}
 	
 	@Override
@@ -104,18 +104,8 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	@Override
-	public int recipeBookCount(int foodNo) {
-		return uDAO.recipeBookCount(sqlSession, foodNo);
-	}
-	
-	@Override
-	public int recipeLikeCount(int foodNo) {
-		return uDAO.recipeLikeCount(sqlSession, foodNo);
-	}
-	
-	@Override
-	public int getBookListCount(int usersNo) {
-		return uDAO.getBookListCount(sqlSession, usersNo);
+	public int getBookListCount(HashMap<String, Object> listMap) {
+		return uDAO.getBookListCount(sqlSession, listMap);
 	}
 	
 	@Override

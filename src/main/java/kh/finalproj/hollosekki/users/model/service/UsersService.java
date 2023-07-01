@@ -41,15 +41,11 @@ public interface UsersService {
 
 	int insertFollow(HashMap<String, Object> map);
 	
-	int getMyRecipeListCount(int usersNo);
+	int getMyRecipeListCount(HashMap<String, Object> listMap);
 
 	ArrayList<HashMap<String, Object>> selectMyRecipe(HashMap<String, Object> map, PageInfo pi);
 
-	int recipeBookCount(int foodNo);
-
-	int recipeLikeCount(int foodNo);
-	
-	int getBookListCount(int usersNo);
+	int getBookListCount(HashMap<String, Object> listMap);
 	
 	ArrayList<HashMap<String, Object>> myBookMarkList(HashMap<String, Object> map, PageInfo pi);
 

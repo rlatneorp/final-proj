@@ -130,7 +130,7 @@
       FROM cart
       LEFT JOIN product on (cart.product_no = product.product_no)
       WHERE cart.users_no = #{usersNo} AND product.PRODUCT_STATUS = 'Y'
-      ORDER BY cart.product_no
+      ORDER BY cart.pre_order_no
    </select>
    
 <!--    <select id="selectCartList" resultMap="cartList"> -->
@@ -205,12 +205,12 @@
    </select>
    
    <delete id="delBasket">
-      delete from cart where product_no = #{productNo}
+      delete from cart where pre_order_no = #{preorderNo}
    </delete>
    
    <update id="plusCount">
       update cart set cart_count = cart_count + 1 
-      where product_no = #{productNo}
+      where pre_order_no = #{preorderNo}
    </update>
    
    <select id="plusResultCount" resultType="_int">
@@ -219,7 +219,7 @@
       FROM (
           SELECT cart_count
           FROM cart
-          WHERE product_no = #{productNo}
+          WHERE pre_order_no = #{preorderNo}
       )
       WHERE ROWNUM = 1
        ]]>
@@ -227,7 +227,7 @@
    
    <update id="minusCount">
       update cart set cart_count = cart_count - 1 
-      where product_no = #{productNo}
+      where pre_order_no = #{preorderNo}
    </update>
    
    <select id="checkCartList" resultMap="cartList">
@@ -254,9 +254,9 @@
       select * from cart where product_no = #{productNo} and users_no = #{usersNo} and pre_order_no = #{preorderNo}
    </select>
    
-   <select id="selectOptionInfo" resultMap="optionsList">
-      select * from options where option_no = #{productOption} and product_no = #{productNo}
-   </select>
+<!--    <select id="selectOptionInfo" resultMap="optionsList"> -->
+<!--       select * from options where option_no = #{productOption} and product_no = #{productNo} -->
+<!--    </select> -->
    
    <select id="selectProductSet" resultMap="productList">
       select *
@@ -531,4 +531,19 @@
 <!-- 	  AND TRUNC(o.order_date) >= TO_DATE('2023-05-30', 'YYYY-MM-DD') -->
 <!-- 	  AND TRUNC(o.order_date) <= TO_DATE('2023-06-29', 'YYYY-MM-DD') -->
 <!--   </select> -->
+
+		<!-- 주문 번호에 대한 optionNo 조회 -->
+		<select id="selectOptionInfo" resultMap="optionsList">
+			SELECT *
+			FROM cart c
+			INNER JOIN options o ON c.PRODUCT_OPTION = o.option_No
+			WHERE c.pre_order_No = #{preorderNo}
+		</select>
+		
+	<insert id="updatePointTable">
+		insert into point (POINT_NO,USERS_NO,POINT_TYPE,POINT_BEFORE,POINT_CHANGE,MODIFY_DATE )
+		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{pointChange}, sysdate )
+	</insert>
+	
+	
 </mapper>

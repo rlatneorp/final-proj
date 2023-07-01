@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +32,7 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
@@ -63,12 +63,20 @@ public class MarketController {
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       
       ArrayList<Cart> optionNos = new ArrayList<>();
-      ArrayList<Options> optValues = new ArrayList<>();
+      
       for(Cart cart : cartList) {
+    	  ArrayList<Options> optValues = new ArrayList<>();
          int productNo = cart.getProductNo();
          System.out.println("productNo : " + productNo);
-         Options opt = mkService.selectOptionInfo(cart.getProductNo(), cart.getProductOption()); //옵션 넘버 보내서 조회
-         optValues.add(opt);
+         
+         //주문 번호에 대한 optionNo 조회 
+         ArrayList<Options> o = mkService.selectOptionInfo(cart.getPreorderNo());
+         System.out.println("주문번호에 해당 되는 옵션 정보는?? : " + o);
+         
+         cart.setOptionName(o);
+        
+         
+         
          
          ArrayList<Options> options = mkService.selectOptions(productNo);
          
@@ -92,7 +100,7 @@ public class MarketController {
              cart.setProductPrice(price);
              cart.setSale(sale);
          }
-         int size = mkService.plusResultCount(productNo);
+         int size = mkService.plusResultCount(cart.getPreorderNo());
          sum = size * price;
          cart.setSum(sum);
          
@@ -118,83 +126,135 @@ public class MarketController {
              cart.setImgName(imgName);
           }
       }
-      model.addAttribute("optValues", optValues);
+//      System.out.println("optValues " + optValues);
+//      model.addAttribute("optValues", optValues);
       System.out.println("cartList : " + cartList);
       model.addAttribute("cartList", cartList);
       return "basket";
    }
 
    @RequestMapping("payDetail.ma")
-   public String payDetail(HttpSession session, Model model, @RequestParam("optNos") String optNos) {
+   public String payDetail(HttpSession session, Model model, @RequestParam("preorderNos") String preorderNos) {
       
+	   //전달 받은 주문번호를 select 해와 화면에 전달 
       Users users = (Users)session.getAttribute("loginUser");
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
-      ArrayList<Product> productInfo = new ArrayList<>();
-      ArrayList<Cart> checkedCart = new ArrayList<>();
-      ArrayList<Cart> checkedCartList = new ArrayList<>();
+      ArrayList<Product> productInfo = new ArrayList<>(); ArrayList<Cart> checkedCart = new ArrayList<>(); ArrayList<Cart> checkedCartList = new ArrayList<>();
       
       //옵션 
-      ArrayList<Cart> optionNos = new ArrayList<>();
-      ArrayList<Options> optValues = new ArrayList<>();
+      ArrayList<Cart> optionNos = new ArrayList<>(); ArrayList<Options> optValues = new ArrayList<>();
       
-      
-      String[] optNo = optNos.split(",");
-      int[] intOptionNo = new int[optNo.length];
-      
-      for(int i=0; i<optNo.length; i++) {
-         intOptionNo[i] = Integer.parseInt(optNo[i]);
-         System.out.println("intOptionNo : " + intOptionNo[i]);
-         int preorderNo = intOptionNo[i];
-         
-         //주문번호로 cartList 조회 
-         checkedCart = mkService.checkCartList(users.getUsersNo(),preorderNo);
-         
-         for(Cart checCart : checkedCart) { 
-            int productNo = checCart.getProductNo();
-            
-            Options opt = mkService.selectOptionInfo(checCart.getProductNo(), checCart.getProductOption()); //옵션 넘버 보내서 조회
-            optValues.add(opt);
-            
-            foods = mkService.selectFood(productNo);
-            tools = mkService.selectTool(productNo);
-            igs = mkService.selectIngrdient(productNo);
-            menus = mkService.selectMenu(productNo);
-            
-            productInfo = mkService.selectProductInfo(productNo);
-            int price = 0; int sum = 0; int sale = 0;
-            for (Product product : productInfo) {
+      String[] preorderNo = preorderNos.split(",");
+      System.out.println("preorderNo : " + preorderNo);
+      for(int i=0; i<preorderNo.length; i++) {
+    	  int preNo = Integer.parseInt(preorderNo[i]);
+    	  System.out.println("preNo : " + preNo);
+    	  //주문번호로 cartList 조회 
+          checkedCart = mkService.checkCartList(users.getUsersNo(), preNo);
+          System.out.println("cartList : " + checkedCart);
+          //주문 번호에 대한 optionNo 조회 
+          ArrayList<Options> o = mkService.selectOptionInfo(preNo);
+          System.out.println("주문번호에 해당 되는 옵션 정보는??2222 : " + o);
+          for(Cart checCart : checkedCart) {
+        	  checCart.setOptionName(o);
+        	  int productNo = checCart.getProductNo();
+        	  foods = mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
+        	  
+        	  productInfo = mkService.selectProductInfo(productNo);
+              int price = 0; int sum = 0; int sale = 0;
+              for (Product product : productInfo) {
                 price = product.getProductPrice();
                 checCart.setProductPrice(price); 
                 checCart.setSale(product.getProductSale());
-            }
-            int size = mkService.plusResultCount(productNo);
-            sum = size * price;
-            checCart.setSum(sum);
+              }
+              int size = mkService.plusResultCount(preNo);
+              sum = size * price;
+              checCart.setSum(sum);
             
-            if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
-               checCart.setProductName(foods.getFoodName());
-               String imgName = mkService.selectImg(productNo, 3);
-               checCart.setImgName(imgName);
-             }
-             if (tools != null) { //이미지 타입 : 6 ( 주방도구)
-                checCart.setProductName(tools.getToolName());
-                String imgName = mkService.selectImg(productNo, 6);
-               checCart.setImgName(imgName);
-             }
-             if (igs != null) { //이미지 타입 : 5 (식재료) 
-                checCart.setProductName(igs.getIngredientName());
-                String imgName = mkService.selectImg(productNo, 5);
-               checCart.setImgName(imgName);
-             }
-             if (menus != null) { //이미지 타입 : 4 (식단)
-                checCart.setProductName(menus.getMenuName());
-                String imgName = mkService.selectImg(productNo, 4);
-               checCart.setImgName(imgName);
-             }
-             checkedCartList.add(checCart);
-         }
-      }
+              if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+            	  checCart.setProductName(foods.getFoodName());
+            	  String imgName = mkService.selectImg(productNo, 3);
+            	  checCart.setImgName(imgName);
+              }
+              if (tools != null) { //이미지 타입 : 6 ( 주방도구)
+            	  checCart.setProductName(tools.getToolName());
+            	  String imgName = mkService.selectImg(productNo, 6);
+            	  checCart.setImgName(imgName);
+              }
+              if (igs != null) { //이미지 타입 : 5 (식재료) 
+            	  checCart.setProductName(igs.getIngredientName());
+            	  String imgName = mkService.selectImg(productNo, 5);
+            	  checCart.setImgName(imgName);
+              }
+              if (menus != null) { //이미지 타입 : 4 (식단)
+            	  checCart.setProductName(menus.getMenuName());
+            	  String imgName = mkService.selectImg(productNo, 4);
+            	  checCart.setImgName(imgName);
+              }
+        	  
+              checkedCartList.add(checCart);
+          } //checCart for문 끝 
+          
+          
+          
+      } //주문번호 for문 끝 
+      
+//      int[] intOptionNo = new int[preorderNo.length];
+      
+//      for(int i=0; i<optNo.length; i++) {
+//         intOptionNo[i] = Integer.parseInt(optNo[i]);
+//         System.out.println("intOptionNo : " + intOptionNo[i]);
+//         int preorderNo = intOptionNo[i];
+//         
+//         //주문번호로 cartList 조회 
+//         checkedCart = mkService.checkCartList(users.getUsersNo(),preorderNo);
+//         
+//         for(Cart checCart : checkedCart) { 
+//            int productNo = checCart.getProductNo();
+//            
+//            Options opt = mkService.selectOptionInfo(checCart.getProductNo(), checCart.getProductOption()); //옵션 넘버 보내서 조회
+//            optValues.add(opt);
+//            
+//            foods = mkService.selectFood(productNo);
+//            tools = mkService.selectTool(productNo);
+//            igs = mkService.selectIngrdient(productNo);
+//            menus = mkService.selectMenu(productNo);
+//            
+//            productInfo = mkService.selectProductInfo(productNo);
+//            int price = 0; int sum = 0; int sale = 0;
+//            for (Product product : productInfo) {
+//                price = product.getProductPrice();
+//                checCart.setProductPrice(price); 
+//                checCart.setSale(product.getProductSale());
+//            }
+//            int size = mkService.plusResultCount(productNo);
+//            sum = size * price;
+//            checCart.setSum(sum);
+//            
+//            if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+//               checCart.setProductName(foods.getFoodName());
+//               String imgName = mkService.selectImg(productNo, 3);
+//               checCart.setImgName(imgName);
+//             }
+//             if (tools != null) { //이미지 타입 : 6 ( 주방도구)
+//                checCart.setProductName(tools.getToolName());
+//                String imgName = mkService.selectImg(productNo, 6);
+//               checCart.setImgName(imgName);
+//             }
+//             if (igs != null) { //이미지 타입 : 5 (식재료) 
+//                checCart.setProductName(igs.getIngredientName());
+//                String imgName = mkService.selectImg(productNo, 5);
+//               checCart.setImgName(imgName);
+//             }
+//             if (menus != null) { //이미지 타입 : 4 (식단)
+//                checCart.setProductName(menus.getMenuName());
+//                String imgName = mkService.selectImg(productNo, 4);
+//               checCart.setImgName(imgName);
+//             }
+//             checkedCartList.add(checCart);
+//         }
+//      }
       int point = mkService.selectPoint(users.getUsersNo());
       
       
@@ -375,9 +435,32 @@ public class MarketController {
       
       int currentPoint = mkService.selectPoint(users.getUsersNo()); //보유 포인트 
       int minusPoint = currentPoint - usePoint; //보유 포인트 - 사용 포인트
-      int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트 
+      int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트
+      
       users.setPoint(resultPoint);
       mkService.updatePoint(users); //변경 된 포인트 반영 
+      
+      //포인트 테이블에 minus, plus 포인트 반영 
+      Point p = new Point();
+      p.setUsersNo(users.getUsersNo());
+      //minus
+      
+      System.out.println("usePoint : " + usePoint);
+      if(usePoint != 0) { //사용한 포인트가 있으면 
+    	  System.out.println("사용한 포인트가 있다.");
+    	  p.setPointBefore(currentPoint);
+    	  p.setPointChange(minusPoint); //현재-사용 금액
+    	  p.setPointType(11);
+    	  mkService.updatePointTable(p);
+      }
+      if(plus != 0) { // 추가 된 포인트가 있다면 
+    	  System.out.println("추가 한 포인트가 있다.");
+    	  int currentPoint2 = mkService.selectPoint(users.getUsersNo());
+          p.setPointBefore(currentPoint2);
+          p.setPointChange(currentPoint2+plus);
+          p.setPointType(3);
+          mkService.updatePointTable(p);
+      }
       
       //장바구니에서 제거 
       mkService.deleteFromCart(preorderNo);
@@ -463,17 +546,18 @@ public class MarketController {
 
    //장바구니 목록 삭제 
    @RequestMapping(value="delBasket.ma", produces="application/json; charset=UTF-8")
-   public String delBasket(@RequestParam("productNo") int productNo) {
-      mkService.delBasket(productNo);
+   public String delBasket(@RequestParam("preorderNo") int preorderNo) {
+      mkService.delBasket(preorderNo);
       return "basket";
    }
    
    
    @RequestMapping(value="plusCount.ma", produces="application/json; charset=UTF-8")
-   public void plusCount(@RequestParam("productNo") int productNo, @RequestParam("price") int price, HttpServletResponse response) {
-      mkService.plusCount(productNo);
+   public void plusCount(@RequestParam("preorderNo") int preorderNo, @RequestParam("price") int price, HttpServletResponse response) {
+      mkService.plusCount(preorderNo);
       
-      int size = mkService.plusResultCount(productNo);
+      int size = mkService.plusResultCount(preorderNo);
+      System.out.println("size : " + size);
       int sum = size * price;
       System.out.println("sum : " + sum);
       response.setContentType("application/json; charset=UTF-8");
@@ -487,9 +571,10 @@ public class MarketController {
    }
    
    @RequestMapping(value="minusCount.ma", produces="application/json; charset=UTF-8")
-   public void minusCount(@RequestParam("productNo") int productNo, @RequestParam("price") int price, HttpServletResponse response) {
-      mkService.minusCount(productNo);
-      int size = mkService.plusResultCount(productNo);
+   public void minusCount(@RequestParam("preorderNo") int preorderNo, @RequestParam("price") int price, HttpServletResponse response) {
+      System.out.println("minus : " + preorderNo);
+	   mkService.minusCount(preorderNo);
+      int size = mkService.plusResultCount(preorderNo);
       int sum = size * price;
       response.setContentType("application/json; charset=UTF-8");
         GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd"); 
@@ -638,7 +723,22 @@ public class MarketController {
 	   
 	   
    }
-		   	
+   
+   @RequestMapping("insertPay.ma")
+   @ResponseBody
+   public String insertPay(@ModelAttribute Orders orders) {
+	   
+	   int selectProductType = mkService.selectProductType(orders.getProductNo());
+	   orders.setProductType(selectProductType);
+	   int result = mkService.insertPay(orders);
+	   
+	   if(result >= 1) {
+		   return "success";
+	   } else {
+		   return "fail";
+	   }
+   }
+	
 //   public String insertPay(@ModelAttribute Orders orders) {
 //	   
 //	   int selectProductType = mkService.selectProductType(orders.getProductNo());

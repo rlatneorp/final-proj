@@ -151,7 +151,8 @@ public class AdminDAO {
 		return sqlSession.selectOne("adminMapper.selectMenu", pNo);
 	}
 
-	public ArrayList<String> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
+//	public ArrayList<String> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
+	public ArrayList<Integer> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectFoodProductNo", pNo);
 	}
 	
@@ -369,6 +370,10 @@ public class AdminDAO {
 
 	public FAQ selectFAQ(SqlSessionTemplate sqlSession, Integer faqNo) {
 		return sqlSession.selectOne("adminMapper.selectFAQ", faqNo);
+	}
+
+	public int updateFAQ(SqlSessionTemplate sqlSession, FAQ faq) {
+		return sqlSession.update("adminMapper.updateFAQ", faq);
 	}
 
 

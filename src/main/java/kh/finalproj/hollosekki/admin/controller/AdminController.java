@@ -66,13 +66,11 @@ public class AdminController {
 		System.out.println("type:"+type);
 		System.out.println("url:"+url);
 		
-//		삭제하러 들어오기 전, 기존에 다른DB에서 해당 데이터를 사용중이라면, 삭제 불가!!  
-		
-//		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+//		삭제하러 들어오기 전, 기존에 다른DB에서 해당 데이터를 사용중이라면, 삭제 불가!!하도록 변경해야함
 		
 //		 	type	-->
 //		 	1 : 식품 			product				image
-//		 	2 : 식단 			product				image 
+//		 	2 : 식단 			product				image 	menuList
 //		 	3 : 식재료		(product)			image
 //		 	4 : 주방도구		product				image
 //				5 : 상품  		
@@ -81,6 +79,7 @@ public class AdminController {
 //		 	8 : 게시판(Board) review				image
 //		 	9 : FAQ		
 //		 	10 : QNA
+//			11 : menuList
 //		
 //		1. type == 3 	1) ingredient_no에 맞는 product_no 리스트 불러오기
 //						2) product_no이 0이 아니라면 type과 함께 image 리스트 불러오기
@@ -106,16 +105,20 @@ public class AdminController {
 		ArrayList<Image> imgList = new ArrayList<Image>();
 		ArrayList<Integer> delList1 = new ArrayList<Integer>();
 		ArrayList<Integer> delList2 = new ArrayList<Integer>();
+		ArrayList<Integer> delList3 = new ArrayList<Integer>();
 		Integer imgType1 = 0;
 		Integer imgType2 = 0;
 		Integer type1 = type;
 		Integer type2 = 0;
+		Integer type3 = 0;
 		int resultImg = 0;
 		int result1 = 0;
 		int result2 = 0;
+		int result3 = 0;
 		
+		delList1 = selDeletes;
 //		상품일때(식품/식단/식재료/주방) type == 1~4;
-		if(type >= 1 || type <= 4) {
+		if(type >= 1 && type <= 4) {
 //			식재료일때
 			if(type == 3) {
 				imgType1 = 3;
@@ -130,7 +133,20 @@ public class AdminController {
 						type2 = 5;
 					}
 				}
+			}else {
+				delList2 = selDeletes;
+				type2 = 5;
 			}
+			if(type == 2) {
+				imgType1 = 2;
+				for(Integer i:selDeletes) {
+					ArrayList<Integer> fNoList = aService.selectFoodProductNo(i);
+					delList3.addAll(fNoList);
+					type3 = 11;
+				}
+				
+			}
+			
 //		레시피일때 type == 6
 		}else if(type == 6){
 			imgType1 = 6;
@@ -160,8 +176,9 @@ public class AdminController {
 				}
 			}
 		}
-		delList1 = selDeletes;
+		
 				
+//		1,2,3,4,6,7,8 에 해당하는 image테이블의 type 설정
 		switch(imgType1) {
 		case 1: imgType1 = 3; break;
 		case 2: imgType1 = 4; break;
@@ -204,19 +221,32 @@ public class AdminController {
 			HashMap<String, Object> map1 = new HashMap<String, Object>();
 			map1.put("selDeletes", delList1);
 			map1.put("type", type1);
+			System.out.println("delList1:"+delList1);
+			System.out.println("type1:"+type1);
 			result1 = aService.deleteSelects(map1);
 		}
 		if(type2 != 0) {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 			map2.put("selDeletes", delList2);
 			map2.put("type", type2);
+			System.out.println("delList2:"+delList2);
+			System.out.println("type2:"+type2);
 			result2 = aService.deleteSelects(map2);
+		}
+		if(type3 != 0) {
+			HashMap<String, Object> map3 = new HashMap<String, Object>();
+			map3.put("selDeletes", delList3);
+			map3.put("type", type3);
+			System.out.println("delList3:"+delList3);
+			System.out.println("type3:"+type3);
+			result2 = aService.deleteSelects(map3);
 		}
 		
 		System.out.println(resultImg);
 		System.out.println(result1);
 		System.out.println(result2);
-		if(result1 + result2 + resultImg > 0) {
+		System.out.println(result3);
+		if(result1 + result2 + result3 + resultImg > 0) {
 			model = adminBasic(model, request);
 			return "redirect:"+url;
 		}else {
@@ -454,7 +484,8 @@ public class AdminController {
 		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
 		
 //		ab.setKind(0);
-		ArrayList<String> fNoArr = aService.selectFoodProductNo(pNo);
+//		ArrayList<String> fNoArr = aService.selectFoodProductNo(pNo);
+		ArrayList<Integer> fNoArr = aService.selectFoodProductNo(pNo);
 		String str = "";
 		for(int i = 0; i<fNoArr.size(); i++) {
 			str += fNoArr.get(i);
@@ -1715,8 +1746,20 @@ public class AdminController {
 		}
 	}
 	@PostMapping("adminFAQUpdate.ad")
-	public String adminFAQUpdate() {
-		return "redirect:adminFAQManage.ad";
+	public String adminFAQUpdate(@ModelAttribute FAQ faq,
+								 HttpServletRequest request,
+								 Model model) {
+		
+		int result = aService.updateFAQ(faq);
+		
+		if(result > 0) {
+			model = adminBasic(model, request);
+			return "redirect:adminFAQManage.ad";
+		}else {
+			throw new AdminException("FAQ 업데이트에 실패하였습니다.");
+		}
+		
+		
 	}
 	@GetMapping("adminFAQWrite.ad")
 	public String adminFAQWrite() {

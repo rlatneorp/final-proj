@@ -16,6 +16,7 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
@@ -113,24 +114,24 @@ public class MarketService {
       return mkDAO.selectIngrdient(sqlSession, productNo);
    }
 
-   public void delBasket(int productNo) {
-      mkDAO.delBasket(sqlSession, productNo);
+   public void delBasket(int preorderNo) {
+      mkDAO.delBasket(sqlSession, preorderNo);
    }
 
    public ArrayList<Product> selectProductInfo(int productNo) {
       return mkDAO.selectProductInfo(sqlSession, productNo);
    }
 
-   public int plusCount(int productNo) {
-      return mkDAO.plusCount(sqlSession, productNo);
+   public int plusCount(int preorderNo) {
+      return mkDAO.plusCount(sqlSession, preorderNo);
    }
 
-   public int plusResultCount(int productNo) {
-      return mkDAO.plusResultCount(sqlSession, productNo);
+   public int plusResultCount(int preorderNo) {
+      return mkDAO.plusResultCount(sqlSession, preorderNo);
    }
 
-   public void minusCount(int productNo) {
-      mkDAO.minusCount(sqlSession, productNo);
+   public void minusCount(int preorderNo) {
+      mkDAO.minusCount(sqlSession, preorderNo);
    }
 
    public ArrayList<Cart> checkCartList(int usersNo, int preorderNo) {
@@ -305,6 +306,15 @@ public class MarketService {
 
 	public ArrayList<Map<String, Object>> orderPeriodSearchList(Properties prop, PageInfo pi) {
 		return mkDAO.orderPeriodSearchList(sqlSession, prop, pi);
+	}
+	
+	//주문번호에 대한 option 조회 
+	public ArrayList<Options> selectOptionInfo(int preorderNo) {
+		return mkDAO.selectOptionInfo(sqlSession, preorderNo);
+	}
+
+	public void updatePointTable(Point p) {
+		mkDAO.updatePointTable(sqlSession, p);		
 	}
 
 

@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +32,7 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
@@ -435,9 +435,32 @@ public class MarketController {
       
       int currentPoint = mkService.selectPoint(users.getUsersNo()); //보유 포인트 
       int minusPoint = currentPoint - usePoint; //보유 포인트 - 사용 포인트
-      int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트 
+      int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트
+      
       users.setPoint(resultPoint);
       mkService.updatePoint(users); //변경 된 포인트 반영 
+      
+      //포인트 테이블에 minus, plus 포인트 반영 
+      Point p = new Point();
+      p.setUsersNo(users.getUsersNo());
+      //minus
+      
+      System.out.println("usePoint : " + usePoint);
+      if(usePoint != 0) { //사용한 포인트가 있으면 
+    	  System.out.println("사용한 포인트가 있다.");
+    	  p.setPointBefore(currentPoint);
+    	  p.setPointChange(minusPoint); //현재-사용 금액
+    	  p.setPointType(11);
+    	  mkService.updatePointTable(p);
+      }
+      if(plus != 0) { // 추가 된 포인트가 있다면 
+    	  System.out.println("추가 한 포인트가 있다.");
+    	  int currentPoint2 = mkService.selectPoint(users.getUsersNo());
+          p.setPointBefore(currentPoint2);
+          p.setPointChange(currentPoint2+plus);
+          p.setPointType(3);
+          mkService.updatePointTable(p);
+      }
       
       //장바구니에서 제거 
       mkService.deleteFromCart(preorderNo);

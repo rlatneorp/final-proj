@@ -15,6 +15,7 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
@@ -332,6 +333,11 @@ public class MarketDAO {
 
 	public ArrayList<Options> selectOptionInfo(SqlSessionTemplate sqlSession, int preorderNo) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionInfo", preorderNo);
+	}
+
+
+	public void updatePointTable(SqlSessionTemplate sqlSession, Point p) {
+		sqlSession.insert("marketMapper.updatePointTable", p);		
 	}
 
 

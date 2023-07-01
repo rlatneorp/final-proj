@@ -16,6 +16,7 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
@@ -310,6 +311,10 @@ public class MarketService {
 	//주문번호에 대한 option 조회 
 	public ArrayList<Options> selectOptionInfo(int preorderNo) {
 		return mkDAO.selectOptionInfo(sqlSession, preorderNo);
+	}
+
+	public void updatePointTable(Point p) {
+		mkDAO.updatePointTable(sqlSession, p);		
 	}
 
 

@@ -539,4 +539,11 @@
 			INNER JOIN options o ON c.PRODUCT_OPTION = o.option_No
 			WHERE c.pre_order_No = #{preorderNo}
 		</select>
+		
+	<insert id="updatePointTable">
+		insert into point (POINT_NO,USERS_NO,POINT_TYPE,POINT_BEFORE,POINT_CHANGE,MODIFY_DATE )
+		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{pointChange}, sysdate )
+	</insert>
+	
+	
 </mapper>

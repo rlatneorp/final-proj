@@ -345,7 +345,7 @@
 	
 	<!-- 주문한 리스트 조회  -->
 	<select id="selectOrderList" resultMap="OrdersResultSet">
-		select * from orders where users_no = #{usersNo}
+		select * from orders where users_no = #{usersNo} order by order_no desc
 	</select>
 	
 	<select id="orderListCount" resultType="_int">
@@ -400,4 +400,7 @@
 		]]>
 	</select>
 	
+	<insert id="minusPoint">
+		
+	</insert>
 </mapper>

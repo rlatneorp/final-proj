@@ -538,7 +538,7 @@ input[type="text"] {
 				error: (data) => {}
 			}) //ajax끝
 		} else {
-			alert('1개 이상 선택') //이거 빼버릴까 ?
+			alert('1개 이상 선택') 
 			return;
 		}
 	})
@@ -606,51 +606,33 @@ input[type="text"] {
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
 		//체크 된 부분만 삭제 처리 
 		for(basketNo of basketNos) {
+			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
+			
 			if(basketNo.nextSibling.nextSibling.checked) {
+				console.log(delPreOrder)
 				const delBasket = basketNo.value;
 				$.ajax({
 					url:'${contextPath}/delBasket.ma',
 					data:{ 
-						productNo:delBasket
+						preorderNo:delPreOrder
 					},
 					success: (data) => {
+						//해당 상품 삭제
 						for(const checkProduct of checkProducts) {
 							let list = checkProduct.parentNode.parentNode;
 							list.remove(); 
-							
-							const table = document.getElementsByClassName('productInfos');
-							for(trs of table) {
-								console.log(trs);
-								
-// 								요약 숫자 변화 
-	 							let intOrderSize = parseInt(document.getElementById('orderSize').innerText);
-	 							intOrderSize--;
-	 							document.getElementById('orderSize').innerText = intOrderSize;
-	 							let price = 0;
-	 							const sumPrice = document.getElementsByClassName('sum');
-	 							for(const sum of sumPrice) {
-	 								const intSum = parseInt(sum.innerText.replace(/,/g, ''));
-	 								price += intSum;
-	 							}
-	 							document.getElementById('trTotalSum').innerText = price;
-								
-	 							//배송비
-	 							if(price >= 30000) {
-	 								document.getElementById('shipPrice').innerText = '0';
-	 							} else {
-	 								document.getElementById('shipPrice').innerText = '3,000';
-	 							}
-	 							//하단 총 합계 금액 
-	 							if(document.getElementById('shipPrice').innerText == '3,000') {
-	 								const ship = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
-	 								document.getElementById('shipSum').innerText = (price + ship)
-	 							} else {
-	 								document.getElementById('shipSum').innerText = document.getElementById('trTotalSum').innerText;
-	 							}
-							}
-							
 						}
-					},
+						swal({
+							 text: "성공적으로 삭제 되었습니다.",
+							 icon: "success",
+							 button: "확인",
+							});
+						//초기화
+						document.getElementById('orderSize').innerText = '0'; 
+						document.getElementById('trTotalSum').innerText = '0';
+						document.getElementById('shipPrice').innerText = '3,000';
+						document.getElementById('shipSum').innerText = '0';
+						},
 					error: (data) => {
 					}
 				})
@@ -669,12 +651,12 @@ input[type="text"] {
 				 button: "확인",
 				});
 		} else {
-			let optNos = [];
+			let preorderNos = [];
 			for(cp of checkProducts) { //체크 된 input type checkbox 
 				const preorderNo = cp.parentElement.lastElementChild.value;
-				optNos.push(preorderNo);
+				preorderNos.push(preorderNo);
 			}
-			console.log('optNos : ' + optNos);
+			console.log('preorderNos  : ' + preorderNos);
 			
 			const form = document.createElement('form');
 			form.method = 'POST';
@@ -682,8 +664,8 @@ input[type="text"] {
 			
 			const prNoInput = document.createElement('input');
 			prNoInput.type = 'hidden';
-			prNoInput.name = 'optNos';
-			prNoInput.value = optNos;
+			prNoInput.name = 'preorderNos';
+			prNoInput.value = preorderNos;
 			
 			form.appendChild(prNoInput);
 			

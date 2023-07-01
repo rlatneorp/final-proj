@@ -205,7 +205,7 @@
    </select>
    
    <delete id="delBasket">
-      delete from cart where product_no = #{productNo}
+      delete from cart where pre_order_no = #{preorderNo}
    </delete>
    
    <update id="plusCount">

@@ -106,8 +106,8 @@ public class MarketDAO {
       return sqlSession.selectOne("marketMapper.selectIngrdient", productNo);
    }
 
-   public void delBasket(SqlSessionTemplate sqlSession, int productNo) {
-      sqlSession.delete("marketMapper.delBasket", productNo);
+   public void delBasket(SqlSessionTemplate sqlSession, int preorderNo) {
+      sqlSession.delete("marketMapper.delBasket", preorderNo);
    }
 
    public ArrayList<Product> selectProductInfo(SqlSessionTemplate sqlSession, int productNo) {

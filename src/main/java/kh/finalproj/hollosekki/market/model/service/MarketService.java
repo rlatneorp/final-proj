@@ -113,8 +113,8 @@ public class MarketService {
       return mkDAO.selectIngrdient(sqlSession, productNo);
    }
 
-   public void delBasket(int productNo) {
-      mkDAO.delBasket(sqlSession, productNo);
+   public void delBasket(int preorderNo) {
+      mkDAO.delBasket(sqlSession, preorderNo);
    }
 
    public ArrayList<Product> selectProductInfo(int productNo) {

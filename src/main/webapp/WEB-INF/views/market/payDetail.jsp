@@ -246,47 +246,50 @@ input[type="text"] {
 			<th class="tableBorder1"><b>합계금액</b></th>
 		</tr>
 		<tbody id="products">
+			<c:set var="previousPreorderNo" value="" />
 			<c:forEach items="${ checkedCartList}" var="cl" varStatus="status" >
-				<c:if test="${cl.preorderNo != checkedCartList[status.index - 1].preorderNo}">
-				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
-					<td class="imgTab">
-						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-						<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-						<input type="hidden" id="preorderNo-${cl.productNo }" value="${cl.preorderNo }">
-					</td>
-					<td style="border-right: 2px solid #dee2e6; text-align: left">
-						<b id="productName-${cl.productNo }">${cl.productName}</b><br><br>
-						<c:forEach items="${optValues }" var="opt">
-							<c:if test="${ opt.productNo eq cl.productNo }">
+				<c:if test="${cl.preorderNo != previousPreorderNo}">
+					<c:set var="previousPreorderNo" value="${cl.preorderNo}" />
+					<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
+						<td class="imgTab">
+							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
+							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
+							<input type="text" value="${cl.preorderNo }">
+						</td>
+						<td style="border-right: 2px solid #dee2e6; text-align: left">
+							<b id="productName-${cl.preorderNo }">${cl.productName}</b><br><br>
+							<c:forEach items="${cl.optionName }" var="opt">
+								<input type="hidden" value="${opt.optionNo }">
 								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
+							</c:forEach>
+						</td>
+						<td  style="border-right: 2px solid #dee2e6; width:130px">
+							<input type="text" class="forProductNo" value="${cl.productNo }">
+							<input type="text" value="${cl.preorderNo }">
+							<span class="cartCount" id="size-${cl.preorderNo}">${cl.cartCount }</span>개&nbsp;
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:150px " >
+							<c:if test="${cl.sale ne 0 }">
+								<span id="sale-${cl.preorderNo }" class="highlight"><b>${cl.sale }% 할인</b></span>
+								<br><br> <span style="text-decoration: line-through;" id="originP-${cl.preorderNo }">${cl.productPrice}</span>
+								<br><span id="pp-${cl.preorderNo }" style="font-size:25px; font-weight:bold" class="price">
+									${cl.productPrice}
+								</span>원
 							</c:if>
-						</c:forEach>
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:130px">
-						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp;
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:150px " >
-						<c:if test="${cl.sale ne 0 }">
-							<span id="sale-${cl.productNo }" class="highlight-a"><b>${cl.sale }% 할인</b></span>
-							<br><br> <span style="text-decoration: line-through;" id="originP-${cl.productNo }">${cl.productPrice}</span>
-							<br><span id="pp-${cl.productNo }" style="font-size:25px; font-weight:bold" class="price">
-								${cl.productPrice}
+							<c:if test="${cl. sale eq 0 }">
+								<span id="pp-${cl.productNo }" class="price">
+									${cl.productPrice}
+								</span>원
+							</c:if>
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:130px">
+							<span class="point" id="point-${cl.preorderNo }"></span>P 적립
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:160px">
+							<span class="sum" id="sum-${cl.preorderNo }">
+							${cl.sum }
 							</span>원
-						</c:if>
-						<c:if test="${cl.sale eq 0 }">
-							<span id="pp-${cl.productNo }" style="font-size:25px; font-weight:bold"  class="price">
-								${cl.productPrice}
-							</span>원
-						</c:if>
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:130px">
-						<span class="point" id="point-${cl.productNo }"></span>P 적립
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:160px">
-						<span class="sum" id="sum-${cl.productNo }">
-						${cl.sum }
-						</span>원
-					</td>
+						</td>
 				</tr>
 				</c:if>
 			</c:forEach>
@@ -662,8 +665,7 @@ input[type="text"] {
 		//포인트
 		const parentPnos = document.getElementsByClassName('imgTab');
 		for(let p of parentPnos) { 
-			let pNos = p.children[0].value; //번호
-			
+			let pNos = p.children[0].value; //주문번호
 			let sumPrice = parseInt(document.getElementById('sum-' + pNos).innerText);
 			let size = parseInt(document.getElementById('size-'+ pNos).innerText);
 			
@@ -675,7 +677,9 @@ input[type="text"] {
 			const sales =document.getElementById('sale-' + pNos);
 			if(sales != null) {
 				const sale = parseInt(sales.innerText);
+				console.log(document.getElementById('originP-' + pNos));
 				const originP = parseInt(document.getElementById('originP-' + pNos).innerText);
+				
 				const discountAmount = originP * (sale / 100);
 				const discountedPrice = (originP - discountAmount).toLocaleString();
 				const disFormatDiscountedPrice = (originP - discountAmount);
@@ -1179,10 +1183,10 @@ input[type="text"] {
 		
 		const orderInfo = []; /* 상품 단가, 할인률?, 적립금, 포인트 사용 금액 */
 		for(pn of parentNo) {
-			const productNo = pn.firstChild.nextSibling.value; 
+			const preorderNo = pn.firstChild.nextSibling.value; 
 			const orderCountMinus1 = parentNo.length - 1;
-			const productName = document.getElementById('productName-' + productNo).innerText;
-			const preorderNo = document.getElementById('preorderNo-' + productNo).value;
+			const productName = document.getElementById('productName-' + preorderNo).innerText;
+// 			const preorderNo = document.getElementById('preorderNo-' + preorderNo).value;
 			let name = '';
 			if(orderCountMinus1 == 0) {
 	        	name = '주문명:' + productName;
@@ -1193,8 +1197,8 @@ input[type="text"] {
 				pg: 'html5_inicis',
 				pay_method: 'card',
 				name:name,
-				amount:shipSum,
-				amount:100,
+// 				amount:shipSum,
+				amount:100
 // 				buyer_name:
 				//가격
 				//	        buyer_email: 'iamport@siot.do',
@@ -1211,77 +1215,86 @@ input[type="text"] {
 				        */
 				}, function (rsp) {
 					if (rsp.success) {
-						var msg = '결제가 완료되었습니다.';
+// 						var msg = '결제가 완료되었습니다.';
 			            //usePoint, plusPoint 반영 
-			            //ajax...ㅋㅋㅋ 
 			            //결제 성공 시 orders테이블에 insert 
-			            orderInfo.length = 0; //배열 비우기 
-			 			//상품 list 구매내역 테이블에 담기 
-			 			//insert 시 필요 데이터 : 
-			 			//productNo, users_no, orderCount, totalPrice(개별 합계), orderAddress, orderStock(R), orderComment, 배송비
-						const productNo = pn.firstChild.nextSibling.value; 
+// 			            orderInfo.length = 0; //배열 비우기 
+// 			 			//상품 list 구매내역 테이블에 담기 
+// 			 			//insert 시 필요 데이터 : 
+// 			 			//productNo, users_no, orderCount, totalPrice(개별 합계), orderAddress, orderStock(R), orderComment, 배송비
+						const forProductNos = document.getElementsByClassName('forProductNo');
 						const usersNo = ${loginUser.usersNo};
-						const count = document.getElementById('size-' + productNo).innerText;
-						const sum = parseInt(document.getElementById('sum-' + productNo).innerText.replace(/,/g, ''));
-	
-						/* 상품 단가, 할인률, 적립금, 포인트 사용 금액 */
-						const price = document.getElementById('originP-' + productNo); //단가
-						const sale = document.getElementById('sale-' + productNo); //할인률
-						if(price != null) {
-							orderInfo.push('가격 : ' + price.innerText);
-						} else { //null이면 
-							orderInfo.push('가격 : ' + sum);
-						}
-						if(sale != null) {
-							orderInfo.push('할인가 : ' + sale.innerText);
-						} else {
-							orderInfo.push('할인가 없음');
-						}
-						const plusPoint = document.getElementById('point-' + productNo).innerText; //해당 상품에 대한 포인트 적립  
-						let usePoint = document.getElementById('inputPoint').value; //포인트 차감 (동일)
-						if(usePoint === '') {
-							usePoint = '0';
-						}
-						orderInfo.push('적립금 : ' + plusPoint);
-						orderInfo.push('차감적립 : ' + usePoint);
-						orderInfo.push('/');
-						const join = orderInfo.join(',');
-						const orderInfos = join.replace(/,\/,/g, '/').replace(/,\/$/, '');
-								
-						//옵션 담기 
-						const optionElement = document.getElementById('productName-' + productNo).parentElement.querySelectorAll('span');
-						console.log('length : ' + optionElement.length)
-						let options = [];
-						if(optionElement.length != 0) {
-							for(option of optionElement) {
-								console.log('option :  ' + option);
-								options.push(option.innerText);
+			            for(forProductNo of forProductNos){
+			            	const productNo = forProductNo.value
+			            	console.log(forProductNo);
+			            	const preorderNo = forProductNo.nextElementSibling.value;
+			            	console.log('productNo : ' + productNo);
+			            	console.log('preorderNo : ' + preorderNo);
+			            	const count = document.getElementById('size-' + preorderNo).innerText;
+			            	console.log(count);
+			            	const sum = parseInt(document.getElementById('sum-' + preorderNo).innerText.replace(/,/g, ''));
+			            	
+			            	/* 상품 단가, 할인률, 적립금, 포인트 사용 금액 */
+	 						const price = document.getElementById('originP-' + preorderNo); //단가
+	 						const sale = document.getElementById('sale-' + preorderNo); //할인률
+	 						if(price != null) {
+	 							orderInfo.push('가격 : ' + price.innerText);
+	 						} else { //null이면 
+	 							orderInfo.push('가격 : ' + sum);
+	 						}
+	 						if(sale != null) {
+	 							orderInfo.push('할인가 : ' + sale.innerText);
+	 						} else {
+	 							orderInfo.push('할인 : X'); //할인가 없음 
+	 						}
+	 						const plusPoint = document.getElementById('point-' + preorderNo).innerText; //해당 상품에 대한 포인트 적립  
+	 						let usePoint = document.getElementById('inputPoint').value; //포인트 차감 (동일)
+	 						if(usePoint === '') {
+	 							usePoint = '0';
+	 						}
+	 						orderInfo.push('적립금 : ' + plusPoint);
+	 						orderInfo.push('사용한 적립금 : ' + usePoint);
+	 						orderInfo.push('/');
+	 						const join = orderInfo.join(',');
+	 						const orderInfos = join.replace(/,\/,/g, '/').replace(/,\/$/, '');
+	 						
+	 						//옵션 담기 
+	 						const optionElement = document.getElementById('productName-' + preorderNo).parentElement.querySelectorAll('span');
+	 						console.log('length : ' + optionElement.length)
+	 						
+	 						let options = [];
+							if(optionElement.length != 0) {
+								for(option of optionElement) {
+									console.log('option :  ' + option);
+									options.push(option.innerText);
+								}
+							} else { //옵션이 없다면 
+								options = '옵션 없음';
 							}
-						} else { //옵션이 없다면 
-							options = '옵션 없음';
-						}
-						$.ajax({
-							url:'${contextPath}/insertPay.ma',
-							data:{
-								productNo:productNo,
-								usersNo:usersNo,
-								orderCount:count,
-								totalPrice:sum,
-								orderAddress:orderAddress,
-								orderDeliveryComment:deliveryComment,
-								orderInfo:orderInfos,
-								shipPrice:document.getElementById('shipPrice').innerText,
-								options:options
-							},
-							success: data => {
-			            		//insert성공 시 
-								location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + plusPoint + '&preNo=' + preorderNo;
-							},
-							error: data => {
-										
-							}
-					    });
-						            //결제 성공 시 포인트 및 장바구니에서 제거 함 
+							//insert + 포인트 및 장바구니에서 제거
+							$.ajax({
+								url:'${contextPath}/insertPay.ma',
+								data:{
+									productNo:productNo,
+									usersNo:usersNo,
+									orderCount:count,
+									totalPrice:sum,
+									orderAddress:orderAddress,
+									orderDeliveryComment:deliveryComment,
+									orderInfo:orderInfos,
+									shipPrice:document.getElementById('shipPrice').innerText,
+									options:options
+								},
+								success: data => {
+				            		//insert성공 시 
+									location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + plusPoint + '&preNo=' + preorderNo;
+								},
+								error: data => {
+											
+								}
+					    	}); //ajax 끝 
+			            } //for문 끝 
+					
 					 	            
 					//             msg += '고유ID : ' + rsp.imp_uid;
 					//             msg += '상점 거래ID : ' + rsp.merchant_uid;

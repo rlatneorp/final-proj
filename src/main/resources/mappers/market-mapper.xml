@@ -435,7 +435,15 @@
    
    <!-- 포인트 조회  -->
    <select id="selectPoint" resultType="_int">
-      select point from users where users_no = #{usersNo}
+      <![CDATA[
+      SELECT POINT_CHANGE
+      FROM (
+	    SELECT *
+	    FROM point
+	    WHERE USERS_NO = #{usersNo}
+	    ORDER BY POINT_NO DESC
+	    ) WHERE ROWNUM = 1
+	  ]]>
    </select>
    
    <!-- 장바구니 상품에 대한 이미지 조회 -->

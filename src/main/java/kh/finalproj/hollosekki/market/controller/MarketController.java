@@ -428,42 +428,63 @@ public class MarketController {
    }
    
    @RequestMapping("paySuccess.ma")
-   public String paySuccess(HttpSession session, Model model, @RequestParam("use") String use, @RequestParam("preNo") int preorderNo, @RequestParam("plus") int plus) {
-	  
+   public String paySuccess(HttpSession session, Model model, @RequestParam("use") String use, @RequestParam("preNo") String preorderNo, @RequestParam("plus") int plus) {
+	  System.out.println("preorderNo : " + preorderNo);
 	  int usePoint = Integer.parseInt(use.split("원")[0]); //사용 포인트 
       Users users = (Users)session.getAttribute("loginUser");
       
-      int currentPoint = mkService.selectPoint(users.getUsersNo()); //보유 포인트 
-      int minusPoint = currentPoint - usePoint; //보유 포인트 - 사용 포인트
-      int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트
-      
-      users.setPoint(resultPoint);
-      mkService.updatePoint(users); //변경 된 포인트 반영 
+      //users테이블 
+      //포인트 차감은 최초 1번만, 포인트 +는 여러 번.... 
+//      int currentPointForUserTable = mkService.selectPoint(users.getUsersNo()); //보유 포인트 
+//      int minusPoint = currentPointForUserTable - usePoint; //보유 포인트 - 사용 포인트
+//      int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트
+//      
+//      users.setPoint(resultPoint);
+//      mkService.updatePoint(users); //변경 된 포인트 반영 
       
       //포인트 테이블에 minus, plus 포인트 반영 
       Point p = new Point();
       p.setUsersNo(users.getUsersNo());
       //minus
       
-      System.out.println("usePoint : " + usePoint);
+      //상품 하나하나가 들어옴 
+      
       if(usePoint != 0) { //사용한 포인트가 있으면 
     	  System.out.println("사용한 포인트가 있다.");
+    	  System.out.println("usePoint1 : " + usePoint);
+    	  int currentPoint = mkService.selectPoint(users.getUsersNo());
+    	  System.out.println("currentPoint1111 : " + currentPoint);
     	  p.setPointBefore(currentPoint);
-    	  p.setPointChange(minusPoint); //현재-사용 금액
+    	  int minus = currentPoint-usePoint;
+    	  System.out.println("minus : " + minus);
+    	  p.setPointChange(minus); //현재-사용 금액
     	  p.setPointType(11);
     	  mkService.updatePointTable(p);
       }
       if(plus != 0) { // 추가 된 포인트가 있다면 
-    	  System.out.println("추가 한 포인트가 있다.");
-    	  int currentPoint2 = mkService.selectPoint(users.getUsersNo());
+    	  System.out.println("추가 한 포인트가 있다." + plus);
+    	  int currentPoint2 = mkService.selectPoint(users.getUsersNo()); //33900원이 떠야 되는데....차감이 안됨 ?
+    	  System.out.println("currentPoint2222 : " + currentPoint2);
           p.setPointBefore(currentPoint2);
-          p.setPointChange(currentPoint2+plus);
+          int plusPoint = currentPoint2+plus;
+          System.out.println("plusPoint : " + plusPoint);
+          p.setPointChange(plusPoint);
           p.setPointType(3);
           mkService.updatePointTable(p);
       }
+      //users테이블에 총 포인트 반영 
+      int currentPointForUsers = mkService.selectPoint(users.getUsersNo());
+      users.setPoint(currentPointForUsers);
+      mkService.updatePoint(users);
       
       //장바구니에서 제거 
-      mkService.deleteFromCart(preorderNo);
+      String[] preorderNoArr = preorderNo.split(",");
+      int[] preorderNoIntArr = new int[preorderNoArr.length];
+      for (int i = 0; i < preorderNoArr.length; i++) {
+          preorderNoIntArr[i] = Integer.parseInt(preorderNoArr[i]);
+          mkService.deleteFromCart(preorderNoIntArr[i]);
+      }
+
       
       model.addAttribute("users", users);
       return "paySuccess";

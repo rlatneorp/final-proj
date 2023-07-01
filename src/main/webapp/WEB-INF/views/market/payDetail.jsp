@@ -254,7 +254,7 @@ input[type="text"] {
 						<td class="imgTab">
 							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
 							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-							<input type="text" value="${cl.preorderNo }">
+							<input type="text" class="storePreOrderNo" value="${cl.preorderNo }">
 						</td>
 						<td style="border-right: 2px solid #dee2e6; text-align: left">
 							<b id="productName-${cl.preorderNo }">${cl.productName}</b><br><br>
@@ -677,7 +677,6 @@ input[type="text"] {
 			const sales =document.getElementById('sale-' + pNos);
 			if(sales != null) {
 				const sale = parseInt(sales.innerText);
-				console.log(document.getElementById('originP-' + pNos));
 				const originP = parseInt(document.getElementById('originP-' + pNos).innerText);
 				
 				const discountAmount = originP * (sale / 100);
@@ -1115,6 +1114,7 @@ input[type="text"] {
 					});
 					inputPoint.value = currentPoint + '원';
 					usePoint.innerText = currentPoint;
+					console.log('up1: ' + usePoint.innerText)
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-currentPoint).toLocaleString(); //총금액+배송비-포인트
 				} else if ( value < currentPoint) { //새로 입력한 값보다 보유 포인트 금액이 크면 
 					inputPoint.value = formattedValue + '원';
@@ -1181,6 +1181,8 @@ input[type="text"] {
 		orderAddress.push(address);
 		orderAddress.push(detailAddress);
 		
+		let usePoint = document.getElementById('usePoint').innerText;
+		
 		const orderInfo = []; /* 상품 단가, 할인률?, 적립금, 포인트 사용 금액 */
 		for(pn of parentNo) {
 			const preorderNo = pn.firstChild.nextSibling.value; 
@@ -1224,14 +1226,13 @@ input[type="text"] {
 // 			 			//productNo, users_no, orderCount, totalPrice(개별 합계), orderAddress, orderStock(R), orderComment, 배송비
 						const forProductNos = document.getElementsByClassName('forProductNo');
 						const usersNo = ${loginUser.usersNo};
-			            for(forProductNo of forProductNos){
+						 //포인트 차감 (동일)
+						 
+			            for(forProductNo of forProductNos){ //insert 
 			            	const productNo = forProductNo.value
-			            	console.log(forProductNo);
 			            	const preorderNo = forProductNo.nextElementSibling.value;
-			            	console.log('productNo : ' + productNo);
-			            	console.log('preorderNo : ' + preorderNo);
 			            	const count = document.getElementById('size-' + preorderNo).innerText;
-			            	console.log(count);
+			            	console.log(preorderNo);
 			            	const sum = parseInt(document.getElementById('sum-' + preorderNo).innerText.replace(/,/g, ''));
 			            	
 			            	/* 상품 단가, 할인률, 적립금, 포인트 사용 금액 */
@@ -1248,10 +1249,9 @@ input[type="text"] {
 	 							orderInfo.push('할인 : X'); //할인가 없음 
 	 						}
 	 						const plusPoint = document.getElementById('point-' + preorderNo).innerText; //해당 상품에 대한 포인트 적립  
-	 						let usePoint = document.getElementById('inputPoint').value; //포인트 차감 (동일)
-	 						if(usePoint === '') {
-	 							usePoint = '0';
-	 						}
+	 						//사용 포인트가 없다면 0으로 
+	 						
+	 						console.log('너의 현재 금액은? : ' + usePoint);
 	 						orderInfo.push('적립금 : ' + plusPoint);
 	 						orderInfo.push('사용한 적립금 : ' + usePoint);
 	 						orderInfo.push('/');
@@ -1260,12 +1260,10 @@ input[type="text"] {
 	 						
 	 						//옵션 담기 
 	 						const optionElement = document.getElementById('productName-' + preorderNo).parentElement.querySelectorAll('span');
-	 						console.log('length : ' + optionElement.length)
 	 						
 	 						let options = [];
 							if(optionElement.length != 0) {
 								for(option of optionElement) {
-									console.log('option :  ' + option);
 									options.push(option.innerText);
 								}
 							} else { //옵션이 없다면 
@@ -1286,14 +1284,33 @@ input[type="text"] {
 									options:options
 								},
 								success: data => {
-				            		//insert성공 시 
-									location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + plusPoint + '&preNo=' + preorderNo;
+									
 								},
 								error: data => {
 											
 								}
 					    	}); //ajax 끝 
 			            } //for문 끝 
+			            
+			          	//insert성공 시 
+			            const p = document.getElementsByClassName('point');
+			            console.log('p : ' + document.getElementsByClassName('point'));
+			            let pp = 0;
+			            for (let i = 0; i < p.length; i++) {
+			            	const pot = parseInt(p[i].innerText);
+			            	if (i > 0) {
+			            		pp += pot;
+			            	}
+			            }
+						const pr = document.getElementsByClassName('storePreOrderNo');
+						let preOrder = [];
+						for(prs of pr) {
+							console.log(prs.value);
+							const prsNo = prs.value;
+							preOrder.push(prsNo);
+						}
+						location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + pp + '&preNo=' + preOrder;
+						usePoint = 0;
 					
 					 	            
 					//             msg += '고유ID : ' + rsp.imp_uid;
@@ -1306,8 +1323,8 @@ input[type="text"] {
 					}
 				  })
 				
-			}; //request 끝 
-		} //for문끝 
+			}; //for문 끝
+		} //requestPay 문끝 
 // 	} //requestPay 끝
 </script>
 

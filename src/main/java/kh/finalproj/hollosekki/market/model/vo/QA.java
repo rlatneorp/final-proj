@@ -1,8 +1,10 @@
-package kh.finalproj.hollosekki.customer.model.vo;
+package kh.finalproj.hollosekki.market.model.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class Qna {
+import kh.finalproj.hollosekki.users.model.vo.Users;
+
+public class QA extends Users{
 	private int qnaNo;
 	private int usersNo;
 	private Date qnaDate;
@@ -11,14 +13,17 @@ public class Qna {
 	private int adminNo;
 	private Date answerDate;
 	private String answerContent;
-	private char qnaStatus;
+	private String qnaStatus;
+	private int qnaType;
+	private String nickName;
+	private String qnaCategory;
 	
-	public Qna() {
+	public QA() {
 		super();
 	}
 
-	public Qna(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, int adminNo, Date answerDate,
-			String answerContent, char qnaStatus) {
+	public QA(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, int adminNo, Date answerDate,
+			String answerContent, String qnaStatus, int qnaType, String nickName, String qnaCategory) {
 		super();
 		this.qnaNo = qnaNo;
 		this.usersNo = usersNo;
@@ -29,6 +34,9 @@ public class Qna {
 		this.answerDate = answerDate;
 		this.answerContent = answerContent;
 		this.qnaStatus = qnaStatus;
+		this.qnaType = qnaType;
+		this.nickName = nickName;
+		this.qnaCategory = qnaCategory;
 	}
 
 	public int getQnaNo() {
@@ -95,20 +103,44 @@ public class Qna {
 		this.answerContent = answerContent;
 	}
 
-	public char getQnaStatus() {
+	public String getQnaStatus() {
 		return qnaStatus;
 	}
 
-	public void setQnaStatus(char qnaStatus) {
+	public void setQnaStatus(String qnaStatus) {
 		this.qnaStatus = qnaStatus;
+	}
+
+	public int getQnaType() {
+		return qnaType;
+	}
+
+	public void setQnaType(int qnaType) {
+		this.qnaType = qnaType;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public String getQnaCategory() {
+		return qnaCategory;
+	}
+
+	public void setQnaCategory(String qnaCategory) {
+		this.qnaCategory = qnaCategory;
 	}
 
 	@Override
 	public String toString() {
-		return "Qna [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
+		return "QA [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
 				+ ", qnaContent=" + qnaContent + ", adminNo=" + adminNo + ", answerDate=" + answerDate
-				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + "]";
+				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType
+				+ ", nickName=" + nickName + ", qnaCategory=" + qnaCategory + "]";
 	}
 
-	
 }

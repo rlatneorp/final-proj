@@ -553,5 +553,37 @@
 		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{pointChange}, sysdate )
 	</insert>
 	
+	<insert	id="insertQna">
+		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type)
+	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, #{qnaType})
+	</insert>
+	
+	<select id="selectQnaList" resultMap="QnAResultSet">
+		select *
+		from qna join users using(users_no)
+		where qna_type=#{productNo} and qna_status = 'Y'
+		order by qna_no desc
+	</select>
+	
+	<select id="selectQnaCount" resultType="int">
+		select count(*)
+		from qna
+		where qna_type=#{productNo} and qna_status = 'Y'
+	</select>
+	
+	<resultMap type="QA" id="QnAResultSet">
+		<id column="QNA_NO" property="qnaNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="QNA_DATE" property="qnaDate"/>
+		<result column="QNA_TITLE" property="qnaTitle"/>
+		<result column="QNA_CONTENT" property="qnaContent"/>
+		<result column="ADMIN_NO" property="adminNo"/>
+		<result column="ANSWER_DATE" property="answerDate"/>
+		<result column="ANSWER_CONTENT" property="answerContent"/>
+		<result column="QNA_STATUS" property="qnaStatus"/>
+		<result column="QNA_TYPE" property="qnaType"/>
+		<result column="NICKNAME" property="nickName"/>
+	</resultMap>
+	
 	
 </mapper>

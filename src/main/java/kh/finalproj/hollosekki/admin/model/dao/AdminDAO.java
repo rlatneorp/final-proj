@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.admin.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
+import kh.finalproj.hollosekki.board.model.vo.Board;
+import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -24,12 +27,20 @@ import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
 public class AdminDAO {
+
+	public ArrayList<AdminMain> adminMainWeek(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.adminMainWeek");
+	}
 	
 //	Common-공용
 	public int updateStatus(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.update("adminMapper.updateStatus", map);
 	}
 
+	public int deleteSelects(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.delete("adminMapper.deleteSelects", map);
+	}
+	
 	public int insertOptions(SqlSessionTemplate sqlSession, ArrayList<Options> oList) {
 		int result = 0;
 		for(Options op: oList) {
@@ -140,7 +151,8 @@ public class AdminDAO {
 		return sqlSession.selectOne("adminMapper.selectMenu", pNo);
 	}
 
-	public ArrayList<String> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
+//	public ArrayList<String> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
+	public ArrayList<Integer> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectFoodProductNo", pNo);
 	}
 	
@@ -289,44 +301,82 @@ public class AdminDAO {
 		return resultRpOd+resultRp;
 	}
 
-	public ArrayList<AdminMain> adminMainWeek(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("adminMapper.adminMainWeek");
+
+//	Board-게시판
+	public int getBoardCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getBoardCount", ab);
 	}
 
+	public ArrayList<Board> selectBoardList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectBoardList", ab, rowBounds);
+	}
+
+	public Board selectBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.selectOne("adminMapper.selectBoard", boardNo);
+	}
+
+	public int deletesBoard(SqlSessionTemplate sqlSession, String[] selDeletes) {
+		int resultR = 0;
+		AdminBasic ab = new AdminBasic();
+		ab.setKind(-1);
+		for(int i = 0; i < selDeletes.length; i++) {
+			ab.setNumber(Integer.parseInt(selDeletes[i]));
+			resultR += sqlSession.delete("adminMapper.deleteReview", ab);
+		}
+		
+		return resultR + sqlSession.delete("adminMapper.deletesBoard", selDeletes);
+	}
+
+
+//	Review-리뷰
 	public int getReviewCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
 		return sqlSession.selectOne("adminMapper.getReviewCount", ab);
 	}
 
 	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("adminMapper.selectReviewList", ab, rowBounds);
+		if(pi != null) {
+			int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+			RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+			return (ArrayList)sqlSession.selectList("adminMapper.selectReviewList", ab, rowBounds);
+		}else {
+			return (ArrayList)sqlSession.selectList("adminMapper.selectReviewList", ab);
+		}
 	}
 
 	public Review selectReview(SqlSessionTemplate sqlSession, Integer reviewNo) {
-		
-		Review r1 = sqlSession.selectOne("adminMapper.selectReview", reviewNo);
-		
-		AdminBasic ab = new AdminBasic();
-		
-		Product pd = null;
-//		상품일때 타입 가져오기
-		if(r1.getOrderNo() != 0 && r1.getOrderNo() != -1) {
-			pd = selectProduct(sqlSession, r1.getProductNo());
-			ab.setType(pd.getProductType());
-		}
-		ab.setKind(r1.getOrderNo());
-		ab.setNumber(r1.getReviewNo());
-		
-		Review r2 = (Review)((ArrayList)sqlSession.selectList("adminMapper.selectReviewList", ab)).get(0);
-		System.out.println(r2);
-		
-		return r2;
+		return sqlSession.selectOne("adminMapper.selectReview", reviewNo);
+	}
+
+	public int deletesReview(SqlSessionTemplate sqlSession, String[] selDeletes) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("selDeletes", selDeletes);
+		map.put("type", 7);
+		return sqlSession.delete("adminMapper.deletesReview", map);
+	}
+
+	
+//	FAQ-자주묻는질문
+	public int getFAQCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getFAQCount", ab);
+	}
+
+	public ArrayList<FAQ> selectFAQList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectFAQList", ab, rowBounds);
+	}
+
+	public FAQ selectFAQ(SqlSessionTemplate sqlSession, Integer faqNo) {
+		return sqlSession.selectOne("adminMapper.selectFAQ", faqNo);
+	}
+
+	public int updateFAQ(SqlSessionTemplate sqlSession, FAQ faq) {
+		return sqlSession.update("adminMapper.updateFAQ", faq);
 	}
 
 
-	
-	
 
 
 

@@ -20,10 +20,12 @@ public class Cart {
 	private int sale;
 	private String productName;
 	private String optionValue;
-	private Map<String, List<String>> optionName;
+	private ArrayList<Options> optionName;
 	private ArrayList<Cart> cartValue;
 	private String selectedOpt;
 	private String imgName;
+	
+	
 	
 	public Cart() {
 		super();
@@ -49,7 +51,7 @@ public class Cart {
 		this.sale = sale;
 		this.productName = productName;
 		this.optionValue = optionValue;
-		this.optionName = optionName;
+		this.optionName = (ArrayList<Options>) optionName;
 		this.cartValue = cartValue;
 		this.selectedOpt = selectedOpt;
 		this.imgName = imgName;
@@ -213,14 +215,14 @@ public class Cart {
 
 
 
-	public Map<String, List<String>> getOptionName() {
+	public ArrayList<Options> getOptionName() {
 		return optionName;
 	}
 
 
 
-	public void setOptionName(Map<String, List<String>> optionName) {
-		this.optionName = optionName;
+	public void setOptionName(ArrayList<Options> o) {
+		this.optionName = o;
 	}
 
 

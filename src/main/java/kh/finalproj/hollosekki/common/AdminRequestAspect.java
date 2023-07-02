@@ -80,10 +80,10 @@ public class AdminRequestAspect {
 	
 		ab.setSearchType(request.getParameter("searchType"));
 		ab.setSearchText(request.getParameter("searchText"));
-		if(request.getParameter("type") != null) {
+		if(request.getParameter("type") != null && request.getParameter("type").trim() != "") {
 			ab.setType(Integer.parseInt(request.getParameter("type")));
 		}
-		if(request.getParameter("kind") != null) {
+		if(request.getParameter("kind") != null && request.getParameter("kind").trim() != "") {
 			ab.setKind(Integer.parseInt(request.getParameter("kind")));
 		}
 		

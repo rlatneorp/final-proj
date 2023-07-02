@@ -27,7 +27,9 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
+import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -52,6 +54,246 @@ public class AdminController {
 //		ArrayList<AdminMain> amList = aService.adminMainWeek();
 		return "adminMain";
 	}
+	
+	@PostMapping("adminDeleteSelects.ad")
+	public String adminDeleteSelects(@RequestParam("selectDelete") ArrayList<Integer> selDeletes,
+//									 @RequestParam("selectDelete") String[] selDeletes,
+									 @RequestParam("type") Integer type,
+									 @RequestParam("url") String url,
+								 	 HttpServletRequest request,
+								 	 Model model) {
+		System.out.println("selDeletes"+selDeletes);
+		System.out.println("type:"+type);
+		System.out.println("url:"+url);
+		
+//		삭제하러 들어오기 전, 기존에 다른DB에서 해당 데이터를 사용중이라면, 삭제 불가!!하도록 변경해야함
+		
+//		 	type	-->
+//		 	1 : 식품 			product				image
+//		 	2 : 식단 			product				image 	menuList
+//		 	3 : 식재료		(product)			image
+//		 	4 : 주방도구		product				image
+//				5 : 상품  		
+//		 	6 : 레시피	 	review				image
+//		 	7 : 리뷰(Review)						image
+//		 	8 : 게시판(Board) review				image
+//		 	9 : FAQ		
+//		 	10 : QNA
+//			11 : menuList
+//		
+//		1. type == 3 	1) ingredient_no에 맞는 product_no 리스트 불러오기
+//						2) product_no이 0이 아니라면 type과 함께 image 리스트 불러오기
+//		   type == 1~4	3) product_no, type으로 image 리스트 불러오기
+//			o	a.이미지 (일괄)삭제
+//				b.각각(food, menu, ingredient, tool) 삭제
+//				c.product 삭제
+//		
+//		2. type == 6,8	1) review 리스트 불러오기
+//						2) review 이미지 리스트 불러오기
+//						3) 게시글의 image 리스트 불러오기
+//			o	a.이미지 삭제
+//				b.리뷰 삭제
+//				c.각각(레시피/게시판)삭제
+//		
+//		3. type == 7 	1) review 이미지 리스트 불러오기
+//			o	a.이미지 삭제
+//				b.리뷰 삭제
+//		
+//		4. type == 9,10	1) -
+//				a.각각(FAQ/QNA) 삭제
+		
+		ArrayList<Image> imgList = new ArrayList<Image>();
+		ArrayList<Integer> delList1 = new ArrayList<Integer>();
+		ArrayList<Integer> delList2 = new ArrayList<Integer>();
+		ArrayList<Integer> delList3 = new ArrayList<Integer>();
+		Integer imgType1 = 0;
+		Integer imgType2 = 0;
+		Integer type1 = type;
+		Integer type2 = 0;
+		Integer type3 = 0;
+		int resultImg = 0;
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
+		
+		delList1 = selDeletes;
+//		상품일때(식품/식단/식재료/주방) type == 1~4;
+		if(type >= 1 && type <= 4) {
+//			식재료일때
+			if(type == 3) {
+				imgType1 = 3;
+				ArrayList<Ingredient> igdList = new ArrayList<Ingredient>();
+				ArrayList<Integer> pNoList = new ArrayList<Integer>();
+				
+				for(Integer i:selDeletes) {
+					Ingredient ingredient = aService.selectIngredient(i);
+//					product 등록이 되어있다면, product_no 담기
+					if(ingredient.getProductNo() != 0) {
+						delList2.add(ingredient.getProductNo());
+						type2 = 5;
+					}
+				}
+			}else {
+				delList2 = selDeletes;
+				type2 = 5;
+			}
+			if(type == 2) {
+				imgType1 = 2;
+				for(Integer i:selDeletes) {
+					ArrayList<Integer> fNoList = aService.selectFoodProductNo(i);
+					delList3.addAll(fNoList);
+					type3 = 11;
+				}
+				
+			}
+			
+//		레시피일때 type == 6
+		}else if(type == 6){
+			imgType1 = 6;
+			imgType2 = 7;
+			for(Integer i:selDeletes) {
+				AdminBasic ab = new AdminBasic();
+				ab.setKind(0);
+				ab.setNumber(i);
+				ab.setDuplication("Y");
+				ArrayList<Review> rvList = aService.selectReviewList(null, ab);
+				for(Review rv:rvList) {
+					delList2.add(rv.getReviewNo());
+					type2 = 7;
+				}
+			}
+		}else if(type == 8) {
+			imgType2 = 7;
+			for(Integer i:selDeletes) {
+				AdminBasic ab = new AdminBasic();
+				ab.setKind(-1);
+				ab.setNumber(i);
+				ab.setDuplication("Y");
+				ArrayList<Review> rvList = aService.selectReviewList(null, ab);
+				for(Review rv:rvList) {
+					delList2.add(rv.getReviewNo());
+					type2 = 7;
+				}
+			}
+		}
+		
+				
+//		1,2,3,4,6,7,8 에 해당하는 image테이블의 type 설정
+		switch(imgType1) {
+		case 1: imgType1 = 3; break;
+		case 2: imgType1 = 4; break;
+		case 3: imgType1 = 5; break;
+		case 4: imgType1 = 6; break;
+		case 6: imgType1 = 2; break;
+		case 7: imgType1 = 7; break;
+		case 0: break;
+		}
+		
+		switch(imgType2) {
+		case 1: imgType2 = 3; break;
+		case 2: imgType2 = 4; break;
+		case 3: imgType2 = 5; break;
+		case 4: imgType2 = 6; break;
+		case 6: imgType2 = 2; break;
+		case 7: imgType2 = 7; break;
+		case 0: break;
+		}
+			
+		if(delList1 != null && imgType1 != 0) {
+			for(Integer no:delList1) {
+				imgList.addAll(selectAllImageList(no, imgType1, -1));
+			}
+		}
+		if(delList2 != null && imgType2 != 0) {
+			for(Integer no:delList2) {
+				imgList.addAll(selectAllImageList(no, imgType2, -1));
+			}
+		}
+					
+//		데이터 서버 이미지 삭제
+		for(Image img:imgList) {
+			deleteFile(img.getImageRenameName(), request);
+//			DB서버 이미지 삭제
+			resultImg += aService.deleteImage(img);
+		}
+		
+		if(type1 != 0) {
+			HashMap<String, Object> map1 = new HashMap<String, Object>();
+			map1.put("selDeletes", delList1);
+			map1.put("type", type1);
+			System.out.println("delList1:"+delList1);
+			System.out.println("type1:"+type1);
+			result1 = aService.deleteSelects(map1);
+		}
+		if(type2 != 0) {
+			HashMap<String, Object> map2 = new HashMap<String, Object>();
+			map2.put("selDeletes", delList2);
+			map2.put("type", type2);
+			System.out.println("delList2:"+delList2);
+			System.out.println("type2:"+type2);
+			result2 = aService.deleteSelects(map2);
+		}
+		if(type3 != 0) {
+			HashMap<String, Object> map3 = new HashMap<String, Object>();
+			map3.put("selDeletes", delList3);
+			map3.put("type", type3);
+			System.out.println("delList3:"+delList3);
+			System.out.println("type3:"+type3);
+			result2 = aService.deleteSelects(map3);
+		}
+		
+		System.out.println(resultImg);
+		System.out.println(result1);
+		System.out.println(result2);
+		System.out.println(result3);
+		if(result1 + result2 + result3 + resultImg > 0) {
+			model = adminBasic(model, request);
+			return "redirect:"+url;
+		}else {
+			throw new AdminException("삭제 실패 (type : "+type);
+		}
+	}
+	
+//	private int deleteSelects(String[] selDeletes, Integer type) {
+//		
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("selDeletes", selDeletes);
+//		map.put("type", type);
+//		int result1 = aService.deleteSelects(map);
+//		int result2 = 0; 
+//		if(type >= 1 && type <= 4) {
+//			if(type == 3) {
+//				String[] igdDeletes = new String[selDeletes.length];
+//				String[] pDeletes = new String[selDeletes.length];
+//				int pCount = 0;
+//				
+//				int resultImg = 0;
+//				
+//				for(int i = 0; i < selDeletes.length; i++) {
+//					String[] deletes = selDeletes[i].split("-");
+//					
+//					igdDeletes[i] = deletes[0];
+//					
+//					if(deletes.length != 1 && !deletes[1].equals("0")) {
+//						pDeletes[pCount] = deletes[1];
+//						pCount++;
+//					}
+//					
+////					데이터 서버 이미지 삭제
+//					ArrayList<Image> iList = selectAllImageList(Integer.parseInt(deletes[0]), 5, 0);
+//					if(!iList.isEmpty()) {
+//						Image img = iList.get(0);
+//						deleteFile(img.getImageRenameName(), request);
+////						DB서버 이미지 삭제
+//						resultImg += aService.deleteImage(img);
+//					}
+//				}
+//			}else {
+//				aService.deletesProduct(selDeletes);
+//			}
+//		}
+//		return result1 + result2;
+//	}
 	
 //	sales-매출 관리
 	@GetMapping("adminSalesManage.ad")
@@ -242,7 +484,8 @@ public class AdminController {
 		ArrayList<Food> fList2 = aService.selectFoodList(pi, ab2); 
 		
 //		ab.setKind(0);
-		ArrayList<String> fNoArr = aService.selectFoodProductNo(pNo);
+//		ArrayList<String> fNoArr = aService.selectFoodProductNo(pNo);
+		ArrayList<Integer> fNoArr = aService.selectFoodProductNo(pNo);
 		String str = "";
 		for(int i = 0; i<fNoArr.size(); i++) {
 			str += fNoArr.get(i);
@@ -466,8 +709,6 @@ public class AdminController {
 		map.put("no", no);
 		map.put("type", type);
 		
-		System.out.println(map);
-		System.out.println(food);
 		if(no != 0) {
 			food = aService.selectFood(map);
 			food = (Food)selectProduct(food);
@@ -675,13 +916,8 @@ public class AdminController {
 			}
 			
 //			데이터 서버 이미지 삭제
-//			HashMap<String, Integer> map = new HashMap<String, Integer>();
-//			map.put("imageDivideNo", Integer.parseInt(deletes[0]));
-//			map.put("imageType", 5);
-//			ArrayList<Image> iList = aService.selectAllImageList(map);
 			ArrayList<Image> iList = selectAllImageList(Integer.parseInt(deletes[0]), 5, 0);
 			if(!iList.isEmpty()) {
-//				Image img = aService.selectAllImageList(map).get(0);
 				Image img = iList.get(0);
 				deleteFile(img.getImageRenameName(), request);
 //				DB서버 이미지 삭제
@@ -992,8 +1228,7 @@ public class AdminController {
 	}
 	
 	
-	
-//	Tool-상품 관리
+//	Tool-도구 관리
 	@GetMapping("adminToolManage.ad")
 	public String adminToolManage(
 //			@ModelAttribute AdminBasic ab,
@@ -1258,7 +1493,7 @@ public class AdminController {
 	}
 	
 
-//	Recipe-레시피 관리
+//	Recipe-레시피
 	@GetMapping("adminRecipeManage.ad")
 	public String adminRecipeManage(HttpServletRequest request,
 									Model model) {
@@ -1296,7 +1531,7 @@ public class AdminController {
 		return "adminRecipeWrite";
 	}
 	@PostMapping("adminRecipeDeletes.ad")
-	public String adminRecipedDeletes(@RequestParam("selectDelete") String[] selDeletes,
+	public String adminRecipeDeletes(@RequestParam("selectDelete") String[] selDeletes,
 									HttpServletRequest request,
 									Model model) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
@@ -1328,90 +1563,203 @@ public class AdminController {
 	}
 
 
-//	Review-리뷰 Detail
-	@GetMapping("adminReviewDetail.ad")
-	public String adminReviewDetail(@RequestParam("reviewNo") Integer reviewNo,
-									Model model) {
-
-		Review r = aService.selectReview(reviewNo);
-		
-		model.addAttribute("r", r);
-		return "adminReviewDetail";
-	}
-	
-	
-	
-//	RecipeReview-레시피후기 관리
-	@GetMapping("adminRecipeReviewManage.ad")
-	public String adminRecipeReviewManage(HttpServletRequest request,
-										  Model model) {
+//	Board-게시판
+	@GetMapping("adminBoardManage.ad")
+	public String adminBoardManage(HttpServletRequest request,
+								   Model model) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-		ab.setKind(0);
 
-		int listCount = aService.getReviewCount(ab);
+		int listCount = aService.getBoardCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
-		ArrayList<Review> rprList = aService.selectReviewList(pi, ab);
+		ArrayList<Board> bList = aService.selectBoardList(pi, ab);
 		
-		if(rprList != null) {
+		if(bList != null) {
 			model.addAttribute("pi", pi);
-			model.addAttribute("rprList", rprList);
-			return "adminRecipeReviewManage";
+			model.addAttribute("bList", bList);
+			return "adminBoardManage";
 		}else {
-			throw new AdminException("레시피 목록 조회에 실패하였습니다.");
+			throw new AdminException("게시글 목록 조회에 실패하였습니다.");
 		}
 	}
-	@GetMapping("adminRecipeReviewDetail.ad")
-	public String adminRecipeReviewDetail() {
-		return "adminRecipeReviewDetail";
+	@GetMapping("adminBoardDetail.ad")
+	public String adminBoardDetail(@ModelAttribute Board board,
+								   Model model) {
+		AdminBasic ab = new AdminBasic();
+		ab.setKind(-1);
+		ab.setNumber(board.getBoardNo());
+		ab.setDuplication("Y");
+		Board b = aService.selectBoard(board.getBoardNo());
+		ArrayList<Review> rList = aService.selectReviewList(null, ab);
+		
+		if(b != null) {
+			model.addAttribute("b", b);
+			model.addAttribute("rList", rList);
+			return "adminBoardDetail";
+		}else{
+			throw new AdminException("게시글 상세보기에 실패하였습니다.");
+		}
 	}
-	@PostMapping("adminRecipeReviewUpdate.ad")
-	public String adminRecipeReviewUpdate() {
-		return "redirect:adminRecipeReviewManage.ad";
+	@PostMapping("adminBoardDeletes.ad")
+	public String adminBoardDeletes(@RequestParam("selectDelete") String[] selDeletes,
+									HttpServletRequest request,
+									Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
+//		int resultImg = 0;
+		int resultB = 0;
+		
+		resultB = aService.deletesBoard(selDeletes);
+		
+//		ArrayList<Image> imgList = null;
+//		for(int i = 0; i < selDeletes.length; i++) {
+////			데이터 서버 이미지 삭제
+//			imgList = selectAllImageList(Integer.parseInt(selDeletes[i]), 2, -1);
+//			for(Image img:imgList) {
+//				deleteFile(img.getImageRenameName(), request);
+////				DB서버 이미지 삭제
+//				resultImg += aService.deleteImage(img);
+//			}
+//		}
+		
+//		if(resultB != 0 && resultImg == imgList.size()) {
+		if(resultB != 0) {
+			model.addAttribute("page", ab.getPage());
+			model.addAttribute("searchType", ab.getSearchType());
+			model.addAttribute("searchText", ab.getSearchText());
+			return "redirect:adminBoardManage.ad";
+		}else {
+			throw new AdminException("게시판 삭제 실패");
+		}
 	}
 	
 	
-//	MenuReview-메뉴후기 관리
-	@GetMapping("adminMenuReviewManage.ad")
-	public String adminMenuReviewManage() {
-		return "adminMenuReviewManage";
+//	Review-리뷰
+	@GetMapping("adminReviewManage.ad")
+	public String adminReviewManage(HttpServletRequest request,
+									Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		int listCount = aService.getReviewCount(ab);
+		
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Review> rList = aService.selectReviewList(pi, ab);
+		
+		if(rList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("rList", rList);
+			return "adminReviewManage";
+		}else {
+			throw new AdminException("게시글 목록 조회에 실패하였습니다.");
+		}
 	}
-	@GetMapping("adminMenuReviewDetail.ad")
-	public String adminMenuReviewDetail() {
-		return "adminMenuReviewDetail";
+	@GetMapping("adminSelectReview.ad")
+	public void adminSelectReview(@RequestParam("rNo") Integer rNo,
+								  HttpServletResponse response) {
+		
+		Review r = aService.selectReview(rNo);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(r, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
 	}
-	@PostMapping("adminMenuReviewUpdate.ad")
-	public String adminMenuReviewUpdate() {
-		return "redirect:adminMenuReviewManage.ad";
+	@GetMapping("adminSelectReviewImage.ad")
+	public void adminSelectReviewImage(@RequestParam("rNo") Integer rNo,
+									   HttpServletResponse response) {
+		
+		ArrayList<Image> iList = selectAllImageList(rNo, 7, -1);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+		GsonBuilder gb = new GsonBuilder();
+		Gson gson = gb.create();
+		try {
+			gson.toJson(iList, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
 	}
+//	@PostMapping("adminReviewDeletes.ad")
+//	public String adminReviewDeletes(@RequestParam("selectDelete") String[] selDeletes,
+//									 HttpServletRequest request,
+//									 Model model) {
+//		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+//		int resultImg = 0;
+//		int resultR = 0;
+//		
+//		
+//		ArrayList<Image> imgList = null;
+//		for(int i = 0; i < selDeletes.length; i++) {
+////			데이터 서버 이미지 삭제
+//			imgList = selectAllImageList(Integer.parseInt(selDeletes[i]), 7, -1);
+//			for(Image img:imgList) {
+//				deleteFile(img.getImageRenameName(), request);
+////				DB서버 이미지 삭제
+//				resultImg += aService.deleteImage(img);
+//			}
+//		}
+//		resultR = deleteSelects(selDeletes, 7);
+////		resultR = aService.deletesReview(selDeletes);
+//		
+//		if(resultR != 0 && resultImg == imgList.size()) {
+//			model.addAttribute("page", ab.getPage());
+//			return "redirect:adminReviewManage.ad";
+//		}else {
+//			throw new AdminException("리뷰 삭제 실패");
+//		}
+//	}
 	
 	
-//	ProductReview-상품후기 관리
-	@GetMapping("adminProductReviewManage.ad")
-	public String adminProductReviewManage() {
-		return "adminProductReviewManage";
-	}
-	@GetMapping("adminProductReviewDetail.ad")
-	public String adminProductReviewDetail() {
-		return "adminProductReviewDetail";
-	}
-	@PostMapping("adminProductReviewUpdate.ad")
-	public String adminProductReviewUpdate() {
-		return "redirect:adminProductReviewManage.ad";
-	}
-	
-	
-//	FAQ-자주묻는질문 관리
+//	FAQ-자주묻는질문
 	@GetMapping("adminFAQManage.ad")
-	public String adminFAQManage() {
-		return "adminFAQManage";
+	public String adminFAQManage(HttpServletRequest request,
+								 Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		int listCount = aService.getFAQCount(ab);
+		
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<FAQ> faqList = aService.selectFAQList(pi, ab);
+		
+		if(faqList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("faqList", faqList);
+			return "adminFAQManage";
+		}else {
+			throw new AdminException("자주묻는질문 목록 조회에 실패하였습니다.");
+		}
 	}
 	@GetMapping("adminFAQDetail.ad")
-	public String adminFAQDetail() {
-		return "adminFAQDetail";
+	public String adminFAQDetail(@RequestParam("faqNo")Integer faqNo,
+								 Model model) {
+		
+		FAQ faq = aService.selectFAQ(faqNo);
+		
+		if(faq != null) {
+			model.addAttribute("faq", faq);
+			return "adminFAQDetail";
+		}else{
+			throw new AdminException("FAQ 상세보기에 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminFAQUpdate.ad")
-	public String adminFAQUpdate() {
-		return "redirect:adminFAQManage.ad";
+	public String adminFAQUpdate(@ModelAttribute FAQ faq,
+								 HttpServletRequest request,
+								 Model model) {
+		
+		int result = aService.updateFAQ(faq);
+		
+		if(result > 0) {
+			model = adminBasic(model, request);
+			return "redirect:adminFAQManage.ad";
+		}else {
+			throw new AdminException("FAQ 업데이트에 실패하였습니다.");
+		}
+		
+		
 	}
 	@GetMapping("adminFAQWrite.ad")
 	public String adminFAQWrite() {
@@ -1421,9 +1769,26 @@ public class AdminController {
 	public String adminFAQInsert() {
 		return "redirect:adminFAQManage.ad";
 	}
-	
-	
-//	QNA-1:1문의 관리	
+//	@PostMapping("adminFAQDeletes.ad")
+//	public String adminFAQDeletes(@RequestParam("selectDelete") String[] selDeletes,
+//								  HttpServletRequest request,
+//								  Model model) {
+//		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+//		int resultF = 0;
+//		
+//		resultF = deleteSelects(selDeletes, 7);
+////		resultF = aService.deletesFAQ(selDeletes);
+//		
+//		if(resultF != 0) {
+//			model.addAttribute("page", ab.getPage());
+//			return "redirect:adminFAQManage.ad";
+//		}else {
+//			throw new AdminException("FAQ 삭제 실패");
+//		}
+//	}
+
+
+	//	QNA-1:1문의 관리	
 	@GetMapping("adminQNAManage.ad")
 	public String adminQNAManage() {
 		return "adminQNAManage";
@@ -1439,6 +1804,20 @@ public class AdminController {
 	
 	
 //	공용
+	public Model adminBasic(Model model, HttpServletRequest request) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		
+		model.addAttribute("page", ab.getPage());
+		model.addAttribute("pageCount", ab.getPageCount());
+		model.addAttribute("searchType", ab.getSearchType());
+		model.addAttribute("searchText", ab.getSearchText());
+		model.addAttribute("type", ab.getType());
+		model.addAttribute("kind", ab.getKind());
+//		model.addAttribute("duplication", ab.getDuplication());
+//		model.addAttribute("number", ab.getNumber());
+		return model;
+	}
+	
 	@GetMapping("adminUpdateStatus.ad")
 	public void adminUpdateStatus(@RequestParam("dataNo") String dataNo,
 								  @RequestParam("dataStatus") String dataStatus,
@@ -1452,6 +1831,9 @@ public class AdminController {
 //		5	-> users	status 업데이트
 //		6	-> recipe	status 업데이트
 //		7	-> review	status 업데이트
+//		8	-> board	status 업데이트
+//		9	-> faq		status 업데이트
+//		10	-> qna		status 업데이트
 		
 		int result = aService.updateStatus(map);
 		String msg = "msg";
@@ -1529,30 +1911,9 @@ public class AdminController {
 		}
 		return p;
 	}
-	
-//	private AdminBasic adminBasic(AdminBasic ab, HttpSession session) {
-//		int currentPage = 1;
-//		if(ab.getPage() == null) {
-//			ab.setPage(currentPage);
-//		}
-//		int pageCount = 10;
-//	//	세션에 값 X ab에 값 X	-> 초기값 동일 설정
-//		if(session.getAttribute("pageCount") == null && ab.getPageCount() == null) {
-//			ab.setPageCount(pageCount);
-//			session.setAttribute("pageCount", pageCount);
-//	//	세션에 값 X ab에 값 O	(불가능)
-//	//	세션에 값 O ab에 값 X	-> 세션값 ab에 입력
-//		}else if(session.getAttribute("pageCount") != null && ab.getPageCount() == null){
-//			ab.setPageCount((int)session.getAttribute("pageCount"));
-//	//	세션에 값 O ab에 값 O	-> ab값 세션에 입력
-//		}else {
-//			session.setAttribute("pageCount", ab.getPageCount());
-//		}
-//		
-//		return ab;
-//	}
 
 	private ArrayList<Image> selectAllImageList(int imageDivideNo, int imageType, int imageLevel) {
+//		모든 imageLevel	-> 	imageLevel = -1		
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("imageDivideNo", imageDivideNo);
 		map.put("imageType", imageType);

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.admin.model.dao.AdminDAO;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
+import kh.finalproj.hollosekki.board.model.vo.Board;
+import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -37,6 +39,10 @@ public class AdminService {
 		return aDAO.updateStatus(sqlSession, map);
 	}
 
+	public int deleteSelects(HashMap<String, Object> map) {
+		return aDAO.deleteSelects(sqlSession, map);
+	}
+	
 	public int insertOptions(ArrayList<Options> oList) {
 		return aDAO.insertOptions(sqlSession, oList);
 	}
@@ -48,6 +54,8 @@ public class AdminService {
 	public ArrayList<Options> selectOptions(int pNo) {
 		return aDAO.selectOptions(sqlSession, pNo);
 	}
+	
+	
 //	Product-상품
 	public Product selectProduct(int pNo) {
 		return aDAO.selectProduct(sqlSession, pNo);
@@ -125,7 +133,8 @@ public class AdminService {
 		return aDAO.selectMenu(sqlSession, pNo);
 	}
 
-	public ArrayList<String> selectFoodProductNo(int pNo) {
+//	public ArrayList<String> selectFoodProductNo(int pNo) {
+	public ArrayList<Integer> selectFoodProductNo(int pNo) {
 		return aDAO.selectFoodProductNo(sqlSession, pNo);
 	}
 	
@@ -254,6 +263,24 @@ public class AdminService {
 	}
 
 	
+//	Board-게시판
+	public int getBoardCount(AdminBasic ab) {
+		return aDAO.getBoardCount(sqlSession, ab);
+	}
+
+	public ArrayList<Board> selectBoardList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectBoardList(sqlSession, pi, ab);
+	}
+
+	public Board selectBoard(int boardNo) {
+		return aDAO.selectBoard(sqlSession, boardNo);
+	}
+
+	public int deletesBoard(String[] selDeletes) {
+		return aDAO.deletesBoard(sqlSession, selDeletes);
+	}
+	
+	
 //	Review-리뷰
 	public int getReviewCount(AdminBasic ab) {
 		return aDAO.getReviewCount(sqlSession, ab);
@@ -266,6 +293,30 @@ public class AdminService {
 	public Review selectReview(Integer reviewNo) {
 		return aDAO.selectReview(sqlSession, reviewNo);
 	}
+
+	public int deletesReview(String[] selDeletes) {
+		return aDAO.deletesReview(sqlSession, selDeletes);
+	}
+
+	
+//	FAQ-자주묻는질문
+	public int getFAQCount(AdminBasic ab) {
+		return aDAO.getFAQCount(sqlSession, ab);
+	}
+
+	public ArrayList<FAQ> selectFAQList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectFAQList(sqlSession, pi, ab);
+	}
+
+	public FAQ selectFAQ(Integer faqNo) {
+		return aDAO.selectFAQ(sqlSession, faqNo);
+	}
+
+	public int updateFAQ(FAQ faq) {
+		return aDAO.updateFAQ(sqlSession, faq);
+	}
+
+
 
 
 

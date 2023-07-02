@@ -35,8 +35,22 @@
 	
 	<select id="menuDetailMenu" resultMap="menuListResultSet">
 		select *
-		from menu_list
-		where product_no=#{mNO}
+		from menu_list ml
+			 left join food f on(ml.food_product_no = f.product_no)
+		where ml.product_no=#{mNO}
+		order by menu_list_no asc
+	</select>
+	
+	<select id="menuDetailImage" resultMap="imageResultSet">
+		select *
+		from image
+		where image_type=3 and image_level=1
+	</select>
+	
+	<select id="selectList" resultMap="menuResultSet">
+		select *
+		from menu
+		where menu_name like '%${word}%'
 	</select>
 	
 	<resultMap type="Menu" id="menuResultSet">
@@ -47,6 +61,7 @@
 		<result column="MENU_KIND" property="menuKind"/>
 		<result column="MENU_NO" property="menuNo"/>
 		<result column="product_price" property="productPrice"/>
+		<result column="product_sale" property="productSale"/>
 	</resultMap>
 	
 	<resultMap type="Image" id="imageResultSet">
@@ -63,5 +78,8 @@
 		<id column="menu_list_no" property="menuListNo"/>
 		<result column="product_no" property="productNo"/>
 		<result column="food_product_no" property="foodProductNo"/>
+		<result column="food_Name" property="foodName"/>
+		<result column="food_Content" property="foodContent"/>
+		
 	</resultMap>
 </mapper>

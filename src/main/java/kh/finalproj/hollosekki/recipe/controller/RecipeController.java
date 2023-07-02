@@ -702,13 +702,15 @@ public class RecipeController {
 		rService.reviewWrite(re);
 		ArrayList<Review> reList = rService.selectReview(Integer.parseInt(foodNo));
 		
-		
 		response.setContentType("application/json; charset=UTF-8");
 		
-//		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
-//		Gson gson = gb.create();
+		GsonBuilder gBuilder = new GsonBuilder();
 		
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gBuilder.setDateFormat("yyyy-MM-dd");
+		
+		Gson gson = gBuilder.create();
+		
+//		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		
 		try {
 			gson.toJson(reList, response.getWriter());

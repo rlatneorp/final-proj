@@ -6,12 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>adminMain</title>
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
 <link href="${pageContext.servletContext.contextPath}/resources/css/sidebars.css" rel="stylesheet">
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> -->
-<%-- <c:if test="${location.pathname}"></c:if> --%>
 <style>
-	.sidebar{width: 230px; z-index: 2000; top: 40px;}
+	.sidebar{width: 230px; z-index: 0; top: 40px;}
 	.mainBox{margin: 0px 270px; width: 1450px;}
 	.mainBox tr{height: 40px;}
 	.mainBox th{font-size: 14px;}
@@ -26,9 +23,6 @@
 </head>
 
 <body>
-<%-- 	<%@ include file="../common/top.jsp" %> --%>
-<%-- 	<c:set value="${pageContext.servletContext.contextPath}" var="contextPath" scope="application"/> --%>
-<!-- 	<div class="d-flex position-fixed sidebar" style="width: 230px; z-index: 2000;"> -->
 	<div class="d-flex position-fixed sidebar">
 		<div class="d-flex flex-column p-3 bg-white">
 			<a href="${contextPath}/adminMain.ad" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
@@ -56,7 +50,6 @@
 						<div class="collapse show" id="collapse-two">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 								<li><a href="${contextPath}/adminUsersManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">회원관리</a></li>
-	<!-- 							<li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">출석체크관리</a></li> -->
 								<li><a href="${contextPath}/adminPointManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">포인트관리</a></li>
 							</ul>
 						</div>
@@ -81,9 +74,8 @@
 						<div class="collapse show" id="collapse-four">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 								<li><a href="${contextPath}/adminRecipeManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">레시피관리</a></li>
-								<li><a href="${contextPath}/adminRecipeReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">레시피후기관리</a></li>
-								<li><a href="${contextPath}/adminMenuReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">식단구독후기관리</a></li>
-								<li><a href="${contextPath}/adminProductReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">상품구매후기관리</a></li>
+								<li><a href="${contextPath}/adminBoardManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">게시판관리</a></li>
+								<li><a href="${contextPath}/adminReviewManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">후기관리 (레시피,<br/>식단,식품,식재료,기타)</a></li>
 							</ul>
 						</div>
 					</li>

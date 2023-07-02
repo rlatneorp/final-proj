@@ -20,7 +20,10 @@
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>
 			
-		<form id="deleteForm" action="${contextPath}/adminIngredientDeletes.ad" method="post">
+<%-- 		<form id="deleteForm" action="${contextPath}/adminIngredientDeletes.ad" method="post"> --%>
+		<form id="deleteForm" action="${contextPath}/adminDeleteSelects.ad" method="post">
+			<input type="hidden" name="type" value="3">
+			<input type="hidden" name="url" value="adminIngredientManage.ad">
 			<table class="w-100 text-center mb-3">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>
@@ -88,7 +91,8 @@
 								<button type="button" class="btns statusBtn" style="background-color: gray;">N</button>
 							</c:if>
 						</td>
-						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;" value="${igd.ingredientNo}-${igd.productNo}"></td>
+<%-- 						<td><input type="checkbox" <td><input type="checkbox"="width: 16px; height: 16px;" value="${igd.ingredientNo}-${igd.productNo}"></td> --%>
+						<td><input type="checkbox" name="selectDelete" style="width: 16px; height: 16px;" value="${igd.ingredientNo}"></td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -107,45 +111,45 @@
 	<script>
 		window.onload = () =>{
 // 			삭제 체크박스 전체선택 이벤트
-			const allSelect = document.getElementsByClassName('allSelect')[0];
-			allSelect.addEventListener('click', ()=>{
-				selectDeletes = document.getElementsByName('selectDelete');
-				let count = 0;
-				for(const sDel of selectDeletes){
-					if(sDel.checked == true){
-						count += 1;
-					}
-				}
-				if(count == selectDeletes.length){
-					for(const sDel of selectDeletes){
-						sDel.checked = false;
-					}
-				}else{
-					for(const sDel of selectDeletes){
-						sDel.checked = true;
-					}
-				}
-			})
+// 			const allSelect = document.getElementsByClassName('allSelect')[0];
+// 			allSelect.addEventListener('click', ()=>{
+// 				selectDeletes = document.getElementsByName('selectDelete');
+// 				let count = 0;
+// 				for(const sDel of selectDeletes){
+// 					if(sDel.checked == true){
+// 						count += 1;
+// 					}
+// 				}
+// 				if(count == selectDeletes.length){
+// 					for(const sDel of selectDeletes){
+// 						sDel.checked = false;
+// 					}
+// 				}else{
+// 					for(const sDel of selectDeletes){
+// 						sDel.checked = true;
+// 					}
+// 				}
+// 			})
 			
 // 			삭제버튼 클릭 이벤트 (confirm 띄우기)
-			const deleteBtn = document.getElementsByClassName('deleteBtn')[0];
-			deleteBtn.addEventListener('click', ()=>{
-				let count = 0;
-				selectDeletes = document.getElementsByName('selectDelete');
-				for(const sDel of selectDeletes){
-					if(sDel.checked == true){
-						count++;
-					}
-				}
-				if(count > 0){
-					const result = confirm("정말 삭제하시겠습니까?");
-					if(result){
-						document.getElementById('deleteForm').submit();
-					}
-				}else{
-					alert("삭제할 식재료를 선택해주세요.");
-				}
-			})
+// 			const deleteBtn = document.getElementsByClassName('deleteBtn')[0];
+// 			deleteBtn.addEventListener('click', ()=>{
+// 				let count = 0;
+// 				selectDeletes = document.getElementsByName('selectDelete');
+// 				for(const sDel of selectDeletes){
+// 					if(sDel.checked == true){
+// 						count++;
+// 					}
+// 				}
+// 				if(count > 0){
+// 					const result = confirm("정말 삭제하시겠습니까?");
+// 					if(result){
+// 						document.getElementById('deleteForm').submit();
+// 					}
+// 				}else{
+// 					alert("삭제할 식재료를 선택해주세요.");
+// 				}
+// 			})
 			
 			
 // 			공식등록 버튼 이벤트
@@ -204,16 +208,9 @@
 										if(i%2 == 0){
 											statusBtns[i].style.background = "#19A7CE";
 											statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
-// 											document.getElementsByClassName('priceBox')[j].style.display="block";
-// 											document.getElementsByClassName('saleBox')[j].style.display="block";
 										}else if(i%2 == 1){
 											statusBtns[i].style.background = "#19A7CE";
 											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-											
-// 											price = document.getElementsByClassName('priceBox')[j].innerText;
-// 											sale = document.getElementsByClassName('saleBox')[j].innerText;
-// 											document.getElementsByClassName('priceBox')[j].style.display="none";
-// 											document.getElementsByClassName('saleBox')[j].style.display="none";
 										}
 									}else{
 										alert("상태 변경에 실패하였습니다.");

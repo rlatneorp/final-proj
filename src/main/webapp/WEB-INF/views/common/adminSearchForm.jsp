@@ -14,14 +14,26 @@
 		<input type="hidden" name="searchStart" value="Y"> 
 		<div class="text-center searchBox">
 			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
-				<option value="name" <c:if test="${ab.searchType eq 'name'}"></c:if>>이름</option>
+				<option value="name" <c:if test="${ab.searchType eq 'name'}">selected</c:if>>이름</option>
 				<option value="id" <c:if test="${ab.searchType eq 'id'}">selected</c:if>>아이디</option>
 			</select>
 			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
-				<option value="number" <c:if test="${ab.searchType eq 'number'}"></c:if>>번호</option>	
+				<option value="number" <c:if test="${ab.searchType eq 'number'}">selected</c:if>>번호</option>	
 			</select>
 			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
-				<option value="name" <c:if test="${ab.searchType eq 'name'}"></c:if>>이름</option>
+				<option value="writer" <c:if test="${ab.searchType eq 'writer'}">selected</c:if>>작성자</option>
+				<option value="content" <c:if test="${ab.searchType eq 'content'}">selected</c:if>>내용</option>
+			</select>
+			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
+				<option value="writer" <c:if test="${ab.searchType eq 'writer'}">selected</c:if>>작성자</option>
+				<option value="title" <c:if test="${ab.searchType eq 'title'}">selected</c:if>>제목</option>
+			</select>
+			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
+				<option value="title" <c:if test="${ab.searchType eq 'title'}">selected</c:if>>제목</option>
+				<option value="content" <c:if test="${ab.searchType eq 'content'}">selected</c:if>>내용</option>
+			</select>
+			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
+				<option value="name" <c:if test="${ab.searchType eq 'name'}">selected</c:if>>이름</option>
 			</select>
 			<div style="width:200px" class="d-inline-block mb-4">
 				<input type="search" class="form-control" name="searchText" value="${ab.searchText}">
@@ -31,13 +43,31 @@
 	</form>
 	
 	<script>
+			if(location.pathname == "/hollosekki/adminFAQManage.ad"){
+			}else{
+				if(document.getElementsByClassName('allSelect')[0] != null){
+					document.getElementsByClassName('allSelect')[0].parentElement.style.display="none";
+				}
+				const selectDeletes = document.getElementsByName('selectDelete')
+				for(const sd of selectDeletes){
+					sd.parentElement.style.display="none";
+				}
+			}
+	
+	
 			let aliveType = 0;
 			if(location.pathname == "/hollosekki/adminUsersManage.ad"){
 				aliveType = 0;
 			}else if(location.pathname == "/hollosekki/adminPointManage.ad"){
 				aliveType = 1;
-			}else{
+			}else if(location.pathname == "/hollosekki/adminReviewManage.ad"){
 				aliveType = 2;
+			}else if(location.pathname == "/hollosekki/adminBoardManage.ad"){
+				aliveType = 3;
+			}else if(location.pathname == "/hollosekki/adminFAQManage.ad"){
+				aliveType = 4;
+			}else{
+				aliveType = 5;
 			}
 			const types = document.getElementsByClassName('searchSelect');
 			document.getElementsByClassName('searchBox')[0].innerHTML 

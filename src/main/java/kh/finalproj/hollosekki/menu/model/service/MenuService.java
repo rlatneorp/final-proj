@@ -21,4 +21,8 @@ public interface MenuService {
 
 	ArrayList<MenuList> menuDetailMenu(int mNo);
 
+	ArrayList<Image> menuDetailImage();
+
+	ArrayList<Menu> searchMenu(String word);
+
 }

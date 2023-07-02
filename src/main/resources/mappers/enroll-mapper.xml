@@ -8,38 +8,36 @@
 	</insert>
 	
 	<select id="login" resultMap="usersResultSet">
-		select *
+		select users_no, users_id, users_pw, users_name, nickname, email, phone, enroll_date, exit_date, status, 
+			   check_day, point, is_admin, users_address, users_selfintro, image_renamename, social_profile_img
 		from users
+		     left join image on(users_no = image_divide_no)
+		     left join social_login on (users_id = social_id)
 		where users_id = #{usersId} and status = 'Y'
 	</select>
 
 	<select id="checkId" resultType="_int">
-		select count(*)
-		from users
+		select count(*) from users
 		where users_id = #{id}
 	</select>
 	
 	<select id="checkNickName" resultType="_int">
-		select count(*)
-		from users
+		select count(*) from users
 		where nickName = #{nickName}
 	</select>
 	
 	<select id="checkEmail" resultType="_int">
-		select count(*)
-		from users
+		select count(*) from users
 		where email = #{email}
 	</select>
 	
 	<select id="findIdResult" resultMap="usersResultSet">
-		select *
-		from users
+		select * from users
 		where users_name = #{name} and email = #{email}
 	</select>
 	
 	<select id="findPwdCheck" resultType="_int">
-		select count(*)
-		from users
+		select count(*) from users
 		where users_id = #{id} and email = #{email}
 	</select>
 	
@@ -48,8 +46,7 @@
 	</update>
 	
 	<select id="socialLogin" resultMap="socialResultSet">
-		select *
-		from social_login
+		select * from social_login
 		where social_id=#{id}
 	</select>
 	
@@ -59,8 +56,7 @@
 	</insert>
 	
 	<select id="socialLoginUpdate" resultMap="usersResultSet">
-		select *
-		from users
+		select * from users
 		where users_id = #{id} and status = 'Y'
 	</select>
 	
@@ -75,72 +71,61 @@
 	</update>
 	
 	<select id="recipeList" resultMap="recipeResultSet">
-		select *
-		from recipe
+		select * from recipe
 		where users_no=#{usersNo} and recipe_status = 'Y'
 		order by food_no desc
 	</select>
 	
 	<select id="recipeImageList" resultMap="imageResultSet">
-		select *
-		from image
+		select * from image
 		where image_divide_no = #{ foodNo } and image_level = 0
 		order by image_no desc
 	</select>
 	
 	<select id="bookMarkList" resultMap="bookmarkResultSet">
-		select *
-		from bookmark
+		select * from bookmark
 		where users_no = #{usersNo}
 	</select>
 	
 	<select id="menuList" resultMap="menuResultSet">
-		select *
-		from menu
+		select * from menu
 		order by product_no desc
 	</select>
 	
 	<select id="follow" resultType="_int">
-		select count(*)
-		from follow
+		select count(*) from follow
 		where following_user_no = #{usersNo}
 	</select>
 	
 	<select id="following" resultType="_int">
-		select count(*)
-		from follow
+		select count(*) from follow
 		where users_no = #{usersNo}
 	</select>
 	
 	<select id="menuImageList" resultMap="imageResultSet">
-		select *
-		from image
+		select * from image
 		where image_type=4
 		order by image_no desc
 	</select>
 	
 	<select id="productList" resultMap="productResultSet">
-		select *
-		from product
+		select * from product
 		where product_status = 'Y'
 		order by product_no desc
 	</select>
 	
-	<select id="healtherList" resultMap="usersResultSet">
-		select *
-		from users
+	<select id="AllUsersList" resultMap="usersResultSet">
+		select * from users
 		where status = 'Y'
 	</select>
 	
 	<select id="allRecipeList" resultMap="recipeResultSet">
-		select *
-		from recipe
+		select * from recipe
 		where recipe_status = 'Y'
 	</select>
 	
 	<select id="allRecipeImageList" resultMap="imageResultSet">
-		select *
-		from image
+		select * from image
 		where image_type=2 and image_level=0
 		order by image_no desc
 	</select>
@@ -173,28 +158,27 @@
 		order by follow_create_date desc
 	</select>
 	
-	<select id="recipeBookMarkList" resultType="_int">
-		select count(*)
+	<select id="recipeBookMarkList" resultMap="recipeResultSet">
+		select * 
 		from bookmark
-		where users_no = ${ usersNo } and number_type = 1
+			 join recipe on(bookmark.division_no = recipe.food_no)
+		where bookmark.users_no = ${ usersNo } and number_type = 1
 	</select>
 	
 	<select id="menuBookMarkList" resultType="_int">
-		select count(*)
-		from bookmark
+		select count(*) from bookmark
 		where users_no = ${ usersNo } and number_type = 2
 	</select>
 	
 	<select id="boardList" resultMap="BoardResultSet">
-		select *
-		from board
+		select * from board
 		where users_No = #{ usersNo } and board_status = 'Y'
 	</select>
 	
 	<select id="reviewList" resultMap="reviewResultSet">
 		select *
 		from review
-			 join recipe on(review.order_no = recipe.food_no)
+			 join recipe on(review.product_no = recipe.food_no)
 		where review_writer = #{usersId} and review_status = 'Y'
 	</select>
 	
@@ -205,18 +189,27 @@
 		where review_writer = #{usersId} and review_status = 'Y'
 	</select>
 	
-	<select id="menuReviewImageList" resultMap="imageResultSet">
-		select *
-		from image
-		where image_type = 7 and image_level = 0
-		order by image_no desc
-	</select>
-	
 	<select id="replyList" resultMap="reviewResultSet">
-		select *
-		from review
+		select * from review
 		where order_no = '-1' and review_status = 'Y'
 		order by review_no desc
+	</select>
+	
+	<select id="allBoardList" resultMap="BoardResultSet">
+		select * from board
+		where board_status = 'Y'
+		order by board_no desc
+	</select>
+	
+<!-- 	<select id="userReplyList" resultMap="reviewResultSet"> -->
+<!-- 		select * from review -->
+<!-- 		where review_writer = #{nickName} and review_status = 'Y' and order_no = '-1' -->
+<!-- 	</select> -->
+
+	<select id="userReplyList" resultMap="reviewResultSet">
+		select * 
+		from review
+		where review_writer = #{nickName} and review_status = 'Y' and order_no = '-1'
 	</select>
 	
 	<resultMap type="Users" id="usersResultSet">
@@ -237,6 +230,8 @@
 		<result column="ATTENDANCE_DAY" property="attendanceDay"/>
 		<result column="USERS_ADDRESS" property="usersAddress"/>
 		<result column="USERS_SELFINTRO" property="usersSelfIntro"/>
+		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
+		<result column="SOCIAL_PROFILE_IMG" property="socialProfileImg"/>
 	</resultMap>
 		
 	<resultMap type="SocialLogin" id="socialResultSet">
@@ -278,10 +273,12 @@
 	</resultMap>
 	
 	<resultMap type="Menu" id="menuResultSet">
-		<id column="PRODUCT_NO" property="productNo"/>
+		<id column="PRODUCT_NO" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>
 		<result column="MENU_TYPE" property="menuType"/>
 		<result column="MENU_CONTENT" property="menuContent"/>
+		<result column="MENU_KIND" property="menuKind"/>
+		<result column="MENU_NO" property="menuNo"/>
 	</resultMap>
 	
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">

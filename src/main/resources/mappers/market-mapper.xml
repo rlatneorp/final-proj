@@ -24,7 +24,6 @@
              and dateStr = to_char(sysdate, 'YYYY-MM-DD')
    </select>
    
-   
    <resultMap type="Users" id="UsersResultSet">
       <id column="USERS_NO" property="usersNo"/>
       <result column="USERS_ID" property="usersId"/>
@@ -113,6 +112,7 @@
       select *
       from shipping_address
       where users_no = #{usersNo}
+      order by shipping_no desc
    </select>
    
    <resultMap type="ShippingAddress" id="shipAddress">
@@ -130,7 +130,7 @@
       FROM cart
       LEFT JOIN product on (cart.product_no = product.product_no)
       WHERE cart.users_no = #{usersNo} AND product.PRODUCT_STATUS = 'Y'
-      ORDER BY cart.product_no
+      ORDER BY cart.pre_order_no
    </select>
    
 <!--    <select id="selectCartList" resultMap="cartList"> -->
@@ -205,12 +205,12 @@
    </select>
    
    <delete id="delBasket">
-      delete from cart where product_no = #{productNo}
+      delete from cart where pre_order_no = #{preorderNo}
    </delete>
    
    <update id="plusCount">
       update cart set cart_count = cart_count + 1 
-      where product_no = #{productNo}
+      where pre_order_no = #{preorderNo}
    </update>
    
    <select id="plusResultCount" resultType="_int">
@@ -219,7 +219,7 @@
       FROM (
           SELECT cart_count
           FROM cart
-          WHERE product_no = #{productNo}
+          WHERE pre_order_no = #{preorderNo}
       )
       WHERE ROWNUM = 1
        ]]>
@@ -227,7 +227,7 @@
    
    <update id="minusCount">
       update cart set cart_count = cart_count - 1 
-      where product_no = #{productNo}
+      where pre_order_no = #{preorderNo}
    </update>
    
    <select id="checkCartList" resultMap="cartList">
@@ -254,9 +254,9 @@
       select * from cart where product_no = #{productNo} and users_no = #{usersNo} and pre_order_no = #{preorderNo}
    </select>
    
-   <select id="selectOptionInfo" resultMap="optionsList">
-      select * from options where option_no = #{productOption} and product_no = #{productNo}
-   </select>
+<!--    <select id="selectOptionInfo" resultMap="optionsList"> -->
+<!--       select * from options where option_no = #{productOption} and product_no = #{productNo} -->
+<!--    </select> -->
    
    <select id="selectProductSet" resultMap="productList">
       select *
@@ -358,14 +358,6 @@
       where product_no = #{productNo}      
    </select>
    
-   <select id="selectImgList" resultMap="imageResultSet">
-        select *
-        from image join review on review_no = image_divide_no
-        where image_type = 7
-                  and product_no = #{productNo}
-        order by review_no
-	</select>
-   
    <select id="selectImagList" resultMap="imageResultSet">
 		select *
 		from (select *
@@ -377,37 +369,13 @@
 			  </if>
 	</select>
 	
+	<!-- 배송지 삭제 -->
+	<delete id="delShipping">
+		DELETE FROM shipping_address
+		WHERE shipping_no = #{shippingNo}
+	</delete>
 	
-<!-- 	<select id="selectImageList" resultMap="imageResultSet"> -->
-<!-- 		select * -->
-<!-- 		from (select * -->
-<!-- 			  from image -->
-<!-- 			  order by image_no asc)	 -->
-<!-- 		where image_divide_no = #{imageDivideNo} and image_type = #{imageType} -->
-<!-- 		<if test="imageLevel != -1"> -->
-<!-- 			  and image_level = #{imageLevel} -->
-<!-- 		</if> -->
-<!-- 	</select> -->
-	
-	
-	<!-- 포인트 조회  -->
-	<select id="selectPoint" resultType="_int">
-		select point from users where users_no = #{usersNo}
-	</select>
-	
-	<!-- 장바구니 상품에 대한 이미지 조회 -->
-	<select id="selectImg" resultType="String">
-		select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
-   </select>
-   
-   <!-- 배송지 삭제 -->
-   <delete id="delShipping">
-      DELETE FROM shipping_address
-      WHERE shipping_no = #{shippingNo}
-   </delete>
-   
-   
-   <insert    id="insertReview">
+   <insert  id="insertReview">
       insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date, review_writer)
       values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
       <selectKey keyProperty="reviewNo" resultType="int" order="AFTER" >
@@ -415,6 +383,35 @@
       </selectKey>
    
    </insert>
+   
+      <select id="selectImgList" resultMap="imageResultSet">
+        select *
+        from image join review on review_no = image_divide_no
+        where image_type = 7
+                  and product_no = #{productNo}	
+        order by review_no
+	</select>
+   
+   <select id="reviewAvg" resultType="_int">
+	  select round(avg(review_Score))
+	  from review 
+	  where product_no = #{productNo}
+   </select>
+   
+   <select id="reviewAvgDesc" resultMap="reviewResultSet">
+   	  select *
+      from review
+      where product_no = #{productNo}
+      order by review_score desc, review_no desc
+   </select>
+   
+   <select id="reviewDesc" resultMap="reviewResultSet">
+   	  select *
+      from review
+      where product_no = #{productNo}
+      order by review_no desc
+   </select>
+   
    
    <select    id="selectReview" resultMap="reviewResultSet">
       select *
@@ -435,19 +432,126 @@
       </if>
    </select>
    
+   
+   <!-- 포인트 조회  -->
+   <select id="selectPoint" resultType="_int">
+      <![CDATA[
+      SELECT POINT_CHANGE
+      FROM (
+	    SELECT *
+	    FROM point
+	    WHERE USERS_NO = #{usersNo}
+	    ORDER BY POINT_NO DESC
+	    ) WHERE ROWNUM = 1
+	  ]]>
+   </select>
+   
+   <!-- 장바구니 상품에 대한 이미지 조회 -->
+   <select id="selectImg" resultType="String">
+      select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
+   </select>
+   
    <select id="selectStock" resultType="_int">
-   	  select PRODUCT_STOCK from product where product_no = #{productNo}
+        select PRODUCT_STOCK from product where product_no = #{productNo}
    </select>
    
    <!-- 결제 시 insert -->
    <insert id="insertPay">
-   	  insert into orders (ORDER_NO, PRODUCT_NO, USERS_NO, ORDER_COUNT, ORDER_TOTAL_PRICE, ORDER_DATE, ORDER_STATUS, ORDER_ADDRESS, ORDER_STOCK, ORDER_DELIVERY_COMMENT,ORDER_INFO )
-   	  values (SEQ_ORDER_NO.nextval, #{productNo}, #{usersNo}, #{orderCount}, #{totalPrice}, sysdate, default, #{orderAddress}, 'R', #{orderDeliveryComment}, #{orderInfo})
+        insert into orders (ORDER_NO, PRODUCT_NO, USERS_NO, PRODUCT_TYPE, ORDER_COUNT, ORDER_TOTAL_PRICE, ORDER_DATE, ORDER_STATUS, ORDER_ADDRESS, ORDER_STOCK, ORDER_DELIVERY_COMMENT,ORDER_INFO, SHIP_PRICE, OPTIONS )
+        values (SEQ_ORDER_NO.nextval, #{productNo}, #{usersNo}, #{productType}, #{orderCount}, #{totalPrice}, sysdate, default, #{orderAddress}, 'R', #{orderDeliveryComment}, #{orderInfo}, #{shipPrice}, #{options})
    </insert>
    
    <update id="updatePoint">
-   	  update users
+      update users
       set point = #{point}
       where users_id = #{usersId}
    </update>
+   
+   <!-- 결제 후 장바구니에서 해당 상품 제거 -->
+   <delete id="deleteFromCart">
+   		DELETE FROM cart
+		WHERE PRE_ORDER_NO = #{preorderNo}
+   </delete>
+   
+   <select id="selectProductType" resultType="_int">
+   		select product_type from product where product_no = #{productNo}
+   </select>
+   
+   <select id="orderSearchCount" resultType="_int">
+		SELECT count(*)
+		FROM orders o
+		LEFT JOIN food f ON o.product_no = f.product_no
+		LEFT JOIN ingredient i ON o.product_no = i.product_no
+		LEFT JOIN menu m ON o.product_no = m.product_no
+		LEFT JOIN tool t ON o.product_no = t.product_no
+		WHERE o.users_no = #{usersNo} AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+   </select>
+   
+   <select id="orderSearchList" resultType="map">
+   		SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name
+		FROM orders o
+		LEFT JOIN food f ON o.product_no = f.product_no
+		LEFT JOIN ingredient i ON o.product_no = i.product_no
+		LEFT JOIN menu m ON o.product_no = m.product_no
+		LEFT JOIN tool t ON o.product_no = t.product_no
+		WHERE o.users_no = #{usersNo} AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+   </select>
+   
+   <select id="orderPeriodSearchCount" resultType="_int">
+   		<![CDATA[
+	   		SELECT count(*)
+			FROM orders o
+			LEFT JOIN food f ON o.product_no = f.product_no
+			LEFT JOIN ingredient i ON o.product_no = i.product_no
+			LEFT JOIN menu m ON o.product_no = m.product_no
+			LEFT JOIN tool t ON o.product_no = t.product_no
+			WHERE o.users_no = #{usersNo}
+			  AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+			  AND TRUNC(o.order_date) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(o.order_date) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+   		]]>
+   </select>
+   
+   <select id="orderPeriodSearchList" resultType="map">
+   		<![CDATA[
+	   		SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name
+			FROM orders o
+			LEFT JOIN food f ON o.product_no = f.product_no
+			LEFT JOIN ingredient i ON o.product_no = i.product_no
+			LEFT JOIN menu m ON o.product_no = m.product_no
+			LEFT JOIN tool t ON o.product_no = t.product_no
+			WHERE o.users_no = #{usersNo}
+			  AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+			  AND TRUNC(o.order_date) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(o.order_date) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+   		]]>
+   </select>
+   
+<!--    <select id="" resultType="map"> -->
+<!--    SELECT o.*, f.food_name, i.ingredient_name, m.menu_name, t.tool_name -->
+<!-- 	FROM orders o -->
+<!-- 	LEFT JOIN food f ON o.product_no = f.product_no -->
+<!-- 	LEFT JOIN ingredient i ON o.product_no = i.product_no -->
+<!-- 	LEFT JOIN menu m ON o.product_no = m.product_no -->
+<!-- 	LEFT JOIN tool t ON o.product_no = t.product_no -->
+<!-- 	WHERE o.users_no = 23 -->
+<!-- 	  AND (f.food_name LIKE '%펜%' OR i.ingredient_name LIKE '%펜%' OR m.menu_name LIKE '%펜%' OR t.tool_name LIKE '%펜%') -->
+<!-- 	  AND TRUNC(o.order_date) >= TO_DATE('2023-05-30', 'YYYY-MM-DD') -->
+<!-- 	  AND TRUNC(o.order_date) <= TO_DATE('2023-06-29', 'YYYY-MM-DD') -->
+<!--   </select> -->
+
+		<!-- 주문 번호에 대한 optionNo 조회 -->
+		<select id="selectOptionInfo" resultMap="optionsList">
+			SELECT *
+			FROM cart c
+			INNER JOIN options o ON c.PRODUCT_OPTION = o.option_No
+			WHERE c.pre_order_No = #{preorderNo}
+		</select>
+		
+	<insert id="updatePointTable">
+		insert into point (POINT_NO,USERS_NO,POINT_TYPE,POINT_BEFORE,POINT_CHANGE,MODIFY_DATE )
+		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{pointChange}, sysdate )
+	</insert>
+	
+	
 </mapper>

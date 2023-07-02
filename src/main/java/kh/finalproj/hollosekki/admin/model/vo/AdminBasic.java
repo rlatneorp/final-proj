@@ -11,9 +11,9 @@ public class AdminBasic {
 	private Integer number;
 //	           	  type		kind
 //  <리뷰>
-//	레시피후기 		:			0    
+//	레시피후기 	:			0    
 //	게시판댓글		: 			-1   
-//	상품후기		: 			null	
+//	상품후기		: 1~4		1	
 	
 	public AdminBasic() {}
 

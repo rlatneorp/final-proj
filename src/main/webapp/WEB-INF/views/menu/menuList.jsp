@@ -205,7 +205,7 @@
 						<div class="col">
 							<input type="hidden" value="${m.foodProductNo}">
 							<div class="card shadow-sm">
-								<img src="${contextPath }/resources/images/${i.imageRenameName}" style="width: 100%; height: 100%;">
+								<img src="${contextPath }/resources/uploadFiles/${i.imageRenameName}" style="width: 100%; height: 100%;">
 								<div class="card-body cardColor">
 									<h5>${m.menuName } / ${m.menuType }</h5>
 									<div class="d-inline-block" style="width: 130px; height: 50px;"></div>
@@ -260,6 +260,12 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
+	const search = document.getElementById('searchBtn');
+	search.addEventListener('click', function(){
+		const text = document.getElementById('inputText').value;
+		location.href="${contextPath}/searchMenu.mn?word="+text;
+	})
+
 	const likeBtns = document.getElementsByClassName('likeBtn');
 	for(const likeBtn of likeBtns){
 		likeBtn.addEventListener('click', function(){
@@ -275,7 +281,6 @@
 				this.querySelector('i').classList.replace("bi-heart-fill", "bi-heart");
 				this.nextElementSibling.innerText = num - 1;
 			}
-			
 		})
 	}
 	const cols = document.querySelectorAll('.col');

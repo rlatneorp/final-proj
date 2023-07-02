@@ -81,9 +81,10 @@ th:first-child, td:first-child {
 #trash{
 	font-size: 30px;
 }
+#trash:hover{cursor: pointer;}
 #delete{ 
 	font-size: 18px;
-	margin-left: 791px;
+	margin-left: 785px;
 }
 #tbody tr {height: 150px;}
 #tbody tr img {width: 50%;}
@@ -91,6 +92,8 @@ th:first-child, td:first-child {
 	box-shadow: none;
 	width: 20px; height: 20px;
 }
+.page-link.disabled{color: lightgray;}
+.page-link.disabled:hover{background: white; color: lightgray;}
 </style>
 </head>
 <body>
@@ -129,9 +132,17 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
+							<c:if test="${ empty list }">
+								<tr>
+									<td colspan="5" height="260">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										스크랩 내역이 없습니다.
+									</td>
+								</tr>
+							</c:if>
 							<c:forEach items="${ list }" var="l">
-								<c:if test="${ l.NUMBER_TYPE == 1 }">
-									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-division-no="${l.DIVISION_NO}">
+								<c:if test="${ l.NUMBER_TYPE == 1 and !empty l.RECIPE_NAME }">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
@@ -140,7 +151,7 @@ th:first-child, td:first-child {
 									</tr>
 								</c:if>
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
-									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-division-no="${l.DIVISION_NO}">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.MENU_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>식단</td>
 										<td>${ l.MENU_NAME }</td>
@@ -157,26 +168,52 @@ th:first-child, td:first-child {
 					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
 						<ul class="pagination">
 							<li class="page-item">
-								<c:url var="goBack" value="${ loc }">
-									<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
-								</c:url>
-								<a class="page-link" href="${ goBack }" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-								</a>
+								<c:if test="${ pi.currentPage <= 1 }">
+									<a class="page-link disabled" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</c:if>
+								<c:if test="${ pi.currentPage > 1 }">
+									<c:url var="goBack" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+										<c:param name="searchType" value="${searchType}"></c:param>
+										<c:if test="${ !empty searchTitle }">
+											<c:param name="searchTitle" value="${searchTitle}"></c:param>
+										</c:if>
+									</c:url>
+									<a class="page-link" href="${ goBack }" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</c:if>
 							</li>
 							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 								<c:url var="goNum" value="${ loc }">
 									<c:param name="page" value="${ p }"></c:param>
+									<c:param name="searchType" value="${searchType}"></c:param>
+									<c:if test="${ !empty searchTitle }">
+										<c:param name="searchTitle" value="${searchTitle}"></c:param>
+									</c:if>
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ goNum }">${ p }</a></li>
 							</c:forEach>
 							<li class="page-item">
-								<c:url var="goNext" value="${ loc }">
-									<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
-								</c:url>
-								<a class="page-link" href="${ goNext }" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-								</a>
+								<c:if test="${ pi.currentPage >= pi.maxPage }">
+									<a class="page-link disabled" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</c:if>
+								<c:if test="${ pi.currentPage < pi.maxPage }">
+									<c:url var="goNext" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+										<c:param name="searchType" value="${searchType}"></c:param>
+										<c:if test="${ !empty searchTitle }">
+											<c:param name="searchTitle" value="${searchTitle}"></c:param>
+										</c:if>
+									</c:url>
+									<a class="page-link" href="${ goNext }" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</c:if>
 							</li>
 						</ul>
 					</nav>
@@ -212,6 +249,20 @@ th:first-child, td:first-child {
 		   location.href="${contextPath}/myPage_MyBookMark.me?searchTitle=" + searchTitle;
 	   }
 	   
+	   
+	   //검색 img 클릭했을 때
+	   const searchInput = document.getElementById('search');
+	   document.getElementById('searchIcon').addEventListener('click', function() {
+	      search();
+	   })
+	   
+	   //검색어 입력 엔터 기능 
+	   searchInput.addEventListener('keyup', function(event) {
+	     if (event.key === 'Enter') {
+	       search();
+	     }
+	   });
+	   
 		//전체 체크박스
 		let allCheck = document.getElementsByClassName('delete');
 		//체크 된 체크박스 
@@ -243,50 +294,36 @@ th:first-child, td:first-child {
 		
 		trash.addEventListener('click', () => {
 			let checked = document.querySelectorAll('input.delete:checked');
-			const selectedDivisionNos = [];
+			const selectedBookmarkNos = [];
+			let bookmarkNo = 0;
 			checked.forEach((checkbox) => {
-				const divisionNo = checkbox.closest('tr').getAttribute('data-division-no');
-				selectedDivisionNos.push(divisionNo);
-				swal({
-				    text: '정말 삭제하시겠습니까?',
-				    icon: 'warning',
-				    buttons: ["취소", "삭제하기"]
-				}).then((YES) => {
-				    if (YES) {
-				      	console.log('ㅎㅇㄴ');
-				      	$.ajax({
-							url : '${contextPath}/myPage_deleteBookLike.me',
-							data : {divisionNo : selectedDivisionNos},
-							success : data => {
-								console.log(data);
-								if(data == 'yes'){
-									location.reload();
-								} else {
-									swal('', '삭제를 실패하였습니다.', 'error');
-								}
-							},
-							error : data => {
-								console.log(data);
-							}
-						});
-				    }
-				});
+				bookmarkNo = checkbox.closest('tr').getAttribute('data-bookMark-no');
+				selectedBookmarkNos.push(bookmarkNo);
  			});
+			swal({
+			    text: '정말 삭제하시겠습니까?',
+			    icon: 'warning',
+			    buttons: ["취소", "삭제하기"]
+			}).then((YES) => {
+			    if (YES) {
+			      	$.ajax({
+						url : '${contextPath}/myPage_deleteBookMark.me',
+						data : {bookmarkNo : JSON.stringify(selectedBookmarkNos)},
+						success : data => {
+							console.log(data);
+							if(data == 'yes'){
+								location.reload();
+							} else {
+								swal('', '삭제를 실패하였습니다.', 'error');
+							}
+						},
+						error : data => {
+							console.log(data);
+						}
+					});
+			    }
+			});
 		});
-	   
-	   //검색 img 클릭했을 때
-	   const searchInput = document.getElementById('search');
-	   document.getElementById('searchIcon').addEventListener('click', function() {
-	      search();
-	   })
-	   
-	   //검색어 입력 엔터 기능 
-	   searchInput.addEventListener('keyup', function(event) {
-	     if (event.key === 'Enter') {
-	       search();
-	     }
-	   });
-	   
 		
 		// 옵션 선택
 		const selectElement = document.querySelector("select");

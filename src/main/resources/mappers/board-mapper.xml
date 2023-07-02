@@ -28,6 +28,7 @@
 		<result column="BOARD_COUNT" property="boardCount"/>
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="ORDER_NO" property="orderNo"/>
+		<result column="REVIEW_NO" property="reviewNo"/>
 		<result column="REVIEW_TITLE" property="reviewTitle"/>
 		<result column="REVIEW_CONTENT" property="reviewContent"/>
 		<result column="REVIEW_SCORE" property="reviewScore"/>
@@ -71,7 +72,7 @@
 		from review
 			left join users on(review_writer = users_id)
 		where product_no = #{bId} and review_status = 'Y'
-		order by review_date desc
+		order by review_date
 	</select>
 	
 	<update id="replyDelete">
@@ -82,5 +83,18 @@
 			and product_no = #{productNo}	
 			and order_no = -1
 	</update>
+	
+	<update id="reReply">
+		update review
+		set review_content = #{reviewContent}
+		where review_writer = #{reviewWriter}
+			and review_no = #{reviewNo}
+			and product_no = #{productNo}
+			and review_status = 'Y'
+			and order_no = -1
+	</update>
+	
+	
+	
 	
 </mapper>

@@ -3,20 +3,26 @@ package kh.finalproj.hollosekki.market.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+//import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -101,24 +107,24 @@ public class MarketDAO {
       return sqlSession.selectOne("marketMapper.selectIngrdient", productNo);
    }
 
-   public void delBasket(SqlSessionTemplate sqlSession, int productNo) {
-      sqlSession.delete("marketMapper.delBasket", productNo);
+   public void delBasket(SqlSessionTemplate sqlSession, int preorderNo) {
+      sqlSession.delete("marketMapper.delBasket", preorderNo);
    }
 
    public ArrayList<Product> selectProductInfo(SqlSessionTemplate sqlSession, int productNo) {
       return (ArrayList)sqlSession.selectList("marketMapper.selectProductInfo", productNo);
    }
 
-   public int plusCount(SqlSessionTemplate sqlSession, int productNo) {
-      return sqlSession.update("marketMapper.plusCount", productNo);
+   public int plusCount(SqlSessionTemplate sqlSession, int preorderNo) {
+      return sqlSession.update("marketMapper.plusCount", preorderNo);
    }
 
-   public int plusResultCount(SqlSessionTemplate sqlSession, int productNo) {
-      return sqlSession.selectOne("marketMapper.plusResultCount", productNo);
+   public int plusResultCount(SqlSessionTemplate sqlSession, int preorderNo) {
+      return sqlSession.selectOne("marketMapper.plusResultCount", preorderNo);
    }
 
-   public void minusCount(SqlSessionTemplate sqlSession, int productNo) {
-      sqlSession.update("marketMapper.minusCount", productNo);
+   public void minusCount(SqlSessionTemplate sqlSession, int preorderNo) {
+      sqlSession.update("marketMapper.minusCount", preorderNo);
    }
 
    public ArrayList<Cart> checkCartList(SqlSessionTemplate sqlSession, int usersNo, int preorderNo) {
@@ -268,9 +274,6 @@ public class MarketDAO {
 	}
 
 
-   public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
-		return sqlSession.insert("marketMapper.insertPay", orders);
-   }
 
 	public int selectStock(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.selectStock", productNo);
@@ -280,8 +283,61 @@ public class MarketDAO {
 		sqlSession.update("marketMapper.updatePoint", users);
 	}
 
-	public int highScrore(SqlSessionTemplate sqlSession, Review r) {
-		return sqlSession.;
+	public int reviewAvg(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.reviewAvg",productNo);
+	}
+
+	public ArrayList<Review> reviewAvgDesc(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.reviewAvgDesc", productNo);
+	
+	}
+	public void deleteFromCart(SqlSessionTemplate sqlSession, int preorderNo) {
+		sqlSession.delete("marketMapper.deleteFromCart", preorderNo);
+	}
+	
+	//주문한 상품에 대한 productType 조회 
+	public int selectProductType(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectProductType", productNo) ;
+	}
+
+	public int insertPay(SqlSessionTemplate sqlSession, Orders orders) {
+		return sqlSession.insert("marketMapper.insertPay", orders);
+   }
+
+	public int orderSearchCount(SqlSessionTemplate sqlSession, Properties prop) {
+		return sqlSession.selectOne("marketMapper.orderSearchCount", prop);
+	}
+
+	public ArrayList<Map<String, Object>> orderSearch(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("marketMapper.orderSearchList", prop, rowBounds);
+	}
+
+	public int orderPeriodSearchCount(SqlSessionTemplate sqlSession, Properties prop) {
+		return sqlSession.selectOne("marketMapper.orderPeriodSearchCount", prop);
+	}
+
+	public ArrayList<Map<String, Object>> orderPeriodSearchList(SqlSessionTemplate sqlSession, Properties prop, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("marketMapper.orderPeriodSearchList", prop, rowBounds);
+	}
+
+
+	public ArrayList<Review> reviewDesc(SqlSessionTemplate sqlSession, int productNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.reviewDesc", productNo);
+	}
+
+	public ArrayList<Options> selectOptionInfo(SqlSessionTemplate sqlSession, int preorderNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectOptionInfo", preorderNo);
+	}
+
+
+	public void updatePointTable(SqlSessionTemplate sqlSession, Point p) {
+		sqlSession.insert("marketMapper.updatePointTable", p);		
 	}
 
 

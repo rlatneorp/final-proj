@@ -73,7 +73,8 @@ th:first-child, td:first-child {
 #searchIcon:hover {
    cursor:pointer;
 }
-
+.page-link.disabled{color: lightgray;}
+.page-link.disabled:hover{background: white; color: lightgray;}
 
 </style>
 </head>
@@ -113,6 +114,14 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
+							<c:if test="${ empty list }">
+								<tr>
+									<td colspan="6" height="305">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										레시피가 없습니다.
+									</td>
+								</tr>
+							</c:if>
 							<c:forEach items="${ list }" var="l">
 								<tr onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'">
 									<td>${ l.FOOD_NO }</td>
@@ -131,26 +140,46 @@ th:first-child, td:first-child {
 					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
 						<ul class="pagination">
 							<li class="page-item">
-								<c:url var="goBack" value="${ loc }">
-									<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
-								</c:url>
-								<a class="page-link" href="${ goBack }" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-								</a>
+								<c:if test="${ pi.currentPage <= 1 }">
+									<a class="page-link disabled" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</c:if>
+								<c:if test="${ pi.currentPage > 1 }">
+									<c:url var="goBack" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+										<c:param name="searchType" value="${searchType}"></c:param>
+										<c:param name="searchTitle" value="${searchTitle}"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goBack }" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</c:if>
 							</li>
 							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 								<c:url var="goNum" value="${ loc }">
 									<c:param name="page" value="${ p }"></c:param>
+									<c:param name="searchType" value="${searchType}"></c:param>
+									<c:param name="searchTitle" value="${searchTitle}"></c:param>
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ goNum }">${ p }</a></li>
 							</c:forEach>
 							<li class="page-item">
-								<c:url var="goNext" value="${ loc }">
-									<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
-								</c:url>
-								<a class="page-link" href="${ goNext }" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-								</a>
+								<c:if test="${ pi.currentPage >= pi.maxPage }">
+									<a class="page-link disabled" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</c:if>
+								<c:if test="${ pi.currentPage < pi.maxPage }">
+									<c:url var="goNext" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+										<c:param name="searchType" value="${searchType}"></c:param>
+										<c:param name="searchTitle" value="${searchTitle}"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goNext }" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</c:if>
 							</li>
 						</ul>
 					</nav>

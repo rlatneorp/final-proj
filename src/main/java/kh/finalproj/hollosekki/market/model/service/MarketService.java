@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.dao.MarketDAO;
 import kh.finalproj.hollosekki.market.model.vo.Attendance;
@@ -20,6 +24,7 @@ import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+//import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -109,24 +114,24 @@ public class MarketService {
       return mkDAO.selectIngrdient(sqlSession, productNo);
    }
 
-   public void delBasket(int productNo) {
-      mkDAO.delBasket(sqlSession, productNo);
+   public void delBasket(int preorderNo) {
+      mkDAO.delBasket(sqlSession, preorderNo);
    }
 
    public ArrayList<Product> selectProductInfo(int productNo) {
       return mkDAO.selectProductInfo(sqlSession, productNo);
    }
 
-   public int plusCount(int productNo) {
-      return mkDAO.plusCount(sqlSession, productNo);
+   public int plusCount(int preorderNo) {
+      return mkDAO.plusCount(sqlSession, preorderNo);
    }
 
-   public int plusResultCount(int productNo) {
-      return mkDAO.plusResultCount(sqlSession, productNo);
+   public int plusResultCount(int preorderNo) {
+      return mkDAO.plusResultCount(sqlSession, preorderNo);
    }
 
-   public void minusCount(int productNo) {
-      mkDAO.minusCount(sqlSession, productNo);
+   public void minusCount(int preorderNo) {
+      mkDAO.minusCount(sqlSession, preorderNo);
    }
 
    public ArrayList<Cart> checkCartList(int usersNo, int preorderNo) {
@@ -266,11 +271,54 @@ public class MarketService {
 		mkDAO.updatePoint(sqlSession, users);
 	}
 
-//	public int highScrore(Review r) {
-//		return mkDAO.highScrore(sqlSession, r);
-//	}
+	public int reviewAvg(int productNo) {
+		return mkDAO.reviewAvg(sqlSession, productNo);
+	}
+
+	public ArrayList<Review> reviewAvgDesc(int productNo) {
+		return mkDAO.reviewAvgDesc(sqlSession, productNo);
+		
+	}
+	//구매 후 장바구니에서 제거
+	public void deleteFromCart(int preorderNo) {
+		mkDAO.deleteFromCart(sqlSession, preorderNo);
+	}
+
+	public int selectProductType(int productNo) {
+		return mkDAO.selectProductType(sqlSession, productNo);
+	}
+
+	public ArrayList<Review> reviewDesc(int productNo) {
+		return mkDAO.reviewDesc(sqlSession,productNo);
+	}
+
+	public int orderSearchCount(Properties prop) {
+		return mkDAO.orderSearchCount(sqlSession, prop);
+	}
+
+	public ArrayList<Map<String, Object>> orderSearch(Properties prop, PageInfo pi) {
+		return mkDAO.orderSearch(sqlSession, prop, pi);
+	}
+
+	public int orderPeriodSearchCount(Properties prop) {
+		return mkDAO.orderPeriodSearchCount(sqlSession, prop);
+	}
+
+	public ArrayList<Map<String, Object>> orderPeriodSearchList(Properties prop, PageInfo pi) {
+		return mkDAO.orderPeriodSearchList(sqlSession, prop, pi);
+	}
+	
+	//주문번호에 대한 option 조회 
+	public ArrayList<Options> selectOptionInfo(int preorderNo) {
+		return mkDAO.selectOptionInfo(sqlSession, preorderNo);
+	}
+
+	public void updatePointTable(Point p) {
+		mkDAO.updatePointTable(sqlSession, p);		
+	}
 
 
+	
 
 
 	

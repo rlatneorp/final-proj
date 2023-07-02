@@ -19,7 +19,10 @@
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>
 			
-		<form id="deleteForm" action="${contextPath}/adminFoodDeletes.ad" method="post">
+<%-- 		<form id="deleteForm" action="${contextPath}/adminFoodDeletes.ad" method="post"> --%>
+		<form id="deleteForm" action="${contextPath}/adminDeleteSelects.ad" method="post">
+			<input type="hidden" name="type" value="1">
+			<input type="hidden" name="url" value="adminFoodManage.ad">
 			<table class="w-100 text-center mb-3">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>
@@ -34,7 +37,7 @@
 					<th style="width: 7%">좋아요</th>
 					<th style="width: 9%">상태</th>
 					<th style="width: 6%">
-<!-- 						<button type="button" class="allSelect btns" style="background-color: #19A7CE; width: 45px;font-weight: bold;">전체</button> -->
+						<button type="button" class="allSelect btns" style="background-color: #19A7CE; width: 45px;font-weight: bold;">전체</button>
 					</th>
 				</tr>
 				

@@ -246,47 +246,50 @@ input[type="text"] {
 			<th class="tableBorder1"><b>합계금액</b></th>
 		</tr>
 		<tbody id="products">
+			<c:set var="previousPreorderNo" value="" />
 			<c:forEach items="${ checkedCartList}" var="cl" varStatus="status" >
-				<c:if test="${cl.preorderNo != checkedCartList[status.index - 1].preorderNo}">
-				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
-					<td class="imgTab">
-						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-						<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-						<input type="hidden" value="${cl.preorderNo }">
-					</td>
-					<td style="border-right: 2px solid #dee2e6; text-align: left">
-						<b>${cl.productName}</b><br><br>
-						<c:forEach items="${optValues }" var="opt">
-							<c:if test="${ opt.productNo eq cl.productNo }">
+				<c:if test="${cl.preorderNo != previousPreorderNo}">
+					<c:set var="previousPreorderNo" value="${cl.preorderNo}" />
+					<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
+						<td class="imgTab">
+							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
+							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
+							<input type="text" class="storePreOrderNo" value="${cl.preorderNo }">
+						</td>
+						<td style="border-right: 2px solid #dee2e6; text-align: left">
+							<b id="productName-${cl.preorderNo }">${cl.productName}</b><br><br>
+							<c:forEach items="${cl.optionName }" var="opt">
+								<input type="hidden" value="${opt.optionNo }">
 								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
+							</c:forEach>
+						</td>
+						<td  style="border-right: 2px solid #dee2e6; width:130px">
+							<input type="text" class="forProductNo" value="${cl.productNo }">
+							<input type="text" value="${cl.preorderNo }">
+							<span class="cartCount" id="size-${cl.preorderNo}">${cl.cartCount }</span>개&nbsp;
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:150px " >
+							<c:if test="${cl.sale ne 0 }">
+								<span id="sale-${cl.preorderNo }" class="highlight"><b>${cl.sale }% 할인</b></span>
+								<br><br> <span style="text-decoration: line-through;" id="originP-${cl.preorderNo }">${cl.productPrice}</span>
+								<br><span id="pp-${cl.preorderNo }" style="font-size:25px; font-weight:bold" class="price">
+									${cl.productPrice}
+								</span>원
 							</c:if>
-						</c:forEach>
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:130px">
-						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp;
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:150px " >
-						<c:if test="${cl.sale ne 0 }">
-							<span id="sale-${cl.productNo }" class="highlight-a"><b>${cl.sale }% 할인</b></span>
-							<br><br> <span style="text-decoration: line-through;" id="originP-${cl.productNo }">${cl.productPrice}</span>
-							<br><span id="pp-${cl.productNo }" style="font-size:25px; font-weight:bold" class="price">
-								${cl.productPrice}
+							<c:if test="${cl. sale eq 0 }">
+								<span id="pp-${cl.productNo }" class="price">
+									${cl.productPrice}
+								</span>원
+							</c:if>
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:130px">
+							<span class="point" id="point-${cl.preorderNo }"></span>P 적립
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:160px">
+							<span class="sum" id="sum-${cl.preorderNo }">
+							${cl.sum }
 							</span>원
-						</c:if>
-						<c:if test="${cl.sale eq 0 }">
-							<span id="pp-${cl.productNo }" style="font-size:25px; font-weight:bold"  class="price">
-								${cl.productPrice}
-							</span>원
-						</c:if>
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:130px">
-						<span class="point" id="point-${cl.productNo }"></span>P 적립
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:160px">
-						<span class="sum" id="sum-${cl.productNo }">
-						${cl.sum }
-						</span>원
-					</td>
+						</td>
 				</tr>
 				</c:if>
 			</c:forEach>
@@ -385,12 +388,6 @@ input[type="text"] {
 				<input type="text" id="sample6_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" class="payContent" placeholder="주소"><br> 
 				<input type="text" id="sample6_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;"class="payContent"  placeholder="상세주소"><br>
 		</tr>
-<!-- 		<tr> -->
-<!-- 			<td class="address"><b>전화번호</b></td> -->
-<!-- 			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"> -->
-<!-- 				<input type="text" id="homePhone" style="width: 200px; margin-left: 15px;" class="payContent" name="payName"> -->
-<!-- 			</td> -->
-<!-- 		</tr> -->
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
@@ -423,12 +420,6 @@ input[type="text"] {
 				</div>
 			</td>
 		</tr>
-<!-- 		<tr> -->
-<!-- 			<td class="address"><b>전화번호</b></td> -->
-<!-- 			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"> -->
-<!-- 				<input type="text" class="payContent" style="width: 200px; margin-left: 15px;" name="payName"> -->
-<!-- 			</td> -->
-<!-- 		</tr> -->
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
@@ -481,7 +472,6 @@ input[type="text"] {
 	    		<th style="width:150px">받으실 분</th>
 	    		<th>배송지 명</th>
 	    		<th style="width:300px">배송지</th>
-<!-- 	    		<th>전화번호</th> -->
 	    		<th>휴대폰 번호</th>
 	    	</tr>
 	    		<tbody id="tbody"></tbody>
@@ -525,12 +515,6 @@ input[type="text"] {
 				<input type="text" id="sample7_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="주소"><br> 
 				<input id="detailAddress2" type="text" id="sample7_detailAddress" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" placeholder="상세주소"><br>
 		</tr>
-<!-- 		<tr> -->
-<!-- 			<td class="address"><b>전화번호</b></td> -->
-<!-- 			<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"> -->
-<!-- 				<input id="homeNumber2" type="text" style="width: 200px; margin-left: 15px;" name="payName"> -->
-<!-- 			</td> -->
-<!-- 		</tr> -->
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
@@ -575,12 +559,6 @@ input[type="text"] {
 						<input type="text" id="update_address" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" name="addressLocation" placeholder="주소"><br> 
 						<input id="update_detailAddress" type="text" style="margin-bottom: 10px; width: 400px; margin-left: 15px;" name="detailAddress" placeholder="상세주소"><br>
 				</tr>
-<!-- 				<tr> -->
-<!-- 					<td class="address"><b>전화번호</b></td> -->
-<!-- 					<td style="width: 400px; text-align: left; height: 50px; border-top: 2px solid #dee2e6"> -->
-<!-- 						<input id="updateHomeNumber" type="text" style="width: 200px; margin-left: 15px;" name="homePhone"> -->
-<!-- 					</td> -->
-<!-- 				</tr> -->
 				<tr>
 					<td class="address"><b>휴대폰 번호</b></td>
 					<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
@@ -592,10 +570,6 @@ input[type="text"] {
   </div>
 </div>
 
-
-
-
-
 <br><br><br><br><br><br>
 
 <%@include file="../common/footer.jsp"%>
@@ -605,7 +579,7 @@ input[type="text"] {
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-	//주소 찾기 
+	//배송지 API 
     function sample6_execDaumPostcode() { //우편번호 찾기 클릭 시
         new daum.Postcode({ //다음에서 제공하는 Postcode 메서드 
             oncomplete: function(data) {
@@ -646,8 +620,6 @@ input[type="text"] {
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('sample7_postcode').value = data.zonecode;
                 document.getElementById("sample7_address").value = addr;
-                // 커서를 상세주소 필드로 이동한다.
-//                 document.getElementById("sample7_detailAddress").focus();
                 window.close();
             }
         }).open();
@@ -693,8 +665,7 @@ input[type="text"] {
 		//포인트
 		const parentPnos = document.getElementsByClassName('imgTab');
 		for(let p of parentPnos) { 
-			let pNos = p.children[0].value; //번호
-			
+			let pNos = p.children[0].value; //주문번호
 			let sumPrice = parseInt(document.getElementById('sum-' + pNos).innerText);
 			let size = parseInt(document.getElementById('size-'+ pNos).innerText);
 			
@@ -707,6 +678,7 @@ input[type="text"] {
 			if(sales != null) {
 				const sale = parseInt(sales.innerText);
 				const originP = parseInt(document.getElementById('originP-' + pNos).innerText);
+				
 				const discountAmount = originP * (sale / 100);
 				const discountedPrice = (originP - discountAmount).toLocaleString();
 				const disFormatDiscountedPrice = (originP - discountAmount);
@@ -793,17 +765,12 @@ input[type="text"] {
 					  console.log(shippingNo);
 					  var row = document.createElement("tr");
 					  row.classList.add('shippingList');
-// 					  row.children.classList.add('shippingList');
 					  row.innerHTML = 
 						"<td><input type='radio' name='ship' value='" + shippingNo + "'></td>" +
 					    "<td>" + datas.recipient + "</td>" +
 					    "<td>" + datas.shippingName + "</td>" +
 					    "<td>" + datas.address + "</td>" +
-// 					    "<td>" + datas.homePhone + "</td>" +
 					    "<td>" + datas.phone + "</td>";
-// 					    "<td><button class='editShip'>수정</button><input type='text' value='" + shippingNo + "'><button>삭제</button></td>";
-					    
-					    
 					  tbody.append(row);
 				  }
 			  }, 
@@ -819,7 +786,6 @@ input[type="text"] {
 		let updatePostcode = document.getElementById('update_postcode');
 		let updateAddress = document.getElementById('update_address');
 		let updateDetailAddress = document.getElementById('update_detailAddress');
-// 		let updateHomeNumber = document.getElementById('updateHomeNumber');
 		let updatePhoneNumber = document.getElementById('updatePhoneNumber');
 		let checkedShip = 0;
 		
@@ -968,12 +934,9 @@ input[type="text"] {
 					
 					document.getElementById('shippingName').value = data.shippingName;
 					document.getElementById('shippingRecipient').value = data.recipient;
-					
 					document.getElementById('sample6_postcode').value = postNo;
 					document.getElementById('sample6_address').value = address;
 					document.getElementById('sample6_detailAddress').value = detailAddress;
-					
-// 					document.getElementById('homePhone').value = data.homePhone;
 					document.getElementById('phone').value = data.phone;
 					
 				},
@@ -1000,7 +963,6 @@ input[type="text"] {
 					updatePostcode:updatePostcode.value,
 					updateAddress:updateAddress.value,
 					updateDetailAddress:updateDetailAddress.value,
-// 					homePhone:updateHomeNumber.value,
 					phone:updatePhoneNumber.value
 				},
 				success : data => {
@@ -1044,7 +1006,6 @@ input[type="text"] {
 				  document.getElementById('sample7_postcode').value = '';
 				  document.getElementById('sample7_address').value = '';
 				  document.getElementById('detailAddress2').value = '';
-// 				  document.getElementById('homeNumber2').value = '';
 				  document.getElementById('phoneNumber2').value = '';
 			  }
 		});
@@ -1063,7 +1024,6 @@ input[type="text"] {
 			const postcode = document.getElementById('sample7_postcode').value;
 			const addressInfo = document.getElementById('sample7_address').value;
 			const detailAddress = document.getElementById('detailAddress2').value;
-// 			const homePhone = document.getElementById('homeNumber2').value;
 			const phone = document.getElementById('phoneNumber2').value;
 			
 		  if (orderName.trim() === '' || postcode.trim() === '' || addressInfo.trim() === '' || detailAddress.trim() === '' ||  phone.trim() === '') {
@@ -1088,7 +1048,6 @@ input[type="text"] {
 					  postcode:postcode,
 					  addressInfo:addressInfo,
 					  detailAddress:detailAddress,
-// 					  homePhone:homePhone,
 					  phone:phone
 				  },
 				  success: data => {
@@ -1104,7 +1063,6 @@ input[type="text"] {
 						    "<td>" + datas.recipient + "</td>" +
 						    "<td>" + datas.shippingName + "</td>" +
 						    "<td>" + datas.address + "</td>" +
-// 						    "<td>" + datas.homePhone + "</td>" +
 						    "<td>" + datas.phone + "</td>";
 						  tbody.append(row);
 					  }
@@ -1126,7 +1084,6 @@ input[type="text"] {
 		const inputPoint = document.getElementById('inputPoint'); 
 		const usePoint = document.getElementById('usePoint');
 		
-// 		const shipSum = parseInt(document.getElementById('shipSum').innerText);
 		//포인트 전액 사용 클릭 시
 		document.getElementById('totalPointCheck').addEventListener('click', () => {
 			const trTotalSum = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, ''));
@@ -1157,6 +1114,7 @@ input[type="text"] {
 					});
 					inputPoint.value = currentPoint + '원';
 					usePoint.innerText = currentPoint;
+					console.log('up1: ' + usePoint.innerText)
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-currentPoint).toLocaleString(); //총금액+배송비-포인트
 				} else if ( value < currentPoint) { //새로 입력한 값보다 보유 포인트 금액이 크면 
 					inputPoint.value = formattedValue + '원';
@@ -1173,6 +1131,7 @@ input[type="text"] {
 	} //window.onload
 	
 	
+	//입력값 초기화
 	document.getElementById('deleteContent').addEventListener('click', () => {
 		document.getElementById('shippingName').value = '';
 		document.getElementById('shippingRecipient').value = '';
@@ -1195,7 +1154,7 @@ input[type="text"] {
 	
 	const payContent = document.getElementsByClassName('payContent');
 	requestPay = () => {
-		
+		//모든 입력값 기재하지 않았을 때
 		for(pc of payContent) {
 			//길이가 다르게 됨 
 				if(pc.value.trim() === '') {
@@ -1207,188 +1166,166 @@ input[type="text"] {
 				return;
 			}
 		}
-		
 		const parentNo = document.getElementsByClassName('imgTab');
-		const orderInfo = []; /* 상품 단가, 할인률?, 적립금, 포인트 사용 금액 */
-		
 		const shipSum = parseInt(document.getElementById('shipSum').innerText.replace(/,/g, '')); //총합 금액 
+		const shipRecipient = document.getElementById('shippingRecipient').value;
+		const phon = document.getElementById('phone').value;
 		const postcode = document.getElementById('sample6_postcode').value;
 		const address = document.getElementById('sample6_address').value;
 		const detailAddress = document.getElementById('sample6_detailAddress').value;
-		const deliveryComment = document.getElementById('shippingAsk').value; //필요 
-		
-		const orderAddress = []; //필요 
+		const deliveryComment = document.getElementById('shippingAsk').value; 
+		const orderAddress = [];
+		orderAddress.push(shipRecipient);
+		orderAddress.push(phon);
 		orderAddress.push(postcode);
 		orderAddress.push(address);
 		orderAddress.push(detailAddress);
 		
+		let usePoint = document.getElementById('usePoint').innerText;
+		
+		const orderInfo = []; /* 상품 단가, 할인률?, 적립금, 포인트 사용 금액 */
 		for(pn of parentNo) {
-			orderInfo.length = 0; //배열 비우기 
-			//상품 list 구매내역 테이블에 담기 
-			//insert 시 필요 데이터 : 
-			//productNo, users_no, orderCount, totalPrice(개별 합계), orderAddress, orderStock(일단null), orderComment
-			const productNo = pn.firstChild.nextSibling.value; 
-			const usersNo = ${loginUser.usersNo};
-			const count = document.getElementById('size-' + productNo).innerText;
-			const sum = parseInt(document.getElementById('sum-' + productNo).innerText.replace(/,/g, ''));
-			
-			/* 상품 단가, 할인률, 적립금, 포인트 사용 금액 */
-			const price = document.getElementById('originP-' + productNo); //단가
-			const sale = document.getElementById('sale-' + productNo); //할인률
-			if(price != null) {
-				orderInfo.push('가격 : ' + price.innerText);
-			} else { //null이면 
-				orderInfo.push('가격 : ' + sum);
-			}
-			if(sale != null) {
-				orderInfo.push('할인가 : ' + sale.innerText);
-			} else {
-				orderInfo.push('할인가 없음');
-			}
-			
-			const plusPoint = document.getElementById('point-' + productNo).innerText; //해당 상품에 대한 포인트 적립  
-			const usePoint = document.getElementById('inputPoint').value; //포인트 차감 (동일)
-			
-			orderInfo.push('적립금 : ' + plusPoint);
-			if(usePoint != '') {
-				orderInfo.push('차감적립 : ' + usePoint);
-			} else {
-				orderInfo.push('차감적립 : ' + 0);
-			}
-			orderInfo.push('/');
-			const join = orderInfo.join(',');
-			const orderInfos = join.replace(/,\/,/g, '/').replace(/,\/$/, '');
-// 			console.log('-----------------------------------')
-// 			console.log('productNo : ' + productNo);
-// 			console.log('usersNo : ' + usersNo);
-// 			console.log('orderCount : ' + count);
-// 			console.log('sum : ' + sum);
-// 			console.log('orderAddress : ' + orderAddress);
-// 			console.log('deliveryComment : ' + deliveryComment);
-// 			console.log('orderInfos : ' + orderInfos);
-			
-			$.ajax({
-				url:'${contextPath}/insertPay.ma',
-				data:{
-					productNo:productNo,
-					usersNo:usersNo,
-					orderCount:count,
-					totalPrice:sum,
-					orderAddress:orderAddress,
-					orderDeliveryComment:deliveryComment,
-					orderInfo:orderInfos,
-				},
-				success: data => {
-// 					console.log(data); 
-// 					location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + plusPoint;
-					if(data == "success") {
-						IMP.request_pay({
-					        pg: 'html5_inicis', 
-					        pay_method: 'card',
-					        name: '주문명:결제테스트',
-// 					        amount:shipSum,
-							amount:100,
-//				 	        buyer_name:
-					        //가격
-					//	        buyer_email: 'iamport@siot.do',
-					//	        buyer_name: '구매자이름',
-					//	        buyer_tel: '010-1234-5678',
-					//	        buyer_addr: '서울특별시 강남구 삼성동',
-					//	        buyer_postcode: '123-456',
-					//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
-					//         m_redirect_url: 'humanentec.iptime.org'
-					        /*
-					        모바일 결제시,
-					        결제가 끝나고 랜딩되는 URL을 지정
-					        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
-					        */
-					    }, function (rsp) {
-					        if (rsp.success) {
-					            var msg = '결제가 완료되었습니다.';
-//				 	          
-					            //usePoint, plusPoint 반영 
-				 	            location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + plusPoint;
-					            
-					            
-					            
-					            
-					            
+			const preorderNo = pn.firstChild.nextSibling.value; 
+			const orderCountMinus1 = parentNo.length - 1;
+			const productName = document.getElementById('productName-' + preorderNo).innerText;
+// 			const preorderNo = document.getElementById('preorderNo-' + preorderNo).value;
+			let name = '';
+			if(orderCountMinus1 == 0) {
+	        	name = '주문명:' + productName;
+	        } else{
+	        	name = '주문명:' + productName + ' 외' + orderCountMinus1 + '개';
+	        }
+			IMP.request_pay({
+				pg: 'html5_inicis',
+				pay_method: 'card',
+				name:name,
+// 				amount:shipSum,
+				amount:100
+// 				buyer_name:
+				//가격
+				//	        buyer_email: 'iamport@siot.do',
+				//	        buyer_name: '구매자이름',
+				//	        buyer_tel: '010-1234-5678',
+				//	        buyer_addr: '서울특별시 강남구 삼성동',
+				//	        buyer_postcode: '123-456',
+				//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
+				//         m_redirect_url: 'humanentec.iptime.org'
+				        /*
+				        모바일 결제시,
+				        결제가 끝나고 랜딩되는 URL을 지정
+				        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
+				        */
+				}, function (rsp) {
+					if (rsp.success) {
+// 						var msg = '결제가 완료되었습니다.';
+			            //usePoint, plusPoint 반영 
+			            //결제 성공 시 orders테이블에 insert 
+// 			            orderInfo.length = 0; //배열 비우기 
+// 			 			//상품 list 구매내역 테이블에 담기 
+// 			 			//insert 시 필요 데이터 : 
+// 			 			//productNo, users_no, orderCount, totalPrice(개별 합계), orderAddress, orderStock(R), orderComment, 배송비
+						const forProductNos = document.getElementsByClassName('forProductNo');
+						const usersNo = ${loginUser.usersNo};
+						 //포인트 차감 (동일)
+						 
+			            for(forProductNo of forProductNos){ //insert 
+			            	const productNo = forProductNo.value
+			            	const preorderNo = forProductNo.nextElementSibling.value;
+			            	const count = document.getElementById('size-' + preorderNo).innerText;
+			            	console.log(preorderNo);
+			            	const sum = parseInt(document.getElementById('sum-' + preorderNo).innerText.replace(/,/g, ''));
+			            	
+			            	/* 상품 단가, 할인률, 적립금, 포인트 사용 금액 */
+	 						const price = document.getElementById('originP-' + preorderNo); //단가
+	 						const sale = document.getElementById('sale-' + preorderNo); //할인률
+	 						if(price != null) {
+	 							orderInfo.push('가격 : ' + price.innerText);
+	 						} else { //null이면 
+	 							orderInfo.push('가격 : ' + sum);
+	 						}
+	 						if(sale != null) {
+	 							orderInfo.push('할인가 : ' + sale.innerText);
+	 						} else {
+	 							orderInfo.push('할인 : X'); //할인가 없음 
+	 						}
+	 						const plusPoint = document.getElementById('point-' + preorderNo).innerText; //해당 상품에 대한 포인트 적립  
+	 						//사용 포인트가 없다면 0으로 
+	 						
+	 						console.log('너의 현재 금액은? : ' + usePoint);
+	 						orderInfo.push('적립금 : ' + plusPoint);
+	 						orderInfo.push('사용한 적립금 : ' + usePoint);
+	 						orderInfo.push('/');
+	 						const join = orderInfo.join(',');
+	 						const orderInfos = join.replace(/,\/,/g, '/').replace(/,\/$/, '');
+	 						
+	 						//옵션 담기 
+	 						const optionElement = document.getElementById('productName-' + preorderNo).parentElement.querySelectorAll('span');
+	 						
+	 						let options = [];
+							if(optionElement.length != 0) {
+								for(option of optionElement) {
+									options.push(option.innerText);
+								}
+							} else { //옵션이 없다면 
+								options = '옵션 없음';
+							}
+							//insert + 포인트 및 장바구니에서 제거
+							$.ajax({
+								url:'${contextPath}/insertPay.ma',
+								data:{
+									productNo:productNo,
+									usersNo:usersNo,
+									orderCount:count,
+									totalPrice:sum,
+									orderAddress:orderAddress,
+									orderDeliveryComment:deliveryComment,
+									orderInfo:orderInfos,
+									shipPrice:document.getElementById('shipPrice').innerText,
+									options:options
+								},
+								success: data => {
+									
+								},
+								error: data => {
+											
+								}
+					    	}); //ajax 끝 
+			            } //for문 끝 
+			            
+			          	//insert성공 시 
+			            const p = document.getElementsByClassName('point');
+			            console.log('p : ' + document.getElementsByClassName('point'));
+			            let pp = 0;
+			            for (let i = 0; i < p.length; i++) {
+			            	const pot = parseInt(p[i].innerText);
+			            	if (i > 0) {
+			            		pp += pot;
+			            	}
+			            }
+						const pr = document.getElementsByClassName('storePreOrderNo');
+						let preOrder = [];
+						for(prs of pr) {
+							console.log(prs.value);
+							const prsNo = prs.value;
+							preOrder.push(prsNo);
+						}
+						location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + pp + '&preNo=' + preOrder;
+						usePoint = 0;
+					
+					 	            
 					//             msg += '고유ID : ' + rsp.imp_uid;
 					//             msg += '상점 거래ID : ' + rsp.merchant_uid;
 					//             msg += '결제 금액 : ' + rsp.paid_amount;
 					//             msg += '카드 승인번호 : ' + rsp.apply_num;
-					        } else {
-					            var msg = '결제에 실패하였습니다.';
-					//             msg += '에러내용 : ' + rsp.error_msg;
-					        }
-					        alert(msg);
-					    });
-					}else {
-						console.log(data);
-						alert('결제 실패 : ');
+					} else {
+						var msg = '결제에 실패하였습니다.';
+						//msg += '에러내용 : ' + rsp.error_msg;
 					}
-										
-				},
-				error: data =>{
-					console.log(data);
-				}
-			})
-		}
-		
-		const join = orderInfo.join(',');
-// 		const orderInfos = join.replace(/,\/,/g, '/').replace(/,\/$/, '');
-// 		console.log('orderInfos : ' + orderInfos)
-		
-// 		IMP.request_pay({
-// 	        pg: 'html5_inicis', 
-// 	        pay_method: 'card',
-// 	        name: '주문명:결제테스트',
-// 	        amount:shipSum,
-// // 	        buyer_name:
-// 	        //가격
-// 	//	        buyer_email: 'iamport@siot.do',
-// 	//	        buyer_name: '구매자이름',
-// 	//	        buyer_tel: '010-1234-5678',
-// 	//	        buyer_addr: '서울특별시 강남구 삼성동',
-// 	//	        buyer_postcode: '123-456',
-// 	//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
-// 	//         m_redirect_url: 'humanentec.iptime.org'
-// 	        /*
-// 	        모바일 결제시,
-// 	        결제가 끝나고 랜딩되는 URL을 지정
-// 	        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
-// 	        */
-// 	    }, function (rsp) {
-// 	        if (rsp.success) {
-// 	            var msg = '결제가 완료되었습니다.';
-// // 	            $.ajax({
-// // 	            	url:'${contextPath}/insertPay.ma',
-// // 	            })
-	            
-	            
-	            
-// // 	            location.href='${contextPath}/paySuccess.ma';
-	          
-	            
-	            
-	            
-	            
-// 	//             msg += '고유ID : ' + rsp.imp_uid;
-// 	//             msg += '상점 거래ID : ' + rsp.merchant_uid;
-// 	//             msg += '결제 금액 : ' + rsp.paid_amount;
-// 	//             msg += '카드 승인번호 : ' + rsp.apply_num;
-// 	        } else {
-// 	            var msg = '결제에 실패하였습니다.';
-// 	//             msg += '에러내용 : ' + rsp.error_msg;
-// 	        }
-// 	        alert(msg);
-// 	    });
-	} // requestPay 끝
-	
-
-
-
-
+				  })
+				
+			}; //for문 끝
+		} //requestPay 문끝 
+// 	} //requestPay 끝
 </script>
 
 </html>

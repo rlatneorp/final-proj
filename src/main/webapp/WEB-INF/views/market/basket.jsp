@@ -196,54 +196,54 @@ input[type="text"] {
 			<th class="tableBorder1"><b>합계금액</b></th>
 		</tr>
 		<tbody id="products">
+			<c:set var="previousPreorderNo" value="" />
 			<c:forEach items="${ cartList}" var="cl" varStatus="status" >
-				<c:if test="${cl.preorderNo != cartList[status.index - 1].preorderNo}">
-				<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
-					<td class="imgTab">
-						<input type="hidden" id="basketNo-${cl.productNo }" class="basketNos" value="${ cl.productNo }">
-						<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.productNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
-						<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-						<input type="hidden" value="${cl.preorderNo }">
-					</td>
-					<td style="border-right: 2px solid #dee2e6; text-align: left">
-						<b>${cl.productName}</b><br><br>
-						<c:forEach items="${optValues }" var="opt">
-							<c:if test="${ opt.productNo eq cl.productNo }">
+				<c:if test="${cl.preorderNo != previousPreorderNo}">
+					<c:set var="previousPreorderNo" value="${cl.preorderNo}" />
+					<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
+						<td class="imgTab">
+							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
+							<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
+							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
+							<input type="text" value="${cl.preorderNo }">
+						</td>
+						<td style="border-right: 2px solid #dee2e6; text-align: left">
+							<b>${cl.productName}</b><br><br>
+							<c:forEach items="${cl.optionName }" var="opt">
 								<input type="hidden" value="${opt.optionNo }">
 								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
+							</c:forEach>
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:130px">
+							<i class="bi bi-dash-square-fill" id="minus-${cl.preorderNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
+							<span class="cartCount" id="size-${cl.preorderNo}">${cl.cartCount }</span>개&nbsp;
+							<i class="bi bi-plus-square-fill" id="plus-${cl.preorderNo }" style="color: #00AAFF; font-size: 15px"></i>
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:150px " >
+							<c:if test="${cl.sale ne 0 }">
+								<span id="sale-${cl.preorderNo }" class="highlight"><b>${cl.sale }% 할인</b></span>
+								<br><br> <span style="text-decoration: line-through;" id="originP-${cl.preorderNo }">${cl.productPrice}</span>
+								<br><span id="pp-${cl.preorderNo }" style="font-size:25px; font-weight:bold" class="price">
+									${cl.productPrice}
+								</span>원
 							</c:if>
-						</c:forEach>
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:130px">
-						<i class="bi bi-dash-square-fill" id="minus-${cl.productNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
-						<span class="cartCount" id="size-${cl.productNo}">${cl.cartCount }</span>개&nbsp;
-						<i class="bi bi-plus-square-fill" id="plus-${cl.productNo }" style="color: #00AAFF; font-size: 15px"></i>
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:150px " >
-						<c:if test="${cl.sale ne 0 }">
-							<span id="sale-${cl.productNo }" class="highlight"><b>${cl.sale }% 할인</b></span>
-							<br><br> <span style="text-decoration: line-through;" id="originP-${cl.productNo }">${cl.productPrice}</span>
-							<br><span id="pp-${cl.productNo }" style="font-size:25px; font-weight:bold" class="price">
-								${cl.productPrice}
+							<c:if test="${cl. sale eq 0 }">
+								<span id="pp-${cl.productNo }" class="price">
+									${cl.productPrice}
+								</span>원
+							</c:if>
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:130px">
+							<span class="point" id="point-${cl.preorderNo }"></span>P 적립
+						</td>
+						<td style="border-right: 2px solid #dee2e6; width:160px">
+							<span class="sum" id="sum-${cl.preorderNo }">
+							${cl.sum }
 							</span>원
-						</c:if>
-						<c:if test="${cl. sale eq 0 }">
-							<span id="pp-${cl.productNo }" class="price">
-								${cl.productPrice}
-							</span>원
-						</c:if>
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:130px">
-						<span class="point" id="point-${cl.productNo }"></span>P 적립
-					</td>
-					<td style="border-right: 2px solid #dee2e6; width:160px">
-						<span class="sum" id="sum-${cl.productNo }">
-						${cl.sum }
-						</span>원
-					</td>
+						</td>
 				</tr>
 				</c:if>
-				</c:forEach>
+			</c:forEach>
 		</tbody>
 	</table><br><br>
 	<div style="width: 1200px; margin: 0 auto; font-align: right">
@@ -407,61 +407,61 @@ input[type="text"] {
 			
 	const parentPnos = document.getElementsByClassName('imgTab');
 	for(let p of parentPnos) { 
+		let preOrder = p.lastChild.previousElementSibling.value;
 		let pNos = p.children[1].value;
-		let size = parseInt(document.getElementById('size-'+ pNos).innerText);
+		let size = parseInt(document.getElementById('size-'+ preOrder).innerText);
 		
 		//상품가격 및 개별 상품 합계 금액 
-		const sales =document.getElementById('sale-' + pNos);
+		const sales =document.getElementById('sale-' + preOrder);
 		if(sales != null) {
 			const sale = parseInt(sales.innerText);
-			const originP = parseInt(document.getElementById('originP-' + pNos).innerText);
+			const originP = parseInt(document.getElementById('originP-' + preOrder).innerText);
 			const discountAmount = originP * (sale / 100);
 			const discountedPrice = originP - discountAmount;
-			document.getElementById('pp-' + pNos).innerText = discountedPrice;
-			document.getElementById('sum-' + pNos).innerText = (size * discountedPrice);
-			
+			document.getElementById('pp-' + preOrder).innerText = discountedPrice;
+			document.getElementById('sum-' + preOrder).innerText = (size * discountedPrice);
 		}
 		
 		
 		//적립금(POINT)
-		const sum = parseFloat(document.getElementById('sum-' + pNos).innerText.replace(/,/g, ''));
+		const sum = parseFloat(document.getElementById('sum-' + preOrder).innerText.replace(/,/g, ''));
 		let pointRate = Math.round(sum*0.005);
 		
 		
-		document.getElementById('point-' + pNos).innerText = pointRate; 
+		document.getElementById('point-' + preOrder).innerText = pointRate; 
 		
-		const shippingPrice = document.getElementById('shippingPrice-' + pNos);
-		const originPriceString = document.getElementById('pp-'+pNos).innerText;
+		const shippingPrice = document.getElementById('shippingPrice-' + preOrder);
+		const originPriceString = document.getElementById('pp-'+preOrder).innerText;
 		const price = parseInt(originPriceString.replace(/[,원]/g, ""));
 		let totalPrice = 0;
 			
 		//1. 수량 증가 시 
-		const clickPlus = document.getElementById('plus-' + pNos);
+		const clickPlus = document.getElementById('plus-' + preOrder);
 		const cartCount = document.getElementsByClassName('cartCount');
 		clickPlus.addEventListener('click', function() {
 			//tr당 수량 증가 
 			size++;
-			document.getElementById('size-'+ pNos).innerText = size;
+			document.getElementById('size-'+ preOrder).innerText = size;
 			
 			$.ajax({
 				url:'${contextPath}/plusCount.ma',
 				data:{
-					productNo:pNos,
+					preorderNo:preOrder,
 					price:price
 				},
 				success: data => {
 					//포인트
 					pointRate = data*0.005;
-					document.getElementById('point-' + pNos).innerText = pointRate;
+					document.getElementById('point-' + preOrder).innerText = pointRate;
 						
 					//플러스 버튼 누를 때마다 개당 합계 금액 금액화 
 					const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
 					const sum = formattedPrice.replace(/[₩]/g, "");
-					document.getElementById('sum-'+pNos).innerText = sum;
+					document.getElementById('sum-'+preOrder).innerText = sum;
 					let trTotalPrice = 0;
 					let clickPlusSum= parseInt(sum.replace(/,/g, '')); //플러스 눌렀을 때 금액 
 					//플러스 버튼 누를 때마다 해당 tr이 나옴 
-					if(document.getElementById('chec-' + pNos).checked) {
+					if(document.getElementById('chec-' + preOrder).checked) {
 						console.log(parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price);
 						let zz = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price;
 						
@@ -489,31 +489,31 @@ input[type="text"] {
 		})
 				
 	//2.수량 감소 시 
-	const clickMinus = document.getElementById('minus-' + pNos);
+	const clickMinus = document.getElementById('minus-' + preOrder);
 	clickMinus.addEventListener('click', function() {
-		const minSize = parseInt(document.getElementById('size-'+ pNos).innerText);
+		const minSize = parseInt(document.getElementById('size-'+ preOrder).innerText);
 		if(minSize != 1) {
 			size--;
-			document.getElementById('size-'+ pNos).innerText = size; //감소 수량 삽입 
-			
+			document.getElementById('size-'+ preOrder).innerText = size; //감소 수량 삽입 
+			console.log(preOrder);
 			$.ajax({
 				url:'${contextPath}/minusCount.ma',
 				data:{
-					productNo:pNos,
+					preorderNo:preOrder,
 					price:price
 				},
 				success: data => {
 					//포인트
 					pointRate = data*0.005;
-					document.getElementById('point-' + pNos).innerText = pointRate;
+					document.getElementById('point-' + preOrder).innerText = pointRate;
 						
 					//마이너스 버튼 누를 때마다 개당 합계 금액 금액화 
 					const formattedPrice = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(data);
 					const sum = formattedPrice.replace(/[₩]/g, "");
-					document.getElementById('sum-'+pNos).innerText = sum; 
+					document.getElementById('sum-'+preOrder).innerText = sum; 
 					let clickPlusSum= parseInt(sum.replace(/,/g, '')); // 개당 합계 금액 
 					let trTotalPrice = 0;
-					if(document.getElementById('chec-' + pNos).checked) {
+					if(document.getElementById('chec-' + preOrder).checked) {
 						console.log(parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price);
 						let zz = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) - price;
 						document.getElementById('trTotalSum').innerText = zz;
@@ -538,7 +538,7 @@ input[type="text"] {
 				error: (data) => {}
 			}) //ajax끝
 		} else {
-			alert('1개 이상 선택') //이거 빼버릴까 ?
+			alert('1개 이상 선택') 
 			return;
 		}
 	})
@@ -569,14 +569,15 @@ input[type="text"] {
 		
 		//수량 반영 
 		const trSum = document.getElementsByClassName('sum');
-	
+		console.log(trSum);
 		let trTotalSum = 0;
 		let totalCount = 0;
 		for(sum of trSum) {
 			//체크 되어 있는지 확인해서 체크 되어 있다면 수량 반영해라 
 			const checBox = sum.parentElement.parentElement.children[0].children[1];
 			const checNo = sum.parentElement.parentElement.children[0].children[1].value;
-			const size = parseInt(document.getElementById('size-' + checNo).innerText);
+			const preOrder = sum.parentElement.parentElement.children[0].children[0].value;
+			const size = parseInt(document.getElementById('size-' + preOrder).innerText);
 			console.log(size);
 			
 			if(checBox.checked) {
@@ -605,51 +606,33 @@ input[type="text"] {
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
 		//체크 된 부분만 삭제 처리 
 		for(basketNo of basketNos) {
+			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
+			
 			if(basketNo.nextSibling.nextSibling.checked) {
+				console.log(delPreOrder)
 				const delBasket = basketNo.value;
 				$.ajax({
 					url:'${contextPath}/delBasket.ma',
 					data:{ 
-						productNo:delBasket
+						preorderNo:delPreOrder
 					},
 					success: (data) => {
+						//해당 상품 삭제
 						for(const checkProduct of checkProducts) {
 							let list = checkProduct.parentNode.parentNode;
 							list.remove(); 
-							
-							const table = document.getElementsByClassName('productInfos');
-							for(trs of table) {
-								console.log(trs);
-								
-// 								요약 숫자 변화 
-	 							let intOrderSize = parseInt(document.getElementById('orderSize').innerText);
-	 							intOrderSize--;
-	 							document.getElementById('orderSize').innerText = intOrderSize;
-	 							let price = 0;
-	 							const sumPrice = document.getElementsByClassName('sum');
-	 							for(const sum of sumPrice) {
-	 								const intSum = parseInt(sum.innerText.replace(/,/g, ''));
-	 								price += intSum;
-	 							}
-	 							document.getElementById('trTotalSum').innerText = price;
-								
-	 							//배송비
-	 							if(price >= 30000) {
-	 								document.getElementById('shipPrice').innerText = '0';
-	 							} else {
-	 								document.getElementById('shipPrice').innerText = '3,000';
-	 							}
-	 							//하단 총 합계 금액 
-	 							if(document.getElementById('shipPrice').innerText == '3,000') {
-	 								const ship = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
-	 								document.getElementById('shipSum').innerText = (price + ship)
-	 							} else {
-	 								document.getElementById('shipSum').innerText = document.getElementById('trTotalSum').innerText;
-	 							}
-							}
-							
 						}
-					},
+						swal({
+							 text: "성공적으로 삭제 되었습니다.",
+							 icon: "success",
+							 button: "확인",
+							});
+						//초기화
+						document.getElementById('orderSize').innerText = '0'; 
+						document.getElementById('trTotalSum').innerText = '0';
+						document.getElementById('shipPrice').innerText = '3,000';
+						document.getElementById('shipSum').innerText = '0';
+						},
 					error: (data) => {
 					}
 				})
@@ -668,12 +651,12 @@ input[type="text"] {
 				 button: "확인",
 				});
 		} else {
-			let optNos = [];
+			let preorderNos = [];
 			for(cp of checkProducts) { //체크 된 input type checkbox 
 				const preorderNo = cp.parentElement.lastElementChild.value;
-				optNos.push(preorderNo);
+				preorderNos.push(preorderNo);
 			}
-			console.log('optNos : ' + optNos);
+			console.log('preorderNos  : ' + preorderNos);
 			
 			const form = document.createElement('form');
 			form.method = 'POST';
@@ -681,8 +664,8 @@ input[type="text"] {
 			
 			const prNoInput = document.createElement('input');
 			prNoInput.type = 'hidden';
-			prNoInput.name = 'optNos';
-			prNoInput.value = optNos;
+			prNoInput.name = 'preorderNos';
+			prNoInput.value = preorderNos;
 			
 			form.appendChild(prNoInput);
 			

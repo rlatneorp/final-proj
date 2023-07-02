@@ -135,6 +135,9 @@
 		select count(*)
 		from recipe
 		where users_no = #{usersNo} and recipe_status = 'Y'
+		<if test="selectTitle != null">
+			and recipe_name like '%${selectTitle}%'
+		</if>
 	</select>
 	
 	<select id="selectMyRecipe" resultType="map">
@@ -142,7 +145,7 @@
 		FROM recipe r
 		LEFT JOIN bookmark rb ON (r.food_no = rb.division_no)
 		LEFT JOIN likes rl ON (r.food_no = rl.division_no)
-		WHERE r.users_no = 22 AND r.recipe_status = 'Y'
+		WHERE r.users_no = #{usersNo} AND r.recipe_status = 'Y'
 		<if test="selectTitle != null">
 			and recipe_name like '%${selectTitle}%'
 		</if>
@@ -180,43 +183,37 @@
 		<result column="RECIPE_STATUS" property="recipeStatus"/>
 	</resultMap>
 	
-	<select id="recipeBookCount" resultType="_int">
-		select count(*)
-		from bookmark
-		where DIVISION_NO = #{foodNo} and number_type = 1
-	</select>
-	
-	<select id="recipeLikeCount" resultType="_int">
-		select count(*)
-		from likes
-		where DIVISION_NO = #{foodNo} and number_type = 1
-	</select>
-	
 	<select id="getBookListCount" resultType="_int">
 		select count(*)
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
-		     left join product p on (m.product_no = p.product_no)
-             left join healther h on (p.users_no = h.users_no)
+		     left join product p on (b.division_no = p.product_no)
+		     left join healther h on (p.users_no = h.users_no)
 		     left join recipe r on (b.division_no = r.food_no)
-		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO)
+		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO) AND i.image_level = 0
 		     left join image im on (m.product_no = im.image_divide_no)
 		     left join users u on (u.users_no = r.users_no)
-		where b.users_no = #{usersNo}
+		where b.users_no = 22
+		      AND (p.product_status = 'Y' OR p.product_status IS NULL)
+			  AND (r.recipe_name IS NOT NULL OR m.menu_name IS NOT NULL)
+		<if test="selectTitle != null">
+			and (recipe_name like '%${selectTitle}%' or menu_name like '%${selectTitle}%')
+		</if>
 	</select>
 	
 	<select id="myBookMarkList" resultType="map">
-		select DIVISION_NO, NUMBER_TYPE, i.image_renamename recipe_image, u.nickname, r.recipe_modify_date, 
-			   r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, im.image_renamename menu_image, food_no
+		select DIVISION_NO, NUMBER_TYPE, i.image_renamename recipe_image, i.image_level, u.nickname, r.recipe_modify_date, 
+		       r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, im.image_renamename menu_image, food_no, bookmark_no
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
-		     left join product p on (m.product_no = p.product_no)
-             left join healther h on (p.users_no = h.users_no)
+		     left join product p on (b.division_no = p.product_no)
+		     left join healther h on (p.users_no = h.users_no)
 		     left join recipe r on (b.division_no = r.food_no)
-		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO)
+		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO) AND i.image_level = 0
 		     left join image im on (m.product_no = im.image_divide_no)
 		     left join users u on (u.users_no = r.users_no)
-		where b.users_no = #{usersNo}
+		where b.users_no = #{usersNo} AND (p.product_status = 'Y' OR p.product_status IS NULL)
+			  AND (r.recipe_name IS NOT NULL OR m.menu_name IS NOT NULL)
 		<if test="selectTitle != null">
 			and (recipe_name like '%${selectTitle}%' or menu_name like '%${selectTitle}%')
 		</if>
@@ -275,7 +272,7 @@
 	<!-- 식단, 식품, 상품(도구) 조회 -->
 	<select id="myFoodLikeList" resultType="map">
 		select number_type, name, menu_name, product_modify_date, food_name, food_type, image_renamename product_image, 
-			   product_type, tool_name, product_price, p.product_no
+			   product_type, tool_name, product_price, p.product_no, like_no
 		from likes l 
 		   left join menu m on (l.division_no = m.product_no)
 		   left join product p on (l.division_no = p.product_no)
@@ -284,7 +281,7 @@
 		   left join tool t on (p.product_no = t.product_no)
 		   left join ingredient g on (l.division_no = g.product_no)
 		   left join image i on (l.division_no = i.image_divide_no)
-		where l.users_no = #{usersNo} and number_type = 2 and image_level = 1
+		where l.users_no = #{usersNo} and number_type = 2 and image_level = 1 and product_status = 'Y'
 		<if test="selectType == 0">
 			and product_type in (1,2,4)
 		</if>
@@ -305,7 +302,7 @@
    
    <!-- 레시피 조회 -->
    <select id="myRecipeLikeList" resultType="map">
-		select number_type, recipe_name, recipe_modify_date, nickname, image_renamename recipe_image, food_no
+		select number_type, recipe_name, recipe_modify_date, nickname, image_renamename recipe_image, food_no, like_no
 		from likes l
 		     left join recipe r on (l.division_no = r.food_no)
 		     left join users u on (r.users_no = u.users_no)
@@ -319,12 +316,12 @@
    
    <!-- 상품(식재료) 조회 -->
    <select id="myProductLikeList" resultType="map">
-		select number_type, ingredient_name, product_type, product_price, image_renamename food_image, p.product_no
+		select number_type, ingredient_name, product_type, product_price, image_renamename food_image, p.product_no, like_no
 		from likes l
 		     left join product p on (l.division_no = p.product_no)
 		     left join ingredient g on (l.division_no = g.product_no)
 		     left join image i on (l.division_no = i.image_divide_no)
-		where l.users_no = #{usersNo} and image_level = 0 and number_type = 2 and product_type = 3
+		where l.users_no = #{usersNo} and image_level = 0 and number_type = 2 and product_type = 3 and product_status = 'Y'
 		<if test="selectTitle != null">
 			and ingredient_name like '%${selectTitle}%'
 		</if>
@@ -334,7 +331,72 @@
 	<!-- 스크랩, 좋아요 삭제 -->
 	<delete id="deleteBookMark">
 		delete from bookmark
-		where division_no = #{divisionNo} and number_type = 1
+		where bookmark_no = #{bookmarkNo}
 	</delete>
 	
+	<delete id="deleteLike">
+		delete from likes
+		where like_no = #{likeNo}
+	</delete>
+	
+	<!-- 주문한 리스트 조회  -->
+	<select id="selectOrderList" resultMap="OrdersResultSet">
+		select * from orders where users_no = #{usersNo} order by order_no desc
+	</select>
+	
+	<select id="orderListCount" resultType="_int">
+		select count(*) from orders where users_no = #{usersNo}
+	</select>
+	
+	<resultMap type="Orders" id="OrdersResultSet">
+      <id column="ORDER_NO" property="orderNo"/>
+      <result column="PRODUCT_NO" property="productNo"/>
+      <result column="USERS_NO" property="usersNo"/>
+      <result column="PRODUCT_TYPE" property="productType"/>
+      <result column="ORDER_COUNT" property="orderCount"/>
+      <result column="ORDER_TOTAL_PRICE" property="totalPrice"/>
+      <result column="ORDER_DATE" property="orderDate"/>
+      <result column="ORDER_STATUS" property="orderStatus"/>
+      <result column="ORDER_ADDRESS" property="orderAddress"/>
+      <result column="ORDER_DELIVERY_DATE" property="orderDeliveryDate"/>
+      <result column="ORDER_STOCK" property="orderStock"/>
+      <result column="ORDER_DELIVERY_COMMENT" property="orderDeliveryComment"/>
+      <result column="ORDER_INFO" property="orderInfo"/>
+      <result column="SHIP_PRICE" property="shipPrice"/>
+      <result column="OPTIONS" property="options"/>
+   </resultMap>
+	
+	<select id="selectDetailOrder" resultMap="OrdersResultSet">
+		select * from orders where order_no = #{orderNo}
+	</select>
+	
+	<update id="updateAddress">
+		update shipping_address 
+		set RECIPIENT=#{recipient}, ADDRESS=#{address}, PHONE=#{phone}, SHIPPING_NAME=#{shippingName}
+		where SHIPPING_NO = #{shippingNo}
+	</update>
+	
+	<select id="selectPeriodOrders" resultMap="OrdersResultSet">
+		<![CDATA[
+			SELECT *
+			FROM orders
+			WHERE TRUNC(ORDER_DATE) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(ORDER_DATE) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+			  AND USERS_NO = #{usersNo}
+		]]>
+	</select>
+	
+	<select id="orderPeriodCount" resultType="_int">
+		<![CDATA[
+			SELECT count(*)
+			FROM orders
+			WHERE TRUNC(ORDER_DATE) >= TO_DATE(#{start}, 'YYYY-MM-DD')
+			  AND TRUNC(ORDER_DATE) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+			  AND users_no = #{usersNo}
+		]]>
+	</select>
+	
+	<insert id="minusPoint">
+		
+	</insert>
 </mapper>

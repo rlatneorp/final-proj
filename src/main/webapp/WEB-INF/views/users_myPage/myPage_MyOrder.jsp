@@ -115,6 +115,7 @@ th:first-child, td:first-child {
 					<div class="search" style="margin: 0 auto;">
 						<input type="button" name="whole" value="전체" class="term" id="whole">
 						<input type="button" name="today" value="오늘" class="term" id="today">
+						<input type="hidden" id="requestWord" value="${word}">
 						<c:if test="${ start ne null}">
 							<input type="hidden" id="requestStart" value="${start }">
 							<input type="hidden" id="requestEnd" value="${end }">
@@ -152,28 +153,38 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<c:forEach items="${orderList }" var="ol">
-								<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me?orderNo='+${ol.orderNo}">
-									<td>
-										${ol.orderNo }
+							<c:if test="${!empty orderList }">
+								<c:forEach items="${orderList }" var="ol">
+										<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me?orderNo='+${ol.orderNo}">
+											<td>
+												${ol.orderNo }
+											</td>
+											<c:if test="${ol.productType eq 1 }">
+												<td>식품</td>
+											</c:if>
+											<c:if test="${ol.productType eq 2 }">
+												<td>식단</td>
+											</c:if>
+											<c:if test="${ol.productType eq 3 }">
+												<td>식재료</td>
+											</c:if>
+											<c:if test="${ol.productType eq 4 }">
+												<td>주방도구</td>
+											</c:if>
+											<td>${ol.productName }</td>
+											<td>${ol.orderDate }</td>
+											<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
+										</tr>
+								</c:forEach>
+							</c:if>
+							<c:if test="${ empty orderList }">
+								<tr>
+									<td colspan="6" height="330">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										<b>조회 된 구매내역이 없습니다.</b>
 									</td>
-									<c:if test="${ol.productType eq 1 }">
-										<td>식품</td>
-									</c:if>
-									<c:if test="${ol.productType eq 2 }">
-										<td>식단</td>
-									</c:if>
-									<c:if test="${ol.productType eq 3 }">
-										<td>식재료</td>
-									</c:if>
-									<c:if test="${ol.productType eq 4 }">
-										<td>주방도구</td>
-									</c:if>
-									<td>${ol.productName }</td>
-									<td>${ol.orderDate }</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
 								</tr>
-							</c:forEach>
+							</c:if>
 						</tbody>
 					</table>
 				</div>
@@ -208,7 +219,7 @@ th:first-child, td:first-child {
 				</div>
 				<br>
 				<div style="display: flex; width:300px; position: relative; margin: 0 auto;">
-					<input type="text" placeholder="검색어 입력" name="searchWord" id="searchInput"> 
+					<input type="text" placeholder="상품명 입력" name="searchWord" id="searchInput"> 
 					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="searchIcon">
 				</div>
 			</div>
@@ -216,11 +227,16 @@ th:first-child, td:first-child {
 	</div>
 	
 	<script>
-	   //테이블에 마우스 올렸을 때 css
-	   const tbody = document.getElementById('tbody');
-	   const trs = tbody.children;
-	   
-	   for(tr of trs) {
+		
+		// 간편 검색 
+		const searchInput = document.getElementById('searchInput');
+		searchInput.focus();
+		
+		//테이블에 마우스 올렸을 때 css
+		const tbody = document.getElementById('tbody');
+		const trs = tbody.children;
+		
+		for(tr of trs) {
 	       tr.addEventListener('mouseenter', function() {
 	             this.style.backgroundColor = 'rgba(176, 218, 255, 0.3)'; // 마우스를 올렸을 때의 스타일
 	             this.style.cursor = 'pointer';
@@ -229,14 +245,13 @@ th:first-child, td:first-child {
 	        tr.addEventListener('mouseleave', function() {
 	          this.style.backgroundColor = ''; // 마우스를 뗐을 때의 스타일 (기존 스타일로 복구)
 	        }); 
-	   }
+	    }
 	   
-	   //검색 img 클릭했을 때
-	   const searchInput = document.getElementById('searchInput');
+	   //검색어 입력
 	   document.getElementById('searchIcon').addEventListener('click', function() {
-	      const searchWord = searchInput.value;
+		   const searchWord = searchInput.value;
 	      
-	      if(document.getElementById('requestStart') == null) { //start가 없으면 
+		   if(document.getElementById('requestStart') == null) { //start가 없으면 
 			   const url = '${contextPath}/searchWord.me?word=' + searchWord;
 			   window.location.href = url;
 		   } else {
@@ -245,17 +260,23 @@ th:first-child, td:first-child {
 			   const url = '${contextPath}/searchWord.me?start=' + start + '&end=' + end + '&word=' + searchWord;
 			   window.location.href = url;
 		   }
-// 	      searchInput.value = '';
 	   })
 	   
 	   //검색어 입력 엔터 기능 
 	   searchInput.addEventListener('keyup', function(event) {
 	     if (event.key === 'Enter') {
-	       const searchText = searchInput.value
-	       //여기에 ajax로 searchText 넘기기 
+	       const searchWord = searchInput.value
+	       if(document.getElementById('requestStart') == null) { //start가 없으면 
+			   const url = '${contextPath}/searchWord.me?word=' + searchWord;
+			   window.location.href = url;
+		   } else {
+			   const start = document.getElementById('requestStart').value;
+			   const end = document.getElementById('requestEnd').value;
+			   const url = '${contextPath}/searchWord.me?start=' + start + '&end=' + end + '&word=' + searchWord;
+			   window.location.href = url;
+		   }
+	       searchWord.value = '';
 	       
-	       console.log('검색어:', searchText);
-	       searchInput.value = '';
 	     }
 	   });
 	   
@@ -284,7 +305,6 @@ th:first-child, td:first-child {
 	   
 	   //1개월 조회 버튼 
 	   document.getElementById('1month').addEventListener('click', function() {
-// 		   this.classList.add('buttonColor')
 		   getBoardList(oneMonthAgo, currentDate); //1개월 전부터 현재시점까지 게시글 조회 
 	   })
 	   //3개월 조회 버튼
@@ -300,7 +320,6 @@ th:first-child, td:first-child {
 	   document.getElementById('selectDate').addEventListener('click', function() {
 		   let startDate = document.getElementById('startDate').value;
 		   let endDate = document.getElementById('endDate').value;
-		   //저기로 넘어가면 안 됨 아니면 이걸 걍 바꺼뽀까 
 		   getBoardList(startDate, endDate); 
 	   })
 	   
@@ -340,15 +359,26 @@ th:first-child, td:first-child {
 	   
 	   //페이징 (start, end 처리)
 	   function goToPage(page) {
-		   if(document.getElementById('requestStart') == null) {
-			   const url = '${contextPath}/myPage_MyOrder.me?page=' + page;
-			   window.location.href = url;
-		   } else {
+		   if(document.getElementById('requestStart') == null) { //기간이 없으면 
+			   if(document.getElementById('requestWord') == null) {
+				   const url = '${contextPath}/myPage_MyOrder.me?page=' + page;
+				   window.location.href = url;
+			   } else {
+				   const word = document.getElementById('requestWord').value;
+				   const url = '${contextPath}/searchWord.me?page=' + page + '&word=' + word;
+				   window.location.href = url;
+			   }
+		   } else { //기간이 있으면
 			   const start = document.getElementById('requestStart').value;
 			   const end = document.getElementById('requestEnd').value;
-
-			   const url = '${contextPath}/selectPeriodOrders.me?start=' + start + '&end=' + end + '&page=' + page;
-			   window.location.href = url;
+			   if(document.getElementById('requestWord') == null) {
+				   const url = '${contextPath}/selectPeriodOrders.me?start=' + start + '&end=' + end + '&page=' + page;
+				   window.location.href = url;
+			   } else {
+				   const word = document.getElementById('requestWord').value;
+				   const url = '${contextPath}/searchWord.me?start=' + start + '&end=' + end + '&page=' + page + '&word=' + word;
+				   window.location.href = url;
+			   }
 		   }
 		 }
 	   
@@ -382,8 +412,6 @@ th:first-child, td:first-child {
 	     const diffInMonths = Math.round(diffInMilliseconds / millisecondsPerMonth);
 	     return diffInMonths;
 	   }
-	   
-	   //검색어 조회 시 
 	   
 	</script>
 	

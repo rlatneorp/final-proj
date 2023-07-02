@@ -29,9 +29,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
+import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
+import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
@@ -41,6 +43,7 @@ import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
 //import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
@@ -267,16 +270,26 @@ public class MarketController {
 
    @GetMapping("market_detail.ma")
    public String marketdetail(@RequestParam("productNo") int productNo,
+		   				@RequestParam(value="page", required=false) Integer currentPage,
                         @ModelAttribute Review r,
+                        @ModelAttribute QA q,
                         @ModelAttribute Image img,
                         HttpSession session, Model model) {
       Users users = (Users)session.getAttribute("loginUser");
       Tool tool = mkService.selectTool(productNo);
+		if(currentPage == null) {
+			currentPage = 1;
+		}
+		int qnaCount = mkService.selectQnaCount(productNo);
+		PageInfo pi = Pagination.getPageInfo(currentPage, qnaCount, 5);
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(1000);
       ArrayList<Options> options = mkService.selectOptionsSet(productNo);
+      ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
       Product p = mkService.selectProductSet(productNo);
       r.setProductNo(productNo);
 //      r.setReviewScore();
-   
+      System.out.println(qna);
       
       
       
@@ -285,13 +298,8 @@ public class MarketController {
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
       int reviewCount = mkService.selectReviewCount(productNo);
       
-      
       int starAvg = mkService.reviewAvg(productNo);
       
-//      
-//     System.out.println(result);
-//	System.out.println(mainImage);
-//	System.out.println(imglist);
       
       if(mainImage != null) {
     	  model.addAttribute("mainImage", mainImage);
@@ -308,8 +316,10 @@ public class MarketController {
       
       
       model.addAttribute("reviewCount", reviewCount);
-      
       model.addAttribute("tool", tool);
+      model.addAttribute("qna", qna);
+      model.addAttribute("qnaCount", qnaCount);
+      model.addAttribute("pi", pi);
       model.addAttribute("p", p);
       model.addAttribute("options", options);
       return "market_detail";
@@ -317,7 +327,10 @@ public class MarketController {
    
 
    @GetMapping("createqna.ma")
-   	public String createqna() {
+   	public String createqna(HttpSession session, Product p, Model model) {
+	   Users users = (Users)session.getAttribute("loginUser");
+	   System.out.println(p);
+	   model.addAttribute("productNo", p.getProductNo());
 	   return "createQnA";
    }
    
@@ -533,7 +546,6 @@ public class MarketController {
 
       
 //      System.out.println(pNo);
-      System.out.println(c.getProductNo());
       int result = mkService.insertCart(c);
       
       response.setContentType("application/json; charset=utf-8");
@@ -742,6 +754,33 @@ public class MarketController {
 	   
 	   
    }
+   
+   
+   @PostMapping("insertQna.ma")
+   public String insertQna(QA qna,HttpSession session, @RequestParam ("productNo") int productNo, Model model) {
+	   Users users = (Users)session.getAttribute("loginUser");
+	   qna.setQnaContent(qna.getQnaContent());
+	   qna.setUsersNo(users.getUsersNo());
+	   qna.setQnaTitle(qna.getQnaTitle());
+	   qna.setNickName(users.getNickName());
+	   qna.setQnaCategory(qna.getQnaCategory());
+	   int result = mkService.insertQna(qna);
+	   
+	   System.out.println(qna);
+	   
+	   if(result > 0) {
+		   model.addAttribute("qna", qna);
+		   model.addAttribute("productNo", productNo);
+		   
+	   }
+	   
+	   return "redirect:market_detail.ma";
+   }
+   
+   
+   
+   
+   
    
    @RequestMapping("insertPay.ma")
    @ResponseBody

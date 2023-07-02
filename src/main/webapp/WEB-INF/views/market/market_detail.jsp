@@ -855,7 +855,7 @@ p b {
 			<li>상세정보</li>
 			<li>후기 (${reviewCount})</li>
 			<li>배송 및 환불</li>
-			<li>문의</li>
+			<li>문의(${qnaCount})</li>
 		</ul>
 	</div>
 	<br>
@@ -1022,37 +1022,73 @@ p b {
 	                    <div id="ajax-goods-goodsqa-list">
 	                    
 	              	<ul class="goods_accordion_qna">
-              	
-        <!--  반복 될 부분 -->      	
+              	${q}
+        <!--  반복 될 부분 -->  
+        <c:forEach items="${qna}" var="qna">
              <li class="accordion_q_li js_data_row" >
                 <div class="accordion_q_tit1"> 
                    
                     <div class="qna">
-                        상품문의 입니다.
+                       <span style="color:#4485d7;">${qna.qnaNo} </span>
+                      |&nbsp [${q.qnaCategory}]
+                       ${qna.qnaTitle}
                     </div>
-                        <span class="writer" style="margin-right: 60px">조단</span>
-                        <span class="rv_cont_date" style="margin-right: 60px">2023.06.29</span>
-                        <span class="qna_result" style="float: right;">답변완료</span>
+                        <span class="writer" style="margin-right: 60px">${qna.nickName}</span>
+                        <span class="rv_cont_date" style="margin-right: 60px">${qna.qnaDate}</span>
+                        <span class="qna_result" style="float: right;">
+	                        <c:if test="${qna.answerContent ne null}"><span style="color: red;">답변대기중</span></c:if>
+	                       <c:if test="${qna.answerContent eq null}"><span style="color: green;">답변 완료</span></c:if>
+                       </span>
                     
                 
                 </div>
                 <div class="js_detail accordion_q_cont"></div>
-            </li>
+            </li>        
+        </c:forEach>    	
             <!-- 여기 까지 반복 -->
             
 			</ul>
 				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
 <%-- 					<c:if test="${ loginUser != null}"> --%>
-					    <div class="review_btn_wr"><a href="createqna.ma">
+					    <div class="review_btn_wr">
+					    <a href="createqna.ma?productNo=${p.productNo}">
 					    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
 					    </div>
 <%-- 				    </c:if> --%>
 				</div>
-								<div class="pagination" style="display: block">
-								<ul>
-									<li class="on">
-									<span>1</span>
+<!-- 								<div class="pagination" style="display: block"> -->
+<!-- 								<ul> -->
+<!-- 									<li class="on"> -->
+<!-- 									<span>1</span> -->
+<!-- 									</li> -->
+<!-- 								</ul> -->
+								<ul class="pageCustomer pagination justify-content-center">
+								    <c:if test="${ pi.currentPage > 1 }">
+								    <li class="page-item">
+								    	<c:url var="goBack" value="${ loc }">
+											<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+										</c:url>
+										<a class="page-link" href="${ goBack }" aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>	
 									</li>
+									</c:if>
+									<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+									   	<c:url var="goNum" value="${ loc }">
+											<c:param name="page" value="${ p }"></c:param>
+										</c:url>
+									  	<li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
+									</c:forEach>
+									<c:if test="${ pi.currentPage < pi.maxPage }">
+									<li class="page-item">
+										<c:url var="goNext" value="${ loc }">
+											<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+										</c:url>
+										<a class="page-link" href="${ goNext }" aria-label="Next">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
+									</c:if>
 								</ul>
 							</div>
 						</div>

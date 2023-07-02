@@ -8,9 +8,7 @@ import java.util.Properties;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
-import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -24,6 +22,7 @@ import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
 //import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
@@ -338,6 +337,21 @@ public class MarketDAO {
 
 	public void updatePointTable(SqlSessionTemplate sqlSession, Point p) {
 		sqlSession.insert("marketMapper.updatePointTable", p);		
+	}
+
+
+	public int insertQna(SqlSessionTemplate sqlSession, QA qna) {
+		return sqlSession.insert("marketMapper.insertQna", qna);
+	}
+
+	public ArrayList<QA> selectQnaList(SqlSessionTemplate sqlSession, PageInfo pi, int productNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("marketMapper.selectQnaList", productNo, rowBounds);
+	}
+
+	public int selectQnaCount(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectQnaCount", productNo);
 	}
 
 

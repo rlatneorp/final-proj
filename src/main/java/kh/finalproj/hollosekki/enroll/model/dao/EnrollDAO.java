@@ -180,6 +180,10 @@ public class EnrollDAO {
 		return (ArrayList)sqlSession.selectList("enrollMapper.userReplyList", nickName);
 	}
 
+	public void insertPoint(SqlSessionTemplate sqlSession, Users u) {
+		sqlSession.insert("enrollMapper.insertPoint", u);
+	}
+
 
 
 

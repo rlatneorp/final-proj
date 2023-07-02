@@ -84,6 +84,8 @@ public interface EnrollService {
 
 	ArrayList<Review> userReplyList(String nickName);
 
+	void insertPoint(Users u);
+
 
 
 

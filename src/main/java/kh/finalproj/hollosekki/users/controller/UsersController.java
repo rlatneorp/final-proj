@@ -761,9 +761,6 @@ public class UsersController {
 			currentPage = 1;
 		}
 		
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-		
 		Properties prop = new Properties();
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		String userNo = String.valueOf(usersNo);
@@ -800,7 +797,6 @@ public class UsersController {
 		model.addAttribute("end", end);
 		
 		model.addAttribute("pi", pi);
-		System.out.println("ps : " + periodSelec);
 		model.addAttribute("orderList", periodSelec);
 		
 		return "myPage_MyOrder";
@@ -808,12 +804,13 @@ public class UsersController {
 	}
 	
 	@GetMapping("searchWord.me")
-	public String searchWord(String start, String end, String word, Model model,  @RequestParam(value="page", required=false) Integer currentPage) {
+	public String searchWord(@RequestParam(value = "start", required = false) String start,
+		    @RequestParam(value = "end", required = false) String end, @RequestParam(value="word", required= false) String word, Model model,  
+		    @RequestParam(value="page", required=false) Integer currentPage) {
 		
 		if(currentPage == null) {
 			currentPage = 1;
 		}
-		System.out.println("word : " + word);
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		String userNo = String.valueOf(usersNo);
 		
@@ -825,10 +822,9 @@ public class UsersController {
 		int listCount = 0; PageInfo pi = null; ArrayList<Map<String, Object>> orderSearchList = null;
 		if(start == null) { //전체 조회 
 			listCount = mkService.orderSearchCount(prop); //단어 있는 것 중, 전체 조회 
-			System.out.println("lc : " + listCount);
 			pi = Pagination.getPageInfo(currentPage, listCount, 5);
 			orderSearchList = mkService.orderSearch(prop, pi); //단어 있는 것 중 페이징처리하여 전체 조회
-			System.out.println("orderSearchList" + orderSearchList);
+			model.addAttribute("pi", pi);
 		} else { //기간이 들어오면,
 			prop.setProperty("start", start);
 			prop.setProperty("end", end);
@@ -836,6 +832,7 @@ public class UsersController {
 			pi = Pagination.getPageInfo(currentPage, listCount, 5);
 			orderSearchList = mkService.orderPeriodSearchList(prop, pi);
 			
+			model.addAttribute("pi", pi);
 			model.addAttribute("start", start);
 			model.addAttribute("end", end);
 		}
@@ -864,7 +861,7 @@ public class UsersController {
 		}
 		
 		
-		model.addAttribute("pi", pi);
+		model.addAttribute("word", word);
 		model.addAttribute("orderList", orderList);
 		
 		return "myPage_MyOrder";

@@ -2,16 +2,13 @@ package kh.finalproj.hollosekki.market.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -26,6 +23,7 @@ import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
 //import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
@@ -316,6 +314,19 @@ public class MarketService {
 	public void updatePointTable(Point p) {
 		mkDAO.updatePointTable(sqlSession, p);		
 	}
+
+	public int insertQna(QA qna) {
+		return mkDAO.insertQna(sqlSession, qna);
+	}
+
+	public ArrayList<QA> selectQnaList(PageInfo pi, int productNo) {
+		return mkDAO.selectQnaList(sqlSession, pi, productNo);
+	}
+
+	public int selectQnaCount(int productNo) {
+		return mkDAO.selectQnaCount(sqlSession, productNo);
+	}
+
 
 
 	

@@ -96,6 +96,10 @@
 							</td>
 						</tr>
 						<tr>
+							<td class="detail">수량</td>
+							<td>${orders.orderCount }개</td>
+						</tr>
+						<tr>
 							<td class="detail">총 결제금액</td>
 							<td><b><fmt:formatNumber type="number" maxFractionDigits="3" value="${orders.totalPrice }"/>원</b></td>
 						</tr>

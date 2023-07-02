@@ -495,6 +495,7 @@
 		LEFT JOIN menu m ON o.product_no = m.product_no
 		LEFT JOIN tool t ON o.product_no = t.product_no
 		WHERE o.users_no = #{usersNo} AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
+		ORDER BY ORDER_NO DESC
    </select>
    
    <select id="orderPeriodSearchCount" resultType="_int">
@@ -524,6 +525,7 @@
 			  AND (f.food_name LIKE '%${word}%' OR i.ingredient_name LIKE '%${word}%' OR m.menu_name LIKE '%${word}%' OR t.tool_name LIKE '%${word}%')
 			  AND TRUNC(o.order_date) >= TO_DATE(#{start}, 'YYYY-MM-DD')
 			  AND TRUNC(o.order_date) <= TO_DATE(#{end}, 'YYYY-MM-DD')
+			ORDER BY ORDER_NO DESC
    		]]>
    </select>
    

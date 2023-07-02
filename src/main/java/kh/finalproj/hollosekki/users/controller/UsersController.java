@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -284,14 +286,16 @@ public class UsersController {
 			currentPage = page;
 		}
 
+		HashMap<String, Object> listMap = new HashMap<String, Object>();
+		listMap.put("usersNo", usersNo);
+		
 		int selectType = 0; // 최신/오래된/조회/스크랩/좋아요
 		if (searchType != null) {
 			selectType = searchType;
+			listMap.put("selectType", selectType);
 		}
 		
 		String selectTitle = null;
-		HashMap<String, Object> listMap = new HashMap<String, Object>();
-		listMap.put("usersNo", usersNo);
 		if (searchTitle != null) {
 			selectTitle = searchTitle;
 			listMap.put("selectTitle", selectTitle);
@@ -315,7 +319,8 @@ public class UsersController {
 
 		return "myPage_MyRecipe";
 	}
-
+	
+	// 스크랩 조회
 	@RequestMapping("myPage_MyBookMark.me")
 	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "searchType", required = false) Integer searchType,
@@ -327,14 +332,16 @@ public class UsersController {
 			currentPage = page;
 		}
 
+		HashMap<String, Object> listMap = new HashMap<String, Object>();
+		listMap.put("usersNo", usersNo);
+		
 		int selectType = 0; // 최신/오래된/레시피/식단
 		if (searchType != null) {
 			selectType = searchType;
+			listMap.put("selectType", selectType);
 		}
 		
 		String selectTitle = null;
-		HashMap<String, Object> listMap = new HashMap<String, Object>();
-		listMap.put("usersNo", usersNo);
 		if (searchTitle != null) {
 			selectTitle = searchTitle;
 			listMap.put("selectTitle", selectTitle);
@@ -358,79 +365,124 @@ public class UsersController {
 
 		return "myPage_MyBookMark";
 	}
-
+	
+	// 좋아요 조회
+//	@RequestMapping("myPage_MyFavorite.me")
+//	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page,
+//			@RequestParam(value = "searchType", required = false) Integer searchType,
+//			@RequestParam(value = "searchTitle", required = false) String searchTitle) {
+//		int currentPage = 1;
+//		if (page != null) {
+//			currentPage = page;
+//		}
+//
+//		int selectType = 0; // 전체/레시피/식단/식품/식재료/상품
+//		if (searchType != null) {
+//			selectType = searchType;
+//		}
+//		
+//		String selectTitle = null;
+//		if (searchTitle != null) {
+//			selectTitle = searchTitle;
+//		}
+//
+//		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
+//		// 좋아요 리스트 개수...
+//		int product = uService.getFoodListCount(usersNo);
+//		int recipe = uService.getRecipeListCount(usersNo);
+//		int ingredient = uService.getingredientListCount(usersNo);
+//
+//		int listCount = product + recipe + ingredient;
+//		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+//
+//		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+//
+//		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, selectType, selectTitle, pi); // 식단,
+//																													// 식품,
+//																													// 상품도구
+//		ArrayList<HashMap<String, Object>> rList = uService.myRecipeLikeList(usersNo, selectTitle, pi); // 레시피
+//		ArrayList<HashMap<String, Object>> pList = uService.myProductLikeList(usersNo, selectTitle, pi); // 식재료
+//
+//		if (searchType == null || selectType == 0) {
+//			list.addAll(fList);
+//			list.addAll(rList);
+//			list.addAll(pList);
+//
+//			model.addAttribute("list", list);
+//			model.addAttribute("pi", pi);
+//			model.addAttribute("searchType", searchType);
+//			model.addAttribute("searchTitle", searchTitle);
+//		} else if (selectType == 1) {
+//			model.addAttribute("list", rList);
+//			model.addAttribute("pi", pi);
+//			model.addAttribute("searchType", searchType);
+//			model.addAttribute("searchTitle", searchTitle);
+//		} else if (selectType == 2) {
+//			model.addAttribute("list", fList);
+//			model.addAttribute("pi", pi);
+//			model.addAttribute("searchType", searchType);
+//			model.addAttribute("searchTitle", searchTitle);
+//		} else if (selectType == 3) {
+//			model.addAttribute("list", fList);
+//			model.addAttribute("pi", pi);
+//			model.addAttribute("searchType", searchType);
+//			model.addAttribute("searchTitle", searchTitle);
+//		} else if (selectType == 4) {
+//			model.addAttribute("list", pList);
+//			model.addAttribute("pi", pi);
+//			model.addAttribute("searchType", searchType);
+//			model.addAttribute("searchTitle", searchTitle);
+//		} else if (selectType == 5) {
+//			model.addAttribute("list", fList);
+//			model.addAttribute("pi", pi);
+//			model.addAttribute("searchType", searchType);
+//			model.addAttribute("searchTitle", searchTitle);
+//		}
+//		System.out.println(list);
+//		return "myPage_MyFavorite";
+//	}
+	
 	@RequestMapping("myPage_MyFavorite.me")
 	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "searchType", required = false) Integer searchType,
-			@RequestParam(value = "searchTitle", required = false) String searchTitle) {
+									@RequestParam(value = "searchType", required = false) Integer searchType,
+									@RequestParam(value = "searchTitle", required = false) String searchTitle) {
+		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
 		}
-
+		
+		HashMap<String, Object> listMap = new HashMap<String, Object>();
+		listMap.put("usersNo", usersNo);
+		
 		int selectType = 0; // 전체/레시피/식단/식품/식재료/상품
 		if (searchType != null) {
 			selectType = searchType;
+			listMap.put("selectType", selectType);
 		}
 		
 		String selectTitle = null;
 		if (searchTitle != null) {
 			selectTitle = searchTitle;
+			listMap.put("selectTitle", selectTitle);
 		}
-
-		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
+		
 		// 좋아요 리스트 개수...
-		int product = uService.getFoodListCount(usersNo);
-		int recipe = uService.getRecipeListCount(usersNo);
-		int ingredient = uService.getingredientListCount(usersNo);
-
-		int listCount = product + recipe + ingredient;
+		int listCount = uService.getLikeListCount(listMap);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-
-		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-
-		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, selectType, selectTitle, pi); // 식단,
-																													// 식품,
-																													// 상품도구
-		ArrayList<HashMap<String, Object>> rList = uService.myRecipeLikeList(usersNo, selectTitle, pi); // 레시피
-		ArrayList<HashMap<String, Object>> pList = uService.myProductLikeList(usersNo, selectTitle, pi); // 식재료
-
-		if (searchType == null || selectType == 0) {
-			list.addAll(fList);
-			list.addAll(rList);
-			list.addAll(pList);
-
-			model.addAttribute("list", list);
-			model.addAttribute("pi", pi);
-			model.addAttribute("searchType", searchType);
-			model.addAttribute("searchTitle", searchTitle);
-		} else if (selectType == 1) {
-			model.addAttribute("list", rList);
-			model.addAttribute("pi", pi);
-			model.addAttribute("searchType", searchType);
-			model.addAttribute("searchTitle", searchTitle);
-		} else if (selectType == 2) {
-			model.addAttribute("list", fList);
-			model.addAttribute("pi", pi);
-			model.addAttribute("searchType", searchType);
-			model.addAttribute("searchTitle", searchTitle);
-		} else if (selectType == 3) {
-			model.addAttribute("list", fList);
-			model.addAttribute("pi", pi);
-			model.addAttribute("searchType", searchType);
-			model.addAttribute("searchTitle", searchTitle);
-		} else if (selectType == 4) {
-			model.addAttribute("list", pList);
-			model.addAttribute("pi", pi);
-			model.addAttribute("searchType", searchType);
-			model.addAttribute("searchTitle", searchTitle);
-		} else if (selectType == 5) {
-			model.addAttribute("list", fList);
-			model.addAttribute("pi", pi);
-			model.addAttribute("searchType", searchType);
-			model.addAttribute("searchTitle", searchTitle);
-		}
-		System.out.println(list);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("selectType", selectType);
+		map.put("selectTitle", selectTitle);
+		
+		ArrayList<HashMap<String, Object>> list = uService.myLikeList(map, pi);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchTitle", searchTitle);
+			
 		return "myPage_MyFavorite";
 	}
 
@@ -643,11 +695,87 @@ public class UsersController {
 
 		return result > 0 ? "yes" : "no";
 	}
-
+	
+	// 포인트 내역 조회
 	@RequestMapping("myPage_Point.me")
-	public String myPage_Point() {
-		return "myPage_Point";
+	public String myPage_Point(Model model, @RequestParam(value = "page", required = false) Integer page) {
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = uService.getPointCount(usersNo);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		ArrayList<HashMap<String, Object>> list = uService.selectPoint(usersNo, pi);
+		
+		// 세션에서 포인트 소멸 확인 여부를 가져옴
+	    boolean pointExpiryChecked = (boolean) model.getAttribute("pointExpiryChecked");
+
+	    if (pointExpiryChecked) {
+	        // 이미 포인트 소멸 확인한 경우, 처리할 필요가 없으므로 바로 반환
+	    	model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+			
+			return "myPage_Point";
+	    } else {
+		    // 현재 날짜 구하기
+		    LocalDate currentDate = LocalDate.now();
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		    String formattedCurrentDate = currentDate.format(formatter);
+	
+		    // 포인트 소멸 처리 로직 작성
+//		    for (HashMap<String, Object> p : list) {
+//		    	Integer type = (Integer) p.get("POINT_TYPE");
+//		    	if(type == null) {  // 출첵
+//		    		String checked = (String) p.get("CHECKED");
+//		    		if(checked.equals(formattedCurrentDate)) {
+//		    			int users_No = (int) p.get("USERS_NO");
+//		    			int point = ((Users)model.getAttribute("loginUser")).getPoint();
+//		    			
+//		    		}
+//		    	} else {
+//			        String expirationDate = (String) p.get("MODIFY_DATE");
+//			        if (expirationDate.equals(formattedCurrentDate)) {
+//			            // 포인트 소멸 처리 코드
+//			        	int users_No = (int) p.get("USERS_NO");
+//			            int point = (int) p.get("POINT_CHANGE");
+//			            // 포인트 소멸 서비스 메소드 호출
+//			            uService.deletePoint(pointNo, deletedPoint);
+//			        }
+//		    	}
+//		    }
+	
+		    // 포인트 소멸 확인 여부를 세션에 저장
+		    model.addAttribute("pointExpiryChecked", true);
+			
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+			
+			return "myPage_Point";
+	    }
 	}
+	
+//	@RequestMapping("myPage_deletePoint.me")
+//	@ResponseBody
+//	public String myPage_deletePoint(Model model, @RequestParam("usersNo") int usersNo, @RequestParam("dePoint") int dePoint) {
+//		int point = ((Users)model.getAttribute("loginUser")).getPoint();
+//		
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("usersNo", usersNo);
+//		map.put("point", point);
+//		map.put("dePoint", dePoint);
+//		
+//		int result = uService.deletePoint(map);
+//		
+//		if(result > 0) {
+//			return "yes";
+//		} else {
+//			return "no";
+//		}
+//	}
 
 	@RequestMapping("myPage_edit.me")
 	public String myPage_edit() {

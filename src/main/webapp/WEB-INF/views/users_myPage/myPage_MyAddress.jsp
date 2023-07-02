@@ -169,7 +169,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="330">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										배송지가 없습니다.
+										등록한 배송지가 없습니다.
 									</td>
 								</tr>
 							</c:if>

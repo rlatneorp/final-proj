@@ -151,7 +151,7 @@ th:first-child, td:first-child {
 									</tr>
 								</c:if>
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
-									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/menuDetail.mn?mNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-bookMark-no="${l.BOOKMARK_NO}">
 										<td><img src="${ contextPath }/resources/uploadFiles/${l.MENU_IMAGE}" style="width: 100%; height: 100%"/></td>
 										<td>식단</td>
 										<td>${ l.MENU_NAME }</td>
@@ -186,6 +186,9 @@ th:first-child, td:first-child {
 									</a>
 								</c:if>
 							</li>
+							<c:if test="${ pi.endPage == 0 }">
+								<li class="page-item"><a class="page-link">1</a></li>
+							</c:if>
 							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 								<c:url var="goNum" value="${ loc }">
 									<c:param name="page" value="${ p }"></c:param>

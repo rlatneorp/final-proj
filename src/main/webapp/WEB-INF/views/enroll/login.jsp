@@ -99,11 +99,11 @@
 								<div><button class="button">로그인</button></div>
 	
 								<div class="find">
-									<div class="find2" onclick="location.href='${contextPath}/findId.en'">ID 찾기</div>
-									<div class="find2" onclick="location.href='${contextPath}/findPwd.en'">비밀번호 찾기</div>
+									<div class="find2" onclick="location.href='findId.en'">ID 찾기</div>
+									<div class="find2" onclick="location.href='findPwd.en'">비밀번호 찾기</div>
 								</div>
 								<div class="line"></div>
-								<div class="logincheck" onclick="location.href='${contextPath}/join.en'"> 아직 홀로세끼 계정이 없으신가요? SIGN IN</div>
+								<div class="logincheck" onclick="location.href='join.en'"> 아직 홀로세끼 계정이 없으신가요? SIGN IN</div>
 							</form>
 							
 							<div class="socialLogin-btn">

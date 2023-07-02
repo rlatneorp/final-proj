@@ -95,50 +95,62 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.myBookMarkList", map, rowBounds);
 	}
 	
-	public int getFoodListCount(SqlSessionTemplate sqlSession, int usersNo) {
-		return sqlSession.selectOne("usersMapper.getFoodListCount", usersNo);
-	}
+//	public int getFoodListCount(SqlSessionTemplate sqlSession, int usersNo) {
+//		return sqlSession.selectOne("usersMapper.getFoodListCount", usersNo);
+//	}
+//	
+//	public int getRecipeListCount(SqlSessionTemplate sqlSession, int usersNo) {
+//		return sqlSession.selectOne("usersMapper.getRecipeListCount", usersNo);
+//	}
+//	
+//	public int getingredientListCount(SqlSessionTemplate sqlSession, int usersNo) {
+//		return sqlSession.selectOne("usersMapper.getingredientListCount", usersNo);
+//	}
 	
-	public int getRecipeListCount(SqlSessionTemplate sqlSession, int usersNo) {
-		return sqlSession.selectOne("usersMapper.getRecipeListCount", usersNo);
+	public int getLikeListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> listMap) {
+		return sqlSession.selectOne("usersMapper.getLikeListCount", listMap);
 	}
+
+//	public ArrayList<HashMap<String, Object>> myFoodLikeList(SqlSessionTemplate sqlSession, int usersNo, int selectType, String selectTitle, PageInfo pi) {
+//		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+//		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+//		
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("usersNo", usersNo);
+//		map.put("selectType", selectType);
+//		map.put("selectTitle", selectTitle);
+//		
+//		return (ArrayList)sqlSession.selectList("usersMapper.myFoodLikeList", map, rowBounds);
+//	}
+//
+//	public ArrayList<HashMap<String, Object>> myRecipeLikeList(SqlSessionTemplate sqlSession, int usersNo, String selectTitle, PageInfo pi) {
+//		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+//		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+//		
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("usersNo", usersNo);
+//		map.put("selectTitle", selectTitle);
+//		
+//		return (ArrayList)sqlSession.selectList("usersMapper.myRecipeLikeList", map, rowBounds);
+//	}
+//
+//	public ArrayList<HashMap<String, Object>> myProductLikeList(SqlSessionTemplate sqlSession, int usersNo, String selectTitle, PageInfo pi) {
+//		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+//		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+//		
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("usersNo", usersNo);
+//		map.put("selectTitle", selectTitle);
+//		
+//		return (ArrayList)sqlSession.selectList("usersMapper.myProductLikeList", map, rowBounds);
+//	}
 	
-	public int getingredientListCount(SqlSessionTemplate sqlSession, int usersNo) {
-		return sqlSession.selectOne("usersMapper.getingredientListCount", usersNo);
-	}
-
-	public ArrayList<HashMap<String, Object>> myFoodLikeList(SqlSessionTemplate sqlSession, int usersNo, int selectType, String selectTitle, PageInfo pi) {
+	public ArrayList<HashMap<String, Object>> myLikeList(SqlSessionTemplate sqlSession, HashMap<String, Object> map,
+			PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("usersNo", usersNo);
-		map.put("selectType", selectType);
-		map.put("selectTitle", selectTitle);
-		
-		return (ArrayList)sqlSession.selectList("usersMapper.myFoodLikeList", map, rowBounds);
-	}
-
-	public ArrayList<HashMap<String, Object>> myRecipeLikeList(SqlSessionTemplate sqlSession, int usersNo, String selectTitle, PageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("usersNo", usersNo);
-		map.put("selectTitle", selectTitle);
-		
-		return (ArrayList)sqlSession.selectList("usersMapper.myRecipeLikeList", map, rowBounds);
-	}
-
-	public ArrayList<HashMap<String, Object>> myProductLikeList(SqlSessionTemplate sqlSession, int usersNo, String selectTitle, PageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("usersNo", usersNo);
-		map.put("selectTitle", selectTitle);
-		
-		return (ArrayList)sqlSession.selectList("usersMapper.myProductLikeList", map, rowBounds);
+		return (ArrayList)sqlSession.selectList("usersMapper.myLikeList", map, rowBounds);
 	}
 
 	public int deleteBookMark(SqlSessionTemplate sqlSession, int bookmarkNo) {
@@ -193,11 +205,23 @@ public class UsersDAO {
 		
 		return (ArrayList)sqlSession.selectList("usersMapper.orderSearch", prop, rowBounds);
 	}
+
+	public int getPointCount(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("usersMapper.getPointCount", usersNo);
+
+	}
 	
+	public ArrayList<HashMap<String, Object>> selectPoint(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.selectPoint", usersNo, rowBounds);
+	}
+
+	public int deletePoint(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.insert("usersMapper.deletePoint", map);
+	}
+
 	
-
-
-
-
 
 }

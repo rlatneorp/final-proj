@@ -49,17 +49,21 @@ public interface UsersService {
 	
 	ArrayList<HashMap<String, Object>> myBookMarkList(HashMap<String, Object> map, PageInfo pi);
 
-	int getFoodListCount(int usersNo);
+//	int getFoodListCount(int usersNo);
+//	
+//	int getRecipeListCount(int usersNo);
+//	
+//	int getingredientListCount(int usersNo);
+
+	int getLikeListCount(HashMap<String, Object> listMap);
 	
-	int getRecipeListCount(int usersNo);
+//	ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, int selectType, String selectTitle, PageInfo pi);
+//
+//	ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, String selectTitle, PageInfo pi);
+//
+//	ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, String selectTitle, PageInfo pi);
 	
-	int getingredientListCount(int usersNo);
-
-	ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, int selectType, String selectTitle, PageInfo pi);
-
-	ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, String selectTitle, PageInfo pi);
-
-	ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, String selectTitle, PageInfo pi);
+	ArrayList<HashMap<String, Object>> myLikeList(HashMap<String, Object> map, PageInfo pi);
 
 	int deleteBookMark(int bookmarkNo);
 	
@@ -85,9 +89,14 @@ public interface UsersService {
 	int orderSearchCount(Properties prop);
 	//검색어 일치하는 리스트 조회 
 	ArrayList<Orders> orderSearch(Properties prop, PageInfo pi);
-
-
-
-
 	
+	int getPointCount(int usersNo);
+	
+	// 포인트 내역 조회
+	ArrayList<HashMap<String, Object>> selectPoint(int usersNo, PageInfo pi);
+
+	int deletePoint(HashMap<String, Object> map);
+
+
+
 }

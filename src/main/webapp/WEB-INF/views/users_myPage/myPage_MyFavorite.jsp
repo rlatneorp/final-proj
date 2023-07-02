@@ -146,7 +146,7 @@ th:first-child, td:first-child {
 							<c:forEach items="${ list }" var="l">
 								<c:if test="${ l.NUMBER_TYPE == 1 }">
 									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-like-no="${ l.LIKE_NO }">
-										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
+										<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
 										<td>${ l.NICKNAME }</td>
@@ -157,7 +157,7 @@ th:first-child, td:first-child {
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
 									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 2 }">
 										<tr data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>식품 - 밀키트</td>
 											<td>${ l.FOOD_NAME }</td>
 											<td>-</td>
@@ -167,7 +167,7 @@ th:first-child, td:first-child {
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 1 }">
 										<tr data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>식품 - 식재료</td>
 											<td>${ l.FOOD_NAME }</td>
 											<td>-</td>
@@ -176,8 +176,8 @@ th:first-child, td:first-child {
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 2 }">
-										<tr data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/menuDetail.mn?mNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>식단</td>
 											<td>${ l.MENU_NAME }</td>
 											<td>${ l.NAME }</td>
@@ -187,7 +187,7 @@ th:first-child, td:first-child {
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 3 }">
 										<tr data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.FOOD_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>식재료</td>
 											<td>${ l.INGREDIENT_NAME }</td>
 											<td>-</td>
@@ -197,7 +197,7 @@ th:first-child, td:first-child {
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 4 }">
 										<tr data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.PRODUCT_IMAGE}" style="width: 100%; height: 100%"/></td>
+											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>상품</td>
 											<td>${ l.TOOL_NAME }</td>
 											<td>-</td>
@@ -231,6 +231,9 @@ th:first-child, td:first-child {
 									</a>
 								</c:if>
 							</li>
+							<c:if test="${ pi.endPage == 0 }">
+								<li class="page-item"><a class="page-link">1</a></li>
+							</c:if>
 							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 								<c:url var="goNum" value="${ loc }">
 									<c:param name="page" value="${ p }"></c:param>
@@ -372,17 +375,17 @@ th:first-child, td:first-child {
 	        const value = this.value; // 선택된 값 출력
 
 	        // 선택된 값에 따라 URL을 생성하여 페이지 이동
-	        if(value == 0){
+	        if(value == 0){ // 전체
 	        	location.href = "${contextPath}/myPage_MyFavorite.me?searchType=0";
-	        } else if (value == 1) { // 전체
+	        } else if (value == 1) { // 레시피
 	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=1";
-	        } else if (value == 2) { // 레시피
+	        } else if (value == 2) { // 식단
 	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=2";
-	        } else if (value == 3) { // 식단
+	        } else if (value == 3) { // 식품
 	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=3";
-	        } else if (value == 4) { // 식품
+	        } else if (value == 4) { // 식재료
 	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=4";
-	        } else if (value == 5) { // 식재료
+	        } else if (value == 5) { // 상품
 	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=5";
 	        }
 	    });

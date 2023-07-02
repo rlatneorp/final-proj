@@ -515,7 +515,7 @@
 				url: 'point.ma',
 				success: function(info){
 					let myP = document.querySelector('#myP');
-					myP.innerHTML = info.point + 'P';
+					myP.innerHTML = info.point + ' P';
 				}
 				
 			});

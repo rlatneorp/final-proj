@@ -113,34 +113,44 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.myBookMarkList(sqlSession, map, pi);
 	}
 	
-	@Override
-	public int getFoodListCount(int usersNo) {
-		return uDAO.getFoodListCount(sqlSession, usersNo);
-	}
+//	@Override
+//	public int getFoodListCount(int usersNo) {
+//		return uDAO.getFoodListCount(sqlSession, usersNo);
+//	}
+//	
+//	@Override
+//	public int getRecipeListCount(int usersNo) {
+//		return uDAO.getRecipeListCount(sqlSession, usersNo);
+//	}
+//	
+//	@Override
+//	public int getingredientListCount(int usersNo) {
+//		return uDAO.getingredientListCount(sqlSession, usersNo);
+//	}
 	
 	@Override
-	public int getRecipeListCount(int usersNo) {
-		return uDAO.getRecipeListCount(sqlSession, usersNo);
+	public int getLikeListCount(HashMap<String, Object> listMap) {
+		return uDAO.getLikeListCount(sqlSession, listMap);
 	}
 	
-	@Override
-	public int getingredientListCount(int usersNo) {
-		return uDAO.getingredientListCount(sqlSession, usersNo);
-	}
+//	@Override
+//	public ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, int selectType, String selectTitle, PageInfo pi) {
+//		return uDAO.myFoodLikeList(sqlSession, usersNo, selectType, selectTitle, pi);
+//	}
+//	
+//	@Override
+//	public ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, String selectTitle, PageInfo pi) {
+//		return uDAO.myRecipeLikeList(sqlSession, usersNo, selectTitle, pi);
+//	}
+//	
+//	@Override
+//	public ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, String selectTitle, PageInfo pi) {
+//		return uDAO.myProductLikeList(sqlSession, usersNo, selectTitle, pi);
+//	}
 	
 	@Override
-	public ArrayList<HashMap<String, Object>> myFoodLikeList(int usersNo, int selectType, String selectTitle, PageInfo pi) {
-		return uDAO.myFoodLikeList(sqlSession, usersNo, selectType, selectTitle, pi);
-	}
-	
-	@Override
-	public ArrayList<HashMap<String, Object>> myRecipeLikeList(int usersNo, String selectTitle, PageInfo pi) {
-		return uDAO.myRecipeLikeList(sqlSession, usersNo, selectTitle, pi);
-	}
-	
-	@Override
-	public ArrayList<HashMap<String, Object>> myProductLikeList(int usersNo, String selectTitle, PageInfo pi) {
-		return uDAO.myProductLikeList(sqlSession, usersNo, selectTitle, pi);
+	public ArrayList<HashMap<String, Object>> myLikeList(HashMap<String, Object> map, PageInfo pi) {
+		return uDAO.myLikeList(sqlSession, map, pi);
 	}
 	
 	@Override
@@ -193,5 +203,20 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public ArrayList<Orders> orderSearch(Properties prop, PageInfo pi) {
 		return uDAO.orderSearch(sqlSession, prop, pi);
+	}
+	
+	@Override
+	public int getPointCount(int usersNo) {
+		return uDAO.getPointCount(sqlSession, usersNo);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPoint(int usersNo, PageInfo pi) {
+		return uDAO.selectPoint(sqlSession, usersNo, pi);
+	}
+	
+	@Override
+	public int deletePoint(HashMap<String, Object> map) {
+		return uDAO.deletePoint(sqlSession, map);
 	}
 }

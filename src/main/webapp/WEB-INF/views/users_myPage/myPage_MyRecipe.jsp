@@ -118,7 +118,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="305">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										레시피가 없습니다.
+										작성한 레시피가 없습니다.
 									</td>
 								</tr>
 							</c:if>
@@ -147,7 +147,7 @@ th:first-child, td:first-child {
 								</c:if>
 								<c:if test="${ pi.currentPage > 1 }">
 									<c:url var="goBack" value="${ loc }">
-										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+										<c:param name="page" value="${ pi.currentPage - 1 }"></c:param>
 										<c:param name="searchType" value="${searchType}"></c:param>
 										<c:param name="searchTitle" value="${searchTitle}"></c:param>
 									</c:url>
@@ -156,6 +156,9 @@ th:first-child, td:first-child {
 									</a>
 								</c:if>
 							</li>
+							<c:if test="${ pi.endPage == 0 }">
+								<li class="page-item"><a class="page-link">1</a></li>
+							</c:if>
 							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 								<c:url var="goNum" value="${ loc }">
 									<c:param name="page" value="${ p }"></c:param>
@@ -172,7 +175,7 @@ th:first-child, td:first-child {
 								</c:if>
 								<c:if test="${ pi.currentPage < pi.maxPage }">
 									<c:url var="goNext" value="${ loc }">
-										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+										<c:param name="page" value="${ pi.currentPage + 1 }"></c:param>
 										<c:param name="searchType" value="${searchType}"></c:param>
 										<c:param name="searchTitle" value="${searchTitle}"></c:param>
 									</c:url>

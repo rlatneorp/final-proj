@@ -248,7 +248,7 @@ if(loginUser != ''){
 		url: 'point.ma',
 		success: function(info){
 			let topP = document.querySelector('#topP');
-			topP.innerHTML = info.point;
+			topP.innerHTML = info.point + ' P';
 		}
 		
 	});

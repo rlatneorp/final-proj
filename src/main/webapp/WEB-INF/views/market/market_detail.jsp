@@ -847,23 +847,15 @@ p b {
 	
 			<div class="reviewWrap1" style="padding: 10px; border-bottom: 1px solid lightgray;">
 					<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
-	<%-- 			<c:if test="${ loginUser != null }"> --%>
+				<c:if test="${ loginUser != null }">
 						<div class="review_btn">
 							<a href="createReview.ma?productNo=${p.productNo}">
 							<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 						</div>
-						
-	<%-- 				</c:if>	 --%>
-<!-- 					<div class="photoList"> -->
-<!-- 						<ul style="padding: 10px;"> -->
-<!-- 							<li ><img src="img" alt="" /></li> -->
-<!-- 							<li><img src="img" alt="" /></li> -->
-<!-- 							<li ><img src="img" alt=""/></li> -->
-<!-- 						</ul> -->
-<!-- 					</div> -->
+				</c:if>	
 
 			<span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span>
-			<span class="review_star_desc" style="font-size: 500;">별점순</span>
+			<span class="review_star_desc" style="font-size: 500;" onclick="highScrore_review.ma">별점순</span>
 			</div>
 		
 			
@@ -878,7 +870,7 @@ p b {
 		<c:forEach items="${ list }" var="r">
 				<div class="textbox" >
 						<div class="nickName" style="font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 400;">${r.reviewWriter}</div>
-						<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar">
+						<span style="font-size: 20px; font-weight: 800; color:#4485d7;"  class="reviewStar">
 							<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
 							<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
 							<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
@@ -886,17 +878,14 @@ p b {
 							<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
 							<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
 						</span>
-						<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
+						<span class="reviewDate" style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
 						
-						
-<%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
-		
 				
 							<div class="reviewPhoto">
 								<ul>
 									<c:forEach items="${imglist}" var="img" >
 										<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
-											<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}"></li>
+											<li><img class="reviewImg" src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}"></li>
 										</c:if>
 									</c:forEach>
 								</ul>
@@ -914,6 +903,8 @@ p b {
 <%-- 							</c:if> --%>
 			</div>
 		</c:forEach>
+		
+		
 			<div class="moreView">더보기</div>
 				
 	<div class="productBox">
@@ -1103,6 +1094,23 @@ p b {
 	
 	window.onload = function(){
 		
+		const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
+		const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
+		const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
+		const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
+	 	const buyBtn = document.getElementById("buyBtn");
+		const result = document.getElementById("productResult");
+		const like = document.querySelector(".like");
+		const productSet = document.querySelector(".productSet");
+		const increase = document.querySelectorAll(".increase");	
+		const reviewStar = document.querySelectorAll(".reviewStar");
+		const total = document.querySelector('.totalPrice');
+		let totalPriceSet = document.querySelectorAll(".totalPriceSet");
+		const productPrice = document.querySelectorAll(".productPrice");
+		const cartCount = document.querySelectorAll(".cartCount");
+		   
+		   
+		
 		$('.accordion_i_tit').click(function(){
 			$('.accordion_i_cont').toggle(400);
 		})
@@ -1113,20 +1121,7 @@ p b {
 			$('.accordion_i_cont3').toggle(400);
 		})
 	
-	   const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
-	   const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
-	   const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
-	   const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
-	   const buyBtn = document.getElementById("buyBtn");
-	   const result = document.getElementById("productResult");
-	   const like = document.querySelector(".like");
-	   const productSet = document.querySelector(".productSet");
-	   const increase = document.querySelectorAll(".increase");	
-	   const reviewStar = document.querySelectorAll(".reviewStar");
-	   const total = document.querySelector('.totalPrice');
-	   let totalPriceSet = document.querySelectorAll(".totalPriceSet");
-	   const productPrice = document.querySelectorAll(".productPrice");
-	   const cartCount = document.querySelectorAll(".cartCount");
+
 			$(document).on("click",".btnbox",function(e){
 				const increBtn = this.childNodes[2]; //증가버튼
 				const decreBtn = this.childNodes[0]; //감소버튼
@@ -1255,9 +1250,8 @@ p b {
 		    });
 	});
 	
-		
 		$(document).ready(function() {
-			
+
 	    $("#cartbtn").click(function() {
 	        var productNo = $("input[name='productNo']").val();
 	        var cartCount = $(".cartCount").val();
@@ -1270,7 +1264,6 @@ p b {
 	        var productOptionValues=[];
 	        var productOption2Values=[];
 	        var usersNoValues=[];
-	        
 	        
 	        var allData ={
 	        		"productNo":productNoValues, 
@@ -1301,10 +1294,8 @@ p b {
 	        	usersNoValues.push($(this).val());
 	        })
 	        
-	        
 	        let count = 0;
 		        for(i=0; i<productNoValues.length; i++){
-		        	console.log(productNoValues[i]);
 			        $.ajax({
 			            url: "insertCart.ma",
 			            async: false,
@@ -1335,6 +1326,27 @@ p b {
 	    })
 		
 		})
+		
+		
+// 		for(let i=0; i<$(".reviewDate").length; i++){
+// 			$.ajax({
+// 				url:"highScrore_review.ma",
+// 				async:false,
+// 				data:{
+// 					"reviewStar":$(".reviewStar")[i].val();,
+// 					"nickName":$(".nickName")[i].val();,
+// 					"reviewDate":$(".reviewDate")[i].val();,
+// 					"reviewImg":$(".reviewImg")[i].val();,
+// 					"reviewContent":$(".reviewContent")[i].val();
+// 				},
+// 				success: data => {
+// 					console.log("성공");
+// 				},
+// 				error: data => {
+// 					console.log("error");
+// 				}
+// 			})
+// 		}		
 	}
 	 </script> 
 </body>

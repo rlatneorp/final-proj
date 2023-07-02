@@ -37,7 +37,7 @@ import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
-import kh.finalproj.hollosekki.market.model.vo.Orders;
+//import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
@@ -250,9 +250,9 @@ public class MarketController {
    }
    
 
-@GetMapping("createqna.ma")
-   public String createqna() {
-      return "createQnA";
+   @GetMapping("createqna.ma")
+   	public String createqna() {
+	   return "createQnA";
    }
    
    @PostMapping("insertReview.ma")
@@ -316,8 +316,6 @@ public class MarketController {
 
    
    
-   
-   
    @GetMapping("createReview.ma")
    public String createReview(HttpSession session, Product p, Model model) {
       Users users = (Users)session.getAttribute("loginUser");
@@ -357,6 +355,8 @@ public class MarketController {
       
       return returnArr; 
    }
+   
+   
    
    
    @GetMapping("kitchenToolMain.ma")
@@ -422,23 +422,6 @@ public class MarketController {
    }
    
    
-
-//   @ResponseBody
-//   @PostMapping("insertCart.ma")
-//   public int insertCart(@RequestBody Cart c /*@RequestParam("productNo")ArrayList<Cart> productNo,
-//                    @RequestParam("cartCount")ArrayList<Cart>cartCount,
-//                    @RequestParam("productOption")ArrayList<Cart>productOption,
-//                    @RequestParam("UserNo")ArrayList<Cart>UserNo*/) {
-
-//      
-//      int result = mkService.insertCart(c);
-//      
-//      System.out.println(c);
-//      
-//      return result;
-//   }
-//   
-   
    @RequestMapping("insertCart.ma")
       public void insertCart(@ModelAttribute Cart c,HttpServletResponse response) {
 
@@ -458,6 +441,19 @@ public class MarketController {
          e.printStackTrace();
       } 
    }
+   
+//   @ResponseBody
+//   @RequestMapping("highScrore_review.ma")
+//   public String highScrore(HttpServletResponse response, @ModelAttribute Review r) {
+//	  int result = mkService.highScrore(r);
+//	   
+//      response.setContentType("application/json; charset=utf-8");
+//      GsonBuilder gb = new GsonBuilder();
+//      Gson gson = gb.create();
+//      gson.toJson(result, response.getWriter());
+//	   return "market_detail";
+//   }
+//   
    
    
 
@@ -592,26 +588,26 @@ public class MarketController {
 	      return imageList;
 	   }
    
-   @RequestMapping("insertPay.ma")
-   @ResponseBody
-   public String insertPay(@ModelAttribute Orders orders) {
-	  
-//	   int stock = mkService.selectStock(orders.getProductNo());
-//	   int remainStock = stock-orders.getOrderCount();
-//	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
-//	   if(remainStock <= -1) {
-//		   return "stStock";
-//	   } else {
-		   int result = mkService.insertPay(orders);
-		   
-//		   return "success";
-//	   }
-		   
-		   if(result >= 1) {
-			   return "success";
-		   } else {
-			   return "fail";
-		   }
-	   
+//   @RequestMapping("insertPay.ma")
+//   @ResponseBody
+//   public String insertPay(@ModelAttribute Orders orders) {
+//	  
+////	   int stock = mkService.selectStock(orders.getProductNo());
+////	   int remainStock = stock-orders.getOrderCount();
+////	   String stStock = String.valueOf(mkService.selectStock(orders.getProductNo()));
+////	   if(remainStock <= -1) {
+////		   return "stStock";
+////	   } else {
+//		   int result = mkService.insertPay(orders);
+//		   
+////		   return "success";
+////	   }
+//		   
+//		   if(result >= 1) {
+//			   return "success";
+//		   } else {
+//			   return "fail";
+//		   }
+//	   
    }
-}
+//}

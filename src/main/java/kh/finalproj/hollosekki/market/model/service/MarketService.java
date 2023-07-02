@@ -266,6 +266,10 @@ public class MarketService {
 		mkDAO.updatePoint(sqlSession, users);
 	}
 
+//	public int highScrore(Review r) {
+//		return mkDAO.highScrore(sqlSession, r);
+//	}
+
 
 
 

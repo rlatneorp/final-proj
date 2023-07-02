@@ -280,6 +280,10 @@ public class MarketDAO {
 		sqlSession.update("marketMapper.updatePoint", users);
 	}
 
+	public int highScrore(SqlSessionTemplate sqlSession, Review r) {
+		return sqlSession.;
+	}
+
 
 
 }

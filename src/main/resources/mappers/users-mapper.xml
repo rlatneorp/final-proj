@@ -472,6 +472,7 @@
 			WHERE TRUNC(ORDER_DATE) >= TO_DATE(#{start}, 'YYYY-MM-DD')
 			  AND TRUNC(ORDER_DATE) <= TO_DATE(#{end}, 'YYYY-MM-DD')
 			  AND USERS_NO = #{usersNo}
+			ORDER BY ORDER_NO DESC
 		]]>
 	</select>
 	

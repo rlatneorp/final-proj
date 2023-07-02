@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.admin.model.dao.AdminDAO;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
+import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
@@ -20,9 +21,11 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Service
@@ -87,6 +90,23 @@ public class AdminService {
 		return aDAO.deleteImage(sqlSession, img);
 	}
 
+	
+//	Sales-매출
+	public int getSalesCount(AdminBasic ab) {
+		return aDAO.getSalesCount(sqlSession, ab);
+	}
+
+	public ArrayList<Sales> selectSalesList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectSalesList(sqlSession, pi, ab);
+	}
+	
+	public int getOrdersCount(AdminBasic ab) {
+		return aDAO.getOrdersCount(sqlSession, ab);
+	}
+	
+	public ArrayList<Orders> selectOrdersList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectOrdersList(sqlSession, pi, ab);
+	}
 
 //	Users-회원
 	public int getUsersCount(AdminBasic ab) {
@@ -315,6 +335,35 @@ public class AdminService {
 	public int updateFAQ(FAQ faq) {
 		return aDAO.updateFAQ(sqlSession, faq);
 	}
+	
+	public int insertFAQ(FAQ faq) {
+		return aDAO.insertFAQ(sqlSession, faq);
+	}
+	
+	
+//	QNA-1:1문의
+	public int getQNACount(AdminBasic ab) {
+		return aDAO.getQNACount(sqlSession, ab);
+	}
+
+	public ArrayList<QNA> selectQNAList(PageInfo pi, AdminBasic ab) {
+		return aDAO.selectQNAList(sqlSession, pi, ab);
+	}
+
+	public QNA selectQNA(Integer qnaNo) {
+		return aDAO.selectQNA(sqlSession, qnaNo);
+	}
+
+	public int updateQNA(QNA qna) {
+		return aDAO.updateQNA(sqlSession, qna);
+	}
+
+
+
+
+
+
+
 
 
 

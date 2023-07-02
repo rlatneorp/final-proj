@@ -27,6 +27,7 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.FAQ;
@@ -38,9 +39,11 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Controller
@@ -247,73 +250,56 @@ public class AdminController {
 		System.out.println(result2);
 		System.out.println(result3);
 		if(result1 + result2 + result3 + resultImg > 0) {
-			model = adminBasic(model, request);
+			model = adminBasic(model, request, null);
 			return "redirect:"+url;
 		}else {
 			throw new AdminException("삭제 실패 (type : "+type);
 		}
 	}
 	
-//	private int deleteSelects(String[] selDeletes, Integer type) {
-//		
-//		HashMap<String, Object> map = new HashMap<String, Object>();
-//		map.put("selDeletes", selDeletes);
-//		map.put("type", type);
-//		int result1 = aService.deleteSelects(map);
-//		int result2 = 0; 
-//		if(type >= 1 && type <= 4) {
-//			if(type == 3) {
-//				String[] igdDeletes = new String[selDeletes.length];
-//				String[] pDeletes = new String[selDeletes.length];
-//				int pCount = 0;
-//				
-//				int resultImg = 0;
-//				
-//				for(int i = 0; i < selDeletes.length; i++) {
-//					String[] deletes = selDeletes[i].split("-");
-//					
-//					igdDeletes[i] = deletes[0];
-//					
-//					if(deletes.length != 1 && !deletes[1].equals("0")) {
-//						pDeletes[pCount] = deletes[1];
-//						pCount++;
-//					}
-//					
-////					데이터 서버 이미지 삭제
-//					ArrayList<Image> iList = selectAllImageList(Integer.parseInt(deletes[0]), 5, 0);
-//					if(!iList.isEmpty()) {
-//						Image img = iList.get(0);
-//						deleteFile(img.getImageRenameName(), request);
-////						DB서버 이미지 삭제
-//						resultImg += aService.deleteImage(img);
-//					}
-//				}
-//			}else {
-//				aService.deletesProduct(selDeletes);
-//			}
-//		}
-//		return result1 + result2;
-//	}
 	
 //	sales-매출 관리
 	@GetMapping("adminSalesManage.ad")
-	public String adminSalesManage() {
-		return "adminSalesManage";
-	}
-	@GetMapping("adminSalesDaily.ad")
-	public String adminSalesDaily() {
-		return "adminSalesDaily";
-	}
-	@GetMapping("adminSalesDetail.ad")
-	public String adminSalesDetail() {
-		return "adminSalesDetail";
+	public String adminSalesManage(HttpServletRequest request,
+								   Model model) {
+		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
+		int listCount = aService.getSalesCount(ab);
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Sales> sList = aService.selectSalesList(pi, ab);
+		if(sList != null) {
+			model = adminBasic(model, request, pi);
+			System.out.println(sList);
+			System.out.println(ab);
+			
+			model.addAttribute("sList", sList);
+			return "adminSalesManage";
+		}else {
+			throw new AdminException("매출 조회를 실패하였습니다.");
+		}
+		
 	}
 	
 	
 //	order-주문 관리
-	@GetMapping("adminOrderManage.ad")
-	public String adminOrderManage() {
-		return "adminOrderManage";
+	@GetMapping("adminOrdersManage.ad")
+	public String adminOrdersManage(HttpServletRequest request,
+								   Model model) {
+		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
+		int listCount = aService.getOrdersCount(ab);
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<Orders> odList = aService.selectOrdersList(pi, ab);
+		Sales sales = aService.selectSalesList(null, ab).get(0);
+		if(odList != null) {
+			System.out.println(odList);
+			model = adminBasic(model, request, pi);
+			model.addAttribute("odList", odList);
+			model.addAttribute("sales", sales);
+			return "adminOrdersManage";
+		}else {
+			throw new AdminException("주문 목록 조회에 실패하였습니다.");
+		}
+		
+		
 	}
 	@GetMapping("adminOrderDetail.ad")
 	public String adminOrderDetail() {
@@ -349,16 +335,10 @@ public class AdminController {
 		}
 	}
 	@GetMapping("adminUsersDetail.ad")
-	public String adminUsersDetail(
-//			@ModelAttribute AdminBasic ab,
-								   @RequestParam("usersNo") int uNo,
+	public String adminUsersDetail(@RequestParam("usersNo") int uNo,
 								   @RequestParam(value="uri", required=false) String uri,
 							 	   Model model) {
 		Users u = aService.selectUsers(uNo);
-//		HashMap<String, Integer> map = new HashMap<String, Integer>();
-//		map.put("imageDivideNo", uNo);
-//		map.put("imageType", 1);
-//		ArrayList<Image> img = aService.selectAllImageList(map);
 		ArrayList<Image> img = selectAllImageList(uNo, 1, 0);
 
 		HashMap<String, Integer> uMap = new HashMap<String, Integer>();
@@ -373,7 +353,6 @@ public class AdminController {
 		u.setLikeCount(uInfo.get(4));
 		
 		if(u != null) {
-//			model.addAttribute("ab", ab);
 			model.addAttribute("u", u);
 			model.addAttribute("img", img);
 			model.addAttribute("uri", uri);
@@ -441,12 +420,9 @@ public class AdminController {
 	
 //	Menu-식단 관리
 	@GetMapping("adminMenuManage.ad")
-	public String adminMenuManage(
-//			@ModelAttribute AdminBasic ab,
-								  HttpServletRequest request,
+	public String adminMenuManage(HttpServletRequest request,
 							 	  Model model) {
 		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
-//		ab = adminBasic(ab, session);
 		
 		int listCount = aService.getMenuCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
@@ -457,7 +433,6 @@ public class AdminController {
 		}
 		if(mList != null) {
 			model.addAttribute("pi", pi);
-//			model.addAttribute("ab", ab);
 			model.addAttribute("mList", mList);
 			return "adminMenuManage";
 		}else {
@@ -1683,35 +1658,6 @@ public class AdminController {
 			e.printStackTrace();
 		}
 	}
-//	@PostMapping("adminReviewDeletes.ad")
-//	public String adminReviewDeletes(@RequestParam("selectDelete") String[] selDeletes,
-//									 HttpServletRequest request,
-//									 Model model) {
-//		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-//		int resultImg = 0;
-//		int resultR = 0;
-//		
-//		
-//		ArrayList<Image> imgList = null;
-//		for(int i = 0; i < selDeletes.length; i++) {
-////			데이터 서버 이미지 삭제
-//			imgList = selectAllImageList(Integer.parseInt(selDeletes[i]), 7, -1);
-//			for(Image img:imgList) {
-//				deleteFile(img.getImageRenameName(), request);
-////				DB서버 이미지 삭제
-//				resultImg += aService.deleteImage(img);
-//			}
-//		}
-//		resultR = deleteSelects(selDeletes, 7);
-////		resultR = aService.deletesReview(selDeletes);
-//		
-//		if(resultR != 0 && resultImg == imgList.size()) {
-//			model.addAttribute("page", ab.getPage());
-//			return "redirect:adminReviewManage.ad";
-//		}else {
-//			throw new AdminException("리뷰 삭제 실패");
-//		}
-//	}
 	
 	
 //	FAQ-자주묻는질문
@@ -1753,7 +1699,7 @@ public class AdminController {
 		int result = aService.updateFAQ(faq);
 		
 		if(result > 0) {
-			model = adminBasic(model, request);
+			model = adminBasic(model, request, null);
 			return "redirect:adminFAQManage.ad";
 		}else {
 			throw new AdminException("FAQ 업데이트에 실패하였습니다.");
@@ -1766,47 +1712,81 @@ public class AdminController {
 		return "adminFAQWrite";
 	}
 	@PostMapping("adminFAQInsert.ad")
-	public String adminFAQInsert() {
-		return "redirect:adminFAQManage.ad";
+	public String adminFAQInsert(@ModelAttribute FAQ faq,
+								 HttpServletRequest request,
+								 Model model) {
+		
+		Users user = (Users)request.getSession().getAttribute("loginUser");
+		faq.setUsersNo(user.getUsersNo());
+		System.out.println(faq);
+		
+		int result = aService.insertFAQ(faq);
+		
+		if(result > 0) {
+			model = adminBasic(model, request, null);
+			return "redirect:adminFAQManage.ad";
+		}else {
+			throw new AdminException("FAQ 게시글 등록에 실패하였습니다.");
+		}
+		
 	}
-//	@PostMapping("adminFAQDeletes.ad")
-//	public String adminFAQDeletes(@RequestParam("selectDelete") String[] selDeletes,
-//								  HttpServletRequest request,
-//								  Model model) {
-//		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-//		int resultF = 0;
-//		
-//		resultF = deleteSelects(selDeletes, 7);
-////		resultF = aService.deletesFAQ(selDeletes);
-//		
-//		if(resultF != 0) {
-//			model.addAttribute("page", ab.getPage());
-//			return "redirect:adminFAQManage.ad";
-//		}else {
-//			throw new AdminException("FAQ 삭제 실패");
-//		}
-//	}
 
 
 	//	QNA-1:1문의 관리	
 	@GetMapping("adminQNAManage.ad")
-	public String adminQNAManage() {
-		return "adminQNAManage";
+	public String adminQNAManage(HttpServletRequest request,
+								 Model model) {
+		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+		int listCount = aService.getQNACount(ab);
+		
+		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
+		ArrayList<QNA> qnaList = aService.selectQNAList(pi, ab);
+		
+		if(qnaList != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("qnaList", qnaList);
+			return "adminQNAManage";
+		}else {
+			throw new AdminException("1:1문의 목록 조회에 실패하였습니다.");
+		}
 	}
 	@GetMapping("adminQNADetail.ad")
-	public String adminQNADetail() {
-		return "adminQNADetail";
+	public String adminQNADetail(@RequestParam("qnaNo")Integer qnaNo,
+								 Model model) {
+		
+		QNA qna = aService.selectQNA(qnaNo);
+		
+		if(qna != null) {
+			model.addAttribute("qna", qna);
+			return "adminQNADetail";
+		}else{
+			throw new AdminException("QNA 상세보기에 실패하였습니다.");
+		}
 	}
 	@PostMapping("adminQNAUpdate.ad")
-	public String adminQNAUpdate() {
-		return "redirect:adminQNAManage.ad";
+	public String adminQNAUpdate(@ModelAttribute QNA qna,
+								 HttpServletRequest request,
+								 Model model) {
+		qna.setAdminNo(((Users)request.getSession().getAttribute("loginUser")).getUsersNo());
+		System.out.println(qna);
+		int result = aService.updateQNA(qna);
+		
+		if(result > 0) {
+			model = adminBasic(model, request, null);
+			return "redirect:adminQNAManage.ad";
+		}else {
+			throw new AdminException("QNA 업데이트에 실패하였습니다.");
+		}
+		
 	}
 	
 	
 //	공용
-	public Model adminBasic(Model model, HttpServletRequest request) {
+	public Model adminBasic(Model model, HttpServletRequest request, PageInfo pi) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-		
+		if(pi != null) {
+			model.addAttribute("pi", pi);
+		}
 		model.addAttribute("page", ab.getPage());
 		model.addAttribute("pageCount", ab.getPageCount());
 		model.addAttribute("searchType", ab.getSearchType());

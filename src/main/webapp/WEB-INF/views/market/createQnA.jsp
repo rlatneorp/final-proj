@@ -146,15 +146,15 @@ select .form-control {
 
 		<div class="container" role="main">
 
-			<div style="font-weight: 200; border-bottom: 1px solid black; color: rgb(68, 133, 215); font-weight: bold; 10px; font-size: 20px;">리뷰 작성</div>
+			<div style="font-weight: 200; border-bottom: 1px solid black; color: rgb(68, 133, 215); font-weight: bold; 10px; font-size: 20px;">문의 작성</div>
 
-			<form name="form" id="form" role="form" method="post" action="${ contextPath }/insertqna.pr" class="qnaForm">
+			<form name="form" id="form" role="form" method="post" action="insertQna.ma" class="qnaForm">
 
 				<div class="mb-3">
 				
 					<label for="title" style="font-weight: 800;">문의 내용</label>
-					<select class="form-control" name="qnaOption">
-						<option value="배송" >배송</option>
+					<select class="form-control" name="qnaCategory">
+						<option value="배송">배송</option>
 						<option value="환불">환불</option>
 						<option value="상품"> 상품</option>
 						<option value="기타">기타</option>
@@ -163,11 +163,13 @@ select .form-control {
 
 					<label for="title" style="font-weight: 800;">아이디</label>
 
-					<input type="text" class="form-control" name="userId" id="userId" value="아이디" readonly>
+					<input type="text" class="form-control" name="usersId" value="${loginUser.usersId}" readonly>
+					<input type="hidden" class="form-control" name="usersNo" value="${loginUser.usersNo}" readonly>
+					<input type="hidden" class="form-control" name="qnaType" value="${productNo}" readonly>
+					<input type="hidden" class="form-control" name="productNo" value="${productNo}" readonly>
 					
 					<br>
-					<label for="qnaTitle" style="font-weight: 800;">제목</label>
-					
+					<label for="qnaTitle" style="font-weight: 800;" >제목</label>
 					<input type="text" class="form-control" name="qnaTitle" id="qnaTitle" placeholder="제목을 입력해주세요 ">
 
 				</div>
@@ -176,21 +178,21 @@ select .form-control {
 
 					<label for="content" style="font-weight: 800;">내용</label>
 
-					<textarea class="form-control" rows="5" name="content" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  ></textarea>
+					<textarea class="form-control" rows="5" name="qnaContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  ></textarea>
 
 				</div>
 				
-				<div class="mb-3">
+<!-- 				<div class="mb-3"> -->
 
-					<label for="Filedata" style="cursor: pointer; font-weight: 800;">사진 첨부 &nbsp; <br><br>
-						<img  src="resources/images/filePlus.jpg">
-					</label>
+<!-- 					<label for="Filedata" style="cursor: pointer; font-weight: 800;">사진 첨부 &nbsp; <br><br> -->
+<!-- 						<img  src="resources/images/filePlus.jpg"> -->
+<!-- 					</label> -->
 
-					<input type="file" name="Filedata" id="Filedata" class="input_file">
+<!-- 					<input type="file" name="Filedata" id="Filedata" class="input_file"> -->
 
-				</div>
+<!-- 				</div> -->
 
-					<button type="submit" class="button" id="Save">작성하기</button>
+					<button type="submit" class="button" >작성하기</button>
 
 				<button type="button" class="button" id="btnList" onclick="history.back();">취소</button>
 					

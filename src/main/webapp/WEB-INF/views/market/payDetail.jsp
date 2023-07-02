@@ -254,7 +254,7 @@ input[type="text"] {
 						<td class="imgTab">
 							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
 							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-							<input type="text" class="storePreOrderNo" value="${cl.preorderNo }">
+							<input type="hidden" class="storePreOrderNo" value="${cl.preorderNo }">
 						</td>
 						<td style="border-right: 2px solid #dee2e6; text-align: left">
 							<b id="productName-${cl.preorderNo }">${cl.productName}</b><br><br>
@@ -264,8 +264,8 @@ input[type="text"] {
 							</c:forEach>
 						</td>
 						<td  style="border-right: 2px solid #dee2e6; width:130px">
-							<input type="text" class="forProductNo" value="${cl.productNo }">
-							<input type="text" value="${cl.preorderNo }">
+							<input type="hidden" class="forProductNo" value="${cl.productNo }">
+							<input type="hidden" value="${cl.preorderNo }">
 							<span class="cartCount" id="size-${cl.preorderNo}">${cl.cartCount }</span>개&nbsp;
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:150px " >

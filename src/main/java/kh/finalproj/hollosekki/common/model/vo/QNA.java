@@ -1,24 +1,25 @@
-package kh.finalproj.hollosekki.customer.model.vo;
+package kh.finalproj.hollosekki.common.model.vo;
 
 import java.util.Date;
 
-public class Qna {
+public class QNA {
 	private int qnaNo;
 	private int usersNo;
 	private Date qnaDate;
 	private String qnaTitle;
 	private String qnaContent;
-	private int adminNo;
+	private Integer adminNo;
 	private Date answerDate;
 	private String answerContent;
-	private char qnaStatus;
+	private String qnaStatus;
+	private int qnaType;
 	
-	public Qna() {
+	public QNA() {
 		super();
 	}
 
-	public Qna(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, int adminNo, Date answerDate,
-			String answerContent, char qnaStatus) {
+	public QNA(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, Integer adminNo,
+			Date answerDate, String answerContent, String qnaStatus, int qnaType) {
 		super();
 		this.qnaNo = qnaNo;
 		this.usersNo = usersNo;
@@ -29,6 +30,7 @@ public class Qna {
 		this.answerDate = answerDate;
 		this.answerContent = answerContent;
 		this.qnaStatus = qnaStatus;
+		this.qnaType = qnaType;
 	}
 
 	public int getQnaNo() {
@@ -71,11 +73,11 @@ public class Qna {
 		this.qnaContent = qnaContent;
 	}
 
-	public int getAdminNo() {
+	public Integer getAdminNo() {
 		return adminNo;
 	}
 
-	public void setAdminNo(int adminNo) {
+	public void setAdminNo(Integer adminNo) {
 		this.adminNo = adminNo;
 	}
 
@@ -95,20 +97,27 @@ public class Qna {
 		this.answerContent = answerContent;
 	}
 
-	public char getQnaStatus() {
+	public String getQnaStatus() {
 		return qnaStatus;
 	}
 
-	public void setQnaStatus(char qnaStatus) {
+	public void setQnaStatus(String qnaStatus) {
 		this.qnaStatus = qnaStatus;
+	}
+
+	public int getQnaType() {
+		return qnaType;
+	}
+
+	public void setQnaType(int qnaType) {
+		this.qnaType = qnaType;
 	}
 
 	@Override
 	public String toString() {
-		return "Qna [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
+		return "QNA [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
 				+ ", qnaContent=" + qnaContent + ", adminNo=" + adminNo + ", answerDate=" + answerDate
-				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + "]";
+				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType + "]";
 	}
-
 	
 }

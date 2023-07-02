@@ -43,7 +43,8 @@
 	</form>
 	
 	<script>
-			if(location.pathname == "/hollosekki/adminFAQManage.ad"){
+			if(location.pathname == "/hollosekki/adminFAQManage.ad"
+				|| location.pathname == "/hollosekki/adminQNAManage.ad"){
 			}else{
 				if(document.getElementsByClassName('allSelect')[0] != null){
 					document.getElementsByClassName('allSelect')[0].parentElement.style.display="none";
@@ -64,7 +65,8 @@
 				aliveType = 2;
 			}else if(location.pathname == "/hollosekki/adminBoardManage.ad"){
 				aliveType = 3;
-			}else if(location.pathname == "/hollosekki/adminFAQManage.ad"){
+			}else if(location.pathname == "/hollosekki/adminFAQManage.ad"
+					|| location.pathname == "/hollosekki/adminQNAManage.ad"){
 				aliveType = 4;
 			}else{
 				aliveType = 5;

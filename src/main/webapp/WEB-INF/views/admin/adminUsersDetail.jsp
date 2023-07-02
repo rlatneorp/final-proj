@@ -87,10 +87,10 @@
 <!-- 					<span class="col-4">출석체크</span> -->
 <%-- 					<input type="number" name="checkDay" class="col-8 pb-1 mb-2 rounded" value="${u.checkDay}"> --%>
 					<span class="col-4">포인트</span>
-					<input type="number" name="pointBefore" class="col-3 mb-2 rounded text-end border" readonly value="<fmt:formatNumber pattern="###,###,###" value="${u.point}"/>">
+					<input type="text" name="pointBefore" class="col-3 mb-2 rounded text-end border" value="${u.point}"readonly>
 					
 					<span class="col-2 text-center">-></span>
-					<input type="number" name="point" class="col-3 mb-2 rounded text-end" value="<fmt:formatNumber pattern="###,###,###" value="${u.point}"/>">
+					<input type="number" name="point" class="col-3 mb-2 rounded text-end" value="${u.point}">
 					
 					<span class="col-4"></span>
 

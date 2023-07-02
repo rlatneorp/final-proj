@@ -165,6 +165,99 @@
 		</if>
 	</delete>
 
+<!--Sales 매출 -->
+	<select id="getSalesCount" resultType="_int">
+		<if test="kind == null">
+			select count(*)
+			from(select substr(order_date,0,8)
+				from orders
+				group by substr(order_date,0,8)
+				order by substr(order_date,0,8) desc)
+		</if>
+		<if test="kind == 1">
+			select count(*)
+			from(select substr(order_date,0,5)
+				from orders
+				group by substr(order_date,0,5)
+				order by substr(order_date,0,5) desc)
+		</if>
+	</select>
+	<select id="selectSalesList" resultMap="salesResultSet">
+<!-- 	kind == null	일일 매출 -->
+<!-- 	kind == 1		월 매출 -->
+		<if test="kind == null">
+			select substr(order_date,0,8) as date_kind, sum(order_total_price) as sales, count(*) as order_count
+			from orders
+			group by substr(order_date,0,8)
+			<if test="searchText != null and searchText != '' ">
+				having substr(order_date,0,8) = #{searchText}
+			</if>
+			order by substr(order_date,0,8) desc
+		</if>
+		<if test="kind == 1">
+			select substr(order_date,0,5) as date_kind, sum(order_total_price) as sales, count(*) as order_count
+			from orders
+			group by substr(order_date,0,5)
+			<if test="searchText != null and searchText != '' " >
+				having substr(order_date,0,5) = #{searchText}
+			</if>
+			order by substr(order_date,0,5) desc
+		</if>
+	</select>
+	
+	<select id="getOrdersCount" resultType="_int">
+		<if test="searchText == null">
+			select count(*)
+			from orders
+		</if>
+		<if test="searchText != null">
+			<if test="kind == 0 or kind == null">
+				select count(*)
+				from orders
+				where substr(order_date, 0, 8) = #{searchText}
+			</if>
+			<if test="kind == 1">
+				select count(*)
+				from orders
+				where substr(order_date, 0, 5) = #{searchText}
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectOrdersList" resultMap="ordersResultSet">
+		<if test="searchText == null">
+			select count(*)
+			from orders
+				 left join food using(product_no)
+				 left join menu using(product_no)
+				 left join ingredient using(product_no)
+				 left join tool using(product_no)
+			order by order_date asc, order_no asc
+		</if>
+		<if test="searchText != null">
+			<if test="kind == 0 or kind == null">
+				select *
+				from orders
+					 left join food using(product_no)
+					 left join menu using(product_no)
+					 left join ingredient using(product_no)
+					 left join tool using(product_no)
+				where substr(order_date, 0, 8) = #{searchText}
+				order by order_date asc, order_no asc
+			</if>
+			<if test="kind == 1">
+				select *
+				from orders
+					 left join food using(product_no)
+					 left join menu using(product_no)
+					 left join ingredient using(product_no)
+					 left join tool using(product_no)
+				where substr(order_date, 0, 5) = #{searchText}
+				order by order_date asc, order_no asc
+			</if>
+		</if>
+	</select>
+
 
 <!--Users-회원 -->
 	<select id="getUsersCount" resultType="_int">
@@ -840,11 +933,62 @@
 			faq_content = #{faqContent},
 			faq_answer = #{faqAnswer},
 			faq_date = sysdate,
+			faq_status = #{faqStatus},
 			faq_type = #{faqType}
 		where faq_no = ${faqNo}
 	</update>
+	
+	<insert id="insertFAQ">
+		insert into faq(faq_no, users_no, faq_title, faq_content, faq_date, faq_status, faq_type, faq_answer)
+		values(seq_faq_no.nextval, #{usersNo}, #{faqTitle}, #{faqContent}, sysdate, #{faqStatus}, #{faqType}, #{faqAnswer})
+		
+	</insert>
 
 
+<!--QNA-1:1문의 -->
+	<select id="getQNACount" resultType="_int">
+		select count(*)
+		from qna
+		<if test="searchText != null">
+			<if test='searchType == "title"'>
+				where qna_title like '%${searchText}%'
+			</if>
+			<if test='searchType == "content"'>
+				where qna_content like '%${searchText}%'
+			</if>
+		</if>
+		order by qna_no desc
+	</select>
+	
+	<select id="selectQNAList" resultMap="qnaResultSet">
+		select *
+		from qna
+		<if test="searchText != null">
+			<if test='searchType == "title"'>
+				where qna_title like '%${searchText}%'
+			</if>
+			<if test='searchType == "content"'>
+				where qna_content like '%${searchText}%'
+			</if>
+		</if>
+		order by qna_no desc
+	</select>
+	
+	<select id="selectQNA" resultMap="qnaResultSet">
+		select *
+		from qna
+		where qna_no = ${qnaNo}
+	</select>
+	
+	<update id="updateQNA">
+		update qna
+		set admin_no = ${adminNo},
+			answer_date = sysdate,
+			answer_content = #{answerContent},
+			qna_status = #{qnaStatus}
+		where qna_no = #{qnaNo}
+	</update>
+	
 <!--ResultSet -->
 <!-- ㅡ공용 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.Product" id="productResultSet">
@@ -879,6 +1023,35 @@
 	
 	
 <!-- ㅡnot 공용 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
+	<resultMap type="Sales" id="salesResultSet">
+		<id column="date_kind" property="dateKind"/>
+		<result column="sales" property="sales"/>
+		<result column="order_count" property="orderCount"/>
+	</resultMap>
+	
+	<resultMap type="Orders" id="ordersResultSet">
+    	<id column="ORDER_NO" property="orderNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="ORDER_COUNT" property="orderCount"/>
+		<result column="ORDER_TOTAL_PRICE" property="totalPrice"/>
+		<result column="ORDER_DATE" property="orderDate"/>
+		<result column="ORDER_STATUS" property="orderStatus"/>
+		<result column="ORDER_ADDRESS" property="orderAddress"/>
+		<result column="ORDER_DELIVERY_DATE" property="orderDeliveryDate"/>
+		<result column="ORDER_STOCK" property="orderStock"/>
+		<result column="ORDER_DELIVERY_COMMENT" property="orderDeliveryComment"/>
+		<result column="ORDER_INFO" property="orderInfo"/>
+		<result column="SHIP_PRICE" property="shipPrice"/>
+		<result column="OPTIONS" property="options"/>
+		
+		<result column="FOOD_NAME" property="productName"/>
+		<result column="MENU_NAME" property="productName"/>
+		<result column="INGREDIENT_NAME" property="productName"/>
+		<result column="TOOL_NAME" property="productName"/>
+   </resultMap>
 	
 	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
@@ -1010,5 +1183,16 @@
 		<result column="FAQ_TYPE" property="faqType"/>
 	</resultMap>
 	
-	
+	<resultMap type="kh.finalproj.hollosekki.common.model.vo.QNA" id="qnaResultSet">
+		<id column="QNA_NO" property="qnaNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="QNA_DATE" property="qnaDate"/>
+		<result column="QNA_TITLE" property="qnaTitle"/>
+		<result column="QNA_CONTENT" property="qnaContent"/>
+		<result column="ADMIN_NO" property="adminNo"/>
+		<result column="ANSWER_DATE" property="answerDate"/>
+		<result column="ANSWER_CONTENT" property="answerContent"/>
+		<result column="QNA_STATUS" property="qnaStatus"/>
+		<result column="QNA_TYPE" property="qnaType"/>
+	</resultMap>
 </mapper>

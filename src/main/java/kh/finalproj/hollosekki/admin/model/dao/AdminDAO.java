@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
 import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
+import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
@@ -20,9 +21,11 @@ import kh.finalproj.hollosekki.common.model.vo.Options;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.common.model.vo.Tool;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Repository
@@ -57,6 +60,7 @@ public class AdminDAO {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectOptions", pNo);
 	}
 
+
 //	Product-상품
 	public Product selectProduct(SqlSessionTemplate sqlSession, int pNo) {
 		return sqlSession.selectOne("adminMapper.selectProduct", pNo);
@@ -90,6 +94,31 @@ public class AdminDAO {
 		return sqlSession.delete("adminMapper.deleteImage", img);
 	}
 	
+	
+//	Sales-매출
+	public int getSalesCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getSalesCount", ab);
+	}
+
+	public ArrayList<Sales> selectSalesList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		if(pi != null) {
+			int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+			RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+			return (ArrayList)sqlSession.selectList("adminMapper.selectSalesList", ab, rowBounds);
+		}else {
+			return (ArrayList)sqlSession.selectList("adminMapper.selectSalesList", ab);
+		}
+	}
+
+	public int getOrdersCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getOrdersCount", ab);
+	}
+	
+	public ArrayList<Orders> selectOrdersList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectOrdersList", ab, rowBounds);
+	}
 	
 //	Users-회원
 	public int getUsersCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
@@ -375,6 +404,34 @@ public class AdminDAO {
 	public int updateFAQ(SqlSessionTemplate sqlSession, FAQ faq) {
 		return sqlSession.update("adminMapper.updateFAQ", faq);
 	}
+	public int insertFAQ(SqlSessionTemplate sqlSession, FAQ faq) {
+		return sqlSession.insert("adminMapper.insertFAQ", faq);
+	}
+	
+	
+//	QNA-1:1문의
+	public int getQNACount(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.getQNACount", ab);
+	}
+
+	public ArrayList<QNA> selectQNAList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("adminMapper.selectQNAList", ab, rowBounds);
+	}
+
+	public QNA selectQNA(SqlSessionTemplate sqlSession, Integer qnaNo) {
+		return sqlSession.selectOne("adminMapper.selectQNA", qnaNo);
+	}
+
+	public int updateQNA(SqlSessionTemplate sqlSession, QNA qna) {
+		return sqlSession.update("adminMapper.updateQNA", qna);
+	}
+
+
+	
+
+
 
 
 

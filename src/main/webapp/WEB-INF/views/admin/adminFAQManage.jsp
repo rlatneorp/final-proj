@@ -79,7 +79,7 @@
 		<jsp:include page="../common/adminPaging.jsp"/>
 	</div>
 
-<script>
+	<script>
 		window.onload = () =>{
 // 			삭제 체크박스 전체선택 이벤트
 			const allSelect = document.getElementsByClassName('allSelect')[0];

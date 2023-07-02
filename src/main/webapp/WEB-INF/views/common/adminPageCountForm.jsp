@@ -34,7 +34,8 @@
 	</div>
 	
 	<script>
-		if(location.pathname == "/hollosekki/adminFAQManage.ad"){
+		if(location.pathname == "/hollosekki/adminFAQManage.ad"
+			|| location.pathname == "/hollosekki/adminQNAManage.ad"){
 			document.getElementsByClassName('deleteBtnBox')[0].style.display="block";
 		}else{
 			document.getElementsByClassName('deleteBtnBox')[0].style.display="none";

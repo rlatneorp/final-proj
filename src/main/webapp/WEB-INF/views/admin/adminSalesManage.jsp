@@ -7,20 +7,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>adminSalesManage</title>
-<style>
-	tr{height: 40px;}
-	td{font-size: 14px;}
-</style>
+<title>admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
+<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
 	<%@ include file="../common/top.jsp" %>
+
 	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-2">매출관리</h4>
-		<h5 class="mb-4 mb-2">일일 매출 현황</h5>
-		<div style="width: 100%; border:1px solid black; margin-bottom:1px;"></div>
-		<div style="width: 100%; border:1px solid black; margin-bottom:30px;"></div>
+		<c:if test="${ab.kind eq null || ab.kind eq 0}">
+			<h5 class="mb-4 mb-2">일일 매출 현황</h5>
+		</c:if>
+		<c:if test="${ab.kind eq 1}">
+			<h5 class="mb-4 mb-2">월별 매출 현황</h5>
+		</c:if>
+		
+		<div class="mb-3">
+			<button onclick="selectSalesType(0)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 30px; font-size: 12px; font-weight: bold;">일별 조회</button>
+			<button onclick="selectSalesType(1)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 30px; font-size: 12px; font-weight: bold;">월별 조회</button>
+		</div>
+		
+		<jsp:include page="../common/adminPageCountForm.jsp"/>
 		
 		<table class="w-100 text-center mb-3">
 			<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
@@ -35,22 +44,22 @@
 			</tr>
 			
 			
-			<c:forEach begin="1" end="10" varStatus="vs">
+			<c:forEach items="${sList}" var="s" varStatus="vs">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
 					<td>
-						<a href="${contextPath}/adminSalesDaily.ad?page=${pi.currentPage}&date=">
-							2023-05-${23-vs.index}
+						<a href="${contextPath}/adminOrdersManage.ad?page=1&pageCount=${ab.pageCount}&searchText=${s.dateKind}&kind=${ab.kind}">
+							${s.dateKind}
 						</a>		
 					</td>
-					<td>${23-vs.index}</td>
+					<td>${s.orderCount}</td>
 					<td>
-						<fmt:formatNumber pattern="###,###,###,###" value="7098020"/>원
+						<fmt:formatNumber pattern="###,###,###,###" value="${s.sales}"/>원
 					</td>
 					<td>
-						<fmt:formatNumber pattern="###,###,###,###" value="8007490"/>원
+						<fmt:formatNumber pattern="###,###,###,###" value="${s.sales}"/>원
 					</td>
 					<td>
-						<fmt:formatNumber pattern="###,###,###,###" value="909470"/>원
+						<fmt:formatNumber pattern="###,###,###,###" value="0"/>원
 					</td>
 				</tr>
 			</c:forEach>
@@ -60,6 +69,16 @@
 		
 	</div>
 
+	<script>
+		function selectSalesType(i){
+			if(i == 0){
+				location.href="${contextPath}/adminSalesManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}";
+			}else if(i == 1){
+				location.href="${contextPath}/adminSalesManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}"
+								+"&kind=1";
+			}
+		}
+	</script>
 
 	
 	

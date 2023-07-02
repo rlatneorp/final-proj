@@ -28,6 +28,13 @@
 			<a href="${contextPath}/adminMain.ad" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
 				<span class="fs-5 fw-semibold">관리자페이지</span>
 			</a>
+			<div class="d-flex justify-content-center">
+				<div class="d-flex">
+					<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 60px; height: 30px; font-size: 12px; font-weight: bold;">뒤로</button>
+					<button onclick="history.forward()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 60px; height: 30px; font-size: 12px; font-weight: bold;">앞으로</button>
+				</div>
+			</div>
+			<hr>
 			<p class="fs-7 fw-semibold mb-0 text-center folderBtn">sidebar 접기</p>
 			<hr>
 			<div class="folder">
@@ -39,7 +46,7 @@
 						<div class="collapse show" id="collapse-one">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 								<li><a href="${contextPath}/adminSalesManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">매출관리</a></li>
-								<li><a href="${contextPath}/adminOrderManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">주문관리</a></li>
+								<li><a href="${contextPath}/adminOrdersManage.ad" class="link-dark d-inline-flex text-decoration-none rounded">주문관리</a></li>
 							</ul>
 						</div>
 					</li>

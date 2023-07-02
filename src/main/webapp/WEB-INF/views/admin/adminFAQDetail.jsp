@@ -10,16 +10,16 @@
 <style>
 	span{height:25px;}
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,700,0,0" />
 </head>
 <body>
 	<%@ include file="../common/top.jsp" %>
-<!-- 	<div class="mainBox d-flex align-top p-4 ps-5" style="border: 2px solid rgba(0,0,0,0.1); margin-bottom: 100px;"> -->
 	<div class="mainBox d-flex justify-content-center align-top p-4 ps-5" style="margin-bottom: 100px;">
 		<div class="d-flex border p-5" style="width: 1000px;">
-<!-- 			<h4 class="py-4 mb-0">자주묻는질문관리</h4> -->
 			
 			<form action="${contextPath}/adminFAQUpdate.ad" method="post">
-				<div class="row" style="padding: 0px 35px 0px 15px;">
+				<input type="hidden" name="faqNo" value="${faq.faqNo}">
+				<div class="row" style="padding: 0px 35px 0px 35px;">
 					<h5 class="mt-3 mb-5">- 자주묻는질문 -</h5>
 					<span class="col-12">분류</span>
 					<select name="faqType" class="col-2 mb-3">
@@ -29,19 +29,28 @@
 						<option value="0"<c:if test="${faq.faqType eq 0}">selected</c:if>>기타</option>
 					</select>
 					<span class="col-12">제목</span>
-					<input type="text" name="faqTitle" class="col-12 pb-1 mb-5" placeholder="제목을 입력해주세요." value="${faq.faqTitle}">
+					<input type="text" name="faqTitle" class="col-11 pb-1 mb-5" placeholder="제목을 입력해주세요." value="${faq.faqTitle}">
 					
 					<span class="col-12">내용</span>
-					<textarea rows="10" name="faqContent" class="col-12 mb-5" placeholder="내용을 입력해주세요.">${faq.faqContent}</textarea>
+					<textarea rows="10" name="faqContent" class="col-11 mb-5" placeholder="내용을 입력해주세요.">${faq.faqContent}</textarea>
+					<span class="col-1"></span>
 					
-					<span class="col-12">답변내용</span>
-					<textarea rows="10" name="faqAnswer" class="col-12 mb-5" placeholder="내용을 입력해주세요.">${faq.faqAnswer}</textarea>
+					<span class="col-1"></span>
+					<span class="col-11">답변내용</span>
+					<span class="col-1 material-symbols-rounded" style="font-size:40px; color: #19A7CE;">subdirectory_arrow_right</span>
+					<textarea rows="10" name="faqAnswer" class="col-11 mb-5" placeholder="내용을 입력해주세요.">${faq.faqAnswer}</textarea>
 	
 					<span class="col-2">공개상태</span>
 					<div class="col-2">
-						<input type="hidden" name="faqNo" value="${faq.faqNo}">
-						<button type="button" class="btns statusBtn" style="background-color: #19A7CE; width:50px; height:35px; font-size:16px;">Y</button>
-						<button type="button" class="btns statusBtn" style="background-color: gray; width:50px; height:35px; font-size:16px;">N</button>
+						<input type="hidden" name="faqStatus" value="${faq.faqStatus}">
+						<c:if test="${faq.faqStatus eq 'Y'}">
+							<button type="button" class="btns statusBtn" style="background-color: #19A7CE; width:50px; height:35px; font-size:16px;">Y</button>
+							<button type="button" class="btns statusBtn" style="background-color: gray; width:50px; height:35px; font-size:16px;">N</button>
+						</c:if>
+						<c:if test="${faq.faqStatus eq 'N'}">
+							<button type="button" class="btns statusBtn" style="background-color: gray; width:50px; height:35px; font-size:16px;">Y</button>
+							<button type="button" class="btns statusBtn" style="background-color: #19A7CE; width:50px; height:35px; font-size:16px;">N</button>
+						</c:if>
 					</div>
 					<span class="col-6"></span>
 					<div class="mb-5"></div>
@@ -61,38 +70,19 @@
 		window.onload = () =>{
 // 			상태 버튼 이벤트
 			const statusBtns = document.getElementsByClassName('statusBtn');
-			const Nos = document.getElementsByName('faqNo');
-			for(const i in statusBtns){
-				if(i<statusBtns.length){
-					let j = Math.floor(i/2);
-					if(Nos[j].value != 0){
-						statusBtns[i].addEventListener('click', function(){
-							console.log('aa');
-							$.ajax({
-								url: '${contextPath}/adminUpdateStatus.ad',
-								data: {dataNo:Nos[j].value,
-									   dataStatus:statusBtns[i].innerText,
-									   dataType:9},
-								success: data =>{
-									if(data == "success"){
-										if(i%2 == 0){
-											statusBtns[i].style.background = "#19A7CE";
-											statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
-										}else if(i%2 == 1){
-											statusBtns[i].style.background = "#19A7CE";
-											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-										}
-									}else{
-										alert("상태 변경에 실패하였습니다.");
-									}
-								},
-								error: data => {
-									console.log(data);
-								}
-							})
-						})
+			const status = document.getElementsByName('faqStatus')[0];
+			for(let i = 0; i < statusBtns.length; i++){
+				statusBtns[i].addEventListener('click', function(){
+					if(i == 0){
+						statusBtns[0].style.background = "#19A7CE";
+						statusBtns[1].style.background = "gray";
+						status.value = "Y";
+					}else{
+						statusBtns[0].style.background = "gray";
+						statusBtns[1].style.background = "#19A7CE";
+						status.value = "N";
 					}
-				}
+				})
 			}
 		}
 	</script>

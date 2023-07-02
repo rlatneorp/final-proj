@@ -431,12 +431,11 @@
 				<!-- 메뉴4. 작성 후기 목록 -->
 				<div class="recipe-review-contents">
 					<div class="bookmark-contents-title"><i class="bi bi-check"></i> 레시피</div>
-					
 					<c:if test="${ empty rvList }">
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
 					</c:if>
 					<c:forEach items="${ rvList }" var="rv">
-						<div class="recipe-review-content div-box4" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${rv.orderNo }' + '&page=' + '${ page }'">
+						<div class="recipe-review-content div-box4" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ rv.productNo }' + '&page=' + '${ page }'">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ rv.productNo == a.foodNo }">
 									<c:forEach items="${ recipeImageList }" var="rImg">
@@ -491,7 +490,7 @@
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 식단 후기가 없습니다.</div>
 					</c:if>
 					<c:forEach items="${ mrList }" var="mr">
-						<div class="recipe-review-content div-box5" style="display: none;" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ mr.PRODUCT_NO }' + 'page='">
+						<div class="recipe-review-content div-box5" style="display: none;" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ mr.PRODUCT_NO }' + '&page='">
 							<c:forEach items="${ menuImageList }" var="mImg">
 								<c:if test="${ mImg.imageDivideNo == mr.PRODUCT_NO }">
 									<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ mImg.imageRenameName }"></div>

@@ -4,7 +4,12 @@
 	<insert id="insertUser">
 		insert into users
 		values(SEQ_USERS_NO.nextval, #{usersId}, #{usersPw}, #{usersName}, #{nickName}, #{email}, #{phone}, 
-				sysdate, default, default, default, default, default, default, default, default, default)
+				sysdate, default, default, default, 1000, default, default, default)
+	</insert>
+	
+	<insert id="insertPoint">
+		insert into point
+		values(SEQ_POINT_NO.nextval, SEQ_USERS_NO.CURRVAL, 2, 0, 1000, sysdate )
 	</insert>
 	
 	<select id="login" resultMap="usersResultSet">

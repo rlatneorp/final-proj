@@ -84,6 +84,7 @@ public class EnrollController {
 			u.setUsersPw(userPwd);
 			
 			int count = eService.insertUser(u);
+			eService.insertPoint(u);
 			String result = count > 0 ? "yes" : "no";
 			out.print(result);
 		}
@@ -263,7 +264,8 @@ public class EnrollController {
 	        	u.setPhone("카카오로그인 회원입니다");
 		        
 		        int result = eService.insertUser(u);
-		        		
+		        eService.insertPoint(u);		
+		        
 	        	if(result > 0) { // 회원정보 저장했을때 
 	        		Users u2 = eService.socialLoginUpdate(id);
 	        		
@@ -317,6 +319,7 @@ public class EnrollController {
 				u.setPhone("네이버로그인 회원입니다");
 				
 				int result = eService.insertUser(u);
+				eService.insertPoint(u);
 				
 				if(result > 0) { // 등록 잘 된 경우
 					Users u2 = eService.socialLoginUpdate(id);

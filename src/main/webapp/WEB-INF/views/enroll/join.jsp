@@ -769,8 +769,8 @@
 	            		reAction(); // 꽃가루
 		       				  
 	            		swal({
-	            			title: "회원가입이 완료되었습니다.",
-	            			text: "홀로세끼의 회원이 되신걸 환영합니다^^",
+	            			title: "홀로세끼 가입을 환영합니다^^",
+	            			text: "신규가입 축하 1000포인트가 지급되었습니다",
 	            			icon: "success",
 	            			buttons: {
 	            				login: {text:"로그인", value:"login"},
@@ -782,7 +782,7 @@
 	            		.then((value) => {
 	            			switch (value) {
 		            		    case "login":
-		            		    	window.location.href="${contextPath}/login.en";
+		            		    	window.location.href="login.en";
 		            		   		break;
 		            		    case "main":
 		            		    	window.location.href="${contextPath}";

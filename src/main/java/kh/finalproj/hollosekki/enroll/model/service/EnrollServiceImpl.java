@@ -202,6 +202,11 @@ public class EnrollServiceImpl implements EnrollService{
 		return eDAO.userReplyList(sqlSession, nickName);
 	}
 
+	@Override
+	public void insertPoint(Users u) {
+		eDAO.insertPoint(sqlSession, u);
+	}
+
 
 	
 }

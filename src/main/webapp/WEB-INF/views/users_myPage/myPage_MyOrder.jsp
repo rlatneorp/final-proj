@@ -153,28 +153,38 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<c:forEach items="${orderList }" var="ol">
-								<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me?orderNo='+${ol.orderNo}">
-									<td>
-										${ol.orderNo }
+							<c:if test="${!empty orderList }">
+								<c:forEach items="${orderList }" var="ol">
+										<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me?orderNo='+${ol.orderNo}">
+											<td>
+												${ol.orderNo }
+											</td>
+											<c:if test="${ol.productType eq 1 }">
+												<td>식품</td>
+											</c:if>
+											<c:if test="${ol.productType eq 2 }">
+												<td>식단</td>
+											</c:if>
+											<c:if test="${ol.productType eq 3 }">
+												<td>식재료</td>
+											</c:if>
+											<c:if test="${ol.productType eq 4 }">
+												<td>주방도구</td>
+											</c:if>
+											<td>${ol.productName }</td>
+											<td>${ol.orderDate }</td>
+											<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
+										</tr>
+								</c:forEach>
+							</c:if>
+							<c:if test="${ empty orderList }">
+								<tr>
+									<td colspan="6" height="330">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										<b>조회 된 구매내역이 없습니다.</b>
 									</td>
-									<c:if test="${ol.productType eq 1 }">
-										<td>식품</td>
-									</c:if>
-									<c:if test="${ol.productType eq 2 }">
-										<td>식단</td>
-									</c:if>
-									<c:if test="${ol.productType eq 3 }">
-										<td>식재료</td>
-									</c:if>
-									<c:if test="${ol.productType eq 4 }">
-										<td>주방도구</td>
-									</c:if>
-									<td>${ol.productName }</td>
-									<td>${ol.orderDate }</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
 								</tr>
-							</c:forEach>
+							</c:if>
 						</tbody>
 					</table>
 				</div>
@@ -209,7 +219,7 @@ th:first-child, td:first-child {
 				</div>
 				<br>
 				<div style="display: flex; width:300px; position: relative; margin: 0 auto;">
-					<input type="text" placeholder="검색어 입력" name="searchWord" id="searchInput"> 
+					<input type="text" placeholder="상품명 입력" name="searchWord" id="searchInput"> 
 					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="searchIcon">
 				</div>
 			</div>

@@ -196,6 +196,7 @@ input[type="text"] {
 			<th class="tableBorder1"><b>합계금액</b></th>
 		</tr>
 		<tbody id="products">
+			<c:if test="${!empty cartList }">
 			<c:set var="previousPreorderNo" value="" />
 			<c:forEach items="${ cartList}" var="cl" varStatus="status" >
 				<c:if test="${cl.preorderNo != previousPreorderNo}">
@@ -205,7 +206,7 @@ input[type="text"] {
 							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
 							<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
 							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-							<input type="text" value="${cl.preorderNo }">
+							<input type="hidden" value="${cl.preorderNo }">
 						</td>
 						<td style="border-right: 2px solid #dee2e6; text-align: left">
 							<b>${cl.productName}</b><br><br>
@@ -244,11 +245,20 @@ input[type="text"] {
 				</tr>
 				</c:if>
 			</c:forEach>
+			</c:if>
+			<c:if test="${ empty cartList }">
+				<tr>
+					<td colspan="6" height="330">
+						<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+						<b>장바구니에 담긴 상품이 없습니다.</b>
+					</td>
+				</tr>
+			</c:if>
 		</tbody>
 	</table><br><br>
-	<div style="width: 1200px; margin: 0 auto; font-align: right">
+	<div style="cursor:pointer; width: 1200px; margin: 0 auto; font-align: right">
 		<i class="bi bi-caret-left-fill"></i><i class="bi bi-caret-left-fill"></i>
-		<b>쇼핑 계속하기</b><br>
+		<b><a style="color:inherit; text-decoration:none" href="${contextPath}/kitchenToolMain.ma">쇼핑 계속하기</a></b><br>
 	</div><br>
 	
 	<!-- 금액 -->

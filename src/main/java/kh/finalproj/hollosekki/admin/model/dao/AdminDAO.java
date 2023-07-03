@@ -181,9 +181,13 @@ public class AdminDAO {
 	}
 
 	public ArrayList<Menu> selectMenuList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("adminMapper.selectMenuList", ab, rowBounds);
+		if(pi != null) {
+			int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+			RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+			return (ArrayList)sqlSession.selectList("adminMapper.selectMenuList", ab, rowBounds);
+		}else {
+			return (ArrayList)sqlSession.selectList("adminMapper.selectMenuList", ab);
+		}
 	}
 
 	public Menu selectMenu(SqlSessionTemplate sqlSession, int pNo) {

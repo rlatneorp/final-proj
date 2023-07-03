@@ -75,4 +75,19 @@ public class MenuServiceImpl implements MenuService{
 	public ArrayList<Product> healtherInfo(int usersNo) {
 		return mDAO.healtherInfo(sqlSession, usersNo);
 	}
+
+	@Override
+	public int selectBookmark(int usersNo, int productNo) {
+		return mDAO.selectBookmark(sqlSession, usersNo, productNo);
+	}
+
+	@Override
+	public int insertBookmark(int usersNo, int divisionNo) {
+		return mDAO.insertBookmark(sqlSession, usersNo, divisionNo);
+	}
+
+	@Override
+	public int deleteBookmark(int usersNo, int divisionNo) {
+		return mDAO.deleteBookmark(sqlSession, usersNo, divisionNo);
+	}
 }

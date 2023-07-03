@@ -168,19 +168,37 @@
 <!--AdminMain-관리자 메인화면 -->
 	<select id="selectAdminMainList" resultMap="adminMainResultSet">
 		<if test="type == 1">
-			select * 
-			from(select recipe_create_date as day, count(*) as recipe_day_count
-				 from recipe
-				 group by recipe_create_date
-				 order by recipe_create_date desc)
+			select *
+			from(select substr(order_date,0,8) as day, sum(order_total_price) as order_day_sales, count(*) as order_day_count
+				 from orders
+				 group by substr(order_date,0,8)
+				 order by substr(order_date,0,8) desc)
 			where rownum &lt;= 7
 		</if>
 		<if test="type == 2">
+			select * 
+			from(select substr(recipe_create_date, 0, 8) as day, count(*) as recipe_day_count
+				 from recipe
+				 group by substr(recipe_create_date, 0, 8)
+				 order by substr(recipe_create_date, 0, 8) desc)
+			where rownum &lt;= 7
+		</if>
+		<if test="type == 3">
 			select *
-			from(select enroll_date as day, count(*) as enroll_day_count
+			from(select substr(enroll_date, 0, 8) as day, count(*) as enroll_day_count
 				 from users
-				 group by enroll_date
-			 	 order by enroll_date desc)
+				 group by substr(enroll_date, 0, 8)
+			 	 order by substr(enroll_date, 0, 8) desc)
+			where rownum &lt;= 7
+		</if>
+		<if test="type == 4">
+			select *
+			from(select substr(order_date, 0, 8) as day, count(*) as menu_day_count
+				 from (select *
+				 	   from orders
+				 	   where product_type = 2)
+				 group by substr(order_date, 0, 8)
+			 	 order by substr(order_date, 0, 8) desc)
 			where rownum &lt;= 7
 		</if>
 		
@@ -208,10 +226,10 @@
 	<select id="selectSalesList" resultMap="salesResultSet">
 <!-- 	kind == null	일일 매출 -->
 <!-- 	kind == 1		월 매출 -->
-		<if test="number != null">
-			select *
-			from(
-		</if>
+<!-- 		<if test="number != null"> -->
+<!-- 			select * -->
+<!-- 			from( -->
+<!-- 		</if> -->
 			<if test="kind == null">
 				select substr(order_date,0,8) as date_kind, sum(order_total_price) as sales, count(*) as order_count
 				from orders
@@ -230,17 +248,22 @@
 				</if>
 				order by substr(order_date,0,5) desc
 			</if>
-		<if test="number != null">
-			)
-			where rownum &lt;= ${number}
-		</if>
+<!-- 		<if test="number != null"> -->
+<!-- 			) -->
+<!-- 			where rownum &lt;= ${number} -->
+<!-- 		</if> -->
 	</select>
 	
+	
+<!--Orders-주문 -->
 	<select id="getOrdersCount" resultType="_int">
 		<if test="searchText == null or searchText == ''">
 			select count(*)
 			from orders
 				 join users using(users_no)
+			<if test="type != 0">
+				where product_type = ${type} 
+			</if>
 		</if>
 		<if test="searchText != null and searchText != ''">
 			<if test="kind == 0 or kind == null">
@@ -255,10 +278,17 @@
 					 join users using(users_no)
 				where substr(order_date, 0, 5) = #{searchText}
 			</if>
+			<if test="type != 0">
+				and product_type = ${type} 
+			</if>
 		</if>
 	</select>
 	
 	<select id="selectOrdersList" resultMap="ordersResultSet">
+		<if test="number != null">
+			select *
+			from(
+		</if>
 		<if test="searchText == null or searchText == ''">
 			select *
 			from orders
@@ -292,6 +322,10 @@
 				where substr(order_date, 0, 5) = #{searchText}
 				order by order_date desc, order_no desc
 			</if>
+		</if>
+		<if test="number != null">
+			)
+			where rownum &lt;= ${number}
 		</if>
 	</select>
 	
@@ -1074,8 +1108,11 @@
 	
 	<resultMap type="AdminMain" id="adminMainResultSet">
 		<id column="DAY" property="day"/>
+		<result column="ORDER_DAY_COUNT" property="orderDayCount"/>
+		<result column="ORDER_DAY_SALES" property="orderDaySales"/>
 		<result column="RECIPE_DAY_COUNT" property="recipeDayCount"/>
 		<result column="ENROLL_DAY_COUNT" property="enrollDayCount"/>
+		<result column="MENU_DAY_COUNT" property="menuDayCount"/>
 	</resultMap>
 	
 	<resultMap type="Sales" id="salesResultSet">

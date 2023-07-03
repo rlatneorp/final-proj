@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.menu.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -60,6 +61,27 @@ public class MenuDAO {
 
 	public ArrayList<Product> healtherInfo(SqlSessionTemplate sqlSession, int usersNo) {
 		return (ArrayList)sqlSession.selectList("menuMapper.healtherInfo", usersNo);
+	}
+
+	public int selectBookmark(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("productNo", productNo);
+		return sqlSession.selectOne("menuMapper.selectBookmark", map);
+	}
+
+	public int insertBookmark(SqlSessionTemplate sqlSession, int usersNo, int divisionNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("divisionNo", divisionNo);
+		return sqlSession.insert("menuMapper.insertBookmark", map);
+	}
+
+	public int deleteBookmark(SqlSessionTemplate sqlSession, int usersNo, int divisionNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("divisionNo", divisionNo);
+		return sqlSession.delete("menuMapper.deleteBookmark", map);
 	}
 
 }

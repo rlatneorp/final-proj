@@ -18,6 +18,7 @@ public class AdminMain {
 	private int menuDayCount;
 	private int menuDaySales;
 	private int menuMonthCount;
+	private int menuTotalCount;
 	private int menuMonthSales;
 	
 	public AdminMain() {
@@ -26,7 +27,9 @@ public class AdminMain {
 
 	public AdminMain(String day, int orderDayCount, int orderDaySales, int orderMonthCount, int orderMonthSales,
 			int recipeDayCount, int recipeMonthCount, int recipeTotalCount, int enrollDayCount, int enrollMonthCount,
-			int enrollTotalCount, int menuDayCount, int menuDaySales, int menuMonthCount, int menuMonthSales) {
+			int enrollTotalCount, int menuDayCount, int menuDaySales, int menuMonthCount, int menuTotalCount,
+			int menuMonthSales) {
+		super();
 		this.day = day;
 		this.orderDayCount = orderDayCount;
 		this.orderDaySales = orderDaySales;
@@ -41,6 +44,7 @@ public class AdminMain {
 		this.menuDayCount = menuDayCount;
 		this.menuDaySales = menuDaySales;
 		this.menuMonthCount = menuMonthCount;
+		this.menuTotalCount = menuTotalCount;
 		this.menuMonthSales = menuMonthSales;
 	}
 
@@ -156,6 +160,14 @@ public class AdminMain {
 		this.menuMonthCount = menuMonthCount;
 	}
 
+	public int getMenuTotalCount() {
+		return menuTotalCount;
+	}
+
+	public void setMenuTotalCount(int menuTotalCount) {
+		this.menuTotalCount = menuTotalCount;
+	}
+
 	public int getMenuMonthSales() {
 		return menuMonthSales;
 	}
@@ -171,7 +183,8 @@ public class AdminMain {
 				+ recipeDayCount + ", recipeMonthCount=" + recipeMonthCount + ", recipeTotalCount=" + recipeTotalCount
 				+ ", enrollDayCount=" + enrollDayCount + ", enrollMonthCount=" + enrollMonthCount
 				+ ", enrollTotalCount=" + enrollTotalCount + ", menuDayCount=" + menuDayCount + ", menuDaySales="
-				+ menuDaySales + ", menuMonthCount=" + menuMonthCount + ", menuMonthSales=" + menuMonthSales + "]";
+				+ menuDaySales + ", menuMonthCount=" + menuMonthCount + ", menuTotalCount=" + menuTotalCount
+				+ ", menuMonthSales=" + menuMonthSales + "]";
 	}
 
 }

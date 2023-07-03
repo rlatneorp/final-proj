@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,7 @@
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<div class="mainBox d-inline-block align-top">
+	<div class="mainBox d-inline-block align-top" style="margin-bottom: 100px;">
 		<div class="row mt-5">
 			<div class="dataBox col-6 border-end border-bottom p-4">
 				<h4>매출</h4>
@@ -22,12 +23,12 @@
 						<th>월 누적 매출액</th>
 					</tr>
 					
-					<c:forEach begin="1" end="7" varStatus="vs">
+					<c:forEach items="${salesList}" var="s" varStatus="vs">
 						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
-							<td>2023-05-${20-vs.index}</td>
-							<td>2000건</td>
-							<td>30,302,000원</td>
-							<td>603,203,200원</td>
+							<td>${s.day}</td>
+							<td><fmt:formatNumber value="${s.orderDayCount}" pattern="###,###,###"/>건</td>
+							<td><fmt:formatNumber value="${s.orderDaySales}" pattern="###,###,###"/>원</td>
+							<td><fmt:formatNumber value="${s.orderMonthSales}" pattern="###,###,###"/>원</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -47,11 +48,11 @@
 						<th>누적 등록</th>
 					</tr>
 					
-					<c:forEach begin="1" end="7" varStatus="vs">
+					<c:forEach items="${recipeList}" var="r" varStatus="vs">
 						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
-							<td>2023-05-${20-vs.index}</td>
-							<td>${11-vs.index}명</td>
-							<td>000명</td>
+							<td>${r.day}</td>
+							<td>${r.recipeDayCount}개</td>
+							<td>${r.recipeTotalCount}개</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -71,11 +72,11 @@
 						<th>누적 가입</th>
 					</tr>
 					
-					<c:forEach begin="1" end="7" varStatus="vs">
+					<c:forEach items="${usersList}" var="u" varStatus="vs">
 						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
-							<td>2023-05-${20-vs.index}</td>
-							<td>${51-vs.index}명</td>
-							<td>000명</td>
+							<td>${u.day}</td>
+							<td>${u.enrollDayCount}명</td>
+							<td>${u.enrollTotalCount}명</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -95,11 +96,11 @@
 						<th>누적 가입</th>
 					</tr>
 					
-					<c:forEach begin="1" end="7" varStatus="vs">
+					<c:forEach items="${menuList}" var="m" varStatus="vs">
 						<tr style="border-bottom: 1px solid rgba(0,0,0,0.2);">
-							<td>2023-05-${20-vs.index}</td>
-							<td>${11-vs.index}명</td>
-							<td>000명</td>
+							<td>${m.day}</td>
+							<td>${m.menuDayCount}명</td>
+							<td>${m.menuTotalCount}명</td>
 						</tr>
 					</c:forEach>
 				</table>

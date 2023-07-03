@@ -30,9 +30,6 @@
 			<p class="fs-5 fw-bold mb-0 text-center folderBtn">sidebar 접기</p>
 			<hr class="sidebar_hr">
 			<div class="folder">
-				<a href="${contextPath}/adminMain.ad" class="d-flex text-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-					<span class="fs-5 fw-semibold w-100">관리자페이지</span>
-				</a>
 				<div class="d-flex justify-content-center ">
 					<div class="d-flex">
 						<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 60px; height: 30px; font-size: 12px; font-weight: bold;">뒤로</button>
@@ -40,6 +37,9 @@
 					</div>
 				</div>
 				<hr class="sidebar_hr">
+				<a href="${contextPath}/adminMain.ad" class="d-flex text-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+					<span class="fs-5 fw-semibold w-100">관리자페이지</span>
+				</a>
 				<ul class="list-unstyled ps-0">
 					<li class="mb-1">
 						<button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true">

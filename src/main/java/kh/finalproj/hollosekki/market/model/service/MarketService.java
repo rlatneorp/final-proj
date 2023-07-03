@@ -370,6 +370,10 @@ public class MarketService {
 		return mkDAO.selectViewWholeCount(sqlSession);
 	}
 
+	public ArrayList<Product> selectWholeHotDeal() {
+		return mkDAO.selectWholeHotDeal(sqlSession);
+	}
+
 	
 
 

@@ -414,6 +414,10 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectViewWholeCount");
 	}
 
+	public ArrayList<Product> selectWholeHotDeal(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectWholeHotDeal");
+	}
+
 
 
 }

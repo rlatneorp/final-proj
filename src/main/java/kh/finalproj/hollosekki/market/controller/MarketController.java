@@ -425,50 +425,31 @@ public class MarketController {
    @GetMapping("kitchenToolMain.ma")
    public String kitchenToolMain() {
       
-      return "kitchenToolMainPage";
+      return "redirect:viewWhole.ma";
    }
    
    @RequestMapping("paySuccess.ma")
    public String paySuccess(HttpSession session, Model model, @RequestParam("use") String use, @RequestParam("preNo") String preorderNo, @RequestParam("plus") int plus) {
-	  System.out.println("preorderNo : " + preorderNo);
 	  int usePoint = Integer.parseInt(use.split("원")[0]); //사용 포인트 
       Users users = (Users)session.getAttribute("loginUser");
-      
-      //users테이블 
-      //포인트 차감은 최초 1번만, 포인트 +는 여러 번.... 
-//      int currentPointForUserTable = mkService.selectPoint(users.getUsersNo()); //보유 포인트 
-//      int minusPoint = currentPointForUserTable - usePoint; //보유 포인트 - 사용 포인트
-//      int resultPoint = minusPoint + plus; //보유 포인트 + 추가 포인트
-//      
-//      users.setPoint(resultPoint);
-//      mkService.updatePoint(users); //변경 된 포인트 반영 
       
       //포인트 테이블에 minus, plus 포인트 반영 
       Point p = new Point();
       p.setUsersNo(users.getUsersNo());
-      //minus
       
       //상품 하나하나가 들어옴 
-      
       if(usePoint != 0) { //사용한 포인트가 있으면 
-    	  System.out.println("사용한 포인트가 있다.");
-    	  System.out.println("usePoint1 : " + usePoint);
     	  int currentPoint = mkService.selectPoint(users.getUsersNo());
-    	  System.out.println("currentPoint1111 : " + currentPoint);
     	  p.setPointBefore(currentPoint);
     	  int minus = currentPoint-usePoint;
-    	  System.out.println("minus : " + minus);
     	  p.setPointChange(minus); //현재-사용 금액
     	  p.setPointType(11);
     	  mkService.updatePointTable(p);
       }
       if(plus != 0) { // 추가 된 포인트가 있다면 
-    	  System.out.println("추가 한 포인트가 있다." + plus);
     	  int currentPoint2 = mkService.selectPoint(users.getUsersNo()); //33900원이 떠야 되는데....차감이 안됨 ?
-    	  System.out.println("currentPoint2222 : " + currentPoint2);
           p.setPointBefore(currentPoint2);
           int plusPoint = currentPoint2+plus;
-          System.out.println("plusPoint : " + plusPoint);
           p.setPointChange(plusPoint);
           p.setPointType(3);
           mkService.updatePointTable(p);
@@ -485,8 +466,6 @@ public class MarketController {
           preorderNoIntArr[i] = Integer.parseInt(preorderNoArr[i]);
           mkService.deleteFromCart(preorderNoIntArr[i]);
       }
-
-      
       model.addAttribute("users", users);
       return "paySuccess";
    }
@@ -512,7 +491,6 @@ public class MarketController {
       addresses[2] = detailAddress;
       sa.setAddress(Arrays.toString(addresses));
       
-      System.out.println("ssss : " + sa);
       int result = mkService.insertShipping(sa);
       ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(sa.getUsersNo());
       
@@ -529,9 +507,7 @@ public class MarketController {
    
    @RequestMapping("insertCart.ma")
       public void insertCart(@ModelAttribute Cart c,HttpServletResponse response) {
-
       
-//      System.out.println(pNo);
       int result = mkService.insertCart(c);
       
       response.setContentType("application/json; charset=utf-8");
@@ -574,9 +550,7 @@ public class MarketController {
       mkService.plusCount(preorderNo);
       
       int size = mkService.plusResultCount(preorderNo);
-      System.out.println("size : " + size);
       int sum = size * price;
-      System.out.println("sum : " + sum);
       response.setContentType("application/json; charset=UTF-8");
         GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd"); 
         Gson gson = gb.create();
@@ -589,8 +563,7 @@ public class MarketController {
    
    @RequestMapping(value="minusCount.ma", produces="application/json; charset=UTF-8")
    public void minusCount(@RequestParam("preorderNo") int preorderNo, @RequestParam("price") int price, HttpServletResponse response) {
-      System.out.println("minus : " + preorderNo);
-	   mkService.minusCount(preorderNo);
+	  mkService.minusCount(preorderNo);
       int size = mkService.plusResultCount(preorderNo);
       int sum = size * price;
       response.setContentType("application/json; charset=UTF-8");
@@ -603,7 +576,6 @@ public class MarketController {
          }
    }
    
-   //
    @RequestMapping(value="selectShipping.ma", produces="application/json; charset=UTF-8")
    public void selectShipping(@RequestParam("usersNo") int usersNo, HttpServletResponse response) {
       
@@ -624,10 +596,8 @@ public class MarketController {
    //수정 버튼 클릭 시 클릭한 배송지 정보 조회 
    @RequestMapping(value="updateShipping.ma", produces="application/json; charset=UTF-8")
    public void updateShipping(@RequestParam("shippingNo") int shippingNo, HttpServletResponse response) {
-      System.out.println("shippingNo : " + shippingNo);
       
       ShippingAddress sa = mkService.selectShippingForUpdate(shippingNo);
-      System.out.println("sa : " + sa);
       response.setContentType("application/json; charset=UTF-8");
       GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
       Gson gson = gb.create();
@@ -645,13 +615,11 @@ public class MarketController {
             @RequestParam("updateAddress") String addressLocation,
             @RequestParam("updateDetailAddress") String detailAddress) {
       
-      System.out.println("ShippingAddress : " + sa);
       String[] addresses = new String[3];
       addresses[0] = addressPostCode;
       addresses[1] = addressLocation;
       addresses[2] = detailAddress;
       sa.setAddress(Arrays.toString(addresses));
-      
       
       mkService.updateConfirmShipping(sa);
       return "payDetail";
@@ -714,8 +682,6 @@ public class MarketController {
 	         e.printStackTrace();
 	      }
 	   	
-	   	
-	   	
    }
    
    @PostMapping("reviewDesc.ma")
@@ -736,8 +702,6 @@ public class MarketController {
 	   } catch (JsonIOException | IOException e) {
 		   e.printStackTrace();
 	   }
-	   
-	   
 	   
    }
    
@@ -821,18 +785,14 @@ public class MarketController {
 	   if(currentPage == null) {
 		   currentPage = 1;
 	   }
+	   Food food = null; Tool tool = null; Ingredient ingre = null;
 	   int listCount = mkService.selectViewWholeCount();
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
-//	   pi.setBoardLimit(5);
-	   
 	   ArrayList<Product> list = mkService.selectViewWhole(pi);
-	   System.out.println(list.size());
-	   
-	   Food food = null; Tool tool = null; Ingredient ingre = null;
+	   //전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Product lists : list) {
-			   int productNo = lists.getProductNo();
-			   String img = null;
+			   int productNo = lists.getProductNo(); String img = null;
 			   food = mkService.selectFood(productNo); tool = mkService.selectTool(productNo); ingre = mkService.selectIngrdient(productNo);
 			   if(food != null) {
 				   lists.setProductName(food.getFoodName());
@@ -849,9 +809,32 @@ public class MarketController {
 			   }
 		   }
 	   }
-	   System.out.println("list : " + list);
+	   
+	   ArrayList<Product> hotDeal = mkService.selectWholeHotDeal();
+	   //가장 sale 높은 순 
+	   if(!hotDeal.isEmpty()) {
+		   for(Product lists : hotDeal) {
+			   int productNo = lists.getProductNo(); String img = null; food = mkService.selectFood(productNo); tool = mkService.selectTool(productNo); ingre = mkService.selectIngrdient(productNo);
+			   if(food != null) {
+				   lists.setProductName(food.getFoodName());img = mkService.selectImg(productNo, 3);
+			   } else if (tool != null) {
+				   lists.setProductName(tool.getToolName()); img = mkService.selectImg(productNo, 6);
+			   } else if (ingre != null) {
+				   lists.setProductName(ingre.getIngredientName()); img = mkService.selectImg(productNo, 5);
+			   }
+			   if(img != null) {
+				   lists.setProductImg(img);
+			   }
+		   }
+	   }
+	   
+	   
+	   
+	   
 	   model.addAttribute("pi", pi);
 	   model.addAttribute("list", list);
+	   model.addAttribute("hotDeal", hotDeal);
+	   
 	   return "kitchenToolMainPage";
    }
    

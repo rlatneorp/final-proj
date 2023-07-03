@@ -4,7 +4,7 @@
 	<select id="getNListCount" resultType="_int">
 		select count(*)
 		from faq
-		where faq_status= 'Y' and faq_type in(1,null) 
+		where faq_status= 'Y' and faq_type in(-1,null) 
 	</select>
 	
 <!-- 	<select id="getFListCount" resultType="_int"> -->
@@ -22,7 +22,7 @@
 	<select id="nBoardList" resultMap="CustomerResultSet">
 		select faq_no, users_no, faq_title, faq_content, faq_date, faq_status, faq_type
 		from faq
-		where faq_status = 'Y' and faq_type in (1,null)  
+		where faq_status = 'Y' and faq_type in (-1,null)  
 		order by faq_no
 	</select>
 <!-- 	<select id="fBoardList" resultMap="CustomerResultSet"> -->
@@ -63,7 +63,7 @@
 	<select id="getCategoryFListCount" resultType="_int">
 		select count(*)
 		from faq
-		where faq_status = 'Y' and faq_type = 2 
+		where faq_status = 'Y' and faq_type in (0,1,2,3)  
 		<if test="category == 'user'">
 			  and (faq_title like '%회원%')
 		</if>
@@ -105,7 +105,7 @@
 	<select id="fBoardList" resultMap="CustomerResultSet">
 		select *
 		from faq
-		where faq_status = 'Y' and faq_type = 2  
+		where faq_status = 'Y' and faq_type  in (0,1,2,3) 
 		<if test="category == 'user'">
 			  and (faq_title like '%회원%')
 		</if>

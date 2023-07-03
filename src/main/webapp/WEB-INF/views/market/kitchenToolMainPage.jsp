@@ -364,12 +364,12 @@ ul li {
 			<div class="productName">${li.productName }</div>
 			<c:if test="${li.productSale ne 0 }">
 				<span class="originPrice">
-					${li.productPrice }
+					${li.productPrice }원
 				</span>
 			</c:if>
 			<c:if test="${li.productSale eq 0 }">
 				<span style="font-size:25px;">
-					<fmt:formatNumber value="${li.productPrice }" pattern="###,###,###"/>
+					<fmt:formatNumber value="${li.productPrice }" pattern="###,###,###"/>원
 				</span>
 			</c:if>
 			<span class="discount" id="discount-${li.productNo }"></span>
@@ -382,23 +382,15 @@ ul li {
 <script>
 	window.onload = () => {
 		const normal = document.getElementsByClassName('normal');
-		console.log(normal)
 		for(np of normal) {
 			const productNo = np.children[0].value;
-			console.log(productNo);
 			//할인 계산 
 			if(np.children[5].value != '0') {
 				const originPrice = parseInt(np.children[3].innerText);
-				console.log(originPrice);
 				const sale = parseInt(np.children[5].value);
-				console.log(sale);
 				const discount = (originPrice * (1- sale/100)).toLocaleString();
-				console.log(discount);
-				document.getElementById('discount-'+productNo).innerText = discount
-			} else { //0일 경우 
-// 				document.getElementById('discount-'+productNo).innerHTML = '<br>'
-			}
-			
+				document.getElementById('discount-'+productNo).innerText = discount + '원'
+			} 
 		}
 	}
 	

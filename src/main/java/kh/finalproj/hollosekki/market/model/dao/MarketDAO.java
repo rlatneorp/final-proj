@@ -370,11 +370,15 @@ public class MarketDAO {
 		return sqlSession.delete("marketMapper.deleteLike", map);
 	}
 
-	public int selectLike(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
+	public Integer selectLike(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
 		Map<Object, Object> map = new HashMap<>();
 		map.put("usersNo", usersNo);
 		map.put("divisionNo", productNo);
 		return sqlSession.selectOne("marketMapper.selectLike", map);
+	}
+
+	public ArrayList<QA> qnalist(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return (ArrayList)sqlSession.selectList("marketMapper.qnalist", map);
 	}
 
 

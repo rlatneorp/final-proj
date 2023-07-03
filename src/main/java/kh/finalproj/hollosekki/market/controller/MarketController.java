@@ -310,17 +310,17 @@ public class MarketController {
       
       if(list != null) {
          model.addAttribute("list", list);
-//         model.addAttribute("starAvg", starAvg);
+         model.addAttribute("starAvg", starAvg);
       }
       
       if(imglist != null) {
          model.addAttribute("imglist", imglist);
       }
       
-      int result = mkService.selectLike(users.getUsersNo(), productNo);
-      if(result >= 1) {
-    	  model.addAttribute("like", result);
-      }
+////      Integer result = mkService.selectLike(users.getUsersNo(), productNo);
+//      if(result >= 1) {
+//    	  model.addAttribute("like", result);
+//      }
       
       model.addAttribute("reviewCount", reviewCount);
       model.addAttribute("tool", tool);
@@ -782,6 +782,19 @@ public class MarketController {
 	   }
 	   
 	   return "redirect:market_detail.ma";
+   }
+   
+   @GetMapping("QnAdetail.ma")
+   public String QnAdetail(@RequestParam ("usersNo") int usersNo, @RequestParam ("productNo") int productNo, @RequestParam("qnaNo") int qnaNo,Model model) {
+	   HashMap<String, Object> map = new HashMap<String, Object>();
+	   map.put("usersNo", usersNo);
+	   map.put("productNo", productNo);
+	   map.put("qnaNo", qnaNo);
+	   ArrayList<QA> qnaList = mkService.qnalist(map);
+	   if(qnaList != null) {
+		   model.addAttribute("qnaList",qnaList);
+	   }
+	   return "QnAdetail";
    }
    
    

@@ -134,6 +134,10 @@ select .form-control {
 	
 }
 
+.form-control:disabled, .form-control[readonly] {
+    background-color: white;
+    opacity: 1;
+}
 
 
 </style>
@@ -142,72 +146,69 @@ select .form-control {
 <body>
 	<c:set value="${ pageContext.servletContext.contextPath }" var="contextPath" scope="application"/>
 	
-	<article>
-
-		<div class="container" role="main">
-
-			<div style="font-weight: 200; border-bottom: 1px solid black; color: rgb(68, 133, 215); font-weight: bold; 10px; font-size: 20px;">문의 작성</div>
-
-			<form name="form" id="form" role="form" method="post" action="insertQna.ma" class="qnaForm">
-
-				<div class="mb-3">
-				
-					<label for="title" style="font-weight: 800;">문의 내용</label>
-					<select class="form-control" name="qnaType">
-						<option value="1">배송</option>
-						<option value="2">결제</option>
-						<option value="3">회원</option>
-						<option value="4">상품</option>
-						<option value="0">기타</option>
-					</select>
-				
-
-					<label for="title" style="font-weight: 800;">아이디</label>
-
-					<input type="text" class="form-control" name="usersId" value="${loginUser.usersId}" readonly>
-					<input type="hidden" class="form-control" name="usersNo" value="${loginUser.usersNo}" readonly>
-					<input type="hidden" class="form-control" name="productNo" value="${productNo}" readonly>
+	
+	<c:forEach items="${qnaList}" var="qna">
+		<article>
+	
+			<div class="container" role="main">
+	
+				<div style="font-weight: 200; border-bottom: 1px solid black; color: rgb(68, 133, 215); font-weight: bold; 10px; font-size: 20px;">문의 작성</div>
+	
+					<div class="mb-3">
 					
-					<br>
-					<label for="qnaTitle" style="font-weight: 800;" >제목</label>
-					<input type="text" class="form-control" name="qnaTitle" id="qnaTitle" placeholder="제목을 입력해주세요 ">
-
-				</div>
-
-				<div class="mb-3">
-
-					<label for="content" style="font-weight: 800;">내용</label>
-
-					<textarea class="form-control" rows="5" name="qnaContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  ></textarea>
-
-				</div>
-				
-<!-- 				<div class="mb-3"> -->
-
-<!-- 					<label for="Filedata" style="cursor: pointer; font-weight: 800;">사진 첨부 &nbsp; <br><br> -->
-<!-- 						<img  src="resources/images/filePlus.jpg"> -->
-<!-- 					</label> -->
-
-<!-- 					<input type="file" name="Filedata" id="Filedata" class="input_file"> -->
-
-<!-- 				</div> -->
-
-					<button type="submit" class="button" >작성하기</button>
-
-				<button type="button" class="button" id="btnList" onclick="history.back();">취소</button>
+						<label for="qnaCate" style="font-weight: 800;">문의 내용</label>
+							<br>
+							<div style="color:white; font-size: 20px; font-weight: bold; width:auto; background-color: rgb(68, 133, 215); padding:5px; padding-left:20px;" >
+							   <c:if test="${qna.qnaType eq 1 }"> 배송 </c:if>
+		                       <c:if test="${qna.qnaType eq 2 }"> 결제 </c:if>
+		                       <c:if test="${qna.qnaType eq 3 }"> 회원 </c:if>
+		                       <c:if test="${qna.qnaType eq 4 }"> 상품 </c:if>
+		                       <c:if test="${qna.qnaType eq 0 }"> 기타 </c:if>
+							</div>
+						<br>
+	
+						<label for="title" style="font-weight: 800;">작성자</label>
+						<input type="text" class="form-control" name="usersId" value="${qna.nickName}" readonly>
+	<%-- 					<input type="hidden" class="form-control" name="usersNo" value="${loginUser.usersNo}" readonly> --%>
+	<%-- 					<input type="hidden" class="form-control" name="productNo" value="${productNo}" readonly> --%>
+						
+						<br>
+						<label for="qnaTitle" style="font-weight: 800;" >제목</label>
+						<input type="text" class="form-control" name="qnaTitle" id="qnaTitle" value="${qna.qnaTitle }" readOnly>
+	
+					</div>
+	
+					<div class="mb-3">
+	
+						<label for="content" style="font-weight: 800;">내용</label>
+	
+						<textarea class="form-control" rows="5" name="qnaContent" id="content" placeholder="${qna.qnaContent}"  readonly></textarea>
+						
+						<br>
+						
+						<label for="content" style="font-weight: 800; color:rgb(68, 133, 215) ">관리자 답변</label>
+						
+						<c:if test="${qna.answerContent ne null}">
+							<textarea class="form-control" rows="5" name="qnaContent" id="content" placeholder="${qna.answerContent}" style="font-weight: bold;" readonly></textarea>
+						</c:if>
+						
+						<c:if test="${qna.answerContent eq null}">
+							<textarea class="form-control" rows="5" name="qnaContent" id="content" placeholder="잠시만 기다려주시면 답변을 드리겠습니다!"  readonly></textarea>
+						</c:if>
+					</div>
 					
-
-			</form>
-
-			<div >
-
-				
+	
+					<button type="button" class="button" id="btnList" onclick="history.back();">확인</button>
+	
+				<div >
+	
+					
+				</div>
+	
 			</div>
-
-		</div>
-
-	</article>
-
+	
+		</article>
+	</c:forEach>
 </body>
 
 </html>

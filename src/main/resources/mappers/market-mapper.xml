@@ -598,8 +598,15 @@
 		where users_no=#{usersNo} and division_no=#{divisionNo}
 	</delete>
 	
-	<select id="selectLike" resultType="_int">
+	<select id="selectLike" resultType="_integer">
 		select count(*) from likes where users_no=#{usersNo} and division_no=#{divisionNo}
 	</select>
+	
+	<select id="qnalist" resultMap="QnAResultSet">
+		select *
+		from qna join users using (users_no)
+		where qna_no = #{qnaNo} and users_no = #{usersNo} and product_no=#{productNo} and qna_status='Y'
+	</select>
+	
 	
 </mapper>

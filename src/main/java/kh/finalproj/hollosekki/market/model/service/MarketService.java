@@ -335,8 +335,12 @@ public class MarketService {
 		return mkDAO.deleteLike(sqlSession, usersNo, divisionNo);
 	}
 
-	public int selectLike(int usersNo, int productNo) {
+	public Integer selectLike(int usersNo, int productNo) {
 		return mkDAO.selectLike(sqlSession, usersNo, productNo);
+	}
+
+	public ArrayList<QA> qnalist(HashMap<String, Object> map) {
+		return mkDAO.qnalist(sqlSession, map);
 	}
 
 	

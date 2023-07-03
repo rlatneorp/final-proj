@@ -556,21 +556,21 @@
 	</insert>
 	
 	<insert	id="insertQna">
-		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type)
-	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, #{qnaType})
+		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type, product_no)
+	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, #{qnaType}, #{productNo})
 	</insert>
 	
 	<select id="selectQnaList" resultMap="QnAResultSet">
 		select *
 		from qna join users using(users_no)
-		where qna_type=#{productNo} and qna_status = 'Y'
+		where product_no=#{productNo} and qna_status = 'Y'
 		order by qna_no desc
 	</select>
 	
 	<select id="selectQnaCount" resultType="int">
 		select count(*)
 		from qna
-		where qna_type=#{productNo} and qna_status = 'Y'
+		where product_no=#{productNo} and qna_status = 'Y'
 	</select>
 	
 	<resultMap type="QA" id="QnAResultSet">
@@ -585,6 +585,7 @@
 		<result column="QNA_STATUS" property="qnaStatus"/>
 		<result column="QNA_TYPE" property="qnaType"/>
 		<result column="NICKNAME" property="nickName"/>
+		<result column="PRODUCTNO" property="productNo"/>
 	</resultMap>
 	
 	

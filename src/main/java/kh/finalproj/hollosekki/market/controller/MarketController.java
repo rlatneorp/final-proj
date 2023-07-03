@@ -123,9 +123,6 @@ public class MarketController {
              cart.setImgName(imgName);
           }
       }
-//      System.out.println("optValues " + optValues);
-//      model.addAttribute("optValues", optValues);
-      System.out.println("cartList : " + cartList);
       model.addAttribute("cartList", cartList);
       return "basket";
    }
@@ -761,6 +758,80 @@ public class MarketController {
 		   return "fail";
 	   }
    }
+   
+   //전체보기
+   @RequestMapping("viewWhole.ma")
+   public String viewWhole(Model model) {
+	   ArrayList<Product> list = mkService.selectViewWhole();
+	   
+	   Food food = null; Tool tool = null; Ingredient ingre = null;
+	   String img = null;
+	   
+	   for(Product lists : list) {
+		   int productNo = lists.getProductNo();
+		   System.out.println("productNo : " + productNo);
+		   food = mkService.selectFood(productNo); tool = mkService.selectTool(productNo); ingre = mkService.selectIngrdient(productNo);
+		   if(food != null) {
+			   lists.setProductName(food.getFoodName());
+			   img = mkService.selectImg(productNo, 3);
+		   } else if (tool != null) {
+			   System.out.println("tool들어왔다" + tool.getToolName()) ;
+			   lists.setProductName(tool.getToolName());
+			   img = mkService.selectImg(productNo, 6);
+		   } else if (ingre != null) {
+			   lists.setProductName(ingre.getIngredientName());
+			   img = mkService.selectImg(productNo, 5);
+		   }
+		   if(img != null) {
+			   lists.setProductImg(img);
+		   }
+	   }
+	   System.out.println("list : " + list);
+	   model.addAttribute("list", list);
+	   return "kitchenToolMainPage";
+   }
+   
+   //식품
+   @RequestMapping("viewFood.ma")
+   public String viewFood(Model model) {
+	   ArrayList<Product> list = mkService.selectViewFood();
+	   //Menu
+	   model.addAttribute("list", list);
+	   System.out.println("list : " + list);
+	   return "kitchenToolMainPage";
+   }
+   
+//   //식단
+//   @RequestMapping("viewMenu.ma")
+//   public String viewMenu(Model model) {
+//	   ArrayList<Menu> list = mkService.selectViewMenu();
+//	   //Tool
+//	   model.addAttribute("list", list);
+//	   System.out.println("list : " + list);
+//	   return "kitchenToolMainPage";
+//   }
+   
+   //식재료
+   @RequestMapping("viewIngredient.ma")
+   public String viewIngredient(Model model) {
+	   
+	   ArrayList<Ingredient> list = mkService.selectViewIngredient();
+	   //Ingredient
+	   model.addAttribute("list", list);
+	   System.out.println("list : " + list);
+	   return "kitchenToolMainPage";
+   }
+   
+   //주방용품
+   @RequestMapping("viewTool.ma")
+   public String viewTool(Model model) {
+	   ArrayList<Tool> list = mkService.selectViewTool();
+	   //Ingredient
+	   model.addAttribute("list", list);
+	   System.out.println("list : " + list);
+	   return "kitchenToolMainPage";
+   }
+   
    
    
 //   public String insertPay(@ModelAttribute Orders orders) {

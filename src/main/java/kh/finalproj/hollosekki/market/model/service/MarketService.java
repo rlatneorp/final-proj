@@ -339,6 +339,27 @@ public class MarketService {
 		return mkDAO.selectLike(sqlSession, usersNo, productNo);
 	}
 
+	//상품 메인 창에서 카테고리 별 조회 
+	public ArrayList<Product> selectViewWhole() {
+		return mkDAO.selectViewWhole(sqlSession);
+	}
+
+	public ArrayList<Product> selectViewFood() {
+		return mkDAO.selectViewFood(sqlSession);
+	}
+
+	public ArrayList<Menu> selectViewMenu() {
+		return mkDAO.selectViewMenu(sqlSession);
+	}
+
+	public ArrayList<Ingredient> selectViewIngredient() {
+		return mkDAO.selectViewIngredient(sqlSession);
+	}
+
+	public ArrayList<Tool> selectViewTool() {
+		return mkDAO.selectViewTool(sqlSession);
+	}
+
 	
 
 

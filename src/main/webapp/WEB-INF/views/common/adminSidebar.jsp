@@ -8,7 +8,7 @@
 <title>adminMain</title>
 <link href="${pageContext.servletContext.contextPath}/resources/css/sidebars.css" rel="stylesheet">
 <style>
-	.sidebar{width: 230px; z-index: 0; top: 40px;}
+	.sidebar{width: 230px; z-index: 10; top: 40px;}
 	.mainBox{margin: 0px 270px; width: 1450px;}
 	.mainBox tr{height: 40px;}
 	.mainBox th{font-size: 14px;}
@@ -19,6 +19,7 @@
 	.mainBox input{font-size:14px;}
 	.mainBox .btns{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;}
 	.sidebar .folderBtn:hover{cursor: pointer;}
+	.sidebar_hr{width:220px;}
 </style>
 </head>
 
@@ -34,9 +35,9 @@
 					<button onclick="history.forward()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 60px; height: 30px; font-size: 12px; font-weight: bold;">앞으로</button>
 				</div>
 			</div>
-			<hr>
+			<hr class="sidebar_hr">
 			<p class="fs-7 fw-semibold mb-0 text-center folderBtn">sidebar 접기</p>
-			<hr>
+			<hr class="sidebar_hr">
 			<div class="folder">
 				<ul class="list-unstyled ps-0">
 					<li class="mb-1">

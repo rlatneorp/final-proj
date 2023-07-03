@@ -1,11 +1,12 @@
 package kh.finalproj.hollosekki.market.model.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Orders {
 	private int orderNo;
 	private int productNo;
 	private int usersNo;
+	private String usersId;
 	private int productType;
 	private int orderCount;
 	private int totalPrice;
@@ -24,14 +25,14 @@ public class Orders {
 	
 	public Orders() {}
 
-	public Orders(int orderNo, int productNo, int usersNo, int productType, int orderCount, int totalPrice,
-			Date orderDate, String orderStatus, String orderAddress, Date orderDeliveryDate, String orderStock,
-			String orderDeliveryComment, String orderInfo, String shipPrice, String options, String productName,
-			String imgName) {
-		super();
+	public Orders(int orderNo, int productNo, int usersNo, String usersId, int productType, int orderCount,
+			int totalPrice, Date orderDate, String orderStatus, String orderAddress, Date orderDeliveryDate,
+			String orderStock, String orderDeliveryComment, String orderInfo, String shipPrice, String options,
+			String productName, String imgName) {
 		this.orderNo = orderNo;
 		this.productNo = productNo;
 		this.usersNo = usersNo;
+		this.usersId = usersId;
 		this.productType = productType;
 		this.orderCount = orderCount;
 		this.totalPrice = totalPrice;
@@ -70,6 +71,14 @@ public class Orders {
 
 	public void setUsersNo(int usersNo) {
 		this.usersNo = usersNo;
+	}
+
+	public String getUsersId() {
+		return usersId;
+	}
+
+	public void setUsersId(String usersId) {
+		this.usersId = usersId;
 	}
 
 	public int getProductType() {
@@ -186,14 +195,12 @@ public class Orders {
 
 	@Override
 	public String toString() {
-		return "Orders [orderNo=" + orderNo + ", productNo=" + productNo + ", usersNo=" + usersNo + ", productType="
-				+ productType + ", orderCount=" + orderCount + ", totalPrice=" + totalPrice + ", orderDate=" + orderDate
-				+ ", orderStatus=" + orderStatus + ", orderAddress=" + orderAddress + ", orderDeliveryDate="
-				+ orderDeliveryDate + ", orderStock=" + orderStock + ", orderDeliveryComment=" + orderDeliveryComment
-				+ ", orderInfo=" + orderInfo + ", shipPrice=" + shipPrice + ", options=" + options + ", productName="
-				+ productName + ", imgName=" + imgName + "]";
+		return "Orders [orderNo=" + orderNo + ", productNo=" + productNo + ", usersNo=" + usersNo + ", usersId="
+				+ usersId + ", productType=" + productType + ", orderCount=" + orderCount + ", totalPrice=" + totalPrice
+				+ ", orderDate=" + orderDate + ", orderStatus=" + orderStatus + ", orderAddress=" + orderAddress
+				+ ", orderDeliveryDate=" + orderDeliveryDate + ", orderStock=" + orderStock + ", orderDeliveryComment="
+				+ orderDeliveryComment + ", orderInfo=" + orderInfo + ", shipPrice=" + shipPrice + ", options="
+				+ options + ", productName=" + productName + ", imgName=" + imgName + "]";
 	}
-
-	
 	
 }

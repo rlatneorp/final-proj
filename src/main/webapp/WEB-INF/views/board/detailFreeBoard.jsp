@@ -349,54 +349,60 @@ let ind = null;
 	}
 	
 	function reReply(){
+		
 		const tbody = document.querySelector('tbody');
 		const trs = tbody.querySelectorAll('tr');
+		const reBtns = document.querySelectorAll('.reBtn');
 		
 		for(let i = 0; i < reBtns.length; i++){
-			const tds = trs[i].querySelectorAll('td');
-			beforeText = tds[0].innerText;
-			reBtns[i].addEventListener('keydown', function(event){
-				if(event.keyCode == 13){
-					reBtns[i].click();
-				}
-			})
-			reBtns[i].addEventListener('click', ()=>{
-				console.log(tds[0]);
-				console.log(beforeText);
-				if(beforeText != ''){
-					tds[0].innerHTML = '<input type="text" class="reBox" value="' + beforeText + '">';
-				}
-				
-				const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
-				$.ajax({
-					url: 'reReply.bo',
-					dataType: 'json',
-					data: {
-						reviewContent: beforeText,
-						reviewWriter: '${login}',
-						productNo: hdnBoardNo.value,
-						reviewNo: hdnReplyNo[i].value
-					},
-					success: data=>{
-						console.log(data);
-						for(const da of data){
-							if(da.reviewNo == hdnBoardNo.value){
-								tds[0].value = da.reviewContent;
-							}
-						}
-						console.log(tds[0]);
-					},
-					error: data=>{
-						alert("댓글 수정 중 오류가 발생했습니다.");
-						location.reload();
+			let datas = '';
+			if(!reBtns.disabled){
+				const tds = trs[i].querySelectorAll('td');
+				tds[3].addEventListener('keydown', function(e){
+					if(e.keyCode == 13){
+						tds[3].click();
 					}
+				})
+				console.log(tds);
+				tds[3].addEventListener('click', ()=>{
+					tds[0].innerHTML = '<td><input type="text" class="reBox" value="' + tds[0].innerText + '"></td>';
+					tds[3].innerHTML = '<button type="button" class="reBtn" id="reBtn">' + "확인" + '</button>';
 					
-				});
-			 	
-			})
-		}	
-		
-	}
+					const reBoxs = tds[0].querySelectorAll('.reBox');
+					datas = tds[0].innerText;
+					tds[0].innerHTML = '';
+					const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
+					const hdnBoardNo = document.querySelector('#hdnBoardNo');
+					if(reBtns.innerText == '확인'){
+						$.ajax({
+							url: 'reReply.bo',
+							data: {
+								reviewContent: datas,
+								reviewWriter: '${login}',
+								productNo: hdnBoardNo.value,
+								reviewNo: hdnReplyNo[i].value
+							},
+							success: data=>{
+								if(data == 'success'){
+									tds[0].innerText = datas;
+									tds[3].innerHTML = '<button type="button" class="reBtn" id="reBtn">' + "수정" + '</button>';
+								}else{
+									alert("댓글 수정 중 오류가 발생했습니다.");
+									location.reload();
+								}
+							}
+								
+						});
+					}
+				})
+				
+			}else{
+				alert("작성자 본인만 수정하실 수 있습니다.");
+			}
+				
+		}
+	}	
+	
 	function replySubSuccess (){
 		
 		replySubmit.addEventListener('click', ()=>{
@@ -427,6 +433,7 @@ let ind = null;
 						
 						const contentTd = document.createElement('td');
 						contentTd.innerText = r.reviewContent;
+						beforeText = r.reviewContent;
 						
 						const writerTd = document.createElement('td');
 						writerTd.innerHTML = r.reviewWriter;
@@ -461,7 +468,7 @@ let ind = null;
 						modifyBtn.querySelector('#reBtn').className = 'reBtn';
 						deleteBtn.querySelector('#xBtn').className = 'xBtn';
 						reviewNoTd.querySelector('#hdnReplyNo').value = r.reviewNo;
-	
+						
 						tbody.append(tr);
 						
 						//아직 비동기식으로 c태그를 어떻게 담을지 모르겠음

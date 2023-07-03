@@ -88,6 +88,7 @@ public class BoardController {
 		
 		bService.insertReply(b);
 		ArrayList<Board> rlist = bService.selectReply(b.getProductNo());
+		
 		response.setContentType("application/json; charset=UTF-8");
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
 		Gson gson = gb.create();
@@ -107,19 +108,12 @@ public class BoardController {
 	}
 		
 	@RequestMapping("reReply.bo")
-	public void reReply(@ModelAttribute Board b,HttpServletResponse response) {
+	@ResponseBody
+	public String reReply(@ModelAttribute Board b) {
 		
-		bService.reReply(b);
-		ArrayList<Board> relist = bService.selectReply(b.getProductNo());
-		
-		response.setContentType("application/json; charset=UTF-8");
-		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
-		Gson gson = gb.create();
-		try {
-			gson.toJson(relist, response.getWriter());
-		} catch (JsonIOException | IOException e) {
-			e.printStackTrace();
-		}
+		int result = bService.reReply(b);
+		System.out.println(b);
+		return result == 1 ? "success" : "fail";
 	}
 	
 	

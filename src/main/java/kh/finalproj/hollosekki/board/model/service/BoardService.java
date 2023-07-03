@@ -50,8 +50,8 @@ public class BoardService {
 		return bDAO.replyDelete(sqlSession, b);
 	}
 
-	public void reReply(Board b) {
-		bDAO.reReply(sqlSession, b);
+	public int reReply(Board b) {
+		return bDAO.reReply(sqlSession, b);
 	}
 
 }

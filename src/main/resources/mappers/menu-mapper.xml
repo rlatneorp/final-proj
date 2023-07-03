@@ -17,13 +17,14 @@
 	<select id="selectMenuImage" resultMap="imageResultSet">
 		select *
 		from image
-		where image_type = 4 and image_level = 1
+		where image_type = 4 and image_level = 0
 	</select>
 	
 	<select id="menuDetail" resultMap="menuResultSet">
 		select *
 		from menu
 			 left join product using(product_no)
+			 left join healther using(users_no)
 		where product_no=#{mNO}
 	</select>
 	
@@ -44,7 +45,7 @@
 	<select id="menuDetailImage" resultMap="imageResultSet">
 		select *
 		from image
-		where image_type=3 and image_level=1
+		where image_type=3 and image_level=0
 	</select>
 	
 	<select id="searchMenu" resultMap="menuResultSet">
@@ -60,6 +61,22 @@
 		where menu_kind=#{cate}
 	</select>
 	
+	<select id="selectUsersNo" resultType="_int">
+		select users_no
+		from menu
+		     left join product using(product_no)
+		where product_no = #{mNo}
+	</select>
+	
+	<select id="healtherInfo" resultMap="productResultSet">
+		select *
+		from product
+			 left join healther using(users_no)
+   			 left join image on(product_no = image_divide_no)
+   			 left join menu using(product_no)
+		where users_no=#{usersNo} and product_type=2
+	</select>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>
@@ -70,6 +87,9 @@
 		<result column="product_price" property="productPrice"/>
 		<result column="product_sale" property="productSale"/>
 		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
+		<result column="name" property="name"/>
+		<result column="title" property="title"/>
+		<result column="career" property="career"/>
 	</resultMap>
 	
 	<resultMap type="Image" id="imageResultSet">
@@ -88,6 +108,23 @@
 		<result column="food_product_no" property="foodProductNo"/>
 		<result column="food_Name" property="foodName"/>
 		<result column="food_Content" property="foodContent"/>
+	</resultMap>
+	
+	<resultMap type="CommonProduct" id="productResultSet">
+		<id column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="PRODUCT_PRICE" property="productPrice"/>
+		<result column="PRODUCT_OPTION" property="productOption"/>
+		<result column="PRODUCT_STOCK" property="productStock"/>
+		<result column="PRODUCT_CREATE_DATE" property="productCreateDate"/>
+		<result column="PRODUCT_MODIFY_DATE" property="productModifyDate"/>
+		<result column="PRODUCT_SALE" property="productSale"/>
+		<result column="PRODUCT_COUNT" property="productCount"/>
+		<result column="PRODUCT_STATUS" property="productStatus"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="MENU_KIND" property="menuKind"/>
 		
 	</resultMap>
 </mapper>

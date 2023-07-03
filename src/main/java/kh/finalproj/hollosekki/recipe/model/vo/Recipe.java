@@ -1,6 +1,6 @@
 package kh.finalproj.hollosekki.recipe.model.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Recipe {
 	private int foodNo;

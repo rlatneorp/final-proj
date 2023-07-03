@@ -636,6 +636,11 @@ input[type="text"] {
 							 text: "성공적으로 삭제 되었습니다.",
 							 icon: "success",
 							 button: "확인",
+							}).then(() => {
+								//포문 돌려서 
+								if(document.getElementsByClassName('productInfos').length == 0) {
+									location.reload();
+								}
 							});
 						//초기화
 						document.getElementById('orderSize').innerText = '0'; 

@@ -77,10 +77,10 @@
 
 <div id="search">
 	<form role="search" action="recipeList.rc">
-	<div id="searchBar">
-		<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
-		<div id="searchIcon"><button type="submit" id="searchBtn"><i class="bi bi-search"></i></button></div>
-	</div>
+		<div id="searchBar">
+			<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
+			<div id="searchIcon"><button type="submit" id="searchBtn"><i class="bi bi-search"></i></button></div>
+		</div>
 	</form>
 	<div id="category">
 		<div>

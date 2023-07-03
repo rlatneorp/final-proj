@@ -1030,7 +1030,11 @@ p b {
                    
                     <div class="qna">
                        <span style="color:#4485d7;">${qna.qnaNo} </span>
-                      |&nbsp [${q.qnaCategory}]
+                     |&nbsp <c:if test="${qna.qnaType eq 1 } "> 배송</c:if>
+                       <c:if test="${qna.qnaType eq 2 } "> 결제 </c:if>
+                       <c:if test="${qna.qnaType eq 3 } "> 회원 </c:if>
+                       <c:if test="${qna.qnaType eq 4 } "> 상품 </c:if>
+                       <c:if test="${qna.qnaType eq 0 } "> 기타 </c:if>
                        ${qna.qnaTitle}
                     </div>
                         <span class="writer" style="margin-right: 60px">${qna.nickName}</span>

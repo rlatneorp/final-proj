@@ -308,6 +308,7 @@
 				url: "menuCategory.mn",
 				data: {"cate": cate},
 				success: data=>{
+					console.log(data);
 					const menuBox = document.getElementById('menuBox');
 					menuBox.innerHTML = "";
 					
@@ -333,7 +334,7 @@
 						cardBody.classList.add('cardColor');						
 						
 						const h5 = document.createElement('h5');
-						h5.innerText = post.menuName / post.menuKind;
+						h5.innerText = post.menuName + "/" + post.menuKind;
 						
 						const div = document.createElement('div');
 						div.classList.add('d-inline-block');

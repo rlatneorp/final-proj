@@ -206,11 +206,11 @@
 	</select>
 	
 	<select id="getOrdersCount" resultType="_int">
-		<if test="searchText == null">
+		<if test="searchText == null or searchText == ''">
 			select count(*)
 			from orders
 		</if>
-		<if test="searchText != null">
+		<if test="searchText != null and searchText != ''">
 			<if test="kind == 0 or kind == null">
 				select count(*)
 				from orders
@@ -225,16 +225,16 @@
 	</select>
 	
 	<select id="selectOrdersList" resultMap="ordersResultSet">
-		<if test="searchText == null">
-			select count(*)
+		<if test="searchText == null or searchText == ''">
+			select *
 			from orders
 				 left join food using(product_no)
 				 left join menu using(product_no)
 				 left join ingredient using(product_no)
 				 left join tool using(product_no)
-			order by order_date asc, order_no asc
+			order by order_date desc, order_no desc
 		</if>
-		<if test="searchText != null">
+		<if test="searchText != null and searchText != ''">
 			<if test="kind == 0 or kind == null">
 				select *
 				from orders
@@ -243,7 +243,7 @@
 					 left join ingredient using(product_no)
 					 left join tool using(product_no)
 				where substr(order_date, 0, 8) = #{searchText}
-				order by order_date asc, order_no asc
+				order by order_date desc, order_no desc
 			</if>
 			<if test="kind == 1">
 				select *
@@ -253,7 +253,7 @@
 					 left join ingredient using(product_no)
 					 left join tool using(product_no)
 				where substr(order_date, 0, 5) = #{searchText}
-				order by order_date asc, order_no asc
+				order by order_date desc, order_no desc
 			</if>
 		</if>
 	</select>

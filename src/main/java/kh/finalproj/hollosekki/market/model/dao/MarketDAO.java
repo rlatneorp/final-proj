@@ -282,7 +282,7 @@ public class MarketDAO {
 		sqlSession.update("marketMapper.updatePoint", users);
 	}
 
-	public int reviewAvg(SqlSessionTemplate sqlSession, int productNo) {
+	public Integer reviewAvg(SqlSessionTemplate sqlSession, int productNo) {
 		return sqlSession.selectOne("marketMapper.reviewAvg",productNo);
 	}
 

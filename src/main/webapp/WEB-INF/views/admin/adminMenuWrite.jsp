@@ -114,7 +114,6 @@
 								<input type="hidden" name="menuType" value="1">
 								<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button>
 								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button>
-<!-- 								<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 120px; height: 40px; font-size: 14px; font-weight: bold;">식재료/밀키트</button> -->
 							</div>
 						</div>
 					</div>

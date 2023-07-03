@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
 <script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
-
 <body>
 	<%@ include file="../common/top.jsp" %>
 

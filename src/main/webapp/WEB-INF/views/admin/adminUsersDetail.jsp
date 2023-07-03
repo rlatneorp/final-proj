@@ -56,7 +56,6 @@
 						<span class="col-4">이메일</span>
 						<input type="text" name="email" class="col-8 pb-1 mb-2 rounded" value="${u.email}">
 						<span class="col-4">전화번호</span>
-<%-- 						<input type="text" name="phone" class="col-8 pb-1 mb-2 rounded" value="${fn:substring(u.phone,0,3)}-${fn:substring(u.phone,3,7)}-${fn:substring(u.phone,7,11)}"> --%>
 						<input type="number" name="phone" class="col-2 pe-0 pb-1 mb-2 rounded" value="${fn:substring(u.phone,0,3)}">
 						<span class="col-1">-</span>
 						<input type="number" name="phone" class="col-2 pe-0 pb-1 mb-2 rounded" value="${fn:substring(u.phone,3,7)}">
@@ -84,8 +83,6 @@
 	
 					
 					<h5 class="mb-3">- 기타정보 -</h5>
-<!-- 					<span class="col-4">출석체크</span> -->
-<%-- 					<input type="number" name="checkDay" class="col-8 pb-1 mb-2 rounded" value="${u.checkDay}"> --%>
 					<span class="col-4">포인트</span>
 					<input type="text" name="pointBefore" class="col-3 mb-2 rounded text-end border" value="${u.point}"readonly>
 					
@@ -97,7 +94,6 @@
 					<button type="button" class="col-2 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">+10</button>
 					<button type="button" class="col-2 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">-10</button>
 					
-<!-- 					<span class="col-8"></span> -->
 					<button type="button" class="col-2 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">+100</button>
 					<button type="button" class="col-2 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">-100</button>
 					
@@ -128,11 +124,11 @@
 				
 				<div class="col-6">
 					<div class="ms-5" style="padding-top:56px;">
-						<c:if test="${img ne null }">
-							<img class="w-100 rounded border" alt="로드 실패" src="${contextPath}/resources/uploadFiles/${img[0].imageRenameName}"/>
+						<c:if test="${!empty img}">
+							<img class="w-75 rounded border" alt="로드 실패" src="${contextPath}/resources/uploadFiles/${img[0].imageRenameName}"/>
 						</c:if>
-						<c:if test="${img eq null }">
-							<img class="w-100 rounded border" alt="로드 실패" src="${contextPath}/resources/images/persons.png"/>
+						<c:if test="${empty img}">
+							<img class="w-75 rounded border" alt="로드 실패" src="${contextPath}/resources/images/persons.png"/>
 						</c:if>
 					</div>
 				</div>

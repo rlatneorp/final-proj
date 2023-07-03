@@ -758,10 +758,10 @@ p b {
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-<%-- 			<c:forEach items="${mainImage}" var="main"> --%>
-<%-- 				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;"> --%>
-<%-- 			</c:forEach> --%>
-			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;">
+			<c:forEach items="${mainImage}" var="main">
+				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
+			</c:forEach>
+<!-- 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
 		</div>
 		<div class="right">
 			<!-- like 유무 가리는 용도 -->
@@ -782,7 +782,12 @@ p b {
 					<fmt:formatNumber value="${ total }" groupingUsed="true"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					<c:if test="${like ne null}">
+						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+					</c:if>
+					<c:if test="${like eq null}">
+						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					</c:if>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
 					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
 					</h2>
@@ -865,10 +870,11 @@ p b {
 
 	<div class="Infobox">
 		<!-- 제품 사진 및 소개 칸 -->
-		<div class="imgbox">
-			<img src="https://recipe1.ezmember.co.kr/cache/shop/2023/04/24/5ba96dd7aef9a27712340b1795b190d3_m.jpg"> 
-		</div>
-		
+		<c:forEach items="${subImage}" var="subImg">
+			<div class="imgbox">
+				<img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto;">
+			</div>
+		</c:forEach>
 <!-- 		<div class="DetailMoreBtn"> -->
 <!-- 			<a>상세정보 더보기</a> -->
 <!-- 		</div> -->
@@ -903,6 +909,7 @@ p b {
 		
 				<div class="textbox" id="textbox">
 					<c:forEach items="${ list }" var="r">
+					<c:if test="${ r ne null}">
 						<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>${r.reviewWriter}
 							<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>
 								<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
@@ -932,6 +939,7 @@ p b {
 													${r.reviewContent}  
 											</div>
 								</div>
+					</c:if>
 				</c:forEach>
 			</div>
 		
@@ -1025,11 +1033,11 @@ p b {
 	                    <div id="ajax-goods-goodsqa-list">
 	                    
 	              	<ul class="goods_accordion_qna">
-              	${q}
+	              	
         <!--  반복 될 부분 -->  
         <c:forEach items="${qna}" var="qna">
              <li class="accordion_q_li js_data_row" >
-                <div class="accordion_q_tit1"> 
+                <div class="accordion_q_tit1" onclick="location.href="QnAdetail.ma?userNo=${qna.usersNo}""> 
                    
                     <div class="qna">
                        <span style="color:#4485d7;">${qna.qnaNo} </span>
@@ -1040,11 +1048,11 @@ p b {
                        <c:if test="${qna.qnaType eq 0 } "> 기타 </c:if>
                        ${qna.qnaTitle}
                     </div>
-                        <span class="writer" style="margin-right: 60px">${qna.nickName}</span>
-                        <span class="rv_cont_date" style="margin-right: 60px">${qna.qnaDate}</span>
+                        <div class="writer" style="display:inline-block; width:100px; margin-left:30px;">${qna.nickName}</div>
+                        <div class="rv_cont_date" style="display:inline-block; width:100px; margin-left:30px; ">${qna.qnaDate}</div>
                         <span class="qna_result" style="float: right;">
-	                        <c:if test="${qna.answerContent ne null}"><span style="color: red;">답변대기중</span></c:if>
-	                       <c:if test="${qna.answerContent eq null}"><span style="color: green;">답변 완료</span></c:if>
+	                        <c:if test="${qna.answerContent eq null}"><span style="color: red;">답변 대기</span></c:if>
+	                       <c:if test="${qna.answerContent ne null}"><span style="color: green;">답변 완료</span></c:if>
                        </span>
                     
                 
@@ -1148,6 +1156,12 @@ p b {
 	
 	window.onload = function(){
 		
+		
+		document.getElementById('moveCart').addEventListener('click', function() {
+			const usersNo = '${loginUser.usersNo}'
+			location.href='${contextPath}/basket.ma?usersNo=' + usersNo;
+		})
+		
 		const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
 		const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 		const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
@@ -1162,14 +1176,6 @@ p b {
 		let totalPriceSet = document.querySelectorAll(".totalPriceSet");
 		const productPrice = document.querySelectorAll(".productPrice");
 		const cartCount = document.querySelectorAll(".cartCount");
-		   
-		const likeYn = document.getElementById('likeYn');
-		const like2 = document.getElementById('like');
-		if(likeYn == null) {
-			like2.innerText ='♡';
-		}else {
-			like2.innerText = '♥';
-		}   
 		
 		$('.accordion_i_tit').click(function(){
 			$('.accordion_i_cont').toggle(400);

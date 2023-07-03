@@ -155,7 +155,7 @@
 											<input type="hidden" name="foodPNo" value="${fn:split(m.foodProductNo,',')[vs.index]}">
 											<input type="hidden" class="nutrient" value="0,0,0,0,0,0,0,0,0">
 											<input type="hidden" class="index" value="${fn:substring(vs.index/4+1,0,1)}">
-											<img class="previewImage" src="${contextPath}/resources/images/Logo.png" width="200px" height="200px" alt="메인메뉴사진">
+											<img class="previewImage" src="${contextPath}/resources/images/logo.png" width="200px" height="200px" alt="메인메뉴사진">
 										</td>
 										<td class="content align-top p-3" style="width:40%">
 											<p style="font-size: 18px;"></p>
@@ -374,7 +374,7 @@
 				tr.querySelector('.content').querySelectorAll('p')[0].innerText = '식품 이름';
 				tr.querySelector('.content').querySelectorAll('p')[1].innerText = '식품 내용';
 				tr.querySelectorAll('.priceBox')[0].value = 0;
-				tr.querySelector('.previewImage').src = '${contextPath}/resources/images/Logo.png';
+				tr.querySelector('.previewImage').src = '${contextPath}/resources/images/logo.png';
 				tr.querySelector('.imageTd').children[0].value = obj.value;
 				tr.querySelector('.nutrient').value = "0,0,0,0,0,0,0,0,0,0";
 				dayNutrient(tr.querySelector('.index').value);

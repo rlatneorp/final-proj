@@ -388,11 +388,11 @@
         select *
         from image join review on review_no = image_divide_no
         where image_type = 7
-                  and product_no = #{productNo}	
+                  and product_no = #{productNo}
         order by review_no
 	</select>
    
-   <select id="reviewAvg" resultType="_int">
+   <select id="reviewAvg" resultType="_integer">
 	  select round(avg(review_Score))
 	  from review 
 	  where product_no = #{productNo}

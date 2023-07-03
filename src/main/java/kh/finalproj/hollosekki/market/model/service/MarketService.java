@@ -269,7 +269,7 @@ public class MarketService {
 		mkDAO.updatePoint(sqlSession, users);
 	}
 
-	public int reviewAvg(int productNo) {
+	public Integer reviewAvg(int productNo) {
 		return mkDAO.reviewAvg(sqlSession, productNo);
 	}
 

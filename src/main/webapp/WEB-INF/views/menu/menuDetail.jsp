@@ -340,14 +340,14 @@ p b {
 	.footer> .button{font-weight: bold;}
 	
 	#modalNick{display: inline-block;}
-	#modalInfo{}
+	#modalInfo{height: 100px;}
 
 .modalMid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 15px; margin: 5px 0px; font-weight: bold;}
 .modalMid::before{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0spx;}
 .modalMid::after{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
 
 .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
-.moCon{height: 150px; border-radius: 10px;}
+.moCon{height: 75px; border-radius: 10px;}
 
 /* 	페이지 */
 	.page_wrap {
@@ -406,7 +406,7 @@ p b {
 			<br>
 			<div id="userInfo">
 				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
-				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block"></p>
+				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
 			</div>
 		</div>
 		<div class="right">
@@ -462,6 +462,7 @@ p b {
 							<br>
 						</div>
 					</div>
+					<input type="hidden" id="foodProductNo" name="foodProductNo" value="${ menu.foodProductNo }">
 					<button type="button" id="buybtn" style="display: inline-block; width: 60%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> <!-- 결제 창으로 -->
 					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
 				</div>
@@ -1040,27 +1041,21 @@ p b {
 			<div class="modal-body">
 				<div id="modalNick">
 					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
-					<p style="font-weight: bold;">${menu.name }</p>
+					<p style="font-weight: bold;">닉네임</p>
 				</div>
 				<div id="modalInfo">
-					<p style="font-weight: bold; font-size: 15px;">영양사 소개</p>
-					${menu.title }
-					<br><br>
-					<p style="font-weight: bold; font-size: 15px;">자격증</p>
-					${menu.career }
+				영양사의 정보를 알려주는 창입니다.
 				</div>
-				<br>
+				
 				<p class="modalMid">등록한 식단표</p>
 				<div class="album p-3 bg-white">
 					<div class="container px-3">
 						<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-4">
-							<c:forEach items="${pList}" var="p">
+							<c:forEach begin="1" end="4">
 								<div class="col">
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray">
-											<h6 style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4 ? "고단백" : "채식")))}</a></h6>
-											<img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" width="155px" height="100px" style="border-radius: 10px;">
-											<input type="hidden" value="${p.productNo}">
+											<h6 style="font-weight: bold;"><a href="menuDetail.mn" style="text-decoration: none; color: black;">식단 명 / 카테고리</a></h6>
 										</div>
 									</div>
 								</div>
@@ -1088,7 +1083,7 @@ p b {
 			</div>
 			<div class="footer">
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="button btn-y" id="subscribe">구매하기</button>
+				<button type="button" class="button btn-y" id="subscribe" onclick="location.href='${contextPath}/payDetail2.ma'">구매하기</button>
 			</div>
 		</div>
 	</div>
@@ -1109,7 +1104,7 @@ p b {
 			</div>
 			<div class="footer">
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속<br>쇼핑하기</button>
-				<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
+				<button type="button" class="button btn-y" id="moveCart" onclick="location.href='${contextPath }/basket.ma'">장바구니로</button>
 			</div>
 		</div>
 	</div>
@@ -1144,6 +1139,10 @@ p b {
 		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
 
+	const productNo = '${menu.foodProductNo}';
+	const usersNo = '${loginUser.usersNo}';
+	
+	
 	const buybtn = document.getElementById('buybtn');
 	buybtn.addEventListener('click', function(){
 		const quantity = document.getElementById('quantity');
@@ -1154,6 +1153,28 @@ p b {
 		
 		buyMenuCount.innerText = quantity.innerText;
 		buyMenuPrice.innerText = total.innerText;
+		
+		console.log("quantity : " + buyMenuCount.innerText);
+		console.log("productNo : " + productNo);
+		console.log("usersNo : " + usersNo);
+		
+		$.ajax({
+            url: "insertCart.ma",
+            async: false,
+            data: {
+        		"productNo":productNo, 
+	        	"cartCount":buyMenuCount.innerText,
+	        	"usersNo":usersNo,
+	        },
+            success: data =>{
+        		console.log("success");
+            },
+            error: data => {
+            	console.log("error");
+            	 alert("카트 담기 실패");
+            }
+        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
+		
 	})
 	
 	const cartbtn = document.getElementById('cartbtn');
@@ -1166,16 +1187,29 @@ p b {
 		
 		cartMenuCount.innerText = quantity.innerText;
 		cartMenuPrice.innerText = total.innerText;
+		
+		console.log("quantity : " + cartMenuCount.innerText);
+		console.log("productNo : " + productNo);
+		console.log("usersNo : " + usersNo);
+		
+		$.ajax({
+	            url: "insertCart.ma",
+	            async: false,
+	            data: {
+	        		"productNo":productNo, 
+		        	"cartCount":cartMenuCount.innerText,
+		        	"usersNo":usersNo,
+		        },
+	            success: data =>{
+            		console.log("success");
+	            },
+	            error: data => {
+	            	console.log("error");
+	            	 alert("카트 담기 실패");
+	            }
+	        })
 	})
-	
-	const moCons = document.getElementsByClassName('moCon');
-	for(const moCon of moCons){
-		moCon.addEventListener('click', function(){
-			const mNo = this.childNodes[5].value
-			location.href = "${contextPath}/menuDetail.mn?mNo=" + mNo; 
-		})
-	}
-	
+
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {
 //         var productNo = $("input[name='productNo']").val();
@@ -1199,7 +1233,7 @@ p b {
 //             	}
 //             },
 //             error: function(data) {
-//                 alert("카트 담기 실패");
+//                
 //             }
 //         });
 //     });

@@ -18,15 +18,18 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.menu.model.exception.MenuException;
 import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
-import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Controller
 public class MenuController {
 	@Autowired
 	private MenuService mService;
+	
+	@Autowired
+	private MarketService mkService;
 	
 	@RequestMapping("menuList.mn")
 	public String menuList(Model model, @RequestParam(value="page", required=false) Integer page,
@@ -71,7 +74,7 @@ public class MenuController {
 	
 	@RequestMapping("menuDetail.mn")
 	public ModelAndView menuDetail(@RequestParam("mNo") int mNo, @RequestParam(value="page", required=false) Integer page,
-							 HttpSession session, ModelAndView mv) {
+							 HttpSession session, ModelAndView mv, Model model) {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		String loginId = null;
@@ -79,6 +82,12 @@ public class MenuController {
 			loginId = loginUser.getUsersId();
 		}
 		boolean yn = false;
+		
+		int productNo = mNo;
+		int result = mkService.selectLike(loginUser.getUsersNo(), productNo);
+	      if(result >= 1) {
+	    	  model.addAttribute("like", result);
+	      }
 		
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);

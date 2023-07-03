@@ -31,8 +31,8 @@ import kh.finalproj.hollosekki.common.ReviewPagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
-import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -695,13 +695,15 @@ public class RecipeController {
 	// 후기 입력
 	@RequestMapping("reviewWrite.rc")
 	public void reviewWrite(@RequestParam("content") String content, @RequestParam("id") String id,
-							@RequestParam("foodNo") String foodNo, HttpServletResponse response) {
+							@RequestParam("foodNo") String foodNo, @RequestParam("score") int score, 
+							HttpServletResponse response) {
 		Review re = new Review();
 		
 		re.setProductNo(Integer.parseInt(foodNo));
 		re.setOrderNo(0);
 		re.setReviewContent(content);
 		re.setReviewWriter(id);
+		re.setReviewScore(score);
 		
 		rService.reviewWrite(re);
 		ArrayList<Review> reList = rService.selectReview(Integer.parseInt(foodNo));

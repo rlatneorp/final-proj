@@ -13,13 +13,17 @@ public class Menu extends Product{
 	private int productPrice;
 	private Double productSale;
 	private String imageRenameName;
+	private String name;
+	private String title;
+	private String career;
+	
 	
 	public Menu() {
 		super();
 	}
 
 	public Menu(String menuName, int menuNo, int menuKind, int menuType, String menuContent, String foodProductNo,
-			String menuTarget, String nutrient, int productPrice, Double productSale, String imageRenameName) {
+			String menuTarget, String nutrient, int productPrice, Double productSale, String imageRenameName, String name, String title, String career) {
 		super();
 		this.menuName = menuName;
 		this.menuNo = menuNo;
@@ -32,6 +36,9 @@ public class Menu extends Product{
 		this.productPrice = productPrice;
 		this.productSale = productSale;
 		this.imageRenameName = imageRenameName;
+		this.name = name;
+		this.title = title;
+		this.career = career;
 	}
 
 	public String getMenuName() {
@@ -122,11 +129,35 @@ public class Menu extends Product{
 		this.imageRenameName = imageRenameName;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public String getCareer() {
+		return career;
+	}
+	
+	public void setCareer(String career) {
+		this.career = career;
+	}
+	
 	@Override
 	public String toString() {
 		return "Menu [menuName=" + menuName + ", menuNo=" + menuNo + ", menuKind=" + menuKind + ", menuType=" + menuType
 				+ ", menuContent=" + menuContent + ", foodProductNo=" + foodProductNo + ", menuTarget=" + menuTarget
-				+ ", nutrient=" + nutrient + ", productPrice=" + productPrice + ", productSale=" + productSale + ",imageRenameName=" + imageRenameName + "]";
+				+ ", nutrient=" + nutrient + ", productPrice=" + productPrice + ", productSale=" + productSale + ",imageRenameName=" + imageRenameName + ",name=" + name + ",title=" + title + ",career=" + career + "]";
 	}
 
 }

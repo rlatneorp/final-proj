@@ -17,11 +17,11 @@ import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.menu.model.exception.MenuException;
 import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
-import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
 @Controller
 public class MenuController {
@@ -43,6 +43,7 @@ public class MenuController {
 		ArrayList<Image> iList = new ArrayList<>();
 		ArrayList<Image> searchImage = new ArrayList<>();
 		
+		
 		if(word == null) {
 			mList = mService.selectMenuList(pi);
 			iList = mService.selectMenuImage();
@@ -51,6 +52,8 @@ public class MenuController {
 			iList = mService.selectMenuImage();
 		}
 		
+		System.out.println(mList);
+		System.out.println(iList);
 		
 		if(word ==null) {
 			model.addAttribute("mList", mList);
@@ -65,7 +68,7 @@ public class MenuController {
 			
 			return "menuList";
 		} else {
-		throw new MenuException("식단 조회를 실패하였습니다.");
+			throw new MenuException("식단 조회를 실패하였습니다.");
 		}
 	}
 	
@@ -80,16 +83,20 @@ public class MenuController {
 		}
 		boolean yn = false;
 		
+		int usersNo = mService.selectUsersNo(mNo);
+		
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
 		ArrayList<Image> miList = mService.menuDetailImage();
+		ArrayList<Product> pList = mService.healtherInfo(usersNo);
 		System.out.println(menu);
 		if(menu != null) {
 			mv.addObject("menu", menu);
 			mv.addObject("thum", thum);
 			mv.addObject("mlList", mlList);
 			mv.addObject("miList", miList);
+			mv.addObject("pList", pList);
 			mv.setViewName("menuDetail");
 			
 			return mv;

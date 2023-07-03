@@ -340,14 +340,14 @@ p b {
 	.footer> .button{font-weight: bold;}
 	
 	#modalNick{display: inline-block;}
-	#modalInfo{height: 100px;}
+	#modalInfo{}
 
 .modalMid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 15px; margin: 5px 0px; font-weight: bold;}
 .modalMid::before{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0spx;}
 .modalMid::after{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
 
 .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
-.moCon{height: 75px; border-radius: 10px;}
+.moCon{height: 150px; border-radius: 10px;}
 
 /* 	페이지 */
 	.page_wrap {
@@ -406,7 +406,7 @@ p b {
 			<br>
 			<div id="userInfo">
 				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
-				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
+				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block"></p>
 			</div>
 		</div>
 		<div class="right">
@@ -1040,21 +1040,27 @@ p b {
 			<div class="modal-body">
 				<div id="modalNick">
 					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
-					<p style="font-weight: bold;">닉네임</p>
+					<p style="font-weight: bold;">${menu.name }</p>
 				</div>
 				<div id="modalInfo">
-				영양사의 정보를 알려주는 창입니다.
+					<p style="font-weight: bold; font-size: 15px;">영양사 소개</p>
+					${menu.title }
+					<br><br>
+					<p style="font-weight: bold; font-size: 15px;">자격증</p>
+					${menu.career }
 				</div>
-				
+				<br>
 				<p class="modalMid">등록한 식단표</p>
 				<div class="album p-3 bg-white">
 					<div class="container px-3">
 						<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-4">
-							<c:forEach begin="1" end="4">
+							<c:forEach items="${pList}" var="p">
 								<div class="col">
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray">
-											<h6 style="font-weight: bold;"><a href="menuDetail.mn" style="text-decoration: none; color: black;">식단 명 / 카테고리</a></h6>
+											<h6 style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4 ? "고단백" : "채식")))}</a></h6>
+											<img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" width="155px" height="100px" style="border-radius: 10px;">
+											<input type="hidden" value="${p.productNo}">
 										</div>
 									</div>
 								</div>
@@ -1162,6 +1168,13 @@ p b {
 		cartMenuPrice.innerText = total.innerText;
 	})
 	
+	const moCons = document.getElementsByClassName('moCon');
+	for(const moCon of moCons){
+		moCon.addEventListener('click', function(){
+			const mNo = this.childNodes[5].value
+			location.href = "${contextPath}/menuDetail.mn?mNo=" + mNo; 
+		})
+	}
 	
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {

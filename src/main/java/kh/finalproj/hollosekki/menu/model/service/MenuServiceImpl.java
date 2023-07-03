@@ -59,4 +59,9 @@ public class MenuServiceImpl implements MenuService{
 	public ArrayList<Menu> searchMenu(String word) {
 		return mDAO.searchMenu(sqlSession, word);
 	}
+	
+	@Override
+	public ArrayList<Menu> menuCategory(int cate) {
+		return mDAO.menuCategory(sqlSession, cate);
+	}
 }

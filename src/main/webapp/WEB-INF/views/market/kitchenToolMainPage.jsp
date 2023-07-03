@@ -289,56 +289,31 @@ ul li {
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
-          
           <div class="productList">
-    		<a href="foodMaterialMarcket.ma?productNo=168"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
-          
           <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
-          
           <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
-          
           <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
           </div>
-          
-          <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-          
-          <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-          
-          <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-        </div>
+  </div>
 </div>
 <br>
 <br>
@@ -346,62 +321,38 @@ ul li {
 <div class="product-slider2">
        
         <div class="product-wrapper">
+        
           <div class="productList">
 			<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
-          </div>
-          
+         </div>
           <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
-          </div>
-          
+         </div>
           <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
-          </div>
-          
+         </div>
           <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
-          </div>
-          
+         </div>
           <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
+			<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
 			<div class="productName">전기 믹서기</div>
 			<div class="originPrice">38,000</div>
 			<div class="discount">32,000</div>
-          </div>
+         </div>
           
-          <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-          
-          <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-          
-          <div class="productList">
-          	<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-        
         </div>
 </div>
 
@@ -418,111 +369,6 @@ ul li {
 		<div class="originPrice">38,000</div>
 		<div class="discount">32,000</div>
 	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-		<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
 	
 </ul>
 </div>

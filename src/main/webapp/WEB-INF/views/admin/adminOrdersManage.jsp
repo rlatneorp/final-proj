@@ -14,7 +14,7 @@
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<div class="mainBox d-inline-block align-top">
+	<div class="mainBox d-inline-block align-top" style="margin-bottom: 100px;">
 		<h4 class="py-4 mb-2">주문관리</h4>
 		<c:if test="${fn:substring(ab.searchText,6,8) ne ''}">
 			<h5 class="mb-4">20${fn:substring(ab.searchText,0,2)}년 ${fn:substring(ab.searchText,3,5)}월 ${fn:substring(ab.searchText,6,8)}일 매출현황</h5>
@@ -22,12 +22,6 @@
 		<c:if test="${fn:substring(ab.searchText,6,8) eq ''}">
 			<h5 class="mb-4">20${fn:substring(ab.searchText,0,2)}년 ${fn:substring(ab.searchText,3,5)}월 매출현황</h5>
 		</c:if>
-		
-		<div class="d-flex justify-content-start mb-5">
-			<div class="d-flex">
-				<button onclick="history.back()" type="button" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">뒤로가기</button>
-			</div>
-		</div>
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>
 				

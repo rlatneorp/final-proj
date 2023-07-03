@@ -539,7 +539,7 @@ public class UsersController {
 		int usersNo = users.getUsersNo();
 		
 		int listCount = uService.orderListCount(usersNo);
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		ArrayList<Orders> orderList = uService.selectOrderList(usersNo, pi);
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		for(Orders order :orderList) {
@@ -599,14 +599,8 @@ public class UsersController {
 		}
 		
 		ArrayList<Options> optValues = new ArrayList<>();
-		//그냥 옵션은 스트링 자체로 저장해버리는 게 나을 거 같음 
-//		Options opt = mkService.selectOptionInfo(productNo);
-		//사진 뽑아 와야 해...
-		//옵션도....흑흑
-		
 		
 		model.addAttribute("orders", orders);
-		System.out.println("orders : " + orders);
 		return "myPage_MyOrderDetail";
 	}
 
@@ -933,7 +927,7 @@ public class UsersController {
 		prop.setProperty("usersNo", userNo);
 		
 		int listCount = uService.orderPeriodCount(prop); //기간에 따른 개수 세기 
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
 		ArrayList<Orders> periodSelec = uService.selectPeriodOrders(prop, pi);
 //		//이름 가져오기 
@@ -985,15 +979,14 @@ public class UsersController {
 		int listCount = 0; PageInfo pi = null; ArrayList<Map<String, Object>> orderSearchList = null;
 		if(start == null) { //전체 조회 
 			listCount = mkService.orderSearchCount(prop); //단어 있는 것 중, 전체 조회 
-			System.out.println("lc : " + listCount);
-			pi = Pagination.getPageInfo(currentPage, listCount, 5);
+			pi = Pagination.getPageInfo(currentPage, listCount, 10);
 			orderSearchList = mkService.orderSearch(prop, pi); //단어 있는 것 중 페이징처리하여 전체 조회
 			System.out.println("orderSearchList" + orderSearchList);
 		} else { //기간이 들어오면,
 			prop.setProperty("start", start);
 			prop.setProperty("end", end);
 			listCount = mkService.orderPeriodSearchCount(prop);
-			pi = Pagination.getPageInfo(currentPage, listCount, 5);
+			pi = Pagination.getPageInfo(currentPage, listCount, 10);
 			orderSearchList = mkService.orderPeriodSearchList(prop, pi);
 			
 			model.addAttribute("start", start);

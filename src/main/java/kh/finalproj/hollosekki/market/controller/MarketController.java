@@ -74,13 +74,7 @@ public class MarketController {
          
          //주문 번호에 대한 optionNo 조회 
          ArrayList<Options> o = mkService.selectOptionInfo(cart.getPreorderNo());
-         System.out.println("주문번호에 해당 되는 옵션 정보는?? : " + o);
-         
          cart.setOptionName(o);
-        
-         
-         
-         
          ArrayList<Options> options = mkService.selectOptions(productNo);
          
          //카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
@@ -268,6 +262,15 @@ public class MarketController {
       return "payDetail";
    }
 
+   @GetMapping("marketProductDetail.ma")
+   public String marketProductDetail(@RequestParam("pNo") int productNo, Model model) {
+	   
+	   ArrayList<Review> r = mkService.selectReview(productNo);
+	   model.addAttribute("productNo", productNo);
+	   model.addAttribute("r", r);
+	   return "redirect:market_detail.ma";
+   }
+   
    @GetMapping("market_detail.ma")
    public String marketdetail(@RequestParam("productNo") int productNo,
 		   				@RequestParam(value="page", required=false) Integer currentPage,
@@ -289,31 +292,35 @@ public class MarketController {
       Product p = mkService.selectProductSet(productNo);
       r.setProductNo(productNo);
 //      r.setReviewScore();
-      System.out.println(qna);
       
       
       
-      ArrayList<Image> mainImage = selectImagList(productNo, 6, 1);
+      ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
+      ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
       int reviewCount = mkService.selectReviewCount(productNo);
       
-      int starAvg = mkService.reviewAvg(productNo);
-      
+      Integer starAvg = mkService.reviewAvg(productNo);
       
       if(mainImage != null) {
     	  model.addAttribute("mainImage", mainImage);
+    	  model.addAttribute("subImage", subImage);
       }
       
       if(list != null) {
          model.addAttribute("list", list);
-         model.addAttribute("starAvg", starAvg);
+//         model.addAttribute("starAvg", starAvg);
       }
       
       if(imglist != null) {
          model.addAttribute("imglist", imglist);
       }
       
+      int result = mkService.selectLike(users.getUsersNo(), productNo);
+      if(result >= 1) {
+    	  model.addAttribute("like", result);
+      }
       
       model.addAttribute("reviewCount", reviewCount);
       model.addAttribute("tool", tool);
@@ -329,7 +336,6 @@ public class MarketController {
    @GetMapping("createqna.ma")
    	public String createqna(HttpSession session, Product p, Model model) {
 	   Users users = (Users)session.getAttribute("loginUser");
-	   System.out.println(p);
 	   model.addAttribute("productNo", p.getProductNo());
 	   return "createQnA";
    }
@@ -373,7 +379,7 @@ public class MarketController {
                   image.setImagePath(returnArr[0]);
                   image.setImageOriginalName(imageFile.getOriginalFilename());
                   image.setImageRenameName(returnArr[1]);
-                  image.setImageLevel(0);
+                  image.setImageLevel(1);
                   if(i==0) {
                      image.setImageLevel(1);
                   }
@@ -763,7 +769,8 @@ public class MarketController {
 	   qna.setUsersNo(users.getUsersNo());
 	   qna.setQnaTitle(qna.getQnaTitle());
 	   qna.setNickName(users.getNickName());
-	   qna.setQnaCategory(qna.getQnaCategory());
+	   qna.setQnaType(qna.getQnaType());
+	   qna.setProductNo(productNo);
 	   int result = mkService.insertQna(qna);
 	   
 	   System.out.println(qna);
@@ -776,10 +783,6 @@ public class MarketController {
 	   
 	   return "redirect:market_detail.ma";
    }
-   
-   
-   
-   
    
    
    @RequestMapping("insertPay.ma")
@@ -797,6 +800,29 @@ public class MarketController {
 	   }
    }
 	
+   @RequestMapping("insertLike.ma")
+   @ResponseBody
+   public String insertLike(@RequestParam("usersNo") int usersNo, @RequestParam("divisionNo") int divisionNo) {
+	   int result = mkService.insertLike(usersNo, divisionNo);
+	   if(result >= 1) {
+		   return "success";
+	   } else {
+		   return "fail";
+	   }
+   }
+   
+   @RequestMapping("deleteLike.ma")
+   @ResponseBody
+   public String deleteLike(@RequestParam("usersNo") int usersNo, @RequestParam("divisionNo") int divisionNo) {
+	   int result = mkService.deleteLike(usersNo, divisionNo);
+	   if(result >= 1) {
+		   return "success";
+	   } else {
+		   return "fail";
+	   }
+   }
+   
+   
 //   public String insertPay(@ModelAttribute Orders orders) {
 //	   
 //	   int selectProductType = mkService.selectProductType(orders.getProductNo());

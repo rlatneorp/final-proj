@@ -22,6 +22,7 @@
 					<h5 class="mt-3 mb-5">- 자주묻는질문 -</h5>
 					<span class="col-12">분류</span>
 					<select name="faqType" class="col-2 mb-3">
+						<option value="-1">공지사항</option>
 						<option value="1">배송</option>
 						<option value="2">결제</option>
 						<option value="3">회원</option>

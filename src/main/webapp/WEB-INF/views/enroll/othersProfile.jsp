@@ -61,8 +61,8 @@
 		box-shadow: 5px 5px 10px rgba(0,0,0,0.10), 0 5px 5px rgba(0,0,0,0.22); transform: translateY(-2px); transition: all 0.2s ease 0s;
 		}
 		
-	.more, .more2, .more3, .more4, .more5{width: 100px; text-align: center; cursor: pointer; margin: 0 auto; margin-top: 20px; margin-bottom: 20px;}
-	.more:hover, .more2:hover, .more3:hover, .more4:hover, .more5:hover{font-weight: bold;}
+	.more, .more2, .more3, .more4, .more5, .more22, .more33{width: 100px; text-align: center; cursor: pointer; margin: 0 auto; margin-top: 20px; margin-bottom: 20px;}
+	.more:hover, .more2:hover, .more3:hover, .more4:hover, .more5:hover, .more22:hover, .more33:hover{font-weight: bold;}
 		
 		
 	/* 1. 작성한 레시피 */
@@ -85,8 +85,8 @@
  		background: #b0daff; 
  		text-align: center;
 		} 
-	.tbody{border-bottom: 1px solid lightgray;}
-	.tbody:hover{background: rgba(176, 218, 255, 0.3); cursor:pointer; }
+	.tbody, .tbody2{border-bottom: 1px solid lightgray;}
+	.tbody:hover, .tbody2:hover{background: rgba(176, 218, 255, 0.3); cursor:pointer; }
 	.board-info{width: 750px; padding-left: 30px; padding-top: 10px; padding-bottom: 10px;}
 	.date-count{font-size: 13px; color: gray; margin-bottom: 0px; margin-top: 5px;}
 	.board-reply{width: 150px; text-align: center;}
@@ -367,6 +367,7 @@
 						<c:if test="${ empty boList }">
 							<div style="margin: 90px; text-align: center; color: gray;">작성한 글이 없습니다.</div>
 						</c:if>
+						<div class="more22"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 					</div>
 				</div>
 				
@@ -387,7 +388,7 @@
 											<c:forEach items="${ allBoardList }" var="ab"> <!-- 모든 게시글리스트 가져와야함..! -->
 												<c:if test="${rp.productNo eq ab.boardNo}"> <!-- 해당게시글의 댓글가져옴.. -->
 													<c:if test="${rp.reviewWriter eq user.nickName }"> <!-- 해당 유저가 작성한 댓글만 가져와야하니까.... -->
-														<tr class="tbody" onclick="location.href='${contextPath}/detailFreeBoard.bo?bId=' + '${ ab.boardNo }' + '&writer=' + '${ user.nickName }' + '&page='">
+														<tr class="tbody2" onclick="location.href='${contextPath}/detailFreeBoard.bo?bId=' + '${ ab.boardNo }' + '&writer=' + '${ user.nickName }' + '&page='">
 															<td class="board-info">
 																<p class="date-count">글제목 : ${ ab.boardTitle }</p>
 																<c:forEach items="${ hList }" var="h">
@@ -409,23 +410,18 @@
 															<td class="board-reply"><div class="reply-count">${ count }</div></td>
 														</tr>
 													</c:if>
-													
 												</c:if>
 											</c:forEach>
 										</c:forEach>
 									</c:if>
-								
 								</tbody>
 							</table>
 							<c:if test="${ empty userRList }">
 								<div style="margin: 90px; text-align: center; color: gray;">작성한 댓글이 없습니다.</div>
 							</c:if>
+							<div class="more33"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 						</div>
 					</div>
-					
-				<!-- 페이징 -->
-					
-					
 				</div>
 				
 				<!-- 메뉴4. 작성 후기 목록 -->
@@ -528,7 +524,6 @@
 						</div>
 					</c:forEach>
 					<div class="more5"><i class="bi bi-chevron-double-down"></i> 더보기</div>
-					
 				</div>
 				
 				<!-- 메뉴5. 북마크 목록 -->
@@ -575,7 +570,6 @@
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 식단이 없습니다.</div>
 					</c:if>
 					<div style="display: flex;">
-					
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.foodProductNo }">
@@ -607,7 +601,6 @@
 								</c:if>
 							</c:forEach>
 						</c:forEach>
-						
 					</div>
 					<div class="more3"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 				</div>
@@ -673,7 +666,7 @@
 							    </c:forEach>
 							    <c:if test="${not follow}">
 							    	<c:if test="${ ing.NICKNAME eq loginUser.nickName }">
-					                	<div class="unfollowDiv"><button class="modalUsers">(나)</button></div>
+					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
 					                </c:if>
 					                <c:if test="${ ing.NICKNAME ne loginUser.nickName }">
 					                	 <div class="unfollowDiv" data-user-no="${ing.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
@@ -743,7 +736,7 @@
 							    </c:forEach>
 							    <c:if test="${not following}">
 							    	<c:if test="${ wo.NICKNAME eq loginUser.nickName }">
-					                	<div class="unfollowDiv"><button class="modalUsers">(나)</button></div>
+					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
 					                </c:if>
 					                <c:if test="${ wo.NICKNAME ne loginUser.nickName }">
 					                	 <div class="unfollowDiv" data-user-no="${wo.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
@@ -756,8 +749,6 @@
 			</div>
 		</div>
 	</div>
-	
-	
 	
 <script>
 	$(()=>{
@@ -870,6 +861,7 @@
 			    }
 			});
 		}
+		
 		// 1. 작성 레시피 더보기
 		$(function(){
 		    $(".div-box").slice(0, 8).show(); // 초기갯수
@@ -882,6 +874,40 @@
 		        $(".div-box:hidden").slice(0, 8).show();
 		        if($(".div-box:hidden").length == 0){ // 컨텐츠 남아있는지 확인
 		        	$(".more").hide(); // 컨텐츠 없을시 버튼숨기기
+		        }
+		    });
+		});
+		
+		// 2. 작성 글 더보기
+		$(function(){
+		    $(".tbody:gt(9)").hide();
+		    if ($(".tbody:hidden").length <= 10) {
+		        $(".more22").hide();
+		    }
+		    
+		    $(".more22").click(function(e) {
+		        e.preventDefault();
+		        $(".tbody:hidden").slice(0, 10).show();
+		        
+		        if ($(".tbody:hidden").length <= 10) {
+		            $(".more22").hide();
+		        }
+		    });
+		});
+		
+		// 3. 작성 댓글 더보기
+		$(function(){
+		    $(".tbody2:gt(9)").hide();
+		    if ($(".tbody2:hidden").length <= 10) {
+		        $(".more33").hide();
+		    }
+		    
+		    $(".more33").click(function(e) {
+		        e.preventDefault();
+		        $(".tbody2:hidden").slice(0, 10).show();
+		        
+		        if ($(".tbody2:hidden").length <= 10) {
+		            $(".more33").hide();
 		        }
 		    });
 		});

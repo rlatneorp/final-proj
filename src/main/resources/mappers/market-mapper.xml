@@ -448,7 +448,7 @@
    
    <!-- 장바구니 상품에 대한 이미지 조회 -->
    <select id="selectImg" resultType="String">
-      select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
+      select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType} and image_level = 0
    </select>
    
    <select id="selectStock" resultType="_int">
@@ -588,5 +588,18 @@
 		<result column="PRODUCTNO" property="productNo"/>
 	</resultMap>
 	
+	<insert id="insertLike">
+		insert into likes (LIKE_NO,USERS_NO,DIVISION_NO,NUMBER_TYPE )
+		values(seq_like_no.nextval, #{usersNo}, #{divisionNo}, 2)
+	</insert>
+	
+	<delete id="deleteLike">
+		delete from likes
+		where users_no=#{usersNo} and division_no=#{divisionNo}
+	</delete>
+	
+	<select id="selectLike" resultType="_int">
+		select count(*) from likes where users_no=#{usersNo} and division_no=#{divisionNo}
+	</select>
 	
 </mapper>

@@ -110,6 +110,8 @@ public class AdminDAO {
 		}
 	}
 
+	
+//	Orders-주문
 	public int getOrdersCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
 		return sqlSession.selectOne("adminMapper.getOrdersCount", ab);
 	}

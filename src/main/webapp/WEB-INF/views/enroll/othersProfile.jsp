@@ -422,8 +422,6 @@
 							<div class="more33"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 						</div>
 					</div>
-					
-					
 				</div>
 				
 				<!-- 메뉴4. 작성 후기 목록 -->
@@ -526,7 +524,6 @@
 						</div>
 					</c:forEach>
 					<div class="more5"><i class="bi bi-chevron-double-down"></i> 더보기</div>
-					
 				</div>
 				
 				<!-- 메뉴5. 북마크 목록 -->
@@ -573,7 +570,6 @@
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 식단이 없습니다.</div>
 					</c:if>
 					<div style="display: flex;">
-					
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.foodProductNo }">
@@ -605,7 +601,6 @@
 								</c:if>
 							</c:forEach>
 						</c:forEach>
-						
 					</div>
 					<div class="more3"><i class="bi bi-chevron-double-down"></i> 더보기</div>
 				</div>
@@ -754,8 +749,6 @@
 			</div>
 		</div>
 	</div>
-	
-	
 	
 <script>
 	$(()=>{

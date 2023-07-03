@@ -285,6 +285,14 @@ public class AdminController {
 	public String adminOrdersManage(HttpServletRequest request,
 								   Model model) {
 		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
+//		if(ab.getSearchText() == null || ab.getSearchText().trim().equals("")) {
+//			Date today = new Date();
+//			SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
+//			String searchText = sdf.format(today);
+//			
+//			ab.setSearchText(null);
+//		}
+		System.out.println(ab);
 		int listCount = aService.getOrdersCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Orders> odList = aService.selectOrdersList(pi, ab);
@@ -301,13 +309,9 @@ public class AdminController {
 		
 		
 	}
-	@GetMapping("adminOrderDetail.ad")
-	public String adminOrderDetail() {
-		return "adminOrderDetail";
-	}
-	@PostMapping("adminOrderUpdate.ad")
-	public String adminOrderUpdate() {
-		return "redirect:adminOrderManage.ad";
+	@GetMapping("adminOrdersDetail.ad")
+	public String adminOrdersDetail() {
+		return "adminOrdersDetail";
 	}
 	
 	

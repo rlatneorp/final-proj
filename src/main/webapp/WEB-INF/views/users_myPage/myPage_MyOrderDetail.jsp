@@ -100,6 +100,18 @@
 							<td>${orders.orderCount }개</td>
 						</tr>
 						<tr>
+							<td class="detail">사용포인트</td>
+							<td id="mPoint">
+								<input type="hidden" id="minusPoint" value="${fn:split(orders.orderInfo, ',')[3]}">
+							</td>
+						</tr>
+						<tr>
+							<td class="detail">적립포인트</td>
+							<td id="pPoint">
+								<input type="hidden" id="plusPoint" value="${fn:split(orders.orderInfo, ',')[2]}">
+							</td>
+						</tr>
+						<tr>
 							<td class="detail">총 결제금액</td>
 							<td><b><fmt:formatNumber type="number" maxFractionDigits="3" value="${orders.totalPrice }"/>원</b></td>
 						</tr>
@@ -108,8 +120,11 @@
 					<label class="orderInfo">주문 상품 정보</label>&nbsp;<label>(총 ${orders.orderCount }개 / <fmt:formatNumber type="number" maxFractionDigits="3" pattern="'\ '#,###" value="${orders.totalPrice }"/>)</label>
 					<br><br>
 					<table>
-						<tr style="border-bottom: 1px solid black;">
-							<td class="order"><img src="${contextPath }/resources/uploadFiles/${orders.imgName}"/></td>
+						<tr id="detailProduct" style="border-bottom: 1px solid black;">
+							<td class="order">
+								<input type="hidden" id="productNo" value="${orders.productNo }">
+								<img src="${contextPath }/resources/uploadFiles/${orders.imgName}"/>
+							</td>
 							<td>
 								${orders.productName }<br>
 								<fmt:formatNumber type="number" maxFractionDigits="3" pattern="'\ '#,###" value="${orders.totalPrice }"/> (${orders.orderCount }개)<br><br>
@@ -183,9 +198,15 @@
 			const sale = document.getElementById('sale');
 			const price = parseInt(document.getElementById('price').value.split(':')[1]).toLocaleString();
 			const sal = document.getElementById('sal').value.split(':')[1];
+			const plusPoint = document.getElementById('plusPoint').value.split(':')[1];
+			const pPoint = document.getElementById('pPoint');
+			const minusPoint = document.getElementById('minusPoint').value.split(':')[1];
+			const mPoint = document.getElementById('mPoint');
 			
 			originPrice.innerText = price + '원';
 			sale.innerText = sal;
+			pPoint.innerText = plusPoint + 'p';
+			mPoint.innerText = minusPoint + 'p';
 			
 			//배송지 정보 
 			const recipient = document.getElementById('addresses').value.split(',')[0];
@@ -202,6 +223,12 @@
 			
 			console.log(addresses);
 			addresses.split
+			
+			document.getElementById('detailProduct').addEventListener('click', () => {
+				const productNo = document.getElementById('productNo').value;
+				location.href='${contextPath}/marketProductDetail.ma?pNo=' + productNo;
+				
+			})
 		}
 	</script>
 </body>

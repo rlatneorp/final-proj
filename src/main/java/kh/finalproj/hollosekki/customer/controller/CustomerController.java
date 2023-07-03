@@ -119,6 +119,7 @@ public class CustomerController {
 			map.put("qnaContent", q.getQnaContent());
 			map.put("qnaTitle", q.getQnaTitle());
 			map.put("usersNo", usersNo);
+			map.put("qnaType", q.getQnaType());
 //			map.put("adminNO", adminNo);
 			
 			int result = csService.qnaInsert(map);

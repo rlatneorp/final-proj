@@ -89,10 +89,14 @@ public class MenuController {
 		
 		int usersNo = mService.selectUsersNo(mNo);
 		int productNo = mNo;
-		int result = mkService.selectLike(loginUser.getUsersNo(), productNo);
-	      if(result >= 1) {
-	    	  model.addAttribute("like", result);
-	      }
+		
+		if(loginUser != null) {
+			int result = mkService.selectLike(loginUser.getUsersNo(), productNo);
+		      if(result >= 1) {
+		    	  model.addAttribute("like", result);
+		      }
+		}
+		
 		
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);

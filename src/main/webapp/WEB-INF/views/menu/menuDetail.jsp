@@ -411,7 +411,7 @@ p b {
 		</div>
 		<div class="right">
 			<!-- like 유무 가리는 용도 -->
-			<input type="hidden" id="likeYn" value="${like }">
+			<input type="hidden" id="likeYn" value="${ like }">
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center">
@@ -423,11 +423,13 @@ p b {
 						<fmt:formatNumber value="${menu.productPrice}"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<c:if test="${like ne null}">
-						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
-					</c:if>
-					<c:if test="${like eq null}">
-						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					<c:if test="${ loginUser != null }">
+						<c:if test="${like ne null}">
+							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+						</c:if>
+						<c:if test="${like eq null}">
+							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+						</c:if>
 					</c:if>
 				</div>
 				<div>

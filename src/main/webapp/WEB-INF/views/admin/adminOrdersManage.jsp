@@ -140,7 +140,6 @@
 		window.onload = () =>{
 //			td 클릭시 모달창 띄우기 이벤트
 			const tds = document.getElementsByTagName('table')[0].querySelectorAll('td');
-			console.log(tds);
 			const modal = document.getElementById('ordersModal');
 			for(let i = 0; i < tds.length; i++){
 				tds[i].setAttribute('data-bs-toggle', 'modal');

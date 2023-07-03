@@ -298,20 +298,20 @@ public class MarketController {
       Product p = mkService.selectProductSet(productNo);
       r.setProductNo(productNo);
 //      r.setReviewScore();
-      System.out.println(qna);
       
       
       
-      ArrayList<Image> mainImage = selectImagList(productNo, 6, 1);
+      ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
+      ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
       int reviewCount = mkService.selectReviewCount(productNo);
       
-      int starAvg = mkService.reviewAvg(productNo);
-      
+      Integer starAvg = mkService.reviewAvg(productNo);
       
       if(mainImage != null) {
     	  model.addAttribute("mainImage", mainImage);
+    	  model.addAttribute("subImage", subImage);
       }
       
       if(list != null) {
@@ -381,7 +381,7 @@ public class MarketController {
                   image.setImagePath(returnArr[0]);
                   image.setImageOriginalName(imageFile.getOriginalFilename());
                   image.setImageRenameName(returnArr[1]);
-                  image.setImageLevel(0);
+                  image.setImageLevel(1);
                   if(i==0) {
                      image.setImageLevel(1);
                   }
@@ -785,10 +785,6 @@ public class MarketController {
 	   
 	   return "redirect:market_detail.ma";
    }
-   
-   
-   
-   
    
    
    @RequestMapping("insertPay.ma")

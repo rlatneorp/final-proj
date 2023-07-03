@@ -27,6 +27,7 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
 import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
@@ -52,11 +53,7 @@ public class AdminController {
 	@Autowired
 	private AdminService aService;
 	
-	@GetMapping("adminMain.ad")
-	public String adminMain(Model model) {
-//		ArrayList<AdminMain> amList = aService.adminMainWeek();
-		return "adminMain";
-	}
+
 	
 	@PostMapping("adminDeleteSelects.ad")
 	public String adminDeleteSelects(@RequestParam("selectDelete") ArrayList<Integer> selDeletes,
@@ -255,6 +252,57 @@ public class AdminController {
 		}else {
 			throw new AdminException("삭제 실패 (type : "+type);
 		}
+	}
+	
+	
+//	main-메인화면
+	@GetMapping("adminMain.ad")
+	public String adminMain(Model model) {
+		
+//		매출정보
+		AdminBasic ab = new AdminBasic();
+		ab.setNumber(7);
+		ArrayList<Sales> sDayList = aService.selectSalesList(null, ab);
+		ab.setKind(1);
+		ArrayList<Sales> sMonthList = aService.selectSalesList(null, ab);
+		for(int i = 0; i < sDayList.size(); i++) {
+			Sales daySales = sDayList.get(i);
+			for(int j = 0; j < sMonthList.size(); j++) {
+				if(daySales.getDateKind().substring(0,5).equals(sMonthList.get(j).getDateKind())) {
+					daySales.setMonthData(sMonthList.get(j).getSales());
+					break;
+				}
+			}
+		}
+		
+//		레시피정보
+		ab.setType(1);
+		int totalRecipeCount = aService.getRecipeCount(ab);
+		ArrayList<AdminMain> recipeList = aService.selectAdminMainList(ab);
+		int minus = 0;
+		for(AdminMain am : recipeList) {
+			am.setRecipeTotalCount(totalRecipeCount-minus);
+			minus += am.getRecipeDayCount();
+		}
+		
+//		회원정보
+		ab.setType(2);
+		int totalUsersCount = aService.getUsersCount(ab);
+		ArrayList<AdminMain> usersList = aService.selectAdminMainList(ab);
+		minus = 0;
+		for(AdminMain am : usersList) {
+			am.setEnrollTotalCount(totalUsersCount-minus);
+			minus += am.getEnrollDayCount();
+		}
+		
+//		(식단)구독정보
+		
+				
+		System.out.println(sDayList);
+		System.out.println(recipeList);
+		System.out.println(usersList);
+		
+		return "adminMain";
 	}
 	
 	

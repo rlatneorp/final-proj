@@ -462,6 +462,7 @@ p b {
 							<br>
 						</div>
 					</div>
+					<input type="hidden" id="foodProductNo" name="foodProductNo" value="${ menu.foodProductNo }">
 					<button type="button" id="buybtn" style="display: inline-block; width: 60%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> <!-- 결제 창으로 -->
 					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
 				</div>
@@ -1103,7 +1104,7 @@ p b {
 			</div>
 			<div class="footer">
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속<br>쇼핑하기</button>
-				<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
+				<button type="button" class="button btn-y" id="moveCart" onclick="location.href='${contextPath }/basket.ma'">장바구니로</button>
 			</div>
 		</div>
 	</div>
@@ -1138,6 +1139,10 @@ p b {
 		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
 
+	const productNo = '${menu.foodProductNo}';
+	const usersNo = '${loginUser.usersNo}';
+	
+	
 	const buybtn = document.getElementById('buybtn');
 	buybtn.addEventListener('click', function(){
 		const quantity = document.getElementById('quantity');
@@ -1160,7 +1165,30 @@ p b {
 		
 		cartMenuCount.innerText = quantity.innerText;
 		cartMenuPrice.innerText = total.innerText;
+		
+		console.log("quantity : " + cartMenuCount.innerText);
+		console.log("productNo : " + productNo);
+		console.log("usersNo : " + usersNo);
+		
+		$.ajax({
+	            url: "insertCart.ma",
+	            async: false,
+	            data: {
+	        		"productNo":productNo, 
+		        	"cartCount":cartMenuCount.innerText,
+		        	"usersNo":usersNo,
+		        },
+	            success: data =>{
+            		console.log("success");
+	            },
+	            error: data => {
+	            	console.log("error");
+	            }
+	        })
 	})
+
+	
+	
 	
 	
 // 	$(document).ready(function() {

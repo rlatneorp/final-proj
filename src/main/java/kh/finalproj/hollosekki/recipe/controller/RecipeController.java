@@ -641,6 +641,8 @@ public class RecipeController {
 		
 		ArrayList<Recipe> rList = rService.recentRecipeList();
 		
+		System.out.println(rList);
+		
 		model.addAttribute("rList", rList);
 		
 		return rList;
@@ -664,6 +666,8 @@ public class RecipeController {
 	public ArrayList<Recipe> recipeIngredient(HttpServletRequest request, Model model, @RequestParam("ingredient") String ingredient){
 		
 		ArrayList<Recipe> rList = rService.ingredientSearch(ingredient);
+		
+		System.out.println(rList);
 		
 		return rList;
 	}

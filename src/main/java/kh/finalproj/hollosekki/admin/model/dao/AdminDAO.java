@@ -121,6 +121,11 @@ public class AdminDAO {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("adminMapper.selectOrdersList", ab, rowBounds);
 	}
+
+	public Orders selectOrders(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return sqlSession.selectOne("adminMapper.selectOrders", ab);
+	}
+	
 	
 //	Users-회원
 	public int getUsersCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
@@ -429,6 +434,7 @@ public class AdminDAO {
 	public int updateQNA(SqlSessionTemplate sqlSession, QNA qna) {
 		return sqlSession.update("adminMapper.updateQNA", qna);
 	}
+
 
 
 	

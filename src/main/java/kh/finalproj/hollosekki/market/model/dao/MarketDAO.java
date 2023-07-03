@@ -377,6 +377,8 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectLike", map);
 	}
 
+	public Cart selectCart(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("marketMapper.selectCart", usersNo);
 	public ArrayList<QA> qnalist(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return (ArrayList)sqlSession.selectList("marketMapper.qnalist", map);
 	}

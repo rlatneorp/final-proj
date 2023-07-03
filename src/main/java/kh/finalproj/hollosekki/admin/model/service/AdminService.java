@@ -100,6 +100,8 @@ public class AdminService {
 		return aDAO.selectSalesList(sqlSession, pi, ab);
 	}
 	
+	
+//	Orders-주문
 	public int getOrdersCount(AdminBasic ab) {
 		return aDAO.getOrdersCount(sqlSession, ab);
 	}
@@ -108,6 +110,11 @@ public class AdminService {
 		return aDAO.selectOrdersList(sqlSession, pi, ab);
 	}
 
+	public Orders selectOrders(AdminBasic ab) {
+		return aDAO.selectOrders(sqlSession, ab);
+	}
+
+	
 //	Users-회원
 	public int getUsersCount(AdminBasic ab) {
 		return aDAO.getUsersCount(sqlSession, ab);
@@ -357,6 +364,7 @@ public class AdminService {
 	public int updateQNA(QNA qna) {
 		return aDAO.updateQNA(sqlSession, qna);
 	}
+
 
 
 

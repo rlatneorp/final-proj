@@ -49,4 +49,8 @@ public class MenuDAO {
 		return (ArrayList)sqlSession.selectList("menuMapper.searchMenu", word);
 	}
 
+	public ArrayList<Menu> menuCategory(SqlSessionTemplate sqlSession, int cate) {
+		return (ArrayList)sqlSession.selectList("menuMapper.menuCategory", cate);
+	}
+
 }

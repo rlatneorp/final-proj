@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.menu.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kh.finalproj.hollosekki.common.Pagination;
@@ -94,6 +96,15 @@ public class MenuController {
 		} else {
 			throw new MenuException("식단 상세조회를 실패하였습니다.");
 		}
+	}
+	
+	// 카테고리 검색
+	@RequestMapping(value="menuCategory.mn", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ArrayList<Menu> menuCategory(HttpServletRequest request, Model model, @RequestParam("cate") int cate){
 		
+		ArrayList<Menu> mList = mService.menuCategory(cate);
+		
+		return mList;
 	}
 }

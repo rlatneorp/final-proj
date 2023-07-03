@@ -268,6 +268,15 @@ public class MarketController {
       return "payDetail";
    }
 
+   @GetMapping("marketProductDetail.ma")
+   public String marketProductDetail(@RequestParam("pNo") int productNo, Model model) {
+	   
+	   ArrayList<Review> r = mkService.selectReview(productNo);
+	   model.addAttribute("productNo", productNo);
+	   model.addAttribute("r", r);
+	   return "redirect:market_detail.ma";
+   }
+   
    @GetMapping("market_detail.ma")
    public String marketdetail(@RequestParam("productNo") int productNo,
 		   				@RequestParam(value="page", required=false) Integer currentPage,

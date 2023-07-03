@@ -324,10 +324,6 @@ p b {
 /* 	width: 100%; */
 /* } */
 
- .textbox:hidden { 
- 	width: 100%; 
- } 
-
 
 .reviewComment {
 	display: inline-block;
@@ -796,12 +792,12 @@ p b {
 						<div class="productSet">
 							<div style="text-align: center">
 								<span style="font-size: 40px; font-weight: 400; color:#4485d7; class="reviewStar">
-									<c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
-									<c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
-									<c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>
-									<c:if test="${starAvg  eq  2 }" >★★☆☆☆&nbsp&nbsp(2)</c:if>
-									<c:if test="${starAvg  eq  1 }" >★☆☆☆☆&nbsp&nbsp(1)</c:if>
-									<c:if test="${starAvg  eq  0 }" >☆☆☆☆☆&nbsp&nbsp(0)</c:if>
+										<c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
+										<c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
+										<c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>
+										<c:if test="${starAvg  eq  2 }" >★★☆☆☆&nbsp&nbsp(2)</c:if>
+										<c:if test="${starAvg  eq  1 }" >★☆☆☆☆&nbsp&nbsp(1)</c:if>
+										<c:if test="${starAvg  eq  0 }" >☆☆☆☆☆&nbsp&nbsp(0)</c:if>
 								</span>
 							</div>
 	                        <dl class="info_delivery">
@@ -906,43 +902,44 @@ p b {
 					       <p style="margin:auto; text-align:center; font-weight: 400; color: #999999; font-size: 15px">등록된 후기가 없습니다.</p>
 					  </c:if>
 					  
-		
-				<div class="textbox" id="textbox">
-					<c:forEach items="${ list }" var="r">
-					<c:if test="${ r ne null}">
-						<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>${r.reviewWriter}
-							<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>
-								<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
-								<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
-								<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
-								<c:if test="${r.reviewScore  eq  2 }" >★★☆☆☆</c:if>
-								<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
-								<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
-							</span>
-							<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
-						</div>
-						
-<%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
-		
-				
-							<div class="reviewPhoto" style="padding-left:10px"">
-								<ul>
-									<c:forEach items="${imglist}" var="img" >
-										<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
-											<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
-										</c:if>
-									</c:forEach>
-								</ul>
+	 <div class="textbox" id="textbox"> 
+			<c:forEach items="${ list }" var="r">
+					<div class="reviews" >
+						<c:if test="${ r ne null}">
+							<div class="nickName" style="font-size:18px; font-weight:400; padding:10px;">${r.reviewWriter}
+								<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>
+									<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
+									<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
+									<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
+									<c:if test="${r.reviewScore  eq  2 }" >★★☆☆☆</c:if>
+									<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
+									<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
+								</span>
+								<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
 							</div>
-								<div style="display: inline-block; width: 100%;">
-											<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-													${r.reviewContent}  
-											</div>
+							
+	<%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
+			
+					
+								<div class="reviewPhoto" style="padding-left:10px">
+									<ul>
+										<c:forEach items="${imglist}" var="img" >
+											<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
+												<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
+											</c:if>
+										</c:forEach>
+									</ul>
 								</div>
-					</c:if>
+									<div style="display: inline-block; width: 100%;">
+												<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+														${r.reviewContent}  
+												</div>
+									</div>
+						</c:if>
+					</div>
 				</c:forEach>
-			</div>
-		
+		</div>
+
 			<div class="moreView">더보기</div>
 				
 	<div class="productBox">
@@ -1028,7 +1025,7 @@ p b {
 					</li>
 				</ul>
 				<li id="page-qna" class="accordion_i_li">
-	                <a class="accordion_i_tit3">문의<span>(1)</span></a>
+	                <a class="accordion_i_tit3">문의<span>( ${ qnaCount } )</span></a>
 	                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
 	                    <div id="ajax-goods-goodsqa-list">
 	                    
@@ -1036,17 +1033,20 @@ p b {
 	              	
         <!--  반복 될 부분 -->  
         <c:forEach items="${qna}" var="qna">
-             <li class="accordion_q_li js_data_row" >
-                <div class="accordion_q_tit1" onclick="location.href="QnAdetail.ma?userNo=${qna.usersNo}""> 
+             <li class="accordion_q_li js_data_row" onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
+                <div class="accordion_q_tit1"> 
                    
                     <div class="qna">
                        <span style="color:#4485d7;">${qna.qnaNo} </span>
-                     |&nbsp <c:if test="${qna.qnaType eq 1 } "> 배송</c:if>
-                       <c:if test="${qna.qnaType eq 2 } "> 결제 </c:if>
-                       <c:if test="${qna.qnaType eq 3 } "> 회원 </c:if>
-                       <c:if test="${qna.qnaType eq 4 } "> 상품 </c:if>
-                       <c:if test="${qna.qnaType eq 0 } "> 기타 </c:if>
-                       ${qna.qnaTitle}
+                       |&nbsp
+                       <span style="color: #216dcd; font-weight: 400;">
+							   <c:if test="${qna.qnaType eq 1 }">[배송]</c:if>
+		                       <c:if test="${qna.qnaType eq 2 }">[결제]</c:if>
+		                       <c:if test="${qna.qnaType eq 3 }">[회원]</c:if>
+		                       <c:if test="${qna.qnaType eq 4 }">[상품]</c:if>
+		                       <c:if test="${qna.qnaType eq 0 }">[기타]</c:if>
+                       </span>
+                        ${qna.qnaTitle}
                     </div>
                         <div class="writer" style="display:inline-block; width:100px; margin-left:30px;">${qna.nickName}</div>
                         <div class="rv_cont_date" style="display:inline-block; width:100px; margin-left:30px; ">${qna.qnaDate}</div>
@@ -1065,10 +1065,12 @@ p b {
 			</ul>
 				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
 <%-- 					<c:if test="${ loginUser != null}"> --%>
+					<c:if test="${ loginUser ne null }">
 					    <div class="review_btn_wr">
 					    <a href="createqna.ma?productNo=${p.productNo}">
 					    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
 					    </div>
+					</c:if>
 <%-- 				    </c:if> --%>
 				</div>
 <!-- 								<div class="pagination" style="display: block"> -->
@@ -1108,7 +1110,6 @@ p b {
 							</div>
 						</div>
 					</div>
-	          	</li>
 			</div>
 		</div>
         	<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1126,7 +1127,7 @@ p b {
 	        			</div>
 	        			<div class="footer" style="text-align:center; height: 50px;">
 								<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
-								<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
+								<button type="button" class="button btn-y" id="moveCart" onclick="location.href='basket.ma'">장바구니로</button>
 	<!--         				<button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
 	<!--         				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button> -->
 	        			</div>
@@ -1150,7 +1151,7 @@ p b {
 	        		</div>
 	        	</div>
 	        </div>
-		</div>
+
 <br><br><br>
 	<script>
 	
@@ -1380,9 +1381,7 @@ p b {
 			var productNo = null;
 			
 			$(function(){
-				console.log($(".textbox").slice(0, 3));
-				
-			    $(".textbox").slice(1, 3).show(); // 초기갯수
+			    $(".textbox").slice(0, 3).show(); // 초기갯수
 			    $(".moreView").click(function(e){ // 클릭시 more
 			        e.preventDefault();
 			        $(".textbox").wrapAll().show(); // 클릭시 more 갯수 지저정
@@ -1558,6 +1557,7 @@ p b {
 					+							rev.reviewContent
 					+					'</div>'
 					+		'</div>';
+					
 					$('.textbox').append(result);
 			    					for(let img  of data.imgList){
 			    						if(rev.reviewNo == img.imageDivideNo){

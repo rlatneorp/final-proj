@@ -370,11 +370,38 @@ public class MarketDAO {
 		return sqlSession.delete("marketMapper.deleteLike", map);
 	}
 
-	public int selectLike(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
+	public Integer selectLike(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
 		Map<Object, Object> map = new HashMap<>();
 		map.put("usersNo", usersNo);
 		map.put("divisionNo", productNo);
 		return sqlSession.selectOne("marketMapper.selectLike", map);
+	}
+
+	public Cart selectCart(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("marketMapper.selectCart", usersNo);
+	}
+	public ArrayList<QA> qnalist(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return (ArrayList)sqlSession.selectList("marketMapper.qnalist", map);
+	}
+	//상품 메인 창에서 카테고리 별 조회 
+	public ArrayList<Product> selectViewWhole(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewWhole");
+	}
+
+	public ArrayList<Product> selectViewFood(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewFood");
+	}
+
+	public ArrayList<Menu> selectViewMenu(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewMenu");
+	}
+
+	public ArrayList<Ingredient> selectViewIngredient(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewIngredient");
+	}
+
+	public ArrayList<Tool> selectViewTool(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewTool");
 	}
 
 

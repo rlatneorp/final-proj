@@ -10,6 +10,7 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
@@ -71,31 +72,40 @@ public interface UsersService {
 	
 	int updateAddress(ShippingAddress sa);
 	
-	//주문 리스트 조회 
+	//�ֹ� ����Ʈ ��ȸ 
 	ArrayList<Orders> selectOrderList(int usersNo, PageInfo pi);
 	
-	//페이징~
+	//����¡~
 	int orderListCount(int usersNo);
 	
-	//주문 상세 페이지 조회 
+	//�ֹ� �� ������ ��ȸ 
 	Orders selectDetailOrder(int orderNo);
 	
-	//기간 별 구매 내역 조회 
+	//�Ⱓ �� ���� ���� ��ȸ 
 	ArrayList<Orders> selectPeriodOrders(Properties prop, PageInfo pi);
 
-	//기간 별 구매 내역 수 
+	//�Ⱓ �� ���� ���� �� 
 	int orderPeriodCount(Properties prop);
-	//검색어 일치하는 것 중 수 조회 
+	//�˻��� ��ġ�ϴ� �� �� �� ��ȸ 
 	int orderSearchCount(Properties prop);
-	//검색어 일치하는 리스트 조회 
+	//�˻��� ��ġ�ϴ� ����Ʈ ��ȸ 
 	ArrayList<Orders> orderSearch(Properties prop, PageInfo pi);
 	
 	int getPointCount(int usersNo);
 	
-	// 포인트 내역 조회
+	// ����Ʈ ���� ��ȸ
 	ArrayList<HashMap<String, Object>> selectPoint(int usersNo, PageInfo pi);
 
-	int deletePoint(HashMap<String, Object> map);
+//	int deletePoint(HashMap<String, Object> map);
+//
+//	int updatePoint(HashMap<String, Object> map);
+
+	int getReviewCount(HashMap<String, Object> map);
+	
+	ArrayList<HashMap<String, Object>> selectReview(HashMap<String, Object> map, PageInfo pi);
+
+	Review selectDetailReview(int reviewNo);
+
 
 
 

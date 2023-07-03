@@ -13,13 +13,15 @@ public class Qna {
 	private String answerContent;
 	private char qnaStatus;
 	private int qnaType;
+	private int productNo;
+	private int orderNo;
 	
 	public Qna() {
 		super();
 	}
 
 	public Qna(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, int adminNo, Date answerDate,
-			String answerContent, char qnaStatus, int qnaType) {
+			String answerContent, char qnaStatus, int qnaType, int productNo, int orderNo) {
 		super();
 		this.qnaNo = qnaNo;
 		this.usersNo = usersNo;
@@ -31,6 +33,8 @@ public class Qna {
 		this.answerContent = answerContent;
 		this.qnaStatus = qnaStatus;
 		this.qnaType = qnaType;
+		this.productNo = productNo;
+		this.orderNo = orderNo;
 	}
 
 	public int getQnaNo() {
@@ -113,14 +117,31 @@ public class Qna {
 		this.qnaType = qnaType;
 	}
 
+	public int getProductNo() {
+		return productNo;
+	}
+
+	public void setProductNo(int productNo) {
+		this.productNo = productNo;
+	}
+
+	public int getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Qna [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
 				+ ", qnaContent=" + qnaContent + ", adminNo=" + adminNo + ", answerDate=" + answerDate
-				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType + "]";
+				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType
+				+ ", productNo=" + productNo + ", orderNo=" + orderNo + "]";
 	}
 
-	
+
 
 	
 }

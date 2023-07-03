@@ -123,9 +123,6 @@ public class MarketController {
              cart.setImgName(imgName);
           }
       }
-//      System.out.println("optValues " + optValues);
-//      model.addAttribute("optValues", optValues);
-      System.out.println("cartList : " + cartList);
       model.addAttribute("cartList", cartList);
       return "basket";
    }
@@ -201,6 +198,49 @@ public class MarketController {
       model.addAttribute("optValues", optValues);
       return "payDetail";
    }
+   
+   @RequestMapping("payDetail2.ma")
+   public String payDetail2(HttpSession session, Model model) {
+	   Users users = (Users)session.getAttribute("loginUser");
+	   Menu menus = null;
+	   ArrayList<Product> productInfo = new ArrayList<>(); ArrayList<Cart> checkedCart = new ArrayList<>(); ArrayList<Cart> checkedCartList = new ArrayList<>();
+	   
+	   Cart cart = mkService.selectCart(users.getUsersNo());
+	   int preNo = cart.getPreorderNo();
+	   
+	   checkedCart = mkService.checkCartList(users.getUsersNo(), preNo);
+	   
+	   System.out.println(checkedCart);
+	   
+	   for(Cart checCart : checkedCart) {
+     	  int productNo = checCart.getProductNo();
+     	  menus = mkService.selectMenu(productNo);
+     	  
+     	  productInfo = mkService.selectProductInfo(productNo);
+           int price = 0; int sum = 0; int sale = 0;
+           for (Product product : productInfo) {
+             price = product.getProductPrice();
+             checCart.setProductPrice(price); 
+             checCart.setSale(product.getProductSale());
+           }
+           int size = mkService.plusResultCount(preNo);
+           sum = size * price;
+           checCart.setSum(sum);
+         
+         if (menus != null) { //이미지 타입 : 4 (식단)
+         	  checCart.setProductName(menus.getMenuName());
+         	  String imgName = mkService.selectImg(productNo, 4);
+         	  checCart.setImgName(imgName);
+           }
+     	  
+           checkedCartList.add(checCart);
+       } //checCart for문 끝 
+	   
+	   model.addAttribute("point", users.getPoint());
+	   model.addAttribute("checkedCartList", checkedCart );
+	   
+	   return "payDetail";
+   }
 
    @GetMapping("marketProductDetail.ma")
    public String marketProductDetail(@RequestParam("pNo") int productNo, Model model) {
@@ -250,17 +290,17 @@ public class MarketController {
       
       if(list != null) {
          model.addAttribute("list", list);
-//         model.addAttribute("starAvg", starAvg);
+         model.addAttribute("starAvg", starAvg);
       }
       
       if(imglist != null) {
          model.addAttribute("imglist", imglist);
       }
       
-      int result = mkService.selectLike(users.getUsersNo(), productNo);
-      if(result >= 1) {
-    	  model.addAttribute("like", result);
-      }
+////      Integer result = mkService.selectLike(users.getUsersNo(), productNo);
+//      if(result >= 1) {
+//    	  model.addAttribute("like", result);
+//      }
       
       model.addAttribute("reviewCount", reviewCount);
       model.addAttribute("tool", tool);
@@ -724,6 +764,19 @@ public class MarketController {
 	   return "redirect:market_detail.ma";
    }
    
+   @GetMapping("QnAdetail.ma")
+   public String QnAdetail(@RequestParam ("usersNo") int usersNo, @RequestParam ("productNo") int productNo, @RequestParam("qnaNo") int qnaNo,Model model) {
+	   HashMap<String, Object> map = new HashMap<String, Object>();
+	   map.put("usersNo", usersNo);
+	   map.put("productNo", productNo);
+	   map.put("qnaNo", qnaNo);
+	   ArrayList<QA> qnaList = mkService.qnalist(map);
+	   if(qnaList != null) {
+		   model.addAttribute("qnaList",qnaList);
+	   }
+	   return "QnAdetail";
+   }
+   
    
    @RequestMapping("insertPay.ma")
    @ResponseBody
@@ -761,6 +814,80 @@ public class MarketController {
 		   return "fail";
 	   }
    }
+   
+   //전체보기
+   @RequestMapping("viewWhole.ma")
+   public String viewWhole(Model model) {
+	   ArrayList<Product> list = mkService.selectViewWhole();
+	   
+	   Food food = null; Tool tool = null; Ingredient ingre = null;
+	   String img = null;
+	   
+	   for(Product lists : list) {
+		   int productNo = lists.getProductNo();
+		   System.out.println("productNo : " + productNo);
+		   food = mkService.selectFood(productNo); tool = mkService.selectTool(productNo); ingre = mkService.selectIngrdient(productNo);
+		   if(food != null) {
+			   lists.setProductName(food.getFoodName());
+			   img = mkService.selectImg(productNo, 3);
+		   } else if (tool != null) {
+			   System.out.println("tool들어왔다" + tool.getToolName()) ;
+			   lists.setProductName(tool.getToolName());
+			   img = mkService.selectImg(productNo, 6);
+		   } else if (ingre != null) {
+			   lists.setProductName(ingre.getIngredientName());
+			   img = mkService.selectImg(productNo, 5);
+		   }
+		   if(img != null) {
+			   lists.setProductImg(img);
+		   }
+	   }
+	   System.out.println("list : " + list);
+	   model.addAttribute("list", list);
+	   return "kitchenToolMainPage";
+   }
+   
+   //식품
+   @RequestMapping("viewFood.ma")
+   public String viewFood(Model model) {
+	   ArrayList<Product> list = mkService.selectViewFood();
+	   //Menu
+	   model.addAttribute("list", list);
+	   System.out.println("list : " + list);
+	   return "kitchenToolMainPage";
+   }
+   
+//   //식단
+//   @RequestMapping("viewMenu.ma")
+//   public String viewMenu(Model model) {
+//	   ArrayList<Menu> list = mkService.selectViewMenu();
+//	   //Tool
+//	   model.addAttribute("list", list);
+//	   System.out.println("list : " + list);
+//	   return "kitchenToolMainPage";
+//   }
+   
+   //식재료
+   @RequestMapping("viewIngredient.ma")
+   public String viewIngredient(Model model) {
+	   
+	   ArrayList<Ingredient> list = mkService.selectViewIngredient();
+	   //Ingredient
+	   model.addAttribute("list", list);
+	   System.out.println("list : " + list);
+	   return "kitchenToolMainPage";
+   }
+   
+   //주방용품
+   @RequestMapping("viewTool.ma")
+   public String viewTool(Model model) {
+	   ArrayList<Tool> list = mkService.selectViewTool();
+	   //Ingredient
+	   model.addAttribute("list", list);
+	   System.out.println("list : " + list);
+	   return "kitchenToolMainPage";
+   }
+   
    
    
 //   public String insertPay(@ModelAttribute Orders orders) {

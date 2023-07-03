@@ -105,7 +105,7 @@
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar" href="${ contextPath }/myPage_MyFavorite.me">좋아요 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyFavorite.me">찜 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
@@ -121,6 +121,11 @@
 			</span></a>
 			<br><br>
 			<a class="menuBar" href="${ contextPath }/myPage_Point.me">포인트 관리 &nbsp;&nbsp;&nbsp;
+			<span class="material-symbols-outlined arrow">
+			chevron_right
+			</span></a>
+			<br><br>
+			<a class="menuBar" href="${ contextPath }/myPage_Review.me">후기 관리 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>

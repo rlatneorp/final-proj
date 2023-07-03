@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,6 +37,7 @@ import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
@@ -706,50 +705,82 @@ public class UsersController {
 		ArrayList<HashMap<String, Object>> list = uService.selectPoint(usersNo, pi);
 		
 		// 세션에서 포인트 소멸 확인 여부를 가져옴
-	    boolean pointExpiryChecked = (boolean) model.getAttribute("pointExpiryChecked");
-
-	    if (pointExpiryChecked) {
-	        // 이미 포인트 소멸 확인한 경우, 처리할 필요가 없으므로 바로 반환
-	    	model.addAttribute("list", list);
-			model.addAttribute("pi", pi);
-			
-			return "myPage_Point";
-	    } else {
-		    // 현재 날짜 구하기
-		    LocalDate currentDate = LocalDate.now();
-		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		    String formattedCurrentDate = currentDate.format(formatter);
-	
-		    // 포인트 소멸 처리 로직 작성
+//	    boolean pointExpiryChecked = (boolean) model.getAttribute("pointExpiryChecked");
+//	    int result1 = 0;
+//	    int result2 = 0;
+//	    
+//	    if (pointExpiryChecked == true && pointExpiryChecked != null) {
+//	        // 이미 포인트 소멸 확인한 경우, 처리할 필요가 없으므로 바로 반환
+//	    	model.addAttribute("list", list);
+//			model.addAttribute("pi", pi);
+//			
+//			return "myPage_Point";
+//	    } else {
+//		    // 현재 날짜 구하기
+//		    LocalDate currentDate = LocalDate.now();
+//		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//		    String formattedCurrentDate = currentDate.format(formatter);
+//	
+//		    // 포인트 소멸 처리 로직 작성
 //		    for (HashMap<String, Object> p : list) {
 //		    	Integer type = (Integer) p.get("POINT_TYPE");
 //		    	if(type == null) {  // 출첵
 //		    		String checked = (String) p.get("CHECKED");
 //		    		if(checked.equals(formattedCurrentDate)) {
-//		    			int users_No = (int) p.get("USERS_NO");
-//		    			int point = ((Users)model.getAttribute("loginUser")).getPoint();
+//		    			int userNo = (int) p.get("USERS_NO");
+//		    			int point = (int) p.get("POINT");
 //		    			
+//		    			HashMap<String, Object> map = new HashMap<String, Object>();
+//			            map.put("point", point);
+//			            map.put("userNo", userNo);
+//			            
+//			            int dePoint = uService.deletePoint(map);
+//			            System.out.println(dePoint);
+//			            
+//			            if(dePoint > 0) {
+//			            	result1 = uService.updatePoint(map);
+//			            	System.out.println(result1);
+//			            }
 //		    		}
 //		    	} else {
 //			        String expirationDate = (String) p.get("MODIFY_DATE");
 //			        if (expirationDate.equals(formattedCurrentDate)) {
 //			            // 포인트 소멸 처리 코드
-//			        	int users_No = (int) p.get("USERS_NO");
-//			            int point = (int) p.get("POINT_CHANGE");
-//			            // 포인트 소멸 서비스 메소드 호출
-//			            uService.deletePoint(pointNo, deletedPoint);
+//			        	int userNo = (int) p.get("USERS_NO");
+//			        	int point = (int) p.get("POINT");
+//			        	int before = (int) p.get("POINT_BEFORE");
+//			            int change = (int) p.get("POINT_CHANGE");
+//			            
+//			            HashMap<String, Object> map = new HashMap<String, Object>();
+//			            map.put("point", point);
+//			            map.put("userNo", userNo);
+//			            map.put("before", before);
+//			            map.put("change", change);
+//			            
+//			            int dePoint = uService.deletePoint(map);
+//			            System.out.println(dePoint);
+//			            
+//			            if(dePoint > 0) {
+//			            	result2 = uService.updatePoint(map);
+//			            	System.out.println(result2);
+//			            }
 //			        }
 //		    	}
 //		    }
-	
-		    // 포인트 소멸 확인 여부를 세션에 저장
-		    model.addAttribute("pointExpiryChecked", true);
-			
-			model.addAttribute("list", list);
-			model.addAttribute("pi", pi);
-			
-			return "myPage_Point";
-	    }
+//		    
+//		    if(result1 > 0 || result2 > 0) {
+		    	// 포인트 소멸 확인 여부를 세션에 저장
+//	    	model.addAttribute("pointExpiryChecked", true);
+	    	
+	    	model.addAttribute("list", list);
+	    	model.addAttribute("pi", pi);
+	    	
+	    	return "myPage_Point";
+//		    } else {
+//		    	throw new UsersException("포인트 머시기 실패");
+//		    }
+//	
+//	    }
 	}
 	
 //	@RequestMapping("myPage_deletePoint.me")
@@ -776,7 +807,7 @@ public class UsersController {
 		return "myPage_checkPwd";
 	}
 
-	// �쉶�썝 �젙蹂� �닔�젙 �쟾 鍮꾨�踰덊샇 泥댄겕
+	// 회원 정보 수정 전 비밀번호 체크
 	@RequestMapping("myPage_checkPwd.me")
 	@ResponseBody
 	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
@@ -822,7 +853,7 @@ public class UsersController {
 			model.addAttribute("loginUser", eService.login(u));
 			return "yes";
 		} else {
-			throw new UsersException("�쉶�썝 �젙蹂� �닔�젙 �떎�뙣");
+			throw new UsersException("정보 수정 실패ㅋ");
 		}
 	}
 
@@ -834,7 +865,7 @@ public class UsersController {
 		if (result > 0) {
 			return "redirect:logout.en";
 		} else {
-			throw new UsersException("�쉶�썝 �깉�눜 �떎�뙣");
+			throw new UsersException("탈퇴 실패 ㅋ");
 		}
 	}
 
@@ -883,6 +914,9 @@ public class UsersController {
 			currentPage = 1;
 		}
 		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
 		Properties prop = new Properties();
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		String userNo = String.valueOf(usersNo);
@@ -919,6 +953,7 @@ public class UsersController {
 		model.addAttribute("end", end);
 		
 		model.addAttribute("pi", pi);
+		System.out.println("ps : " + periodSelec);
 		model.addAttribute("orderList", periodSelec);
 		
 		return "myPage_MyOrder";
@@ -926,13 +961,12 @@ public class UsersController {
 	}
 	
 	@GetMapping("searchWord.me")
-	public String searchWord(@RequestParam(value = "start", required = false) String start,
-		    @RequestParam(value = "end", required = false) String end, @RequestParam(value="word", required= false) String word, Model model,  
-		    @RequestParam(value="page", required=false) Integer currentPage) {
+	public String searchWord(String start, String end, String word, Model model,  @RequestParam(value="page", required=false) Integer currentPage) {
 		
 		if(currentPage == null) {
 			currentPage = 1;
 		}
+		System.out.println("word : " + word);
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		String userNo = String.valueOf(usersNo);
 		
@@ -946,7 +980,7 @@ public class UsersController {
 			listCount = mkService.orderSearchCount(prop); //단어 있는 것 중, 전체 조회 
 			pi = Pagination.getPageInfo(currentPage, listCount, 10);
 			orderSearchList = mkService.orderSearch(prop, pi); //단어 있는 것 중 페이징처리하여 전체 조회
-			model.addAttribute("pi", pi);
+			System.out.println("orderSearchList" + orderSearchList);
 		} else { //기간이 들어오면,
 			prop.setProperty("start", start);
 			prop.setProperty("end", end);
@@ -954,7 +988,6 @@ public class UsersController {
 			pi = Pagination.getPageInfo(currentPage, listCount, 10);
 			orderSearchList = mkService.orderPeriodSearchList(prop, pi);
 			
-			model.addAttribute("pi", pi);
 			model.addAttribute("start", start);
 			model.addAttribute("end", end);
 		}
@@ -983,11 +1016,45 @@ public class UsersController {
 		}
 		
 		
-		model.addAttribute("word", word);
+		model.addAttribute("pi", pi);
 		model.addAttribute("orderList", orderList);
 		
 		return "myPage_MyOrder";
 	}
 	
+	@RequestMapping("myPage_Review.me")
+	public String myPage_Review(Model model, @RequestParam(value = "page", required = false) Integer page) {
+		Users u  = (Users)model.getAttribute("loginUser");
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersId", u.getUsersId());
+		map.put("nickName", u.getNickName());
+		
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = uService.getReviewCount(map);
+		System.out.println(listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		ArrayList<HashMap<String, Object>> list = uService.selectReview(map, pi);
+		System.out.println(list);
+		
+		model.addAttribute("list", list);
+		
+		return "myPage_Review";
+	}
+	
+	@RequestMapping("myPage_editReview.me")
+	public String myPage_editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
+		Review r = uService.selectDetailReview(reviewNo);
+		System.out.println(r);
+		
+		model.addAttribute("r", r);
+		
+		return "updateReview";
+	}
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.menu.model.dao.MenuDAO;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
@@ -63,5 +64,15 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public ArrayList<Menu> menuCategory(int cate) {
 		return mDAO.menuCategory(sqlSession, cate);
+	}
+	
+	@Override
+	public int selectUsersNo(int mNo) {
+		return mDAO.selectUsersNo(sqlSession, mNo);
+	}
+	
+	@Override
+	public ArrayList<Product> healtherInfo(int usersNo) {
+		return mDAO.healtherInfo(sqlSession, usersNo);
 	}
 }

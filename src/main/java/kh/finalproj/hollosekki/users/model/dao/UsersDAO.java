@@ -15,6 +15,7 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 
@@ -218,8 +219,27 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.selectPoint", usersNo, rowBounds);
 	}
 
-	public int deletePoint(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
-		return sqlSession.insert("usersMapper.deletePoint", map);
+//	public int deletePoint(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+//		return sqlSession.insert("usersMapper.deletePoint", map);
+//	}
+//
+//	public int updatePoint(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+//		return sqlSession.insert("usersMapper.updatePoint", map);
+//	}
+	
+	public int getReviewCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("usersMapper.getReviewCount", map);
+	}
+
+	public ArrayList<HashMap<String, Object>> selectReview(SqlSessionTemplate sqlSession, HashMap<String, Object> map, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.selectReview", map, rowBounds);
+	}
+
+	public Review selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return sqlSession.selectOne("usersMapper.selectDetailReview", reviewNo);
 	}
 
 	

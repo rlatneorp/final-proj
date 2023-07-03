@@ -782,7 +782,12 @@ p b {
 					<fmt:formatNumber value="${ total }" groupingUsed="true"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					<c:if test="${like ne null}">
+						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+					</c:if>
+					<c:if test="${like eq null}">
+						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					</c:if>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
 					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
 					</h2>
@@ -1151,6 +1156,12 @@ p b {
 	
 	window.onload = function(){
 		
+		
+		document.getElementById('moveCart').addEventListener('click', function() {
+			const usersNo = '${loginUser.usersNo}'
+			location.href='${contextPath}/basket.ma?usersNo=' + usersNo;
+		})
+		
 		const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
 		const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 		const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
@@ -1165,14 +1176,6 @@ p b {
 		let totalPriceSet = document.querySelectorAll(".totalPriceSet");
 		const productPrice = document.querySelectorAll(".productPrice");
 		const cartCount = document.querySelectorAll(".cartCount");
-		   
-		const likeYn = document.getElementById('likeYn');
-		const like2 = document.getElementById('like');
-		if(likeYn == null) {
-			like2.innerText ='♡';
-		}else {
-			like2.innerText = '♥';
-		}   
 		
 		$('.accordion_i_tit').click(function(){
 			$('.accordion_i_cont').toggle(400);

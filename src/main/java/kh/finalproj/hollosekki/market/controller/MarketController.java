@@ -261,6 +261,49 @@ public class MarketController {
       model.addAttribute("optValues", optValues);
       return "payDetail";
    }
+   
+   @RequestMapping("payDetail2.ma")
+   public String payDetail2(HttpSession session, Model model) {
+	   Users users = (Users)session.getAttribute("loginUser");
+	   Menu menus = null;
+	   ArrayList<Product> productInfo = new ArrayList<>(); ArrayList<Cart> checkedCart = new ArrayList<>(); ArrayList<Cart> checkedCartList = new ArrayList<>();
+	   
+	   Cart cart = mkService.selectCart(users.getUsersNo());
+	   int preNo = cart.getPreorderNo();
+	   
+	   checkedCart = mkService.checkCartList(users.getUsersNo(), preNo);
+	   
+	   System.out.println(checkedCart);
+	   
+	   for(Cart checCart : checkedCart) {
+     	  int productNo = checCart.getProductNo();
+     	  menus = mkService.selectMenu(productNo);
+     	  
+     	  productInfo = mkService.selectProductInfo(productNo);
+           int price = 0; int sum = 0; int sale = 0;
+           for (Product product : productInfo) {
+             price = product.getProductPrice();
+             checCart.setProductPrice(price); 
+             checCart.setSale(product.getProductSale());
+           }
+           int size = mkService.plusResultCount(preNo);
+           sum = size * price;
+           checCart.setSum(sum);
+         
+         if (menus != null) { //이미지 타입 : 4 (식단)
+         	  checCart.setProductName(menus.getMenuName());
+         	  String imgName = mkService.selectImg(productNo, 4);
+         	  checCart.setImgName(imgName);
+           }
+     	  
+           checkedCartList.add(checCart);
+       } //checCart for문 끝 
+	   
+	   model.addAttribute("point", users.getPoint());
+	   model.addAttribute("checkedCartList", checkedCart );
+	   
+	   return "payDetail";
+   }
 
    @GetMapping("marketProductDetail.ma")
    public String marketProductDetail(@RequestParam("pNo") int productNo, Model model) {

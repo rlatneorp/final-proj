@@ -1083,7 +1083,7 @@ p b {
 			</div>
 			<div class="footer">
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="button btn-y" id="subscribe">구매하기</button>
+				<button type="button" class="button btn-y" id="subscribe" onclick="location.href='${contextPath}/payDetail2.ma'">구매하기</button>
 			</div>
 		</div>
 	</div>
@@ -1153,6 +1153,28 @@ p b {
 		
 		buyMenuCount.innerText = quantity.innerText;
 		buyMenuPrice.innerText = total.innerText;
+		
+		console.log("quantity : " + buyMenuCount.innerText);
+		console.log("productNo : " + productNo);
+		console.log("usersNo : " + usersNo);
+		
+		$.ajax({
+            url: "insertCart.ma",
+            async: false,
+            data: {
+        		"productNo":productNo, 
+	        	"cartCount":buyMenuCount.innerText,
+	        	"usersNo":usersNo,
+	        },
+            success: data =>{
+        		console.log("success");
+            },
+            error: data => {
+            	console.log("error");
+            	 alert("카트 담기 실패");
+            }
+        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
+		
 	})
 	
 	const cartbtn = document.getElementById('cartbtn');
@@ -1183,14 +1205,11 @@ p b {
 	            },
 	            error: data => {
 	            	console.log("error");
+	            	 alert("카트 담기 실패");
 	            }
 	        })
 	})
 
-	
-	
-	
-	
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {
 //         var productNo = $("input[name='productNo']").val();
@@ -1214,7 +1233,7 @@ p b {
 //             	}
 //             },
 //             error: function(data) {
-//                 alert("카트 담기 실패");
+//                
 //             }
 //         });
 //     });

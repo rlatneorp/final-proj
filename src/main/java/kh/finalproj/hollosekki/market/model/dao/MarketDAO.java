@@ -377,6 +377,10 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectLike", map);
 	}
 
+	public Cart selectCart(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("marketMapper.selectCart", usersNo);
+	}
+
 
 
 }

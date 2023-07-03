@@ -339,6 +339,10 @@ public class MarketService {
 		return mkDAO.selectLike(sqlSession, usersNo, productNo);
 	}
 
+	public Cart selectCart(int usersNo) {
+		return mkDAO.selectCart(sqlSession, usersNo);
+	}
+
 	
 
 

@@ -602,4 +602,12 @@
 		select count(*) from likes where users_no=#{usersNo} and division_no=#{divisionNo}
 	</select>
 	
+	<select id="selectCart" resultMap="cartList">
+		select *
+		from (select * 
+			  from cart
+		 	  where users_no = #{usersNo}
+		 	  order by cart_no desc)
+		where rownum = 1
+	</select>
 </mapper>

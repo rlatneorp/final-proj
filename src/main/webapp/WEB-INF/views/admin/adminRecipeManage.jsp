@@ -52,8 +52,8 @@
 						<td>${rp.categoryType}</td>
 						<td>${rp.usersId}</td>
 						<td>${rp.recipeCount}</td>
-						<td>${rp.recipeCreateDate}</td>
-						<td>${rp.recipeModifyDate}</td>
+						<td><fmt:formatDate value="${rp.recipeCreateDate}" pattern="yyyy-MM-dd"/></td>
+						<td><fmt:formatDate value="${rp.recipeModifyDate}" pattern="yyyy-MM-dd"/></td>
 						<td>
 							<c:if test="${rp.recipeStatus eq 'Y'}">
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">Y</button>

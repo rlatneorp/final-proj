@@ -153,11 +153,12 @@ select .form-control {
 				<div class="mb-3">
 				
 					<label for="title" style="font-weight: 800;">문의 내용</label>
-					<select class="form-control" name="qnaCategory">
-						<option value="배송">배송</option>
-						<option value="환불">환불</option>
-						<option value="상품"> 상품</option>
-						<option value="기타">기타</option>
+					<select class="form-control" name="qnaType">
+						<option value="1">배송</option>
+						<option value="2">결제</option>
+						<option value="3">회원</option>
+						<option value="4">상품</option>
+						<option value="0">기타</option>
 					</select>
 				
 
@@ -165,7 +166,6 @@ select .form-control {
 
 					<input type="text" class="form-control" name="usersId" value="${loginUser.usersId}" readonly>
 					<input type="hidden" class="form-control" name="usersNo" value="${loginUser.usersNo}" readonly>
-					<input type="hidden" class="form-control" name="qnaType" value="${productNo}" readonly>
 					<input type="hidden" class="form-control" name="productNo" value="${productNo}" readonly>
 					
 					<br>

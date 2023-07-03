@@ -95,6 +95,7 @@ font-family: 'Noto Sans KR', sans-serif;
 								<option value="user" <c:if test="${ category == 'user'}">selected</c:if>>회원</option>
 								<option <c:if test="${ category == 'delivery'}">selected</c:if> value="delivery">배송</option>
 								<option <c:if test="${ category == 'pay'}">selected</c:if> value="pay">결제</option>
+								<option <c:if test="${ category == 'product'}">selected</c:if> value="product">상품</option>
 								<option <c:if test="${ category == 'etc'}">selected</c:if> value="etc">기타</option>
 							</select>
 						</div>
@@ -105,6 +106,7 @@ font-family: 'Noto Sans KR', sans-serif;
 					   <label for="floatingInput">제목</label>
 					</div>
 					   <input type="hidden" name="qnaTitle" id="titleSub">
+					   <input type="hidden" name="qnaType" id="typeQna">
 					<div class="form-floating">
 					   <input name="qnaContent" required type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요.">
 					   <label for="floatingText">내용</label>
@@ -124,12 +126,12 @@ font-family: 'Noto Sans KR', sans-serif;
 <script>
 	const floatingInput = document.querySelector('#floatingInput');
 	const titleSub = document.querySelector('#titleSub');
+	const qnaType = document.querySelector('#typeQna');
 	
 	const categoryBtn = document.querySelector('#categoryBtn');
 	const options = document.getElementsByTagName('option');
 	const add = document.getElementById('add');
 	let category = '';
-			
 		categoryBtn.addEventListener('change', ()=>{
 			if(categoryBtn.value){
 				add.disabled = false;
@@ -138,8 +140,21 @@ font-family: 'Noto Sans KR', sans-serif;
 			for(let j = 1; j < options.length; j++){
 				if(options[j].value == categoryBtn.value){
 					category = options[j].innerText;
+					
 				}
 			}
+			if(category == '배송'){
+				qnaType.value = 1
+			}else if(category == '결제'){
+				qnaType.value = 2
+			}else if(category == '회원'){
+				qnaType.value = 3
+			}else if(category == '상품'){
+				qnaType.value = 4
+			}else if(category == '기타'){
+				qnaType.value = 0
+			}
+			
 		});
 		 
 		add.addEventListener('click', ()=>{

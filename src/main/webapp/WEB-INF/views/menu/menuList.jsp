@@ -102,15 +102,18 @@
 <br><br>
 
 <div id="search">
-	<div id="searchBar">
-		<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
-		<div id="searchIcon"><button id="searchBtn"><i class="bi bi-search"></i></button></div>
-	</div>
+	<form role="search" action="menuList.mn">
+		<div id="searchBar">
+			<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
+			<div id="searchIcon"><button id="searchBtn"><i class="bi bi-search"></i></button></div>
+		</div>
+	</form>
 	<br>
 	<div id="category">
 		<div class="categoryIcon d-inline-block">
 			<div class="circle">
-				<a href="#" id="diet" class="categoryBtn">	
+				<a id="diet" class="categoryBtn">
+					<input type="hidden" value="1">
 					<span class="material-symbols-outlined size">
 					fitness_center
 					</span>
@@ -120,7 +123,8 @@
 		</div>
 		<div class="categoryIcon d-inline-block">
 			<div class="circle">
-				<a href="#" id="diet" class="categoryBtn">
+				<a id="sick" class="categoryBtn">
+					<input type="hidden" value="2">
 					<span class="material-symbols-outlined size">
 					sick
 					</span>
@@ -130,7 +134,8 @@
 		</div>
 		<div class="categoryIcon d-inline-block">
 			<div class="circle">
-				<a href="#" id="diet" class="categoryBtn">
+				<a id="meal" class="categoryBtn">
+					<input type="hidden" value="3">
 					<span class="material-symbols-outlined size">
 					restaurant_menu
 					</span>
@@ -140,7 +145,8 @@
 		</div>
 		<div class="categoryIcon d-inline-block">
 			<div class="circle">
-				<a href="#" id="diet" class="categoryBtn">
+				<a id="egg" class="categoryBtn">
+					<input type="hidden" value="4">
 					<span class="material-symbols-outlined size">
 					egg_alt
 					</span>
@@ -150,7 +156,8 @@
 		</div>
 		<div class="categoryIcon d-inline-block">
 			<div class="circle">
-				<a href="#" id="diet" class="categoryBtn">
+				<a id="vage" class="categoryBtn">
+					<input type="hidden" value="5">
 					<span class="material-symbols-outlined size">
 					spa
 					</span>
@@ -197,7 +204,7 @@
 <div class="album p-5 bg-white">
 	<div class="container px-5">
 	
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-5 g-2">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-5 g-2" id="menuBox">
 			
 			<c:forEach items="${mList}" var="m">
 				<c:forEach items="${iList}" var="i">
@@ -207,7 +214,7 @@
 							<div class="card shadow-sm">
 								<img src="${contextPath }/resources/uploadFiles/${i.imageRenameName}" style="width: 100%; height: 100%;">
 								<div class="card-body cardColor">
-									<h5>${m.menuName } / ${m.menuType }</h5>
+									<h5>${m.menuName } / ${m.menuKind }</h5>
 									<div class="d-inline-block" style="width: 130px; height: 50px;"></div>
 									<a class="likeBtn" role="button">
 										<input type="hidden" value="off">
@@ -291,7 +298,90 @@
 			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
 // 			console.log(this.childNodes[1]);
 		})
-		
+	}
+	
+	const categoryBtns = document.getElementsByClassName('categoryBtn');
+	for(const categoryBtn of categoryBtns){
+		const cate = categoryBtn.childNodes[1].value;
+		categoryBtn.addEventListener('click', function(){
+			$.ajax({
+				url: "menuCategory.mn",
+				data: {"cate": cate},
+				success: data=>{
+					console.log(data);
+					const menuBox = document.getElementById('menuBox');
+					menuBox.innerHTML = "";
+					
+					data.forEach(post =>{
+						const col = document.createElement('div');
+						col.classList.add('col');
+						
+						const fPNo = document.createElement('input');
+						fPNo.setAttribute("type", "hidden");
+						fPNo.value = post.foodProductNo;
+						
+						const card = document.createElement('div');
+						card.classList.add('card');
+						card.classList.add('shadow-sm');
+						
+						const image = document.createElement('img');
+						image.src = '${contextPath}/resources/uploadFiles/' + post.imageRenameName;
+						image.style.width = "100%";
+						image.style.height = "100%";
+						
+						const cardBody = document.createElement('div');
+						cardBody.classList.add('card-body');
+						cardBody.classList.add('cardColor');						
+						
+						const h5 = document.createElement('h5');
+						h5.innerText = post.menuName + "/" + post.menuKind;
+						
+						const div = document.createElement('div');
+						div.classList.add('d-inline-block');
+						div.style.width = "130px";
+						div.style.height = "50px;";
+						
+						const a = document.createElement('a');
+						a.classList.add('likeBtn');
+						a.setAttribute("role", "button");
+						
+						const off = document.createElement("input");
+						off.setAttribute("type", "hidden");
+						off.value="off";
+						
+						const i = document.createElement('i');
+						i.classList.add('bi');
+						i.classList.add('bi-heart');
+						i.classList.add('d-inline-block');
+						i.classList.add('iconMar');
+						
+						const p = document.createElement('p');
+						p.classList.add('d-inline-block');
+						p.classList.add('likeNum');
+						p.innerText = "1000";
+						
+						a.appendChild(off);
+						a.appendChild(i);
+						
+						cardBody.appendChild(h5);
+						cardBody.appendChild(div);
+						cardBody.appendChild(a);
+						cardBody.appendChild(p);
+						
+						card.appendChild(image);
+						card.appendChild(cardBody);
+						
+						col.appendChild(fPNo);
+						col.appendChild(card);
+						
+						menuBox.appendChild(col);
+					});
+				},
+				error: data=>{
+					console.log(data);
+				}
+			})
+		})
 	}
 	
 </script>

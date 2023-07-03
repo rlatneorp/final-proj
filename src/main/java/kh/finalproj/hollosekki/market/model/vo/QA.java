@@ -16,14 +16,14 @@ public class QA extends Users{
 	private String qnaStatus;
 	private int qnaType;
 	private String nickName;
-	private String qnaCategory;
+	private int productNo;
 	
 	public QA() {
 		super();
 	}
 
 	public QA(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, int adminNo, Date answerDate,
-			String answerContent, String qnaStatus, int qnaType, String nickName, String qnaCategory) {
+			String answerContent, String qnaStatus, int qnaType, String nickName, int productNo) {
 		super();
 		this.qnaNo = qnaNo;
 		this.usersNo = usersNo;
@@ -36,7 +36,7 @@ public class QA extends Users{
 		this.qnaStatus = qnaStatus;
 		this.qnaType = qnaType;
 		this.nickName = nickName;
-		this.qnaCategory = qnaCategory;
+		this.productNo = productNo;
 	}
 
 	public int getQnaNo() {
@@ -127,12 +127,12 @@ public class QA extends Users{
 		this.nickName = nickName;
 	}
 
-	public String getQnaCategory() {
-		return qnaCategory;
+	public int getProductNo() {
+		return productNo;
 	}
 
-	public void setQnaCategory(String qnaCategory) {
-		this.qnaCategory = qnaCategory;
+	public void setProductNo(int productNo) {
+		this.productNo = productNo;
 	}
 
 	@Override
@@ -140,7 +140,8 @@ public class QA extends Users{
 		return "QA [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
 				+ ", qnaContent=" + qnaContent + ", adminNo=" + adminNo + ", answerDate=" + answerDate
 				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType
-				+ ", nickName=" + nickName + ", qnaCategory=" + qnaCategory + "]";
+				+ ", nickName=" + nickName + ", productNo=" + productNo + "]";
 	}
+	
 
 }

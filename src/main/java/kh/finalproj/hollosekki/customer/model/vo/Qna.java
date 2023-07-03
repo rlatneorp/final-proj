@@ -12,13 +12,14 @@ public class Qna {
 	private Date answerDate;
 	private String answerContent;
 	private char qnaStatus;
+	private int qnaType;
 	
 	public Qna() {
 		super();
 	}
 
 	public Qna(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, int adminNo, Date answerDate,
-			String answerContent, char qnaStatus) {
+			String answerContent, char qnaStatus, int qnaType) {
 		super();
 		this.qnaNo = qnaNo;
 		this.usersNo = usersNo;
@@ -29,6 +30,7 @@ public class Qna {
 		this.answerDate = answerDate;
 		this.answerContent = answerContent;
 		this.qnaStatus = qnaStatus;
+		this.qnaType = qnaType;
 	}
 
 	public int getQnaNo() {
@@ -103,12 +105,22 @@ public class Qna {
 		this.qnaStatus = qnaStatus;
 	}
 
+	public int getQnaType() {
+		return qnaType;
+	}
+
+	public void setQnaType(int qnaType) {
+		this.qnaType = qnaType;
+	}
+
 	@Override
 	public String toString() {
 		return "Qna [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
 				+ ", qnaContent=" + qnaContent + ", adminNo=" + adminNo + ", answerDate=" + answerDate
-				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + "]";
+				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType + "]";
 	}
+
+	
 
 	
 }

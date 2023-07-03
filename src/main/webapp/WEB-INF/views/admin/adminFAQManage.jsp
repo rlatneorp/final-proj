@@ -40,6 +40,7 @@
 						<td>${f.faqNo}
 							<input type="hidden" name="faqNo" value="${f.faqNo}"></td>
 						<td>
+							<c:if test="${f.faqType eq -1}">공지사항</c:if>
 							<c:if test="${f.faqType eq 1}">배송</c:if>
 							<c:if test="${f.faqType eq 2}">결제</c:if>
 							<c:if test="${f.faqType eq 3}">회원</c:if>

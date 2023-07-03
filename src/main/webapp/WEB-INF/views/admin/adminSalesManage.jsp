@@ -15,10 +15,10 @@
 <body>
 	<%@ include file="../common/top.jsp" %>
 
-	<div class="mainBox d-inline-block align-top">
+	<div class="mainBox d-inline-block align-top" style="margin-bottom: 100px;">
 		<h4 class="py-4 mb-2">매출관리</h4>
 		<c:if test="${ab.kind eq null || ab.kind eq 0}">
-			<h5 class="mb-4 mb-2">일일 매출 현황</h5>
+			<h5 class="mb-4 mb-2">일별 매출 현황</h5>
 		</c:if>
 		<c:if test="${ab.kind eq 1}">
 			<h5 class="mb-4 mb-2">월별 매출 현황</h5>

@@ -133,7 +133,7 @@ public class MarketController {
    @RequestMapping("payDetail.ma")
    public String payDetail(HttpSession session, Model model, @RequestParam("preorderNos") String preorderNos) {
       
-	   //전달 받은 주문번호를 select 해와 화면에 전달 
+	  //전달 받은 주문번호를 select 해와 화면에 전달 
       Users users = (Users)session.getAttribute("loginUser");
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
@@ -146,13 +146,10 @@ public class MarketController {
       System.out.println("preorderNo : " + preorderNo);
       for(int i=0; i<preorderNo.length; i++) {
     	  int preNo = Integer.parseInt(preorderNo[i]);
-    	  System.out.println("preNo : " + preNo);
     	  //주문번호로 cartList 조회 
           checkedCart = mkService.checkCartList(users.getUsersNo(), preNo);
-          System.out.println("cartList : " + checkedCart);
           //주문 번호에 대한 optionNo 조회 
           ArrayList<Options> o = mkService.selectOptionInfo(preNo);
-          System.out.println("주문번호에 해당 되는 옵션 정보는??2222 : " + o);
           for(Cart checCart : checkedCart) {
         	  checCart.setOptionName(o);
         	  int productNo = checCart.getProductNo();
@@ -193,68 +190,11 @@ public class MarketController {
               checkedCartList.add(checCart);
           } //checCart for문 끝 
           
-          
-          
       } //주문번호 for문 끝 
       
-//      int[] intOptionNo = new int[preorderNo.length];
-      
-//      for(int i=0; i<optNo.length; i++) {
-//         intOptionNo[i] = Integer.parseInt(optNo[i]);
-//         System.out.println("intOptionNo : " + intOptionNo[i]);
-//         int preorderNo = intOptionNo[i];
-//         
-//         //주문번호로 cartList 조회 
-//         checkedCart = mkService.checkCartList(users.getUsersNo(),preorderNo);
-//         
-//         for(Cart checCart : checkedCart) { 
-//            int productNo = checCart.getProductNo();
-//            
-//            Options opt = mkService.selectOptionInfo(checCart.getProductNo(), checCart.getProductOption()); //옵션 넘버 보내서 조회
-//            optValues.add(opt);
-//            
-//            foods = mkService.selectFood(productNo);
-//            tools = mkService.selectTool(productNo);
-//            igs = mkService.selectIngrdient(productNo);
-//            menus = mkService.selectMenu(productNo);
-//            
-//            productInfo = mkService.selectProductInfo(productNo);
-//            int price = 0; int sum = 0; int sale = 0;
-//            for (Product product : productInfo) {
-//                price = product.getProductPrice();
-//                checCart.setProductPrice(price); 
-//                checCart.setSale(product.getProductSale());
-//            }
-//            int size = mkService.plusResultCount(productNo);
-//            sum = size * price;
-//            checCart.setSum(sum);
-//            
-//            if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
-//               checCart.setProductName(foods.getFoodName());
-//               String imgName = mkService.selectImg(productNo, 3);
-//               checCart.setImgName(imgName);
-//             }
-//             if (tools != null) { //이미지 타입 : 6 ( 주방도구)
-//                checCart.setProductName(tools.getToolName());
-//                String imgName = mkService.selectImg(productNo, 6);
-//               checCart.setImgName(imgName);
-//             }
-//             if (igs != null) { //이미지 타입 : 5 (식재료) 
-//                checCart.setProductName(igs.getIngredientName());
-//                String imgName = mkService.selectImg(productNo, 5);
-//               checCart.setImgName(imgName);
-//             }
-//             if (menus != null) { //이미지 타입 : 4 (식단)
-//                checCart.setProductName(menus.getMenuName());
-//                String imgName = mkService.selectImg(productNo, 4);
-//               checCart.setImgName(imgName);
-//             }
-//             checkedCartList.add(checCart);
-//         }
-//      }
+      System.out.println("point들어오냠!");
       int point = mkService.selectPoint(users.getUsersNo());
-      
-      
+      System.out.println("point : " + point);
       model.addAttribute("point", point);
       model.addAttribute("checkedCartList", checkedCartList );
       System.out.println("cc : " + checkedCartList);

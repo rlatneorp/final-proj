@@ -268,6 +268,15 @@ public class MarketController {
       return "payDetail";
    }
 
+   @GetMapping("marketProductDetail.ma")
+   public String marketProductDetail(@RequestParam("pNo") int productNo, Model model) {
+	   
+	   ArrayList<Review> r = mkService.selectReview(productNo);
+	   model.addAttribute("productNo", productNo);
+	   model.addAttribute("r", r);
+	   return "redirect:market_detail.ma";
+   }
+   
    @GetMapping("market_detail.ma")
    public String marketdetail(@RequestParam("productNo") int productNo,
 		   				@RequestParam(value="page", required=false) Integer currentPage,
@@ -329,7 +338,6 @@ public class MarketController {
    @GetMapping("createqna.ma")
    	public String createqna(HttpSession session, Product p, Model model) {
 	   Users users = (Users)session.getAttribute("loginUser");
-	   System.out.println(p);
 	   model.addAttribute("productNo", p.getProductNo());
 	   return "createQnA";
    }
@@ -763,7 +771,8 @@ public class MarketController {
 	   qna.setUsersNo(users.getUsersNo());
 	   qna.setQnaTitle(qna.getQnaTitle());
 	   qna.setNickName(users.getNickName());
-	   qna.setQnaCategory(qna.getQnaCategory());
+	   qna.setQnaType(qna.getQnaType());
+	   qna.setProductNo(productNo);
 	   int result = mkService.insertQna(qna);
 	   
 	   System.out.println(qna);

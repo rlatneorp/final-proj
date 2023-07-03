@@ -47,10 +47,16 @@
 		where image_type=3 and image_level=1
 	</select>
 	
-	<select id="selectList" resultMap="menuResultSet">
+	<select id="searchMenu" resultMap="menuResultSet">
 		select *
 		from menu
 		where menu_name like '%${word}%'
+	</select>
+	
+	<select id="menuCategory" resultMap="menuResultSet">
+		select *
+		from menu
+		where menu_kind=#{cate}
 	</select>
 	
 	<resultMap type="Menu" id="menuResultSet">

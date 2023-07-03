@@ -787,10 +787,6 @@ public class MarketController {
    }
    
    
-   
-   
-   
-   
    @RequestMapping("insertPay.ma")
    @ResponseBody
    public String insertPay(@ModelAttribute Orders orders) {

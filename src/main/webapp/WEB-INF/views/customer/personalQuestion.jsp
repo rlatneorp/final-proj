@@ -40,6 +40,14 @@ font-family: 'Noto Sans KR', sans-serif;
 	color:black;
 }
 
+#productNo{
+	display: inline-block;
+	width: 97px;
+    height: 40px;
+    padding: 0 7px;
+    border: 1px solid #dddddd;
+    color: #999999;
+}
 
 
 #add{
@@ -89,7 +97,7 @@ font-family: 'Noto Sans KR', sans-serif;
 				<br><br>
 				<div class="customerQ">
 					<div class="Qtitle row justify-content-evenly">
-						<div class="col-1" >
+						<div class="col-12" >
 							<select name="qnaCategory" class="ddd qaaCategoryBtn text-center" id="categoryBtn" required>
 								<option value="cate">카테고리</option>
 								<option value="user" <c:if test="${ category == 'user'}">selected</c:if>>회원</option>
@@ -98,6 +106,16 @@ font-family: 'Noto Sans KR', sans-serif;
 								<option <c:if test="${ category == 'product'}">selected</c:if> value="product">상품</option>
 								<option <c:if test="${ category == 'etc'}">selected</c:if> value="etc">기타</option>
 							</select>
+						</div>
+						<br><br>
+						<div class="col-6" id="productNoDiv" style="display: none;">
+							<p class="d-iline">문의하실 주문번호를 고르세요</p>
+							<select name="orderNo" id="productNo">
+								<option></option>
+							</select>
+						</div>
+						<div class="col-6" id="noneProductNo" style="display: none;">
+							<p class="d-inline">주문번호가 없습니다.</p>
 						</div>
 					</div>
 					<br><br>
@@ -133,6 +151,8 @@ font-family: 'Noto Sans KR', sans-serif;
 	const add = document.getElementById('add');
 	let category = '';
 		categoryBtn.addEventListener('change', ()=>{
+			const productNoDiv = document.querySelector("#productNoDiv");
+			const noneProductNo = document.querySelector("#noneProductNo");
 			if(categoryBtn.value){
 				add.disabled = false;
 			}
@@ -143,25 +163,60 @@ font-family: 'Noto Sans KR', sans-serif;
 					
 				}
 			}
-			if(category == '배송'){
-				qnaType.value = 1
+			if(category == '상품'){
+				noneProductNo.style.display = "none";
+				productNoDiv.style.display = "none";
+				qnaType.value = 4
 			}else if(category == '결제'){
+				noneProductNo.style.display = "none";
+				productNoDiv.style.display = "none";
 				qnaType.value = 2
 			}else if(category == '회원'){
+				noneProductNo.style.display = "none";
+				productNoDiv.style.display = "none";
 				qnaType.value = 3
-			}else if(category == '상품'){
-				qnaType.value = 4
+			}else if(category == '배송'){
+				qnaType.value = 1
+				$.ajax({
+					url:"qnaProductNo.cs",
+					data: {
+						usersNo: '${loginUser.usersNo}',
+					},
+					success: data=>{
+						const ordersNoSelect = document.querySelector('#productNo');
+						for(const d of data){
+							if(d.orderNo != null){
+								const option = document.createElement('option');
+								option.innerText = d.orderNo; 
+								ordersNoSelect.append(option);
+								productNoDiv.style.display = "block";
+							}else{
+								noneProductNo.style.display = "block";
+							}
+						}
+						
+					}
+				
+				})
 			}else if(category == '기타'){
+				productNoDiv.style.display = "none";
+				noneProductNo.style.display = "none";
 				qnaType.value = 0
 			}
 			
 		});
 		 
 		add.addEventListener('click', ()=>{
-			titleSub.value = '[' + category + '] ' + floatingInput.value;
+			const ordersNoSelect = document.querySelector('#productNo');
+			if(ordersNoSelect.value == null){
+				titleSub.value = '[' + category + '] ' + floatingInput.value;
+			}else{
+				titleSub.value = '[' + category + '] ' + "| 주문번호 : " + ordersNoSelect.value + " | " + floatingInput.value;
+			}
+			
 		});
 		
-		
+			
 </script>
 </body>
 </html>

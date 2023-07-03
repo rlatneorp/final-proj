@@ -338,7 +338,6 @@ public class MarketController {
    @GetMapping("createqna.ma")
    	public String createqna(HttpSession session, Product p, Model model) {
 	   Users users = (Users)session.getAttribute("loginUser");
-	   System.out.println(p);
 	   model.addAttribute("productNo", p.getProductNo());
 	   return "createQnA";
    }
@@ -772,7 +771,8 @@ public class MarketController {
 	   qna.setUsersNo(users.getUsersNo());
 	   qna.setQnaTitle(qna.getQnaTitle());
 	   qna.setNickName(users.getNickName());
-	   qna.setQnaCategory(qna.getQnaCategory());
+	   qna.setQnaType(qna.getQnaType());
+	   qna.setProductNo(productNo);
 	   int result = mkService.insertQna(qna);
 	   
 	   System.out.println(qna);

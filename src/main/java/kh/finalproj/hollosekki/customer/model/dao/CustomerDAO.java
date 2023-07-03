@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.customer.model.vo.Customer;
+import kh.finalproj.hollosekki.customer.model.vo.Qna;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 
 @Repository
 public class CustomerDAO {
@@ -49,6 +51,14 @@ public class CustomerDAO {
 
 	public int qnaInsert(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return sqlSession.insert("customerMapper.qnaInsert", map);
+	}
+
+	public int qnaProduct(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.insert("customerMapper.qnaProduct", map) ;
+	}
+
+	public ArrayList<Orders> selectQnaProduct(SqlSessionTemplate sqlSession, Orders o) {
+		return (ArrayList)sqlSession.selectList("customerMapper.selectQnaProduct", o);
 	}
 
 

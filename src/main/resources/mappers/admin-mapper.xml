@@ -165,6 +165,29 @@
 		</if>
 	</delete>
 
+<!--AdminMain-관리자 메인화면 -->
+	<select id="selectAdminMainList" resultMap="adminMainResultSet">
+		<if test="type == 1">
+			select * 
+			from(select recipe_create_date as day, count(*) as recipe_day_count
+				 from recipe
+				 group by recipe_create_date
+				 order by recipe_create_date desc)
+			where rownum &lt;= 7
+		</if>
+		<if test="type == 2">
+			select *
+			from(select enroll_date as day, count(*) as enroll_day_count
+				 from users
+				 group by enroll_date
+			 	 order by enroll_date desc)
+			where rownum &lt;= 7
+		</if>
+		
+	</select>
+
+
+
 <!--Sales 매출 -->
 	<select id="getSalesCount" resultType="_int">
 		<if test="kind == null">
@@ -185,23 +208,31 @@
 	<select id="selectSalesList" resultMap="salesResultSet">
 <!-- 	kind == null	일일 매출 -->
 <!-- 	kind == 1		월 매출 -->
-		<if test="kind == null">
-			select substr(order_date,0,8) as date_kind, sum(order_total_price) as sales, count(*) as order_count
-			from orders
-			group by substr(order_date,0,8)
-			<if test="searchText != null and searchText != '' ">
-				having substr(order_date,0,8) = #{searchText}
-			</if>
-			order by substr(order_date,0,8) desc
+		<if test="number != null">
+			select *
+			from(
 		</if>
-		<if test="kind == 1">
-			select substr(order_date,0,5) as date_kind, sum(order_total_price) as sales, count(*) as order_count
-			from orders
-			group by substr(order_date,0,5)
-			<if test="searchText != null and searchText != '' " >
-				having substr(order_date,0,5) = #{searchText}
+			<if test="kind == null">
+				select substr(order_date,0,8) as date_kind, sum(order_total_price) as sales, count(*) as order_count
+				from orders
+				group by substr(order_date,0,8)
+				<if test="searchText != null and searchText != '' ">
+					having substr(order_date,0,8) = #{searchText}
+				</if>
+				order by substr(order_date,0,8) desc
 			</if>
-			order by substr(order_date,0,5) desc
+			<if test="kind == 1">
+				select substr(order_date,0,5) as date_kind, sum(order_total_price) as sales, count(*) as order_count
+				from orders
+				group by substr(order_date,0,5)
+				<if test="searchText != null and searchText != '' " >
+					having substr(order_date,0,5) = #{searchText}
+				</if>
+				order by substr(order_date,0,5) desc
+			</if>
+		<if test="number != null">
+			)
+			where rownum &lt;= ${number}
 		</if>
 	</select>
 	
@@ -1040,6 +1071,12 @@
 	
 	
 <!-- ㅡnot 공용 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
+	<resultMap type="AdminMain" id="adminMainResultSet">
+		<id column="DAY" property="day"/>
+		<result column="RECIPE_DAY_COUNT" property="recipeDayCount"/>
+		<result column="ENROLL_DAY_COUNT" property="enrollDayCount"/>
+	</resultMap>
 	
 	<resultMap type="Sales" id="salesResultSet">
 		<id column="date_kind" property="dateKind"/>

@@ -27,7 +27,7 @@
 	.categoryItem{width: 100px;}
 	#time{width: 150px;}
 	.term{height: 35px;}
-	.recipeIngredient{height: 30px; }
+	.recipeIngredient{height: 30px; width: 235px;}
 	.ingredientNum{width: 50px; height: 30px;}
 	.hiddenText{width: 148px;height: 30px;}
 	
@@ -176,18 +176,18 @@
 					<input type="hidden" name="elementNo" value="${i.ingredientNo }">
 				</div>
 				|
-				<div style="padding: 5px; display: inline-block;">
-					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)" >
-						<option selected disabled>재료 선택</option>
-						<c:forEach items="${iList}" var="i">
-							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
-						</c:forEach>
-						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
-					</select>
-					<input type="text" name="newIngredient" class="hiddenText" style="display:none;">
-					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
-				</div>
-				|
+<!-- 				<div style="padding: 5px; display: inline-block;"> -->
+<!-- 					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)" > -->
+<!-- 						<option selected disabled>재료 선택</option> -->
+<%-- 						<c:forEach items="${iList}" var="i"> --%>
+<%-- 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option> --%>
+<%-- 						</c:forEach> --%>
+<!-- 						<option value="임의" class="ingreWrite">재료 임의로 적기</option> -->
+<!-- 					</select> -->
+<!-- 					<input type="text" name="newIngredient" class="hiddenText" style="display:none;"> -->
+<!-- 					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10"> -->
+<!-- 				</div> -->
+<!-- 				| -->
 				<div style="padding: 5px; display: inline-block;" id="ingCopy" class="ingCopyC">
 					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)">
 						<option selected disabled>재료 선택</option>

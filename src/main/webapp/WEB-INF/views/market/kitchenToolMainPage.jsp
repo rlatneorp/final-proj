@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -89,14 +90,19 @@ ul li {
 	height:300px;
 }
 .originPrice{
-	font-size: 18px;
+	padding-top:10px;
+	font-size: 25px;
 	color:black;
 	text-decoration: line-through;
+	letter-spacing: 2px; 
 }
 
 .discount{
-	font-size:20px;
+	font-size:25px;
+	padding-left:10px;
+	font-weight:bold;
 	color:red;
+	letter-spacing: 2px; 
 }
 
 .nomalProduct {
@@ -116,8 +122,6 @@ ul li {
 	width:370px;
 	height:370px;
 }
-
-
 
 .product-slider .product-wrapper{
   width:1150px;
@@ -223,7 +227,10 @@ ul li {
 }
 
 .productName{
-	font-size: 18px;
+	font-weight:bold;
+	padding-top:15px;
+	font-size: 22px;
+	letter-spacing: 2px; 
 }
 
 .cateBtn{
@@ -253,6 +260,14 @@ ul li {
 	color: white;
 }
 
+.clickView {
+	color:inherit;
+	text-decoration: none;
+}
+
+.normal{
+	 padding-bottom:60px;
+}
 </style>
 
 
@@ -261,10 +276,11 @@ ul li {
 
 <table class="cateBtn" style="margin:auto;">
 <tr>
-	<td>전체보기</td>
-	<td>밀키트</td>
-	<td>주방용품</td>
-	<td>식재료</td>
+	<td><a class="clickView" href="${contextPath }/viewWhole.ma">전체보기</a></td>
+	<td><a class="clickView" href="${contextPath }/viewFood.ma">식품</a></td>
+<%-- 	<td><a class="clickView" href="${contextPath }/viewMenu.ma">식단</a></td> --%>
+	<td><a class="clickView" href="${contextPath }/viewIngredient.ma">식재료</a></td>
+	<td><a class="clickView" href="${contextPath }/viewTool.ma">주방용품</a></td>
 </tr>
 </table> 
 	<div style="position:relative;">
@@ -279,40 +295,18 @@ ul li {
 	 </div>
 <br>
 </div>
- <h1 class="sider-title">핫딜존</h1>
+ <h1 class="sider-title">New 핫딜존</h1>
 <div class="product-slider">
         <div class="product-wrapper">
-        
+        <c:forEach items="${list }" var="li">
           <div class="productList">
+          	<input type="hidden" value="${li.productNo }">
 			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
+			<div class="productName">${li.productName }</div>
+			<div class="originPrice">${li.productPrice }</div>
+			<div class="discount" id="productNoSale-${li.productNo }"></div>
           </div>
-          <div class="productList">
-			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-          <div class="productList">
-			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-          <div class="productList">
-			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
-          <div class="productList">
-			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
-			<div class="productName">전기 믹서기</div>
-			<div class="originPrice">38,000</div>
-			<div class="discount">32,000</div>
-          </div>
+        </c:forEach>
   </div>
 </div>
 <br>
@@ -363,39 +357,72 @@ ul li {
 
 <div style="text-align: center;">
 <ul class="nomalProduct">
-	<li>
-		<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-		<div class="productName">전기 믹서기</div>
-		<div class="originPrice">38,000</div>
-		<div class="discount">32,000</div>
-	</li>
-	
+	<c:forEach items="${list }" var="li">
+		<li class="normal">
+			<input type="hidden" value="${li.productNo }">
+			<a href="market_detail.ma"><img src="${contextPath }/resources/uploadFiles/${li.productImg}"></a>
+			<div class="productName">${li.productName }</div>
+			<c:if test="${li.productSale ne 0 }">
+				<span class="originPrice">
+					${li.productPrice }
+				</span>
+			</c:if>
+			<c:if test="${li.productSale eq 0 }">
+				<span style="font-size:25px;">
+					<fmt:formatNumber value="${li.productPrice }" pattern="###,###,###"/>
+				</span>
+			</c:if>
+			<span class="discount" id="discount-${li.productNo }"></span>
+			<input type="hidden" value="${li.productSale }">
+		</li>
+	</c:forEach>
 </ul>
 </div>
+
 <script>
-$('.slick').slick({
-	autoplay: true,
-	autoplaySpeed: 2000,
-	prevArrow : "<button type='button' class='slick-prev'></button>",
-	nextArrow : "<button type='button' class='slick-next'></button>"
+	window.onload = () => {
+		const normal = document.getElementsByClassName('normal');
+		console.log(normal)
+		for(np of normal) {
+			const productNo = np.children[0].value;
+			console.log(productNo);
+			//할인 계산 
+			if(np.children[5].value != '0') {
+				const originPrice = parseInt(np.children[3].innerText);
+				console.log(originPrice);
+				const sale = parseInt(np.children[5].value);
+				console.log(sale);
+				const discount = (originPrice * (1- sale/100)).toLocaleString();
+				console.log(discount);
+				document.getElementById('discount-'+productNo).innerText = discount
+			} else { //0일 경우 
+// 				document.getElementById('discount-'+productNo).innerHTML = '<br>'
+			}
+			
+		}
+	}
 	
-});
-
-
-$('.product-wrapper').slick({
-	  slidesToShow: 4,
-	  slidesToScroll: 2,
-	  nextArrow:$('.nextBtn'),
-	  prevArrow:$('.prevBtn'),
-	  prevArrow : "<button type='button' class='slick-prev'></button>",
-	  nextArrow : "<button type='button' class='slick-next'></button>",
-	  infinite : true,
+	
+	
+	$('.slick').slick({
+		autoplay: true,
+		autoplaySpeed: 2000,
+		prevArrow : "<button type='button' class='slick-prev'></button>",
+		nextArrow : "<button type='button' class='slick-next'></button>"
+		
 	});
-
-
-
-
+	
+	
+	$('.product-wrapper').slick({
+		  slidesToShow: 4,
+		  slidesToScroll: 2,
+		  nextArrow:$('.nextBtn'),
+		  prevArrow:$('.prevBtn'),
+		  prevArrow : "<button type='button' class='slick-prev'></button>",
+		  nextArrow : "<button type='button' class='slick-next'></button>",
+		  infinite : true,
+		});
+	
 </script>
-
 </body>
 </html>

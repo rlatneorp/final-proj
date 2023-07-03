@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.customer.model.dao.CustomerDAO;
 import kh.finalproj.hollosekki.customer.model.vo.Customer;
+import kh.finalproj.hollosekki.customer.model.vo.Qna;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 
 @Service
 public class CustomerService {
@@ -49,6 +51,14 @@ public class CustomerService {
 
 	public int qnaInsert(HashMap<String, Object> map) {
 		return csDAO.qnaInsert(sqlSession, map);
+	}
+
+	public int qnaProduct(HashMap<String, Object> map) {
+		return csDAO.qnaProduct(sqlSession, map);
+	}
+
+	public ArrayList<Orders> selectQnaProduct(Orders o) {
+		return csDAO.selectQnaProduct(sqlSession, o);
 	}
 
 

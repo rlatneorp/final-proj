@@ -4,14 +4,15 @@ public class Sales {
 	private String dateKind;
 	private int sales;
 	private int orderCount;
+	private Integer monthData;
 	public Sales() {
 		super();
 	}
-	public Sales(String dateKind, int sales, int orderCount) {
-		super();
+	public Sales(String dateKind, int sales, int orderCount, Integer monthData) {
 		this.dateKind = dateKind;
 		this.sales = sales;
 		this.orderCount = orderCount;
+		this.monthData = monthData;
 	}
 	public String getDateKind() {
 		return dateKind;
@@ -31,9 +32,16 @@ public class Sales {
 	public void setOrderCount(int orderCount) {
 		this.orderCount = orderCount;
 	}
+	public Integer getMonthData() {
+		return monthData;
+	}
+	public void setMonthData(Integer monthData) {
+		this.monthData = monthData;
+	}
 	@Override
 	public String toString() {
-		return "Sales [dateKind=" + dateKind + ", sales=" + sales + ", orderCount=" + orderCount + "]";
+		return "Sales [dateKind=" + dateKind + ", sales=" + sales + ", orderCount=" + orderCount + ", monthData="
+				+ monthData + "]";
 	}
-	
+			
 }

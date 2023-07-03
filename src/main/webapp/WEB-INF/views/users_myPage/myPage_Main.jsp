@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -223,7 +224,7 @@
 									<i class="bi bi-currency-dollar dollars"></i>
 								</td>
 								<td style="font-size: 18px; color: rgb(52, 152, 219);">
-									<p class="d-inline" id="myP" style="font-weight: bold;">${ loginUser.point } P</p>
+									<p class="d-inline" id="myP" style="font-weight: bold;"><fmt:formatNumber pattern="###,###,###">${ loginUser.point }</fmt:formatNumber> P</p>
 								</td>
 							</tr>
 						</table>

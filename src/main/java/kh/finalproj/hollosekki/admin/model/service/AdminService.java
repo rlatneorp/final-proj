@@ -91,6 +91,12 @@ public class AdminService {
 	}
 
 	
+//	AdminMain-관리자메인
+	public ArrayList<AdminMain> selectAdminMainList(AdminBasic ab) {
+		return aDAO.selectAdminMainList(sqlSession, ab);
+	}
+
+	
 //	Sales-매출
 	public int getSalesCount(AdminBasic ab) {
 		return aDAO.getSalesCount(sqlSession, ab);
@@ -283,10 +289,6 @@ public class AdminService {
 
 	public int deletesRicipeOrder(String[] selDeletes) {
 		return aDAO.deletesRecipeOrder(sqlSession, selDeletes);
-	}
-
-	public ArrayList<AdminMain> adminMainWeek() {
-		return aDAO.adminMainWeek(sqlSession);
 	}
 
 	

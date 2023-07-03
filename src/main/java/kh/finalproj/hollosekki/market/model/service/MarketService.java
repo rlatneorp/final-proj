@@ -335,12 +335,35 @@ public class MarketService {
 		return mkDAO.deleteLike(sqlSession, usersNo, divisionNo);
 	}
 
-	public int selectLike(int usersNo, int productNo) {
+	public Integer selectLike(int usersNo, int productNo) {
 		return mkDAO.selectLike(sqlSession, usersNo, productNo);
 	}
 
 	public Cart selectCart(int usersNo) {
 		return mkDAO.selectCart(sqlSession, usersNo);
+	}
+	public ArrayList<QA> qnalist(HashMap<String, Object> map) {
+		return mkDAO.qnalist(sqlSession, map);
+	}
+	//상품 메인 창에서 카테고리 별 조회 
+	public ArrayList<Product> selectViewWhole() {
+		return mkDAO.selectViewWhole(sqlSession);
+	}
+
+	public ArrayList<Product> selectViewFood() {
+		return mkDAO.selectViewFood(sqlSession);
+	}
+
+	public ArrayList<Menu> selectViewMenu() {
+		return mkDAO.selectViewMenu(sqlSession);
+	}
+
+	public ArrayList<Ingredient> selectViewIngredient() {
+		return mkDAO.selectViewIngredient(sqlSession);
+	}
+
+	public ArrayList<Tool> selectViewTool() {
+		return mkDAO.selectViewTool(sqlSession);
 	}
 
 	

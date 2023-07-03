@@ -97,6 +97,9 @@ th:first-child, td:first-child {
 	background:gray;
 }
 .date{width: 140px;}
+
+.page-link.disabled{color: lightgray;}
+.page-link.disabled:hover{background: white; color: lightgray;}
 </style>
 </head>
 <body>
@@ -189,16 +192,23 @@ th:first-child, td:first-child {
 					</table>
 				</div>
 				<br><br>
-				<div>
+				<div style="margin:0 auto">
 					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
 						<ul class="pagination">
 							<li class="page-item">
-								<c:url var="goBack" value="${ loc }">
-									<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
-								</c:url>
-								<a class="page-link" href="#" onclick="goToPage(${pi.currentPage - 1})" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-								</a>
+								<c:if test="${ pi.currentPage <= 1 }">
+										<a class="page-link disabled" aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+								</c:if>
+								<c:if test="${ pi.currentPage > 1 }">
+									<c:url var="goBack" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="#" onclick="goToPage(${pi.currentPage - 1})" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</c:if>
 							</li>
 							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 								<c:url var="goNum" value="${ loc }">
@@ -207,12 +217,19 @@ th:first-child, td:first-child {
 								<li class="page-item"><a class="page-link" href="#" onclick="goToPage(${p})">${ p }</a></li>
 							</c:forEach>
 							<li class="page-item">
-								<c:url var="goNext" value="${ loc }">
-									<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
-								</c:url>
-								<a class="page-link"  href="#" onclick="goToPage(${pi.currentPage + 1})" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-								</a>
+								<c:if test="${ pi.currentPage >= pi.maxPage }">
+									<a class="page-link disabled" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</c:if>
+								<c:if test="${ pi.currentPage < pi.maxPage }">
+									<c:url var="goNext" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+									</c:url>
+									<a class="page-link"  href="#" onclick="goToPage(${pi.currentPage + 1})" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</c:if>
 							</li>
 						</ul>
 					</nav>

@@ -7,6 +7,7 @@
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
 <title>Hollo Store</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -763,6 +764,8 @@ p b {
 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;">
 		</div>
 		<div class="right">
+			<!-- like 유무 가리는 용도 -->
+			<input type="hidden" id="likeYn" value="${like }">
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
@@ -779,7 +782,7 @@ p b {
 					<fmt:formatNumber value="${ total }" groupingUsed="true"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
 					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
 					</h2>
@@ -1156,7 +1159,13 @@ p b {
 		const productPrice = document.querySelectorAll(".productPrice");
 		const cartCount = document.querySelectorAll(".cartCount");
 		   
-		   
+		const likeYn = document.getElementById('likeYn');
+		const like2 = document.getElementById('like');
+		if(likeYn == null) {
+			like2.innerText ='♡';
+		}else {
+			like2.innerText = '♥';
+		}   
 		
 		$('.accordion_i_tit').click(function(){
 			$('.accordion_i_cont').toggle(400);
@@ -1195,11 +1204,81 @@ p b {
 			
 			
 			
-			
+		  const usersNo = '${loginUser.usersNo}';
+		  const divisionNo = '${p.productNo}';
 	      like.addEventListener("click", function() {
 		    if(like.innerText === '♡') {
-		        like.innerText = '♥';
-		    } else like.innerText ='♡';
+		        //찜이 안 되어 있으면 
+		        $.ajax({
+		        	url:'${contextPath}/insertLike.ma',
+		        	data:{
+		        		usersNo:usersNo,
+		        		divisionNo:divisionNo
+		        	},
+		        	success: data=> {
+		        		if(data == 'success') {
+		        			like.innerText = '♥';
+		        			swal({
+								 text: "해당 상품의 찜 등록이 완료되었습니다.",
+								 icon: "success",
+								 button: "확인",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 3000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 찜 등록이 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		        	},
+		        	error:data=>{
+	        			swal({
+							 text: "해당 상품의 찜 등록이 실패했습니다.",
+							 icon: "error",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 2000);
+		        	}
+		        })
+		    } else { //찜 등록이 되어 있으면 
+		    	$.ajax({
+		    		url:'${contextPath}/deleteLike.ma',
+		    		data:{
+		    			usersNo:usersNo,
+		        		divisionNo:divisionNo
+		    		},
+		    		success: data => {
+		    			console.log(data);
+		    			if(data == 'success') {
+		    				like.innerText ='♡';
+		        			swal({
+								 text: "해당 상품의 찜 해제가 완료되었습니다.",
+								 icon: "success",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 찜 해제가 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		    		},
+		    		error: data=>{
+		    			
+		    		}
+		    	})
+		    }
 		});
 	   
 	      

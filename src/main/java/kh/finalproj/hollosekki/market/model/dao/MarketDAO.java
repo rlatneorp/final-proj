@@ -354,6 +354,29 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectQnaCount", productNo);
 	}
 
+	public int insertLike(SqlSessionTemplate sqlSession, int usersNo, int divisionNo) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("usersNo", usersNo);
+		map.put("divisionNo", divisionNo);
+		
+		return sqlSession.insert("marketMapper.insertLike", map);
+	}
+
+	public int deleteLike(SqlSessionTemplate sqlSession, int usersNo, int divisionNo) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("usersNo", usersNo);
+		map.put("divisionNo", divisionNo);
+		
+		return sqlSession.delete("marketMapper.deleteLike", map);
+	}
+
+	public int selectLike(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("usersNo", usersNo);
+		map.put("divisionNo", productNo);
+		return sqlSession.selectOne("marketMapper.selectLike", map);
+	}
+
 
 
 }

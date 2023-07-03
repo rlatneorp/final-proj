@@ -74,13 +74,7 @@ public class MarketController {
          
          //주문 번호에 대한 optionNo 조회 
          ArrayList<Options> o = mkService.selectOptionInfo(cart.getPreorderNo());
-         System.out.println("주문번호에 해당 되는 옵션 정보는?? : " + o);
-         
          cart.setOptionName(o);
-        
-         
-         
-         
          ArrayList<Options> options = mkService.selectOptions(productNo);
          
          //카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
@@ -307,7 +301,7 @@ public class MarketController {
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
       int reviewCount = mkService.selectReviewCount(productNo);
       
-      int starAvg = mkService.reviewAvg(productNo);
+//      int starAvg = mkService.reviewAvg(productNo);
       
       
       if(mainImage != null) {
@@ -316,13 +310,17 @@ public class MarketController {
       
       if(list != null) {
          model.addAttribute("list", list);
-         model.addAttribute("starAvg", starAvg);
+//         model.addAttribute("starAvg", starAvg);
       }
       
       if(imglist != null) {
          model.addAttribute("imglist", imglist);
       }
       
+      int result = mkService.selectLike(users.getUsersNo(), productNo);
+      if(result >= 1) {
+    	  model.addAttribute("like", result);
+      }
       
       model.addAttribute("reviewCount", reviewCount);
       model.addAttribute("tool", tool);
@@ -806,6 +804,29 @@ public class MarketController {
 	   }
    }
 	
+   @RequestMapping("insertLike.ma")
+   @ResponseBody
+   public String insertLike(@RequestParam("usersNo") int usersNo, @RequestParam("divisionNo") int divisionNo) {
+	   int result = mkService.insertLike(usersNo, divisionNo);
+	   if(result >= 1) {
+		   return "success";
+	   } else {
+		   return "fail";
+	   }
+   }
+   
+   @RequestMapping("deleteLike.ma")
+   @ResponseBody
+   public String deleteLike(@RequestParam("usersNo") int usersNo, @RequestParam("divisionNo") int divisionNo) {
+	   int result = mkService.deleteLike(usersNo, divisionNo);
+	   if(result >= 1) {
+		   return "success";
+	   } else {
+		   return "fail";
+	   }
+   }
+   
+   
 //   public String insertPay(@ModelAttribute Orders orders) {
 //	   
 //	   int selectProductType = mkService.selectProductType(orders.getProductNo());

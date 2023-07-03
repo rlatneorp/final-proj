@@ -327,6 +327,20 @@ public class MarketService {
 		return mkDAO.selectQnaCount(sqlSession, productNo);
 	}
 
+	public int insertLike(int usersNo, int divisionNo) {
+		return mkDAO.insertLike(sqlSession, usersNo, divisionNo);
+	}
+
+	public int deleteLike(int usersNo, int divisionNo) {
+		return mkDAO.deleteLike(sqlSession, usersNo, divisionNo);
+	}
+
+	public int selectLike(int usersNo, int productNo) {
+		return mkDAO.selectLike(sqlSession, usersNo, productNo);
+	}
+
+	
+
 
 
 	

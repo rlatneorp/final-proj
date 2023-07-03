@@ -7,6 +7,7 @@
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
 <title>Hollo Store</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -322,10 +323,6 @@ p b {
 /* .textbox { */
 /* 	width: 100%; */
 /* } */
-
- .textbox:hidden { 
- 	width: 100%; 
- } 
 
 
 .reviewComment {
@@ -757,12 +754,14 @@ p b {
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-<%-- 			<c:forEach items="${mainImage}" var="main"> --%>
-<%-- 				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;"> --%>
-<%-- 			</c:forEach> --%>
-			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;">
+			<c:forEach items="${mainImage}" var="main">
+				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
+			</c:forEach>
+<!-- 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
 		</div>
 		<div class="right">
+			<!-- like 유무 가리는 용도 -->
+			<input type="hidden" id="likeYn" value="${like }">
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
@@ -779,7 +778,12 @@ p b {
 					<fmt:formatNumber value="${ total }" groupingUsed="true"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					<c:if test="${like ne null}">
+						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+					</c:if>
+					<c:if test="${like eq null}">
+						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					</c:if>
 					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
 					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
 					</h2>
@@ -788,12 +792,12 @@ p b {
 						<div class="productSet">
 							<div style="text-align: center">
 								<span style="font-size: 40px; font-weight: 400; color:#4485d7; class="reviewStar">
-									<c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
-									<c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
-									<c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>
-									<c:if test="${starAvg  eq  2 }" >★★☆☆☆&nbsp&nbsp(2)</c:if>
-									<c:if test="${starAvg  eq  1 }" >★☆☆☆☆&nbsp&nbsp(1)</c:if>
-									<c:if test="${starAvg  eq  0 }" >☆☆☆☆☆&nbsp&nbsp(0)</c:if>
+										<c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
+										<c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
+										<c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>
+										<c:if test="${starAvg  eq  2 }" >★★☆☆☆&nbsp&nbsp(2)</c:if>
+										<c:if test="${starAvg  eq  1 }" >★☆☆☆☆&nbsp&nbsp(1)</c:if>
+										<c:if test="${starAvg  eq  0 }" >☆☆☆☆☆&nbsp&nbsp(0)</c:if>
 								</span>
 							</div>
 	                        <dl class="info_delivery">
@@ -862,10 +866,11 @@ p b {
 
 	<div class="Infobox">
 		<!-- 제품 사진 및 소개 칸 -->
-		<div class="imgbox">
-			<img src="https://recipe1.ezmember.co.kr/cache/shop/2023/04/24/5ba96dd7aef9a27712340b1795b190d3_m.jpg"> 
-		</div>
-		
+		<c:forEach items="${subImage}" var="subImg">
+			<div class="imgbox">
+				<img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto;">
+			</div>
+		</c:forEach>
 <!-- 		<div class="DetailMoreBtn"> -->
 <!-- 			<a>상세정보 더보기</a> -->
 <!-- 		</div> -->
@@ -897,41 +902,44 @@ p b {
 					       <p style="margin:auto; text-align:center; font-weight: 400; color: #999999; font-size: 15px">등록된 후기가 없습니다.</p>
 					  </c:if>
 					  
-		
-				<div class="textbox" id="textbox">
-					<c:forEach items="${ list }" var="r">
-						<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>${r.reviewWriter}
-							<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>
-								<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
-								<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
-								<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
-								<c:if test="${r.reviewScore  eq  2 }" >★★☆☆☆</c:if>
-								<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
-								<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
-							</span>
-							<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
-						</div>
-						
-<%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
-		
-				
-							<div class="reviewPhoto" style="padding-left:10px"">
-								<ul>
-									<c:forEach items="${imglist}" var="img" >
-										<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
-											<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
-										</c:if>
-									</c:forEach>
-								</ul>
+	 <div class="textbox" id="textbox"> 
+			<c:forEach items="${ list }" var="r">
+					<div class="reviews" >
+						<c:if test="${ r ne null}">
+							<div class="nickName" style="font-size:18px; font-weight:400; padding:10px;">${r.reviewWriter}
+								<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>
+									<c:if test="${r.reviewScore  eq  5 }" >★★★★★</c:if>
+									<c:if test="${r.reviewScore  eq  4 }" >★★★★☆</c:if>
+									<c:if test="${r.reviewScore  eq  3 }" >★★★☆☆</c:if>
+									<c:if test="${r.reviewScore  eq  2 }" >★★☆☆☆</c:if>
+									<c:if test="${r.reviewScore  eq  1 }" >★☆☆☆☆</c:if>
+									<c:if test="${r.reviewScore  eq  0 }" >☆☆☆☆☆</c:if>
+								</span>
+								<span style="font-size: 15px; font-weight: 200;">${r.reviewDate}</span>
 							</div>
-								<div style="display: inline-block; width: 100%;">
-											<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-													${r.reviewContent}  
-											</div>
+							
+	<%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
+			
+					
+								<div class="reviewPhoto" style="padding-left:10px">
+									<ul>
+										<c:forEach items="${imglist}" var="img" >
+											<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
+												<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
+											</c:if>
+										</c:forEach>
+									</ul>
 								</div>
+									<div style="display: inline-block; width: 100%;">
+												<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
+														${r.reviewContent}  
+												</div>
+									</div>
+						</c:if>
+					</div>
 				</c:forEach>
-			</div>
-		
+		</div>
+
 			<div class="moreView">더보기</div>
 				
 	<div class="productBox">
@@ -1017,31 +1025,34 @@ p b {
 					</li>
 				</ul>
 				<li id="page-qna" class="accordion_i_li">
-	                <a class="accordion_i_tit3">문의<span>(1)</span></a>
+	                <a class="accordion_i_tit3">문의<span>( ${ qnaCount } )</span></a>
 	                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
 	                    <div id="ajax-goods-goodsqa-list">
 	                    
 	              	<ul class="goods_accordion_qna">
-              	${q}
+	              	
         <!--  반복 될 부분 -->  
         <c:forEach items="${qna}" var="qna">
-             <li class="accordion_q_li js_data_row" >
+             <li class="accordion_q_li js_data_row" onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
                 <div class="accordion_q_tit1"> 
                    
                     <div class="qna">
                        <span style="color:#4485d7;">${qna.qnaNo} </span>
-                     |&nbsp <c:if test="${qna.qnaType eq 1 } "> 배송</c:if>
-                       <c:if test="${qna.qnaType eq 2 } "> 결제 </c:if>
-                       <c:if test="${qna.qnaType eq 3 } "> 회원 </c:if>
-                       <c:if test="${qna.qnaType eq 4 } "> 상품 </c:if>
-                       <c:if test="${qna.qnaType eq 0 } "> 기타 </c:if>
-                       ${qna.qnaTitle}
+                       |&nbsp
+                       <span style="color: #216dcd; font-weight: 400;">
+							   <c:if test="${qna.qnaType eq 1 }">[배송]</c:if>
+		                       <c:if test="${qna.qnaType eq 2 }">[결제]</c:if>
+		                       <c:if test="${qna.qnaType eq 3 }">[회원]</c:if>
+		                       <c:if test="${qna.qnaType eq 4 }">[상품]</c:if>
+		                       <c:if test="${qna.qnaType eq 0 }">[기타]</c:if>
+                       </span>
+                        ${qna.qnaTitle}
                     </div>
-                        <span class="writer" style="margin-right: 60px">${qna.nickName}</span>
-                        <span class="rv_cont_date" style="margin-right: 60px">${qna.qnaDate}</span>
+                        <div class="writer" style="display:inline-block; width:100px; margin-left:30px;">${qna.nickName}</div>
+                        <div class="rv_cont_date" style="display:inline-block; width:100px; margin-left:30px; ">${qna.qnaDate}</div>
                         <span class="qna_result" style="float: right;">
-	                        <c:if test="${qna.answerContent ne null}"><span style="color: red;">답변대기중</span></c:if>
-	                       <c:if test="${qna.answerContent eq null}"><span style="color: green;">답변 완료</span></c:if>
+	                        <c:if test="${qna.answerContent eq null}"><span style="color: red;">답변 대기</span></c:if>
+	                       <c:if test="${qna.answerContent ne null}"><span style="color: green;">답변 완료</span></c:if>
                        </span>
                     
                 
@@ -1054,10 +1065,12 @@ p b {
 			</ul>
 				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
 <%-- 					<c:if test="${ loginUser != null}"> --%>
+					<c:if test="${ loginUser ne null }">
 					    <div class="review_btn_wr">
 					    <a href="createqna.ma?productNo=${p.productNo}">
 					    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
 					    </div>
+					</c:if>
 <%-- 				    </c:if> --%>
 				</div>
 <!-- 								<div class="pagination" style="display: block"> -->
@@ -1097,7 +1110,6 @@ p b {
 							</div>
 						</div>
 					</div>
-	          	</li>
 			</div>
 		</div>
         	<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1115,7 +1127,7 @@ p b {
 	        			</div>
 	        			<div class="footer" style="text-align:center; height: 50px;">
 								<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
-								<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
+								<button type="button" class="button btn-y" id="moveCart" onclick="location.href='basket.ma'">장바구니로</button>
 	<!--         				<button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
 	<!--         				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button> -->
 	        			</div>
@@ -1139,11 +1151,17 @@ p b {
 	        		</div>
 	        	</div>
 	        </div>
-		</div>
+
 <br><br><br>
 	<script>
 	
 	window.onload = function(){
+		
+		
+		document.getElementById('moveCart').addEventListener('click', function() {
+			const usersNo = '${loginUser.usersNo}'
+			location.href='${contextPath}/basket.ma?usersNo=' + usersNo;
+		})
 		
 		const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
 		const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
@@ -1159,8 +1177,6 @@ p b {
 		let totalPriceSet = document.querySelectorAll(".totalPriceSet");
 		const productPrice = document.querySelectorAll(".productPrice");
 		const cartCount = document.querySelectorAll(".cartCount");
-		   
-		   
 		
 		$('.accordion_i_tit').click(function(){
 			$('.accordion_i_cont').toggle(400);
@@ -1199,11 +1215,81 @@ p b {
 			
 			
 			
-			
+		  const usersNo = '${loginUser.usersNo}';
+		  const divisionNo = '${p.productNo}';
 	      like.addEventListener("click", function() {
 		    if(like.innerText === '♡') {
-		        like.innerText = '♥';
-		    } else like.innerText ='♡';
+		        //찜이 안 되어 있으면 
+		        $.ajax({
+		        	url:'${contextPath}/insertLike.ma',
+		        	data:{
+		        		usersNo:usersNo,
+		        		divisionNo:divisionNo
+		        	},
+		        	success: data=> {
+		        		if(data == 'success') {
+		        			like.innerText = '♥';
+		        			swal({
+								 text: "해당 상품의 찜 등록이 완료되었습니다.",
+								 icon: "success",
+								 button: "확인",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 3000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 찜 등록이 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		        	},
+		        	error:data=>{
+	        			swal({
+							 text: "해당 상품의 찜 등록이 실패했습니다.",
+							 icon: "error",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 2000);
+		        	}
+		        })
+		    } else { //찜 등록이 되어 있으면 
+		    	$.ajax({
+		    		url:'${contextPath}/deleteLike.ma',
+		    		data:{
+		    			usersNo:usersNo,
+		        		divisionNo:divisionNo
+		    		},
+		    		success: data => {
+		    			console.log(data);
+		    			if(data == 'success') {
+		    				like.innerText ='♡';
+		        			swal({
+								 text: "해당 상품의 찜 해제가 완료되었습니다.",
+								 icon: "success",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 찜 해제가 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		    		},
+		    		error: data=>{
+		    			
+		    		}
+		    	})
+		    }
 		});
 	   
 	      
@@ -1295,9 +1381,7 @@ p b {
 			var productNo = null;
 			
 			$(function(){
-				console.log($(".textbox").slice(0, 3));
-				
-			    $(".textbox").slice(1, 3).show(); // 초기갯수
+			    $(".textbox").slice(0, 3).show(); // 초기갯수
 			    $(".moreView").click(function(e){ // 클릭시 more
 			        e.preventDefault();
 			        $(".textbox").wrapAll().show(); // 클릭시 more 갯수 지저정
@@ -1473,6 +1557,7 @@ p b {
 					+							rev.reviewContent
 					+					'</div>'
 					+		'</div>';
+					
 					$('.textbox').append(result);
 			    					for(let img  of data.imgList){
 			    						if(rev.reviewNo == img.imageDivideNo){

@@ -269,7 +269,7 @@ public class MarketService {
 		mkDAO.updatePoint(sqlSession, users);
 	}
 
-	public int reviewAvg(int productNo) {
+	public Integer reviewAvg(int productNo) {
 		return mkDAO.reviewAvg(sqlSession, productNo);
 	}
 
@@ -326,6 +326,47 @@ public class MarketService {
 	public int selectQnaCount(int productNo) {
 		return mkDAO.selectQnaCount(sqlSession, productNo);
 	}
+
+	public int insertLike(int usersNo, int divisionNo) {
+		return mkDAO.insertLike(sqlSession, usersNo, divisionNo);
+	}
+
+	public int deleteLike(int usersNo, int divisionNo) {
+		return mkDAO.deleteLike(sqlSession, usersNo, divisionNo);
+	}
+
+	public Integer selectLike(int usersNo, int productNo) {
+		return mkDAO.selectLike(sqlSession, usersNo, productNo);
+	}
+
+	public Cart selectCart(int usersNo) {
+		return mkDAO.selectCart(sqlSession, usersNo);
+	}
+	public ArrayList<QA> qnalist(HashMap<String, Object> map) {
+		return mkDAO.qnalist(sqlSession, map);
+	}
+	//상품 메인 창에서 카테고리 별 조회 
+	public ArrayList<Product> selectViewWhole() {
+		return mkDAO.selectViewWhole(sqlSession);
+	}
+
+	public ArrayList<Product> selectViewFood() {
+		return mkDAO.selectViewFood(sqlSession);
+	}
+
+	public ArrayList<Menu> selectViewMenu() {
+		return mkDAO.selectViewMenu(sqlSession);
+	}
+
+	public ArrayList<Ingredient> selectViewIngredient() {
+		return mkDAO.selectViewIngredient(sqlSession);
+	}
+
+	public ArrayList<Tool> selectViewTool() {
+		return mkDAO.selectViewTool(sqlSession);
+	}
+
+	
 
 
 

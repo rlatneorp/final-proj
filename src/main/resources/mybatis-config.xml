@@ -37,7 +37,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.menu.model.vo.MenuList" alias="MenuList"/>
 		<typeAlias type="kh.finalproj.hollosekki.market.model.vo.Orders" alias="Orders"/>
 		<typeAlias type="kh.finalproj.hollosekki.admin.model.vo.Sales" alias="Sales"/>
-	
+<!-- 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Likes" alias="Likes"/> -->
 	</typeAliases>
 	
 

@@ -19,11 +19,15 @@ public class Product {
 	private int viewCount;
 	private int likeCount;
 	
+	private String imageRenameName;
+	private String menuName;
+	private int menuKind;
+	
 	public Product() {}
 
 	public Product(int productNo, int productType, int productPrice, String productOption, int productStock,
 			Date productCreateDate, Date productModifyDate, Double productSale, int productCount, String productStatus,
-			int usersNo, int orderCount, int viewCount, int likeCount) {
+			int usersNo, int orderCount, int viewCount, int likeCount, String imageRenameName, String menuName, int menuKind) {
 		super();
 		this.productNo = productNo;
 		this.productType = productType;
@@ -39,6 +43,9 @@ public class Product {
 		this.orderCount = orderCount;
 		this.viewCount = viewCount;
 		this.likeCount = likeCount;
+		this.imageRenameName = imageRenameName;
+		this.menuName = menuName;
+		this.menuKind = menuKind;
 	}
 
 	public int getProductNo() {
@@ -152,6 +159,27 @@ public class Product {
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
 	}
+	
+	public String getImageRenameName() {
+		return imageRenameName;
+	}
+	public void setImageRenameName(String imageRenameName) {
+		this.imageRenameName = imageRenameName;
+	}
+	
+	public String getMenuName() {
+		return menuName;
+	}
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
+	}
+	
+	public int getMenuKind() {
+		return menuKind;
+	}
+	public void setMenuKind(int menuKind) {
+		this.menuKind = menuKind;
+	}
 
 	@Override
 	public String toString() {
@@ -159,7 +187,7 @@ public class Product {
 				+ ", productOption=" + productOption + ", productStock=" + productStock + ", productCreateDate="
 				+ productCreateDate + ", productModifyDate=" + productModifyDate + ", productSale=" + productSale
 				+ ", productCount=" + productCount + ", productStatus=" + productStatus + ", usersNo=" + usersNo
-				+ ", orderCount=" + orderCount + ", viewCount=" + viewCount + ", likeCount=" + likeCount + "]";
+				+ ", orderCount=" + orderCount + ", viewCount=" + viewCount + ", likeCount=" + likeCount + ", imageRenameName=" + imageRenameName + ", menuName=" + menuName + ", menuKind=" + menuName + "]";
 	}
 	
 }

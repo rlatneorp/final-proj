@@ -44,6 +44,7 @@
 							<c:if test="${f.faqType eq 1}">배송</c:if>
 							<c:if test="${f.faqType eq 2}">결제</c:if>
 							<c:if test="${f.faqType eq 3}">회원</c:if>
+							<c:if test="${f.faqType eq 4}">상품</c:if>
 							<c:if test="${f.faqType eq 0}">기타</c:if>
 						</td>
 						<td>${fn:substring(f.faqTitle, 0, 20)}</td>

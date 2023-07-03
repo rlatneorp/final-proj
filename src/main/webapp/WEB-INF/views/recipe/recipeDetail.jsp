@@ -379,7 +379,7 @@
 					<td class="line">5</td>
 					<td class="line">${re.reviewContent}</td>
 					<td class="line">${re.reviewWriter}</td>
-<%-- 					<td class="line">${re.reviewDate}</td> --%>
+					<td class="line">${re.reviewDate}</td>
 				</tr>
 			</c:forEach>
 		</tbody>

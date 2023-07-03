@@ -388,11 +388,11 @@
         select *
         from image join review on review_no = image_divide_no
         where image_type = 7
-                  and product_no = #{productNo}	
+                  and product_no = #{productNo}
         order by review_no
 	</select>
    
-   <select id="reviewAvg" resultType="_int">
+   <select id="reviewAvg" resultType="_integer">
 	  select round(avg(review_Score))
 	  from review 
 	  where product_no = #{productNo}
@@ -448,7 +448,7 @@
    
    <!-- 장바구니 상품에 대한 이미지 조회 -->
    <select id="selectImg" resultType="String">
-      select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType}
+      select image_renamename from image where image_divide_no = #{productNo} and image_type =#{imgType} and image_level = 0
    </select>
    
    <select id="selectStock" resultType="_int">
@@ -588,5 +588,53 @@
 		<result column="PRODUCTNO" property="productNo"/>
 	</resultMap>
 	
+	<insert id="insertLike">
+		insert into likes (LIKE_NO,USERS_NO,DIVISION_NO,NUMBER_TYPE )
+		values(seq_like_no.nextval, #{usersNo}, #{divisionNo}, 2)
+	</insert>
 	
+	<delete id="deleteLike">
+		delete from likes
+		where users_no=#{usersNo} and division_no=#{divisionNo}
+	</delete>
+	
+	<select id="selectLike" resultType="_integer">
+		select count(*) from likes where users_no=#{usersNo} and division_no=#{divisionNo}
+	</select>
+	
+	<select id="selectCart" resultMap="cartList">
+		select *
+		from (select * 
+			  from cart
+		 	  where users_no = #{usersNo}
+		 	  order by cart_no desc)
+		where rownum = 1
+	</select>
+	<select id="qnalist" resultMap="QnAResultSet">
+		select *
+		from qna join users using (users_no)
+		where qna_no = #{qnaNo} and users_no = #{usersNo} and product_no=#{productNo} and qna_status='Y'
+	</select>
+	
+	
+	<!-- 상품 메인 창에서 카테고리 별 조회  -->
+	<select id="selectViewWhole" resultMap="productList" >
+		select * from product where product_type in (1,3,4)
+	</select>
+	
+	<select id="selectViewFood" resultMap="foodInfo" >
+		select * from food
+	</select>
+	
+<!-- 	<select id="selectViewMenu" resultMap="menuInfo" > -->
+<!-- 		select * from menu -->
+<!-- 	</select> -->
+	
+	<select id="selectViewIngredient" resultMap="ingredientInfo" >
+		select * from ingredient
+	</select>
+	
+	<select id="selectViewTool" resultMap="toolInfo" >
+		select * from tool
+	</select>
 </mapper>

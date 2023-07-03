@@ -410,6 +410,8 @@ p b {
 			</div>
 		</div>
 		<div class="right">
+			<!-- like 유무 가리는 용도 -->
+			<input type="hidden" id="likeYn" value="${like }">
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center">
@@ -421,7 +423,12 @@ p b {
 						<fmt:formatNumber value="${menu.productPrice}"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<h4 class="like" style="display: inline-block; font-size: 40px; color: #4485d7;">♡</h4>
+					<c:if test="${like ne null}">
+						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+					</c:if>
+					<c:if test="${like eq null}">
+						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					</c:if>
 				</div>
 				<div>
 					<div class="info_delivery_area">
@@ -462,6 +469,7 @@ p b {
 							<br>
 						</div>
 					</div>
+					<input type="hidden" id="foodProductNo" name="foodProductNo" value="${ menu.foodProductNo }">
 					<button type="button" id="buybtn" style="display: inline-block; width: 60%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> <!-- 결제 창으로 -->
 					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
 				</div>
@@ -1082,7 +1090,7 @@ p b {
 			</div>
 			<div class="footer">
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="button btn-y" id="subscribe">구매하기</button>
+				<button type="button" class="button btn-y" id="subscribe" onclick="location.href='${contextPath}/payDetail2.ma'">구매하기</button>
 			</div>
 		</div>
 	</div>
@@ -1103,7 +1111,7 @@ p b {
 			</div>
 			<div class="footer">
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속<br>쇼핑하기</button>
-				<button type="button" class="button btn-y" id="moveCart">장바구니로</button>
+				<button type="button" class="button btn-y" id="moveCart" onclick="location.href='${contextPath }/basket.ma'">장바구니로</button>
 			</div>
 		</div>
 	</div>
@@ -1112,6 +1120,7 @@ p b {
 <br><br>
 <%@ include file="../common/footer.jsp" %>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
 <script>
 	function decreaseClick(){
 		var quantity = document.getElementById('quantity');
@@ -1138,6 +1147,10 @@ p b {
 		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
 
+	const productNo = '${menu.foodProductNo}';
+	const usersNo = '${loginUser.usersNo}';
+	
+	
 	const buybtn = document.getElementById('buybtn');
 	buybtn.addEventListener('click', function(){
 		const quantity = document.getElementById('quantity');
@@ -1148,6 +1161,28 @@ p b {
 		
 		buyMenuCount.innerText = quantity.innerText;
 		buyMenuPrice.innerText = total.innerText;
+		
+		console.log("quantity : " + buyMenuCount.innerText);
+		console.log("productNo : " + productNo);
+		console.log("usersNo : " + usersNo);
+		
+		$.ajax({
+            url: "insertCart.ma",
+            async: false,
+            data: {
+        		"productNo":productNo, 
+	        	"cartCount":buyMenuCount.innerText,
+	        	"usersNo":usersNo,
+	        },
+            success: data =>{
+        		console.log("success");
+            },
+            error: data => {
+            	console.log("error");
+            	 alert("카트 담기 실패");
+            }
+        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
+		
 	})
 	
 	const cartbtn = document.getElementById('cartbtn');
@@ -1160,9 +1195,105 @@ p b {
 		
 		cartMenuCount.innerText = quantity.innerText;
 		cartMenuPrice.innerText = total.innerText;
+		
+		console.log("quantity : " + cartMenuCount.innerText);
+		console.log("productNo : " + productNo);
+		console.log("usersNo : " + usersNo);
+		
+		$.ajax({
+	            url: "insertCart.ma",
+	            async: false,
+	            data: {
+	        		"productNo":productNo, 
+		        	"cartCount":cartMenuCount.innerText,
+		        	"usersNo":usersNo,
+		        },
+	            success: data =>{
+            		console.log("success");
+	            },
+	            error: data => {
+	            	console.log("error");
+	            	 alert("카트 담기 실패");
+	            }
+			})
 	})
+
+	const like = document.querySelector(".like");
 	
-	
+	like.addEventListener("click", function() {
+	    if(like.innerText === '♡') {
+	        //찜이 안 되어 있으면 
+	        $.ajax({
+	        	url:'${contextPath}/insertLike.ma',
+	        	data:{
+	        		usersNo:usersNo,
+	        		divisionNo:productNo
+	        	},
+	        	success: data=> {
+	        		if(data == 'success') {
+	        			like.innerText = '♥';
+	        			swal({
+							 text: "해당 상품의 찜 등록이 완료되었습니다.",
+							 icon: "success",
+							 button: "확인",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 3000);
+	        		} else { //실패 시 
+	        			swal({
+							 text: "해당 상품의 찜 등록이 실패했습니다.",
+							 icon: "error",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 2000);
+	        		}
+	        	},
+	        	error:data=>{
+        			swal({
+						 text: "해당 상품의 찜 등록이 실패했습니다.",
+						 icon: "error",
+						});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 2000);
+	        	}
+	        })
+	    } else { //찜 등록이 되어 있으면 
+	    	$.ajax({
+	    		url:'${contextPath}/deleteLike.ma',
+	    		data:{
+	    			usersNo:usersNo,
+	        		divisionNo:productNo
+	    		},
+	    		success: data => {
+	    			console.log(data);
+	    			if(data == 'success') {
+	    				like.innerText ='♡';
+	        			swal({
+							 text: "해당 상품의 찜 해제가 완료되었습니다.",
+							 icon: "success",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 2000);
+	        		} else { //실패 시 
+	        			swal({
+							 text: "해당 상품의 찜 해제가 실패했습니다.",
+							 icon: "error",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 2000);
+	        		}
+	    		},
+	    		error: data=>{
+	    			
+	    		}
+	    	})
+	    }
+	});
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {
 //         var productNo = $("input[name='productNo']").val();
@@ -1186,7 +1317,7 @@ p b {
 //             	}
 //             },
 //             error: function(data) {
-//                 alert("카트 담기 실패");
+//                
 //             }
 //         });
 //     });

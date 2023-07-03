@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 public interface MenuService {
@@ -26,5 +27,9 @@ public interface MenuService {
 	ArrayList<Menu> searchMenu(String word);
 
 	ArrayList<Menu> menuCategory(int cate);
+
+	int selectUsersNo(int mNo);
+
+	ArrayList<Product> healtherInfo(int usersNo);
 
 }

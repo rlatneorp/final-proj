@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +56,7 @@
 						</tr>
 						<tr>
 							<td><i class="bi bi-currency-dollar dollars" style="text-align: right;"></i></td>
-							<td style="font-size: 18px; color: rgb(52, 152, 219); text-align: left;"><b>${ loginUser.point } P</b></td>
+							<td style="font-size: 18px; color: rgb(52, 152, 219); text-align: left;"><b><fmt:formatNumber pattern="###,###,###">${ loginUser.point }</fmt:formatNumber> P</b></td>
 							<td style="font-size: 18px;">0 P</td>
 						</tr>
 					</table>
@@ -83,7 +84,7 @@
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
 										<td>회원가입 축하 적립금</td>
 										<td class="extinction"><script>document.write(formattedDate);</script></td>
-										<td>+${ p.POINT_CHANGE - p.POINT_BEFORE }</td>
+										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
 									<c:if test="${ p.POINT_TYPE == 3 }">
 										 <script>
@@ -94,13 +95,13 @@
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
 										<td>구매 포인트 적립</td>
 										<td class="extinction"><script>document.write(formattedDate);</script></td>
-										<td>+${ p.POINT_CHANGE - p.POINT_BEFORE }</td>
+										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
 									<c:if test="${ p.POINT_TYPE == 11 }">
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
 										<td>구매 포인트 차감</td>
 										<td>-</td>
-										<td>${ p.POINT_CHANGE - p.POINT_BEFORE }</td>
+										<td><fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
 									<c:if test="${ p.POINT_TYPE == 12 }">
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>

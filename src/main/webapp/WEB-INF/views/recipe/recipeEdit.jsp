@@ -208,7 +208,6 @@
 			
 			<br><br><br>
 			
-			<p>${cList[0].imageOriginalName}</p>
 			
 			<div class="recipeInformationBox" id="completePic">
 				<div class="d-inline-block beforeInput">완성된 요리 |</div><div class="d-inline-block">완성된 요리 이미지를 올려주세요. 이미지를 추가하려면 +버튼을 눌러주세요.(완성된 요리 이미지는 최대 3개)</div>

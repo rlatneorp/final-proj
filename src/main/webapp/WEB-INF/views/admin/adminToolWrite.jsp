@@ -725,7 +725,7 @@ p b {
 			<div class="left">
 				<!-- 구매창 왼쪽 사진 넣는 곳 -->
 				<div style="width:540px; height:540px;">
-					<img class="previewImage" src="${contextPath}/resources/images/Logo.png" style="width:540px; height:540px;">
+					<img class="previewImage" src="${contextPath}/resources/images/logo.png" style="width:540px; height:540px;">
 				</div>
 				<label>대표이미지 - </label>
 				<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
@@ -825,7 +825,7 @@ p b {
 		<div class="Infobox">
 			<!-- 제품 사진 및 소개 칸 -->
 			<div class="imgbox">
-				<img class="previewImage">
+				<img class="previewImage" src="${contextPath}/resources/images/logo.png" >
 			</div>
 		</div>
 		<br>

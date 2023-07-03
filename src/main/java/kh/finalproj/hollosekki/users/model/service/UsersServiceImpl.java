@@ -15,6 +15,7 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.dao.UsersDAO;
@@ -168,7 +169,7 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.updateAddress(sqlSession, sa);
 	}
 	
-	//주문 리스트 조회
+	//�ֹ� ����Ʈ ��ȸ
 	@Override
 	public ArrayList<Orders> selectOrderList(int usersNo, PageInfo pi) {
 		return uDAO.selectOrderList(sqlSession, usersNo, pi);
@@ -184,7 +185,7 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.selectDetailOrder(sqlSession, orderNo);
 	}
 	
-	//기간 별 주문 리스트 조회 
+	//�Ⱓ �� �ֹ� ����Ʈ ��ȸ 
 	@Override
 	public ArrayList<Orders> selectPeriodOrders(Properties prop, PageInfo pi) {
 		return uDAO.selectPeriodOrders(sqlSession, prop, pi);
@@ -215,8 +216,28 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.selectPoint(sqlSession, usersNo, pi);
 	}
 	
+//	@Override
+//	public int deletePoint(HashMap<String, Object> map) {
+//		return uDAO.deletePoint(sqlSession, map);
+//	}
+//	
+//	@Override
+//	public int updatePoint(HashMap<String, Object> map) {
+//		return uDAO.updatePoint(sqlSession, map);
+//	}
+	
 	@Override
-	public int deletePoint(HashMap<String, Object> map) {
-		return uDAO.deletePoint(sqlSession, map);
+	public int getReviewCount(HashMap<String, Object> map) {
+		return uDAO.getReviewCount(sqlSession, map);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> selectReview(HashMap<String, Object> map, PageInfo pi) {
+		return uDAO.selectReview(sqlSession, map, pi);
+	}
+	
+	@Override
+	public Review selectDetailReview(int reviewNo) {
+		return uDAO.selectDetailReview(sqlSession, reviewNo);
 	}
 }

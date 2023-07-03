@@ -25,4 +25,6 @@ public interface MenuService {
 
 	ArrayList<Menu> searchMenu(String word);
 
+	ArrayList<Menu> menuCategory(int cate);
+
 }

@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,6 +37,7 @@ import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Options;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
@@ -1023,5 +1022,39 @@ public class UsersController {
 		return "myPage_MyOrder";
 	}
 	
+	@RequestMapping("myPage_Review.me")
+	public String myPage_Review(Model model, @RequestParam(value = "page", required = false) Integer page) {
+		Users u  = (Users)model.getAttribute("loginUser");
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersId", u.getUsersId());
+		map.put("nickName", u.getNickName());
+		
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = uService.getReviewCount(map);
+		System.out.println(listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		ArrayList<HashMap<String, Object>> list = uService.selectReview(map, pi);
+		System.out.println(list);
+		
+		model.addAttribute("list", list);
+		
+		return "myPage_Review";
+	}
+	
+	@RequestMapping("myPage_editReview.me")
+	public String myPage_editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
+		Review r = uService.selectDetailReview(reviewNo);
+		System.out.println(r);
+		
+		model.addAttribute("r", r);
+		
+		return "updateReview";
+	}
 	
 }

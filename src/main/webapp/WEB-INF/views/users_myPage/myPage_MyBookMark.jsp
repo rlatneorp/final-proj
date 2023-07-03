@@ -105,7 +105,7 @@ th:first-child, td:first-child {
 		<div class="myPageDiv">
 		<%@ include file="../common/usersSideBar.jsp" %>
 			<div class="content">
-				<p id="pmyPage">스크랩</p>
+				<p id="pmyPage">스크랩 관리</p>
 				<div style="border: 1px solid black; background: black; height: 1px;"></div>
 				<br><br>
 				<div class="search" style="margin: 0 auto; left: 480px;">

@@ -817,32 +817,40 @@ public class MarketController {
    
    //전체보기
    @RequestMapping("viewWhole.ma")
-   public String viewWhole(Model model) {
-	   ArrayList<Product> list = mkService.selectViewWhole();
+   public String viewWhole(Model model, @RequestParam(value="page", required=false) Integer currentPage) {
+	   if(currentPage == null) {
+		   currentPage = 1;
+	   }
+	   int listCount = mkService.selectViewWholeCount();
+	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
+//	   pi.setBoardLimit(5);
+	   
+	   ArrayList<Product> list = mkService.selectViewWhole(pi);
+	   System.out.println(list.size());
 	   
 	   Food food = null; Tool tool = null; Ingredient ingre = null;
-	   String img = null;
-	   
-	   for(Product lists : list) {
-		   int productNo = lists.getProductNo();
-		   System.out.println("productNo : " + productNo);
-		   food = mkService.selectFood(productNo); tool = mkService.selectTool(productNo); ingre = mkService.selectIngrdient(productNo);
-		   if(food != null) {
-			   lists.setProductName(food.getFoodName());
-			   img = mkService.selectImg(productNo, 3);
-		   } else if (tool != null) {
-			   System.out.println("tool들어왔다" + tool.getToolName()) ;
-			   lists.setProductName(tool.getToolName());
-			   img = mkService.selectImg(productNo, 6);
-		   } else if (ingre != null) {
-			   lists.setProductName(ingre.getIngredientName());
-			   img = mkService.selectImg(productNo, 5);
-		   }
-		   if(img != null) {
-			   lists.setProductImg(img);
+	   if(!list.isEmpty()) {
+		   for(Product lists : list) {
+			   int productNo = lists.getProductNo();
+			   String img = null;
+			   food = mkService.selectFood(productNo); tool = mkService.selectTool(productNo); ingre = mkService.selectIngrdient(productNo);
+			   if(food != null) {
+				   lists.setProductName(food.getFoodName());
+				   img = mkService.selectImg(productNo, 3);
+			   } else if (tool != null) {
+				   lists.setProductName(tool.getToolName());
+				   img = mkService.selectImg(productNo, 6);
+			   } else if (ingre != null) {
+				   lists.setProductName(ingre.getIngredientName());
+				   img = mkService.selectImg(productNo, 5);
+			   }
+			   if(img != null) {
+				   lists.setProductImg(img);
+			   }
 		   }
 	   }
 	   System.out.println("list : " + list);
+	   model.addAttribute("pi", pi);
 	   model.addAttribute("list", list);
 	   return "kitchenToolMainPage";
    }
@@ -856,16 +864,6 @@ public class MarketController {
 	   System.out.println("list : " + list);
 	   return "kitchenToolMainPage";
    }
-   
-//   //식단
-//   @RequestMapping("viewMenu.ma")
-//   public String viewMenu(Model model) {
-//	   ArrayList<Menu> list = mkService.selectViewMenu();
-//	   //Tool
-//	   model.addAttribute("list", list);
-//	   System.out.println("list : " + list);
-//	   return "kitchenToolMainPage";
-//   }
    
    //식재료
    @RequestMapping("viewIngredient.ma")

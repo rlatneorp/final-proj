@@ -637,4 +637,9 @@
 	<select id="selectViewTool" resultMap="toolInfo" >
 		select * from tool
 	</select>
+	
+	<select id="selectViewWholeCount" resultType="_int">
+		select count(*) from product where product_type in (1,3,4)
+	</select>
+	
 </mapper>

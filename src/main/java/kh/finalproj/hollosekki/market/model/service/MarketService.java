@@ -346,8 +346,8 @@ public class MarketService {
 		return mkDAO.qnalist(sqlSession, map);
 	}
 	//상품 메인 창에서 카테고리 별 조회 
-	public ArrayList<Product> selectViewWhole() {
-		return mkDAO.selectViewWhole(sqlSession);
+	public ArrayList<Product> selectViewWhole(PageInfo pi) {
+		return mkDAO.selectViewWhole(sqlSession, pi);
 	}
 
 	public ArrayList<Product> selectViewFood() {
@@ -364,6 +364,10 @@ public class MarketService {
 
 	public ArrayList<Tool> selectViewTool() {
 		return mkDAO.selectViewTool(sqlSession);
+	}
+
+	public int selectViewWholeCount() {
+		return mkDAO.selectViewWholeCount(sqlSession);
 	}
 
 	

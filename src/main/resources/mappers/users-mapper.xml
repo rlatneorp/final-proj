@@ -568,9 +568,9 @@
 		order by review_date desc
 	</select>
 	
-	<select id="selectDetailReview" resultMap="Review">
-		select *
-		from review
-		where review_no = #{reviewNo} 
-	</select>
+<!-- 	<select id="selectDetailReview" resultMap="Review"> -->
+<!-- 		select * -->
+<!-- 		from review -->
+<!-- 		where review_no = #{reviewNo}  -->
+<!-- 	</select> -->
 </mapper>

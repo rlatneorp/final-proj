@@ -268,6 +268,47 @@ ul li {
 .normal{
 	 padding-bottom:60px;
 }
+/* 	페이지 */
+	.page_wrap {
+		text-align:center;
+		font-size:0;
+	}
+	.page_nation {
+		display:inline-block;
+	}
+	.page_nation .none {
+		display:none;
+	}
+	.page_nation a {
+		display:block;
+		margin:0 3px;
+		float:left;
+		width:28px;
+		height:28px;
+		line-height:28px;
+		text-align:center;
+		background-color:#fff;
+		font-size:13px;
+		color:#999999;
+		text-decoration:none;
+	}
+	.page_nation .arrow {
+		margin-top: 8px;
+	}
+	.page_nation .prev {
+		background:white;
+	}
+	.page_nation .next {
+		background:white;
+	}
+	.page_nation a.active {
+		background-color:#B0DAFF;
+		color:white;
+		border:1px solid #B0DAFF;
+		border-radius: 100%;
+	}
+.page-link.disabled{color: lightgray;}
+.page-link.disabled:hover{background: white; color: lightgray;}
 </style>
 
 
@@ -298,15 +339,15 @@ ul li {
  <h1 class="sider-title">New 핫딜존</h1>
 <div class="product-slider">
         <div class="product-wrapper">
-        <c:forEach items="${list }" var="li">
+<%--         <c:forEach items="${list }" var="li"> --%>
           <div class="productList">
-          	<input type="hidden" value="${li.productNo }">
+<%--           	<input type="hidden" value="${li.productNo }"> --%>
 			<a href="market_detail.ma?productNo=1000"><img src="resources/images/product1.png"></a>
-			<div class="productName">${li.productName }</div>
-			<div class="originPrice">${li.productPrice }</div>
-			<div class="discount" id="productNoSale-${li.productNo }"></div>
+<%-- 			<div class="productName">${li.productName }</div> --%>
+<%-- 			<div class="originPrice">${li.productPrice }</div> --%>
+<%-- 			<div class="discount" id="productNoSale-${li.productNo }"></div> --%>
           </div>
-        </c:forEach>
+<%--         </c:forEach> --%>
   </div>
 </div>
 <br>
@@ -348,36 +389,70 @@ ul li {
          </div>
           
         </div>
-</div>
-
-<br>
-<br>
-<br>
-
-
-<div style="text-align: center;">
-<ul class="nomalProduct">
-	<c:forEach items="${list }" var="li">
-		<li class="normal">
-			<input type="hidden" value="${li.productNo }">
-			<a href="market_detail.ma"><img src="${contextPath }/resources/uploadFiles/${li.productImg}"></a>
-			<div class="productName">${li.productName }</div>
-			<c:if test="${li.productSale ne 0 }">
-				<span class="originPrice">
-					${li.productPrice }원
-				</span>
+	</div>
+	<br>
+	<br>
+	<br>
+	
+	<div style="text-align: center;">
+		<ul class="nomalProduct">
+			<c:forEach items="${list }" var="li">
+				<li class="normal">
+					<input type="hidden" value="${li.productNo }">
+					<a href="market_detail.ma"><img src="${contextPath }/resources/uploadFiles/${li.productImg}"></a>
+					<div class="productName">${li.productName }</div>
+					<c:if test="${li.productSale ne 0 }">
+						<span class="originPrice">
+							${li.productPrice }원
+						</span>
+					</c:if>
+					<c:if test="${li.productSale eq 0 }">
+						<span style="font-size:25px;">
+							<fmt:formatNumber value="${li.productPrice }" pattern="###,###,###"/>원
+						</span>
+					</c:if>
+					<span class="discount" id="discount-${li.productNo }"></span>
+					<input type="hidden" value="${li.productSale }">
+				</li>
+			</c:forEach>
+		</ul>
+	</div>
+	<div class="page_wrap">
+		<div class="page_nation">
+		
+	<!-- 		이전 페이지로	 -->
+			<c:url var="goBack" value="${loc }">
+				<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+			</c:url>
+			<c:if test="${pi.currentPage > 1 }">
+				<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
 			</c:if>
-			<c:if test="${li.productSale eq 0 }">
-				<span style="font-size:25px;">
-					<fmt:formatNumber value="${li.productPrice }" pattern="###,###,###"/>원
-				</span>
+			
+	<!-- 		페이지 -->
+			<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+				<c:url var="goNum" value="${loc }">
+					<c:param name="page" value="${p }"></c:param>
+				</c:url>
+				<c:if test="${ pi.currentPage eq p }">
+					<a class="active">${p }</a>
+				</c:if>
+				<c:if test="${ !(pi.currentPage eq p) }">
+					<a href="${goNum }">${p }</a>
+				</c:if>
+			</c:forEach>
+			
+			<c:url var="goNext" value="${loc }">
+				<c:param name="page" value="${pi.currentPage + 1 }"></c:param>
+			</c:url>
+			<c:if test="${pi.currentPage < pi.endPage }">
+				<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
 			</c:if>
-			<span class="discount" id="discount-${li.productNo }"></span>
-			<input type="hidden" value="${li.productSale }">
-		</li>
-	</c:forEach>
-</ul>
-</div>
+		</div>
+	</div>
+
+
+
+
 
 <script>
 	window.onload = () => {

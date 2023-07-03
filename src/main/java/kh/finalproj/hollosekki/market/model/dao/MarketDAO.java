@@ -384,8 +384,14 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.qnalist", map);
 	}
 	//상품 메인 창에서 카테고리 별 조회 
-	public ArrayList<Product> selectViewWhole(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectViewWhole");
+	public ArrayList<Product> selectViewWhole(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		System.out.println("pi.boardLimit" + pi.getBoardLimit());
+		System.out.println("pi.offset" + offset);
+		
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewWhole",null, rowBounds);
 	}
 
 	public ArrayList<Product> selectViewFood(SqlSessionTemplate sqlSession) {
@@ -402,6 +408,10 @@ public class MarketDAO {
 
 	public ArrayList<Tool> selectViewTool(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectViewTool");
+	}
+
+	public int selectViewWholeCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("marketMapper.selectViewWholeCount");
 	}
 
 

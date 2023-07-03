@@ -23,6 +23,7 @@
 					<h5 class="mt-3 mb-5">- 자주묻는질문 -</h5>
 					<span class="col-12">분류</span>
 					<select name="faqType" class="col-2 mb-3">
+						<option value="-1"<c:if test="${faq.faqType eq -1}">selected</c:if>>공지사항</option>
 						<option value="1"<c:if test="${faq.faqType eq 1}">selected</c:if>>배송</option>
 						<option value="2"<c:if test="${faq.faqType eq 2}">selected</c:if>>결제</option>
 						<option value="3"<c:if test="${faq.faqType eq 3}">selected</c:if>>회원</option>

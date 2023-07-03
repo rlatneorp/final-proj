@@ -4,7 +4,7 @@
 	<select id="getNListCount" resultType="_int">
 		select count(*)
 		from faq
-		where faq_status= 'Y' and faq_type in(1,null) 
+		where faq_status= 'Y' and faq_type in(-1,null) 
 	</select>
 	
 <!-- 	<select id="getFListCount" resultType="_int"> -->
@@ -22,7 +22,7 @@
 	<select id="nBoardList" resultMap="CustomerResultSet">
 		select faq_no, users_no, faq_title, faq_content, faq_date, faq_status, faq_type
 		from faq
-		where faq_status = 'Y' and faq_type in (1,null)  
+		where faq_status = 'Y' and faq_type in (-1,null)  
 		order by faq_no
 	</select>
 <!-- 	<select id="fBoardList" resultMap="CustomerResultSet"> -->
@@ -63,7 +63,7 @@
 	<select id="getCategoryFListCount" resultType="_int">
 		select count(*)
 		from faq
-		where faq_status = 'Y' and faq_type = 2 
+		where faq_status = 'Y' and faq_type in (0,1,2,3,4)  
 		<if test="category == 'user'">
 			  and (faq_title like '%회원%')
 		</if>
@@ -92,6 +92,10 @@
 			  and (faq_title like '%결제%' 
 			  and faq_title like '%' || #{search} || '%')
 		</if>
+		<if test="category == 'product' and search != ''">
+			  and (faq_title like '%상품%' 
+			  and faq_title like '%' || #{search} || '%')
+		</if>
 		<if test="category == 'etc' and search != ''">
 			  and (faq_title like '%기타%'
 			  and faq_title like '%' || #{search} || '%')
@@ -105,7 +109,7 @@
 	<select id="fBoardList" resultMap="CustomerResultSet">
 		select *
 		from faq
-		where faq_status = 'Y' and faq_type = 2  
+		where faq_status = 'Y' and faq_type  in (0,1,2,3,4) 
 		<if test="category == 'user'">
 			  and (faq_title like '%회원%')
 		</if>
@@ -133,6 +137,10 @@
 			  and (faq_title like '%결제%' 
 			  and faq_title like '%' || #{search} || '%')
 		</if>
+		<if test="category == 'product' and search != ''">
+			  and (faq_title like '%상품%' 
+			  and faq_title like '%' || #{search} || '%')
+		</if>
 		<if test="category == 'etc' and search != ''">
 			  and (faq_title like '%기타%'
 			  and faq_title like '%' || #{search} || '%')
@@ -145,8 +153,8 @@
 	</select>
 
 	<insert id="qnaInsert">
-		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status)
-	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default)
+		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type)
+	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, #{qnaType})
 	</insert>
 	
 

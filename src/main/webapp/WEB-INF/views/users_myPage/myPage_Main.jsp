@@ -204,7 +204,7 @@
 					</div>
 					<div class="name">
 						<br>
-						<a id="center" href="${ contextPath }/askBoard.cs">고객센터
+						<a id="center" href="${ contextPath }/noticeBoard.cs">고객센터
 						<span class="material-symbols-outlined arrow1">
 						chevron_right
 						</span></a><br><br>

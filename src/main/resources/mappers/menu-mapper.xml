@@ -47,10 +47,17 @@
 		where image_type=3 and image_level=1
 	</select>
 	
-	<select id="selectList" resultMap="menuResultSet">
+	<select id="searchMenu" resultMap="menuResultSet">
 		select *
 		from menu
 		where menu_name like '%${word}%'
+	</select>
+	
+	<select id="menuCategory" resultMap="menuResultSet">
+		select *
+		from menu
+			 left join image on (product_no = image_divide_no)
+		where menu_kind=#{cate}
 	</select>
 	
 	<resultMap type="Menu" id="menuResultSet">
@@ -62,6 +69,7 @@
 		<result column="MENU_NO" property="menuNo"/>
 		<result column="product_price" property="productPrice"/>
 		<result column="product_sale" property="productSale"/>
+		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
 	</resultMap>
 	
 	<resultMap type="Image" id="imageResultSet">

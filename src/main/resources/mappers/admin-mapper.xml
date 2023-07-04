@@ -1045,6 +1045,7 @@
 	<select id="selectQNAList" resultMap="qnaResultSet">
 		select *
 		from qna
+			 join users using(users_no)
 		<if test="searchText != null">
 			<if test='searchType == "title"'>
 				where qna_title like '%${searchText}%'
@@ -1059,6 +1060,7 @@
 	<select id="selectQNA" resultMap="qnaResultSet">
 		select *
 		from qna
+			 join users using(users_no)
 		where qna_no = ${qnaNo}
 	</select>
 	
@@ -1069,6 +1071,27 @@
 			answer_content = #{answerContent},
 			qna_status = #{qnaStatus}
 		where qna_no = #{qnaNo}
+	</update>
+	
+	
+<!--Healther-영양사 -->
+	<select id="selectHealther" resultMap="healtherResultSet">
+		select *
+		from healther
+		where users_no = #{uNo}
+	</select>
+	
+	<insert id="insertHealther">
+		insert into healther(users_no, name, title, career)
+		values(#{usersNo}, #{name}, #{title}, #{career})
+	</insert>
+	
+	<update id="updateHealther">
+		update healther
+		set name = #{name},
+			title = #{title},
+			career = #{career}
+		where users_no = #{usersNo}
 	</update>
 	
 <!--ResultSet -->
@@ -1278,6 +1301,7 @@
 	<resultMap type="kh.finalproj.hollosekki.common.model.vo.QNA" id="qnaResultSet">
 		<id column="QNA_NO" property="qnaNo"/>
 		<result column="USERS_NO" property="usersNo"/>
+		<result column="USERS_ID" property="usersId"/>
 		<result column="QNA_DATE" property="qnaDate"/>
 		<result column="QNA_TITLE" property="qnaTitle"/>
 		<result column="QNA_CONTENT" property="qnaContent"/>
@@ -1286,5 +1310,12 @@
 		<result column="ANSWER_CONTENT" property="answerContent"/>
 		<result column="QNA_STATUS" property="qnaStatus"/>
 		<result column="QNA_TYPE" property="qnaType"/>
+	</resultMap>
+	
+	<resultMap type="Healther" id="healtherResultSet">
+		<id column="USERS_NO" property="usersNo"/>
+		<result column="NAME" property="name"/> 
+		<result column="TITLE" property="title"/> 
+		<result column="CARRER" property="carrer"/> 
 	</resultMap>
 </mapper>

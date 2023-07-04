@@ -19,6 +19,7 @@ public class Orders {
 	private String orderInfo;
 	private String shipPrice;
 	private String options;
+	private int qnaType;
 	
 	private String productName;
 	private String imgName;
@@ -28,7 +29,8 @@ public class Orders {
 	public Orders(int orderNo, int productNo, int usersNo, String usersId, int productType, int orderCount,
 			int totalPrice, Date orderDate, String orderStatus, String orderAddress, Date orderDeliveryDate,
 			String orderStock, String orderDeliveryComment, String orderInfo, String shipPrice, String options,
-			String productName, String imgName) {
+			int qnaType, String productName, String imgName) {
+		super();
 		this.orderNo = orderNo;
 		this.productNo = productNo;
 		this.usersNo = usersNo;
@@ -45,6 +47,7 @@ public class Orders {
 		this.orderInfo = orderInfo;
 		this.shipPrice = shipPrice;
 		this.options = options;
+		this.qnaType = qnaType;
 		this.productName = productName;
 		this.imgName = imgName;
 	}
@@ -177,6 +180,14 @@ public class Orders {
 		this.options = options;
 	}
 
+	public int getQnaType() {
+		return qnaType;
+	}
+
+	public void setQnaType(int qnaType) {
+		this.qnaType = qnaType;
+	}
+
 	public String getProductName() {
 		return productName;
 	}
@@ -200,7 +211,9 @@ public class Orders {
 				+ ", orderDate=" + orderDate + ", orderStatus=" + orderStatus + ", orderAddress=" + orderAddress
 				+ ", orderDeliveryDate=" + orderDeliveryDate + ", orderStock=" + orderStock + ", orderDeliveryComment="
 				+ orderDeliveryComment + ", orderInfo=" + orderInfo + ", shipPrice=" + shipPrice + ", options="
-				+ options + ", productName=" + productName + ", imgName=" + imgName + "]";
+				+ options + ", qnaType=" + qnaType + ", productName=" + productName + ", imgName=" + imgName + "]";
 	}
+
+	
 	
 }

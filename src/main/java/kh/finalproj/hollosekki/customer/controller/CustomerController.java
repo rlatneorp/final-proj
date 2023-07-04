@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -100,18 +101,26 @@ public class CustomerController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		
-		ArrayList<Customer> plist = csService.pBoardList(pi, map);
+//		ArrayList<Customer> plist = csService.pBoardList(pi, map);
+		ArrayList<Qna> qlist = csService.qBoardList(pi, map);
 		
-		model.addAttribute("plist", plist);
+		System.out.println(qlist);
+//		model.addAttribute("plist", plist);
+		model.addAttribute("qlist", qlist);
 		model.addAttribute("pi", pi);
 		
 		return "personalBoard";
 	}
 	
 	@RequestMapping("personalQuestion.cs")
-	public String personalQuestion(HttpSession session, @ModelAttribute Qna q, @ModelAttribute Orders o, Model model) {
+	public String personalQuestion(HttpSession session, 
+			@RequestParam(value="qnaContent",required=false) String qnaContent,
+			@RequestParam(value="qnaTitle",required=false) String qnaTitle, 
+			@RequestParam(value="usersNo",required=false) Integer usersNo, 
+			@RequestParam(value="qnaType",required=false) Integer qnaType,
+			@RequestParam(value="orderNo",required=false) Integer orderNo,
+			Model model) {
 		Users u = (Users)session.getAttribute("loginUser");
-		int usersNo = 0;
 //		int adminNo = 0;
 		if(u != null) {
 			usersNo = u.getUsersNo();
@@ -122,25 +131,27 @@ public class CustomerController {
 //			}
 		}
 		
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(q.getQnaContent() != null) {
-			map.put("qnaContent", q.getQnaContent());
-			map.put("qnaTitle", q.getQnaTitle());
+		if(qnaContent != null) {
+			
+			HashMap<Object, Object> map = new HashMap<Object, Object>();
+			map.put("qnaContent", qnaContent);
+			map.put("qnaTitle", qnaTitle);
 			map.put("usersNo", usersNo);
-			map.put("qnaType", q.getQnaType());
-//			map.put("adminNO", adminNo);
-			if(q.getOrderNo() > 0) {
-				int result2 = csService.qnaProduct(map);
-				return "redirect:personalBoard.cs";
-			}else {
-				int result1 = csService.qnaInsert(map);
+			map.put("qnaType", qnaType);
+			map.put("orderNo", orderNo);
+			if(orderNo == null) {
+				int result2 = csService.qnaInsert(map);
+				if(result2 > 0) {
+					return "redirect:personalBoard.cs";
+				}
+			}else if(orderNo != null){
+				int result1 = csService.qnaProduct(map);
 				if(result1 > 0) {
 					return "redirect:personalBoard.cs";
 				}
 			}
-			
 		}
+			
 		return "personalQuestion";
 	}
 			
@@ -162,6 +173,27 @@ public class CustomerController {
 	    }
 	      
 	}
+	@RequestMapping("qnaType.cs")
+	public void qnaType(@RequestParam("usersNo") int usersNo, @RequestParam(value="orderNo",required=false) Integer orderNo, HttpServletResponse response) {
+		
+		
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("usersNo", usersNo);
+		map.put("orderNo", orderNo);
+		
+		ArrayList<Qna> olist = csService.qnaType(map);
+		System.out.println(olist);
+	    response.setContentType("application/json; charset=UTF-8"); 
+		  
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+		Gson gson = gb.create();
+		try {
+		    gson.toJson(olist, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+		    e.printStackTrace();
+		    }
+		      
+	    }
 	
 	
 }

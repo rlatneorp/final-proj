@@ -936,17 +936,16 @@ p b {
 	<%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
 			
 					
-								<div class="reviewPhoto" style="padding-left:10px">
-									<ul>
-										<c:forEach items="${imglist}" var="img" >
-											<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
-											<c:if test="${ fn:containsIgnoreCase(img.imageRenameName, 'jpg') or fn:containsIgnoreCase(img.imageRenameName, 'png')}">
-												<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
-											</c:if>
-											</c:if>
-										</c:forEach>
-									</ul>
-								</div>
+							<div class="reviewPhoto" style="padding-left:10px">
+								<ul>
+									<c:forEach items="${imglist}" var="img" >
+										<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
+										<c:if test="${ fn:containsIgnoreCase(img.imageRenameName, 'jpg') or fn:containsIgnoreCase(img.imageRenameName, 'png')}">
+											<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
+										</c:if>
+										</c:if>
+									</c:forEach>
+								</ul>
 							</div>
 						</c:if>
 					</div>

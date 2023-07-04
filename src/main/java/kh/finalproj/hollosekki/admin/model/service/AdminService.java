@@ -14,6 +14,7 @@ import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -365,6 +366,20 @@ public class AdminService {
 
 	public int updateQNA(QNA qna) {
 		return aDAO.updateQNA(sqlSession, qna);
+	}
+
+	
+//	Healther-영양사
+	public Healther selectHealther(int uNo) {
+		return aDAO.selectHealther(sqlSession, uNo);
+	}
+
+	public int insertHealther(Healther h) {
+		return aDAO.insertHealther(sqlSession, h);
+	}
+
+	public int updateHealther(Healther h) {
+		return aDAO.updateHealther(sqlSession, h);
 	}
 
 

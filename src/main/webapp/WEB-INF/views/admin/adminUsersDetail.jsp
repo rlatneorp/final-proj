@@ -14,7 +14,7 @@
 </head>
 <body>
 	<%@ include file="../common/top.jsp" %>
-	<div class="mainBox d-inline-block align-top p-4 ps-5 rounded" style="height:1000px; border: 2px solid rgba(0,0,0,0.1);">
+	<div class="mainBox d-inline-block align-top rounded" style="width: 1200px; margin-bottom: 200px; padding: 40px 75px; border: 2px solid rgba(0,0,0,0.1);">
 		<h4 class="py-4 mb-0">회원정보관리</h4>
 		
 		<c:set value="${u.usersPw eq '네이버로그인 회원입니다' || u.usersPw eq '카카오로그인 회원입니다'}" var="social"/>
@@ -25,110 +25,133 @@
 			<div class="row">
 				<div class="col-6 row">
 					<h5 class="my-3">- 개인정보 -</h5>
+					<hr>
 					<span class="col-4">회원번호</span>
 					<input type="text" name="usersNo" class="col-8 pb-1 mb-2 rounded border" value="${u.usersNo}" readonly>
+					<hr>
 					<span class="col-4">이름</span>
 					<input type="text" name="usersName" class="col-8 pb-1 mb-2 rounded" value="${u.usersName}">
+					<hr>
 					<span class="col-4">닉네임</span>
 					<input type="text" name="nickName" class="col-8 pb-1 mb-2 rounded" value="${u.nickName}">
+					<hr>
 					
 					<c:if test="${social}">
 						<c:if test="${u.usersPw eq '네이버로그인 회원입니다' }">
 							<span class="col-4">아이디</span>
 							<input type="text" class="col-8 pb-1 mb-2 rounded border" value="-네이버회원-" readonly>
+							<hr>
 							<span class="col-4">이메일</span>
 							<input type="text" class="col-8 pb-1 mb-2 rounded border" value="-네이버회원-" readonly>
+							<hr>
 							<span class="col-4">전화번호</span>
 							<input type="text" class="col-8 pb-1 mb-2 rounded border" value="-네이버회원-" readonly>
+							<hr>
 						</c:if>
 						<c:if test="${u.usersPw eq '카카오로그인 회원입니다' }">
 							<span class="col-4">아이디</span>
 							<input type="text" class="col-8 pb-1 mb-2 rounded border" value="-카카오회원-" readonly>
+							<hr>
 							<span class="col-4">이메일</span>
 							<input type="text" class="col-8 pb-1 mb-2 rounded border" value="-카카오회원-" readonly>
+							<hr>
 							<span class="col-4">전화번호</span>
 							<input type="text" class="col-8 pb-1 mb-2 rounded border" value="-카카오회원-" readonly>
+							<hr>
 						</c:if>
 					</c:if>
 					<c:if test="${!social}">
 						<span class="col-4">아이디</span>
 						<input type="text" name="usersId" class="col-8 pb-1 mb-2 rounded" value="${u.usersId}">
+						<hr>
 						<span class="col-4">이메일</span>
 						<input type="text" name="email" class="col-8 pb-1 mb-2 rounded" value="${u.email}">
+						<hr>
 						<span class="col-4">전화번호</span>
 						<input type="number" name="phone" class="col-2 pe-0 pb-1 mb-2 rounded" value="${fn:substring(u.phone,0,3)}">
 						<span class="col-1">-</span>
 						<input type="number" name="phone" class="col-2 pe-0 pb-1 mb-2 rounded" value="${fn:substring(u.phone,3,7)}">
 						<span class="col-1">-</span>
 						<input type="number" name="phone" class="col-2 pe-0 pb-1 mb-2 rounded" value="${fn:substring(u.phone,7,11)}">
+						<hr>
 					</c:if>
 					
 					<span class="col-4">가입일자</span>
 					<input type="date" class="col-8 pb-1 mb-2 rounded border" value="<fmt:formatDate value="${u.enrollDate}" pattern="yyyy-MM-dd" />" readonly>
+					<hr>
 					<span class="col-4">탈퇴일자</span>
 					<input type="text" class="col-8 pb-1 mb-2 rounded border" value="<fmt:formatDate value="${u.exitDate}" pattern="yyyy-MM-dd" />" readonly>
+					<hr>
 					
 					<span class="col-4 mb-3">활동여부</span>
 					<input type="hidden" name="status" value="${u.status}">
-					<button type="button" class="col-2 status" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
-					<button type="button" class="col-2 status" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
-					<span class="col-4"></span>
+					<button type="button" class="col-1 status" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
+					<button type="button" class="col-1 status" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
+					<span class="col-6"></span>
+					<hr>
 					<span class="col-4 mb-3">관리자여부</span>
 					<input type="hidden" name="isAdmin" value="${u.isAdmin}">
-					<button type="button" class="col-2 isAdmin" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
-					<button type="button" class="col-2 isAdmin" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
-					<span class="col-4"></span>
-					<span class="col-12"></span>
+					<button type="button" class="col-1 isAdmin" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">Y</button>
+					<button type="button" class="col-1 isAdmin" style="background-color: gray; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">N</button>
+					<span class="col-6"></span>
+					<hr><br><br><br>
 					
 	
 					
 					<h5 class="mb-3">- 기타정보 -</h5>
+					<hr>
 					<span class="col-4">포인트</span>
 					<input type="text" name="pointBefore" class="col-3 mb-2 rounded text-end border" value="${u.point}"readonly>
 					
 					<span class="col-2 text-center">-></span>
 					<input type="number" name="point" class="col-3 mb-2 rounded text-end" value="${u.point}">
 					
-					<span class="col-4"></span>
+					<span class="col-8"></span>
 
-					<button type="button" class="col-2 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">+10</button>
-					<button type="button" class="col-2 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">-10</button>
+					<button type="button" class="col-1 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">+10</button>
+					<button type="button" class="col-1 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">-10</button>
 					
-					<button type="button" class="col-2 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">+100</button>
-					<button type="button" class="col-2 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">-100</button>
+					<button type="button" class="col-1 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">+100</button>
+					<button type="button" class="col-1 pointBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; height: 30px; font-size: 14px;">-100</button>
 					
 					<span class="col-10"></span>
-					<button type="button" class="col-2 mb-3 pointResetBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">취소</button>
+					<button type="button" class="col-2 mb-3 pointResetBtn p-0" style="background-color: #19A7CE; color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray;height: 30px; font-size: 14px;">초기화</button>
+					<hr>
 					
 					<span class="col-4">팔로잉</span>
 					<span class="col-8 pb-1 mb-2 rounded border text-end">
 						<fmt:formatNumber pattern="###,###,###" value="${u.following}"/>
 					</span>
+					<hr>
 					<span class="col-4">팔로워</span>
 					<span class="col-8 pb-1 mb-2 rounded border text-end">
 						<fmt:formatNumber pattern="###,###,###" value="${u.follower}"/>
 					</span>
+					<hr>
 					<span class="col-4">레시피 등록 수</span>
 					<span class="col-8 pb-1 mb-2 rounded border text-end">
 						<fmt:formatNumber pattern="###,###,###" value="${u.enrollRecipe}"/>
 					</span>
+					<hr>
 					<span class="col-4">총 스크랩 수</span>
 					<span class="col-8 pb-1 mb-2 rounded border text-end">
 						<fmt:formatNumber pattern="###,###,###" value="${u.bookmarkCount}"/>
 					</span>
+					<hr>
 					<span class="col-4">총 좋아요 수</span>
 					<span class="col-8 pb-1 mb-2 rounded border text-end">
 						<fmt:formatNumber pattern="###,###,###" value="${u.likeCount}"/>
 					</span>
+					<hr>
 				</div>
 				
 				<div class="col-6">
 					<div class="ms-5" style="padding-top:56px;">
 						<c:if test="${!empty img}">
-							<img class="w-75 rounded border" alt="로드 실패" src="${contextPath}/resources/uploadFiles/${img[0].imageRenameName}"/>
+							<img class="w-100 rounded border" alt="로드 실패" src="${contextPath}/resources/uploadFiles/${img[0].imageRenameName}"/>
 						</c:if>
 						<c:if test="${empty img}">
-							<img class="w-75 rounded border" alt="로드 실패" src="${contextPath}/resources/images/persons.png"/>
+							<img class="w-100 rounded border" alt="로드 실패" src="${contextPath}/resources/images/persons.png"/>
 						</c:if>
 					</div>
 				</div>

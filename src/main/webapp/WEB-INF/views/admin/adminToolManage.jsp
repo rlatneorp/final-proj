@@ -19,7 +19,6 @@
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>	
 			
-<%-- 		<form id="deleteForm" action="${contextPath}/adminToolDeletes.ad" method="post"> --%>
 		<form id="deleteForm" action="${contextPath}/adminDeleteSelects.ad" method="post">
 			<input type="hidden" name="type" value="4">
 			<input type="hidden" name="url" value="adminToolManage.ad">
@@ -60,10 +59,10 @@
 							<fmt:formatNumber pattern="###,###,###" value="${t.productPrice}"/>원
 						</td>
 						<td>${t.productSale}%</td>
-						<td>${t.productStock}</td>
-						<td>${t.orderCount}</td>
-						<td>${t.viewCount}</td>
-						<td>${t.likeCount}</td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${t.productStock}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${t.orderCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${t.viewCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${t.likeCount}"/></td>
 						<td>
 							<c:if test="${t.productStatus eq 'Y'}">
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">Y</button>

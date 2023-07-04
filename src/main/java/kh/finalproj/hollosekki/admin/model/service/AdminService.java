@@ -14,6 +14,7 @@ import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -72,10 +73,9 @@ public class AdminService {
 		return aDAO.insertProduct(sqlSession, pd);
 	}
 
-	public int deletesProduct(String[] pDeletes) {
-		return aDAO.deletesProduct(sqlSession, pDeletes);
+	public Product selectProductCount(int pNo) {
+		return aDAO.selectProductCount(sqlSession, pNo);
 	}
-	
 	
 //	Image-사진
 	public ArrayList<Image> selectAllImageList(HashMap<String, Integer> map) {
@@ -166,7 +166,6 @@ public class AdminService {
 		return aDAO.selectMenu(sqlSession, pNo);
 	}
 
-//	public ArrayList<String> selectFoodProductNo(int pNo) {
 	public ArrayList<Integer> selectFoodProductNo(int pNo) {
 		return aDAO.selectFoodProductNo(sqlSession, pNo);
 	}
@@ -213,10 +212,6 @@ public class AdminService {
 		return aDAO.ingredientUpdateIsAccept(sqlSession, igd);
 	}
 	
-	public int deletesIngredient(String[] igdDeletes) {
-		return aDAO.deletesIngredient(sqlSession, igdDeletes);
-	}
-
 	
 //	Food-식품
 	public int getFoodCount(AdminBasic ab) {
@@ -247,10 +242,6 @@ public class AdminService {
 		return aDAO.deleteableFood(sqlSession, pNo);
 	}
 
-	public int deletesFood(String[] foodDeletes) {
-		return aDAO.deletesFood(sqlSession, foodDeletes);
-	}
-
 	
 //	Tool-도구상품
 	public int getToolCount(AdminBasic ab) {
@@ -273,10 +264,6 @@ public class AdminService {
 		return aDAO.insertTool(sqlSession, t);
 	}
 
-	public int deletesTool(String[] toolDeletes) {
-		return aDAO.deletesTool(sqlSession, toolDeletes);
-	}
-	
 	
 //	Recipe-레시피
 	public int getRecipeCount(AdminBasic ab) {
@@ -285,10 +272,6 @@ public class AdminService {
 
 	public ArrayList<Recipe> selectRecipeList(PageInfo pi, AdminBasic ab) {
 		return aDAO.selectRecipeList(sqlSession, pi, ab);
-	}
-
-	public int deletesRicipeOrder(String[] selDeletes) {
-		return aDAO.deletesRecipeOrder(sqlSession, selDeletes);
 	}
 
 	
@@ -305,10 +288,6 @@ public class AdminService {
 		return aDAO.selectBoard(sqlSession, boardNo);
 	}
 
-	public int deletesBoard(String[] selDeletes) {
-		return aDAO.deletesBoard(sqlSession, selDeletes);
-	}
-	
 	
 //	Review-리뷰
 	public int getReviewCount(AdminBasic ab) {
@@ -321,10 +300,6 @@ public class AdminService {
 
 	public Review selectReview(Integer reviewNo) {
 		return aDAO.selectReview(sqlSession, reviewNo);
-	}
-
-	public int deletesReview(String[] selDeletes) {
-		return aDAO.deletesReview(sqlSession, selDeletes);
 	}
 
 	
@@ -367,22 +342,19 @@ public class AdminService {
 		return aDAO.updateQNA(sqlSession, qna);
 	}
 
+	
+//	Healther-영양사
+	public Healther selectHealther(int uNo) {
+		return aDAO.selectHealther(sqlSession, uNo);
+	}
 
+	public int insertHealther(Healther h) {
+		return aDAO.insertHealther(sqlSession, h);
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	public int updateHealther(Healther h) {
+		return aDAO.updateHealther(sqlSession, h);
+	}
 
 
 }

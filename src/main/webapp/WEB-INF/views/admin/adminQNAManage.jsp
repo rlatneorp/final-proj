@@ -25,11 +25,12 @@
 			<table class="w-100 text-center mb-3">
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>
-					<th style="width: 10%">카테고리</th>
+					<th style="width: 6%">카테고리</th>
+					<th style="width: 10%">문의회원</th>
 					<th style="width: 20%">제목</th>
-					<th style="width: 27%">내용</th>
-					<th style="width: 10%">작성날짜</th>
-					<th style="width: 9%">답변</th>
+					<th style="width: 26%">내용</th>
+					<th style="width: 8%">작성날짜</th>
+					<th style="width: 8%">답변</th>
 					<th style="width: 9%">상태</th>
 					<th style="width: 7%">
 						<button type="button" class="allSelect btns" style="background-color: #19A7CE; width: 45px;font-weight: bold;">전체</button>
@@ -47,6 +48,7 @@
 							<c:if test="${q.qnaType eq 4}">상품</c:if>
 							<c:if test="${q.qnaType eq 0}">기타</c:if>
 						</td>
+						<td>(${q.usersNo}) ${q.usersId}</td>
 						<td>
 							<a href="${contextPath}/adminQNADetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&qnaNo=${q.qnaNo}">
 							${fn:substring(q.qnaTitle, 0, 20)}</a>

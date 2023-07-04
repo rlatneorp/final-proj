@@ -49,16 +49,24 @@ public class CustomerService {
 		return csDAO.getCategoryFListCount(sqlSession, map);
 	}
 
-	public int qnaInsert(HashMap<String, Object> map) {
+	public int qnaInsert(HashMap<Object, Object> map) {
 		return csDAO.qnaInsert(sqlSession, map);
 	}
 
-	public int qnaProduct(HashMap<String, Object> map) {
+	public int qnaProduct(HashMap<Object, Object> map) {
 		return csDAO.qnaProduct(sqlSession, map);
 	}
 
 	public ArrayList<Orders> selectQnaProduct(Orders o) {
 		return csDAO.selectQnaProduct(sqlSession, o);
+	}
+
+	public ArrayList<Qna> qBoardList(PageInfo pi, HashMap<String, Object> map) {
+		return csDAO.qBoardList(sqlSession, pi, map);
+	}
+
+	public ArrayList<Qna> qnaType(HashMap<Object, Object> map) {
+		return csDAO.qnaType(sqlSession, map);
 	}
 
 

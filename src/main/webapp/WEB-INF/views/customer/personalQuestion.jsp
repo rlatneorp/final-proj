@@ -185,13 +185,14 @@ font-family: 'Noto Sans KR', sans-serif;
 					success: data=>{
 						const ordersNoSelect = document.querySelector('#productNo');
 						for(const d of data){
-							if(d.orderNo != null){
+							let orderNod = d.orderNo;
+							if(orderNod == ''){
+								noneProductNo.style.display = "block";
+							}else{
 								const option = document.createElement('option');
-								option.innerText = d.orderNo; 
+								option.innerText = orderNod; 
 								ordersNoSelect.append(option);
 								productNoDiv.style.display = "block";
-							}else{
-								noneProductNo.style.display = "block";
 							}
 						}
 						
@@ -207,12 +208,13 @@ font-family: 'Noto Sans KR', sans-serif;
 		});
 		 
 		add.addEventListener('click', ()=>{
-			const ordersNoSelect = document.querySelector('#productNo');
-			if(ordersNoSelect.value == null){
-				titleSub.value = '[' + category + '] ' + floatingInput.value;
-			}else{
-				titleSub.value = '[' + category + '] ' + "| 주문번호 : " + ordersNoSelect.value + " | " + floatingInput.value;
-			}
+			titleSub.value = floatingInput.value;
+// 			const ordersNoSelect = document.querySelector('#productNo');
+// 			if(ordersNoSelect.value == null){
+// 				titleSub.value = '[' + category + '] ' + floatingInput.value;
+// 			}else{
+// 				titleSub.value = '[' + category + '] ' + "| 주문번호 : " + ordersNoSelect.value + " | " + floatingInput.value;
+// 			}
 			
 		});
 		

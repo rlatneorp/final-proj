@@ -17,7 +17,7 @@ public interface EnrollService {
 
 	int insertUser(Users u);
 
-	Users login(Users u);
+	Users login2(Users u);
 
 	int checkId(String id);
 
@@ -85,6 +85,8 @@ public interface EnrollService {
 	ArrayList<Review> userReplyList(String nickName);
 
 	void insertPoint(Users u);
+
+	Users login(Users u);
 
 
 

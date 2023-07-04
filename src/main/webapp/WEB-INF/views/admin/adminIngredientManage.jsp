@@ -63,10 +63,10 @@
 									${igd.productSale}%
 							</div>
 						</td>
-						<td>${igd.productStock}</td>
-						<td>${igd.orderCount}</td>
-						<td>${igd.viewCount}</td>
-						<td>${igd.likeCount}</td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.productStock}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.orderCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.viewCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.likeCount}"/></td>
 						<td>
 							<c:if test="${igd.isAccept eq 'Y'}">
 								<button type="button" class="btns acceptBtn" style="background-color: #19A7CE;">Y</button>

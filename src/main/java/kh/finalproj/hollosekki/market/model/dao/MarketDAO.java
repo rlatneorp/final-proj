@@ -380,6 +380,7 @@ public class MarketDAO {
 	public Cart selectCart(SqlSessionTemplate sqlSession, int usersNo) {
 		return sqlSession.selectOne("marketMapper.selectCart", usersNo);
 	}
+	
 	public ArrayList<QA> qnalist(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return (ArrayList)sqlSession.selectList("marketMapper.qnalist", map);
 	}
@@ -420,6 +421,9 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectWholeHotDeal");
 	}
 
+	public ArrayList<HashMap<String, Object>> selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectDetailReview", reviewNo);
+	}
 	public String selectIngreImg(SqlSessionTemplate sqlSession, int ingredientNo, int i) {
 		Map<Object, Object> map = new HashMap<>();
 		map.put("ingredientNo", ingredientNo);
@@ -465,5 +469,8 @@ public class MarketDAO {
 	}
 
 
+	public ArrayList<Orders> orderList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return (ArrayList)sqlSession.selectList("marketMapper.orderList", map);
+	}
 
 }

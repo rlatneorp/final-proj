@@ -14,6 +14,7 @@ import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -73,9 +74,19 @@ public class AdminDAO {
 		return pd.getProductNo();
 	}
 	
-	public int deletesProduct(SqlSessionTemplate sqlSession, String[] pDeletes) {
-		return sqlSession.delete("adminMapper.deletesProduct", pDeletes);
-	}	
+	public Product selectProductCount(SqlSessionTemplate sqlSession, int pNo) {
+		Product p = new Product();
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pNo", pNo);
+		map.put("type", 1);
+		int orderCount = sqlSession.selectOne("adminMapper.selectProductCount", map);
+		map.put("type", 2);
+		int likeCount = sqlSession.selectOne("adminMapper.selectProductCount", map);
+		p.setOrderCount(orderCount);
+		p.setLikeCount(likeCount);
+		System.out.println(p);
+		return p;
+	}
 	
 	
 //	Image-사진
@@ -194,7 +205,6 @@ public class AdminDAO {
 		return sqlSession.selectOne("adminMapper.selectMenu", pNo);
 	}
 
-//	public ArrayList<String> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
 	public ArrayList<Integer> selectFoodProductNo(SqlSessionTemplate sqlSession, int pNo) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectFoodProductNo", pNo);
 	}
@@ -253,10 +263,6 @@ public class AdminDAO {
 		return sqlSession.update("adminMapper.ingredientUpdateIsAccept", igd);
 	}
 
-	public int deletesIngredient(SqlSessionTemplate sqlSession, String[] igdDeletes) {
-		return sqlSession.delete("adminMapper.deletesIngredient", igdDeletes);
-	}
-
 	
 //	Food-식품
 	public int getFoodCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
@@ -291,10 +297,6 @@ public class AdminDAO {
 		return (ArrayList)sqlSession.selectList("adminMapper.deleteableFood", pNo);
 	}
 	
-	public int deletesFood(SqlSessionTemplate sqlSession, String[] foodDeletes) {
-		return sqlSession.delete("adminMapper.deletesFood", foodDeletes);
-	}
-
 	
 //	Tool-도구상품
 	public int getToolCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
@@ -319,10 +321,6 @@ public class AdminDAO {
 		return sqlSession.insert("adminMapper.insertTool", t);
 	}
 
-	public int deletesTool(SqlSessionTemplate sqlSession, String[] toolDeletes) {
-		return sqlSession.delete("adminMapper.deletesTool", toolDeletes);
-	}
-
 
 //	Recipe-레시피
 	public int getRecipeCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
@@ -333,15 +331,6 @@ public class AdminDAO {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("adminMapper.selectRecipeList", ab, rowBounds);
-	}
-
-	public int deletesRecipeOrder(SqlSessionTemplate sqlSession, String[] selDeletes) {
-		int resultRpOd = sqlSession.delete("adminMapper.deletesRecipeOrder", selDeletes);
-		int resultRp = 0;
-		if(resultRpOd > 0) {
-			resultRp = sqlSession.delete("adminMapper.deletesRecipe", selDeletes);
-		}
-		return resultRpOd+resultRp;
 	}
 
 
@@ -358,18 +347,6 @@ public class AdminDAO {
 
 	public Board selectBoard(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.selectOne("adminMapper.selectBoard", boardNo);
-	}
-
-	public int deletesBoard(SqlSessionTemplate sqlSession, String[] selDeletes) {
-		int resultR = 0;
-		AdminBasic ab = new AdminBasic();
-		ab.setKind(-1);
-		for(int i = 0; i < selDeletes.length; i++) {
-			ab.setNumber(Integer.parseInt(selDeletes[i]));
-			resultR += sqlSession.delete("adminMapper.deleteReview", ab);
-		}
-		
-		return resultR + sqlSession.delete("adminMapper.deletesBoard", selDeletes);
 	}
 
 
@@ -392,13 +369,6 @@ public class AdminDAO {
 		return sqlSession.selectOne("adminMapper.selectReview", reviewNo);
 	}
 
-	public int deletesReview(SqlSessionTemplate sqlSession, String[] selDeletes) {
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("selDeletes", selDeletes);
-		map.put("type", 7);
-		return sqlSession.delete("adminMapper.deletesReview", map);
-	}
-
 	
 //	FAQ-자주묻는질문
 	public int getFAQCount(SqlSessionTemplate sqlSession, AdminBasic ab) {
@@ -418,6 +388,7 @@ public class AdminDAO {
 	public int updateFAQ(SqlSessionTemplate sqlSession, FAQ faq) {
 		return sqlSession.update("adminMapper.updateFAQ", faq);
 	}
+
 	public int insertFAQ(SqlSessionTemplate sqlSession, FAQ faq) {
 		return sqlSession.insert("adminMapper.insertFAQ", faq);
 	}
@@ -441,6 +412,22 @@ public class AdminDAO {
 	public int updateQNA(SqlSessionTemplate sqlSession, QNA qna) {
 		return sqlSession.update("adminMapper.updateQNA", qna);
 	}
+
+	
+//	Healther-영양사
+	public Healther selectHealther(SqlSessionTemplate sqlSession, int uNo) {
+		return sqlSession.selectOne("adminMapper.selectHealther", uNo);
+	}
+
+	public int insertHealther(SqlSessionTemplate sqlSession, Healther h) {
+		return sqlSession.insert("adminMapper.insertHealther", h);
+	}
+
+	public int updateHealther(SqlSessionTemplate sqlSession, Healther h) {
+		return sqlSession.update("adminMapper.updateHealther", h);
+	}
+
+
 
 
 

@@ -62,10 +62,10 @@
 							<fmt:formatNumber pattern="###,###,###" value="${m.productPrice}"/>원
 						</td>
 						<td>${m.productSale}%</td>
-						<td>${m.productStock}</td>
-						<td>${m.orderCount}</td>
-						<td>${m.viewCount}</td>
-						<td>${m.likeCount}</td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${m.productStock}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${m.orderCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${m.viewCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${m.likeCount}"/></td>
 						<td>
 							<c:if test="${m.productStatus eq 'Y'}">
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">Y</button>
@@ -83,7 +83,7 @@
 		</form>
 		<div class="d-flex justify-content-end mb-5">
 			<div class="d-flex">
-				<button type="button" onclick="location.href='${contextPath}/adminMenuWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식단등록</button>
+				<button type="button" onclick="checkHealther();" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식단등록</button>
 			</div>
 		</div>
 
@@ -172,6 +172,15 @@
 						})
 					}
 				}
+			}
+		}
+		function checkHealther(){
+			if(${h eq null}){
+				if(confirm("먼저 영양사 정보를 등록해주세요.")){
+					location.href='${contextPath}/adminHealtherDetail.ad'
+				}
+			}else{
+				location.href='${contextPath}/adminMenuWrite.ad'
 			}
 		}
 	</script>

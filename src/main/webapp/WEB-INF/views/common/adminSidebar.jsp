@@ -99,6 +99,16 @@
 							</ul>
 						</div>
 					</li>
+					<li class="mb-1">
+						<button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-six" aria-expanded="true">
+							영양사
+						</button>
+						<div class="collapse show" id="collapse-six">
+							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+								<li><a href="${contextPath}/adminHealtherDetail.ad" class="link-dark d-inline-flex text-decoration-none rounded">나의 영양사 정보</a></li>
+							</ul>
+						</div>
+					</li>
 				</ul>
 			</div>
 		</div>

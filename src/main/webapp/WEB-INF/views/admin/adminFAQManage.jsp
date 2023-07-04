@@ -16,6 +16,14 @@
 	
 	<div class="mainBox d-inline-block align-top">
 		<h4 class="py-4 mb-0">자주묻는질문관리</h4>
+		<div class="mb-3">
+			<button onclick="selectFAQType(-1)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 38px; font-size: 14px; font-weight: bold;">전체</button>
+			<button onclick="selectFAQType(1)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">배송</button>
+			<button onclick="selectFAQType(2)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">결제</button>
+			<button onclick="selectFAQType(3)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">회원</button>
+			<button onclick="selectFAQType(4)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">상품</button>
+			<button onclick="selectFAQType(0)" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 55px; height: 30px; font-size: 12px; font-weight: bold;">기타</button>
+		</div>
 	
 		<jsp:include page="../common/adminPageCountForm.jsp"/>
 		
@@ -162,6 +170,22 @@
 				}
 			}
 		}
+// 		후기 타입 선택버튼 함수
+		function selectFAQType(i){
+// 			location.href="${contextPath}/adminFAQManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&type="+i;
+			if(i == -1){
+				location.href="${contextPath}/adminFAQManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&type="+i+"&kind=1";
+			}else {
+				location.href="${contextPath}/adminFAQManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&type="+i+"&kind=0";
+			}
+// 				location.href="${contextPath}/adminFAQManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}";
+// 								+"&kind=0";
+// 			}else{
+// 				location.href="${contextPath}/adminFAQManage.ad?page=1&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}"
+// 								+"&kind=1&type="+i;
+// 			}
+		}
+		
 		
 	</script>
 	

@@ -85,30 +85,57 @@
 		top: -5px;
 	}
 	
-	.qnaInputBox fieldset {
+	#reviewBody fieldset {
 		display: inline-block;
 		direction: rtl;
 		border: 0;
 	}
 	
-	.qnaInputBox input[type=radio]{
+	#reviewBody input[type=radio]{
 		display: none;
 	}
-	.qnaInputBox fieldset label {
+	#reviewBody fieldset label {
 		
 		font-size: 1.8em;
 		color: lightgray;
 	}
 	
-	.qnaInputBox fieldset label:hover{
+	#reviewBody fieldset label:hover{
 		color: rgb(68, 133, 215);
 	}
 	
-	.qnaInputBox fieldset label:hover ~ label{
+	#reviewBody fieldset label:hover ~ label{
 		color: rgb(68, 133, 215);
 	}
 	
-	.qnaInputBox fieldset input[type=radio]:checked ~ label{
+	#reviewBody fieldset input[type=radio]:checked ~ label{
+		color: rgb(68, 133, 215);
+	}
+	
+	#updateReviewBody fieldset {
+		display: inline-block;
+		direction: rtl;
+		border: 0;
+	}
+	
+	#updateReviewBody input[type=radio]{
+		display: none;
+	}
+	#updateReviewBody fieldset label {
+		
+		font-size: 1.8em;
+		color: lightgray;
+	}
+	
+	#updateReviewBody fieldset label:hover{
+		color: rgb(68, 133, 215);
+	}
+	
+	#updateReviewBody fieldset label:hover ~ label{
+		color: rgb(68, 133, 215);
+	}
+	
+	#updateReviewBody fieldset input[type=radio]:checked ~ label{
 		color: rgb(68, 133, 215);
 	}
 	
@@ -394,10 +421,43 @@
 </c:if>
 <br><br>
 
+<!-- <p class="mid">후기</p> -->
+<c:if test="${loginUser ne null }">
+	<p class="mid">내가 쓴 후기</p>
+	<br>
+	<div id="qna">
+		<table class="board">
+			<tr class="boardTop">
+				<th class="line no">No.</th>
+				<th class="line star">별점</th>
+				<th class="line content">내용</th>
+				<th class="line reviewWrite">작성자</th>
+				<th class="line reviewDate">날짜</th>
+			</tr>
+			<c:if test="${myReview eq 0 }">
+				<tr>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;">내가 등록한 후기가 없습니다.</td>
+				</tr>
+			</c:if>
+			<c:if test="${myReview ne 0 }">
+				<c:forEach items="${reList }" var="re">
+					<c:if test="${re.reviewWriter eq loginUser.nickName}">
+						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
+							<td class="line">${re.reviewNo }</td>
+							<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
+							<td class="line">${re.reviewContent}</td>
+							<td class="line">${re.reviewWriter}</td>
+							<td class="line">${re.reviewDate}</td>
+						</tr>
+					</c:if>
+				</c:forEach>
+			</c:if>
+		</table>
+	</div>
+<br><br>
+</c:if>
 <p class="mid">후기</p>
-
 <br>
-
 <div id="qna">
 	<table class="board">
 		<tr class="boardTop">
@@ -408,15 +468,24 @@
 			<th class="line reviewDate">날짜</th>
 		</tr>
 		<tbody id="reviewBody">
-			<c:forEach items="${reList }" var="re">
-				<tr class="lineAll">
-					<td class="line">${re.reviewNo }</td>
-					<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
-					<td class="line">${re.reviewContent}</td>
-					<td class="line">${re.reviewWriter}</td>
-					<td class="line">${re.reviewDate}</td>
+			<c:if test="${reviewCount eq 0 }">
+				<tr>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;">등록된 후기가 없습니다.</td>
 				</tr>
-			</c:forEach>
+			</c:if>
+			<c:if test="${reviewCount ne 0 }">
+				<c:forEach items="${reList}" var="re">
+					<c:if test="${re.reviewWriter ne loginUser.nickName }">
+						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
+							<td class="line">${re.reviewNo }</td>
+							<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
+							<td class="line">${re.reviewContent}</td>
+							<td class="line">${re.reviewWriter}</td>
+							<td class="line">${re.reviewDate}</td>
+						</tr>
+					</c:if>
+				</c:forEach>
+			</c:if>
 		</tbody>
 	</table>
 </div>
@@ -458,23 +527,7 @@
 <br>
 <c:if test="${loginUser != null }">
 	<div class="qnaInputBox">
-		<div class="profile d-inline-block">
-			<img src="resources/images/mudo.png" class="profileImg">
-		</div>
-		<fieldset>
-			<input type="radio" name="reviewScore" value="5" id="reviewScore5">
-				<label for="reviewScore5">★</label>
-			<input type="radio" name="reviewScore" value="4" id="reviewScore4">
-				<label for="reviewScore4">★</label>
-			<input type="radio" name="reviewScore" value="3" id="reviewScore3">
-				<label for="reviewScore3">★</label>
-			<input type="radio" name="reviewScore" value="2" id="reviewScore2">
-				<label for="reviewScore2">★</label>
-			<input type="radio" name="reviewScore" value="1" id="reviewScore1">
-				<label for="reviewScore1">★</label>
-			<input type="hidden" name="reviewSc" id="reviewSco">
-		</fieldset>
-		<input type="text" id="reviewWrite" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeReviewInput">&nbsp;<button onclick="reviewEnter()" id="reviewIn" class="enter">등록</button>
+		<button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
 		<input type="hidden" id="reviewId" value="${loginUser.nickName }">
 	</div>
 </c:if>
@@ -502,8 +555,77 @@
 	</div>
 </div>
 
+<!-- 댓글 등록 모달 -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 작성</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<br>
+			<div class="modal-body" id="reviewBody">
+				<fieldset>
+					<input type="radio" name="reviewScore" value="5" id="reviewScore5">
+						<label for="reviewScore5">★</label>
+					<input type="radio" name="reviewScore" value="4" id="reviewScore4">
+						<label for="reviewScore4">★</label>
+					<input type="radio" name="reviewScore" value="3" id="reviewScore3">
+						<label for="reviewScore3">★</label>
+					<input type="radio" name="reviewScore" value="2" id="reviewScore2">
+						<label for="reviewScore2">★</label>
+					<input type="radio" name="reviewScore" value="1" id="reviewScore1">
+						<label for="reviewScore1">★</label>
+					<input type="hidden" name="reviewSc" id="reviewSco">
+				</fieldset>
+				<br><br>
+				<textarea id="reviewWrite" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100"></textarea>
+			</div>
+			<div class="footer">
+				<button type="button" class="button btn-n" data-bs-dismiss="modal">취소</button>
+				<button type="button" class="button btn-y" id="subscribe" onclick="reviewEnter()">작성하기</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-
+<!-- 댓글 수정 모달 -->
+<div class="modal fade" id="updateReviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+			<c:if test=""></c:if>
+				<h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 수정</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<br>
+			<form method="post" id="reviewForm">
+				<div class="modal-body" id="updateReviewBody">
+					<input type="hidden" name="reviewNo" id="reviewNo">
+					<fieldset>
+						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
+							<label for="reviewUpdateScore5">★</label>
+						<input type="radio" name="reviewScore" value="4" id="reviewUpdateScore4">
+							<label for="reviewUpdateScore4">★</label>
+						<input type="radio" name="reviewScore" value="3" id="reviewUpdateScore3">
+							<label for="reviewUpdateScore3">★</label>
+						<input type="radio" name="reviewScore" value="2" id="reviewUpdateScore2">
+							<label for="reviewUpdateScore2">★</label>
+						<input type="radio" name="reviewScore" value="1" id="reviewUpdateScore1">
+							<label for="reviewUpdateScore1">★</label>
+	<!-- 					<input type="hidden" name="updateReviewSc" id="updateReviewSco"> -->
+					</fieldset>
+					<br><br>
+					<textarea id="reviewContentUpdate" name="reviewContent" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100"></textarea>
+				</div>
+				<div class="footer">
+					<button type="button" class="button btn-n" data-bs-dismiss="modal">삭제하기</button>
+					<button type="button" class="button btn-y" id="update">수정하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
 <%@ include file="../common/footer.jsp" %>
 
@@ -538,7 +660,6 @@ for(const resc of reviewScore){
 		console.log(reviewSco.value);
 	})
 }
-
 
 function reviewEnter(){
 	if(reviewSco.value == ""){
@@ -597,6 +718,44 @@ function reviewEnter(){
 	}
 }
 
+const lineAlls = document.getElementsByClassName('lineAll');
+const reviewContentUpdate = document.getElementById('reviewContentUpdate');
+const score5 = document.getElementById('reviewUpdateScore5');
+const score4 = document.getElementById('reviewUpdateScore4');
+const score3 = document.getElementById('reviewUpdateScore3');
+const score2 = document.getElementById('reviewUpdateScore2');
+const score1 = document.getElementById('reviewUpdateScore1');
+const reviewForm = document.getElementById('reviewForm');
+const reviewNo = document.getElementById('reviewNo');
+
+for(const lineAll of lineAlls){
+	lineAll.addEventListener('click', function(){
+		reviewContentUpdate.value = this.querySelectorAll('td')[2].innerText;
+		reviewNo.value = this.querySelectorAll('td')[0].innerText;
+		const score = this.querySelectorAll('td')[1].innerText.trim();
+		if(score == '★★★★★'){
+			score5.checked = true;
+		} else if(score == '★★★★'){
+			score4.checked = true;
+		} else if(score == '★★★'){
+			score3.checked = true;
+		} else if(score == '★★'){
+			score2.checked = true;
+		} else if(score == '★'){
+			score1.checked = true;
+		}
+	})
+}
+
+const updateB = document.getElementById('update');
+updateB.addEventListener('click', () => {
+	if(reviewContentUpdate.value == ''){
+		alert('내용을 입력해주세요');
+	} else {
+		reviewForm.action = '${contextPath}/updateReview.rc';
+		reviewForm.submit();
+	}
+});
 
 </script>
 	

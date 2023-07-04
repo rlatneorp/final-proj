@@ -216,17 +216,16 @@
 	</select>
 	
 	<select id="myBookMarkList" resultType="map">
-		select DIVISION_NO, NUMBER_TYPE, i.image_renamename recipe_image, i.image_level, u.nickname, r.recipe_modify_date, 
-		       r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, im.image_renamename menu_image, food_no, bookmark_no, p.product_no
+		select DIVISION_NO, NUMBER_TYPE, i.image_renamename, i.image_level, u.nickname, r.recipe_modify_date, 
+		       r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, food_no, bookmark_no, p.product_no
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
 		     left join product p on (b.division_no = p.product_no)
 		     left join healther h on (p.users_no = h.users_no)
 		     left join recipe r on (b.division_no = r.food_no)
-		     left join image i on (r.food_no = i.IMAGE_DIVIDE_NO) AND i.image_level = 0
-		     left join image im on (m.product_no = im.image_divide_no)
+		     left join image i on (b.division_no = i.IMAGE_DIVIDE_NO)
 		     left join users u on (u.users_no = r.users_no)
-		where b.users_no = #{usersNo} AND (p.product_status = 'Y' OR p.product_status IS NULL)
+		where b.users_no = #{usersNo} and i.image_level = 0 AND (p.product_status = 'Y' OR p.product_status IS NULL)
 			  AND (r.recipe_name IS NOT NULL OR m.menu_name IS NOT NULL)
 		<if test="selectTitle != null">
 			and (recipe_name like '%${selectTitle}%' or menu_name like '%${selectTitle}%')
@@ -248,152 +247,17 @@
 	</select>
 	
 	<!-- 좋아요 개수 조회 -->
-	<!-- 식단, 식품, 상품 -->
-<!-- 	<select id="getFoodListCount" resultType="_int"> -->
-<!-- 		select count(*) -->
-<!-- 		from likes l  -->
-<!-- 		   left join menu m on (l.division_no = m.product_no) -->
-<!-- 		   left join product p on (l.division_no = p.product_no) -->
-<!-- 		   left join healther h on (p.users_no = h.users_no) -->
-<!-- 		   left join food f on (l.division_no = f.product_no) -->
-<!-- 		   left join tool t on (p.product_no = t.product_no) -->
-<!-- 		   left join ingredient g on (l.division_no = g.product_no) -->
-<!-- 		   left join image i on (l.division_no = i.image_divide_no) -->
-<!-- 		where l.users_no = #{usersNo} and number_type = 2 and image_level = 1 and product_type in (1,2,4) -->
-<!--    </select> -->
-	
-	<!-- 레시피 -->
-<!-- 	<select id="getRecipeListCount" resultType="_int"> -->
-<!-- 		select count(*) -->
-<!-- 		from likes l -->
-<!-- 		     left join recipe r on (l.division_no = r.food_no) -->
-<!-- 		     left join users u on (r.users_no = u.users_no) -->
-<!-- 		     left join image i on (l.division_no = i.image_divide_no) -->
-<!-- 		where l.users_no = #{usersNo} and image_level = 0 and number_type = 1 -->
-<!--    	</select> -->
-   	
-	<!-- 식재료 -->
-<!-- 	<select id="getingredientListCount" resultType="_int"> -->
-<!-- 		select count(*) -->
-<!-- 		from likes l -->
-<!-- 		     left join product p on (l.division_no = p.product_no) -->
-<!-- 		     left join ingredient g on (l.division_no = g.product_no) -->
-<!-- 		     left join image i on (l.division_no = i.image_divide_no) -->
-<!-- 		where l.users_no = #{usersNo} and image_level = 0 and number_type = 2 and product_type = 3 -->
-<!--    	</select> -->
-	
-	<!-- 좋아요 조회 -->
-	<!-- 식단, 식품, 상품(도구) 조회 -->
-<!-- 	<select id="myFoodLikeList" resultType="map"> -->
-<!-- 		select number_type, name, menu_name, product_modify_date, food_name, food_type, image_renamename product_image,  -->
-<!-- 			   product_type, tool_name, product_price, p.product_no, like_no -->
-<!-- 		from likes l  -->
-<!-- 		   left join menu m on (l.division_no = m.product_no) -->
-<!-- 		   left join product p on (l.division_no = p.product_no) -->
-<!-- 		   left join healther h on (p.users_no = h.users_no) -->
-<!-- 		   left join food f on (l.division_no = f.product_no) -->
-<!-- 		   left join tool t on (p.product_no = t.product_no) -->
-<!-- 		   left join ingredient g on (l.division_no = g.product_no) -->
-<!-- 		   left join image i on (l.division_no = i.image_divide_no) -->
-<!-- 		where l.users_no = #{usersNo} and number_type = 2 and image_level = 1 and product_status = 'Y' -->
-<!-- 		<if test="selectType == 0"> -->
-<!-- 			and product_type in (1,2,4) -->
-<!-- 		</if> -->
-<!-- 		<if test="selectType == 2"> -->
-<!-- 			and product_type = 2 -->
-<!-- 		</if> -->
-<!-- 		<if test="selectType == 3"> -->
-<!-- 			and product_type = 1 -->
-<!-- 		</if> -->
-<!-- 		<if test="selectType == 5"> -->
-<!-- 			and product_type = 4 -->
-<!-- 		</if> -->
-<!-- 		<if test="selectTitle != null"> -->
-<!-- 			and (menu_name like '%${selectTitle}%' or food_name like '%${selectTitle}%' or tool_name like '%${selectTitle}%') -->
-<!-- 		</if> -->
-<!-- 		order by like_no desc -->
-<!--    </select> -->
-		
-		<select id="getLikeListCount" resultType="_int">
-			select count(*)
-			from likes l
-			     left join recipe r on (l.division_no = r.food_no)
-			     left join users u on (r.users_no = u.users_no)
-			     left join image i on (l.division_no = i.image_divide_no)
-		         left join menu m on (l.division_no = m.product_no)
-		         left join product p on (l.division_no = p.product_no) and product_status = 'Y'
-		         left join healther h on (p.users_no = h.users_no)
-		         left join food f on (l.division_no = f.product_no)
-		         left join tool t on (p.product_no = t.product_no)
-		         left join ingredient g on (l.division_no = g.product_no)
-			where l.users_no = #{usersNo}
-			<if test="selectType == 1">
-				and number_type = 1
-			</if>
-			<if test="selectType == 2">
-				and product_type = 2
-			</if>
-			<if test="selectType == 3">
-				and product_type = 1
-			</if>
-			<if test="selectType == 4">
-				and product_type = 3
-			</if>
-			<if test="selectType == 5">
-				and product_type = 4
-			</if>
-			<if test="selectTitle != null">
-				and (menu_name like '%${selectTitle}%' or food_name like '%${selectTitle}%' 
-					 or tool_name like '%${selectTitle}%' or ingredient_name like '%${selectTitle}%'
-					 or recipe_name like '%${selectTitle}%')
-			</if>
-			order by like_no desc
-		</select>
-   
-   <!-- 레시피 조회 -->
-<!--    <select id="myRecipeLikeList" resultType="map"> -->
-<!-- 		select number_type, recipe_name, recipe_modify_date, nickname, image_renamename recipe_image, food_no, like_no -->
-<!-- 		from likes l -->
-<!-- 		     left join recipe r on (l.division_no = r.food_no) -->
-<!-- 		     left join users u on (r.users_no = u.users_no) -->
-<!-- 		     left join image i on (l.division_no = i.image_divide_no) -->
-<!-- 		where l.users_no = #{usersNo} and image_level = 0 and number_type = 1 -->
-<!-- 		<if test="selectTitle != null"> -->
-<!-- 			and recipe_name like '%${selectTitle}%' -->
-<!-- 		</if> -->
-<!-- 		order by like_no desc -->
-<!--    </select> -->
-   
-   <!-- 상품(식재료) 조회 -->
-<!--    <select id="myProductLikeList" resultType="map"> -->
-<!-- 		select number_type, ingredient_name, product_type, product_price, image_renamename food_image, p.product_no, like_no -->
-<!-- 		from likes l -->
-<!-- 		     left join product p on (l.division_no = p.product_no) -->
-<!-- 		     left join ingredient g on (l.division_no = g.product_no) -->
-<!-- 		     left join image i on (l.division_no = i.image_divide_no) -->
-<!-- 		where l.users_no = #{usersNo} and image_level = 0 and number_type = 2 and product_type = 3 and product_status = 'Y' -->
-<!-- 		<if test="selectTitle != null"> -->
-<!-- 			and ingredient_name like '%${selectTitle}%' -->
-<!-- 		</if> -->
-<!-- 		order by like_no desc -->
-<!--    </select> -->
-	
-	<!-- 좋아요 조회 -->
-	<select id="myLikeList" resultType="map">
-		select l.like_no, l.number_type, u.nickname, r.recipe_name, r.recipe_modify_date, i.image_renamename, r.food_no,
-       		   h.name, m.menu_name, p.product_modify_date, f.food_name, f.food_type, p.product_type, t.tool_name, 
-       		   p.product_price, p.product_no, g.ingredient_name, i.image_level
+	<select id="getLikeListCount" resultType="_int">
+		select count(*)
 		from likes l
-		     left join recipe r on (l.division_no = r.food_no)
-		     left join users u on (r.users_no = u.users_no)
 		     left join image i on (l.division_no = i.image_divide_no)
-             left join menu m on (l.division_no = m.product_no)
-             left join product p on (l.division_no = p.product_no) and product_status = 'Y'
-             left join healther h on (p.users_no = h.users_no)
-             left join food f on (l.division_no = f.product_no)
-             left join tool t on (p.product_no = t.product_no)
-             left join ingredient g on (l.division_no = g.product_no)
-		where l.users_no = #{usersNo}
+	         left join menu m on (l.division_no = m.product_no)
+	         left join product p on (l.division_no = p.product_no) and product_status = 'Y'
+	         left join healther h on (p.users_no = h.users_no)
+	         left join food f on (l.division_no = f.product_no)
+	         left join tool t on (p.product_no = t.product_no)
+	         left join ingredient g on (l.division_no = g.product_no)
+		where l.users_no = #{usersNo} and i.image_level = 0 and i.image_type in (3,4,5,6)
 		<if test="selectType == 1">
 			and number_type = 1
 		</if>
@@ -411,8 +275,40 @@
 		</if>
 		<if test="selectTitle != null">
 			and (menu_name like '%${selectTitle}%' or food_name like '%${selectTitle}%' 
-				 or tool_name like '%${selectTitle}%' or ingredient_name like '%${selectTitle}%'
-				 or recipe_name like '%${selectTitle}%')
+				 or tool_name like '%${selectTitle}%' or ingredient_name like '%${selectTitle}%')
+		</if>
+		order by like_no desc
+	</select>
+   
+	<!-- 좋아요 조회 -->
+	<select id="myLikeList" resultType="map">
+        select l.like_no, l.number_type, i.image_renamename, h.name, m.menu_name, p.product_modify_date, f.food_name, 
+		       f.food_type, p.product_type, t.tool_name, p.product_price, p.product_no, g.ingredient_name, 
+		       i.image_level
+		from likes l
+		     left join image i on (l.division_no = i.image_divide_no)
+             left join menu m on (l.division_no = m.product_no)
+             left join product p on (l.division_no = p.product_no) and product_status = 'Y'
+             left join healther h on (p.users_no = h.users_no)
+             left join food f on (l.division_no = f.product_no) and product_type = 1
+             left join tool t on (p.product_no = t.product_no)
+             left join ingredient g on (l.division_no = g.product_no)
+		where l.users_no = 22 and i.image_level = 0 and i.image_type in (3,4,5,6)
+		<if test="selectType == 2">
+			and product_type = 2
+		</if>
+		<if test="selectType == 3">
+			and product_type = 1
+		</if>
+		<if test="selectType == 4">
+			and product_type = 3
+		</if>
+		<if test="selectType == 5">
+			and product_type = 4
+		</if>
+		<if test="selectTitle != null">
+			and (menu_name like '%${selectTitle}%' or food_name like '%${selectTitle}%' 
+				 or tool_name like '%${selectTitle}%' or ingredient_name like '%${selectTitle}%')
 		</if>
 		order by like_no desc
 	</select>
@@ -568,9 +464,4 @@
 		order by review_date desc
 	</select>
 	
-<!-- 	<select id="selectDetailReview" resultMap="Review"> -->
-<!-- 		select * -->
-<!-- 		from review -->
-<!-- 		where review_no = #{reviewNo}  -->
-<!-- 	</select> -->
 </mapper>

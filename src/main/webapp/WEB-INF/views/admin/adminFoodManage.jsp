@@ -19,7 +19,6 @@
 		
 		<jsp:include page="../common/adminPageCountForm.jsp"/>
 			
-<%-- 		<form id="deleteForm" action="${contextPath}/adminFoodDeletes.ad" method="post"> --%>
 		<form id="deleteForm" action="${contextPath}/adminDeleteSelects.ad" method="post">
 			<input type="hidden" name="type" value="1">
 			<input type="hidden" name="url" value="adminFoodManage.ad">
@@ -51,29 +50,21 @@
 								${f.foodName }</a>
 						</td>
 						<td>
-							<c:if test="${f.foodKind eq 1}">
-								메인
-							</c:if>
-							<c:if test="${f.foodKind eq 2}">
-								서브
-							</c:if>
+							<c:if test="${f.foodKind eq 1}">메인</c:if>
+							<c:if test="${f.foodKind eq 2}">서브</c:if>
 						</td>
 						<td>
-							<c:if test="${f.foodType eq 1}">
-								식재료
-							</c:if>
-							<c:if test="${f.foodType eq 2}">
-								밀키트
-							</c:if>
+							<c:if test="${f.foodType eq 1}">식재료</c:if>
+							<c:if test="${f.foodType eq 2}">밀키트</c:if>
 						</td>
 						<td>
 							<fmt:formatNumber pattern="###,###,###" value="${f.productPrice}"/>원
 						</td>
 						<td>${f.productSale}%</td>
-						<td>${f.productStock}</td>
-						<td>${f.orderCount}</td>
-						<td>${f.viewCount}</td>
-						<td>${f.likeCount}</td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.productStock}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.orderCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.viewCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.likeCount}"/></td>
 						<td>
 							<c:if test="${f.productStatus eq 'Y'}">
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">Y</button>

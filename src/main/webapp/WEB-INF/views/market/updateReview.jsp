@@ -188,19 +188,20 @@ dl dd div label{
 					<input type="text" class="form-control" name="title" id="title" value="${loginUser.usersId}" readonly>
 
 				</div>
-
+				<c:forEach items="${ list }" var="r" begin="0" end="0">
 					<fieldset>
+					
 						<span style="font-weight: 800;"> 별점을 남겨주세요</span>
 						<br>
-						<input type="radio" name="reviewScore" value="5" id="reviewScore5">
+						<input type="radio" name="reviewScore" value="5" id="reviewScore5" ${r.REVIEW_SCORE == '5' ? 'checked' : ''}>
 							<label for="reviewScore5">★</label>
-						<input type="radio" name="reviewScore" value="4" id="reviewScore4">
+						<input type="radio" name="reviewScore" value="4" id="reviewScore4" ${r.REVIEW_SCORE == '4' ? 'checked' : ''}>
 							<label for="reviewScore4">★</label>
-						<input type="radio" name="reviewScore" value="3" id="reviewScore3">
+						<input type="radio" name="reviewScore" value="3" id="reviewScore3" ${r.REVIEW_SCORE == '3' ? 'checked' : ''}>
 							<label for="reviewScore3">★</label>
-						<input type="radio" name="reviewScore" value="2" id="reviewScore2">
+						<input type="radio" name="reviewScore" value="2" id="reviewScore2" ${r.REVIEW_SCORE == '2' ? 'checked' : ''}>
 							<label for="reviewScore2">★</label>
-						<input type="radio" name="reviewScore" value="1" id="reviewScore1">
+						<input type="radio" name="reviewScore" value="1" id="reviewScore1" ${r.REVIEW_SCORE == '1' ? 'checked' : ''}>
 							<label for="reviewScore1">★</label>
 				  </fieldset>
 				
@@ -213,9 +214,10 @@ dl dd div label{
 
 					<label for="content" style="font-weight: 800;">내용</label>
 					
-					<textarea class="form-control" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  >${ r. }</textarea>
+					<textarea class="form-control" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  >${ r.REVIEW_CONTENT }</textarea>
 
 				</div>
+				</c:forEach>
 				
 				<div id="fileArea">
 						<label style="cursor: pointer; font-weight: 800;">사진 첨부 &nbsp; <br><br>
@@ -226,20 +228,19 @@ dl dd div label{
 							<input type="file" class="form-control form-control-lg" name="imageFile" >
 						</div>
 				</div>
-						<div>
-<%-- 							<c:forEach items="${ list }" var="a"> --%>
-								<h5>
-<%-- 									<a href="${ contextPath }/resources/uploadFils/" --%>
-<!-- 														download=" "> </a> -->
-									<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" id="delete-">삭제 OFF</button>
-									<input type="hidden" name="deleteAttm" value="none">
-								</h5>
-<%-- 							</c:forEach> --%>
-						</div>					
-					<button type="submit" class="button" id="Save">작성하기</button>
+				<div>
+					<c:forEach items="${ list }" var="i" begin="0" end="2">
+						<c:if test="${ !empty i.IMAGE_RENAMENAME }">
+							<h5>
+								<img src="${ contextPath }/resources/uploadFiles/${i.IMAGE_RENAMENAME}" width="100" height="100"/>
+								<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" id="delete-">삭제 OFF</button>
+								<input type="hidden" name="deleteAttm" value="none">
+							</h5>
+						</c:if>
+					</c:forEach>
+				</div>					
+				<button type="submit" class="button" id="Save">작성하기</button>
 				<button type="button" class="button" id="btnList" onclick="javascript:history.back();">취소</button>
-					
-
 			</form>
 
 			<div>

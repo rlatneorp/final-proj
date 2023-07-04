@@ -40,13 +40,13 @@
 					<td>
 						<c:if test="${p.pointType eq 1}">출석체크 지급</c:if>
 						<c:if test="${p.pointType eq 2}">관리자 지급</c:if>
-						<c:if test="${p.pointType eq 11}">상품 구매</c:if>
+						<c:if test="${p.pointType eq 3}">상품 구매 지급</c:if>
+						<c:if test="${p.pointType eq 11}">상품 구매 사용</c:if>
 						<c:if test="${p.pointType eq 12}">이벤트 참여</c:if>
 					</td>
-					<td>${p.pointBefore}</td>
-					<td>
-						<c:if test="${p.pointChange-p.pointBefore ge 0}">+</c:if>${p.pointChange-p.pointBefore}</td>
-					<td>${p.pointChange}</td>
+					<td><fmt:formatNumber pattern="###,###,###" value="${p.pointBefore}"/></td>
+					<td><c:if test="${p.pointChange-p.pointBefore ge 0}">+</c:if><fmt:formatNumber pattern="###,###,###" value="${p.pointChange - p.pointBefore}"/></td>
+					<td><fmt:formatNumber pattern="###,###,###" value="${p.pointChange}"/></td>
 					<td><fmt:formatDate value="${p.modifyDate}" pattern="yyyy-MM-dd"/></td>
 				</tr>
 			</c:forEach>

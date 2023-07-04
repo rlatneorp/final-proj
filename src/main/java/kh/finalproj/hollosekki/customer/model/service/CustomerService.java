@@ -65,7 +65,7 @@ public class CustomerService {
 		return csDAO.qBoardList(sqlSession, pi, map);
 	}
 
-	public ArrayList<Qna> qnaType(HashMap<Object, Object> map) {
+	public ArrayList<Qna> qnaType(HashMap<String, Object> map) {
 		return csDAO.qnaType(sqlSession, map);
 	}
 

@@ -12,7 +12,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-
+<style>
+.qnaCate{
+	width: 150px; height: 35px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	margin: 20px;
+	font-size: 20px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding-top: -20px;
+}
+</style>
 </head>
 <body>
 <%@ include file="../common/top.jsp" %>
@@ -49,10 +61,11 @@
 								<div id="flush-collapseOne-${stc.index +1 }c" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${stc.index +1 }c">
 									<div class="accordion-body">
 										<div>
-											<h5 class="qnaCate"></h5>
+											<button type="button" class="qnaCate d-inline"></button>
 											<c:if test="${q.orderNo ne 0}">
 											 	<h6>주문번호 ${q.orderNo}</h6>
 											</c:if>
+											<br>
 											<h4>Q. ${q.qnaTitle } </h4>
 											<span class="11answer">${q.qnaContent }</span>
 											<input type="hidden" value="${q.qnaNo}" class="qHdn">
@@ -116,50 +129,40 @@
 <%@ include file="../common/footer.jsp" %>	
 <script>
 	const accordion = document.querySelector('body');
-		accordion.onload=()=>{
-			const qnaCates = document.getElementsByClassName('qnaCate');
-			const orderNo = document.getElementsByClassName('qHdn');
-			let oNoValue = '';
-			for(const oNo of orderNo){
-				oNoValue = oNo.value;
-			}
-			for(const qnaCate of qnaCates){
+		accordion.onload = ()=>{
+			const qNos = document.getElementsByClassName('qHdn');
+			const acBodies = document.querySelectorAll('.qnaCate');
+			for(let i = 0; i < qNos.length; i++){
 				$.ajax({
-					url: "qnaType.cs",
-					data :{
+					url: 'qnaType.cs',
+					data: {
 						usersNo: '${loginUser.usersNo}',
-						qnaNo: oNoValue
+						qnaNo: qNos[i].value
 					},
-					success: data=>{
+					success: data =>{
+						console.log(data);
 						for(const d of data){
-							console.log(data);
-							console.log(d);
 							if(d.qnaType == 1){
-								qnaCate.innerText = '배송';
+								acBodies[i].innerText = '배송';
 							}else if(d.qnaType == 2){
-								qnaCate.innerText = '결제';
+								acBodies[i].innerText = '결제';
 							}else if(d.qnaType == 3){
-								qnaCate.innerText = '회원';
+								acBodies[i].innerText = '회원';
 							}else if(d.qnaType == 4){
-								qnaCate.innerText = '상품';
+								acBodies[i].innerText = '상품';
 							}else if(d.qnaType == 0){
-								qnaCate.innerText = '기타';
+								acBodies[i].innerText = '기타';
 							}
 							
-					 };
-				 },
-				 error: data=>{
-					 console.log(data);
-				 }
+						}
+				 	},
+					 error: data=>{
+					 	console.log(data);
+					}
 				
-			 })
-			
-		  }
-	}
-			
-			
-		
-	
+			  	})
+			}
+			}
 
 
 </script>

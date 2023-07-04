@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.board.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -109,10 +110,17 @@ public class BoardController {
 		
 	@RequestMapping("reReply.bo")
 	@ResponseBody
-	public String reReply(@ModelAttribute Board b) {
+	public String reReply(@RequestParam(value="reviewContent",required=false) String reviewContent, @RequestParam(value="reviewWriter",required=false) String reviewWriter,
+			@RequestParam(value="productNo",required=false) int productNo, @RequestParam(value="reviewNo",required=false) int reviewNo) {
 		
-		int result = bService.reReply(b);
-		System.out.println(b);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("reviewContent", reviewContent);
+		map.put("reviewWriter", reviewWriter);
+		map.put("productNo", productNo);
+		map.put("reviewNo", reviewNo);
+		
+		int result = bService.reReply(map);
 		return result == 1 ? "success" : "fail";
 	}
 	

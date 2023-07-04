@@ -67,7 +67,7 @@ public class CustomerDAO {
 		return (ArrayList)sqlSession.selectList("customerMapper.qBoardList", map, rowBounds);
 	}
 
-	public ArrayList<Qna> qnaType(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
+	public ArrayList<Qna> qnaType(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return (ArrayList)sqlSession.selectList("customerMapper.qnaType", map);
 	}
 

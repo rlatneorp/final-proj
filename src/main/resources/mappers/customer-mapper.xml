@@ -183,6 +183,7 @@
 	<resultMap type="Orders" id="OrdersResultSet">
 		<id column="ORDER_NO" property="orderNo"/>
 		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="QNA_NO" property="qnaNo"/>
 		<result column="USERS_NO" property="usersNo"/>
 		<result column="PRODUCT_TYPE" property="productType"/>
 		<result column="ORDER_COUNT" property="orderCount"/>
@@ -203,7 +204,7 @@
 		select *
 		from qna 
 		where users_no = #{usersNo}
-			and order_no = #{orderNo}
+			and qna_no = #{qnaNo}
 	</select>	
 
 </mapper>

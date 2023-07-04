@@ -103,7 +103,6 @@ public class CustomerController {
 		
 //		ArrayList<Customer> plist = csService.pBoardList(pi, map);
 		ArrayList<Qna> qlist = csService.qBoardList(pi, map);
-		
 		System.out.println(qlist);
 //		model.addAttribute("plist", plist);
 		model.addAttribute("qlist", qlist);
@@ -174,16 +173,18 @@ public class CustomerController {
 	      
 	}
 	@RequestMapping("qnaType.cs")
-	public void qnaType(@RequestParam("usersNo") int usersNo, @RequestParam(value="orderNo",required=false) Integer orderNo, HttpServletResponse response) {
+	public void qnaType(@RequestParam(value="usersNo",required=false) Integer usersNo, 
+			@RequestParam(value="qnaNo",required=false) Integer qnaNo, HttpServletResponse response) {
 		
-		
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		HashMap<String, Object> map = new HashMap<String,Object>();
 		map.put("usersNo", usersNo);
-		map.put("orderNo", orderNo);
+		map.put("qnaNo", qnaNo);
+		
+		
+		response.setContentType("application/json; charset=UTF-8"); 
 		
 		ArrayList<Qna> olist = csService.qnaType(map);
 		System.out.println(olist);
-	    response.setContentType("application/json; charset=UTF-8"); 
 		  
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
 		Gson gson = gb.create();

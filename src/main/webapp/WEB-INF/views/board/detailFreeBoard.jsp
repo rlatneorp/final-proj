@@ -355,43 +355,35 @@ let ind = null;
 		const trs = tbody.querySelectorAll('tr');
 		const trArr = Array.from(trs);
 		const reBtnsArr = Array.from(reBtns);
-		let td = '';
-		let trr = '';
-		for(const tr of trArr){
-			td = Array.from(tr.querySelectorAll('td'));
-			trr = tr;
-		}
-		for(const reBtn of reBtnsArr){
-			let datas = '';
+		for(let i = 0; i < reBtnsArr.length; i++){
 // 			const tds = trs.querySelectorAll('td');
-			reBtn.addEventListener('keydown', function(e){
+			reBtnsArr[i].addEventListener('keydown', function(e){
 				if(e.keyCode == 13){
-					reBtn.click();
+					reBtnsArr[i].click();
 				}
 			})
-			reBtn.addEventListener('click', ()=>{
-				if(reBtn.innerText == "수정"){
+			reBtnsArr[i].addEventListener('click', ()=>{
+				const td = Array.from(trArr[i].querySelectorAll('td'));
+				if(reBtnsArr[i].innerText == "수정"){
 					td[0].innerHTML = '<input type="text" class="reBox" value="' + td[0].innerText + '">';
-					reBtn.innerText = '확인';
-				}else if(reBtn.innerText == "확인"){
-					const reInput = Array.from(td[0].querySelectorAll('.reBox'));
-					console.log(reInput);
-					datas = reInput.innerHTML;
-					console.log(datas);
+					reBtnsArr[i].innerText = '확인';
+				}else if(reBtnsArr[i].innerText == "확인"){
+					const reInput = Array.from(trArr[i].querySelectorAll('.reBox'));
+					console.log(reInput[0].value);
 					const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
 					const hdnBoardNo = document.querySelector('#hdnBoardNo');
 					$.ajax({
 						url: 'reReply.bo',
 						data: {
-							reviewContent: datas,
+							reviewContent: reInput[0].value,
 							reviewWriter: '${login}',
 							productNo: hdnBoardNo.value,
-							reviewNo: hdnReplyNo.value
+							reviewNo: hdnReplyNo[i].value
 						},
 						success: data=>{
 							if(data == 'success'){
-								td[0].innerText = datas;
-								reBtn.innerText = '수정';
+								td[0].innerText = reInput[0].value;
+								reBtnsArr[i].innerText = '수정';
 							}else{
 								alert("댓글 수정 중 오류가 발생했습니다.");
 								location.reload();

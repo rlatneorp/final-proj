@@ -125,7 +125,7 @@ font-family: 'Noto Sans KR', sans-serif;
 					</div>
 					   <input type="hidden" name="qnaTitle" id="titleSub">
 					   <input type="hidden" name="qnaType" id="typeQna">
-					<div class="form-floating">
+ 					<div class="form-floating">
 					   <input name="qnaContent" required type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요.">
 					   <label for="floatingText">내용</label>
 					</div>

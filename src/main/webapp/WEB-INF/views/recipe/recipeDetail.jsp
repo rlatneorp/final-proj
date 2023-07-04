@@ -766,8 +766,10 @@ reviewDelete.addEventListener('click', () => {
 	    text: '정말 삭제하시겠습니까?',
 	    icon: 'warning',
 	    buttons: ["취소", "삭제하기"]
-	}).then(() => {
-		location.href = '${contextPath}/deleteReview.rc?reviewNo=' + reviewNo.value + '&rId=' + '${loginUser.usersId}' + '&rNo=' + '${recipe.foodNo}';
+	}).then((yes) => {
+		if(yes){
+			location.href = '${contextPath}/deleteReview.rc?reviewNo=' + reviewNo.value + '&rId=' + '${loginUser.usersId}' + '&rNo=' + '${recipe.foodNo}';
+		}
 	});
 });
 

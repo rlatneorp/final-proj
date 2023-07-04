@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" 
 	  integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	  crossorigin="anonymous">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 
@@ -165,32 +166,21 @@ dl dd div label{
 	background:rgb(68, 133, 215);
 	border: 0.5px solid white;
 }
-
-
 </style>
-
-
 <body>
 	<c:set value="${ pageContext.servletContext.contextPath }" var="contextPath" scope="application"/>
-	
 	<article>
 		<div class="container" role="main">
-
 			<div style="font-weight: 200; border-bottom: 1px solid black; color: rgb(68, 133, 215); font-weight: bold; 10px; font-size: 20px;">리뷰 작성</div>
-
-			<form name="form" id="form" role="form" method="Post" action="${ contextPath }/updateReview.me" enctype="multipart/form-data" class="reviewForm">
-
+			<form id="form" role="form" method="Post" action="${ contextPath }/updateReview.ma" enctype="multipart/form-data" class="reviewForm">
 				<div class="mb-name">
-
 					<label for="title" style="font-weight: 800;">아이디</label>
-
-					<input type="hidden" class="form-control" name="productNo" id="productNo" value="${productNo}" readonly>
 					<input type="text" class="form-control" name="title" id="title" value="${loginUser.usersId}" readonly>
-
 				</div>
 				<c:forEach items="${ list }" var="r" begin="0" end="0">
+					<input type="hidden" name="reviewNo" value="${ r.REVIEW_NO }" id="reviewNo">
+					<input type="hidden" name="productNo" value="${ r.PRODUCT_NO }" id="productNo">
 					<fieldset>
-					
 						<span style="font-weight: 800;"> 별점을 남겨주세요</span>
 						<br>
 						<input type="radio" name="reviewScore" value="5" id="reviewScore5" ${r.REVIEW_SCORE == '5' ? 'checked' : ''}>
@@ -204,45 +194,34 @@ dl dd div label{
 						<input type="radio" name="reviewScore" value="1" id="reviewScore1" ${r.REVIEW_SCORE == '1' ? 'checked' : ''}>
 							<label for="reviewScore1">★</label>
 				  </fieldset>
-				
 				<br>
-				
 				<br>
-				
-				
 				<div class="mb-contents">
-
 					<label for="content" style="font-weight: 800;">내용</label>
-					
 					<textarea class="form-control" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  >${ r.REVIEW_CONTENT }</textarea>
-
 				</div>
 				</c:forEach>
 				
 				<div id="fileArea">
-						<label style="cursor: pointer; font-weight: 800;">사진 첨부 &nbsp; <br><br>
-							<img class="addImage" src="resources/images/filePlus.jpg">
-						</label>
-						
-						<div class="mb-3">
-							<input type="file" class="form-control form-control-lg" name="imageFile" >
-						</div>
+					<label style="cursor: pointer; font-weight: 800;">사진 첨부 &nbsp; <br><br>
+						<img class="addImage" src="resources/images/filePlus.jpg">
+					</label>
 				</div>
 				<div>
 					<c:forEach items="${ list }" var="i" begin="0" end="2">
 						<c:if test="${ !empty i.IMAGE_RENAMENAME }">
 							<h5>
 								<img src="${ contextPath }/resources/uploadFiles/${i.IMAGE_RENAMENAME}" width="100" height="100"/>
-								<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" id="delete-">삭제 OFF</button>
+								<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" id="delete-${ i.IMAGE_RENAMENAME }">삭제 OFF</button>
 								<input type="hidden" name="deleteAttm" value="none">
 							</h5>
 						</c:if>
 					</c:forEach>
 				</div>					
-				<button type="submit" class="button" id="Save">작성하기</button>
+				<button type="submit" class="button" id="Save">수정하기</button>
+				<button type="button" class="button" id="reviewDelete">삭제하기</button>
 				<button type="button" class="button" id="btnList" onclick="javascript:history.back();">취소</button>
 			</form>
-
 			<div>
 			</div>
 		</div>
@@ -251,19 +230,57 @@ dl dd div label{
 	<script>
 	window.onload = () =>{
 		const fileArea = document.querySelector('#fileArea');
+		const deleteAttm = document.querySelector('.deleteAttm');
+		const images = document.querySelectorAll('.reviewForm img');
 		document.querySelector(".addImage").addEventListener('click', (e)=>{
 			const newDiv = document.createElement('div');
 			newDiv.classList.add("mb-3");
-			newDiv.innerHTML = '<input type="file" class="form-control form-control-lg" name="imageFile">';
-			
-			if(document.querySelectorAll(".mb-3").length >= 3 ){
-				e.preventDefault()
-				alert("사진은 최대 3장 까지만 업로드 할 수 있습니다.");
-			}else{
-				fileArea.append(newDiv);
-			}
-			
+			newDiv.innerHTML = '<input type="file" class="form-control-file form-control-lg" name="file" accept="image/jpg, image/png, image/jpeg">';
+			if (images.length === 0) {
+		        fileArea.append(newDiv);
+		    } else if (images.length == 2 && document.querySelectorAll(".mb-3").length <= 2) {
+		        fileArea.append(newDiv);
+		    } else if (images.length == 3 && document.querySelectorAll(".mb-3").length == 0) {
+		        fileArea.append(newDiv);
+		    } else {
+		        e.preventDefault();
+		        alert("사진은 최대 3장 까지만 업로드 할 수 있습니다.");
+		    }
 		});
+		
+		// 사진 삭제
+		const deleteOn = document.getElementsByClassName('deleteAttm');
+        for(const btn of deleteOn) {
+           	btn.addEventListener('click', function() {
+           		const nextHidden = this.nextElementSibling;
+           		if(nextHidden.value == 'none') {
+              		this.style.background = 'rgb(68, 133, 215)';
+              		this.style.color = 'white';
+                	this.innerText = '삭제 ON';
+           			nextHidden.value = this.id.split('-')[1];
+           		} else {
+           			this.style.background = 'none';
+              		this.style.color = 'rgb(68, 133, 215)';
+                	this.innerText = '삭제 OFF';
+                	nextHidden.value = 'none';
+           		}
+           })
+        }
+        
+        const reviewDelete = document.getElementById('reviewDelete');
+        const productNo = document.getElementById('productNo').value;
+        const reviewNo = document.getElementById('reviewNo').value;
+        reviewDelete.addEventListener('click', () => {
+        	swal({
+        	    text: '정말 삭제하시겠습니까?',
+        	    icon: 'warning',
+        	    buttons: ["취소", "삭제하기"]
+        	}).then((yes) => {
+        		if(yes){
+        			location.href = '${contextPath}/deleteReview.ma?productNo=' + productNo + '&reviewNo=' + reviewNo;
+        		}
+        	});
+        });
 	}
 	</script>
 </body>

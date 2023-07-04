@@ -793,7 +793,29 @@
 		select * from product where product_no = #{productNo}
 	</select>
 	
+	<delete id="deleteImage">
+		delete from image where image_renamename in
+		<foreach collection="list" item="rename" open="(" separator="," close=")">
+			#{rename}
+		</foreach>
+	</delete>
 	
+	<update id="updateReview">
+		update review
+		set review_content = #{reviewContent}, review_score = #{reviewScore}
+		where review_no = #{reviewNo}
+	</update>
 	
+	<update id="deleteReview">
+		update review
+		set review_status = 'N'
+		where review_no = #{reviewNo}
+	</update>
+	
+<!-- 	<update id="deleteReviewImage"> -->
+<!-- 		update image -->
+<!-- 		set image_status = 'N' -->
+<!-- 		where image_divide_no = #{reviewNo} and image_type = 7 -->
+<!-- 	</update> -->
 	
 </mapper>

@@ -178,7 +178,7 @@ public class RecipeDAO {
 	}
 
 	public int deleteReview(SqlSessionTemplate sqlSession, int reviewNo) {
-		return sqlSession.delete("recipeMapper.deleteReview", reviewNo);
+		return sqlSession.update("recipeMapper.deleteReview", reviewNo);
 	}
 
 	public int updateOrder(SqlSessionTemplate sqlSession, ArrayList<RecipeOrder> orc) {

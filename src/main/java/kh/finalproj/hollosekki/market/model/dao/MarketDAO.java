@@ -473,4 +473,20 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.orderList", map);
 	}
 
+	public int deleteImage(SqlSessionTemplate sqlSession, ArrayList<String> delRename) {
+		return sqlSession.delete("marketMapper.deleteImage", delRename);
+	}
+
+	public int updateReview(SqlSessionTemplate sqlSession, Review r) {
+		return sqlSession.update("marketMapper.updateReview", r);
+	}
+
+	public int deleteReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return sqlSession.update("marketMapper.deleteReview", reviewNo);
+	}
+
+//	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
+//		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
+//	}
+
 }

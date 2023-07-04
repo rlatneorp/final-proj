@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지 - 배송지 관리</title>
+<title>마이페이지 - 후기 관리</title>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 
@@ -138,6 +138,8 @@ th:first-child, td:first-child {
 }
 /* .review-star{width: 100px; font-size: 13px; margin: 10px;  text-align:right; color: gold;} */
 .fa-star{font-size: 14px; color: gold;}
+.page-link.disabled{color: lightgray;}
+.page-link.disabled:hover{background: white; color: lightgray;}
 </style>
 </head>
 <body>
@@ -263,6 +265,51 @@ th:first-child, td:first-child {
 					</table>
 				</div>
 				<br><br>
+				<div>
+					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
+						<ul class="pagination">
+							<li class="page-item">
+								<c:if test="${ pi.currentPage <= 1 }">
+									<a class="page-link disabled" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</c:if>
+								<c:if test="${ pi.currentPage > 1 }">
+									<c:url var="goBack" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage - 1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goBack }" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</c:if>
+							</li>
+							<c:if test="${ pi.endPage == 0 }">
+								<li class="page-item"><a class="page-link">1</a></li>
+							</c:if>
+							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+								<c:url var="goNum" value="${ loc }">
+									<c:param name="page" value="${ p }"></c:param>
+								</c:url>
+								<li class="page-item"><a class="page-link" href="${ goNum }">${ p }</a></li>
+							</c:forEach>
+							<li class="page-item">
+								<c:if test="${ pi.currentPage >= pi.maxPage }">
+									<a class="page-link disabled" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</c:if>
+								<c:if test="${ pi.currentPage < pi.maxPage }">
+									<c:url var="goNext" value="${ loc }">
+										<c:param name="page" value="${ pi.currentPage + 1 }"></c:param>
+									</c:url>
+									<a class="page-link" href="${ goNext }" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</c:if>
+							</li>
+						</ul>
+					</nav>
+				</div>
 			</div>
 		</div>
 	</div>

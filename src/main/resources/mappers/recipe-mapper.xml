@@ -206,14 +206,14 @@
 	<select id="selectReview" resultMap="reviewResultSet">
 		select *
 		from review
-		where product_no = #{foodNo} and order_no =0
+		where product_no = #{foodNo} and order_no = 0 and review_status = 'Y'
 		order by review_no desc
 	</select>
 	
 	<select id="getReviewCount" resultType="_int">
 		select count(*)
 		from review
-		where product_no=#{foodNo} and order_no=0
+		where product_no=#{foodNo} and order_no= 0 and review_status = 'Y'
 	</select>
 	
 	<select id="selectIngredient" resultMap="ingredientResultSet">
@@ -247,7 +247,7 @@
 	<select id="myReview" resultType="_int">
 		select count(*)
 		from review
-		where product_no = #{productNo} and REVIEW_WRITER=#{reviewWriter} and order_no=0
+		where product_no = #{productNo} and REVIEW_WRITER=#{reviewWriter} and order_no=0 and review_status = 'Y'
 	</select>
 	
 	<update id="updateReview">
@@ -257,8 +257,9 @@
 	</update>
 	
 	<delete id="deleteReview">
-		delete from review
-		where review_no = #{reviewNo}
+		update review
+		set review_status = 'N'
+		where review_no = #{r.reviewNo}
 	</delete>
 		
 	<update id="updateOrder">

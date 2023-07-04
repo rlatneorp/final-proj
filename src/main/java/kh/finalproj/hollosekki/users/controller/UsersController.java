@@ -68,7 +68,6 @@ public class UsersController {
 	public String myPage_Main(Model model) {
 		// 이미지 조회 - 로그인 조회할때 이미지 리네임, 소셜이미지 조인해서 가져옴
 		Users u = (Users) model.getAttribute("loginUser");
-		System.out.println("죽을래?" + u.getImageRenameName());
 		Users loginUser = null;
 		if(u.getImageRenameName() != null) {
 			loginUser = eService.login(u);
@@ -962,6 +961,7 @@ public class UsersController {
 		ArrayList<HashMap<String, Object>> list = uService.selectReview(map, pi);
 		
 		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
 		
 		return "myPage_Review";
 	}

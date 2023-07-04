@@ -36,6 +36,7 @@ import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.exception.MarketException;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Cart;
 import kh.finalproj.hollosekki.market.model.vo.Food;
@@ -979,7 +980,7 @@ public class MarketController {
    
    // 후기 조회
    @RequestMapping("editReview.ma")
-   public String myPage_editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
+   public String editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
 	   ArrayList<HashMap<String, Object>> list = mkService.selectDetailReview(reviewNo);
 	
 	   model.addAttribute("list", list);
@@ -987,6 +988,75 @@ public class MarketController {
 	   return "updateReview";
    }
    
+   @RequestMapping("updateReview.ma")
+   public String updateReview(@ModelAttribute Review r, @RequestParam(value = "deleteAttm", required = false) String[] deleteAttm,
+		   					  @RequestParam(value = "file", required = false) ArrayList<MultipartFile> files,
+		   					  HttpServletRequest request, Model model) {
+	   ArrayList<String> delRename = new ArrayList<>();
+	   
+	   if(deleteAttm != null) {
+		   for(String rename : deleteAttm) {
+			   if(!rename.equals("")) {
+				   String[] split = rename.split("/");
+				   delRename.add(split[0]);
+			   }
+		   }
+	   }
+	   
+	   int deleteImageResult = 0;
+	   if(!delRename.isEmpty()) {
+		   deleteImageResult = mkService.deleteImage(delRename);
+		   if(deleteImageResult > 0) {
+			   for(String rename : delRename) {
+				   deleteFile(rename, request);
+			   }
+		   }
+	   }
+	   
+	   if(files != null) {
+		   Image image = null;
+		   for(int i = 0; i < files.size(); i++) {
+			   MultipartFile upload = files.get(i);
+			   if(!upload.getOriginalFilename().equals("")) {
+				   String[] returnArr = saveFile(upload, request);
+				   if(returnArr != null) {
+					   image = new Image();
+					   image.setImageOriginalName(upload.getOriginalFilename());
+					   image.setImageRenameName(returnArr[1]);
+					   image.setImagePath(returnArr[0]);
+					   image.setImageDivideNo(r.getReviewNo());
+					   image.setImageType(7);
+					   image.setImageLevel(1);
+					   
+					   int updateImageResult = mkService.insertImage(image);
+				   }
+			   }
+		   }
+	   }
+	   
+	   int updateReviewResult = mkService.updateReview(r);
+	   
+	   if(updateReviewResult > 0) {
+		   model.addAttribute("productNo", r.getProductNo());
+	       model.addAttribute("review", r);
+	       return "redirect:market_detail.ma";
+	   } else {
+		   throw new MarketException("수정 실패");
+	   }
+	   
+   }
    
+   // 후기 삭제
+   @RequestMapping("deleteReview.ma")
+   public String deleteReview(@RequestParam("productNo") int productNo, @RequestParam("reviewNo") int reviewNo, Model model) {
+	   int result = mkService.deleteReview(reviewNo);
+//	   int result1 = mkService.deleteReviewImage(reviewNo);
+	   
+	   if(result > 0) {
+		   return "redirect:market_detail.ma?productNo=" + productNo;
+	   } else {
+		   throw new MarketException("후기 삭제 실패");
+	   }
+   }
    
 }

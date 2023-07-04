@@ -501,7 +501,6 @@
 			deleteBtn.addEventListener('click', function() {
 				profileImg();
 				const nextHidden = this.nextElementSibling;
-				console.log(nextHidden.value);
 				if(nextHidden.value == 'none'){
 					nextHidden.value = this.id.split('-')[1];
 				} else {

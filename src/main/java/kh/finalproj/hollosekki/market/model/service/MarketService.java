@@ -422,6 +422,22 @@ public class MarketService {
 		return mkDAO.selectLikeOrderByIngre(sqlSession);
 	}
 
+	public int deleteImage(ArrayList<String> delRename) {
+		return mkDAO.deleteImage(sqlSession, delRename);
+	}
+
+	public int updateReview(Review r) {
+		return mkDAO.updateReview(sqlSession, r);
+	}
+
+	public int deleteReview(int reviewNo) {
+		return mkDAO.deleteReview(sqlSession, reviewNo);
+	}
+
+//	public int deleteReviewImage(int reviewNo) {
+//		return mkDAO.deleteReviewImage(sqlSession, reviewNo);
+//	}
+
 	
 
 

@@ -91,7 +91,7 @@
 		<h1>레시피 수정</h1>
 	</div>
 	<br><br> 
-<form action="updateRecipe.rc" method="post" enctype="multipart/form-data">
+<form action="${contextPath}/updateRecipe.rc" method="post" enctype="multipart/form-data">
 	<input type="hidden" value="${recipe.foodNo }" name="foodNo">
 	<input type="hidden" value="${recipe.usersId}" name="usersId">
 	<input type="hidden" value="${page}" name="page">
@@ -270,16 +270,16 @@
 				</div>
 			</div>
 			
-			<button type="button" id="plusComBtn" onclick="comPlus()">+ 이미지 추가하기</button>
+			<button type="button" id="plusComBtn" onclick="comPlus()" style="position: relative; z-index: 10;">+ 이미지 추가하기</button>
 			<span> / </span>
-			<button type="button" id="minusComBtn" onclick="comRemove()">- 이미지 삭제하기</button>
+			<button type="button" id="minusComBtn" onclick="comRemove()" style="position: relative; z-index: 10;">- 이미지 삭제하기</button>
 		</div>
 	
 	</div>
 	
 	<div id="buttonBox">
-		<button type="submit" id="sub">수정</button>
-		<button type="button" id="can" onclick="history.back()">취소</button> <!-- 뒤로 가기 추가 -->
+		<button type="submit" id="sub" style="position: relative; z-index: 10;">수정</button>
+		<button type="button" id="can" onclick="history.back()" style="position: relative; z-index: 10;">취소</button> <!-- 뒤로 가기 추가 -->
 	</div>
 </form>
 
@@ -445,6 +445,36 @@ function comRemove(){
 	if(comCount > 1){
 		document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].remove();
 		comCount--;
+		if(comCount == 2){
+			const input = document.createElement('input');
+			input.setAttribute("type", "hidden");
+			input.value= "${cList[2].imageRenameName}/${cList[2].imageLevel}";
+			input.classList.add("delCom");
+			input.setAttribute('name', "delComImg");
+			
+			if(input.value === "/"){
+				input.value = "none";
+			} else{
+				input.value= "${cList[2].imageRenameName}/${cList[2].imageLevel}";
+			}
+			
+			cPicBox.appendChild(input);
+		}else if(comCount ==1){
+			const input = document.createElement('input');
+			input.setAttribute("type", "hidden");
+			input.value= "${cList[1].imageRenameName}/${cList[1].imageLevel}";
+			input.classList.add("delCom");
+			input.setAttribute('name', "delComImg");
+			
+			if(input.value === "/"){
+				input.value = "none";
+			} else{
+				input.value= "${cList[1].imageRenameName}/${cList[1].imageLevel}";
+			}
+			
+			cPicBox.appendChild(input);
+		}
+		
 	}
 }
 

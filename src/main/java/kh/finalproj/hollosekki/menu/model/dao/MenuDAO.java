@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
@@ -82,6 +83,14 @@ public class MenuDAO {
 		map.put("usersNo", usersNo);
 		map.put("divisionNo", divisionNo);
 		return sqlSession.delete("menuMapper.deleteBookmark", map);
+	}
+
+	public ArrayList<Menu> menuScore(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("menuMapper.menuScore");
+	}
+
+	public ArrayList<Likes> likeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("menuMapper.likeList");
 	}
 
 }

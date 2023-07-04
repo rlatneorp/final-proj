@@ -3,6 +3,7 @@ package kh.finalproj.hollosekki.menu.model.service;
 import java.util.ArrayList;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
@@ -37,5 +38,9 @@ public interface MenuService {
 	int insertBookmark(int usersNo, int divisionNo);
 
 	int deleteBookmark(int usersNo, int divisionNo);
+
+	ArrayList<Menu> menuScore();
+
+	ArrayList<Likes> likeList();
 
 }

@@ -15,9 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.menu.model.exception.MenuException;
@@ -31,6 +33,9 @@ public class MenuController {
 	
 	@Autowired
 	private MarketService mkService;
+	
+	@Autowired
+	private EnrollService eService;
 	
 	@RequestMapping("menuList.mn")
 	public String menuList(Model model, @RequestParam(value="page", required=false) Integer page,
@@ -47,6 +52,12 @@ public class MenuController {
 		ArrayList<Image> iList = new ArrayList<>();
 		ArrayList<Image> searchImage = new ArrayList<>();
 		
+		ArrayList<Menu> menuScore = mService.menuScore();
+		model.addAttribute("menuScore", menuScore);
+		ArrayList<Users> users = eService.AllUsersList();
+		model.addAttribute("uList", users);
+		ArrayList<Likes> likeList = mService.likeList();
+		model.addAttribute("lList", likeList);
 		
 		if(word == null) {
 			mList = mService.selectMenuList(pi);
@@ -56,10 +67,10 @@ public class MenuController {
 			iList = mService.selectMenuImage();
 		}
 		
-		System.out.println(mList);
-		System.out.println(iList);
+//		System.out.println(mList);
+//		System.out.println(iList);
 		
-		if(word ==null) {
+		if(word == null) {
 			model.addAttribute("mList", mList);
 			model.addAttribute("iList", iList);
 			model.addAttribute("pi", pi);
@@ -155,8 +166,14 @@ public class MenuController {
 		
 		if(result > 0) {
 			   return "success";
-		   } else {
+		} else {
 			   return "fail";
-		   }
+		}
 	}
+	
+	
+	
+	
+	
+	
 }

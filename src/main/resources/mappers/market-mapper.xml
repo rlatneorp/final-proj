@@ -650,4 +650,9 @@
 		FETCH FIRST 8 ROWS ONLY
 	</select>
 	
+	<select id="selectDetailReview" resultMap="reviewResultSet">
+		select *
+		from review
+		where review_no = #{reviewNo} 
+	</select>
 </mapper>

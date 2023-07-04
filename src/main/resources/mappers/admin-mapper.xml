@@ -64,6 +64,10 @@
 <!-- 	8 : 게시판(Board) -->
 <!-- 	9 : FAQ -->
 <!-- 	10 : QNA -->
+<!-- 4-1 : options 추가 요망 -->
+<!-- 6-1 : recipe_order 추가 요망 -->
+<!-- 6-2 : recipe_element 추가 요망 -->
+
 		<if test="type == 1">delete food 		where product_no in</if>
 		<if test="type == 2">delete menu 		where product_no in</if>
 		<if test="type == 3">delete ingredient 	where ingredient_no in</if>
@@ -84,14 +88,7 @@
 		values(seq_option_no.nextval, #{productNo}, #{optionName}, #{optionValue})
 	</insert>
 	
-	<delete id="deletesOptions">
-		delete options
-		where product_no in
-		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
-	
+
 	<select id="selectOptions" resultMap="optionsResultSet">
 		select *
 		from (select *
@@ -111,9 +108,7 @@
 	<update id="updateProduct">
 		update product
 		set product_price = #{productPrice},
-<!-- 		<if test='productOption == "Y" '> -->
 			product_option = #{productOption},
-<!-- 		</if> -->
 			product_stock = #{productStock},
 			product_modify_date = sysdate,
 			product_sale = #{productSale},
@@ -131,14 +126,20 @@
     	</selectKey>
 	</insert>
 	
-	<delete id="deletesProduct">
-		delete product
-		where product_no in
-		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
-
+	<select id="selectProductCount" resultType="_int">
+		<if test="type == 1">
+			select count(*)
+			from orders
+			     join product using(product_no)
+			where product_no = ${pNo}
+		</if>
+		<if test="type == 2">
+			select count(*)
+			from likes
+			where number_type = 2
+			      and division_no = ${pNo}
+		</if>
+	</select>
 
 <!--Image-사진 -->
 	<select id="selectAllImageList" resultMap="imageResultSet">
@@ -566,14 +567,6 @@
 		where ingredient_no = #{ingredientNo} 
 	</update>
 	
-	<delete id="deletesIngredient">
-		delete ingredient
-		where ingredient_no in
-		<foreach collection="array" item="item" index="i" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
-	
 	
 <!--Food-식품 -->
 	<select id="getFoodCount" resultType="_int">
@@ -685,14 +678,7 @@
 		where food_product_no = #{pNo}
 	</select>
 	
-	<delete id="deletesFood">
-		delete food
-		where product_no in
-		<foreach collection="array" item="item" index="i" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
-	
+
 <!--Tool-도구상품 -->
 	<select id="getToolCount" resultType="_int">
 		select count(*)
@@ -751,14 +737,6 @@
 		values(#{productNo}, #{toolName}, #{toolType}, #{toolContent})
 	</insert>
 
-	<delete id="deletesTool">
-		delete tool
-		where product_no in
-		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
-
 
 <!--Recipe-레시피 -->
 	<select id="getRecipeCount" resultType="_int">
@@ -783,22 +761,6 @@
 			</if>
 		</if>
 	</select>
-
-	<delete id="deletesRecipeOrder">
-		delete recipe_order
-		where food_no in
-		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
-
-	<delete id="deletesRecipe">
-		delete recipe
-		where food_no in
-		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
 
 
 <!--Board-게시판 -->
@@ -835,13 +797,6 @@
 			 join users using(users_no)
 		where board_no = ${boardNo}
 	</select>
-	<delete id="deletesBoard">
-		delete board
-		where board_no in
-		<foreach item="item" index="i" collection="array" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
 
 
 <!--Review-리뷰 -->
@@ -962,29 +917,23 @@
 			where review_no = ${number}
 		</if>
 	</delete>
-	<delete id="deletesReview">
-		<if test="type == 7">
-			delete review
-			where review_no in
-		</if>
-		<foreach collection="selDeletes" item="item" index="i" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
-	
 	
 
 <!--FAQ-자주묻는질문 -->
 	<select id="getFAQCount" resultType="_int">
 		select count(*)
 		from faq
+		where not faq_type = -1
 		<if test="searchText != null">
 			<if test='searchType == "title"'>
-				where faq_title like '%${searchText}%'
+				and faq_title like '%${searchText}%'
 			</if>
 			<if test='searchType == "content"'>
-				where faq_content like '%${searchText}%'
+				and faq_content like '%${searchText}%'
 			</if>
+		</if>
+		<if test="kind == 0">
+			and faq_type = #{type}
 		</if>
 		order by faq_no desc
 	</select>
@@ -992,13 +941,17 @@
 	<select id="selectFAQList" resultMap="faqResultSet">
 		select *
 		from faq
+		where not faq_type = -1
 		<if test="searchText != null">
 			<if test='searchType == "title"'>
-				where faq_title like '%${searchText}%'
+				and faq_title like '%${searchText}%'
 			</if>
 			<if test='searchType == "content"'>
-				where faq_content like '%${searchText}%'
+				and faq_content like '%${searchText}%'
 			</if>
+		</if>
+		<if test="kind == 0">
+			and faq_type = #{type}
 		</if>
 		order by faq_no desc
 	</select>
@@ -1023,7 +976,6 @@
 	<insert id="insertFAQ">
 		insert into faq(faq_no, users_no, faq_title, faq_content, faq_date, faq_status, faq_type, faq_answer)
 		values(seq_faq_no.nextval, #{usersNo}, #{faqTitle}, #{faqContent}, sysdate, #{faqStatus}, #{faqType}, #{faqAnswer})
-		
 	</insert>
 
 

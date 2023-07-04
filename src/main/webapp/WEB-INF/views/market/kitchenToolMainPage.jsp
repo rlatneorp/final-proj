@@ -107,6 +107,7 @@ ul li {
 }
 
 .nomalProduct {
+/* 	position:relative; */
 	width: 1200px;
 	padding: 25px;
 	text-align: center;
@@ -222,6 +223,16 @@ ul li {
 	color: #243ad5;
 }
 
+.select-option{
+	padding-top:30px;
+/* 	border:1px solid black; */
+	margin:0 auto;
+	width:1135px;
+	text-align:right;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 20px;
+	color: #243ad5;
+}
 .bannerTitle{
 	position:absolute;
 	left:300px ;
@@ -308,6 +319,8 @@ ul li {
 		border:1px solid #B0DAFF;
 		border-radius: 100%;
 	}
+	
+
 .page-link.disabled{color: lightgray;}
 .page-link.disabled:hover{background: white; color: lightgray;}
 </style>
@@ -334,9 +347,21 @@ ul li {
 			</c:if>
 			
 			<!-- 식재료 카테고리 선택 시 색상 변경 -->
-			<td><a class="clickView" href="${contextPath }/viewIngredient.ma">식재료</a></td>
+			<c:if test="${IngreView ne null }">
+				<td onclick="window.location.href='${contextPath}/viewIngredient.ma'" style="color:white; background-color:#4485d7;">식재료</td>
+			</c:if>
+				<c:if test="${IngreView eq null }">
+				<td onclick="window.location.href='${contextPath}/viewIngredient.ma'"  class="clickView">식재료</td>
+			</c:if>
+			
 			<!-- 주방용품 카테고리 선택 시 색상 변경 -->
-			<td><a class="clickView" href="${contextPath }/viewTool.ma">주방용품</a></td>
+			<c:if test="${ToolView ne null }">
+				<td onclick="window.location.href='${contextPath}/viewTool.ma'" style="color:white; background-color:#4485d7;">주방용품</td>
+			</c:if>
+			<c:if test="${ToolView eq null }">
+				<td onclick="window.location.href='${contextPath}/viewTool.ma'" class="clickView">주방용품</td>
+			</c:if>
+			
 		</tr>
 	</table><br><br>
 	<div style="position:relative;">
@@ -355,7 +380,14 @@ ul li {
 	        <c:forEach items="${hotDeal }" var="h">
 	        	<div class="productList">
 	          		<input type="hidden" value="${h.productNo }">
-					<a href="market_detail.ma?productNo=${h.productNo }"><img style="width:270px" src="${contextPath }/resources/uploadFiles/${h.productImg}"></a>
+					<a href="market_detail.ma?productNo=${h.productNo }">
+						<c:if test="${h.productImg ne null }">
+							<img style="width:270px" src="${contextPath }/resources/uploadFiles/${h.productImg}">
+						</c:if>
+						<c:if test="${h.productImg eq null }">
+							<img style="width:270px; opacity: 0.5;" src="${contextPath }/resources/images/noImg.png">
+						</c:if>
+					</a>
 					<c:set var="productName" value="${h.productName}" />
 					<c:choose>
 					    <c:when test="${fn:length(productName) > 9}">
@@ -382,41 +414,72 @@ ul li {
   		</div>
 	</div><br><br><br><br><br><br>
 	
-	<h1 class="sider-title">추천 상품</h1>
-	<div class="product-slider2">
-		<div class="product-wrapper">
-			<c:forEach items="${like }" var="li">
-				<div class="productList">
-					<a href="market_detail.ma?productNo=${li.PRODUCT_NO }"><img style="width:270px" src="${contextPath }/resources/uploadFiles/${li.IMAGE_RENAMENAME}"></a>
-					<c:if test="${ li.FOOD_NAME ne null }">
-						<div class="productName">${li.FOOD_NAME }</div>
-					</c:if>
-					<c:if test="${ li.TOOL_NAME ne null }">
-						<div class="productName">${li.TOOL_NAME }</div>
-					</c:if>
-					<c:if test="${ li.INGREDIENT_NAME ne null }">
-						<div class="productName">${li.INGREDIENT_NAME }</div>
-					</c:if>
-					<c:if test="${li.PRODUCT_SALE ne 0 }">
-						<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
-					</c:if>
-					<c:if test="${li.PRODUCT_SALE eq 0 }">
-						<div style="text-decoration: none;">${li.PRODUCT_PRICE }</div>
-					</c:if>
-					<div class="discount" ></div>
-					<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
-				</div>
-			</c:forEach>
+	<div class="parent-container">
+		<h1 class="sider-title">추천 상품</h1>
+		<div class="product-slider2">
+			<div class="product-wrapper">
+				<c:forEach items="${like }" var="li">
+					<div class="productList">
+						<a href="market_detail.ma?productNo=${li.PRODUCT_NO }">
+							<c:if test="${li.IMAGE_RENAMENAME ne null }">
+								<img style="width:270px" src="${contextPath }/resources/uploadFiles/${li.IMAGE_RENAMENAME}">
+							</c:if>
+							<c:if test="${li.IMAGE_RENAMENAME eq null }">
+								<img style="width:270px; opacity: 0.5;" src="${contextPath }/resources/images/noImg.png">
+							</c:if>
+						</a>
+						<c:if test="${ li.FOOD_NAME ne null }">
+							<div class="productName">${li.FOOD_NAME }</div>
+						</c:if>
+						<c:if test="${ li.TOOL_NAME ne null }">
+							<div class="productName">${li.TOOL_NAME }</div>
+						</c:if>
+						<c:if test="${ li.INGREDIENT_NAME ne null }">
+							<div class="productName">${li.INGREDIENT_NAME }</div>
+						</c:if>
+						<c:if test="${li.PRODUCT_SALE ne 0 }">
+							<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
+						</c:if>
+						<c:if test="${li.PRODUCT_SALE eq 0 }">
+							<div style="text-decoration: none;">${li.PRODUCT_PRICE }</div>
+						</c:if>
+						<div class="discount" ></div>
+						<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
+					</div>
+				</c:forEach>
+			</div>
 		</div>
 	</div><br><br><br><br><br><br><br>
 	
-	<h1 class="sider-title"><i class="bi bi-egg-fried"></i>&nbsp;&nbsp;판매 중인 상품&nbsp;&nbsp;<i class="bi bi-egg-fried"></i></h1>
+	<h1 class="sider-title">
+		<i class="bi bi-egg-fried"></i>&nbsp;&nbsp;판매 중인 상품&nbsp;&nbsp;<i class="bi bi-egg-fried"></i>
+	</h1>
+	<div class="select-option">
+		<c:if test="${foodView ne null }">
+			<select>
+				<option>밀키트</option>
+				<option>식재료</option>
+			</select>
+			<select>
+				<option>메인</option>
+				<option>서브</option>
+			</select>
+			<button>검색</button>
+		</c:if>	
+	</div>
 	<div style="text-align: center;">
 		<ul class="nomalProduct">
 			<c:forEach items="${list }" var="li">
 				<li class="normal">
 					<input type="hidden" value="${li.productNo }">
-					<a href="market_detail.ma?productNo=${li.productNo }"><img src="${contextPath }/resources/uploadFiles/${li.productImg}"></a>
+					<a href="market_detail.ma?productNo=${li.productNo }">
+						<c:if test="${li.productImg ne null }">
+							<img src="${contextPath }/resources/uploadFiles/${li.productImg}">
+						</c:if>
+						<c:if test="${li.productImg eq null }">
+							<img style="opacity: 0.5;" src="${contextPath }/resources/images/noImg.png">
+						</c:if>
+					</a>
 					<div class="productName">${li.productName }</div>
 					<c:if test="${li.productSale ne 0 }">
 						<span class="originPrice">

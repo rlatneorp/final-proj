@@ -49,16 +49,26 @@ public class CustomerDAO {
 		return sqlSession.selectOne("customerMapper.getCategoryFListCount", map);
 	}
 
-	public int qnaInsert(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+	public int qnaInsert(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
 		return sqlSession.insert("customerMapper.qnaInsert", map);
 	}
 
-	public int qnaProduct(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+	public int qnaProduct(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
 		return sqlSession.insert("customerMapper.qnaProduct", map) ;
 	}
 
 	public ArrayList<Orders> selectQnaProduct(SqlSessionTemplate sqlSession, Orders o) {
 		return (ArrayList)sqlSession.selectList("customerMapper.selectQnaProduct", o);
+	}
+
+	public ArrayList<Qna> qBoardList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(), pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("customerMapper.qBoardList", map, rowBounds);
+	}
+
+	public ArrayList<Qna> qnaType(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
+		return (ArrayList)sqlSession.selectList("customerMapper.qnaType", map);
 	}
 
 

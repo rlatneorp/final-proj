@@ -62,10 +62,10 @@
 							<fmt:formatNumber pattern="###,###,###" value="${m.productPrice}"/>원
 						</td>
 						<td>${m.productSale}%</td>
-						<td>${m.productStock}</td>
-						<td>${m.orderCount}</td>
-						<td>${m.viewCount}</td>
-						<td>${m.likeCount}</td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${m.productStock}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${m.orderCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${m.viewCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${m.likeCount}"/></td>
 						<td>
 							<c:if test="${m.productStatus eq 'Y'}">
 								<button type="button" class="btns statusBtn" style="background-color: #19A7CE;">Y</button>

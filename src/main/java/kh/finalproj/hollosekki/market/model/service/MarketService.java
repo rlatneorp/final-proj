@@ -363,8 +363,8 @@ public class MarketService {
 		return mkDAO.selectViewIngredient(sqlSession, pi);
 	}
 
-	public ArrayList<Tool> selectViewTool() {
-		return mkDAO.selectViewTool(sqlSession);
+	public ArrayList<Tool> selectViewTool(PageInfo pi) {
+		return mkDAO.selectViewTool(sqlSession, pi);
 	}
 
 	public int selectViewWholeCount() {
@@ -420,6 +420,14 @@ public class MarketService {
 
 	public ArrayList<HashMap<String, Object>> selectLikeOrderByIngre() {
 		return mkDAO.selectLikeOrderByIngre(sqlSession);
+	}
+
+	public ArrayList<Product> selectToolHotDeal() {
+		return mkDAO.selectToolHotDeal(sqlSession);
+	}
+
+	public ArrayList<HashMap<String, Object>> selectLikeOrderByTool() {
+		return mkDAO.selectLikeOrderByTool(sqlSession);
 	}
 
 	

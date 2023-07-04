@@ -598,7 +598,7 @@
 		where users_no=#{usersNo} and division_no=#{divisionNo}
 	</delete>
 	
-	<select id="selectLike" resultType="_integer">
+	<select id="selectLike" resultType="java.lang.Integer">
 		select count(*) from likes where users_no=#{usersNo} and division_no=#{divisionNo}
 	</select>
 	
@@ -649,6 +649,8 @@
 		order by product_sale desc, product_modify_date desc
 		FETCH FIRST 8 ROWS ONLY
 	</select>
+	
+	
 	
 	<select id="selectDetailReview" resultType="map">
 		select *
@@ -734,6 +736,29 @@
 		]]>
 	</select>
 	
+	<select id="selectLikeOrderByTool" resultType="map">
+		<![CDATA[
+			SELECT *
+			FROM (
+			    SELECT p.product_price, p.product_sale, p.product_no, img.image_renamename, l.division_count, t.tool_name
+			    FROM product p
+			    LEFT JOIN tool t ON t.product_no = p.product_no
+			    LEFT JOIN (
+			        SELECT division_no, COUNT(*) AS division_count
+			        FROM likes l
+			        GROUP BY division_no
+			    ) l ON l.division_no = p.product_no
+			    LEFT JOIN image img ON p.product_no = img.image_divide_no
+			    WHERE p.product_type = 4
+			    AND l.division_count IS NOT NULL
+			    AND l.division_count <> 0
+			    AND img.image_level = 0
+			    ORDER BY l.division_count DESC
+			) subquery
+			WHERE ROWNUM <= 8
+		]]>
+	</select>
+	
 	<select id="selectLikeOrderByIngre" resultType="map">
 		<![CDATA[
 			SELECT *
@@ -766,6 +791,16 @@
 			select *
 			from product
 			where product_type = 1 AND product_sale <> '0'
+			order by product_sale desc, product_modify_date desc
+			FETCH FIRST 8 ROWS ONLY
+		]]>
+	</select>
+	
+	<select id="selectToolHotDeal" resultMap="productList">
+		<![CDATA[
+			select *
+			from product
+			where product_type = 4 AND product_sale <> '0'
 			order by product_sale desc, product_modify_date desc
 			FETCH FIRST 8 ROWS ONLY
 		]]>

@@ -409,8 +409,10 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectViewIngredient", null, rowBounds);
 	}
 
-	public ArrayList<Tool> selectViewTool(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectViewTool");
+	public ArrayList<Tool> selectViewTool(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewTool", null, rowBounds);
 	}
 
 	public int selectViewWholeCount(SqlSessionTemplate sqlSession) {
@@ -471,6 +473,14 @@ public class MarketDAO {
 
 	public ArrayList<Orders> orderList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
 		return (ArrayList)sqlSession.selectList("marketMapper.orderList", map);
+	}
+
+	public ArrayList<Product> selectToolHotDeal(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectToolHotDeal");
+	}
+
+	public ArrayList<HashMap<String, Object>> selectLikeOrderByTool(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectLikeOrderByTool");
 	}
 
 }

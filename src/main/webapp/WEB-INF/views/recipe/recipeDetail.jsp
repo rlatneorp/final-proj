@@ -434,20 +434,24 @@
 				<th class="line reviewWrite">작성자</th>
 				<th class="line reviewDate">날짜</th>
 			</tr>
-	<c:forEach items="${reList }" var="re">
-		<c:if test="${re.reviewWriter eq loginUser.nickName}">
-			<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
-				<td class="line">${re.reviewNo }</td>
-				<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
-				<td class="line">${re.reviewContent}</td>
-				<td class="line">${re.reviewWriter}</td>
-				<td class="line">${re.reviewDate}</td>
-			</tr>
-		</c:if>
-		<c:if test="${re.reviewNo eq null }">
-			<td colspan=5>내가 등록한 후기가 없습니다.</td>
-		</c:if>
-	</c:forEach>
+			<c:if test="${myReview eq 0 }">
+				<tr>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;">내가 등록한 후기가 없습니다.</td>
+				</tr>
+			</c:if>
+			<c:if test="${myReview ne 0 }">
+				<c:forEach items="${reList }" var="re">
+					<c:if test="${re.reviewWriter eq loginUser.nickName}">
+						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
+							<td class="line">${re.reviewNo }</td>
+							<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
+							<td class="line">${re.reviewContent}</td>
+							<td class="line">${re.reviewWriter}</td>
+							<td class="line">${re.reviewDate}</td>
+						</tr>
+					</c:if>
+				</c:forEach>
+			</c:if>
 		</table>
 	</div>
 <br><br>
@@ -464,17 +468,24 @@
 			<th class="line reviewDate">날짜</th>
 		</tr>
 		<tbody id="reviewBody">
-			<c:forEach items="${reList}" var="re">
-				<c:if test="${re.reviewWriter ne loginUser.nickName }">
-					<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
-						<td class="line">${re.reviewNo }</td>
-						<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
-						<td class="line">${re.reviewContent}</td>
-						<td class="line">${re.reviewWriter}</td>
-						<td class="line">${re.reviewDate}</td>
-					</tr>
-				</c:if>
-			</c:forEach>
+			<c:if test="${reviewCount eq 0 }">
+				<tr>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;">등록된 후기가 없습니다.</td>
+				</tr>
+			</c:if>
+			<c:if test="${reviewCount ne 0 }">
+				<c:forEach items="${reList}" var="re">
+					<c:if test="${re.reviewWriter ne loginUser.nickName }">
+						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
+							<td class="line">${re.reviewNo }</td>
+							<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
+							<td class="line">${re.reviewContent}</td>
+							<td class="line">${re.reviewWriter}</td>
+							<td class="line">${re.reviewDate}</td>
+						</tr>
+					</c:if>
+				</c:forEach>
+			</c:if>
 		</tbody>
 	</table>
 </div>

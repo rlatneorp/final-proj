@@ -207,4 +207,9 @@ public class RecipeServiceImpl implements RecipeService{
 	public ArrayList<RecipeElement> selectRecipeElement(int foodNo) {
 		return rDAO.selectRecipeElement(sqlSession, foodNo);
 	}
+
+	@Override
+	public int myReview(Review my) {
+		return rDAO.myReivew(sqlSession, my);
+	}
 }

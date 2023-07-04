@@ -261,6 +261,15 @@
 		where review_no = #{reviewNo}
 	</delete>
 		
+	<update id="updateOrder">
+		update recipe_order set recipe_order = #{recipeOrder}, RECIPE_ORIGINALNAME=#{recipeOriginalName}, RECIPE_RENAMENAME=#{recipeRenameName}, RECIPE_IMAGEPATH=#{recipeImagePath}
+		where food_no=#{foodNo} and recipe_procedure=#{recipeProcedure}
+	</update>
+	
+	<insert id="insertOrderPlus">
+		insert into recipe_order values(seq_order_no.nextval, #{foodNo}, #{recipeOrder}, default, #{recipeProcedure}, #{recipeOriginalName}, #{recipeRenameName}, #{recipeImagePath})
+	</insert>
+	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

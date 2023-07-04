@@ -88,6 +88,9 @@ public interface RecipeService {
 	int updateReview(HashMap<String, Object> map);
 
 	int deleteReview(int reviewNo);
+	
+	int updateOrder(ArrayList<RecipeOrder> orc);
+
 
 
 }

@@ -452,6 +452,7 @@ public class RecipeController {
 		}
 		
 //		레시피 순서 변경/삭제
+//		System.out.println(rc);
 		ArrayList<RecipeOrder> orc = new ArrayList<>();
 		String[] orderArr = rc.getRecipeOrder().split(",abc123abc,");
 		orderArr[orderArr.length - 1] = orderArr[orderArr.length - 1].replace(",abc123abc", "");
@@ -459,25 +460,29 @@ public class RecipeController {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savedPath = root + "\\uploadFiles";
 		File folder = new File(savedPath);
+		
+		
 		String[] recipeRe = rc.getRecipeRenameName().split(",");
+		
+		
 		int updateOrderResult = 0;
 		if(orderFiles != null) {
 			for(int i = 0; i < orderArr.length; i++) {
-				String recipeOriginal = orderFiles.get(i).getOriginalFilename();
+				System.out.println(recipeRe[i]);
 				
+				for(String delImg : delOrderImg) {
+					deleteFile(delImg, request);
+				}
+				
+				String recipeOriginal = orderFiles.get(i).getOriginalFilename();
 				if(orderFiles.get(i) != null && !recipeOriginal.equals("")) {
-					File file = new File(savedPath + "\\" + recipeRe);
-					
-					if(file.exists()) {
-						file.delete();
-					}
 					
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 					int ranNum = (int) (Math.random() * 100000);
 					String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
 							+ recipeOriginal.substring(recipeOriginal.lastIndexOf("."));
-
-					String renamePath = folder + "\\" + recipeRe;
+	
+					String renamePath = folder + "\\" + renameFileName;
 					
 					try {
 						orderFiles.get(i).transferTo(new File(renamePath));
@@ -489,18 +494,19 @@ public class RecipeController {
 					if(i < orderArr.length) {
 						if(!orderArr[i].equals("")) {
 							rcc.setRecipeOrder(orderArr[i]);
-							rcc.setRecipeOriginalName(recipeOriginal);
-							rcc.setRecipeRenameName(renameFileName);
-							rcc.setRecipeProcedure(i + 1);
-							rcc.setRecipeImagePath(renamePath);
-							
-							orc.add(rcc);
 						}
 					}
+					rcc.setRecipeOriginalName(recipeOriginal);
+					rcc.setRecipeRenameName(renameFileName);
+					rcc.setRecipeProcedure(i + 1);
+					rcc.setRecipeImagePath(renamePath);
+					rcc.setFoodNo(rc.getFoodNo());
+					
+					orc.add(rcc);
 				}
 			}
-			updateOrderResult = rService.insertOrder(orc);
 		}
+		updateOrderResult = rService.updateOrder(orc);
 		
 //		완성 사진 수정
 		ArrayList<Image> comImgList = new ArrayList<>();
@@ -523,27 +529,11 @@ public class RecipeController {
 			}
 		}
 		
-		
 		if(comFiles != null) {
 			for(int i = 0; i < comFiles.size(); i++) {
 				String comOriginal = comFiles.get(i).getOriginalFilename();
 				
 				if(comFiles.get(i) != null && !comOriginal.equals("")) {
-					
-//					for(String rename : delComImg) {
-//						if(!rename.equals("none")) {
-//							String[] split = rename.split("/");
-//							comDelRename.add(split[0]);
-//						}
-//					}
-//					if(!comDelRename.isEmpty()) {
-//						delComResult = rService.deleteComImg(comDelRename);
-//						if(delComResult > 0) {
-//							for(String rename : comDelRename) {
-//								deleteFile(rename, request);
-//							}
-//						}
-//					}
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmsss");
 					int ranNum = (int) (Math.random() * 100000);
 					String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
@@ -556,7 +546,6 @@ public class RecipeController {
 					} catch (IllegalStateException | IOException e) {
 						e.printStackTrace();
 					}
-					
 					Image img = new Image();
 					img.setImagePath(renamePath);
 					img.setImageOriginalName(comOriginal);
@@ -569,48 +558,6 @@ public class RecipeController {
 			}
 			updateComResult = rService.insertAttm(comImgList);
 		}
-		
-//		ArrayList<Image> comImgList = new ArrayList<>();
-//		for(int i = 0; i < comFiles.size(); i++) {
-//			MultipartFile comFile = comFiles.get(i);
-//			if(comFile != null && !comFile.isEmpty()) {
-//				String[] comFileArr = saveFile(comFile, request);
-//				if(comFileArr[1] != null) {
-//					Image img = new Image();
-//					
-//					img.setImagePath(comFileArr[0]);
-//					img.setImageOriginalName(comFile.getOriginalFilename());
-//					img.setImageRenameName(comFileArr[1]);
-//					img.setImageLevel(2);
-//					
-//					comImgList.add(img);
-//				}
-//			}
-//		}
-//		
-//		ArrayList<String> comDelRename = new ArrayList<>();
-//		
-//		for(String rename : delComImg) {
-//			if(!rename.equals("none")) {
-//				String[] split = rename.split("/");
-//				comDelRename.add(split[0]);
-//			}
-//		}
-//		
-//		int recipeComResult = 0;
-//		if(!comDelRename.isEmpty()) {
-//			recipeComResult = rService.deleteComImg(comDelRename);
-//			if(recipeComResult > 0) {
-//				for(String rename : comDelRename) {
-//					deleteFile(rename, request);
-//				}
-//			}
-//		}
-//		
-//		int updateComImg = 0;
-//		if(!comImgList.isEmpty()) {
-//			updateComImg = rService.insertAttm(comImgList);
-//		}
 		
 		if(updateRecipeResult + thumResult + updateOrderResult + updateComResult == thumImgList.size() + orc.size() + comImgList.size() + 1) {
 			if(delThumRename.length() + comDelRename.size() == delThum.length() + delComImg.length && updateComResult + updateOrderResult + thumResult == 0) {

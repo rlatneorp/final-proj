@@ -223,4 +223,10 @@ public class RecipeServiceImpl implements RecipeService{
 	public int deleteReview(int reviewNo) {
 		return rDAO.deleteReview(sqlSession, reviewNo);
 	}
+	
+	@Override
+	public int updateOrder(ArrayList<RecipeOrder> orc) {
+		return rDAO.updateOrder(sqlSession, orc);
+	}
+	
 }

@@ -181,5 +181,19 @@ public class RecipeDAO {
 		return sqlSession.delete("recipeMapper.deleteReview", reviewNo);
 	}
 
+	public int updateOrder(SqlSessionTemplate sqlSession, ArrayList<RecipeOrder> orc) {
+		int result = 0;
+		for(int i = 0; i < orc.size(); i++) {
+			result += sqlSession.update("recipeMapper.updateOrder", orc.get(i));
+		}
+		
+		if(result < orc.size()) {
+			for(int i = result; i < orc.size(); i++) {
+				result += sqlSession.insert("recipeMapper.insertOrderPlus", orc.get(i));
+			}
+		}
+		
+		return result;
+	}
 
 }

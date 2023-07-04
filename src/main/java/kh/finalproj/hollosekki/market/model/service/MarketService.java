@@ -379,6 +379,10 @@ public class MarketService {
 		return mkDAO.selectDetailReview(sqlSession, reviewNo);
 	}
 
+	public ArrayList<Orders> orderList(HashMap<String, Integer> map) {
+		return mkDAO.orderList(sqlSession, map);
+	}
+
 
 
 	

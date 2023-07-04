@@ -351,55 +351,58 @@ let ind = null;
 	function reReply(){
 		
 		const tbody = document.querySelector('tbody');
-		const trs = tbody.querySelectorAll('tr');
 		const reBtns = document.querySelectorAll('.reBtn');
-		
-		for(let i = 0; i < reBtns.length; i++){
+		const trs = tbody.querySelectorAll('tr');
+		const trArr = Array.from(trs);
+		const reBtnsArr = Array.from(reBtns);
+		let td = '';
+		let trr = '';
+		for(const tr of trArr){
+			td = Array.from(tr.querySelectorAll('td'));
+			trr = tr;
+		}
+		for(const reBtn of reBtnsArr){
 			let datas = '';
-			if(!reBtns.disabled){
-				const tds = trs[i].querySelectorAll('td');
-				tds[3].addEventListener('keydown', function(e){
-					if(e.keyCode == 13){
-						tds[3].click();
-					}
-				})
-				console.log(tds);
-				tds[3].addEventListener('click', ()=>{
-					tds[0].innerHTML = '<td><input type="text" class="reBox" value="' + tds[0].innerText + '"></td>';
-					tds[3].innerHTML = '<button type="button" class="reBtn" id="reBtn">' + "확인" + '</button>';
-					
-					const reBoxs = tds[0].querySelectorAll('.reBox');
-					datas = tds[0].innerText;
-					tds[0].innerHTML = '';
+// 			const tds = trs.querySelectorAll('td');
+			reBtn.addEventListener('keydown', function(e){
+				if(e.keyCode == 13){
+					reBtn.click();
+				}
+			})
+			reBtn.addEventListener('click', ()=>{
+				if(reBtn.innerText == "수정"){
+					td[0].innerHTML = '<input type="text" class="reBox" value="' + td[0].innerText + '">';
+					reBtn.innerText = '확인';
+				}else if(reBtn.innerText == "확인"){
+					const reInput = Array.from(td[0].querySelectorAll('.reBox'));
+					console.log(reInput);
+					datas = reInput.innerHTML;
+					console.log(datas);
 					const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
 					const hdnBoardNo = document.querySelector('#hdnBoardNo');
-					if(reBtns.innerText == '확인'){
-						$.ajax({
-							url: 'reReply.bo',
-							data: {
-								reviewContent: datas,
-								reviewWriter: '${login}',
-								productNo: hdnBoardNo.value,
-								reviewNo: hdnReplyNo[i].value
-							},
-							success: data=>{
-								if(data == 'success'){
-									tds[0].innerText = datas;
-									tds[3].innerHTML = '<button type="button" class="reBtn" id="reBtn">' + "수정" + '</button>';
-								}else{
-									alert("댓글 수정 중 오류가 발생했습니다.");
-									location.reload();
-								}
+					$.ajax({
+						url: 'reReply.bo',
+						data: {
+							reviewContent: datas,
+							reviewWriter: '${login}',
+							productNo: hdnBoardNo.value,
+							reviewNo: hdnReplyNo.value
+						},
+						success: data=>{
+							if(data == 'success'){
+								td[0].innerText = datas;
+								reBtn.innerText = '수정';
+							}else{
+								alert("댓글 수정 중 오류가 발생했습니다.");
+								location.reload();
 							}
-								
-						});
-					}
-				})
+						}
+							
+					});
+					
+				}
 				
-			}else{
-				alert("작성자 본인만 수정하실 수 있습니다.");
-			}
-				
+			})
 		}
 	}	
 	

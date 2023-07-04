@@ -97,7 +97,8 @@ public class EnrollController {
 		@RequestMapping("loginCheck.en")
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
-			Users loginUser = eService.login(u);
+			Users loginUser = eService.login2(u);
+			System.out.println("ss :"+loginUser);
 			if(loginUser == null) {
 				int num = 1;
 				model.addAttribute("login", num);

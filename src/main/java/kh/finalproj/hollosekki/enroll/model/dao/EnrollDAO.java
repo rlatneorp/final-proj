@@ -25,8 +25,8 @@ public class EnrollDAO {
 		return sqlSession.insert("enrollMapper.insertUser", u);
 	}
 
-	public Users login(SqlSessionTemplate sqlSession, Users u) {
-		return sqlSession.selectOne("enrollMapper.login", u);
+	public Users login2(SqlSessionTemplate sqlSession, Users u) {
+		return sqlSession.selectOne("enrollMapper.login2", u);
 	}
 
 	public int checkId(SqlSessionTemplate sqlSession, String id) {
@@ -182,6 +182,10 @@ public class EnrollDAO {
 
 	public void insertPoint(SqlSessionTemplate sqlSession, Users u) {
 		sqlSession.insert("enrollMapper.insertPoint", u);
+	}
+
+	public Users login(SqlSessionTemplate sqlSession, Users u) {
+		return sqlSession.selectOne("enrollMapper.login", u);
 	}
 
 

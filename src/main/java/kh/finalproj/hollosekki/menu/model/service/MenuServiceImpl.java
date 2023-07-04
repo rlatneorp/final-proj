@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
@@ -89,5 +90,15 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public int deleteBookmark(int usersNo, int divisionNo) {
 		return mDAO.deleteBookmark(sqlSession, usersNo, divisionNo);
+	}
+
+	@Override
+	public ArrayList<Menu> menuScore() {
+		return mDAO.menuScore(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Likes> likeList() {
+		return mDAO.likeList(sqlSession);
 	}
 }

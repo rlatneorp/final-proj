@@ -68,8 +68,14 @@ public class UsersController {
 	public String myPage_Main(Model model) {
 		// 이미지 조회 - 로그인 조회할때 이미지 리네임, 소셜이미지 조인해서 가져옴
 		Users u = (Users) model.getAttribute("loginUser");
-		Users loginUser = eService.login(u);
-		model.addAttribute("loginUser", loginUser);
+		Users loginUser = null;
+		if(u.getImageRenameName() != null) {
+			loginUser = eService.login(u);
+			model.addAttribute("loginUser", loginUser);
+		}else {
+			loginUser = eService.login2(u);
+			model.addAttribute("loginUser", loginUser);
+		}
 
 		int following = eService.following(loginUser.getUsersNo());
 		int follower = eService.follow(loginUser.getUsersNo());

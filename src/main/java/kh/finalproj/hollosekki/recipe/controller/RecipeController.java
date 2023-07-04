@@ -93,9 +93,19 @@ public class RecipeController {
 							   @RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv) {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
+		
 		String loginId = null;
+		String nickName = null;
+		Review my = new Review();
+		int myReview = 0;
 		if(loginUser != null) {
 			loginId = loginUser.getUsersId();
+			nickName = loginUser.getNickName();
+			
+			my.setReviewWriter(nickName);
+			my.setProductNo(foodNo);
+			
+			myReview = rService.myReview(my);
 		}
 		boolean yn = false;
 		if(!usersId.equals(loginId)) {
@@ -123,10 +133,13 @@ public class RecipeController {
 			mv.addObject("page", page);
 			mv.addObject("rpi", rpi);
 			mv.addObject("eleList", eleList);
+			mv.addObject("myReview", myReview);
+			mv.addObject("reviewCount", reviewCount);
 			mv.setViewName("recipeDetail");
 			
 			return mv;
 		} else {
+			
 			throw new RecipeException("레시피 상세조회를 실패하였습니다.");
 		}
 	}

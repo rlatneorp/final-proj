@@ -71,12 +71,9 @@
 					<td>${od.productNo}</td>
 					<td>${od.productName}</td>
 					<td>${od.options}</td>
-					<td>${od.orderCount}</td>
+					<td><fmt:formatNumber pattern="###,###,###,###" value="${od.orderCount}"/></td>
 					<td><fmt:formatNumber pattern="###,###,###,###" value="${od.totalPrice}"/>원</td>
 				</tr>
-<!-- 				<tr> -->
-<%-- 					<td colspan="8">${od}</td> --%>
-<!-- 				</tr> -->
 			</c:forEach>
 			
 			<c:if test="${ab.searchText != null && ab.searchText != ''}">
@@ -108,21 +105,32 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="row" style="font-size:18px;">
-<!-- 						<input type="hidden" name="modalOrdersNo" value="0"> -->
-						<p class="col-3">주문번호 :	</p><p class="col-9 modalOrderNo">0</p>
-						<p class="col-3">주문자 :		</p><p class="col-9 modalUsers">users</p>
-						<p class="col-3">주문날짜 :	</p><p class="col-9 modalDate mb-0">2023-00-00 hh:mm:ss</p>
-						<p class="col-3">상품 :		</p><p class="col-9 modalProduct">(1000) 후라이펜</p>
-						<p class="col-3">옵션 :		</p><p class="col-9 modalOptions">(1000) 후라이펜</p>
-						<p class="col-3">주문금액 :	</p><p class="col-9 modalTotalPrice">0원</p>
-						<p class="col-3">배송비 :		</p><p class="col-9 modalShipPrice">0원</p>
-						<p class="col-3">주문수량 :	</p><p class="col-9 modalOrderCount">0개</p>
-						<p class="col-3">주문주소 :	</p><p class="col-9 modalAddress">orderAddress</p>
-						<p class="col-3">처리상태 :	</p><p class="col-9 modalOrderDelivery">배송준비중</p>
-						<p class="col-3">배송날짜 :	</p><p class="col-9 modalOrderDeliveryDate">2023-00-00</p>
-						<p class="col-3">배송 요청사항 :</p><p class="col-9 modalOrderComment"></p>
-						<p class="col-3">주문 상세정보 :</p><p class="col-9 modalOrderInfo"></p>
+					<div class="row" style="font-size:14px; padding: 30px 50px;">
+						<p class="col-3">주문번호 	</p><p class="col-9 modalOrderNo">0</p>
+						<hr>
+						<p class="col-3">주문자 	</p><p class="col-9 modalUsers">users</p>
+						<hr>
+						<p class="col-3">주문날짜 	</p><p class="col-9 modalDate mb-0">2023-00-00 hh:mm:ss</p>
+						<hr>
+						<p class="col-3">상품 	</p><p class="col-9 modalProduct">(1000) 후라이펜</p>
+						<hr>
+						<p class="col-3">옵션 	</p><p class="col-9 modalOptions">(1000) 후라이펜</p>
+						<hr>
+						<p class="col-3">주문금액 	</p><p class="col-9 modalTotalPrice">0원</p>
+						<hr>
+						<p class="col-3">배송비 	</p><p class="col-9 modalShipPrice">0원</p>
+						<hr>
+						<p class="col-3">주문수량 	</p><p class="col-9 modalOrderCount">0개</p>
+						<hr>
+						<p class="col-3">주문주소 	</p><p class="col-9 modalAddress">orderAddress</p>
+						<hr>
+						<p class="col-3">처리상태 	</p><p class="col-9 modalOrderDelivery">배송준비중</p>
+						<hr>
+						<p class="col-3">배송날짜 	</p><p class="col-9 modalOrderDeliveryDate">2023-00-00</p>
+						<hr>
+						<p class="col-3">배송 요청사항 </p><p class="col-9 modalOrderComment"></p>
+						<hr>
+						<p class="col-3">주문 상세정보 </p><p class="col-9 modalOrderInfo"></p>
 						
 					</div>
 					<div class="modalImageBox">

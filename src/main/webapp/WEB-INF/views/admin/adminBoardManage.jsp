@@ -52,7 +52,7 @@
 								 자유게시판
 							</c:if>
 						</td>
-						<td>${b.boardCount}</td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${b.boardCount}"/></td>
 						<td><fmt:formatDate value="${b.boardDate}" pattern="yyyy-MM-dd"/></td>
 						<td>
 							<c:if test="${b.boardStatus eq 'Y'}">

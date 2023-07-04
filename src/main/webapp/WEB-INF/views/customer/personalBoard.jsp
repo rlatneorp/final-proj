@@ -35,36 +35,43 @@
 					</c:if>
 					<c:if test="${!empty loginUser}">
 						<div class="accordion acCustomer" id="accordionFlushExample">
-						<c:if test="${empty plist}">
+						<c:if test="${empty qlist}">
 						    <img src="resources/images/qnaNull.png" width="700px" height="500px">
 						</c:if>
-							<c:forEach items="${ plist }" var="c" varStatus="stc"> 
+<%-- 							<c:forEach items="${ plist }" var="c" varStatus="stc">  --%>
+							<c:forEach items="${ qlist }" var="q" varStatus="stc">
 							<div class="accordion-item">
 								<h2 class="accordion-header" id="flush-headingOne-${stc.index +1 }c">
 								<button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-${stc.index +1 }c" aria-expanded="false" aria-controls="flush-collapseOne-${stc.index +1 }c">
-								        <c:set var="date"><fmt:formatDate value="${c.qnaDate }" pattern=" MM월 dd일" /></c:set><c:out value="${date}" /> | ${c.qnaTitle } 
+								     <c:set var="date"><fmt:formatDate value="${q.qnaDate }" pattern=" MM월 dd일" /></c:set><c:out value="${date}" /> | Q. ${q.qnaTitle }  
 								</button>
 								</h2>
 								<div id="flush-collapseOne-${stc.index +1 }c" class="accordion-collapse collapse" aria-labelledby="flush-headingOne-${stc.index +1 }c">
 									<div class="accordion-body">
 										<div>
-											<h4>Q. ${c.qnaTitle } </h4>
-											<span class="11answer">${c.qnaContent }</span>
+											<h5 class="qnaCate"></h5>
+											<c:if test="${q.orderNo ne 0}">
+											 <h6>주문번호 ${q.orderNo}</h6>
+											</c:if>
+											<h4>Q. ${q.qnaTitle } </h4>
+											<span class="11answer">${q.qnaContent }</span>
+											<input type="hidden" value="${q.qnaNo}" class="qHdn">
 										</div>
 										<hr>
 										<div> 
 											<h4>A. 답변 내용</h4>
-											<c:if test="${!empty c.answerContent}">
-											<span class="11answer">${c.answerContent }</span>
+											<c:if test="${!empty q.answerContent}">
+												<span class="11answer">${q.answerContent }</span>
 											</c:if>
-											<c:if test="${empty c.answerContent}">
-											<h5>아직 답변 처리중입니다. 조금만 기다려주세요.</h5>
+											<c:if test="${empty q.answerContent}">
+												<h5>아직 답변 처리중입니다. 조금만 기다려주세요.</h5>
 											</c:if>
 										</div>
 									</div>
 								</div>
 							</div>
 							</c:forEach>
+<%-- 							</c:forEach> --%>
 						</div>
 						<div style="text-align: right;">
 							<button class="askBtn" onclick="location.href='${contextPath}/personalQuestion.cs'">문의하기</button>
@@ -107,5 +114,55 @@
 		</div> 
 	<br><br><br><br><br>
 <%@ include file="../common/footer.jsp" %>	
+<script>
+	const accordion = document.querySelector('body');
+		accordion.onload=function(){
+			const qnaCates = document.getElementsByClassName('qnaCate');
+			const orderNo = document.getElementsByClassName('qHdn');
+			let oNoValue = '';
+			for(const oNo of orderNo){
+				oNoValue = oNo.value;
+			}
+			for(const qnaCate of qnaCates){
+				
+				$.ajax({
+					url: "qnaType.cs",
+					data :{
+						usersNo: '${loginUser.usersNo}',
+						qnaNo: oNoValue
+					},
+					success: data=>{
+						for(const d of data){
+							console.log(data);
+							const qnaCateP = document.createElement('p');
+							const qnaCateH6 = document.createElement('h6');
+							if(d.qnaType == 1){
+								qnaCateH6.innerText = '배송';
+							}else if(d.qnaType == 2){
+								qnaCateH6.innerText = '결제';
+							}else if(d.qnaType == 3){
+								qnaCateH6.innerText = '회원';
+							}else if(d.qnaType == 4){
+								qnaCateH6.innerText = '상품';
+							}else if(d.qnaType == 0){
+								qnaCateH6.innerText = '기타';
+							}
+							
+							qnaCateP.append(qnaCateH6);
+							qnaCate.append(qnaCateP);
+					 };
+				 }
+				
+			 })
+			
+		  }
+	};
+			
+			
+		
+	
+
+
+</script>
 </body>
 </html>

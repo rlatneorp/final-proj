@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.recipe.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
@@ -84,6 +85,10 @@ public interface RecipeService {
 
 	int myReview(Review my);
 
+	int updateReview(HashMap<String, Object> map);
+
+	int deleteReview(int reviewNo);
+	
 	int updateOrder(ArrayList<RecipeOrder> orc);
 
 

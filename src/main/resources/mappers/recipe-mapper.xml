@@ -250,6 +250,17 @@
 		where product_no = #{productNo} and REVIEW_WRITER=#{reviewWriter} and order_no=0
 	</select>
 	
+	<update id="updateReview">
+		update review
+		set review_score = #{reviewScore}, review_content = #{r.reviewContent}
+		where review_no = #{r.reviewNo}
+	</update>
+	
+	<delete id="deleteReview">
+		delete from review
+		where review_no = #{reviewNo}
+	</delete>
+		
 	<update id="updateOrder">
 		update recipe_order set recipe_order = #{recipeOrder}, RECIPE_ORIGINALNAME=#{recipeOriginalName}, RECIPE_RENAMENAME=#{recipeRenameName}, RECIPE_IMAGEPATH=#{recipeImagePath}
 		where food_no=#{foodNo} and recipe_procedure=#{recipeProcedure}

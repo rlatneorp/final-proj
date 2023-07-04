@@ -68,11 +68,12 @@ public class UsersController {
 	public String myPage_Main(Model model) {
 		// 이미지 조회 - 로그인 조회할때 이미지 리네임, 소셜이미지 조인해서 가져옴
 		Users u = (Users) model.getAttribute("loginUser");
+		System.out.println("죽을래?" + u.getImageRenameName());
 		Users loginUser = null;
 		if(u.getImageRenameName() != null) {
 			loginUser = eService.login(u);
 			model.addAttribute("loginUser", loginUser);
-		}else {
+		} else {
 			loginUser = eService.login2(u);
 			model.addAttribute("loginUser", loginUser);
 		}
@@ -192,6 +193,7 @@ public class UsersController {
 				int result2 = uService.insertImage(image);
 
 				if (result2 > 0) {
+					user.setImageRenameName(image.getImageRenameName());
 					model.addAttribute("image", image);
 				} else {
 					throw new UsersException("사진 실패");
@@ -244,6 +246,7 @@ public class UsersController {
 						int insertImage = uService.insertImage(image);
 
 						if (insertImage > 0) {
+							user.setImageRenameName(image.getImageRenameName());
 							model.addAttribute("image", image);
 						} else {
 							throw new UsersException("사진 수정 실패");
@@ -315,7 +318,6 @@ public class UsersController {
 		map.put("selectTitle", selectTitle);
 
 		ArrayList<HashMap<String, Object>> list = uService.selectMyRecipe(map, pi);
-		System.out.println(list);
 
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
@@ -330,7 +332,6 @@ public class UsersController {
 	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "searchType", required = false) Integer searchType,
 			@RequestParam(value = "searchTitle", required = false) String searchTitle) {
-		System.out.println(searchTitle);
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
 		int currentPage = 1;
 		if (page != null) {
@@ -361,7 +362,6 @@ public class UsersController {
 		map.put("selectTitle", selectTitle);
 
 		ArrayList<HashMap<String, Object>> list = uService.myBookMarkList(map, pi);
-		System.out.println("bookmark: " + list);
 
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
@@ -370,82 +370,6 @@ public class UsersController {
 
 		return "myPage_MyBookMark";
 	}
-	
-	// 좋아요 조회
-//	@RequestMapping("myPage_MyFavorite.me")
-//	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page,
-//			@RequestParam(value = "searchType", required = false) Integer searchType,
-//			@RequestParam(value = "searchTitle", required = false) String searchTitle) {
-//		int currentPage = 1;
-//		if (page != null) {
-//			currentPage = page;
-//		}
-//
-//		int selectType = 0; // 전체/레시피/식단/식품/식재료/상품
-//		if (searchType != null) {
-//			selectType = searchType;
-//		}
-//		
-//		String selectTitle = null;
-//		if (searchTitle != null) {
-//			selectTitle = searchTitle;
-//		}
-//
-//		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
-//		// 좋아요 리스트 개수...
-//		int product = uService.getFoodListCount(usersNo);
-//		int recipe = uService.getRecipeListCount(usersNo);
-//		int ingredient = uService.getingredientListCount(usersNo);
-//
-//		int listCount = product + recipe + ingredient;
-//		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-//
-//		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-//
-//		ArrayList<HashMap<String, Object>> fList = uService.myFoodLikeList(usersNo, selectType, selectTitle, pi); // 식단,
-//																													// 식품,
-//																													// 상품도구
-//		ArrayList<HashMap<String, Object>> rList = uService.myRecipeLikeList(usersNo, selectTitle, pi); // 레시피
-//		ArrayList<HashMap<String, Object>> pList = uService.myProductLikeList(usersNo, selectTitle, pi); // 식재료
-//
-//		if (searchType == null || selectType == 0) {
-//			list.addAll(fList);
-//			list.addAll(rList);
-//			list.addAll(pList);
-//
-//			model.addAttribute("list", list);
-//			model.addAttribute("pi", pi);
-//			model.addAttribute("searchType", searchType);
-//			model.addAttribute("searchTitle", searchTitle);
-//		} else if (selectType == 1) {
-//			model.addAttribute("list", rList);
-//			model.addAttribute("pi", pi);
-//			model.addAttribute("searchType", searchType);
-//			model.addAttribute("searchTitle", searchTitle);
-//		} else if (selectType == 2) {
-//			model.addAttribute("list", fList);
-//			model.addAttribute("pi", pi);
-//			model.addAttribute("searchType", searchType);
-//			model.addAttribute("searchTitle", searchTitle);
-//		} else if (selectType == 3) {
-//			model.addAttribute("list", fList);
-//			model.addAttribute("pi", pi);
-//			model.addAttribute("searchType", searchType);
-//			model.addAttribute("searchTitle", searchTitle);
-//		} else if (selectType == 4) {
-//			model.addAttribute("list", pList);
-//			model.addAttribute("pi", pi);
-//			model.addAttribute("searchType", searchType);
-//			model.addAttribute("searchTitle", searchTitle);
-//		} else if (selectType == 5) {
-//			model.addAttribute("list", fList);
-//			model.addAttribute("pi", pi);
-//			model.addAttribute("searchType", searchType);
-//			model.addAttribute("searchTitle", searchTitle);
-//		}
-//		System.out.println(list);
-//		return "myPage_MyFavorite";
-//	}
 	
 	@RequestMapping("myPage_MyFavorite.me")
 	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page,
@@ -482,6 +406,7 @@ public class UsersController {
 		map.put("selectTitle", selectTitle);
 		
 		ArrayList<HashMap<String, Object>> list = uService.myLikeList(map, pi);
+		System.out.println(list);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
@@ -495,15 +420,12 @@ public class UsersController {
 	@RequestMapping("myPage_deleteBookMark.me")
 	@ResponseBody
 	public String myPage_deleteBookMark(@RequestParam("bookmarkNo") String bookmarkNumber) {
-		System.out.println(bookmarkNumber);
-
 		String[] bookmarkNos = bookmarkNumber.split(",");
 		int[] intBookmarkNos = new int[bookmarkNos.length];
 		int result = 0;
 
 		for (int i = 0; i < bookmarkNos.length; i++) {
 			intBookmarkNos[i] = Integer.parseInt(bookmarkNos[i].replaceAll("[\\[\\]\"]", ""));
-			System.out.println(intBookmarkNos[i]);
 			int bookMarkNo = intBookmarkNos[i];
 
 			result = uService.deleteBookMark(bookMarkNo);
@@ -516,15 +438,12 @@ public class UsersController {
 	@RequestMapping("myPage_deleteLike.me")
 	@ResponseBody
 	public String myPage_deleteLike(@RequestParam("likeNo") String likeNumber) {
-		System.out.println(likeNumber);
-
 		String[] likeNos = likeNumber.split(",");
 		int[] intlikeNos = new int[likeNos.length];
 		int result = 0;
 
 		for (int i = 0; i < likeNos.length; i++) {
 			intlikeNos[i] = Integer.parseInt(likeNos[i].replaceAll("[\\[\\]\"]", ""));
-			System.out.println(intlikeNos[i]);
 			int likeNo = intlikeNos[i];
 
 			result = uService.deleteLike(likeNo);
@@ -635,7 +554,6 @@ public class UsersController {
 		addresses[2] = detailAddress;
 		sa.setAddress(Arrays.toString(addresses));
 
-		System.out.println("ssss : " + sa);
 		int result = mkService.insertShipping(sa);
 
 		if (result > 0) {
@@ -664,7 +582,6 @@ public class UsersController {
 		addresses[2] = detailAddress;
 		sa.setAddress(Arrays.toString(addresses));
 
-		System.out.println("ssss : " + sa);
 		int result = uService.updateAddress(sa);
 
 		if (result > 0) {
@@ -678,7 +595,6 @@ public class UsersController {
 	@RequestMapping("myPage_deleteAddress.me")
 	@ResponseBody
 	public String myPage_deleteAddress(@RequestParam("shippingNo") String shippingNumber) {
-		System.out.println(shippingNumber);
 
 		String[] shippingNos = shippingNumber.split(",");
 		int[] intShippingNos = new int[shippingNos.length];
@@ -686,7 +602,6 @@ public class UsersController {
 
 		for (int i = 0; i < shippingNos.length; i++) {
 			intShippingNos[i] = Integer.parseInt(shippingNos[i].replaceAll("[\\[\\]\"]", ""));
-			System.out.println(intShippingNos[i]);
 			int shippingNo = intShippingNos[i];
 
 			result = mkService.delShipping(shippingNo);
@@ -1042,25 +957,14 @@ public class UsersController {
 		}
 		
 		int listCount = uService.getReviewCount(map);
-		System.out.println(listCount);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
 		ArrayList<HashMap<String, Object>> list = uService.selectReview(map, pi);
-		System.out.println(list);
 		
 		model.addAttribute("list", list);
 		
 		return "myPage_Review";
 	}
 	
-	@RequestMapping("myPage_editReview.me")
-	public String myPage_editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
-		Review r = uService.selectDetailReview(reviewNo);
-		System.out.println(r);
-		
-		model.addAttribute("r", r);
-		
-		return "updateReview";
-	}
 	
 }

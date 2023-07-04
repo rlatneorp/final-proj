@@ -389,22 +389,24 @@ public class MarketDAO {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		System.out.println("pi.boardLimit" + pi.getBoardLimit());
-		System.out.println("pi.offset" + offset);
-		
 		return (ArrayList)sqlSession.selectList("marketMapper.selectViewWhole",null, rowBounds);
 	}
 
-	public ArrayList<Product> selectViewFood(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectViewFood");
+	public ArrayList<Food> selectViewFood(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewFood", null, rowBounds);
 	}
 
 	public ArrayList<Menu> selectViewMenu(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectViewMenu");
 	}
 
-	public ArrayList<Ingredient> selectViewIngredient(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("marketMapper.selectViewIngredient");
+	public ArrayList<Ingredient> selectViewIngredient(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewIngredient", null, rowBounds);
 	}
 
 	public ArrayList<Tool> selectViewTool(SqlSessionTemplate sqlSession) {
@@ -419,9 +421,53 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectWholeHotDeal");
 	}
 
-	public Review selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
-		return sqlSession.selectOne("marketMapper.selectDetailReview", reviewNo);
+	public ArrayList<HashMap<String, Object>> selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectDetailReview", reviewNo);
 	}
+	public String selectIngreImg(SqlSessionTemplate sqlSession, int ingredientNo, int i) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("ingredientNo", ingredientNo);
+		map.put("5", i);
+		
+		return sqlSession.selectOne("marketMapper.selectIngreImg", map);
+	}
+
+	public ArrayList<Product> selectLikeOrderBy(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectLikeOrderBy");
+	}
+
+	public int selectViewFoodCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("marketMapper.selectViewFoodCount");
+	}
+
+	public ArrayList<HashMap<String, Object>> selectLikeOrderByFood(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectLikeOrderByFood");
+	}
+
+	public Product selectPfood(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectPfood", productNo);
+	}
+
+	public ArrayList<Product> selectFoodHotDeal(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectFoodHotDeal");
+	}
+
+	public int selectViewIngreCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("marketMapper.selectViewIngreCount");
+	}
+
+	public Product selectPIngre(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("marketMapper.selectPIngre", productNo);
+	}
+
+	public ArrayList<Product> selectIngreHotDeal(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectIngreHotDeal");
+	}
+
+	public ArrayList<HashMap<String, Object>> selectLikeOrderByIngre(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectLikeOrderByIngre");
+	}
+
 
 	public ArrayList<Orders> orderList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
 		return (ArrayList)sqlSession.selectList("marketMapper.orderList", map);

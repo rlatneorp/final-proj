@@ -170,54 +170,94 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="330">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										등록한 배송지가 없습니다.
+										후기가 없습니다.
 									</td>
 								</tr>
 							</c:if>
 							<c:forEach items="${ list }" var="r">
-								<tr onclick="location.href='${contextPath}/myPage_editReview.me?reviewNo=' + '${ r.REVIEW_NO }'">
-									<td>${ r.REVIEW_NO }</td>
-									<c:if test="${ r.ORDER_NO == 0 }">
+								<c:if test="${ r.ORDER_NO == 0 }">
+									<tr onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '&rNo=' + '${ r.PRODUCT_NO }' + '&page=' + '${ pi.currentPage }'">
+										<td>${ r.REVIEW_NO }</td>
 										<td>레시피</td>
 										<td>${ r.RECIPE_NAME }</td>
-									</c:if>
-									<c:if test="${ r.PRODUCT_TYPE == 1 and r.FOOD_TYPE == 1 }">
-										<td>식품 - 식재료</td>
-										<td>${ r.FOOD_NAME }</td>
-									</c:if>
-									<c:if test="${ r.PRODUCT_TYPE == 1 and r.FOOD_TYPE == 2 }">
-										<td>${ r.FOOD_NAME }</td>
-										<td>가지볶음</td>
-									</c:if>
-									<c:if test="${ r.PRODUCT_TYPE == 2 }">
+										<td>${ fn:split(r.REVIEW_DATE, ' ')[0] }</td>
+										<c:if test="${ r.REVIEW_SCORE == 5 }">
+											<td class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 4 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 3 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 2 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 1 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+									</tr>
+								</c:if>
+								<c:if test="${ r.ORDER_NO != 0 and r.PRODUCT_TYPE == 2 }">
+									<tr onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ r.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'">
+										<td>${ r.REVIEW_NO }</td>
 										<td>식단</td>
 										<td>${ r.MENU_NAME }</td>
-									</c:if>
-									<c:if test="${ r.PRODUCT_TYPE == 3 }">
-										<td>식재료</td>
-										<td>${ r.INGREDIENT_NAME }</td>
-									</c:if>
-									<c:if test="${ r.PRODUCT_TYPE == 4 }">
-										<td>상품</td>
-										<td>${ r.TOOL_NAME }</td>
-									</c:if>
-									<td>${ fn:split(r.REVIEW_DATE, ' ')[0] }</td>
-									<c:if test="${ r.REVIEW_SCORE == 5 }">
-										<td class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td>
-									</c:if>
-									<c:if test="${ r.REVIEW_SCORE == 4 }">
-										<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></td>
-									</c:if>
-									<c:if test="${ r.REVIEW_SCORE == 3 }">
-										<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
-									</c:if>
-									<c:if test="${ r.REVIEW_SCORE == 2 }">
-										<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
-									</c:if>
-									<c:if test="${ r.REVIEW_SCORE == 1 }">
-										<td><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
-									</c:if>
-								</tr>
+										<td>${ fn:split(r.REVIEW_DATE, ' ')[0] }</td>
+										<c:if test="${ r.REVIEW_SCORE == 5 }">
+											<td class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 4 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 3 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 2 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 1 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+									</tr>
+								</c:if>
+								<c:if test="${ r.ORDER_NO != 0 and r.PRODUCT_TYPE != 2 }">
+									<tr onclick="location.href='${contextPath}/editReview.ma?reviewNo=' + '${ r.REVIEW_NO }'">
+										<td>${ r.REVIEW_NO }</td>
+										<c:if test="${ r.PRODUCT_TYPE == 1 and r.FOOD_TYPE == 1 }">
+											<td>식품 - 식재료</td>
+											<td>${ r.FOOD_NAME }</td>
+										</c:if>
+										<c:if test="${ r.PRODUCT_TYPE == 1 and r.FOOD_TYPE == 2 }">
+											<td>${ r.FOOD_NAME }</td>
+											<td>가지볶음</td>
+										</c:if>
+										<c:if test="${ r.PRODUCT_TYPE == 3 }">
+											<td>식재료</td>
+											<td>${ r.INGREDIENT_NAME }</td>
+										</c:if>
+										<c:if test="${ r.PRODUCT_TYPE == 4 }">
+											<td>상품</td>
+											<td>${ r.TOOL_NAME }</td>
+										</c:if>
+										<td>${ fn:split(r.REVIEW_DATE, ' ')[0] }</td>
+										<c:if test="${ r.REVIEW_SCORE == 5 }">
+											<td class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 4 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 3 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 2 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+										<c:if test="${ r.REVIEW_SCORE == 1 }">
+											<td><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
+										</c:if>
+									</tr>
+								</c:if>
 							</c:forEach>
 						</tbody>
 					</table>

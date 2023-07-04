@@ -50,8 +50,6 @@
 	   			</c:forEach>
 	      		<li class="page-item">
 	       			<c:url var="goNext" value="${ loc }">
-<%-- 	       				<c:if test="${ pi.currentPage+1 gt pi.endPage }"> --%>
-<%-- 	       					<c:param name="page" value="${ pi.endPage }"></c:param> --%>
 	       				<c:if test="${ pi.currentPage+1 gt pi.maxPage }">
 	       					<c:param name="page" value="${ pi.maxPage }"></c:param>
 	        				<c:param name="pageCount" value="${ab.pageCount}"></c:param>
@@ -60,8 +58,6 @@
 	        				<c:param name="kind" value="${ab.kind}"></c:param>
 	        				<c:param name="type" value="${ab.type}"></c:param>
 	       				</c:if>
-<%-- 	       				<c:if test="${ pi.currentPage+1 le pi.endPage }"> --%>
-<%-- 	       					<c:param name="page" value="${ pi.currentPage+1 }"></c:param> --%>
 	       				<c:if test="${ pi.currentPage+1 le pi.maxPage }">
 	       					<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
 	        				<c:param name="pageCount" value="${ab.pageCount}"></c:param>

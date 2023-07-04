@@ -107,7 +107,7 @@ html{
 	margin: 8px 20px;
 }
 
-#buybtn {
+#buybtn, #buybtn2{
 	width: 100%;
 	height: 40px;
 	margin-top: 10px;
@@ -118,15 +118,16 @@ html{
 	border-color: white;
 }
 
-#cartbtn {
+#cartbtn, #bookmark {
 	width: 100%;
-	height: 38px;
+	height: 40px;
 	margin-top: 10px;
 	border-radius: 5px;
 	background-color: white;
 	border: 1px solid #4485d7;
 	color: #4485d7;
 	font-weight: 400;
+	
 }
 
 select {
@@ -340,14 +341,15 @@ p b {
 	.footer> .button{font-weight: bold;}
 	
 	#modalNick{display: inline-block;}
-	#modalInfo{height: 100px;}
+	#modalInfo{}
 
 .modalMid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 15px; margin: 5px 0px; font-weight: bold;}
 .modalMid::before{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0spx;}
 .modalMid::after{content: ""; flex-grow: 1; margin: 10px 10px 10px 10px; background: rgba(0,0,0,1); height: 1px; font-size: 0px; line-height: 0px;}
 
 .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
-.moCon{height: 75px; border-radius: 10px;}
+.moCon{height: 150px; border-radius: 10px;}
+.moCon:hover{cursor: pointer;}
 
 /* 	페이지 */
 	.page_wrap {
@@ -411,7 +413,7 @@ p b {
 		</div>
 		<div class="right">
 			<!-- like 유무 가리는 용도 -->
-			<input type="hidden" id="likeYn" value="${like }">
+<%-- 			<input type="hidden" id="likeYn" value="${ like }"> --%>
 			<!-- 상품 정보 -->
 			<div class="top">
 				<div class="productNameBox" style="text-align: center">
@@ -423,17 +425,21 @@ p b {
 						<fmt:formatNumber value="${menu.productPrice}"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<c:if test="${like ne null}">
-						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
-					</c:if>
-					<c:if test="${like eq null}">
-						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+					<c:if test="${ loginUser != null }">
+						<c:if test="${like ne null}">
+							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+						</c:if>
+						<c:if test="${like eq null}">
+							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+						</c:if>
+<!-- 						<h4 id="bookmark" class="bookmark" style="display: inline-block; font-size: 35px; color: #4485d7; "><i class="bi bi-bookmark"></i></h4> -->
+						
 					</c:if>
 				</div>
 				<div>
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
-                            <dt style="font-size: 20px; padding: 5px;">
+                            <dt style="font-size: 20px; padding: 5px; margin-top: 20px;">
                             	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
                             	&nbsp;배송 | 3,000원 
                             </dt>
@@ -470,8 +476,17 @@ p b {
 						</div>
 					</div>
 					<input type="hidden" id="foodProductNo" name="foodProductNo" value="${ menu.foodProductNo }">
-					<button type="button" id="buybtn" style="display: inline-block; width: 60%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> <!-- 결제 창으로 -->
-					<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
+					<c:if test="${ loginUser == null }"><button type="button" id="buybtn2" style="display: inline-block; width: 100%;" onclick="location.href='${contextPath}/login.en'">구매하려면 먼저 로그인 해주세요</button></c:if>
+					<c:if test="${ loginUser != null }">
+						<button type="button" id="buybtn" style="display: inline-block; width: 44%;" data-bs-toggle="modal" data-bs-target="#buyModal">구매하기</button> <!-- 결제 창으로 -->
+						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 44%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button>
+						<c:if test="${ bookmark != 0 }">
+							<button type="button" id="bookmark" style="display: inline-block; width: 10%;" value="bookmark"><i class="bi bi-bookmark-fill"></i></button>
+						</c:if>
+						<c:if test="${ bookmark == 0 }">
+							<button type="button" id="bookmark" style="display: inline-block; width: 10%;" value="noBookmark"><i class="bi bi-bookmark"></i></button>
+						</c:if>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -1048,21 +1063,28 @@ p b {
 			<div class="modal-body">
 				<div id="modalNick">
 					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
-					<p style="font-weight: bold;">닉네임</p>
+					<p style="font-weight: bold;">${menu.name}</p>
 				</div>
 				<div id="modalInfo">
-				영양사의 정보를 알려주는 창입니다.
+					<p style="font-weight: bold; font-size: 20px;">영양사 소개</p>
+					${menu.title}
+					<br><br>
+					<p style="font-weight: bold; font-size: 20px;">자격증</p>
+					${menu.career }
+					<br><br>
 				</div>
 				
 				<p class="modalMid">등록한 식단표</p>
 				<div class="album p-3 bg-white">
 					<div class="container px-3">
 						<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-4">
-							<c:forEach begin="1" end="4">
+							<c:forEach items="${pList}" var="p">
 								<div class="col">
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray">
-											<h6 style="font-weight: bold;"><a href="menuDetail.mn" style="text-decoration: none; color: black;">식단 명 / 카테고리</a></h6>
+											<h6 style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</a></h6>
+											<img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" width="150px" height="100px" style="border-radius: 10px;">
+											<input type="hidden" value="${p.productNo}">
 										</div>
 									</div>
 								</div>
@@ -1217,6 +1239,14 @@ p b {
 	            }
 			})
 	})
+	
+	const moCons = document.getElementsByClassName('moCon');
+	for(const moCon of moCons){
+		moCon.addEventListener("click", function(){
+			const mNo = this.childNodes[5].value;
+			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo; 
+		})
+	}
 
 	const like = document.querySelector(".like");
 	
@@ -1294,6 +1324,84 @@ p b {
 	    	})
 	    }
 	});
+	
+	const bookmark = document.querySelector('#bookmark');
+	console.log(bookmark.value);
+	bookmark.addEventListener('click', function(){
+		if(bookmark.value == 'noBookmark'){
+			$.ajax({
+				url: "insertBookmark.mn",
+				data:{
+	        		usersNo:usersNo,
+	        		divisionNo:productNo
+	        	},
+	        	success: data=> {
+	        		if(data == 'success') {
+	        			bookmark.innerHTML = '<i class="bi bi-bookmark-fill"></i>';
+	        			bookmark.value = 'bookmark';
+	        			swal({
+							 text: "해당 상품의 스크랩이 완료되었습니다.",
+							 icon: "success",
+							 button: "확인",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 3000);
+	        		} else { //실패 시 
+	        			swal({
+							 text: "해당 상품의 스크랩에 실패했습니다.",
+							 icon: "error",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 2000);
+	        		}
+	        	},
+	        	error:data=>{
+	    			swal({
+						 text: "해당 상품의 스크랩에 실패했습니다.",
+						 icon: "error",
+						});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 2000);
+	        	}
+	        })
+		} else {
+			$.ajax({
+	    		url:"deleteBookmark.mn",
+	    		data:{
+	    			usersNo:usersNo,
+	        		divisionNo:productNo
+	    		},
+	    		success: data => {
+	    			console.log(data);
+	    			if(data == 'success') {
+	    				bookmark.innerHTML = '<i class="bi bi-bookmark"></i>';
+	    				bookmark.value = 'noBookmark';
+	        			swal({
+							 text: "해당 상품의 스크랩이 해제되었습니다.",
+							 icon: "success",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 2000);
+	        		} else { //실패 시 
+	        			swal({
+							 text: "해당 상품의 스크랩 해제에 실패했습니다.",
+							 icon: "error",
+							});
+		        		setTimeout(function() {
+		        			swal.close(); 
+		        		}, 2000);
+	        		}
+	    		},
+	    		error: data=>{
+	    		}
+	    	})
+		}
+	})
+	
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {
 //         var productNo = $("input[name='productNo']").val();

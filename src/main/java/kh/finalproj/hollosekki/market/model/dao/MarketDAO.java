@@ -384,6 +384,40 @@ public class MarketDAO {
 	public ArrayList<QA> qnalist(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return (ArrayList)sqlSession.selectList("marketMapper.qnalist", map);
 	}
+	//상품 메인 창에서 카테고리 별 조회 
+	public ArrayList<Product> selectViewWhole(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		System.out.println("pi.boardLimit" + pi.getBoardLimit());
+		System.out.println("pi.offset" + offset);
+		
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewWhole",null, rowBounds);
+	}
+
+	public ArrayList<Product> selectViewFood(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewFood");
+	}
+
+	public ArrayList<Menu> selectViewMenu(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewMenu");
+	}
+
+	public ArrayList<Ingredient> selectViewIngredient(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewIngredient");
+	}
+
+	public ArrayList<Tool> selectViewTool(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewTool");
+	}
+
+	public int selectViewWholeCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("marketMapper.selectViewWholeCount");
+	}
+
+	public ArrayList<Product> selectWholeHotDeal(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectWholeHotDeal");
+	}
 
 	public Review selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
 		return sqlSession.selectOne("marketMapper.selectDetailReview", reviewNo);

@@ -72,10 +72,45 @@
 	
 /* 	입력 박스 */
 	.inputBox{width:730px; height: 50px; margin: auto; position: relative;}
+	.qnaInputBox{width:900px; height: 50px; margin: auto; position: relative;}
 	.profile{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
 	.profileImg{width:35px; height: 35px; border-radius: 50%;}
 	.inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px; position: absolute; left: 40px;}
+	.qnaInputBox .inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px; position: absolute; left: 210px;}
 	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; position: absolute; right: 0;}
+	
+	fieldset{
+		position: absolute;
+		left: 40px;
+		top: -5px;
+	}
+	
+	.qnaInputBox fieldset {
+		display: inline-block;
+		direction: rtl;
+		border: 0;
+	}
+	
+	.qnaInputBox input[type=radio]{
+		display: none;
+	}
+	.qnaInputBox fieldset label {
+		
+		font-size: 1.8em;
+		color: lightgray;
+	}
+	
+	.qnaInputBox fieldset label:hover{
+		color: rgb(68, 133, 215);
+	}
+	
+	.qnaInputBox fieldset label:hover ~ label{
+		color: rgb(68, 133, 215);
+	}
+	
+	.qnaInputBox fieldset input[type=radio]:checked ~ label{
+		color: rgb(68, 133, 215);
+	}
 	
 /* 	후기 */
 	.star{width: 110px;}
@@ -181,7 +216,7 @@
 		<div style="width: 50px; height: 500px; display: inline-block; position: absolute; left: 500px;"></div>
 		<div id="imformation">
 			<div id="title">
-				<h2 style="display: inline-block; margin-right: 250px;">${recipe.recipeName }</h2>
+				<h2 style="display: inline-block; width: 580px;">${recipe.recipeName }</h2>
 				<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
 			</div>
 			<div id="grade">
@@ -376,7 +411,7 @@
 			<c:forEach items="${reList }" var="re">
 				<tr class="lineAll">
 					<td class="line">${re.reviewNo }</td>
-					<td class="line">5</td>
+					<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
 					<td class="line">${re.reviewContent}</td>
 					<td class="line">${re.reviewWriter}</td>
 					<td class="line">${re.reviewDate}</td>
@@ -422,12 +457,25 @@
 
 <br>
 <c:if test="${loginUser != null }">
-	<div class="inputBox">
+	<div class="qnaInputBox">
 		<div class="profile d-inline-block">
 			<img src="resources/images/mudo.png" class="profileImg">
 		</div>
+		<fieldset>
+			<input type="radio" name="reviewScore" value="5" id="reviewScore5">
+				<label for="reviewScore5">★</label>
+			<input type="radio" name="reviewScore" value="4" id="reviewScore4">
+				<label for="reviewScore4">★</label>
+			<input type="radio" name="reviewScore" value="3" id="reviewScore3">
+				<label for="reviewScore3">★</label>
+			<input type="radio" name="reviewScore" value="2" id="reviewScore2">
+				<label for="reviewScore2">★</label>
+			<input type="radio" name="reviewScore" value="1" id="reviewScore1">
+				<label for="reviewScore1">★</label>
+			<input type="hidden" name="reviewSc" id="reviewSco">
+		</fieldset>
 		<input type="text" id="reviewWrite" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeReviewInput">&nbsp;<button onclick="reviewEnter()" id="reviewIn" class="enter">등록</button>
-		<input type="hidden" id="reviewId" value="${loginUser.usersId }">
+		<input type="hidden" id="reviewId" value="${loginUser.nickName }">
 	</div>
 </c:if>
 <br><br>
@@ -481,55 +529,72 @@ const recipeWriter = document.getElementById('recipeWriter');
 const recipePage = document.getElementById('recipePage');
 
 const reviewIn = document.getElementById('reviewIn');
-function reviewEnter(){
-	$.ajax({
-		url:"reviewWrite.rc",
-		data:{content:reviewWrite.value, id:id.value, foodNo: foodNo.value},
-		success:data=>{
-			console.log(data);
-			
-			const reviewBody = document.getElementById('reviewBody');
-			reviewBody.innerHTML ="";
-			
-			for(const re of data){
-				const tr = document.createElement('tr');
-				tr.classList.add('lineAll');
-				
-				const no = document.createElement('td');
-				no.classList.add('line');
-				no.innerText = re.reviewNo;
-				
-				const star = document.createElement('td');
-				star.classList.add('line');
-				
-				const content = document.createElement('td');
-				content.classList.add('line');
-				content.innerText = re.reviewContent;
-				
-				const writer = document.createElement('td');
-				writer.classList.add('line');
-				writer.innerText=re.reviewWriter;
-				
-				const date = document.createElement('td');
-				date.classList.add('line');
-				date.innerText=re.reviewDate;
-				
-				tr.append(no);
-				tr.append(star);
-				tr.append(content);
-				tr.append(writer);
-				tr.append(date);
-				
-				reviewBody.append(tr);
-			}
-			
-			reviewWrite.value = '';
-			location.href="${contextPath}/recipeDetail.rc?rId="+recipeWriter.value + "&rNo="+foodNo.value+"&page="+recipePage.value;
-		},
-		error:data=>{
-			console.log(data);
-		}
+const reviewScore = document.getElementsByName('reviewScore');
+
+const reviewSco = document.getElementById('reviewSco');
+for(const resc of reviewScore){
+	resc.addEventListener('click', function(){
+		reviewSco.value = this.value;
+		console.log(reviewSco.value);
 	})
+}
+
+
+function reviewEnter(){
+	if(reviewSco.value == ""){
+		alert('별점을 체크해주세요.');
+	} else if(reviewWrite.value == ''){
+		alert('내용을 입력해주세요.');
+	} else{
+		$.ajax({
+			url:"reviewWrite.rc",
+			data:{content:reviewWrite.value, id:id.value, foodNo: foodNo.value, score:reviewSco.value},
+			success:data=>{
+				console.log(data);
+				
+				const reviewBody = document.getElementById('reviewBody');
+				reviewBody.innerHTML ="";
+				
+				for(const re of data){
+					const tr = document.createElement('tr');
+					tr.classList.add('lineAll');
+					
+					const no = document.createElement('td');
+					no.classList.add('line');
+					no.innerText = re.reviewNo;
+					
+					const star = document.createElement('td');
+					star.classList.add('line');
+					
+					const content = document.createElement('td');
+					content.classList.add('line');
+					content.innerText = re.reviewContent;
+					
+					const writer = document.createElement('td');
+					writer.classList.add('line');
+					writer.innerText=re.reviewWriter;
+					
+					const date = document.createElement('td');
+					date.classList.add('line');
+					date.innerText=re.reviewDate;
+					
+					tr.append(no);
+					tr.append(star);
+					tr.append(content);
+					tr.append(writer);
+					tr.append(date);
+					
+					reviewBody.append(tr);
+				}
+				
+				reviewWrite.value = '';
+				location.href="${contextPath}/recipeDetail.rc?rId="+recipeWriter.value + "&rNo="+foodNo.value+"&page="+recipePage.value;
+			},
+			error:data=>{
+				console.log(data);
+			}
+		})
+	}
 }
 
 

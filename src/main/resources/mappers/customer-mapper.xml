@@ -58,6 +58,8 @@
 		<result column="ANSWER_DATE" property="answerDate"/>
 		<result column="ANSWER_CONTENT" property="answerContent"/>
 		<result column="QNA_STATUS" property="qnaStatus"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
 	</resultMap>
 	
 	<select id="getCategoryFListCount" resultType="_int">
@@ -156,6 +158,35 @@
 		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type)
 	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, #{qnaType})
 	</insert>
+	
+	<insert id="qnaProduct">
+		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type, order_no)
+	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, 1, #{orderNo})
+	</insert>
+	
+	<select id="selectQnaProduct" resultMap="OrdersResultSet">
+		select *
+		from orders
+		where users_no = #{usersNo} 
+	</select>
+	
+	<resultMap type="Orders" id="OrdersResultSet">
+      <id column="ORDER_NO" property="orderNo"/>
+      <result column="PRODUCT_NO" property="productNo"/>
+      <result column="USERS_NO" property="usersNo"/>
+      <result column="PRODUCT_TYPE" property="productType"/>
+      <result column="ORDER_COUNT" property="orderCount"/>
+      <result column="ORDER_TOTAL_PRICE" property="totalPrice"/>
+      <result column="ORDER_DATE" property="orderDate"/>
+      <result column="ORDER_STATUS" property="orderStatus"/>
+      <result column="ORDER_ADDRESS" property="orderAddress"/>
+      <result column="ORDER_DELIVERY_DATE" property="orderDeliveryDate"/>
+      <result column="ORDER_STOCK" property="orderStock"/>
+      <result column="ORDER_DELIVERY_COMMENT" property="orderDeliveryComment"/>
+      <result column="ORDER_INFO" property="orderInfo"/>
+      <result column="SHIP_PRICE" property="shipPrice"/>
+      <result column="OPTIONS" property="options"/>
+   </resultMap>
 	
 
 </mapper>

@@ -77,6 +77,22 @@
 		where users_no=#{usersNo} and product_type=2
 	</select>
 	
+	<select id="selectBookmark" resultType="_int">
+		select count(*)
+		from bookmark
+		where users_no = #{usersNo} and division_no = #{productNo} and number_type = 2
+	</select>
+	
+	<insert id="insertBookmark">
+		insert into bookmark
+		values(SEQ_BOOKMARK_NO.nextval, #{usersNo}, #{divisionNo}, 2)
+	</insert>
+	
+	<delete id="deleteBookmark">
+		delete from bookmark
+		where users_no = #{usersNo} and division_no = #{divisionNo} and number_type = 2
+	</delete>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>

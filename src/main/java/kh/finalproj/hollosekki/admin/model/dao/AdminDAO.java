@@ -31,9 +31,6 @@ import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 @Repository
 public class AdminDAO {
 
-	public ArrayList<AdminMain> adminMainWeek(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("adminMapper.adminMainWeek");
-	}
 	
 //	Common-공용
 	public int updateStatus(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
@@ -92,6 +89,12 @@ public class AdminDAO {
 	
 	public int deleteImage(SqlSessionTemplate sqlSession, Image img) {
 		return sqlSession.delete("adminMapper.deleteImage", img);
+	}
+	
+	
+//	AdminMain-관리자메인
+	public ArrayList<AdminMain> selectAdminMainList(SqlSessionTemplate sqlSession, AdminBasic ab) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectAdminMainList", ab);
 	}
 	
 	
@@ -178,9 +181,13 @@ public class AdminDAO {
 	}
 
 	public ArrayList<Menu> selectMenuList(SqlSessionTemplate sqlSession, PageInfo pi, AdminBasic ab) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("adminMapper.selectMenuList", ab, rowBounds);
+		if(pi != null) {
+			int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+			RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+			return (ArrayList)sqlSession.selectList("adminMapper.selectMenuList", ab, rowBounds);
+		}else {
+			return (ArrayList)sqlSession.selectList("adminMapper.selectMenuList", ab);
+		}
 	}
 
 	public Menu selectMenu(SqlSessionTemplate sqlSession, int pNo) {
@@ -434,6 +441,8 @@ public class AdminDAO {
 	public int updateQNA(SqlSessionTemplate sqlSession, QNA qna) {
 		return sqlSession.update("adminMapper.updateQNA", qna);
 	}
+
+
 
 
 

@@ -346,6 +346,34 @@ public class MarketService {
 	public ArrayList<QA> qnalist(HashMap<String, Object> map) {
 		return mkDAO.qnalist(sqlSession, map);
 	}
+	//상품 메인 창에서 카테고리 별 조회 
+	public ArrayList<Product> selectViewWhole(PageInfo pi) {
+		return mkDAO.selectViewWhole(sqlSession, pi);
+	}
+
+	public ArrayList<Product> selectViewFood() {
+		return mkDAO.selectViewFood(sqlSession);
+	}
+
+	public ArrayList<Menu> selectViewMenu() {
+		return mkDAO.selectViewMenu(sqlSession);
+	}
+
+	public ArrayList<Ingredient> selectViewIngredient() {
+		return mkDAO.selectViewIngredient(sqlSession);
+	}
+
+	public ArrayList<Tool> selectViewTool() {
+		return mkDAO.selectViewTool(sqlSession);
+	}
+
+	public int selectViewWholeCount() {
+		return mkDAO.selectViewWholeCount(sqlSession);
+	}
+
+	public ArrayList<Product> selectWholeHotDeal() {
+		return mkDAO.selectWholeHotDeal(sqlSession);
+	}
 
 	public Review selectDetailReview(int reviewNo) {
 		return mkDAO.selectDetailReview(sqlSession, reviewNo);

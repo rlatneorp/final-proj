@@ -12,6 +12,7 @@
 		<input type="hidden" name="page" value="${ab.page}">
 		<input type="hidden" name="pageCount" value="${ab.pageCount}">
 		<input type="hidden" name="searchStart" value="Y"> 
+		<input type="hidden" name="sidebar" value="${ab.sidebar}">
 		<div class="text-center searchBox">
 			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
 				<option value="name" <c:if test="${ab.searchType eq 'name'}">selected</c:if>>이름</option>

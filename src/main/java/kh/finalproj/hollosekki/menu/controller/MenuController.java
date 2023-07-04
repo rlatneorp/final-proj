@@ -89,10 +89,18 @@ public class MenuController {
 		
 		int usersNo = mService.selectUsersNo(mNo);
 		int productNo = mNo;
-		int result = mkService.selectLike(loginUser.getUsersNo(), productNo);
-	      if(result >= 1) {
-	    	  model.addAttribute("like", result);
-	      }
+		
+		if(loginUser != null) {
+			int result = mkService.selectLike(loginUser.getUsersNo(), productNo);
+			int result2 = mService.selectBookmark(loginUser.getUsersNo(), productNo);
+		      if(result >= 1) {
+		    	  model.addAttribute("like", result);
+		      }
+		      if(result >= 1) {
+		    	  model.addAttribute("bookmark", result2);
+		      }
+		}
+		
 		
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);
@@ -122,5 +130,33 @@ public class MenuController {
 		ArrayList<Menu> mList = mService.menuCategory(cate);
 		
 		return mList;
+	}
+	
+	@RequestMapping("insertBookmark.mn")
+	@ResponseBody
+	public String insertBookmark(int usersNo, int divisionNo) {
+		System.out.println(usersNo);
+		System.out.println(divisionNo);
+		int result = mService.insertBookmark(usersNo, divisionNo);
+		System.out.println(result);
+		if(result > 0) {
+			   return "success";
+		   } else {
+			   return "fail";
+		   }
+	}
+	
+	@RequestMapping("deleteBookmark.mn")
+	@ResponseBody
+	public String deleteBookmark(int usersNo, int divisionNo) {
+		System.out.println("usersNo : "+usersNo);
+		System.out.println("division : "+divisionNo);
+		int result = mService.deleteBookmark(usersNo, divisionNo);
+		
+		if(result > 0) {
+			   return "success";
+		   } else {
+			   return "fail";
+		   }
 	}
 }

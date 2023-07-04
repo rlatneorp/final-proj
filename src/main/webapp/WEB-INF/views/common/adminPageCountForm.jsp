@@ -20,6 +20,7 @@
 				<input type="hidden" name="type" value="${ab.type}">
 				<input type="hidden" name="kind" value="${ab.kind}">
 				<input type="hidden" name="pageCountStart" value="Y">
+				<input type="hidden" name="sidebar" value="${ab.sidebar}">
 				<select name="pageCount" style="font-size: 14px; height:25px">
 					<option value="10" <c:if test="${pageCount eq 10}">selected</c:if>>10개씩 보기</option>
 					<option value="20" <c:if test="${pageCount eq 20}">selected</c:if>>20개씩 보기</option>

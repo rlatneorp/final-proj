@@ -1,4 +1,4 @@
-package kh.finalproj.hollosekki.common;
+package kh.finalproj.hollosekki.admin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -78,6 +78,7 @@ public class AdminRequestAspect {
 			session.setAttribute("pageCount", Integer.parseInt(request.getParameter("pageCount")));
 		}
 	
+		
 		ab.setSearchType(request.getParameter("searchType"));
 		ab.setSearchText(request.getParameter("searchText"));
 		if(request.getParameter("type") != null && request.getParameter("type").trim() != "") {

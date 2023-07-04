@@ -32,4 +32,10 @@ public interface MenuService {
 
 	ArrayList<Product> healtherInfo(int usersNo);
 
+	int selectBookmark(int usersNo, int productNo);
+
+	int insertBookmark(int usersNo, int divisionNo);
+
+	int deleteBookmark(int usersNo, int divisionNo);
+
 }

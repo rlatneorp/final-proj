@@ -27,6 +27,7 @@ import com.google.gson.JsonIOException;
 import kh.finalproj.hollosekki.admin.exception.AdminException;
 import kh.finalproj.hollosekki.admin.model.service.AdminService;
 import kh.finalproj.hollosekki.admin.model.vo.AdminBasic;
+import kh.finalproj.hollosekki.admin.model.vo.AdminMain;
 import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
@@ -52,11 +53,7 @@ public class AdminController {
 	@Autowired
 	private AdminService aService;
 	
-	@GetMapping("adminMain.ad")
-	public String adminMain(Model model) {
-//		ArrayList<AdminMain> amList = aService.adminMainWeek();
-		return "adminMain";
-	}
+
 	
 	@PostMapping("adminDeleteSelects.ad")
 	public String adminDeleteSelects(@RequestParam("selectDelete") ArrayList<Integer> selDeletes,
@@ -254,6 +251,82 @@ public class AdminController {
 			return "redirect:"+url;
 		}else {
 			throw new AdminException("삭제 실패 (type : "+type);
+		}
+	}
+	
+	
+//	main-메인화면
+	@GetMapping("adminMain.ad")
+	public String adminMain(Model model) {
+		
+//		매출정보
+		AdminBasic ab = new AdminBasic();
+		ab.setType(1);
+		ab.setKind(1);
+//		int totalSalesCount = aService.getRecipeCount(ab);
+		ArrayList<AdminMain> salesList = aService.selectAdminMainList(ab);
+		ArrayList<Sales> sMonthList = aService.selectSalesList(null, ab);
+		
+		int minus = 0;
+		for(int i = 0; i < salesList.size(); i++) {
+			AdminMain daySales = salesList.get(i);
+			for(int j = 0; j < sMonthList.size(); j++) {
+				if(i > 0 && !daySales.getDay().substring(0,5).equals(salesList.get(i-1).getDay().substring(0,5))) {
+					minus = 0;
+				}
+				if(daySales.getDay().substring(0,5).equals(sMonthList.get(j).getDateKind())) {
+					daySales.setOrderMonthSales(sMonthList.get(j).getSales() - minus);
+					minus += daySales.getOrderDaySales(); 
+					break;
+				}
+			}
+		}
+		
+//		레시피정보
+		ab.setType(2);
+		int totalRecipeCount = aService.getRecipeCount(ab);
+		ArrayList<AdminMain> recipeList = aService.selectAdminMainList(ab);
+		minus = 0;
+		for(AdminMain am : recipeList) {
+			am.setRecipeTotalCount(totalRecipeCount-minus);
+			minus += am.getRecipeDayCount();
+		}
+		
+//		회원정보
+		ab.setType(3);
+		int totalUsersCount = aService.getUsersCount(ab);
+		ArrayList<AdminMain> usersList = aService.selectAdminMainList(ab);
+		minus = 0;
+		for(AdminMain am : usersList) {
+			am.setEnrollTotalCount(totalUsersCount-minus);
+			minus += am.getEnrollDayCount();
+		}
+		
+//		(식단)구독정보
+		ab = new AdminBasic();
+		ab.setType(2);
+		int totalMenuCount = aService.getOrdersCount(ab);
+		ab.setType(4);
+		ArrayList<AdminMain> menuList = aService.selectAdminMainList(ab);
+		minus = 0;
+		for(AdminMain am : menuList) {
+			am.setMenuTotalCount(totalMenuCount-minus);
+			minus += am.getMenuDayCount();
+		}
+		
+		System.out.println(salesList);
+		System.out.println(recipeList);
+		System.out.println(usersList);
+		System.out.println(menuList);
+		
+		if(salesList != null && recipeList != null && usersList != null && menuList != null) {
+			model.addAttribute("salesList", salesList);
+			model.addAttribute("recipeList", recipeList);
+			model.addAttribute("usersList", usersList);
+			model.addAttribute("menuList", menuList);
+			return "adminMain";
+		}else {
+			throw new AdminException("관리자 메인화면 조회에 실패하였습니다.");
 		}
 	}
 	

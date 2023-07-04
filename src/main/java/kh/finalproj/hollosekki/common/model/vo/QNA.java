@@ -5,6 +5,7 @@ import java.util.Date;
 public class QNA {
 	private int qnaNo;
 	private int usersNo;
+	private String usersId;
 	private Date qnaDate;
 	private String qnaTitle;
 	private String qnaContent;
@@ -18,11 +19,11 @@ public class QNA {
 		super();
 	}
 
-	public QNA(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, Integer adminNo,
-			Date answerDate, String answerContent, String qnaStatus, int qnaType) {
-		super();
+	public QNA(int qnaNo, int usersNo, String usersId, Date qnaDate, String qnaTitle, String qnaContent,
+			Integer adminNo, Date answerDate, String answerContent, String qnaStatus, int qnaType) {
 		this.qnaNo = qnaNo;
 		this.usersNo = usersNo;
+		this.usersId = usersId;
 		this.qnaDate = qnaDate;
 		this.qnaTitle = qnaTitle;
 		this.qnaContent = qnaContent;
@@ -47,6 +48,14 @@ public class QNA {
 
 	public void setUsersNo(int usersNo) {
 		this.usersNo = usersNo;
+	}
+
+	public String getUsersId() {
+		return usersId;
+	}
+
+	public void setUsersId(String usersId) {
+		this.usersId = usersId;
 	}
 
 	public Date getQnaDate() {
@@ -115,9 +124,10 @@ public class QNA {
 
 	@Override
 	public String toString() {
-		return "QNA [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
-				+ ", qnaContent=" + qnaContent + ", adminNo=" + adminNo + ", answerDate=" + answerDate
-				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType + "]";
+		return "QNA [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", usersId=" + usersId + ", qnaDate=" + qnaDate
+				+ ", qnaTitle=" + qnaTitle + ", qnaContent=" + qnaContent + ", adminNo=" + adminNo + ", answerDate="
+				+ answerDate + ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType
+				+ "]";
 	}
 	
 }

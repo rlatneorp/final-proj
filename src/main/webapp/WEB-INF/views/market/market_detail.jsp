@@ -953,6 +953,156 @@ p b {
 							<div class="reviewContent" style=" margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
 								${r.reviewContent}  
 							</div>
+							
+	<%-- 						<c:out value="${imgList.imgDivideNo}"></c:out>  --%>
+			
+					
+							<div class="reviewPhoto" style="padding-left:10px">
+								<ul>
+									<c:forEach items="${imglist}" var="img" >
+										<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
+										<c:if test="${ fn:containsIgnoreCase(img.imageRenameName, 'jpg') or fn:containsIgnoreCase(img.imageRenameName, 'png')}">
+											<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
+										</c:if>
+										</c:if>
+									</c:forEach>
+								</ul>
+							</div>
+						</c:if>
+					</div>
+				</c:forEach>
+			</div>
+
+			<div class="moreView">더보기</div>
+				
+				<div class="productBox">
+					<ul	class="productBoxInfo">
+						<li class="productPageInfo">
+							<a class="accordion_i_tit" data-bdid="info">상품정보</a>			
+							<div class="accordion_i_cont" style="display: none;">
+								<div class="accodion_content">
+			                        <dl>
+			                            <dt>제품의 유형</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>생산자 및 소재지</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>제조연월일 및 유통기한</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>포장 단위별 용량(중량), 수량</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>원재료명 및 함량</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>소비자 상담 전화번호</dt>
+			                            <dd>1234-1033</dd>
+			                        </dl>
+			                    </div>
+			                </div>
+						</li>
+						<li class="productPageInfo">
+							<a class="accordion_i_tit2" data-bdid="info">배송/환불/교환</a>
+							<div class="accordion_i_cont2" style="display: none;">
+								<dl>
+		                            <dt><h3 style="margin-left: 30px; margin-top: 20px;">배송안내</h3></dt>
+		                            <dd>
+		                                <div class="admin_msg"><div style="text-align: center;" align="center"><img src="https://ai.esmplus.com/nowhome22/%EC%83%81%ED%92%88%EB%B3%B4%EA%B8%B0/%EB%B0%B0%EC%86%A1%EC%95%88%EB%82%B4_5000.jpg"></div></div>
+		                            </dd>
+		        
+		                            <dt><h3>교환/반품시 주의사항</h3></dt>
+		                            <dd>
+		                                <div class="admin_msg">
+		                                    <p>
+		                                        <strong><span style="font-size: 10pt;">- 판매 업체마다 반품 회수지와 택배사가 다르므로 네이버페이로 결제하셨을 경우 반품접수가 불가합니다. (고객센터로 문의하시기 바랍니다.)</span></strong>
+		                                    </p>
+		                                </div>
+		                            </dd>
+		
+		                            <dt><h3>판매자 정보</h3></dt>
+		                            <dd>
+		                                <table style="width:100%;">
+		                                    <tbody><tr>
+		                                        <th style="width:150px;">상호 / 대표</th>
+		                                        <td>주식회사 ㅎㄹㅅㄲ / 박신우</td>
+		                                        <th style="width:150px;">사업장 소재지</th>
+		                                        <td>서울특별시 중구 남대문로 120 그레이츠 청계(구 대일빌딩) 2F, 3F</td>
+		                                    </tr>
+		                                    <tr>
+		                                        <th style="width:150px;">e-mail</th>
+		                                        <td>hollosekki@google.co.kr</td>
+		                                        <th style="width:150px;">연락처</th>
+		                                        <td>1133-1234</td>
+		                                    </tr>
+		                                    <tr>
+		                                        <th style="width:150px;">통신판매업 신고번호</th>
+		                                        <td>2023-서울중구-11133</td>
+		                                        <th style="width:150px;">사업자번호</th>
+		                                        <td>333-10-02541</td>
+		                                    </tr>
+		                                </tbody></table>
+		                            </dd>
+		        					<br>
+		                            <dt style="background:#E3F6FF; border:1px solid #ddd; padding:9px 12px 10px; border-radius:6px;">본 상품과 컨텐츠는 입점 판매자가 등록한 것으로 (주)홀로세끼는 통신판매중개자로서 거래 당사자가 아니기 때문에 그 내용과 거래에 대한 책임을 일체 지지 않습니다.<br>
+		                                <span style="color:#065E87;">홀로세끼 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
+		                            <dd></dd>
+		                        </dl>
+							</div> 
+						</li>
+					</ul>
+					<li id="page-qna" class="accordion_i_li">
+		                <a class="accordion_i_tit3">문의<span>( ${ qnaCount } )</span></a>
+		                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
+		                    <div id="ajax-goods-goodsqa-list">
+		                    
+		              	<ul class="goods_accordion_qna">
+					              	
+					        <!--  반복 될 부분 -->  
+					        <c:forEach items="${qna}" var="qna">
+					             <li class="accordion_q_li js_data_row" onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
+					                <div class="accordion_q_tit1"> 
+					                   
+					                    <div class="qna">
+					                       <span style="color:#4485d7;">${qna.qnaNo} </span>
+					                       |&nbsp
+					                       <span style="color: #216dcd; font-weight: 400;">
+												   <c:if test="${qna.qnaType eq 1 }">[배송]</c:if>
+							                       <c:if test="${qna.qnaType eq 2 }">[결제]</c:if>
+							                       <c:if test="${qna.qnaType eq 3 }">[회원]</c:if>
+							                       <c:if test="${qna.qnaType eq 4 }">[상품]</c:if>
+							                       <c:if test="${qna.qnaType eq 0 }">[기타]</c:if>
+					                       </span>
+					                        ${qna.qnaTitle}
+					                    </div>
+										<div class="writer" style="display:inline-block; width:100px; margin-left:30px;">${qna.nickName}</div>
+										<div class="rv_cont_date" style="display:inline-block; width:100px; margin-left:30px; ">${qna.qnaDate}</div>
+										<span class="qna_result" style="float: right;">
+											<c:if test="${qna.answerContent eq null}"><span style="color: red;">답변 대기</span></c:if>
+											<c:if test="${qna.answerContent ne null}"><span style="color: green;">답변 완료</span></c:if>
+										</span>
+									</div>
+					                <div class="js_detail accordion_q_cont"></div>
+					            </li>        
+					        </c:forEach>    	
+				            <!-- 여기 까지 반복 -->
+				            
+						</ul>
+						<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
+		<%-- 					<c:if test="${ loginUser != null}"> --%>
+							<c:if test="${ loginUser ne null }">
+							    <div class="review_btn_wr">
+							    <a href="createqna.ma?productNo=${p.productNo}">
+							    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
+							    </div>
+							</c:if>
+	<%-- 				    </c:if> --%>
 						</div>
                      </div>
                   </c:if>

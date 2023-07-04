@@ -84,5 +84,8 @@ public interface RecipeService {
 
 	int myReview(Review my);
 
+	int updateOrder(ArrayList<RecipeOrder> orc);
+
+
 
 }

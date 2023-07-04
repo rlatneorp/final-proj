@@ -212,4 +212,10 @@ public class RecipeServiceImpl implements RecipeService{
 	public int myReview(Review my) {
 		return rDAO.myReivew(sqlSession, my);
 	}
+	
+	@Override
+	public int updateOrder(ArrayList<RecipeOrder> orc) {
+		return rDAO.updateOrder(sqlSession, orc);
+	}
+	
 }

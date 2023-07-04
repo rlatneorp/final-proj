@@ -755,7 +755,9 @@ p b {
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
 			<c:forEach items="${mainImage}" var="main">
-				<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
+				<c:if test="${ fn:containsIgnoreCase(main.imageRenameName, 'jpg') or fn:containsIgnoreCase(main.imageRenameName, 'png')}">
+					<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
+				</c:if>
 			</c:forEach>
 <!-- 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
 		</div>
@@ -868,7 +870,9 @@ p b {
 		<!-- 제품 사진 및 소개 칸 -->
 		<c:forEach items="${subImage}" var="subImg">
 			<div class="imgbox">
-				<img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto;">
+				<c:if test="${ fn:containsIgnoreCase(subImg.imageRenameName, 'jpg') or fn:containsIgnoreCase(subImg.imageRenameName, 'png')}">
+					<img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto;">
+				</c:if>
 			</div>
 		</c:forEach>
 <!-- 		<div class="DetailMoreBtn"> -->
@@ -925,7 +929,9 @@ p b {
 									<ul>
 										<c:forEach items="${imglist}" var="img" >
 											<c:if test ="${img.imageDivideNo eq r.reviewNo}" >
+											<c:if test="${ fn:containsIgnoreCase(img.imageRenameName, 'jpg') or fn:containsIgnoreCase(img.imageRenameName, 'png')}">
 												<li><img src="${ contextPath }/resources/uploadFiles/${img.imageRenameName}" onclick="window.open(this.src)"></li>
+											</c:if>
 											</c:if>
 										</c:forEach>
 									</ul>
@@ -1033,7 +1039,7 @@ p b {
 	              	
         <!--  반복 될 부분 -->  
         <c:forEach items="${qna}" var="qna">
-             <li class="accordion_q_li js_data_row" onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
+             <li class="accordion_q_li js_data_row"  style="cursor: pointer;" onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
                 <div class="accordion_q_tit1"> 
                    
                     <div class="qna">
@@ -1048,8 +1054,10 @@ p b {
                        </span>
                         ${qna.qnaTitle}
                     </div>
+                    
                         <div class="writer" style="display:inline-block; width:100px; margin-left:30px;">${qna.nickName}</div>
                         <div class="rv_cont_date" style="display:inline-block; width:100px; margin-left:30px; ">${qna.qnaDate}</div>
+                        
                         <span class="qna_result" style="float: right;">
 	                        <c:if test="${qna.answerContent eq null}"><span style="color: red;">답변 대기</span></c:if>
 	                       <c:if test="${qna.answerContent ne null}"><span style="color: green;">답변 완료</span></c:if>
@@ -1177,6 +1185,11 @@ p b {
 		let totalPriceSet = document.querySelectorAll(".totalPriceSet");
 		const productPrice = document.querySelectorAll(".productPrice");
 		const cartCount = document.querySelectorAll(".cartCount");
+		
+		
+		
+		
+		
 		
 		$('.accordion_i_tit').click(function(){
 			$('.accordion_i_cont').toggle(400);
@@ -1561,7 +1574,14 @@ p b {
 					$('.textbox').append(result);
 			    					for(let img  of data.imgList){
 			    						if(rev.reviewNo == img.imageDivideNo){
+			    							
 				    					let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
+				    						
+// 				    						<c:if test="${ fn:containsIgnoreCase('+img.imageRenameName+', 'jpg') or fn:containsIgnoreCase('+img.imageRenameName+', 'png')}">'
+// 													+'<li><img src="${ contextPath }/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
+// 													+'</c:if>'
+				    						
+				    						
 				    					let reviewNos = document.getElementsByName("reviewNo");
 				    					
 					    					for(const revNo of reviewNos){
@@ -1580,9 +1600,6 @@ p b {
 
 	   			})
 
-	    
-	    
-	    
 	    
 		
 		})

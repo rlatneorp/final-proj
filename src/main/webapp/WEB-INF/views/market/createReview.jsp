@@ -223,7 +223,7 @@ dl dd div label{
 						</label>
 						
 						<div class="mb-3">
-							<input type="file" class="form-control form-control-lg" name="imageFile" >
+							<input type="file" class="form-control form-control-lg" name="imageFile" accept="image/jpg, image/png, image/jpeg" >
 						</div>
 				</div>
 						<div>
@@ -253,7 +253,7 @@ dl dd div label{
 		document.querySelector(".addImage").addEventListener('click', (e)=>{
 			const newDiv = document.createElement('div');
 			newDiv.classList.add("mb-3");
-			newDiv.innerHTML = '<input type="file" class="form-control form-control-lg" name="imageFile">';
+			newDiv.innerHTML = '<input type="file" class="form-control form-control-lg" name="imageFile accept="image/jpg, image/png, image/jpeg">';
 			
 			if(document.querySelectorAll(".mb-3").length >= 3 ){
 				e.preventDefault()
@@ -263,7 +263,28 @@ dl dd div label{
 			}
 			
 		});
+		
+		
+		console.log(file.val())
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	</script>
 </body>
 

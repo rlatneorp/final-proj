@@ -213,7 +213,7 @@ dl dd div label{
 
 					<label for="content" style="font-weight: 800;">내용</label>
 					
-					<textarea class="form-control" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  ></textarea>
+					<textarea class="form-control" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  maxlength="200" required="required"></textarea>
 
 				</div>
 				
@@ -222,16 +222,13 @@ dl dd div label{
 							<img class="addImage" src="resources/images/filePlus.jpg">
 						</label>
 						
-						<div class="mb-3">
-							<input type="file" class="form-control form-control-lg" name="imageFile" >
-						</div>
 				</div>
 						<div>
 <%-- 							<c:forEach items="${ list }" var="a"> --%>
 								<h5>
 <%-- 									<a href="${ contextPath }/resources/uploadFils/" --%>
 <!-- 														download=" "> </a> -->
-									<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" id="delete-">삭제 OFF</button>
+									<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" id="delete-">삭제하기</button>
 									<input type="hidden" name="deleteAttm" value="none">
 								</h5>
 <%-- 							</c:forEach> --%>
@@ -250,10 +247,11 @@ dl dd div label{
 	<script>
 	window.onload = () =>{
 		const fileArea = document.querySelector('#fileArea');
+		const deleteAttm = document.querySelector('.deleteAttm');
 		document.querySelector(".addImage").addEventListener('click', (e)=>{
 			const newDiv = document.createElement('div');
 			newDiv.classList.add("mb-3");
-			newDiv.innerHTML = '<input type="file" class="form-control form-control-lg" name="imageFile">';
+			newDiv.innerHTML = '<input type="file" class="form-control-file form-control-lg" name="imageFile accept="image/jpg, image/png, image/jpeg">';
 			
 			if(document.querySelectorAll(".mb-3").length >= 3 ){
 				e.preventDefault()
@@ -263,7 +261,24 @@ dl dd div label{
 			}
 			
 		});
+		
+		deleteAttm.addEventListener('click', function(){
+			for(let att of document.querySelectorAll(".mb-3")){
+					att.remove();
+			}
+			
+
+		})
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	</script>
 </body>
 

@@ -257,24 +257,42 @@ public class MarketController {
                         @ModelAttribute Review r,
                         @ModelAttribute QA q,
                         @ModelAttribute Image img,
-                        HttpSession session, Model model) {
+                        HttpSession session,  Model model) {
       Users users = (Users)session.getAttribute("loginUser");
       Tool tool = mkService.selectTool(productNo);
+      
 		if(currentPage == null) {
 			currentPage = 1;
 		}
+		
 		int qnaCount = mkService.selectQnaCount(productNo);
 		PageInfo pi = Pagination.getPageInfo(currentPage, qnaCount, 5);
 		pi.setCurrentPage(1);
 		pi.setBoardLimit(1000);
-      ArrayList<Options> options = mkService.selectOptionsSet(productNo);
-      ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
+		
+  
       Product p = mkService.selectProductSet(productNo);
       r.setProductNo(productNo);
-//      r.setReviewScore();
       
       
       
+      
+      HashMap<String, Integer> map = new HashMap<String, Integer>();
+      if(users != null) {
+    	  map.put("productNo", productNo);
+    	  map.put("usersNo", users.getUsersNo());
+      }else {
+    	  map.put("productNo", productNo);
+          map.put("usersNo", 0);
+      }
+    
+      
+      ArrayList<Orders> ordList = mkService.orderList(map);
+      
+      
+      
+      ArrayList<Options> options = mkService.selectOptionsSet(productNo);
+      ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
       ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
       ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
       ArrayList<Review> list = mkService.selectReview(productNo);
@@ -309,6 +327,7 @@ public class MarketController {
       model.addAttribute("pi", pi);
       model.addAttribute("p", p);
       model.addAttribute("options", options);
+      model.addAttribute("ordList", ordList);
       return "market_detail";
    }
    
@@ -383,6 +402,7 @@ public class MarketController {
    public String createReview(HttpSession session, Product p, Model model) {
       Users users = (Users)session.getAttribute("loginUser");
       model.addAttribute("productNo", p.getProductNo());
+      
       return "createReview";
    }
    
@@ -521,19 +541,6 @@ public class MarketController {
          e.printStackTrace();
       } 
    }
-   
-//   @ResponseBody
-//   @RequestMapping("highScrore_review.ma")
-//   public String highScrore(HttpServletResponse response, @ModelAttribute Review r) {
-//	  int result = mkService.highScrore(r);
-//	   
-//      response.setContentType("application/json; charset=utf-8");
-//      GsonBuilder gb = new GsonBuilder();
-//      Gson gson = gb.create();
-//      gson.toJson(result, response.getWriter());
-//	   return "market_detail";
-//   }
-//   
    
    
 
@@ -778,6 +785,16 @@ public class MarketController {
 		   return "fail";
 	   }
    }
+
+	@RequestMapping("myPage_editReview.ma")
+	public String myPage_editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
+		Review r = mkService.selectDetailReview(reviewNo);
+		System.out.println(r);
+		
+		model.addAttribute("r", r);
+		
+		return "updateReview";
+	}
    
    //전체보기
    @RequestMapping("viewWhole.ma")
@@ -871,18 +888,4 @@ public class MarketController {
    
    
    
-//   public String insertPay(@ModelAttribute Orders orders) {
-//	   
-//	   int selectProductType = mkService.selectProductType(orders.getProductNo());
-//	   orders.setProductType(selectProductType);
-////	   int result = mkService.insertPay(orders);
-////	   
-////	   if(result >= 1) {
-////		   return "success";
-////	   } else {
-////		   return "fail";
-////	   }
-////	   
-//	   return "market_detail";
-//   }
 }

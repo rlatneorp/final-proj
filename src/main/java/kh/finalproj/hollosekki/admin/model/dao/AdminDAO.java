@@ -14,6 +14,7 @@ import kh.finalproj.hollosekki.admin.model.vo.Sales;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -440,6 +441,20 @@ public class AdminDAO {
 
 	public int updateQNA(SqlSessionTemplate sqlSession, QNA qna) {
 		return sqlSession.update("adminMapper.updateQNA", qna);
+	}
+
+	
+//	Healther-영양사
+	public Healther selectHealther(SqlSessionTemplate sqlSession, int uNo) {
+		return sqlSession.selectOne("adminMapper.selectHealther", uNo);
+	}
+
+	public int insertHealther(SqlSessionTemplate sqlSession, Healther h) {
+		return sqlSession.insert("adminMapper.insertHealther", h);
+	}
+
+	public int updateHealther(SqlSessionTemplate sqlSession, Healther h) {
+		return sqlSession.update("adminMapper.updateHealther", h);
 	}
 
 

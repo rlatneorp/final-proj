@@ -168,5 +168,9 @@ public class RecipeDAO {
 		return (ArrayList)sqlSession.selectList("recipeMapper.selectRecipeElement", foodNo);
 	}
 
+	public int myReivew(SqlSessionTemplate sqlSession, Review my) {
+		return sqlSession.selectOne("recipeMapper.myReview", my);
+	}
+
 
 }

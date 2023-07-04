@@ -650,4 +650,36 @@
 		FETCH FIRST 8 ROWS ONLY
 	</select>
 	
+	<select id="selectDetailReview" resultMap="reviewResultSet">
+		select *
+		from review
+		where review_no = #{reviewNo} 
+	</select>
+	
+	<select id="orderList" resultType="_integer">
+		select count(*)
+		from orders
+		where product_no = #{productNo}	and users_no = nvl(#{usersNo}, -1)
+	</select>
+	
+		<resultMap type="Orders" id="ordersResultSet">
+    	<id column="ORDER_NO" property="orderNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="USERS_ID" property="usersId"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="ORDER_COUNT" property="orderCount"/>
+		<result column="ORDER_TOTAL_PRICE" property="totalPrice"/>
+		<result column="ORDER_DATE" property="orderDate"/>
+		<result column="ORDER_STATUS" property="orderStatus"/>
+		<result column="ORDER_ADDRESS" property="orderAddress"/>
+		<result column="ORDER_DELIVERY_DATE" property="orderDeliveryDate"/>
+		<result column="ORDER_STOCK" property="orderStock"/>
+		<result column="ORDER_DELIVERY_COMMENT" property="orderDeliveryComment"/>
+		<result column="ORDER_INFO" property="orderInfo"/>
+		<result column="SHIP_PRICE" property="shipPrice"/>
+		<result column="OPTIONS" property="options"/>
+   </resultMap>
+	
+	
 </mapper>

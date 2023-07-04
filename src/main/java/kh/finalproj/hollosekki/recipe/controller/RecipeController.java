@@ -93,9 +93,19 @@ public class RecipeController {
 							   @RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv) {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
+		
 		String loginId = null;
+		String nickName = null;
+		Review my = new Review();
+		int myReview = 0;
 		if(loginUser != null) {
 			loginId = loginUser.getUsersId();
+			nickName = loginUser.getNickName();
+			
+			my.setReviewWriter(nickName);
+			my.setProductNo(foodNo);
+			
+			myReview = rService.myReview(my);
 		}
 		boolean yn = false;
 		if(!usersId.equals(loginId)) {
@@ -112,7 +122,7 @@ public class RecipeController {
 		ArrayList<Review> reList = rService.selectReviewList(rpi, foodNo);
 		ArrayList<RecipeElement> eleList = rService.selectRecipeElement(foodNo);
 		
-		System.out.println(reList);
+//		System.out.println(reList);
 		
 		if(recipe != null) {
 			mv.addObject("recipe", recipe);
@@ -123,10 +133,13 @@ public class RecipeController {
 			mv.addObject("page", page);
 			mv.addObject("rpi", rpi);
 			mv.addObject("eleList", eleList);
+			mv.addObject("myReview", myReview);
+			mv.addObject("reviewCount", reviewCount);
 			mv.setViewName("recipeDetail");
 			
 			return mv;
 		} else {
+			
 			throw new RecipeException("레시피 상세조회를 실패하였습니다.");
 		}
 	}
@@ -437,44 +450,6 @@ public class RecipeController {
 			}
 		}
 		
-//		ArrayList<Image> thumImgList = new ArrayList<>();
-//		if(thum != null) {
-//			String thumImg = thum.getOriginalFilename();  // disabled 에서 display=hidden으로 바꾼다음 해보기
-//			if(!thumImg.equals("")) {
-//				String[] thumImgArr = saveFile(thum, request);
-//				if(thumImgArr[1] != null) {
-//					Image img = new Image();
-//					img.setImagePath(thumImgArr[0]);
-//					img.setImageOriginalName(thumImg);
-//					img.setImageRenameName(thumImgArr[1]);
-//					img.setImageLevel(0);
-//					
-//					thumImgList.add(img);
-//				}
-//			}
-//		}
-//		
-//		String thumDelRename = "";
-//		
-//		if(!delThum.equals("none")) {
-//			String[] split = delThum.split("/");
-//			thumDelRename = split[0];
-//		}
-//		
-//		int thumDelResult = 0;
-//		
-//		
-//		if(!thumDelRename.isEmpty()) {
-//			thumDelResult = rService.deleteThumImg(thumDelRename);
-//			if(thumDelResult > 0) {
-//				deleteFile(thumDelRename, request);
-//			}
-//		}
-//		int updateThumImg = 0;
-//		if(!thum.isEmpty()) {
-//			updateThumImg = rService.insertAttm(thumImgList);
-//		}
-		
 //		레시피 순서 변경/삭제
 		ArrayList<RecipeOrder> orc = new ArrayList<>();
 		String[] orderArr = rc.getRecipeOrder().split(",abc123abc,");
@@ -532,26 +507,42 @@ public class RecipeController {
 		int updateComResult = 0;
 		int delComResult = 0;
 		
+		for(String rename : delComImg) {
+			if(!rename.equals("none")) {
+				String[] split = rename.split("/");
+				comDelRename.add(split[0]);
+			}
+		}
+		if(!comDelRename.isEmpty()) {
+			delComResult = rService.deleteComImg(comDelRename);
+			if(delComResult > 0) {
+				for(String rename : comDelRename) {
+					deleteFile(rename, request);
+				}
+			}
+		}
+		
+		
 		if(comFiles != null) {
 			for(int i = 0; i < comFiles.size(); i++) {
 				String comOriginal = comFiles.get(i).getOriginalFilename();
 				
 				if(comFiles.get(i) != null && !comOriginal.equals("")) {
 					
-					for(String rename : delComImg) {
-						if(!rename.equals("none")) {
-							String[] split = rename.split("/");
-							comDelRename.add(split[0]);
-						}
-					}
-					if(!comDelRename.isEmpty()) {
-						delComResult = rService.deleteComImg(comDelRename);
-						if(delComResult > 0) {
-							for(String rename : comDelRename) {
-								deleteFile(rename, request);
-							}
-						}
-					}
+//					for(String rename : delComImg) {
+//						if(!rename.equals("none")) {
+//							String[] split = rename.split("/");
+//							comDelRename.add(split[0]);
+//						}
+//					}
+//					if(!comDelRename.isEmpty()) {
+//						delComResult = rService.deleteComImg(comDelRename);
+//						if(delComResult > 0) {
+//							for(String rename : comDelRename) {
+//								deleteFile(rename, request);
+//							}
+//						}
+//					}
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmsss");
 					int ranNum = (int) (Math.random() * 100000);
 					String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
@@ -630,7 +621,12 @@ public class RecipeController {
 				return "redirect:recipeDetail.rc";
 			}
 		} else {
-			throw new RecipeException("레시피 수정에 실패하였습니다.");
+			model.addAttribute("rId", r.getUsersId());
+			model.addAttribute("rNo", r.getFoodNo());
+			model.addAttribute("page", page);
+			
+			return "redirect:recipeDetail.rc";
+//			throw new RecipeException("레시피 수정에 실패하였습니다.");
 		}
 	}
 	
@@ -641,7 +637,7 @@ public class RecipeController {
 		
 		ArrayList<Recipe> rList = rService.recentRecipeList();
 		
-		System.out.println(rList);
+//		System.out.println(rList);
 		
 		model.addAttribute("rList", rList);
 		
@@ -667,7 +663,7 @@ public class RecipeController {
 		
 		ArrayList<Recipe> rList = rService.ingredientSearch(ingredient);
 		
-		System.out.println(rList);
+//		System.out.println(rList);
 		
 		return rList;
 	}

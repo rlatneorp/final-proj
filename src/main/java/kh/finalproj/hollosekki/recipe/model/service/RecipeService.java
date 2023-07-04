@@ -82,5 +82,7 @@ public interface RecipeService {
 
 	ArrayList<RecipeElement> selectRecipeElement(int foodNo);
 
+	int myReview(Review my);
+
 
 }

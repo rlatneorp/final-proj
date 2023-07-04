@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
 <style>
 
 /* 	검색 창 부분 */
@@ -29,30 +29,38 @@
 	.group-button1, .group-button2, .group-button3{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
 	
 /* 	이번주 인기 식단 */
-	#weekend{width: 1200px; height: 400px; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black; background-color: #B0DAFF;}
-	#hotWeekend{width: 1200px; height: 25px; background-color: black; color: white; text-align: center; border-radius: 10px 10px 0 0;}
-	#weekendBox{width: 1200px; height: 400px; margin: 37px 50px;}
+	#weekend{width: 1200px; height: 470px; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black; background-color: #edf8FF;}
+	#hotWeekend{width: 1200px; height: 35px; background-color: black; color: white; text-align: center; border-radius: 10px 10px 0 0; padding-top: 6px;}
+	#weekendBox{width: 1200px; height: 100%; margin: 50px 50px;}
 	
 	.foodRank{
-	    font-size: 28px;
+	    font-size: 25px;
 	    border: none;
 	    width: 60px;
 	    height: 60px;
 	    margin-top: 10px;
-	    padding-top: 8px;
+	    padding-top: 10px;
 	    border-radius: 100px;
 	    background-color: lightgray;
 	    text-align: center;
+	    font-weight: bold;
 	}
 	
 	.wkalbum{position: relative;}
-	.albumTitle{position: absolute; width: 300px; height: 50px; top: 250px; left: 30px; text-align: center; font-weight: bold;}
-	.weekendPic{margin: 0 30px;}
+	.albumTitle{position: absolute; width: 300px; height: 40px; top: 310px; left: 30px; text-align: center; font-weight: bold; font-size: 22px;}
+	.albumTitle2{position: absolute; width: 300px; height: 40px; top: 340px; left: 30px; text-align: center; font-size: 18px;}
+	.weekendPic-div{overflow: hidden; width: 300px; height: 300px; margin: 0 30px;}
+	.weekendPic{width: 100%; height: 100%; object-fit: cover; object-position: center;}
+	.weekendPic:hover{ transform: scale(1.2);  object-fit: cover; object-position: center; transition: all 0.2s ease 0s;}
 	
 /* 	최신 식단 */
 	#middle{width: 1250px; height: 50px; font-weight: bold; font-size: 20px; border-bottom: 1px solid black; margin: auto;}
 	.cardColor{background-color: #B0DAFF;}
 	.likeBtn{color: black;}
+	
+ 	.cardImg{width:237.06px; height:237.06px; overflow: hidden;}
+ 	.image{width: 100%; height: 100%; object-fit: cover; object-position: center;}
+	
 	
 	/* 	페이지 */
 	.page_wrap {
@@ -171,30 +179,75 @@
 <br><br><br>
 
 <div id="weekend">
-	<div id="hotWeekend">이번주 ㅎㄹㅅㄲ의 인기 식단</div>
+	<div id="hotWeekend"><i class="bi bi-fire"></i> 이번주 홀로세끼의 인기 식단 <i class="bi bi-fire"></i></div>
 	
 	<div id="weekendBox">
-		<div class="d-inline-block wkalbum">
-			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;">
-				<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div>
+		<c:forEach items="${ menuScore }" var="score" end="2" varStatus="status">
+			<div class="d-inline-block wkalbum" style="cursor: pointer;">
+				<input type="hidden" value="${score.PRODUCT_NO}">
+				<c:if test="${ status.count == 1 }">
+					<div class="position-absolute top-0 start-0" style="margin-top: -40px; z-index: 9999;">
+						<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div>
+					</div>
+				</c:if>
+				<c:if test="${ status.count == 2 }">
+					<div class="position-absolute top-0 start-0" style="margin-top: -40px; z-index: 9999;">
+						<div class="foodRank" style="background: rgb(238, 238, 238);">2위</div>
+					</div>
+				</c:if>
+				<c:if test="${ status.count == 3 }">
+					<div class="position-absolute top-0 start-0" style="margin-top: -40px; z-index: 9999;">
+						<div class="foodRank" style="background: rgb(215, 192, 174);">3위</div>
+					</div>
+				</c:if>
+				<c:forEach items="${ iList }" var="i">
+					<c:if test="${ i.imageDivideNo eq score.PRODUCT_NO }">
+						<div class="weekendPic-div">
+							<img src="${ contextPath }/resources/uploadFiles/${i.imageRenameName}" class="weekendPic">
+						</div>
+					</c:if>
+					
+				</c:forEach>
+				<div class="albumTitle">${ score.MENU_NAME }</div>
+				<div class="albumTitle2">
+					<c:if test="${ score.MENU_KIND == 1 }"><a>다이어트</a></c:if>
+					<c:if test="${ score.MENU_KIND == 2 }"><a>몸보신</a></c:if>
+					<c:if test="${ score.MENU_KIND == 3 }"><a>든든밥상</a></c:if>
+					<c:if test="${ score.MENU_KIND == 4 }"><a>고단백</a></c:if>
+					<c:if test="${ score.MENU_KIND == 5 }"><a>채식</a></c:if>
+					<i class="bi bi-dot lightgray"></i>
+					<c:forEach items="${ uList }" var="u">
+						<c:if test="${ u.usersNo eq score.USERS_NO }">
+							${ u.usersName }
+						</c:if>
+					</c:forEach>
+				</div>
 			</div>
-			<img src="#" width="300px" height="300px" class="weekendPic">
-			<div class="albumTitle">고단백 / 영양사B</div>
-		</div>
-		<div class="d-inline-block wkalbum">
-			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;">
-				<div class="foodRank" style="background: rgb(238, 238, 238);">2위</div>
-			</div>
-			<img src="#" width="300px" height="300px" class="weekendPic">
-			<div class="albumTitle">다이어트 / 영양사C</div>
-		</div>
-		<div class="d-inline-block wkalbum">
-			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;">
-				<div class="foodRank" style="background: rgb(215, 192, 174);">3위</div>
-			</div>
-			<img src="#" width="300px" height="300px" class="weekendPic">
-			<div class="albumTitle">든든밥상 / 영양사E</div>
-		</div>
+		</c:forEach>
+		
+	
+<!-- 		<div class="d-inline-block wkalbum"> -->
+<!-- 			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;"> -->
+<!-- 				<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div> -->
+<!-- 			</div> -->
+<!-- 			<img src="#" width="300px" height="300px" class="weekendPic"> -->
+<!-- 			<div class="albumTitle">고단백 / 영양사B</div> -->
+<!-- 		</div> -->
+		
+<!-- 		<div class="d-inline-block wkalbum"> -->
+<!-- 			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;"> -->
+<!-- 				<div class="foodRank" style="background: rgb(238, 238, 238);">2위</div> -->
+<!-- 			</div> -->
+<!-- 			<img src="#" width="300px" height="300px" class="weekendPic"> -->
+<!-- 			<div class="albumTitle">다이어트 / 영양사C</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="d-inline-block wkalbum"> -->
+<!-- 			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;"> -->
+<!-- 				<div class="foodRank" style="background: rgb(215, 192, 174);">3위</div> -->
+<!-- 			</div> -->
+<!-- 			<img src="#" width="300px" height="300px" class="weekendPic"> -->
+<!-- 			<div class="albumTitle">든든밥상 / 영양사E</div> -->
+<!-- 		</div> -->
 	</div>
 </div>
 
@@ -212,15 +265,44 @@
 						<div class="col">
 							<input type="hidden" value="${m.foodProductNo}">
 							<div class="card shadow-sm">
-								<img src="${contextPath }/resources/uploadFiles/${i.imageRenameName}" style="width: 100%; height: 100%;">
+								<div class="cardImg">
+									<img src="${contextPath }/resources/uploadFiles/${i.imageRenameName}" class="image">
+								</div>
+								
 								<div class="card-body cardColor">
-									<h5>${m.menuName } / ${m.menuKind }</h5>
+									<h5>${m.menuName } / ${ m.menuKind}
+<%-- 										<c:if test="${ m.menuKind == 1 }"><a style="font-size: 25px;">🥗</a></c:if> --%>
+<%-- 										<c:if test="${ m.menuKind == 2 }"><a style="font-size: 25px;">🤒</a></c:if> --%>
+<%-- 										<c:if test="${ m.menuKind == 3 }"><a style="font-size: 25px;">💪</a></c:if> --%>
+<%-- 										<c:if test="${ m.menuKind == 4 }"><a style="font-size: 25px;">🥩</a></c:if> --%>
+<%-- 										<c:if test="${ m.menuKind == 5 }"><a style="font-size: 25px;">🥬</a></c:if> --%>
+									</h5>
 									<div class="d-inline-block" style="width: 130px; height: 50px;"></div>
 									<a class="likeBtn" role="button">
 										<input type="hidden" value="off">
 										<i class='bi bi-heart d-inline-block iconMar'></i>
 									</a>&nbsp;
-									<p class="d-inline-block likeNum">1000</p>
+									<c:forEach items="${menuScore}" var="score">
+										<c:if test="${score.PRODUCT_NO eq m.foodProductNo}">
+											<c:choose>
+												<c:when test="${empty lList}">
+													<p class="d-inline-block likeNum">0</p>
+												</c:when>
+												<c:otherwise>
+													<c:set var="found" value="false" />
+													<c:forEach items="${lList}" var="l">
+														<c:if test="${score.PRODUCT_NO eq l.PRODUCT_NO}">
+															<p class="d-inline-block likeNum">${l.COUNT}</p>
+															<c:set var="found" value="true" />
+														</c:if>
+													</c:forEach>
+													<c:if test="${found eq false}">
+														<p class="d-inline-block likeNum">0</p>
+													</c:if>
+												</c:otherwise>
+											</c:choose>
+										</c:if>
+									</c:forEach>
 								</div>
 							</div>
 						</div>
@@ -300,6 +382,15 @@
 		})
 	}
 	
+	const hots = document.querySelectorAll('.wkalbum');
+	for(const hot of hots){
+		hot.addEventListener('click', function(){
+		const mNo = this.childNodes[1].value;
+		location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
+		})
+	}
+	
+	
 	const categoryBtns = document.getElementsByClassName('categoryBtn');
 	for(const categoryBtn of categoryBtns){
 		const cate = categoryBtn.childNodes[1].value;
@@ -324,10 +415,14 @@
 						card.classList.add('card');
 						card.classList.add('shadow-sm');
 						
+						const cardImg = document.createElement('div');
+						cardImg.classList.add('cardImg');
+						
 						const image = document.createElement('img');
 						image.src = '${contextPath}/resources/uploadFiles/' + post.imageRenameName;
-						image.style.width = "100%";
-						image.style.height = "100%";
+						image.classList.add('image');
+// 						image.style.width = "100%";
+// 						image.style.height = "100%";
 						
 						const cardBody = document.createElement('div');
 						cardBody.classList.add('card-body');
@@ -339,7 +434,7 @@
 						const div = document.createElement('div');
 						div.classList.add('d-inline-block');
 						div.style.width = "130px";
-						div.style.height = "50px;";
+						div.style.height = "50px";
 						
 						const a = document.createElement('a');
 						a.classList.add('likeBtn');
@@ -368,7 +463,9 @@
 						cardBody.appendChild(a);
 						cardBody.appendChild(p);
 						
-						card.appendChild(image);
+						cardImg.appendChild(image);
+						
+						card.appendChild(cardImg);
 						card.appendChild(cardBody);
 						
 						col.appendChild(fPNo);
@@ -387,6 +484,6 @@
 	
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> -->
 </body>
 </html>

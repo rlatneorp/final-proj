@@ -2,6 +2,7 @@ package kh.finalproj.hollosekki.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +34,7 @@ import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.FAQ;
 import kh.finalproj.hollosekki.common.model.vo.Food;
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
@@ -490,7 +492,10 @@ public class AdminController {
 //	Menu-식단 관리
 	@GetMapping("adminMenuManage.ad")
 	public String adminMenuManage(HttpServletRequest request,
-							 	  Model model) {
+							 	  Model model,
+							 	  HttpSession session) {
+		int uNo = ((Users)session.getAttribute("loginUser")).getUsersNo();
+		Healther h = aService.selectHealther(uNo); 
 		AdminBasic ab = (AdminBasic) request.getAttribute("ab");
 		
 		int listCount = aService.getMenuCount(ab);
@@ -502,6 +507,7 @@ public class AdminController {
 		}
 		if(mList != null) {
 			model.addAttribute("pi", pi);
+			model.addAttribute("h", h);
 			model.addAttribute("mList", mList);
 			return "adminMenuManage";
 		}else {
@@ -1661,7 +1667,7 @@ public class AdminController {
 	}
 
 
-	//	QNA-1:1문의 관리	
+//	QNA-1:1문의	
 	@GetMapping("adminQNAManage.ad")
 	public String adminQNAManage(HttpServletRequest request,
 								 Model model) {
@@ -1707,7 +1713,85 @@ public class AdminController {
 		}
 		
 	}
+
 	
+//	Healther-영양사
+	@GetMapping("adminHealtherDetail.ad")
+	public String adminHealtherDetail(HttpSession session,
+									  Model model) {
+		int uNo = ((Users)session.getAttribute("loginUser")).getUsersNo();
+		Healther h = aService.selectHealther(uNo);
+		
+		ArrayList<Image> imgList = selectAllImageList(uNo, 8, -1);
+		Image img = null;
+		if(!imgList.isEmpty()) {
+			img = imgList.get(0);
+		}
+		
+		model.addAttribute("h", h);
+		model.addAttribute("img", img);
+		return "adminHealtherDetail";
+	}
+	@PostMapping("adminHealtherInsert.ad")
+	public String adminHealtherInsert(@ModelAttribute Healther h,
+									  @RequestParam("imageFile") MultipartFile imageFile,
+									  HttpServletRequest request) {
+		int resultImg = 0; 
+		int result = aService.insertHealther(h);
+		
+		if(result > 0) {
+//			이미지 저장
+			Image image = new Image();
+			if(imageFile != null && !imageFile.isEmpty()) {
+				String[] returnArr = saveFile(imageFile, request);
+				if(returnArr[1] != null) {
+					image = setImage(h.getUsersNo(), 8, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 0);
+				}
+			}
+			resultImg = aService.insertImage(image);
+		}
+		
+		if(resultImg > 0) {
+			return "redirect:adminMenuManage.ad";
+		}else {
+			throw new AdminException("영양사 정보 입력에 실패하였습니다.");
+		}
+	}
+	@PostMapping("adminHealtherUpdate.ad")
+	public String adminHealtherUpdate(@ModelAttribute Healther h,
+									  @RequestParam("imageFile") MultipartFile imageFile,
+									  HttpServletRequest request) {
+		int result = aService.updateHealther(h);
+		int resultImgDel = 1;
+		int resultImg = 1;
+//		이미지 변경저장
+		if(h.getImageChange().equals("Y")) {
+//			데이터 서버 이미지 삭제
+			Image img = selectAllImageList(h.getUsersNo(), 8, 0).get(0);
+			deleteFile(img.getImageRenameName(), request);
+			
+//			DB서버 이미지 삭제
+			resultImgDel = aService.deleteImage(img);
+			
+			if(resultImgDel > 0) {
+//				이미지 저장
+				Image image = new Image();
+				if(imageFile != null && !imageFile.isEmpty()) {
+					String[] returnArr = saveFile(imageFile, request);
+					if(returnArr[1] != null) {
+						image = setImage(h.getUsersNo(), 8, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 0);
+					}
+				}
+				resultImg = aService.insertImage(image);
+			}
+		}
+		
+		if(result > 0 && resultImgDel > 0 && resultImg > 0) {
+			return "redirect:adminMenuManage.ad";
+		}else {
+			throw new AdminException("영양사 정보 수정에 실패하였습니다.");
+		}
+	}
 	
 //	공용
 	public Model adminBasic(Model model, HttpServletRequest request, PageInfo pi) {

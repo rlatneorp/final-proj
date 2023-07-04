@@ -87,7 +87,7 @@
 		select *
 		from image
 		where image_Divide_No = #{foodNo} and image_Level=2
-		order by image_no desc	
+		order by image_no asc
 	</select>
 	
 	<select id="recipeDetailOrderText" resultMap="orderResultSet">
@@ -114,7 +114,7 @@
 	
 	<delete id="deleteThumImg">
 		delete from image
-		where image_rename=#{thumDelRename}
+		where image_renamename=#{thumDelRename}
 	</delete>
 	
 	<update id="updateRecipe">
@@ -242,6 +242,12 @@
 		select *
 		from recipe_element
 		where food_no=#{foodNo}
+	</select>
+	
+	<select id="myReview" resultType="_int">
+		select count(*)
+		from review
+		where product_no = #{productNo} and REVIEW_WRITER=#{reviewWriter} and order_no=0
 	</select>
 		
 	<resultMap type="Recipe" id="recipeResultSet">

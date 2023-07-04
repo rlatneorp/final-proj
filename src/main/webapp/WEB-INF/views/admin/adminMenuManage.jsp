@@ -83,7 +83,7 @@
 		</form>
 		<div class="d-flex justify-content-end mb-5">
 			<div class="d-flex">
-				<button type="button" onclick="location.href='${contextPath}/adminMenuWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식단등록</button>
+				<button type="button" onclick="checkHealther();" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">식단등록</button>
 			</div>
 		</div>
 
@@ -172,6 +172,15 @@
 						})
 					}
 				}
+			}
+		}
+		function checkHealther(){
+			if(${h eq null}){
+				if(confirm("먼저 영양사 정보를 등록해주세요.")){
+					location.href='${contextPath}/adminHealtherDetail.ad'
+				}
+			}else{
+				location.href='${contextPath}/adminMenuWrite.ad'
 			}
 		}
 	</script>

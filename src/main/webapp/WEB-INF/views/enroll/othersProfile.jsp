@@ -323,7 +323,7 @@
 										<div>
 											${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ r.categorySituation }<i class="bi bi-dot lightgray"></i>${ r.categoryType }
 										</div>
-										<div class="recipe-date">${ r.recipeCreateDate }</div>
+										<div class="recipe-date"><fmt:formatDate value="${ r.recipeCreateDate }" pattern="yyyy-MM-dd"/></div>
 									</div>
 								</c:if>
 							</c:forEach>
@@ -582,11 +582,11 @@
 										<i class="fa-solid fa-bookmark" id="bookmark-btn"></i>
 										<div class="recipe-name">${ m.menuName }</div>
 										<div>
-											<c:if test="${ m.menuType == 1 }"><a>🥗다이어트</a></c:if>
-											<c:if test="${ m.menuType == 2 }"><a>🤒몸보신</a></c:if>
-											<c:if test="${ m.menuType == 3 }"><a>💪든든밥상</a></c:if>
-											<c:if test="${ m.menuType == 4 }"><a>🥩고단백</a></c:if>
-											<c:if test="${ m.menuType == 5 }"><a>🥬채식</a></c:if>
+											<c:if test="${ m.menuKind == 1 }"><a>🥗다이어트</a></c:if>
+											<c:if test="${ m.menuKind == 2 }"><a>🤒몸보신</a></c:if>
+											<c:if test="${ m.menuKind == 3 }"><a>💪든든밥상</a></c:if>
+											<c:if test="${ m.menuKind == 4 }"><a>🥩고단백</a></c:if>
+											<c:if test="${ m.menuKind == 5 }"><a>🥬채식</a></c:if>
 										</div>
 										<c:forEach items="${ pList }" var="p">
 											<c:if test="${ p.productNo == m.foodProductNo }">

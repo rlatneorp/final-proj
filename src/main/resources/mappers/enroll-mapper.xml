@@ -18,8 +18,10 @@
 		from users
 		     left join image on(users_no = image_divide_no)
 		     left join social_login on (users_id = social_id)
-		where users_id = #{usersId} and status = 'Y'
+		where users_id = #{usersId} and status = 'Y' and image_type = 1
 	</select>
+	
+	
 
 	<select id="checkId" resultType="_int">
 		select count(*) from users

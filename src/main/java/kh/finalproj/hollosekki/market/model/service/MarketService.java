@@ -342,6 +342,7 @@ public class MarketService {
 	public Cart selectCart(int usersNo) {
 		return mkDAO.selectCart(sqlSession, usersNo);
 	}
+	
 	public ArrayList<QA> qnalist(HashMap<String, Object> map) {
 		return mkDAO.qnalist(sqlSession, map);
 	}
@@ -374,7 +375,13 @@ public class MarketService {
 		return mkDAO.selectWholeHotDeal(sqlSession);
 	}
 
-	
+	public Review selectDetailReview(int reviewNo) {
+		return mkDAO.selectDetailReview(sqlSession, reviewNo);
+	}
+
+	public ArrayList<Orders> orderList(HashMap<String, Integer> map) {
+		return mkDAO.orderList(sqlSession, map);
+	}
 
 
 

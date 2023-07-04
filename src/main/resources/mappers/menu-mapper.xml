@@ -93,6 +93,23 @@
 		where users_no = #{usersNo} and division_no = #{divisionNo} and number_type = 2
 	</delete>
 	
+	<select id="menuScore" resultType="map">
+		select menu.product_no, menu_name, menu_kind, product.users_no, COUNT(*) AS count
+		from menu
+		     left join likes on(product_No = division_no)
+		     join product on(menu.product_no = product.product_no)
+		group by menu.product_no, menu_name, menu_kind, product.users_no
+		order by count desc
+	</select>
+	
+	<select id="likeList" resultType="map">
+		select menu.product_no, COUNT(*) AS count
+		from menu
+		     join likes on(product_No = division_no)
+		group by menu.product_no
+		order by count desc
+	</select>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>
@@ -141,6 +158,12 @@
 		<result column="IMAGE_RENAMENAME" property="imageRenameName"/>
 		<result column="MENU_NAME" property="menuName"/>
 		<result column="MENU_KIND" property="menuKind"/>
-		
 	</resultMap>
+	
+<!-- 	<resultMap type="Likes" id="likeResultSet"> -->
+<!-- 		<id column="LIKE_NO" property="likeNo"/> -->
+<!-- 		<result column="USERS_NO" property="usersNo"/> -->
+<!-- 		<result column="DIVISION_NO" property="divisionNo"/> -->
+<!-- 		<result column="NUMBER_TYPE" property="numberType"/> -->
+<!-- 	</resultMap> -->
 </mapper>

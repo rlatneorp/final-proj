@@ -243,6 +243,12 @@
 		from recipe_element
 		where food_no=#{foodNo}
 	</select>
+	
+	<select id="myReview" resultType="_int">
+		select count(*)
+		from review
+		where product_no = #{productNo} and REVIEW_WRITER=#{reviewWriter} and order_no=0
+	</select>
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>

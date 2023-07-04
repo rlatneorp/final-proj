@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -723,10 +724,35 @@ public class RecipeController {
 	
 	// 후기 수정
 	@RequestMapping("updateReview.rc")
-	public String updateReview(@ModelAttribute Review r, Model model, @RequestParam(value="reviewScore", defaultValue = "0", required=false) int reviewScore) {
-//		int result = rService.updateReview(r.getReviewNo());
+	public String updateReview(@ModelAttribute Review r, Model model, 
+							   @RequestParam(value="reviewScore", defaultValue = "0", required=false) int reviewScore) {
+		String usersId = ((Users)model.getAttribute("loginUser")).getUsersId();
+		int foodNo = r.getProductNo();
 		
-		return null;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("r", r);
+		map.put("reviewScore", reviewScore);
+		
+		int result = rService.updateReview(map);
+		
+		if(result > 0) {
+			return "redirect:recipeDetail.rc?rId=" + usersId + "&rNo=" + foodNo;
+		} else {
+			throw new RecipeException("레시피 후기 수정 실패");
+		}
+	}
+	
+	// 후기 삭제
+	@RequestMapping("deleteReview.rc")
+	public String deleteReview(@RequestParam("rId") String usersId, @RequestParam("rNo") int foodNo,
+							   @RequestParam("reviewNo") int reviewNo, Model model) {
+		int result = rService.deleteReview(reviewNo);
+		
+		if(result > 0) {
+			return "redirect:recipeDetail.rc?rId=" + usersId + "&rNo=" + foodNo;
+		} else {
+			throw new RecipeException("레시피 후기 삭제 실패");
+		}
 	}
 	
 }

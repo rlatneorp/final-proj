@@ -68,11 +68,12 @@ public class UsersController {
 	public String myPage_Main(Model model) {
 		// 이미지 조회 - 로그인 조회할때 이미지 리네임, 소셜이미지 조인해서 가져옴
 		Users u = (Users) model.getAttribute("loginUser");
+		System.out.println("죽을래?" + u.getImageRenameName());
 		Users loginUser = null;
 		if(u.getImageRenameName() != null) {
 			loginUser = eService.login(u);
 			model.addAttribute("loginUser", loginUser);
-		}else {
+		} else {
 			loginUser = eService.login2(u);
 			model.addAttribute("loginUser", loginUser);
 		}
@@ -192,6 +193,7 @@ public class UsersController {
 				int result2 = uService.insertImage(image);
 
 				if (result2 > 0) {
+					user.setImageRenameName(image.getImageRenameName());
 					model.addAttribute("image", image);
 				} else {
 					throw new UsersException("사진 실패");
@@ -244,6 +246,7 @@ public class UsersController {
 						int insertImage = uService.insertImage(image);
 
 						if (insertImage > 0) {
+							user.setImageRenameName(image.getImageRenameName());
 							model.addAttribute("image", image);
 						} else {
 							throw new UsersException("사진 수정 실패");

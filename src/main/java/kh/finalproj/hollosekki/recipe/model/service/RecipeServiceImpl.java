@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.recipe.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -211,5 +212,15 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public int myReview(Review my) {
 		return rDAO.myReivew(sqlSession, my);
+	}
+	
+	@Override
+	public int updateReview(HashMap<String, Object> map) {
+		return rDAO.updateReview(sqlSession, map);
+	}
+	
+	@Override
+	public int deleteReview(int reviewNo) {
+		return rDAO.deleteReview(sqlSession, reviewNo);
 	}
 }

@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.recipe.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -170,6 +171,14 @@ public class RecipeDAO {
 
 	public int myReivew(SqlSessionTemplate sqlSession, Review my) {
 		return sqlSession.selectOne("recipeMapper.myReview", my);
+	}
+
+	public int updateReview(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.update("recipeMapper.updateReview", map);
+	}
+
+	public int deleteReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return sqlSession.delete("recipeMapper.deleteReview", reviewNo);
 	}
 
 

@@ -249,6 +249,17 @@
 		from review
 		where product_no = #{productNo} and REVIEW_WRITER=#{reviewWriter} and order_no=0
 	</select>
+	
+	<update id="updateReview">
+		update review
+		set review_score = #{reviewScore}, review_content = #{r.reviewContent}
+		where review_no = #{r.reviewNo}
+	</update>
+	
+	<delete id="deleteReview">
+		delete from review
+		where review_no = #{reviewNo}
+	</delete>
 		
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 /* 	레시피 소개 */
 	#top{width: 1200px; height: 600px; margin: auto; position: relative;}
@@ -602,6 +603,7 @@
 			<form method="post" id="reviewForm">
 				<div class="modal-body" id="updateReviewBody">
 					<input type="hidden" name="reviewNo" id="reviewNo">
+					<input type="hidden" name="productNo" value="${recipe.foodNo}">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
 							<label for="reviewUpdateScore5">★</label>
@@ -619,7 +621,7 @@
 					<textarea id="reviewContentUpdate" name="reviewContent" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100"></textarea>
 				</div>
 				<div class="footer">
-					<button type="button" class="button btn-n" data-bs-dismiss="modal">삭제하기</button>
+					<button type="button" class="button btn-n" id="reviewDelete">삭제하기</button>
 					<button type="button" class="button btn-y" id="update">수정하기</button>
 				</div>
 			</form>
@@ -727,6 +729,8 @@ const score2 = document.getElementById('reviewUpdateScore2');
 const score1 = document.getElementById('reviewUpdateScore1');
 const reviewForm = document.getElementById('reviewForm');
 const reviewNo = document.getElementById('reviewNo');
+const productNo = document.getElementById('productNo');
+const reviewDelete = document.getElementById('reviewDelete');
 
 for(const lineAll of lineAlls){
 	lineAll.addEventListener('click', function(){
@@ -755,6 +759,16 @@ updateB.addEventListener('click', () => {
 		reviewForm.action = '${contextPath}/updateReview.rc';
 		reviewForm.submit();
 	}
+});
+
+reviewDelete.addEventListener('click', () => {
+	swal({
+	    text: '정말 삭제하시겠습니까?',
+	    icon: 'warning',
+	    buttons: ["취소", "삭제하기"]
+	}).then(() => {
+		location.href = '${contextPath}/deleteReview.rc?reviewNo=' + reviewNo.value + '&rId=' + '${loginUser.usersId}' + '&rNo=' + '${recipe.foodNo}';
+	});
 });
 
 </script>

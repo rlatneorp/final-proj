@@ -1571,8 +1571,7 @@ p b {
             $('.textbox').append(result);
                          for(let img  of data.imgList){
                             if(rev.reviewNo == img.imageDivideNo){
-//                             	console.log(img);
-                            	if(img.imageRenameName.indexOf('jpg') != -1 || img.imageRenameName.indexOf('png') != -1){
+                            	if(img.imageRenameName.indexOf('JPG') !== -1 || img.imageRenameName.indexOf('PNG') != -1 || img.imageRenameName.indexOf('jpg') !== -1 || img.imageRenameName.indexOf('png') != -1){
 		                            let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
 		                            let reviewNos = document.getElementsByName("reviewNo");
 		                               for(const revNo of reviewNos){
@@ -1635,7 +1634,7 @@ p b {
             $('.textbox').append(result);
                          for(let img  of data.imgList){
                             if(rev.reviewNo == img.imageDivideNo){
-                            	if(img.imageRenameName.indexOf('JPG') !== -1 || img.imageRenameName.indexOf('PNG') != -1){
+                            	if(img.imageRenameName.indexOf('JPG') !== -1 || img.imageRenameName.indexOf('PNG') != -1 || img.imageRenameName.indexOf('jpg') !== -1 || img.imageRenameName.indexOf('png') != -1){
 		                            let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
 		                            let reviewNos = document.getElementsByName("reviewNo");
 		                               for(const revNo of reviewNos){

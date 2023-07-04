@@ -380,6 +380,7 @@ public class MarketDAO {
 	public Cart selectCart(SqlSessionTemplate sqlSession, int usersNo) {
 		return sqlSession.selectOne("marketMapper.selectCart", usersNo);
 	}
+	
 	public ArrayList<QA> qnalist(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return (ArrayList)sqlSession.selectList("marketMapper.qnalist", map);
 	}
@@ -418,6 +419,8 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectWholeHotDeal");
 	}
 
-
+	public Review selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return sqlSession.selectOne("marketMapper.selectDetailReview", reviewNo);
+	}
 
 }

@@ -745,79 +745,77 @@ p b {
 
 </style>
 <body>
-<span>
-<%@include file="../common/storeTop.jsp" %>
-<br>
-</span>
+	<span>
+		<%@include file="../common/storeTop.jsp" %>
+		<br>
+	</span>
 	<form action="${contextPath}/insertCart.ma" method="post">
-	<main id="order-wrap">
-		<!-- 구매창 컨테이너 -->
-		<div class="left">
-			<!-- 구매창 왼쪽 사진 넣는 곳 -->
-			<c:forEach items="${mainImage}" var="main">
-				<c:if test="${ fn:containsIgnoreCase(main.imageRenameName, 'jpg') or fn:containsIgnoreCase(main.imageRenameName, 'png')}">
+		<main id="order-wrap">
+			<!-- 구매창 컨테이너 -->
+			<div class="left">
+				<!-- 구매창 왼쪽 사진 넣는 곳 -->
+				<c:forEach items="${mainImage}" var="main">
 					<img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
-				</c:if>
-			</c:forEach>
-<!-- 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
-		</div>
-		<div class="right">
-			<!-- like 유무 가리는 용도 -->
-			<input type="hidden" id="likeYn" value="${like }">
-			<!-- 상품 정보 -->
-			<div class="top">
-				<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-					 <span style="font-weight: 400; font-size: 42px;">${ tool.toolName } </span>
-				</div>
-				<div style="margin: auto; text-align: center;">
-				<br>
-					<h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
-						${ p.productSale }<span>%</span>
-						<!-- 할인율 -->
-					</h2>
-					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-					<c:set var="total" value="${ p.productPrice - (p.productPrice * (p.productSale *0.01))}" />
-					<fmt:formatNumber value="${ total }" groupingUsed="true"/>원
-					</h2>
-					&nbsp;&nbsp;
-					<c:if test="${like ne null}">
-						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
-					</c:if>
-					<c:if test="${like eq null}">
-						<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
-					</c:if>
-					<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-					<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
-					</h2>
-				</div>
+				</c:forEach>
+	<!-- 			<img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
+			</div>
+			<div class="right">
+				<!-- like 유무 가리는 용도 -->
+				<input type="hidden" id="likeYn" value="${like }">
+				<!-- 상품 정보 -->
+				<div class="top">
+					<div class="productNameBox" style="text-align: center; margin-bottom:0px;">
+						 <span style="font-weight: 400; font-size: 42px;">${ tool.toolName } </span>
+					</div>
+					<div style="margin: auto; text-align: center;">
+						<br>
+						<h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
+							${ p.productSale }<span>%</span>
+							<!-- 할인율 -->
+						</h2>
+						<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
+							<c:set var="total" value="${ p.productPrice - (p.productPrice * (p.productSale *0.01))}" />
+							<fmt:formatNumber value="${ total }" groupingUsed="true"/>원
+						</h2>
+						&nbsp;&nbsp;
+						<c:if test="${like ne null}">
+							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+						</c:if>
+						<c:if test="${like eq null}">
+							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+						</c:if>
+						<h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
+							<fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
+						</h2>
+					</div>
 					<div>
 						<div class="productSet">
 							<div style="text-align: center">
 								<span style="font-size: 40px; font-weight: 400; color:#4485d7; class="reviewStar">
-										<c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
-										<c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
-										<c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>
-										<c:if test="${starAvg  eq  2 }" >★★☆☆☆&nbsp&nbsp(2)</c:if>
-										<c:if test="${starAvg  eq  1 }" >★☆☆☆☆&nbsp&nbsp(1)</c:if>
-										<c:if test="${starAvg  eq  0 }" >☆☆☆☆☆&nbsp&nbsp(0)</c:if>
+									<c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
+									<c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
+									<c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>
+									<c:if test="${starAvg  eq  2 }" >★★☆☆☆&nbsp&nbsp(2)</c:if>
+									<c:if test="${starAvg  eq  1 }" >★☆☆☆☆&nbsp&nbsp(1)</c:if>
+									<c:if test="${starAvg  eq  0 }" >☆☆☆☆☆&nbsp&nbsp(0)</c:if>
 								</span>
 							</div>
-	                        <dl class="info_delivery">
+							<dl class="info_delivery">
 	                            <dt style="font-size: 20px; padding:5px; height:45px">
 	                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
 	                            	&nbsp;배송
 	                            </dt>
-	                                </dl>
-	                         		<hr style="margin: 0px;">
-	                                <dl class="info_point" style="margin: 0px;">
-	                            <dt style="font-size: 20px; padding: 5px; height:45px"">
-	                            	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
+							</dl>
+	                    	<hr style="margin: 0px;">
+							<dl class="info_point" style="margin: 0px;">
+								<dt style="font-size: 20px; padding: 5px; height:45px"">
+									<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
 	                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
-	                            </dt>
-	                                </dl>
-									<hr style="margin: 0px;">
+								</dt>
+							</dl>
+							<hr style="margin: 0px;">
 							
-						<c:forEach items="${options}" var="op" varStatus="vs">
+							<c:forEach items="${options}" var="op" varStatus="vs">
 								<c:if test="${vs.index == 0}">
 									<label for="productOptionSet">${op.optionName}</label>
 									<select class='productOptionSet'  required>
@@ -837,22 +835,22 @@ p b {
 								</c:if>
 								<c:if test="${vs.last}">
 									</select>
-							</c:if>
-						</c:forEach>
+								</c:if>
+							</c:forEach>
 						
-					</div>
 						</div>
+					</div>
 				</div>
-								<div class="totalPrice"></div>
-								<br>
-							<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-	<!-- 						<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
-							<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
-
-		</div>
-	</main>
-</form>
-<br>
+				<div class="totalPrice"></div>
+				<br>
+				<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+<!-- 				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
+				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+	
+			</div>
+		</main>
+	</form>
+	<br>
 		
 	
 <div class ="productInfoMain">
@@ -881,16 +879,29 @@ p b {
 	</div>
 		<br>
 	
+		<div class="Infobox">
+			<!-- 제품 사진 및 소개 칸 -->
+			<c:forEach items="${subImage}" var="subImg">
+				<div class="imgbox">
+					<img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto;">
+				</div>
+			</c:forEach>
+	<!-- 		<div class="DetailMoreBtn"> -->
+	<!-- 			<a>상세정보 더보기</a> -->
+	<!-- 		</div> -->
+		</div>
+		<br>
+		
 	
-	<div class="reviewWrap" style=" width:1200px;">
+		<div class="reviewWrap" style=" width:1200px;">
 	
 			<div class="reviewWrap1" style="padding: 10px; border-bottom: 1px solid lightgray;">
-					<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
+				<h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
 				<c:if test="${ loginUser != null }">
-						<div class="review_btn">
-							<a href="createReview.ma?productNo=${p.productNo}">
-							<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
-						</div>
+					<div class="review_btn">
+						<a href="createReview.ma?productNo=${p.productNo}">
+						<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
+					</div>
 				</c:if>	
 
 			<span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
@@ -898,16 +909,16 @@ p b {
 			</div>
 		
 			
-					<c:set var="reviewCount" value="${reviewCount}" />
-					   <c:if test="${reviewCount eq 0}">
-					  	<div style="text-align:center; margin: 10px;">
-					  		<img style="width:100px; height:100px;" src="resources/images/icon_none.png">
-					  	</div>
-					       <p style="margin:auto; text-align:center; font-weight: 400; color: #999999; font-size: 15px">등록된 후기가 없습니다.</p>
-					  </c:if>
+			<c:set var="reviewCount" value="${reviewCount}" />
+			<c:if test="${reviewCount eq 0}">
+				<div style="text-align:center; margin: 10px;">
+			  		<img style="width:100px; height:100px;" src="resources/images/icon_none.png">
+			  	</div>
+				<p style="margin:auto; text-align:center; font-weight: 400; color: #999999; font-size: 15px">등록된 후기가 없습니다.</p>
+			</c:if>
 					  
-	 <div class="textbox" id="textbox"> 
-			<c:forEach items="${ list }" var="r">
+	 		<div class="textbox" id="textbox"> 
+				<c:forEach items="${ list }" var="r">
 					<div class="reviews" >
 						<c:if test="${ r ne null}">
 							<div class="nickName" style="font-size:18px; font-weight:400; padding:10px;">${r.reviewWriter}
@@ -936,236 +947,227 @@ p b {
 										</c:forEach>
 									</ul>
 								</div>
-									<div style="display: inline-block; width: 100%;">
-												<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">
-														${r.reviewContent}  
-												</div>
-									</div>
+							</div>
 						</c:if>
 					</div>
 				</c:forEach>
-		</div>
+			</div>
 
 			<div class="moreView">더보기</div>
 				
-	<div class="productBox">
-		<ul	class="productBoxInfo">
-			<li class="productPageInfo">
-				<a class="accordion_i_tit" data-bdid="info">상품정보</a>			
-				<div class="accordion_i_cont" style="display: none;">
-					<div class="accodion_content">
-                        <dl>
-                            <dt>제품의 유형</dt>
-                            <dd>상세 페이지 참고</dd>
-                        </dl>
-                        <dl>
-                            <dt>생산자 및 소재지</dt>
-                            <dd>상세 페이지 참고</dd>
-                        </dl>
-                        <dl>
-                            <dt>제조연월일 및 유통기한</dt>
-                            <dd>상세 페이지 참고</dd>
-                        </dl>
-                        <dl>
-                            <dt>포장 단위별 용량(중량), 수량</dt>
-                            <dd>상세 페이지 참고</dd>
-                        </dl>
-                        <dl>
-                            <dt>원재료명 및 함량</dt>
-                            <dd>상세 페이지 참고</dd>
-                        </dl>
-                        <dl>
-                            <dt>소비자 상담 전화번호</dt>
-                            <dd>1234-1033</dd>
-                        </dl>
-                    </div>
-                </div>
-			</li>
-			<li class="productPageInfo">
-				<a class="accordion_i_tit2" data-bdid="info">배송/환불/교환</a>
-					<div class="accordion_i_cont2" style="display: none;">
-						<dl>
-                            <dt><h3 style="margin-left: 30px; margin-top: 20px;">배송안내</h3></dt>
-                            <dd>
-                                <div class="admin_msg"><div style="text-align: center;" align="center"><img src="https://ai.esmplus.com/nowhome22/%EC%83%81%ED%92%88%EB%B3%B4%EA%B8%B0/%EB%B0%B0%EC%86%A1%EC%95%88%EB%82%B4_5000.jpg"></div></div>
-                            </dd>
-        
-                            <dt><h3>교환/반품시 주의사항</h3></dt>
-                            <dd>
-                                <div class="admin_msg">
-                                    <p>
-                                        <strong><span style="font-size: 10pt;">- 판매 업체마다 반품 회수지와 택배사가 다르므로 네이버페이로 결제하셨을 경우 반품접수가 불가합니다. (고객센터로 문의하시기 바랍니다.)</span></strong>
-                                    </p>
-                                </div>
-                            </dd>
-
-                            <dt><h3>판매자 정보</h3></dt>
-                            <dd>
-                                <table style="width:100%;">
-                                    <tbody><tr>
-                                        <th style="width:150px;">상호 / 대표</th>
-                                        <td>주식회사 ㅎㄹㅅㄲ / 박신우</td>
-                                        <th style="width:150px;">사업장 소재지</th>
-                                        <td>서울특별시 중구 남대문로 120 그레이츠 청계(구 대일빌딩) 2F, 3F</td>
-                                    </tr>
-                                    <tr>
-                                        <th style="width:150px;">e-mail</th>
-                                        <td>hollosekki@google.co.kr</td>
-                                        <th style="width:150px;">연락처</th>
-                                        <td>1133-1234</td>
-                                    </tr>
-                                    <tr>
-                                        <th style="width:150px;">통신판매업 신고번호</th>
-                                        <td>2023-서울중구-11133</td>
-                                        <th style="width:150px;">사업자번호</th>
-                                        <td>333-10-02541</td>
-                                    </tr>
-                                </tbody></table>
-                            </dd>
-        					<br>
-                            <dt style="background:#E3F6FF; border:1px solid #ddd; padding:9px 12px 10px; border-radius:6px;">본 상품과 컨텐츠는 입점 판매자가 등록한 것으로 (주)홀로세끼는 통신판매중개자로서 거래 당사자가 아니기 때문에 그 내용과 거래에 대한 책임을 일체 지지 않습니다.<br>
-                                <span style="color:#065E87;">홀로세끼 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
-                            <dd></dd>
-                        </dl>
-                      </div> 
-					</li>
-				</ul>
-				<li id="page-qna" class="accordion_i_li">
-	                <a class="accordion_i_tit3">문의<span>( ${ qnaCount } )</span></a>
-	                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
-	                    <div id="ajax-goods-goodsqa-list">
-	                    
-	              	<ul class="goods_accordion_qna">
-	              	
-        <!--  반복 될 부분 -->  
-        <c:forEach items="${qna}" var="qna">
-             <li class="accordion_q_li js_data_row"  style="cursor: pointer;" onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
-                <div class="accordion_q_tit1"> 
-                   
-                    <div class="qna">
-                       <span style="color:#4485d7;">${qna.qnaNo} </span>
-                       |&nbsp
-                       <span style="color: #216dcd; font-weight: 400;">
-							   <c:if test="${qna.qnaType eq 1 }">[배송]</c:if>
-		                       <c:if test="${qna.qnaType eq 2 }">[결제]</c:if>
-		                       <c:if test="${qna.qnaType eq 3 }">[회원]</c:if>
-		                       <c:if test="${qna.qnaType eq 4 }">[상품]</c:if>
-		                       <c:if test="${qna.qnaType eq 0 }">[기타]</c:if>
-                       </span>
-                        ${qna.qnaTitle}
-                    </div>
-                    
-                        <div class="writer" style="display:inline-block; width:100px; margin-left:30px;">${qna.nickName}</div>
-                        <div class="rv_cont_date" style="display:inline-block; width:100px; margin-left:30px; ">${qna.qnaDate}</div>
-                        
-                        <span class="qna_result" style="float: right;">
-	                        <c:if test="${qna.answerContent eq null}"><span style="color: red;">답변 대기</span></c:if>
-	                       <c:if test="${qna.answerContent ne null}"><span style="color: green;">답변 완료</span></c:if>
-                       </span>
-                    
-                
-                </div>
-                <div class="js_detail accordion_q_cont"></div>
-            </li>        
-        </c:forEach>    	
-            <!-- 여기 까지 반복 -->
-            
-			</ul>
-				<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
-<%-- 					<c:if test="${ loginUser != null}"> --%>
-					<c:if test="${ loginUser ne null }">
-					    <div class="review_btn_wr">
-					    <a href="createqna.ma?productNo=${p.productNo}">
-					    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
-					    </div>
-					</c:if>
-<%-- 				    </c:if> --%>
-				</div>
-<!-- 								<div class="pagination" style="display: block"> -->
-<!-- 								<ul> -->
-<!-- 									<li class="on"> -->
-<!-- 									<span>1</span> -->
-<!-- 									</li> -->
-<!-- 								</ul> -->
-								<ul class="pageCustomer pagination justify-content-center">
-								    <c:if test="${ pi.currentPage > 1 }">
-								    <li class="page-item">
-								    	<c:url var="goBack" value="${ loc }">
-											<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
-										</c:url>
-										<a class="page-link" href="${ goBack }" aria-label="Previous">
-											<span aria-hidden="true">&laquo;</span>
-										</a>	
-									</li>
-									</c:if>
-									<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-									   	<c:url var="goNum" value="${ loc }">
-											<c:param name="page" value="${ p }"></c:param>
-										</c:url>
-									  	<li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
-									</c:forEach>
-									<c:if test="${ pi.currentPage < pi.maxPage }">
-									<li class="page-item">
-										<c:url var="goNext" value="${ loc }">
-											<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
-										</c:url>
-										<a class="page-link" href="${ goNext }" aria-label="Next">
-											<span aria-hidden="true">&raquo;</span>
-										</a>
-									</li>
-									</c:if>
-								</ul>
-							</div>
+				<div class="productBox">
+					<ul	class="productBoxInfo">
+						<li class="productPageInfo">
+							<a class="accordion_i_tit" data-bdid="info">상품정보</a>			
+							<div class="accordion_i_cont" style="display: none;">
+								<div class="accodion_content">
+			                        <dl>
+			                            <dt>제품의 유형</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>생산자 및 소재지</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>제조연월일 및 유통기한</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>포장 단위별 용량(중량), 수량</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>원재료명 및 함량</dt>
+			                            <dd>상세 페이지 참고</dd>
+			                        </dl>
+			                        <dl>
+			                            <dt>소비자 상담 전화번호</dt>
+			                            <dd>1234-1033</dd>
+			                        </dl>
+			                    </div>
+			                </div>
+						</li>
+						<li class="productPageInfo">
+							<a class="accordion_i_tit2" data-bdid="info">배송/환불/교환</a>
+							<div class="accordion_i_cont2" style="display: none;">
+								<dl>
+		                            <dt><h3 style="margin-left: 30px; margin-top: 20px;">배송안내</h3></dt>
+		                            <dd>
+		                                <div class="admin_msg"><div style="text-align: center;" align="center"><img src="https://ai.esmplus.com/nowhome22/%EC%83%81%ED%92%88%EB%B3%B4%EA%B8%B0/%EB%B0%B0%EC%86%A1%EC%95%88%EB%82%B4_5000.jpg"></div></div>
+		                            </dd>
+		        
+		                            <dt><h3>교환/반품시 주의사항</h3></dt>
+		                            <dd>
+		                                <div class="admin_msg">
+		                                    <p>
+		                                        <strong><span style="font-size: 10pt;">- 판매 업체마다 반품 회수지와 택배사가 다르므로 네이버페이로 결제하셨을 경우 반품접수가 불가합니다. (고객센터로 문의하시기 바랍니다.)</span></strong>
+		                                    </p>
+		                                </div>
+		                            </dd>
+		
+		                            <dt><h3>판매자 정보</h3></dt>
+		                            <dd>
+		                                <table style="width:100%;">
+		                                    <tbody><tr>
+		                                        <th style="width:150px;">상호 / 대표</th>
+		                                        <td>주식회사 ㅎㄹㅅㄲ / 박신우</td>
+		                                        <th style="width:150px;">사업장 소재지</th>
+		                                        <td>서울특별시 중구 남대문로 120 그레이츠 청계(구 대일빌딩) 2F, 3F</td>
+		                                    </tr>
+		                                    <tr>
+		                                        <th style="width:150px;">e-mail</th>
+		                                        <td>hollosekki@google.co.kr</td>
+		                                        <th style="width:150px;">연락처</th>
+		                                        <td>1133-1234</td>
+		                                    </tr>
+		                                    <tr>
+		                                        <th style="width:150px;">통신판매업 신고번호</th>
+		                                        <td>2023-서울중구-11133</td>
+		                                        <th style="width:150px;">사업자번호</th>
+		                                        <td>333-10-02541</td>
+		                                    </tr>
+		                                </tbody></table>
+		                            </dd>
+		        					<br>
+		                            <dt style="background:#E3F6FF; border:1px solid #ddd; padding:9px 12px 10px; border-radius:6px;">본 상품과 컨텐츠는 입점 판매자가 등록한 것으로 (주)홀로세끼는 통신판매중개자로서 거래 당사자가 아니기 때문에 그 내용과 거래에 대한 책임을 일체 지지 않습니다.<br>
+		                                <span style="color:#065E87;">홀로세끼 쇼핑몰 내 모든 사진 및 컨텐츠를 무단 사용 시 법적 조치를 받을 수 있습니다.</span></dt>
+		                            <dd></dd>
+		                        </dl>
+							</div> 
+						</li>
+					</ul>
+					<li id="page-qna" class="accordion_i_li">
+		                <a class="accordion_i_tit3">문의<span>( ${ qnaCount } )</span></a>
+		                <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
+		                    <div id="ajax-goods-goodsqa-list">
+		                    
+		              	<ul class="goods_accordion_qna">
+					              	
+					        <!--  반복 될 부분 -->  
+					        <c:forEach items="${qna}" var="qna">
+					             <li class="accordion_q_li js_data_row" onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
+					                <div class="accordion_q_tit1"> 
+					                   
+					                    <div class="qna">
+					                       <span style="color:#4485d7;">${qna.qnaNo} </span>
+					                       |&nbsp
+					                       <span style="color: #216dcd; font-weight: 400;">
+												   <c:if test="${qna.qnaType eq 1 }">[배송]</c:if>
+							                       <c:if test="${qna.qnaType eq 2 }">[결제]</c:if>
+							                       <c:if test="${qna.qnaType eq 3 }">[회원]</c:if>
+							                       <c:if test="${qna.qnaType eq 4 }">[상품]</c:if>
+							                       <c:if test="${qna.qnaType eq 0 }">[기타]</c:if>
+					                       </span>
+					                        ${qna.qnaTitle}
+					                    </div>
+										<div class="writer" style="display:inline-block; width:100px; margin-left:30px;">${qna.nickName}</div>
+										<div class="rv_cont_date" style="display:inline-block; width:100px; margin-left:30px; ">${qna.qnaDate}</div>
+										<span class="qna_result" style="float: right;">
+											<c:if test="${qna.answerContent eq null}"><span style="color: red;">답변 대기</span></c:if>
+											<c:if test="${qna.answerContent ne null}"><span style="color: green;">답변 완료</span></c:if>
+										</span>
+									</div>
+					                <div class="js_detail accordion_q_cont"></div>
+					            </li>        
+					        </c:forEach>    	
+				            <!-- 여기 까지 반복 -->
+				            
+						</ul>
+						<div class="photoreview_tit3" style="padding: 20px 0 0 12px;">
+		<%-- 					<c:if test="${ loginUser != null}"> --%>
+							<c:if test="${ loginUser ne null }">
+							    <div class="review_btn_wr">
+							    <a href="createqna.ma?productNo=${p.productNo}">
+							    	<img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">문의하기</a>
+							    </div>
+							</c:if>
+	<%-- 				    </c:if> --%>
 						</div>
+	<!-- 								<div class="pagination" style="display: block"> -->
+	<!-- 								<ul> -->
+	<!-- 									<li class="on"> -->
+	<!-- 									<span>1</span> -->
+	<!-- 									</li> -->
+	<!-- 								</ul> -->
+						<ul class="pageCustomer pagination justify-content-center">
+						    <c:if test="${ pi.currentPage > 1 }">
+						    <li class="page-item">
+						    	<c:url var="goBack" value="${ loc }">
+									<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+								</c:url>
+								<a class="page-link" href="${ goBack }" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>	
+							</li>
+							</c:if>
+							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+							   	<c:url var="goNum" value="${ loc }">
+									<c:param name="page" value="${ p }"></c:param>
+								</c:url>
+							  	<li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
+							</c:forEach>
+							<c:if test="${ pi.currentPage < pi.maxPage }">
+							<li class="page-item">
+								<c:url var="goNext" value="${ loc }">
+									<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+								</c:url>
+								<a class="page-link" href="${ goNext }" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+							</c:if>
+						</ul>
 					</div>
+				</div>
 			</div>
 		</div>
-        	<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	        	<div class="modal-dialog modal-dialog-centered">
-	        		<div class="modal-content">
-	        			<div class="modal-header">
-	        				<h1 class="modal-title fs-5" id="exampleModalLabel">장바구니 담기</h1>
-	        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	        			</div>
-	        			<div class="modal-body">
-	        				<i class="bi bi-check-circle-fill"></i><br>
-	        				<h3>${ tool.toolName} </h3><br>
-	        				상품이 장바구니에 담겼습니다.
-	
-	        			</div>
-	        			<div class="footer" style="text-align:center; height: 50px;">
-								<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
-								<button type="button" class="button btn-y" id="moveCart" onclick="location.href='basket.ma'">장바구니로</button>
-	<!--         				<button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
-	<!--         				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button> -->
-	        			</div>
-	        		</div>
-	        	</div>
-	        </div>
-	        
-        	<div class="modal fade" id="cartFailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	        	<div class="modal-dialog modal-dialog-centered">
-	        		<div class="modal-content">
-	        			<div class="modal-header">
-	        				<h1 class="modal-title fs-5" id="exampleModalFail">장바구니 담기 오류</h1>
-	        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	        			</div>
-	        			<div class="modal-body">
-	        				<i class="bi bi-x-circle-fill"></i><br><br>
-	        				<h3>장바구니에 담지 못했습니다. </h3>
-	        			</div>
-	        			<div class="footer" style="text-align:center; height: 50px;">
-	        			</div>
-	        		</div>
-	        	</div>
-	        </div>
+	</div>
+	<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       	<div class="modal-dialog modal-dialog-centered">
+       		<div class="modal-content">
+       			<div class="modal-header">
+       				<h1 class="modal-title fs-5" id="exampleModalLabel">장바구니 담기</h1>
+       				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       			</div>
+       			<div class="modal-body">
+       				<i class="bi bi-check-circle-fill"></i><br>
+       				<h3>${ tool.toolName} </h3><br>
+       				상품이 장바구니에 담겼습니다.
 
-<br><br><br>
+       			</div>
+       			<div class="footer" style="text-align:center; height: 50px;">
+						<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
+						<button type="button" class="button btn-y" id="moveCart" onclick="location.href='basket.ma'">장바구니로</button>
+<!--         				<button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
+<!--         				<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;" data-bs-toggle="modal" data-bs-target="#cartModal">장바구니</button> -->
+       			</div>
+       		</div>
+		</div>
+	</div>
+	        
+	<div class="modal fade" id="cartFailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       	<div class="modal-dialog modal-dialog-centered">
+       		<div class="modal-content">
+       			<div class="modal-header">
+       				<h1 class="modal-title fs-5" id="exampleModalFail">장바구니 담기 오류</h1>
+       				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       			</div>
+       			<div class="modal-body">
+       				<i class="bi bi-x-circle-fill"></i><br><br>
+       				<h3>장바구니에 담지 못했습니다. </h3>
+       			</div>
+       			<div class="footer" style="text-align:center; height: 50px;"></div>
+       		</div>
+		</div>
+	</div>
+
+	<br><br><br>
 	<script>
 	
 	window.onload = function(){
 		
-		
+// 		장바구니로 이동 버튼 이벤트
 		document.getElementById('moveCart').addEventListener('click', function() {
 			const usersNo = '${loginUser.usersNo}'
 			location.href='${contextPath}/basket.ma?usersNo=' + usersNo;
@@ -1173,7 +1175,7 @@ p b {
 		
 		const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
 		const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
-		const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
+// 		const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
 		const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
 	 	const buyBtn = document.getElementById("buyBtn");
 		const result = document.getElementById("productResult");
@@ -1202,38 +1204,38 @@ p b {
 		})
 	
 
-			$(document).on("click",".btnbox",function(e){
-				const increBtn = this.childNodes[2]; //증가버튼
-				const decreBtn = this.childNodes[0]; //감소버튼
-				const cartNum = this.childNodes[1];  //카트수량 
-				e.stopPropagation();    //이벤트 버블링 막기
-				if(e.target == increBtn){
-					totalPrice1 = this.childNodes[1].value*${total}+${total};
-				this.childNodes[1].value++;
-				} 
-				if(e.target == decreBtn){
-					totalPrice1 = cartNum.value * ${total}-${total};
-					 cartNum.value--;
-					 priceSet--;
-					if(cartNum.value < 1){
-						cartNum.value=1;
-					}
-					
+		$(document).on("click",".btnbox",function(e){
+			const increBtn = this.childNodes[2]; //증가버튼
+			const decreBtn = this.childNodes[0]; //감소버튼
+			const cartNum = this.childNodes[1];  //카트수량 
+			e.stopPropagation();    //이벤트 버블링 막기
+			if(e.target == increBtn){
+				totalPrice1 = this.childNodes[1].value*${total}+${total};
+			this.childNodes[1].value++;
+			} 
+			if(e.target == decreBtn){
+				totalPrice1 = cartNum.value * ${total}-${total};
+				 cartNum.value--;
+				 priceSet--;
+				if(cartNum.value < 1){
+					cartNum.value=1;
 				}
 				
-				if(e.target == this.childNodes[3] || e.target ==this.childNodes[3].childNodes[0]){ //x버튼을 클릭하거나 x이미지를 클릭하거나 상품옵션창을 삭제한다.
-					this.parentNode.parentNode.remove();
-				}
-			})
+			}
 			
-			
-			
-		  const usersNo = '${loginUser.usersNo}';
-		  const divisionNo = '${p.productNo}';
-	      like.addEventListener("click", function() {
-		    if(like.innerText === '♡') {
-		        //찜이 안 되어 있으면 
-		        $.ajax({
+			if(e.target == this.childNodes[3] || e.target ==this.childNodes[3].childNodes[0]){ //x버튼을 클릭하거나 x이미지를 클릭하거나 상품옵션창을 삭제한다.
+				this.parentNode.parentNode.remove();
+			}
+		})
+		
+		
+		
+		const usersNo = '${loginUser.usersNo}';
+		const divisionNo = '${p.productNo}';
+		like.addEventListener("click", function() {
+			if(like.innerText === '♡') {
+	        //찜이 안 되어 있으면 
+				$.ajax({
 		        	url:'${contextPath}/insertLike.ma',
 		        	data:{
 		        		usersNo:usersNo,
@@ -1304,45 +1306,90 @@ p b {
 		    	})
 		    }
 		});
-	   
-	      
-	      let productOp = []; 
-	      let opTextBox = []; 
-	      
-	    	for( prOp  of productOption2Set){ 
-	   		 productOp.unshift(prOp.innerText);
+   
+      
+		let productOp = []; 
+		let opTextBox = []; 
+		if(productOption2Set != null){
+			for(prOp of productOption2Set){
+				productOp.unshift(prOp.innerText);
 	   		 
-	   		 for( opText of productOption2Set){
-	   			opTextBox.unshift(opText.value);
-	   		 }
-	   		 if(prOp.value == "옵션을 선택해주세요."){
-	   			productOp.pop();
-	   		 }
-	   	 }
-	    	productOptionSet.addEventListener("change", function(){
-	                let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
-	                let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-	                if ( result != "") { 
-						o = productOp;
-		                }else if(result == ""){
-		                	o = ["옵션을 선택해주세요."];
-			             }
-	                	
-		                if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
-		             	   productOption2Set.options.length=0;
-		                }
-	                
-	                for ( let i = 0; i < o.length; i++) {
-	                		productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
-	                  }
-	    	})
-	    	
-	    	
+				for( opText of productOption2Set){
+		   			opTextBox.unshift(opText.value);
+				}
+				if(prOp.value == "옵션을 선택해주세요."){
+		   			productOp.pop();
+				}
+			}
+		}
+    	productOptionSet.addEventListener("change", function(){
+			let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
+			let o;										   //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
+			if(result != "") {
+				o = productOp;
+			}else if(result == ""){
+                	o = ["옵션을 선택해주세요."];
+			}
+			
+			if(productOption2Set != null){
+				if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+					productOption2Set.options.length=0;
+				}
+	
+				for(let i = 0; i < o.length; i++) {
+					productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
+				}
+			}else{
+				const select =  $('.productOptionSet option:selected');
+				cartCount.value = 1;
+				let optionName = "${tool.toolName}"+select.text();
+				const opSearch = document.getElementsByClassName('opSearch');
+				let YN = "Y";
+				for(let k=0; k<opSearch.length; k++){
+	      			if(opSearch[k].innerText == optionName){
+	      				alert("이미 선택한 옵션입니다.");
+	      				YN = "N";
+	      			}
+	      		}
+				
+				if(YN == "Y" && select.val()!="옵션을 선택해주세요."){
+					productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+								+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+							 							+'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
+							 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
+							 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
+							 							+'<input type="hidden" name="productPrice" value="${total}">'
+							 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
+							 							+'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+							 						+'</h4>'
+							 						+'<div>'
+							 							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+							 								+'<button class="decrease" type="button">-</button>'
+							 								+'<input type="number" class="cartCount"'
+							 								+'	value="1" name="cartCount" min="1" readonly>'
+							 								+'<button class="increase" type="button">+</button>'
+							 								+'<button class="removeProudct" type="button" style="float: right;">'
+							 									+'<img src="resources/images/close.png" style="width: 10px;">'
+							 							+'<span>'
+							 							+'</button>'
+							 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
+							 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+							 						+'</div>'
+							 						 +'<br>'
+							 					+'</div>');
+					}
+				
+			}
+    	})
+    	
+    	if(productOption2Set != null){
+    		
 	        productOption2Set.addEventListener("change", function(){
-	             const select =  $('.productOptionSet option:selected');
-	             const select2 = $('.productOption2Set option:selected');
-	             cartCount.value = 1;
-	      		let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
+				const select =  $('.productOptionSet option:selected');
+				const select2 = $('.productOption2Set option:selected');
+				cartCount.value = 1;
+	      		let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
+// 	      		let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
 	      		const opSearch = document.getElementsByClassName('opSearch');
 	      		let YN = "Y";
 	      		for(let k=0; k<opSearch.length; k++){
@@ -1350,43 +1397,44 @@ p b {
 	      				alert("이미 선택한 옵션입니다.");
 	      				YN = "N";
 	      			}
-	      			
 	      		}
-
-		      			if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
-							productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
-			 						+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-									 							+'<span class="opSearch">캠핑용 후라이팬'+select.text()+" "+select2.text()+'</span>'
-									 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
-									 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
-									 							+'<input type="hidden" name="productPrice" value="${total}">'
-									 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
-									 							+'<input type="hidden" name="productOption2" value='+select2.val()+'>'
-									 							+'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
-									 						+'</h4>'
-									 						+'<div>'
-									 							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-									 								+'<button class="decrease" type="button">-</button>'
-									 								+'<input type="number" class="cartCount"'
-									 								+'	value="1" name="cartCount" min="1" readonly>'
-									 								+'<button class="increase" type="button">+</button>'
-									 								+'<button class="removeProudct" type="button" style="float: right;">'
-									 									+'<img src="resources/images/close.png" style="width: 10px;">'
-									 							+'<span>'
-									 							+'</button>'
-									 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-									 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-									 						+'</div>'
-									 						 +'<br>'
-									 					+'</div>');
-						
-		      			}
-			  					
-	      	})
+	
+				if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
+				productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+							+'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+						 							+'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
+						 							+'<input type="hidden" name="productNo" value="${tool.productNo}">'
+						 							+'<input type="hidden" name="productName" value="${tool.toolName}">'
+						 							+'<input type="hidden" name="productPrice" value="${total}">'
+						 							+'<input type="hidden" name="productOption" value='+select.val()+'>'
+						 							+'<input type="hidden" name="productOption2" value='+select2.val()+'>'
+						 							+'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+						 						+'</h4>'
+						 						+'<div>'
+						 							+'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+						 								+'<button class="decrease" type="button">-</button>'
+						 								+'<input type="number" class="cartCount"'
+						 								+'	value="1" name="cartCount" min="1" readonly>'
+						 								+'<button class="increase" type="button">+</button>'
+						 								+'<button class="removeProudct" type="button" style="float: right;">'
+						 									+'<img src="resources/images/close.png" style="width: 10px;">'
+						 							+'<span>'
+						 							+'</button>'
+						 							+'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
+						 							+'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+						 						+'</div>'
+						 						 +'<br>'
+						 					+'</div>');
+				}
+			})
+    	}else{
+    		
+    		
+    	}
 	      	
-	   function priceToString() {
-	       return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	   }
+		function priceToString() {
+			return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		}
 	   
 	    
 		
@@ -1402,208 +1450,196 @@ p b {
 			        	$(".moreView").hide(); // 컨텐츠 없을시 alert 창 띄우기 
 			        }
 			    });
-		});
+			});
 			
 			
 			
 			
-	    $("#cartbtn").click(function() {
-	        productNo = $("input[name='productNo']").val();
-	        var cartCount = $(".cartCount").val();
-	        var productOption = $(".productOption").val();
-	        var productOption2 = $(".productOption2").val();
-	        var preorderNo = 0;
-	        
-	        var productNoValues=[];
-	        var cartCountValues=[];
-	        var productOptionValues=[];
-	        var productOption2Values=[];
-	        var usersNoValues=[];
-	        
-	        
-	        $("input[name='productNo']").each(function(){
-	        	productNoValues.push($(this).val());
-	        })
-	        
-	        $(".cartCount").each(function(){
-	        	cartCountValues.push($(this).val());
-	        })
-	        
-	        $("input[name='productOption']").each(function(){
-	        	productOptionValues.push($(this).val());
-	        })
-	        
-	        $("input[name='productOption2']").each(function(){
-	        	productOption2Values.push($(this).val());
-	        })
-	        
-	        $("input[name='usersNo']").each(function(){
-	        	usersNoValues.push($(this).val());
-	        })
-	        
-	        let count = 0;
-		        for(i=0; i<productNoValues.length; i++){
-			        $.ajax({
-			            url: "insertCart.ma",
-			            async: false,
-			            data: {
-			        		"productNo":productNoValues[i], 
-				        	"cartCount":cartCountValues[i],
-				        	"productOption":productOptionValues[i], 
-				        	"productOption2":productOption2Values[i],
-				        	"usersNo":usersNoValues[i],
-				        },
-			            success: preNo =>{
-		                	count++;
-			            },
-			            error: allData => {
-			            	console.log("error");
-			            }
-			        })
-		        }
-	        if(count == productNoValues.length &&  count != 0) {
-	            	$("#cartModal").modal("show");
-// 	        	$("#cartFailModal").modal("show");
-	        	}else if(count != productNoValues.length){
-	        		$("#cartFailModal").modal("show");
-	        	}else if((count == 0)  || productNoValues.length == 0 ){
-	        		$("#cartFailModal").modal("show");
-	        	}
-	        	
-	    })
+		    $("#cartbtn").click(function() {
+		        productNo = $("input[name='productNo']").val();
+		        var cartCount = $(".cartCount").val();
+		        var productOption = $(".productOption").val();
+		        var productOption2 = $(".productOption2").val();
+		        var preorderNo = 0;
+		        
+		        var productNoValues=[];
+		        var cartCountValues=[];
+		        var productOptionValues=[];
+		        var productOption2Values=[];
+		        var usersNoValues=[];
+		        
+		        
+		        $("input[name='productNo']").each(function(){
+		        	productNoValues.push($(this).val());
+		        })
+		        
+		        $(".cartCount").each(function(){
+		        	cartCountValues.push($(this).val());
+		        })
+		        
+		        $("input[name='productOption']").each(function(){
+		        	productOptionValues.push($(this).val());
+		        })
+		        
+		        $("input[name='productOption2']").each(function(){
+		        	productOption2Values.push($(this).val());
+		        })
+		        
+		        $("input[name='usersNo']").each(function(){
+		        	usersNoValues.push($(this).val());
+		        })
+		        
+		        let count = 0;
+			        for(i=0; i<productNoValues.length; i++){
+				        $.ajax({
+				            url: "insertCart.ma",
+				            async: false,
+				            data: {
+				        		"productNo":productNoValues[i], 
+					        	"cartCount":cartCountValues[i],
+					        	"productOption":productOptionValues[i], 
+					        	"productOption2":productOption2Values[i],
+					        	"usersNo":usersNoValues[i],
+					        },
+				            success: preNo =>{
+			                	count++;
+				            },
+				            error: allData => {
+				            	console.log("error");
+				            }
+				        })
+			        }
+		        if(count == productNoValues.length &&  count != 0) {
+		            	$("#cartModal").modal("show");
+	// 	        	$("#cartFailModal").modal("show");
+		        	}else if(count != productNoValues.length){
+		        		$("#cartFailModal").modal("show");
+		        	}else if((count == 0)  || productNoValues.length == 0 ){
+		        		$("#cartFailModal").modal("show");
+		        	}
+		        	
+		    })
 	    
-	    	    $(".review_stardesc").click(function(){
-	    	    	let star='';
-	    	    	let result = '';
-	    	    	let result2 = '';
-			    	$.ajax({
-			    		url:"reviewAvgDesc.ma",
-			    		type:"post",
-			    		data:{productNo:${p.productNo}},
-			    		success: data =>{
-			    			$('.textbox').html('');
-			    				for(let rev  of data.result ){
-		    						switch(rev.reviewScore){
-		    						case 0 : star = '☆☆☆☆☆'; break;
-		    						case 1 : star = '★☆☆☆☆'; break;
-		    						case 2 : star = '★★☆☆☆'; break;
-		    						case 3 : star = '★★★☆☆'; break;
-		    						case 4 : star = '★★★★☆'; break;
-		    						case 5 : star = '★★★★★'; break;
-	    						}
-		    						
-									result = '<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>'+rev.reviewWriter
-					+				'<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>'
-					+		star+'&nbsp'
-					+	'</span>'
-					+	'<span style="font-size: 15px; font-weight: 200;">'+rev.reviewDate+'</span>'
-					
-					+	'</div>'
-					+	'<div class="reviewPhoto" style="padding-left:10px"">'
-					+		'<ul>'
-					+			'<input type="hidden" name="reviewNo" value="'+rev.reviewNo+'">'
-					+		'</ul>'
-					+	'</div>'
-					+		'<div style="display: inline-block; width: 100%;">'
-					+				'<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">'
-					+							rev.reviewContent
-					+					'</div>'
-					+		'</div>';
-					$('.textbox').append(result);
-			    					for(let img  of data.imgList){
-			    						if(rev.reviewNo == img.imageDivideNo){
-				    					let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
-				    					let reviewNos = document.getElementsByName("reviewNo");
-				    					
-					    					for(const revNo of reviewNos){
-					    						if(revNo.value == rev.reviewNo){
-					    							revNo.parentElement.innerHTML +=result2;
-					    						}
-					    					}
-			    						}
-				    				}
+    	    $(".review_stardesc").click(function(){
+    	    	let star='';
+    	    	let result = '';
+    	    	let result2 = '';
+		    	$.ajax({
+		    		url:"reviewAvgDesc.ma",
+		    		type:"post",
+		    		data:{productNo:${p.productNo}},
+		    		success: data =>{
+		    			$('.textbox').html('');
+		    				for(let rev  of data.result ){
+	    						switch(rev.reviewScore){
+	    						case 0 : star = '☆☆☆☆☆'; break;
+	    						case 1 : star = '★☆☆☆☆'; break;
+	    						case 2 : star = '★★☆☆☆'; break;
+	    						case 3 : star = '★★★☆☆'; break;
+	    						case 4 : star = '★★★★☆'; break;
+	    						case 5 : star = '★★★★★'; break;
+    						}
+	    						
+								result = '<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>'+rev.reviewWriter
+				+				'<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>'
+				+		star+'&nbsp'
+				+	'</span>'
+				+	'<span style="font-size: 15px; font-weight: 200;">'+rev.reviewDate+'</span>'
+				
+				+	'</div>'
+				+	'<div class="reviewPhoto" style="padding-left:10px"">'
+				+		'<ul>'
+				+			'<input type="hidden" name="reviewNo" value="'+rev.reviewNo+'">'
+				+		'</ul>'
+				+	'</div>'
+				+		'<div style="display: inline-block; width: 100%;">'
+				+				'<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">'
+				+							rev.reviewContent
+				+					'</div>'
+				+		'</div>';
+				$('.textbox').append(result);
+		    					for(let img  of data.imgList){
+		    						if(rev.reviewNo == img.imageDivideNo){
+			    					let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
+			    					let reviewNos = document.getElementsByName("reviewNo");
+			    					
+				    					for(const revNo of reviewNos){
+				    						if(revNo.value == rev.reviewNo){
+				    							revNo.parentElement.innerHTML +=result2;
+				    						}
+				    					}
+		    						}
 			    				}
-			    			
-			    		},
-			    		error:function(){
-			                alert("통신실패");
-			            }
-			    	})
+		    				}
+		    			
+		    		},
+		    		error:function(){
+		                alert("통신실패");
+		            }
+		    	})
 
-	   			})
-	   			
-	   			
-	   			$(".review_desc").click(function(){
-	    	    	let star='';
-	    	    	let result = '';
-	    	    	let result2 = '';
-			    	$.ajax({
-			    		url:"reviewDesc.ma",
-			    		type:"post",
-			    		data:{productNo:${p.productNo}},
-			    		success: data =>{
-			    			$('.textbox').html('');
-			    				for(let rev  of data.result ){
-		    						switch(rev.reviewScore){
-		    						case 0 : star = '☆☆☆☆☆'; break;
-		    						case 1 : star = '★☆☆☆☆'; break;
-		    						case 2 : star = '★★☆☆☆'; break;
-		    						case 3 : star = '★★★☆☆'; break;
-		    						case 4 : star = '★★★★☆'; break;
-		    						case 5 : star = '★★★★★'; break;
-	    						}
-		    						
-									result = '<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>'+rev.reviewWriter
-					+				'<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>'
-					+		star+'&nbsp'
-					+	'</span>'
-					+	'<span style="font-size: 15px; font-weight: 200;">'+rev.reviewDate+'</span>'
-					
-					+	'</div>'
-					+	'<div class="reviewPhoto" style="padding-left:10px"">'
-					+		'<ul>'
-					+			'<input type="hidden" name="reviewNo" value="'+rev.reviewNo+'">'
-					+		'</ul>'
-					+	'</div>'
-					+		'<div style="display: inline-block; width: 100%;">'
-					+				'<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">'
-					+							rev.reviewContent
-					+					'</div>'
-					+		'</div>';
-					
-					$('.textbox').append(result);
-			    					for(let img  of data.imgList){
-			    						if(rev.reviewNo == img.imageDivideNo){
-			    							
-				    					let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
-				    						
-// 				    						<c:if test="${ fn:containsIgnoreCase('+img.imageRenameName+', 'jpg') or fn:containsIgnoreCase('+img.imageRenameName+', 'png')}">'
-// 													+'<li><img src="${ contextPath }/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
-// 													+'</c:if>'
-				    						
-				    						
-				    					let reviewNos = document.getElementsByName("reviewNo");
-				    					
-					    					for(const revNo of reviewNos){
-					    						if(revNo.value == rev.reviewNo){
-					    							revNo.parentElement.innerHTML +=result2;
-					    						}
-					    					}
-			    						}
-				    				}
+   			})
+   			
+   			
+   			$(".review_desc").click(function(){
+    	    	let star='';
+    	    	let result = '';
+    	    	let result2 = '';
+		    	$.ajax({
+		    		url:"reviewDesc.ma",
+		    		type:"post",
+		    		data:{productNo:${p.productNo}},
+		    		success: data =>{
+		    			$('.textbox').html('');
+		    				for(let rev  of data.result ){
+	    						switch(rev.reviewScore){
+	    						case 0 : star = '☆☆☆☆☆'; break;
+	    						case 1 : star = '★☆☆☆☆'; break;
+	    						case 2 : star = '★★☆☆☆'; break;
+	    						case 3 : star = '★★★☆☆'; break;
+	    						case 4 : star = '★★★★☆'; break;
+	    						case 5 : star = '★★★★★'; break;
+    						}
+	    						
+								result = '<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>'+rev.reviewWriter
+				+				'<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>'
+				+		star+'&nbsp'
+				+	'</span>'
+				+	'<span style="font-size: 15px; font-weight: 200;">'+rev.reviewDate+'</span>'
+				
+				+	'</div>'
+				+	'<div class="reviewPhoto" style="padding-left:10px"">'
+				+		'<ul>'
+				+			'<input type="hidden" name="reviewNo" value="'+rev.reviewNo+'">'
+				+		'</ul>'
+				+	'</div>'
+				+		'<div style="display: inline-block; width: 100%;">'
+				+				'<div class="reviewContent" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px; font-weight: 200;">'
+				+							rev.reviewContent
+				+					'</div>'
+				+		'</div>';
+				
+				$('.textbox').append(result);
+		    					for(let img  of data.imgList){
+		    						if(rev.reviewNo == img.imageDivideNo){
+			    					let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
+			    					let reviewNos = document.getElementsByName("reviewNo");
+			    					
+				    					for(const revNo of reviewNos){
+				    						if(revNo.value == rev.reviewNo){
+				    							revNo.parentElement.innerHTML +=result2;
+				    						}
+				    					}
+		    						}
 			    				}
-			    		},
-			    		error:function(){
-			                alert("통신실패");
-			            }
-			    	})
-
-	   			})
-
-	    
-		
+		    				}
+		    		},
+		    		error:function(){
+		                alert("통신실패");
+		            }
+		    	})
+   			})
 		})
-		
 	}
 	 </script> 
 </body>

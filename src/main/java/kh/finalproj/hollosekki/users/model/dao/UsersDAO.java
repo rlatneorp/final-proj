@@ -238,9 +238,6 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.selectReview", map, rowBounds);
 	}
 
-	public Review selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
-		return sqlSession.selectOne("usersMapper.selectDetailReview", reviewNo);
-	}
 
 	
 

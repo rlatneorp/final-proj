@@ -143,7 +143,7 @@ th:first-child, td:first-child {
 							<c:forEach items="${ list }" var="l">
 								<c:if test="${ l.NUMBER_TYPE == 1 and !empty l.RECIPE_NAME }">
 									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
-										<td><img src="${ contextPath }/resources/uploadFiles/${l.RECIPE_IMAGE}" style="width: 100%; height: 100%"/></td>
+										<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
 										<td>${ l.NICKNAME }</td>
@@ -152,7 +152,7 @@ th:first-child, td:first-child {
 								</c:if>
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
 									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/menuDetail.mn?mNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-bookMark-no="${l.BOOKMARK_NO}">
-										<td><img src="${ contextPath }/resources/uploadFiles/${l.MENU_IMAGE}" style="width: 100%; height: 100%"/></td>
+										<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 										<td>식단</td>
 										<td>${ l.MENU_NAME }</td>
 										<td>${ l.NAME }</td>

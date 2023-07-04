@@ -297,10 +297,10 @@ public class MarketController {
          model.addAttribute("imglist", imglist);
       }
       
-////      Integer result = mkService.selectLike(users.getUsersNo(), productNo);
-//      if(result >= 1) {
-//    	  model.addAttribute("like", result);
-//      }
+      Integer result = mkService.selectLike(users.getUsersNo(), productNo);
+      if(result >= 1) {
+    	  model.addAttribute("like", result);
+      }
       
       model.addAttribute("reviewCount", reviewCount);
       model.addAttribute("tool", tool);
@@ -312,7 +312,7 @@ public class MarketController {
       return "market_detail";
    }
    
-
+    
    @GetMapping("createqna.ma")
    	public String createqna(HttpSession session, Product p, Model model) {
 	   Users users = (Users)session.getAttribute("loginUser");
@@ -802,7 +802,7 @@ public class MarketController {
 				   img = mkService.selectImg(productNo, 6);
 			   } else if (ingre != null) {
 				   lists.setProductName(ingre.getIngredientName());
-				   img = mkService.selectImg(productNo, 5);
+				   img = mkService.selectImg(ingre.getIngredientNo(), 5);
 			   }
 			   if(img != null) {
 				   lists.setProductImg(img);
@@ -820,7 +820,7 @@ public class MarketController {
 			   } else if (tool != null) {
 				   lists.setProductName(tool.getToolName()); img = mkService.selectImg(productNo, 6);
 			   } else if (ingre != null) {
-				   lists.setProductName(ingre.getIngredientName()); img = mkService.selectImg(productNo, 5);
+				   lists.setProductName(ingre.getIngredientName()); img = mkService.selectImg(ingre.getIngredientNo(), 5);
 			   }
 			   if(img != null) {
 				   lists.setProductImg(img);
@@ -828,34 +828,135 @@ public class MarketController {
 		   }
 	   }
 	   
+	   //전체 상품 중 좋아요가 많은 상위 8개 조회 
+	   ArrayList<Product> likeOrderBy = mkService.selectLikeOrderBy();
 	   
-	   
-	   
+	   model.addAttribute("whole", "whole");
 	   model.addAttribute("pi", pi);
 	   model.addAttribute("list", list);
 	   model.addAttribute("hotDeal", hotDeal);
+	   model.addAttribute("like", likeOrderBy);
 	   
 	   return "kitchenToolMainPage";
    }
    
    //식품
    @RequestMapping("viewFood.ma")
-   public String viewFood(Model model) {
-	   ArrayList<Product> list = mkService.selectViewFood();
-	   //Menu
-	   model.addAttribute("list", list);
-	   System.out.println("list : " + list);
+   public String viewFood(Model model, @RequestParam(value="page", required=false) Integer currentPage) {
+	   //식품 - 밀키트,식재료 
+	   if(currentPage == null) {
+		   currentPage = 1;
+	   }
+	   Food food = null; Product pFood = null;
+	   int listCount = mkService.selectViewFoodCount();
+	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
+	   ArrayList<Food> list = mkService.selectViewFood(pi); ArrayList<Object> productInfo = new ArrayList<>();
+	   //식품 전체 상품 조회
+	   if(!list.isEmpty()) {
+		   for(Food lists : list) {
+			   int productNo = lists.getProductNo(); String img = null;
+			   pFood = mkService.selectPfood(productNo); //food productNo에 대한 Product 테이블 조회 
+			   pFood.setProductName(lists.getFoodName());
+			   img = mkService.selectImg(productNo, 3);
+			   if(img != null) {
+				   pFood.setProductImg(img);
+			   }
+			   productInfo.add(pFood); 
+		   }
+	   }
+		   
+	   //HotDeal조회
+	   Food hotFood = null;
+	   ArrayList<Product> hotDeal = mkService.selectFoodHotDeal();
+	   if(!hotDeal.isEmpty()) {
+		   for(Product lists : hotDeal) {
+			   int productNo = lists.getProductNo(); 
+			   String img = null; 
+			   hotFood = mkService.selectFood(productNo);
+			   if(hotFood != null) {
+				   lists.setProductName(hotFood.getFoodName());
+			   }
+			   img = mkService.selectImg(productNo, 3);
+			   if(img != null) {
+				   lists.setProductImg(img);
+			   }
+		   }
+	   }
+	   //전체 상품 중 좋아요가 많은 상위 8개 조회 
+	   ArrayList<HashMap<String,Object>> likeOrderBy = mkService.selectLikeOrderByFood();
+	   
+	   model.addAttribute("foodView", "foodView");
+	   model.addAttribute("pi", pi);
+	   model.addAttribute("list", productInfo);
+	   model.addAttribute("hotDeal", hotDeal);
+	   model.addAttribute("like", likeOrderBy);
+	   
 	   return "kitchenToolMainPage";
    }
    
    //식재료
    @RequestMapping("viewIngredient.ma")
-   public String viewIngredient(Model model) {
+   public String viewIngredient(Model model, @RequestParam(value="page", required=false) Integer currentPage) {
+	  
+	   //식재료 : 이미지 타입 5번 - 상품 타입 : 3번 
+	   if(currentPage == null) {
+		   currentPage = 1;
+	   }
+	   int listCount = mkService.selectViewIngreCount();
+	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
+	   ArrayList<Ingredient> list = mkService.selectViewIngredient(pi);
+	   ArrayList<Object> productInfo = new ArrayList<>(); Product pIngre = new Product();
+	   //식재료 전체 상품 조회
+	   if(!list.isEmpty()) {
+		   for(Ingredient lists : list) {
+			   int productNo = lists.getProductNo(); String img = null;
+			   pIngre = mkService.selectPIngre(productNo); //food productNo에 대한 Product 테이블 조회 
+			   if(pIngre != null) {
+				   pIngre.setProductName(lists.getIngredientName());
+			   }
+			   img = mkService.selectImg(productNo, 3);
+			   if(img != null) {
+				   pIngre.setProductImg(img);
+			   }
+			   productInfo.add(pIngre); 
+		   }
+	   }
+	   System.out.println("pi : " + productInfo);
+		   
+	   //HotDeal조회
+	   Ingredient hotIngre = null;
+	   ArrayList<Product> hotDeal = mkService.selectIngreHotDeal();
+	   ArrayList<Object> hotDeals = new ArrayList<>();
+	   System.out.println("hotDeal : " + hotDeal);
+	   if(!hotDeal.isEmpty()) {
+		   for(Product lists : hotDeal) {
+			   int productNo = lists.getProductNo(); 
+			   System.out.println("productNo : " + productNo);
+			   String img = null; 
+			   hotIngre = mkService.selectIngrdient(productNo);
+			   System.out.println("hotIngre : " + hotIngre);
+			   if(hotIngre != null) {
+				   lists.setProductName(hotIngre.getIngredientName());
+			   }
+			   img = mkService.selectImg(hotIngre.getIngredientNo(), 5);
+			   if(img != null) {
+				   lists.setProductImg(img);
+			   }
+			   
+			   hotDeals.add(lists);
+		   }
+	   }
 	   
-	   ArrayList<Ingredient> list = mkService.selectViewIngredient();
-	   //Ingredient
-	   model.addAttribute("list", list);
-	   System.out.println("list : " + list);
+	   System.out.println("hd : " + hotDeal );
+	   //전체 상품 중 좋아요가 많은 상위 8개 조회 
+	   ArrayList<HashMap<String,Object>> likeOrderBy = mkService.selectLikeOrderByIngre();
+	   
+	   model.addAttribute("IngreView", "IngreView");
+	   model.addAttribute("pi", pi);
+	   model.addAttribute("list", productInfo);
+	   model.addAttribute("hotDeal", hotDeals);
+	   model.addAttribute("like", likeOrderBy);
+	   
 	   return "kitchenToolMainPage";
    }
    

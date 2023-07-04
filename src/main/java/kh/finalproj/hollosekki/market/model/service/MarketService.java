@@ -350,16 +350,16 @@ public class MarketService {
 		return mkDAO.selectViewWhole(sqlSession, pi);
 	}
 
-	public ArrayList<Product> selectViewFood() {
-		return mkDAO.selectViewFood(sqlSession);
+	public ArrayList<Food> selectViewFood(PageInfo pi) {
+		return mkDAO.selectViewFood(sqlSession, pi);
 	}
 
 	public ArrayList<Menu> selectViewMenu() {
 		return mkDAO.selectViewMenu(sqlSession);
 	}
 
-	public ArrayList<Ingredient> selectViewIngredient() {
-		return mkDAO.selectViewIngredient(sqlSession);
+	public ArrayList<Ingredient> selectViewIngredient(PageInfo pi) {
+		return mkDAO.selectViewIngredient(sqlSession, pi);
 	}
 
 	public ArrayList<Tool> selectViewTool() {
@@ -372,6 +372,46 @@ public class MarketService {
 
 	public ArrayList<Product> selectWholeHotDeal() {
 		return mkDAO.selectWholeHotDeal(sqlSession);
+	}
+
+	public String selectIngreImg(int ingredientNo, int i) {
+		return mkDAO.selectIngreImg(sqlSession, ingredientNo, i);
+	}
+
+	public ArrayList<Product> selectLikeOrderBy() {
+		return mkDAO.selectLikeOrderBy(sqlSession);
+	}
+
+	public int selectViewFoodCount() {
+		return mkDAO.selectViewFoodCount(sqlSession);
+	}
+
+	public ArrayList<HashMap<String, Object>> selectLikeOrderByFood() {
+		return mkDAO.selectLikeOrderByFood(sqlSession);
+	}
+
+	public Product selectPfood(int productNo) {
+		return mkDAO.selectPfood(sqlSession, productNo);
+	}
+
+	public ArrayList<Product> selectFoodHotDeal() {
+		return mkDAO.selectFoodHotDeal(sqlSession);
+	}
+
+	public int selectViewIngreCount() {
+		return mkDAO.selectViewIngreCount(sqlSession);
+	}
+
+	public Product selectPIngre(int productNo) {
+		return mkDAO.selectPIngre(sqlSession, productNo);
+	}
+
+	public ArrayList<Product> selectIngreHotDeal() {
+		return mkDAO.selectIngreHotDeal(sqlSession);
+	}
+
+	public ArrayList<HashMap<String, Object>> selectLikeOrderByIngre() {
+		return mkDAO.selectLikeOrderByIngre(sqlSession);
 	}
 
 	

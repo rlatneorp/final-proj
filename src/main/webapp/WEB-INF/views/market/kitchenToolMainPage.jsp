@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css"/>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -99,7 +100,7 @@ ul li {
 
 .discount{
 	font-size:25px;
-	padding-left:10px;
+	padding-left:1px;
 	font-weight:bold;
 	color:red;
 	letter-spacing: 2px; 
@@ -124,13 +125,13 @@ ul li {
 }
 
 .product-slider .product-wrapper{
-  width:1150px;
-  height:369px;
+  width:1200px;
+  height:370px;
   margin:0px auto;
 }
 .product-slider .product-wrapper .productList{
   text-align:center;
-  width:400px;
+  width:450px;
   height: 450px;
   display:inline-block;
   background: #edf8ff;
@@ -147,7 +148,6 @@ ul li {
 .post-slider{
   width:70%;
   margin:0px auto;
- 
 }
 
 
@@ -169,14 +169,14 @@ ul li {
 }
 
 .product-slider2 .product-wrapper{
-  width:1150px;
+  width:1200px;
   height:369px;
   margin:0px auto;
 }
 .product-slider2 .product-wrapper .productList{
   text-align:center;
-  width:400px;
-  height: 410px;
+  width:450px;
+  height: 450px;
   display:inline-block;
   background: #edf8ff;
   padding:15px;
@@ -215,6 +215,7 @@ ul li {
 
 .sider-title{
 	text-align: center;
+	padding-bottom:7px;
 	font-weight: 500;
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 32px;
@@ -223,7 +224,7 @@ ul li {
 
 .bannerTitle{
 	position:absolute;
-	left:350px ;
+	left:300px ;
 }
 
 .productName{
@@ -317,10 +318,24 @@ ul li {
 	<br><br>
 	<table class="cateBtn" style="margin:auto;">
 		<tr>
-			<td><a class="clickView" href="${contextPath }/viewWhole.ma">전체보기</a></td>
-			<td><a class="clickView" href="${contextPath }/viewFood.ma">식품</a></td>
-		<%-- 	<td><a class="clickView" href="${contextPath }/viewMenu.ma">식단</a></td> --%>
+			<!-- 전체 보기 시 색상 변경 -->
+			<c:if test="${whole ne null }">
+				<td onclick="window.location.href='${contextPath}/viewWhole.ma'" style="color:white; background-color:#4485d7;">전체보기</td>
+			</c:if>
+			<c:if test="${whole eq null }">
+				<td class="clickView" onclick="window.location.href='${contextPath}/viewWhole.ma'">전체보기
+			</c:if>
+			<!-- 식품 카테고리 선택 시 색상 변경 -->
+			<c:if test="${ foodView ne null }">
+				<td onclick="window.location.href='${contextPath}/viewFood.ma'" style="color:white; background-color:#4485d7;">식품</td>
+			</c:if>
+			<c:if test="${ foodView eq null }">
+				<td onclick="window.location.href='${contextPath}/viewFood.ma'" class="clickView">식품</td>
+			</c:if>
+			
+			<!-- 식재료 카테고리 선택 시 색상 변경 -->
 			<td><a class="clickView" href="${contextPath }/viewIngredient.ma">식재료</a></td>
+			<!-- 주방용품 카테고리 선택 시 색상 변경 -->
 			<td><a class="clickView" href="${contextPath }/viewTool.ma">주방용품</a></td>
 		</tr>
 	</table><br><br>
@@ -335,12 +350,12 @@ ul li {
 	 	</div><br>
 	</div><br><br>
  	<h1 class="sider-title" >New 핫딜존</h1>
-	<div class="product-slider" style="padding-top:15px;">
+	<div class="product-slider">
 		<div class="product-wrapper">
 	        <c:forEach items="${hotDeal }" var="h">
 	        	<div class="productList">
 	          		<input type="hidden" value="${h.productNo }">
-					<a href="market_detail.ma?productNo=1000"><img src="${contextPath }/resources/uploadFiles/${h.productImg}"></a>
+					<a href="market_detail.ma?productNo=${h.productNo }"><img style="width:270px" src="${contextPath }/resources/uploadFiles/${h.productImg}"></a>
 					<c:set var="productName" value="${h.productName}" />
 					<c:choose>
 					    <c:when test="${fn:length(productName) > 9}">
@@ -365,26 +380,43 @@ ul li {
 	          	</div>
 	        </c:forEach>
   		</div>
-	</div><br><br><br><br>
+	</div><br><br><br><br><br><br>
 	
-	<h1 class="sider-title">추천상품</h1>
+	<h1 class="sider-title">추천 상품</h1>
 	<div class="product-slider2">
 		<div class="product-wrapper">
-			<div class="productList">
-				<a href="market_detail.ma"><img src="resources/images/product1.png"></a>
-				<div class="productName">전기 믹서기</div>
-				<div class="originPrice">38,000</div>
-				<div class="discount">32,000</div>
-			</div>
+			<c:forEach items="${like }" var="li">
+				<div class="productList">
+					<a href="market_detail.ma?productNo=${li.PRODUCT_NO }"><img style="width:270px" src="${contextPath }/resources/uploadFiles/${li.IMAGE_RENAMENAME}"></a>
+					<c:if test="${ li.FOOD_NAME ne null }">
+						<div class="productName">${li.FOOD_NAME }</div>
+					</c:if>
+					<c:if test="${ li.TOOL_NAME ne null }">
+						<div class="productName">${li.TOOL_NAME }</div>
+					</c:if>
+					<c:if test="${ li.INGREDIENT_NAME ne null }">
+						<div class="productName">${li.INGREDIENT_NAME }</div>
+					</c:if>
+					<c:if test="${li.PRODUCT_SALE ne 0 }">
+						<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
+					</c:if>
+					<c:if test="${li.PRODUCT_SALE eq 0 }">
+						<div style="text-decoration: none;">${li.PRODUCT_PRICE }</div>
+					</c:if>
+					<div class="discount" ></div>
+					<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
+				</div>
+			</c:forEach>
 		</div>
-	</div><br><br><br>
+	</div><br><br><br><br><br><br><br>
 	
+	<h1 class="sider-title"><i class="bi bi-egg-fried"></i>&nbsp;&nbsp;판매 중인 상품&nbsp;&nbsp;<i class="bi bi-egg-fried"></i></h1>
 	<div style="text-align: center;">
 		<ul class="nomalProduct">
 			<c:forEach items="${list }" var="li">
 				<li class="normal">
 					<input type="hidden" value="${li.productNo }">
-					<a href="market_detail.ma"><img src="${contextPath }/resources/uploadFiles/${li.productImg}"></a>
+					<a href="market_detail.ma?productNo=${li.productNo }"><img src="${contextPath }/resources/uploadFiles/${li.productImg}"></a>
 					<div class="productName">${li.productName }</div>
 					<c:if test="${li.productSale ne 0 }">
 						<span class="originPrice">
@@ -441,6 +473,18 @@ ul li {
 
 <script>
 	window.onload = () => {
+		
+		//글자 수 9개 이상 ... 표시 
+		const productNames = document.getElementsByClassName("productName");
+
+		for (let i = 0; i < productNames.length; i++) {
+		  const productName = productNames[i].textContent;
+		  if (productName.length > 9) {
+		    productNames[i].textContent = productName.substring(0, 9) + "...";
+		  }
+		}
+
+		
 		//normal
 		const normal = document.getElementsByClassName('normal');
 		for(np of normal) {
@@ -456,10 +500,8 @@ ul li {
 		
 		//핫딜존 
 		const hotDealList = document.getElementsByClassName('hotDeal');
-// 		const hotDealList = document.getElementById('hotDeal').children;
-		console.log(hotDealList)
 		for(pl of hotDealList) {
-			const productNo = pl.parentElement.children[0].value;
+// 			const productNo = pl.parentElement.children[0].value;
 			//할인 계산 
 			if(pl.value != '0') {
 				console.log(pl.previousElementSibling)
@@ -468,6 +510,17 @@ ul li {
 				const discount = (originPrice * (1- sale/100)).toLocaleString();
 				pl.previousElementSibling.innerText = discount + '원'
 			} 
+		}
+		
+		//추천 상품
+		const likeOrders = document.getElementsByClassName('likeOrders');
+		for(lo of likeOrders) {
+			if(lo.value != '0') {
+				const originPrice = parseInt(lo.previousElementSibling.previousElementSibling.innerText.replace(/원/g, ''));
+				const sale = parseInt(lo.value);
+				const discount = (originPrice * (1- sale/100)).toLocaleString();
+				lo.previousElementSibling.innerText = discount + '원'
+			}	
 		}
 		
 	} //window.onload 

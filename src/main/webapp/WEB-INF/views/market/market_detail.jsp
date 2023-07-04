@@ -1053,7 +1053,7 @@ p b {
                                 
                        <!--  반복 될 부분 -->  
                        <c:forEach items="${qna}" var="qna">
-                            <li class="accordion_q_li js_data_row" onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
+                            <li class="accordion_q_li js_data_row" style="cursor: pointer;"  onclick="location.href='QnAdetail.ma?usersNo=${qna.usersNo}&productNo=${p.productNo}&qnaNo=${qna.qnaNo}'">
                                <div class="accordion_q_tit1"> 
                                   
                                    <div class="qna">
@@ -1568,13 +1568,12 @@ p b {
             +                     rev.reviewContent
             +               '</div>'
             +      '</div>';
-            $('.reviews').append(result);
+            $('.textbox').append(result);
                          for(let img  of data.imgList){
                             if(rev.reviewNo == img.imageDivideNo){
-                            	if(img.imageRenameName.indexOf('jpg') != -1 || img.imageRenameName.indexOf('png') != -1){
+                            	if(img.imageRenameName.indexOf('JPG') !== -1 || img.imageRenameName.indexOf('PNG') != -1 || img.imageRenameName.indexOf('jpg') !== -1 || img.imageRenameName.indexOf('png') != -1){
 		                            let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
 		                            let reviewNos = document.getElementsByName("reviewNo");
-		                            
 		                               for(const revNo of reviewNos){
 		                                  if(revNo.value == rev.reviewNo){
 		                                     revNo.parentElement.innerHTML +=result2;
@@ -1613,7 +1612,7 @@ p b {
                          case 4 : star = '★★★★☆'; break;
                          case 5 : star = '★★★★★'; break;
                       }
-                         
+                        
                         result = '<div class="nickName" style="font-size: 18px; font-weight: 400; padding:10px";>'+rev.reviewWriter
             +            '<span style="font-size: 20px; font-weight: 800; color:#4485d7;" class="reviewStar"><br>'
             +      star+'&nbsp'
@@ -1632,11 +1631,10 @@ p b {
             +               '</div>'
             +      '</div>';
             
-            $('.reviews').append(result);
+            $('.textbox').append(result);
                          for(let img  of data.imgList){
                             if(rev.reviewNo == img.imageDivideNo){
-                            	console.log(img);
-                            	if(img.imageRenameName.indexOf('jpg') !== -1 || img.imageRenameName.indexOf('png') != -1){
+                            	if(img.imageRenameName.indexOf('JPG') !== -1 || img.imageRenameName.indexOf('PNG') != -1 || img.imageRenameName.indexOf('jpg') !== -1 || img.imageRenameName.indexOf('png') != -1){
 		                            let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
 		                            let reviewNos = document.getElementsByName("reviewNo");
 		                               for(const revNo of reviewNos){

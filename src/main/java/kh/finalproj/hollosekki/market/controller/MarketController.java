@@ -294,8 +294,7 @@ public class MarketController {
       ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
-      
-      System.out.println(imglist);
+//      System.out.println(imglist);
       int reviewCount = mkService.selectReviewCount(productNo);
       
       Integer starAvg = mkService.reviewAvg(productNo);

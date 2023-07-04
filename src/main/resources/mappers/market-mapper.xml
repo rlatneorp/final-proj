@@ -616,5 +616,9 @@
 		where qna_no = #{qnaNo} and users_no = #{usersNo} and product_no=#{productNo} and qna_status='Y'
 	</select>
 	
-	
+	<select id="selectDetailReview" resultMap="reviewResultSet">
+		select *
+		from review
+		where review_no = #{reviewNo} 
+	</select>
 </mapper>

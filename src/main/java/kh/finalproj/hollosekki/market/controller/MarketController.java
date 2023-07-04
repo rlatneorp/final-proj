@@ -817,20 +817,16 @@ public class MarketController {
 		   return "fail";
 	   }
    }
+
+	@RequestMapping("myPage_editReview.ma")
+	public String myPage_editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
+		Review r = mkService.selectDetailReview(reviewNo);
+		System.out.println(r);
+		
+		model.addAttribute("r", r);
+		
+		return "updateReview";
+	}
    
    
-//   public String insertPay(@ModelAttribute Orders orders) {
-//	   
-//	   int selectProductType = mkService.selectProductType(orders.getProductNo());
-//	   orders.setProductType(selectProductType);
-////	   int result = mkService.insertPay(orders);
-////	   
-////	   if(result >= 1) {
-////		   return "success";
-////	   } else {
-////		   return "fail";
-////	   }
-////	   
-//	   return "market_detail";
-//   }
 }

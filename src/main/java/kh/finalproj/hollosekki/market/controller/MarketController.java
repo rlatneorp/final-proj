@@ -288,15 +288,13 @@ public class MarketController {
     
       
       ArrayList<Orders> ordList = mkService.orderList(map);
-      
-      
-      
       ArrayList<Options> options = mkService.selectOptionsSet(productNo);
       ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
       ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
       ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
+      System.out.println(imglist);
       int reviewCount = mkService.selectReviewCount(productNo);
       
       Integer starAvg = mkService.reviewAvg(productNo);
@@ -393,6 +391,8 @@ public class MarketController {
          }
          
       }
+      
+      
       return "redirect:market_detail.ma";
    }
    

@@ -423,4 +423,8 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectDetailReview", reviewNo);
 	}
 
+	public ArrayList<Orders> orderList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return (ArrayList)sqlSession.selectList("marketMapper.orderList", map);
+	}
+
 }

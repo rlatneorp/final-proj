@@ -340,7 +340,7 @@ ul li {
 	        <c:forEach items="${hotDeal }" var="h">
 	        	<div class="productList">
 	          		<input type="hidden" value="${h.productNo }">
-					<a href="market_detail.ma?productNo=1000"><img src="${contextPath }/resources/uploadFiles/${h.productImg}"></a>
+					<a href="market_detail.ma?productNo=${h.productNo }"><img src="${contextPath }/resources/uploadFiles/${h.productImg}"></a>
 					<c:set var="productName" value="${h.productName}" />
 					<c:choose>
 					    <c:when test="${fn:length(productName) > 9}">

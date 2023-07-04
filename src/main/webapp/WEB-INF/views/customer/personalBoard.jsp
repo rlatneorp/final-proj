@@ -51,7 +51,7 @@
 										<div>
 											<h5 class="qnaCate"></h5>
 											<c:if test="${q.orderNo ne 0}">
-											 <h6>주문번호 ${q.orderNo}</h6>
+											 	<h6>주문번호 ${q.orderNo}</h6>
 											</c:if>
 											<h4>Q. ${q.qnaTitle } </h4>
 											<span class="11answer">${q.qnaContent }</span>
@@ -116,7 +116,7 @@
 <%@ include file="../common/footer.jsp" %>	
 <script>
 	const accordion = document.querySelector('body');
-		accordion.onload=function(){
+		accordion.onload=()=>{
 			const qnaCates = document.getElementsByClassName('qnaCate');
 			const orderNo = document.getElementsByClassName('qHdn');
 			let oNoValue = '';
@@ -124,7 +124,6 @@
 				oNoValue = oNo.value;
 			}
 			for(const qnaCate of qnaCates){
-				
 				$.ajax({
 					url: "qnaType.cs",
 					data :{
@@ -134,29 +133,29 @@
 					success: data=>{
 						for(const d of data){
 							console.log(data);
-							const qnaCateP = document.createElement('p');
-							const qnaCateH6 = document.createElement('h6');
+							console.log(d);
 							if(d.qnaType == 1){
-								qnaCateH6.innerText = '배송';
+								qnaCate.innerText = '배송';
 							}else if(d.qnaType == 2){
-								qnaCateH6.innerText = '결제';
+								qnaCate.innerText = '결제';
 							}else if(d.qnaType == 3){
-								qnaCateH6.innerText = '회원';
+								qnaCate.innerText = '회원';
 							}else if(d.qnaType == 4){
-								qnaCateH6.innerText = '상품';
+								qnaCate.innerText = '상품';
 							}else if(d.qnaType == 0){
-								qnaCateH6.innerText = '기타';
+								qnaCate.innerText = '기타';
 							}
 							
-							qnaCateP.append(qnaCateH6);
-							qnaCate.append(qnaCateP);
 					 };
+				 },
+				 error: data=>{
+					 console.log(data);
 				 }
 				
 			 })
 			
 		  }
-	};
+	}
 			
 			
 		

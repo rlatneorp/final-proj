@@ -375,7 +375,7 @@ public class MarketService {
 		return mkDAO.selectWholeHotDeal(sqlSession);
 	}
 
-	public Review selectDetailReview(int reviewNo) {
+	public ArrayList<HashMap<String, Object>> selectDetailReview(int reviewNo) {
 		return mkDAO.selectDetailReview(sqlSession, reviewNo);
 	}
 

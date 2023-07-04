@@ -650,9 +650,10 @@
 		FETCH FIRST 8 ROWS ONLY
 	</select>
 	
-	<select id="selectDetailReview" resultMap="reviewResultSet">
+	<select id="selectDetailReview" resultType="map">
 		select *
 		from review
+			 left join image on (review_no = image_divide_no)
 		where review_no = #{reviewNo} 
 	</select>
 	

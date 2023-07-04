@@ -419,8 +419,8 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectWholeHotDeal");
 	}
 
-	public Review selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
-		return sqlSession.selectOne("marketMapper.selectDetailReview", reviewNo);
+	public ArrayList<HashMap<String, Object>> selectDetailReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectDetailReview", reviewNo);
 	}
 
 	public ArrayList<Orders> orderList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {

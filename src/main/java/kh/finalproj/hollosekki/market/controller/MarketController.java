@@ -288,15 +288,13 @@ public class MarketController {
     
       
       ArrayList<Orders> ordList = mkService.orderList(map);
-      
-      
-      
       ArrayList<Options> options = mkService.selectOptionsSet(productNo);
       ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
       ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
       ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
+      System.out.println(imglist);
       int reviewCount = mkService.selectReviewCount(productNo);
       
       Integer starAvg = mkService.reviewAvg(productNo);
@@ -315,10 +313,10 @@ public class MarketController {
          model.addAttribute("imglist", imglist);
       }
       
-////      Integer result = mkService.selectLike(users.getUsersNo(), productNo);
-//      if(result >= 1) {
-//    	  model.addAttribute("like", result);
-//      }
+      Integer result = mkService.selectLike(users.getUsersNo(), productNo);
+      if(result >= 1) {
+    	  model.addAttribute("like", result);
+      }
       
       model.addAttribute("reviewCount", reviewCount);
       model.addAttribute("tool", tool);
@@ -393,6 +391,8 @@ public class MarketController {
          }
          
       }
+      
+      
       return "redirect:market_detail.ma";
    }
    
@@ -785,16 +785,6 @@ public class MarketController {
 		   return "fail";
 	   }
    }
-
-	@RequestMapping("myPage_editReview.ma")
-	public String myPage_editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
-		Review r = mkService.selectDetailReview(reviewNo);
-		System.out.println(r);
-		
-		model.addAttribute("r", r);
-		
-		return "updateReview";
-	}
    
    //전체보기
    @RequestMapping("viewWhole.ma")
@@ -884,6 +874,16 @@ public class MarketController {
 	   model.addAttribute("list", list);
 	   System.out.println("list : " + list);
 	   return "kitchenToolMainPage";
+   }
+   
+   // 후기 조회
+   @RequestMapping("editReview.ma")
+   public String myPage_editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
+	   ArrayList<HashMap<String, Object>> list = mkService.selectDetailReview(reviewNo);
+	
+	   model.addAttribute("list", list);
+	
+	   return "updateReview";
    }
    
    

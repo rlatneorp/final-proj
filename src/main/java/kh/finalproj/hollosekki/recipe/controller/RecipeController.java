@@ -721,4 +721,12 @@ public class RecipeController {
 		}
 	}
 	
+	// 후기 수정
+	@RequestMapping("updateReview.rc")
+	public String updateReview(@ModelAttribute Review r, Model model, @RequestParam(value="reviewScore", defaultValue = "0", required=false) int reviewScore) {
+//		int result = rService.updateReview(r.getReviewNo());
+		
+		return null;
+	}
+	
 }

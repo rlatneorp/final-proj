@@ -563,6 +563,7 @@
 				<h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 작성</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
+			<br>
 			<div class="modal-body" id="reviewBody">
 				<fieldset>
 					<input type="radio" name="reviewScore" value="5" id="reviewScore5">
@@ -577,7 +578,7 @@
 						<label for="reviewScore1">★</label>
 					<input type="hidden" name="reviewSc" id="reviewSco">
 				</fieldset>
-				<br>
+				<br><br>
 				<textarea id="reviewWrite" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100"></textarea>
 			</div>
 			<div class="footer">
@@ -597,27 +598,31 @@
 				<h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 수정</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body" id="updateReviewBody">
-				<fieldset>
-					<input type="radio" name="reviewScore" value="5" id="reviewScore5">
-						<label for="reviewScore5">★</label>
-					<input type="radio" name="reviewScore" value="4" id="reviewScore4">
-						<label for="reviewScore4">★</label>
-					<input type="radio" name="reviewScore" value="3" id="reviewScore3">
-						<label for="reviewScore3">★</label>
-					<input type="radio" name="reviewScore" value="2" id="reviewScore2">
-						<label for="reviewScore2">★</label>
-					<input type="radio" name="reviewScore" value="1" id="reviewScore1">
-						<label for="reviewScore1">★</label>
-					<input type="hidden" name="updateReviewSc" id="updateReviewSco">
-				</fieldset>
-				<br>
-				<textarea id="reviewContentUpdate" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100"></textarea>
-			</div>
-			<div class="footer">
-				<button type="button" class="button btn-n" data-bs-dismiss="modal">삭제하기</button>
-				<button type="button" class="button btn-y" id="subscribe" onclick="reviewEnter()">수정하기</button>
-			</div>
+			<br>
+			<form method="post" id="reviewForm">
+				<div class="modal-body" id="updateReviewBody">
+					<input type="hidden" name="reviewNo" id="reviewNo">
+					<fieldset>
+						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
+							<label for="reviewUpdateScore5">★</label>
+						<input type="radio" name="reviewScore" value="4" id="reviewUpdateScore4">
+							<label for="reviewUpdateScore4">★</label>
+						<input type="radio" name="reviewScore" value="3" id="reviewUpdateScore3">
+							<label for="reviewUpdateScore3">★</label>
+						<input type="radio" name="reviewScore" value="2" id="reviewUpdateScore2">
+							<label for="reviewUpdateScore2">★</label>
+						<input type="radio" name="reviewScore" value="1" id="reviewUpdateScore1">
+							<label for="reviewUpdateScore1">★</label>
+	<!-- 					<input type="hidden" name="updateReviewSc" id="updateReviewSco"> -->
+					</fieldset>
+					<br><br>
+					<textarea id="reviewContentUpdate" name="reviewContent" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100"></textarea>
+				</div>
+				<div class="footer">
+					<button type="button" class="button btn-n" data-bs-dismiss="modal">삭제하기</button>
+					<button type="button" class="button btn-y" id="update">수정하기</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -715,13 +720,42 @@ function reviewEnter(){
 
 const lineAlls = document.getElementsByClassName('lineAll');
 const reviewContentUpdate = document.getElementById('reviewContentUpdate');
+const score5 = document.getElementById('reviewUpdateScore5');
+const score4 = document.getElementById('reviewUpdateScore4');
+const score3 = document.getElementById('reviewUpdateScore3');
+const score2 = document.getElementById('reviewUpdateScore2');
+const score1 = document.getElementById('reviewUpdateScore1');
+const reviewForm = document.getElementById('reviewForm');
+const reviewNo = document.getElementById('reviewNo');
+
 for(const lineAll of lineAlls){
 	lineAll.addEventListener('click', function(){
-		console.log(this.querySelectorAll('td')[2].innerText);
-		reviewContentUpdate.value = this.querySelectorAll('td')[2].innerText
+		reviewContentUpdate.value = this.querySelectorAll('td')[2].innerText;
+		reviewNo.value = this.querySelectorAll('td')[0].innerText;
+		const score = this.querySelectorAll('td')[1].innerText.trim();
+		if(score == '★★★★★'){
+			score5.checked = true;
+		} else if(score == '★★★★'){
+			score4.checked = true;
+		} else if(score == '★★★'){
+			score3.checked = true;
+		} else if(score == '★★'){
+			score2.checked = true;
+		} else if(score == '★'){
+			score1.checked = true;
+		}
 	})
 }
 
+const updateB = document.getElementById('update');
+updateB.addEventListener('click', () => {
+	if(reviewContentUpdate.value == ''){
+		alert('내용을 입력해주세요');
+	} else {
+		reviewForm.action = '${contextPath}/updateReview.rc';
+		reviewForm.submit();
+	}
+});
 
 </script>
 	

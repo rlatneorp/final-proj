@@ -104,9 +104,6 @@ public interface UsersService {
 	
 	ArrayList<HashMap<String, Object>> selectReview(HashMap<String, Object> map, PageInfo pi);
 
-	Review selectDetailReview(int reviewNo);
-
-
 
 
 }

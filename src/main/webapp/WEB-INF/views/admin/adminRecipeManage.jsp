@@ -51,7 +51,7 @@
 						<td>${rp.categorySituation}</td>
 						<td>${rp.categoryType}</td>
 						<td>${rp.usersId}</td>
-						<td>${rp.recipeCount}</td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${rp.recipeCount}"/></td>
 						<td><fmt:formatDate value="${rp.recipeCreateDate}" pattern="yyyy-MM-dd"/></td>
 						<td><fmt:formatDate value="${rp.recipeModifyDate}" pattern="yyyy-MM-dd"/></td>
 						<td>

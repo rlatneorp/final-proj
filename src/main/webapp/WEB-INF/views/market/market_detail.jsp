@@ -899,12 +899,12 @@ p b {
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
             <c:forEach	items="${ordList}" var="orders">
-               <c:if test="${ orders >=  1 }">
+<%--                <c:if test="${ orders >=  1 }"> --%>
 	               <div class="review_btn">
 	                  <a href="createReview.ma?productNo=${p.productNo}">
 	                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 	               </div>
-            </c:if> 
+<%--             </c:if>  --%>
             </c:forEach>   
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
@@ -960,7 +960,7 @@ p b {
             </c:forEach>
          </div>
 
-         <div class="moreView">더보기</div>
+         <div class="moreView" style="display:none;">더보기</div>
             
             <div class="productBox">
                <ul   class="productBoxInfo">
@@ -1449,19 +1449,17 @@ p b {
          var productNo = null;
          
          $(function(){
-        	 if($(".reviews").length <= 5){
-        		 $(".moreView").hide(); 
-        	 }else{
-        		 $(".moreView").show();
+        	 if($(".reviews").length >= 6){
+        	   $(".moreView").show();
         	 }
-	             $(".reviews").slice(0, 5).show(); // 초기갯수
-	             $(".moreView").click(function(e){ // 클릭시 more
-	                 e.preventDefault();
-	                 $(".reviews").wrapAll().show(); // 클릭시 more 갯수 지저정
-	                 if($(".reviews:hidden").length == 0){ 
-	                    $(".moreView").hide(); 
-	                 }
-	             });
+	           $(".reviews").slice(0, 5).show(); // 초기갯수
+	           $(".moreView").click(function(e){ // 클릭시 more
+	               e.preventDefault();
+	               $(".reviews").wrapAll().show(); // 클릭시 more 갯수 지저정
+	               if($(".reviews:hidden").length == 0){ 
+	                  $(".moreView").hide(); 
+	               }
+	           });
              
          });
          
@@ -1570,7 +1568,7 @@ p b {
             +                     rev.reviewContent
             +               '</div>'
             +      '</div>';
-            $('.textbox').append(result);
+            $('.reviews').append(result);
                          for(let img  of data.imgList){
                             if(rev.reviewNo == img.imageDivideNo){
                             	if(img.imageRenameName.indexOf('jpg') != -1 || img.imageRenameName.indexOf('png') != -1){
@@ -1634,13 +1632,13 @@ p b {
             +               '</div>'
             +      '</div>';
             
-            $('.textbox').append(result);
+            $('.reviews').append(result);
                          for(let img  of data.imgList){
                             if(rev.reviewNo == img.imageDivideNo){
-                            	if(img.imageRenameName.indexOf('jpg') != -1 || img.imageRenameName.indexOf('png') != -1){
+                            	console.log(img);
+                            	if(img.imageRenameName.indexOf('jpg') !== -1 || img.imageRenameName.indexOf('png') != -1){
 		                            let result2 = '<li><img src="/hollosekki/resources/uploadFiles/'+img.imageRenameName+'"+&nbsp onclick="window.open(this.src)"></li>'
 		                            let reviewNos = document.getElementsByName("reviewNo");
-		                            
 		                               for(const revNo of reviewNos){
 		                                  if(revNo.value == rev.reviewNo){
 		                                     revNo.parentElement.innerHTML +=result2;

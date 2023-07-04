@@ -33,8 +33,8 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public Users login(Users u) {
-		return eDAO.login(sqlSession, u);
+	public Users login2(Users u) {
+		return eDAO.login2(sqlSession, u);
 	}
 
 	@Override
@@ -205,6 +205,11 @@ public class EnrollServiceImpl implements EnrollService{
 	@Override
 	public void insertPoint(Users u) {
 		eDAO.insertPoint(sqlSession, u);
+	}
+
+	@Override
+	public Users login(Users u) {
+		return eDAO.login(sqlSession, u);
 	}
 
 

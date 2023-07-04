@@ -251,7 +251,7 @@ dl dd div label{
 		document.querySelector(".addImage").addEventListener('click', (e)=>{
 			const newDiv = document.createElement('div');
 			newDiv.classList.add("mb-3");
-			newDiv.innerHTML = '<input type="file" class="form-control-file form-control-lg" name="imageFile accept="image/jpg, image/png, image/jpeg">';
+			newDiv.innerHTML = '<input type="file" class="form-control-file form-control-lg" name="imageFile" accept="image/jpg, image/png, image/jpeg">';
 			
 			if(document.querySelectorAll(".mb-3").length >= 3 ){
 				e.preventDefault()

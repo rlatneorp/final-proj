@@ -59,5 +59,7 @@ public interface MenuService {
 
 	int insertReview(Review r);
 
+	int updateReview(Review r);
+
 
 }

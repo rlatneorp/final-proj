@@ -123,5 +123,9 @@ public class MenuDAO {
 		return sqlSession.insert("menuMapper.insertReview", r);
 	}
 
+	public int updateReview(SqlSessionTemplate sqlSession, Review r) {
+		return sqlSession.update("menuMapper.updateReview", r);
+	}
+
 
 }

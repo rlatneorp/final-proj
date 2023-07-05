@@ -144,6 +144,12 @@
 		values(#{productNo}, #{orderNo}, seq_review_no.nextval, default, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
 	</insert>
 	
+	<update id="updateReview">
+		update review
+		set review_content = #{reviewContent}, review_score = #{reviewScore}
+		where review_no = #{reviewNo}
+	</update>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>

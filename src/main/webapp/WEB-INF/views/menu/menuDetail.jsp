@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <style>
 * {
@@ -1022,7 +1021,7 @@ p b {
 			</tr>
 			<c:if test="${reviewCount eq 0 }">
 				<tr>
-					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br> 등록한 후기가 없습니다.</td>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br> 등록된 후기가 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${reviewCount ne 0 }">
@@ -1041,39 +1040,82 @@ p b {
 	<br><br>
 	<div class="page_wrap">
 	   <div class="page_nation">
-	      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-	      <a href="#" class="active">1</a>
-	      <a href="#">2</a>
-	      <a href="#">3</a>
-	      <a href="#">4</a>
-	      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+	      <!-- 		이전 페이지로	 -->
+			<c:url var="goBack" value="${loc }">
+				<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
+				<c:param name="rId" value="${recipe.usersId}"></c:param>
+				<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+				<c:param name="page" value="${page}"></c:param>
+			</c:url>
+			<c:if test="${rpi.currentPage > 1 }">
+				<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
+	<%-- 			<c:param name="rId" value="${recipe.usersId}"></c:param> --%>
+	<%-- 			<c:param name="rNo" value="${recipe.foodNo}"></c:param> --%>
+	<%-- 			<c:param name="page" value="${page}"></c:param> --%>
+	<%-- 			<c:param name="repage" value="${repage}"></c:param> --%>
+			</c:if>
+			
+	<!-- 		페이지 -->
+			<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
+				<c:url var="goNum" value="${loc }">
+					<c:param name="repage" value="${p }"></c:param>
+					<c:param name="rId" value="${recipe.usersId}"></c:param>
+					<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${ rpi.currentPage eq p }">
+					<a class="active">${p }</a>
+				</c:if>
+				<c:if test="${ !(rpi.currentPage eq p) }">
+					<a href="${goNum }">${p }</a>
+				</c:if>
+			</c:forEach>
+			
+			<c:url var="goNext" value="${loc }">
+				<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
+				<c:param name="rId" value="${recipe.usersId}"></c:param>
+				<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+				<c:param name="page" value="${page}"></c:param>
+			</c:url>
+			<c:if test="${rpi.currentPage < rpi.endPage }">
+				<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
+			</c:if>
 	   </div>
 	</div>
 	<br>
 </div>
 <c:if test="${loginUser != null}">
-  <c:if test="${not empty oList}">
-    <div class="qnaInputBox">
-      <c:set var="canWriteReview" value="true" />
-      <c:forEach items="${oList}" var="o" varStatus="s">
-        <c:forEach items="${rList}" var="r">
-          <c:if test="${o.orderNo eq r.orderNo and r.reviewWriter eq loginUser.nickName}">
+    <c:if test="${not empty oList}">
+        <div class="qnaInputBox">
             <c:set var="canWriteReview" value="false" />
-          </c:if>
-        </c:forEach>
-      </c:forEach>
-      <c:if test="${canWriteReview}">
-        <button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
-        <input type="hidden" id="reviewId" value="${loginUser.nickName}">
-        <c:forEach items="${oList}" var="o" varStatus="s">
-          <c:if test="${o.usersNo eq loginUser.usersNo}">
-            <input type="hidden" id="order" value="${o.orderNo}">
-          </c:if>
-        </c:forEach>
-      </c:if>
-    </div>
-  </c:if>
+            <c:forEach items="${oList}" var="o" varStatus="s">
+                <c:set var="hasReview" value="false" />
+                <c:forEach items="${rList}" var="r">
+                    <c:if test="${o.orderNo eq r.orderNo and r.reviewWriter eq loginUser.nickName}">
+                        <c:set var="hasReview" value="true" />
+                    </c:if>
+                </c:forEach>
+                <c:if test="${o.usersNo eq loginUser.usersNo and !hasReview}">
+                    <c:set var="canWriteReview" value="true" />
+                    <input type="hidden" id="order" value="${o.orderNo}">
+                    <input type="hidden" id="product" value="${o.productNo}">
+                </c:if>
+                <c:if test="${canWriteReview}">
+                    <button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
+                    <input type="hidden" id="reviewId" value="${loginUser.nickName}">
+                </c:if>
+                <c:if test="${canWriteReview}">
+                    <!-- 루프 중단을 위한 조건 체크 -->
+                    <c:set var="canWriteReview" value="false" />
+                </c:if>
+            </c:forEach>
+        </div>
+    </c:if>
 </c:if>
+
+
+
+
 <br><br>
 <br>
 
@@ -1215,7 +1257,7 @@ p b {
 			<form method="post" id="updateReview">
 				<div class="modal-body" id="updateReviewBody">
 					<input type="hidden" name="reviewNo" id="reviewNo">
-					<input type="hidden" name="productNo" value="${recipe.foodNo}">
+					<input type="hidden" name="productNo" value="${ menu.foodProductNo }" id="mNo">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
 							<label for="reviewUpdateScore5">★</label>
@@ -1564,9 +1606,10 @@ p b {
 	const score2 = document.getElementById('reviewUpdateScore2');
 	const score1 = document.getElementById('reviewUpdateScore1');
 	const updateContent = document.getElementById('reviewContentUpdate');
-	const updateForm = docuement.getElementById('updateReview');
-	const updateB = docuement.getElementById('update');
-	const deleteB = docuement.getElementById('reviewDelete');
+	const updateForm = document.getElementById('updateReview');
+	const updateB = document.getElementById('update');
+	const deleteB = document.getElementById('reviewDelete');
+	const mNo = document.getElementById('mNo');
 	
 	function openReviewModal(reviewNo, reviewContent, reviewScore) {
 	    rNo.value = reviewNo;
@@ -1584,7 +1627,29 @@ p b {
 	    }
 	  }
 	
-	
+	updateB.addEventListener('click', () => {
+		if(updateContent.value == ''){
+			swal({
+	            text: "리뷰 내용을 입력해주세요.",
+	            icon: "error",
+	            button: "확인",
+	        });
+		} else {
+			updateForm.action = '${contextPath}/updateReview.mn';		
+			updateForm.submit();
+		}
+	});
+	reviewDelete.addEventListener('click', () => {
+		swal({
+		    text: '정말 삭제하시겠습니까?',
+		    icon: 'warning',
+		    buttons: ["취소", "삭제하기"]
+		}).then((yes) => {
+			if(yes){
+				location.href = '${contextPath}/deleteReview.mn?reviewNo=' + rNo.value + '&mNo=' + mNo.value;
+			}
+		});
+	});
  </script> 
 
 </body>

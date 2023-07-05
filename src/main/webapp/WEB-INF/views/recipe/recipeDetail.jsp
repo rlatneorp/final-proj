@@ -355,7 +355,7 @@
 <!-- 문의 / 후기 -->
 
 <!-- <p class="mid">후기</p> -->
-<c:if test="${loginUser ne null }">
+<c:if test="${loginUser ne null and myReview ne 0 }">
 	<p class="mid">내가 쓴 후기</p>
 	<br>
 	<div id="qna">
@@ -369,7 +369,7 @@
 			</tr>
 			<c:if test="${myReview eq 0 }">
 				<tr>
-					<td colspan=5 style="font-weight: bolder; font-size: 20px;">내가 등록한 후기가 없습니다.</td>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br>내가 등록한 후기가 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${myReview ne 0 }">
@@ -403,7 +403,7 @@
 		<tbody id="reviewBody">
 			<c:if test="${reviewCount eq 0 }">
 				<tr>
-					<td colspan=5 style="font-weight: bolder; font-size: 20px;">등록된 후기가 없습니다.</td>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br>등록된 후기가 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${reviewCount ne 0 }">

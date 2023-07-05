@@ -135,4 +135,9 @@ public class MenuServiceImpl implements MenuService{
 	public int insertReview(Review r) {
 		return mDAO.insertReview(sqlSession, r);
 	}
+	
+	@Override
+	public int updateReview(Review r) {
+		return mDAO.updateReview(sqlSession, r);
+	}
 }

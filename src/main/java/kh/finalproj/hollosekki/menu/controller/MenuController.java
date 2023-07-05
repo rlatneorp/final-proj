@@ -108,8 +108,10 @@ public class MenuController {
 		String loginId = null;
 		String nickName = null;
 		Review my = new Review();
+		int userNo = 0;
 		int myReview = 0;
 		if(loginUser != null) {
+			userNo = ((Users)session.getAttribute("loginUser")).getUsersNo();
 			loginId = loginUser.getUsersId();
 			nickName = loginUser.getNickName();
 			
@@ -145,7 +147,6 @@ public class MenuController {
 		ArrayList<Review> rList = mService.selectReviewList(pi, mNo);
 		
 		// 주문정보 조회
-		int userNo = ((Users)session.getAttribute("loginUser")).getUsersNo();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("usersNo", userNo);
 		map.put("productNo", mNo);
@@ -213,8 +214,7 @@ public class MenuController {
 	}
 	
 	@RequestMapping("writeReview.mn")
-	public String writeReview(@ModelAttribute Review r, Model model) {
-		System.out.println(r);
+	public String writeReview(@ModelAttribute Review r) {
 		int result = mService.insertReview(r);
 		
 		if(result > 0) {
@@ -224,7 +224,27 @@ public class MenuController {
 		}
 	}
 	
+	@RequestMapping("updateReview.mn")
+	public String updateReview(@ModelAttribute Review r) {
+		int result = mService.updateReview(r);
+		
+		if(result > 0) {
+			return "redirect:menuDetail.mn?mNo=" + r.getProductNo();
+		} else {
+			throw new MenuException("식단 후기 등록 실패");
+		}
+	}
 	
+	@RequestMapping("deleteReview.mn")
+	public String updateReview(@RequestParam("reviewNo") int reviewNo, @RequestParam("mNo") int mNo) {
+		int result = rService.deleteReview(reviewNo);
+		
+		if(result > 0) {
+			return "redirect:menuDetail.mn?mNo=" + mNo;
+		} else {
+			throw new MenuException("식단 후기 등록 실패");
+		}
+	}
 	
 	
 }

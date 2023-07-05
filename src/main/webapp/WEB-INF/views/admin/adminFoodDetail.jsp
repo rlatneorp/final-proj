@@ -578,10 +578,10 @@ p b {
 											<td style="width: 58%;">
 												<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요.">${fn:split(fn:split(table,'-')[2],',')[0]}</textarea>
 											</td>
-											<td style="width: 7%; text-align: center">
+<!-- 											<td style="width: 7%; text-align: center"> -->
 <!-- 												삭제버튼 보류 -->
 <!-- 												<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button> -->
-											</td>
+<!-- 											</td> -->
 										</tr>
 									</table>
 								</div>
@@ -603,10 +603,10 @@ p b {
 												<p style="font-size: 12px; color: gray; margin-bottom: 0px;">최적 이미지 비율은 4:3입니다.</p>
 											</td>
 											<td class="num" style="width: 5%; text-align: center">${fn:split(table,'-')[0]}</td>
-											<td style="width: 7%; text-align: center">
+<!-- 											<td style="width: 7%; text-align: center"> -->
 <!-- 												삭제버튼 보류 -->
 <!-- 												<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button> -->
-											</td>
+<!-- 											</td> -->
 										</tr>
 									</table>
 								</div>

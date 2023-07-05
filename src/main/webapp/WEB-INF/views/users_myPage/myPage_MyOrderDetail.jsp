@@ -226,8 +226,7 @@
 			
 			document.getElementById('detailProduct').addEventListener('click', () => {
 				const productNo = document.getElementById('productNo').value;
-				location.href='${contextPath}/marketProductDetail.ma?pNo=' + productNo;
-				
+				location.href='${contextPath}/menuDetail.mn?mNo=' + productNo;
 			})
 		}
 	</script>

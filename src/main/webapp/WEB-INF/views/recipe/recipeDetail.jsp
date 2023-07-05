@@ -23,11 +23,11 @@
 	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; margin-left: 10px;}
 	
 /* 	재료 */
-	#ingredient{width: 1100px; height: 300px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
+	#ingredient{width: 1100px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
 	#ingrTitle{font-size: 23px; text-align: center; width: 100px; margin-left: 500px; margin-right: 500px; padding-top: 20px; height: 50px; position: relative;}
-	#ingrList{width: 900px; height: 220px; margin-left: 100px; margin-right: 100px;}
+	#ingrList{width: 900px; margin-left: 100px; margin-right: 100px;}
 	.ingrElem{padding-top: 10px; padding-bottom: 10px;}
-	.recipeElement{width: 200px; height: 30px; display: inline-block; padding: 10px 5px 5px 5px;}
+	.recipeElement{height: 30px; display: inline-block; padding: 10px 5px 5px 5px; margin: 10px 0 30px 0;}
 	
 /* 	중간선 */
 	.mid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 30px; margin: 5px 0px; font-weight: bold;}
@@ -353,74 +353,6 @@
 <br><br>
 
 <!-- 문의 / 후기 -->
-<p class="mid">문의</p>
-
-<br>
-
-<div id="qna">
-	<table class="board">
-		<tr class="boardTop">
-			<th class="line no">No.</th>
-			<th class="line content">내용</th>
-			<th class="line write">작성자</th>
-			<th class="line date">날짜</th>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">1</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">2</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">3</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">4</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-		<tr class="lineAll">
-			<td class="line">5</td>
-			<td class="line">문의~~~~~~~내용</td>
-			<td class="line">작성자 아이디or닉네임</td>
-			<td class="line">작성 날짜</td>
-		</tr>
-	</table>
-</div>
-
-<br>
-
-<div class="page_wrap">
-   <div class="page_nation">
-      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-      <a href="#" class="active">1</a>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">4</a>
-      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
-   </div>
-</div>
-
-<br>
-<c:if test="${loginUser != null }">
-	<div class="inputBox">
-		<div class="profile d-inline-block">
-			<img src="resources/images/mudo.png" class="profileImg">
-		</div>	
-		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="recipeQnaInput">&nbsp;<button class="enter">등록</button>
-	</div>
-</c:if>
-<br><br>
 
 <!-- <p class="mid">후기</p> -->
 <c:if test="${loginUser ne null }">
@@ -498,15 +430,25 @@
       <!-- 		이전 페이지로	 -->
 		<c:url var="goBack" value="${loc }">
 			<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
+			<c:param name="rId" value="${recipe.usersId}"></c:param>
+			<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+			<c:param name="page" value="${page}"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage > 1 }">
 			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
+<%-- 			<c:param name="rId" value="${recipe.usersId}"></c:param> --%>
+<%-- 			<c:param name="rNo" value="${recipe.foodNo}"></c:param> --%>
+<%-- 			<c:param name="page" value="${page}"></c:param> --%>
+<%-- 			<c:param name="repage" value="${repage}"></c:param> --%>
 		</c:if>
 		
 <!-- 		페이지 -->
 		<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
 				<c:param name="repage" value="${p }"></c:param>
+				<c:param name="rId" value="${recipe.usersId}"></c:param>
+				<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+				<c:param name="page" value="${page}"></c:param>
 			</c:url>
 			<c:if test="${ rpi.currentPage eq p }">
 				<a class="active">${p }</a>
@@ -518,6 +460,9 @@
 		
 		<c:url var="goNext" value="${loc }">
 			<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
+			<c:param name="rId" value="${recipe.usersId}"></c:param>
+			<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+			<c:param name="page" value="${page}"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage < rpi.endPage }">
 			<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>

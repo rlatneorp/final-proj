@@ -74,5 +74,28 @@
 			</ul>
 	  	</nav>
 	</div>
+	<script>
+		let dataType = '';
+// 		상태버튼 이벤트
+		switch(location.pathname){
+			case "/hollosekki/adminUsersManage.ad": dataType = 5; break;
+			case "/hollosekki/adminMenuManage.ad": dataType = 2; break;
+			case "/hollosekki/adminIngredientManage.ad": dataType = 3; break;
+			case "/hollosekki/adminFoodManage.ad": dataType = 1; break;
+			case "/hollosekki/adminToolManage.ad": dataType = 4; break;
+			case "/hollosekki/adminRecipeManage.ad": dataType = 6; break;
+			case "/hollosekki/adminBoardManage.ad": dataType = 8; break;
+			case "/hollosekki/adminReviewManage.ad": dataType = 7; break;
+			case "/hollosekki/adminFAQManage.ad": dataType = 9; break;
+			case "/hollosekki/adminQNAManage.ad": dataType = 10; break;
+		}
+		adminUpdateStatus(dataType);
+		
+//		삭제 체크박스 전체선택 이벤트
+//		삭제버튼 클릭 이벤트 (confirm 띄우기)
+		if(dataType >= 1 && dataType <= 10 && dataType != 5){
+			deleteFunction();
+		}
+	</script>
 </body>
 </html>

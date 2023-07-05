@@ -189,6 +189,7 @@ ul, li {
    height: 30px;
    margin-top: 15px;
    margin-bottom: 5px;
+   float:right;
 }
 
 #buybtn {
@@ -814,6 +815,31 @@ p b {
                         </dt>
                      </dl>
                      <hr style="margin: 0px;">
+                     
+                     <div class="productResultSet" style="display:block">
+	                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
+	                        <span class="opSearch">${tool.toolName}아이스크림 스푼</span>
+	                        <input type="hidden" name="productNo" value="${tool.productNo}">
+	                        <input type="hidden" name="productName" value="${tool.toolName}">
+	                        <input type="hidden" name="productPrice" value="${total}">
+<!-- 	                        <input type="hidden" name="productOption" value=select.val()> -->
+<!-- 	                        <input type="hidden" name="productOption2" value=select2.val()> -->
+	                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}>
+	                     </h4>
+                         <div>
+                            <div  class="btnbox" style="margin: 0 0 0 -1px;">
+	                            <button class="decrease" type="button">-</button>
+	                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly>
+	                            <button class="increase" type="button">+</button>
+<!-- 	                            <button class="removeProudct" type="button" style="float: right;"> -->
+<!-- 	                            	<img src="resources/images/close.png" style="width: 10px;"> -->
+<!--                                 </button> -->
+                          </div>
+                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>
+                            <input type="hidden" name="productPrice" value=${p.productPrice}>
+                         </div>
+                           <br>
+                   </div>
                      
                      <c:forEach items="${options}" var="op" varStatus="vs">
                         <c:if test="${vs.index == 0}">

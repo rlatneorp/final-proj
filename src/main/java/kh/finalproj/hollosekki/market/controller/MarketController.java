@@ -261,6 +261,8 @@ public class MarketController {
                         HttpSession session,  Model model) {
       Users users = (Users)session.getAttribute("loginUser");
       Tool tool = mkService.selectTool(productNo);
+      Food food = mkService.selectFood(productNo);
+      Ingredient ingredient = mkService.selectIngrdient(productNo);
       
 		if(currentPage == null) {
 			currentPage = 1;
@@ -277,7 +279,6 @@ public class MarketController {
       
       
       
-      
       HashMap<String, Integer> map = new HashMap<String, Integer>();
       if(users != null) {
     	  map.put("productNo", productNo);
@@ -291,8 +292,11 @@ public class MarketController {
       ArrayList<Orders> ordList = mkService.orderList(map);
       ArrayList<Options> options = mkService.selectOptionsSet(productNo);
       ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
-      ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
-      ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
+      ArrayList<Image> ToolMainImage = selectImagList(productNo, 6, 0);
+      ArrayList<Image> ToolsubImage = selectImagList(productNo, 6, 1);
+      ArrayList<Image> foodMainImage = selectImagList(productNo, 3, 0);
+      ArrayList<Image> foodsubImage = selectImagList(productNo, 3, 1);
+      
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
 //      System.out.println(imglist);
@@ -300,10 +304,28 @@ public class MarketController {
       
       Integer starAvg = mkService.reviewAvg(productNo);
       
-      if(mainImage != null) {
-    	  model.addAttribute("mainImage", mainImage);
-    	  model.addAttribute("subImage", subImage);
+      if(tool != null) {
+    	  model.addAttribute("toolMainImage", ToolMainImage);
+    	  model.addAttribute("toolsubImage", ToolsubImage);
+    	  model.addAttribute("tool", tool);
+    	  
       }
+      
+      if(food != null) {
+    	  model.addAttribute("food", food);
+    	  model.addAttribute("foodMainImage", foodMainImage);
+    	  model.addAttribute("foodsubImage", foodsubImage);
+    	  
+      }
+      
+      if(ingredient != null) {
+          ArrayList<Image> ingredientMainImage = selectImagList(ingredient.getIngredientNo(), 5, 0);
+          ArrayList<Image> ingredientsubImage = selectImagList(ingredient.getIngredientNo(), 5, 1);
+    	  model.addAttribute("ingredient", ingredient);
+    	  model.addAttribute("ingredientMainImage", ingredientMainImage);
+    	  model.addAttribute("ingredientsubImage", ingredientsubImage);
+      }
+      
       
       if(list != null) {
          model.addAttribute("list", list);
@@ -324,7 +346,8 @@ public class MarketController {
       
       
       model.addAttribute("reviewCount", reviewCount);
-      model.addAttribute("tool", tool);
+      
+      
       model.addAttribute("qna", qna);
       model.addAttribute("qnaCount", qnaCount);
       model.addAttribute("pi", pi);
@@ -660,12 +683,91 @@ public class MarketController {
    }
    
    @RequestMapping("foodMaterialMarcket.ma")
-   public String foodMaterialMarcket() {
+   public String foodMaterialMarcket(@RequestParam("productNo") int productNo,
+					  			     @RequestParam(value="page", required=false) Integer currentPage,
+					                 @ModelAttribute Review r,
+					                 @ModelAttribute QA q,
+					                 @ModelAttribute Image img,
+					                 HttpSession session,  Model model) {
+		Users users = (Users)session.getAttribute("loginUser");
+		Tool tool = mkService.selectTool(productNo);
+		
+		if(currentPage == null) {
+			currentPage = 1;
+		}
+		
+		int qnaCount = mkService.selectQnaCount(productNo);
+		PageInfo pi = Pagination.getPageInfo(currentPage, qnaCount, 5);
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(1000);
+		
+		
+		Product p = mkService.selectProductSet(productNo);
+		r.setProductNo(productNo);
+		
+		
+		
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		if(users != null) {
+		 map.put("productNo", productNo);
+		 map.put("usersNo", users.getUsersNo());
+		}else {
+		 map.put("productNo", productNo);
+		 map.put("usersNo", 0);
+		}
+		
+		
+		ArrayList<Orders> ordList = mkService.orderList(map);
+		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
+		ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
+		ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
+		ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
+		ArrayList<Review> list = mkService.selectReview(productNo);
+		ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
+		//System.out.println(imglist);
+		int reviewCount = mkService.selectReviewCount(productNo);
+		
+		Integer starAvg = mkService.reviewAvg(productNo);
+		
+		if(mainImage != null) {
+		 model.addAttribute("mainImage", mainImage);
+		 model.addAttribute("subImage", subImage);
+		}
+		
+		if(list != null) {
+		model.addAttribute("list", list);
+		model.addAttribute("starAvg", starAvg);
+		}
+		
+		if(imglist != null) {
+		model.addAttribute("imglist", imglist);
+		}
+		
+		//로그인 한 회원이라면 
+		if(users != null) {
+		 Integer result = mkService.selectLike(users.getUsersNo(), productNo);
+		 if(result != null && result >= 1) {
+			  model.addAttribute("like", result);
+		 }
+		}
+		
+		
+		model.addAttribute("reviewCount", reviewCount);
+		model.addAttribute("tool", tool);
+		model.addAttribute("qna", qna);
+		model.addAttribute("qnaCount", qnaCount);
+		model.addAttribute("pi", pi);
+		model.addAttribute("p", p);
+		model.addAttribute("options", options);
+		model.addAttribute("ordList", ordList);
+
+	   
 	   return"market_detail_foodMaterial";
    }
    
    
-   private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
+   private ArrayList<Image> selectImagList(Integer imageDivideNo, int imageType, int imageLevel) {
       HashMap<String, Integer> map = new HashMap<String, Integer>();
       map.put("imageDivideNo", imageDivideNo);
       map.put("imageType", imageType);
@@ -1025,6 +1127,61 @@ public class MarketController {
 	   return "kitchenToolMainPage";
    }
    
+   @RequestMapping("viewSearch.ma")
+   public String viewSearch(@RequestParam(value="page", required=false) Integer currentPage,
+		   					@RequestParam(value="searchStart", required=false) String searchStart,
+		   					@RequestParam("searchType") String searchType,
+		   					@RequestParam("searchText") String searchText,
+		   					Model model){
+	   
+	   if(currentPage == null || (searchStart != null && searchStart.equals("Y"))) {
+		   currentPage = 1;
+	   }
+	   HashMap<String, String> map = new HashMap<String, String>();
+	   map.put("searchType", searchType);
+	   map.put("searchText", searchText);
+	   
+	   int listCount = mkService.selectViewSearchCount(map);
+	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
+	   ArrayList<Product> list = mkService.selectViewSearch(pi, map);
+	   
+	   for(Product p:list) {
+		   System.out.println(p);
+	   }
+	   //전체 상품 조회
+	   if(!list.isEmpty()) {
+		   for(Product lists : list) {
+			   int productNo = lists.getProductNo(); 
+			   String img = null;
+			   switch(lists.getProductType()) {
+			   case 1: Food f = mkService.selectFood(productNo);
+		   				lists.setProductName(f.getFoodName());
+			   			img = mkService.selectImg(productNo, 3); break;
+			   case 3: Ingredient igd = mkService.selectIngrdient(productNo);
+					    lists.setProductName(igd.getIngredientName());
+			   			img = mkService.selectImg(igd.getIngredientNo(), 6); break;
+			   case 4: Tool t = mkService.selectTool(productNo);
+					    lists.setProductName(t.getToolName());
+				   		img = mkService.selectImg(productNo, 5); break;
+			   }
+			   if(img != null) {
+				   lists.setProductImg(img);
+			   }
+		   }
+	   }
+	   
+	   for(Product p:list) {
+		   System.out.println(p);
+	   }
+	   model.addAttribute("searchType", searchType);
+	   model.addAttribute("searchText", searchText);
+	   model.addAttribute("pi", pi);
+	   model.addAttribute("list", list);
+	   
+	   return "kitchenToolMainSearchPage";
+   }
+   
+   
    // 후기 조회
    @RequestMapping("editReview.ma")
    public String editReview(Model model, @RequestParam("reviewNo") int reviewNo) {
@@ -1097,7 +1254,6 @@ public class MarketController {
    @RequestMapping("deleteReview.ma")
    public String deleteReview(@RequestParam("productNo") int productNo, @RequestParam("reviewNo") int reviewNo, Model model) {
 	   int result = mkService.deleteReview(reviewNo);
-//	   int result1 = mkService.deleteReviewImage(reviewNo);
 	   
 	   if(result > 0) {
 		   return "redirect:market_detail.ma?productNo=" + productNo;
@@ -1106,4 +1262,62 @@ public class MarketController {
 	   }
    }
    
-}
+   @RequestMapping(value="foodDropDownSelect.ma", produces="application/json; charset=UTF-8")
+   public void foodDropDownSelect(int foodType, int foodKind, @RequestParam(value="page", required=false) Integer currentPage, HttpServletResponse response) {
+	   
+	   if(currentPage == null) {
+		   currentPage = 1;
+	   }
+	   ArrayList<Food> foodList = new ArrayList<>();
+	   int listCount = 0;
+	   PageInfo pi = null;
+	   if(foodType == 0 && foodKind == 0) {
+		   listCount = mkService.selectViewFoodCount();
+		   pi = Pagination.getPageInfo(currentPage, listCount, 15);
+		   foodList = mkService.selectViewFood(pi);
+	   } else if (foodType >= 1 && foodKind >= 1) {
+		   listCount = mkService.selectFoodKindTypeCount(foodType, foodKind);
+		   pi = Pagination.getPageInfo(currentPage, listCount, 15);
+		   foodList = mkService.selectFoodKindType(pi, foodType, foodKind);
+	   } else if (foodType == 0 && foodKind >= 1) {
+		   listCount = mkService.selectFoodKindCount(foodKind);
+		   pi = Pagination.getPageInfo(currentPage, listCount, 15);
+		   foodList = mkService.selectFoodKind(foodKind, pi);
+	   } else if (foodType >= 1 && foodKind == 0) {
+		   listCount = mkService.selectFoodTypeCount(foodType);
+		   pi = Pagination.getPageInfo(currentPage, listCount, 15);
+		   foodList = mkService.selectFoodType(foodType, pi);
+	   }
+	   
+	   
+	   Food food = null; Product pFood = null;
+//	   int listCount = mkService.selectViewFoodCount();
+//	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
+	    ArrayList<Object> productInfo = new ArrayList<>();
+	   //식품 전체 상품 조회
+	   if(!foodList.isEmpty()) {
+		   for(Food lists : foodList) {
+			   int productNo = lists.getProductNo(); String img = null;
+			   pFood = mkService.selectPfood(productNo); //food productNo에 대한 Product 테이블 조회 
+			   pFood.setProductName(lists.getFoodName());
+			   img = mkService.selectImg(productNo, 3);
+			   if(img != null) {
+				   pFood.setProductImg(img);
+			   }
+			   productInfo.add(pFood); 
+		   }
+	   }
+	   
+	   response.setContentType("application/json; charset=UTF-8");
+       GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+       Gson gson = gb.create();
+       try {
+          gson.toJson(productInfo, response.getWriter());
+       } catch (JsonIOException | IOException e) {
+          e.printStackTrace();
+       }
+	   
+   	 }
+		   
+   }
+   

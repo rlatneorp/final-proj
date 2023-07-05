@@ -495,6 +495,62 @@ public class MarketDAO {
 		return sqlSession.update("marketMapper.deleteReview", reviewNo);
 	}
 
+	public ArrayList<Food> selectFoodKindType(SqlSessionTemplate sqlSession, int foodType, int foodKind, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		Map<Object, Object> map = new HashMap<>();
+		map.put("foodType", foodType);
+		map.put("foodKind", foodKind);
+		System.out.println("map : " + map);
+		return (ArrayList)sqlSession.selectList("marketMapper.selectFoodKindType", map, rowBounds);
+	}
+
+	public ArrayList<Food> selectFoodKind(SqlSessionTemplate sqlSession, int foodKind, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("marketMapper.selectFoodKind", foodKind, rowBounds);
+	}
+
+	public ArrayList<Food> selectFoodType(SqlSessionTemplate sqlSession, int foodType, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("marketMapper.selectFoodType", foodType, rowBounds);
+	}
+
+	public int selectFoodKindCount(SqlSessionTemplate sqlSession, int foodKind) {
+		return sqlSession.selectOne("marketMapper.selectFoodKindCount", foodKind);
+	}
+
+	public int selectFoodTypeCount(SqlSessionTemplate sqlSession, int foodType) {
+		return sqlSession.selectOne("marketMapper.selectFoodTypeCount", foodType);
+	}
+
+	public int selectFoodKindTypeCount(SqlSessionTemplate sqlSession, int foodKind, int foodType) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("foodType", foodType);
+		map.put("foodKind", foodKind);
+
+		return sqlSession.selectOne("marketMapper.selectFoodKindTypeCount", map);
+	}
+
+	public ArrayList<Product> selectLikeOrderByOne(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectLikeOrderByOne", sqlSession);
+	}
+
+//	검색용 메소드
+	public int selectViewSearchCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("marketMapper.selectViewSearchCount", map);
+	}
+
+	public ArrayList<Product> selectViewSearch(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewSearch", map, rowBounds);
+	}
+	
+	
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

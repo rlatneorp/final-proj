@@ -58,7 +58,9 @@ public class AdminRequestAspect {
 		
 		AdminBasic ab = new AdminBasic();
 		
-		if(request.getParameter("searchStart") != null || request.getParameter("pageCountStart") != null || request.getParameter("page") == null) {
+		if(request.getParameter("searchStart") != null || request.getParameter("pageCountStart") != null) {
+			ab.setPage(1);
+		}else if(request.getParameter("page") == null || request.getParameter("page").trim().equals("") ){
 			ab.setPage(1);
 		}else {
 			ab.setPage(Integer.parseInt(request.getParameter("page")));
@@ -92,7 +94,13 @@ public class AdminRequestAspect {
 		request.setAttribute("ab", ab);
 		
 		System.out.println("[Before] " + componentName + type2 + "." + methodName + "()");		
+
+		
+//		메소드 호출
 		Object result = joinPoint.proceed();
+		
+		
+		
 		System.out.println("[After] " + componentName + type2 + "." + methodName + "()");
 
 		HttpServletRequest requestAfter = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

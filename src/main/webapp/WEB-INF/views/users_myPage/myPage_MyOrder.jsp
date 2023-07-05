@@ -100,6 +100,16 @@ th:first-child, td:first-child {
 
 .page-link.disabled{color: lightgray;}
 .page-link.disabled:hover{background: white; color: lightgray;}
+.write{
+	border-radius: 5px;
+	font-weight: bold; font-size: 14px;
+	width: 78px; height: 38px;
+	background: #F3F3F3;
+	box-shadow: none; padding: 0;
+	text-align: center;
+	border: 1px #DADADA solid;
+    outline: none;
+}
 </style>
 </head>
 <body>
@@ -153,12 +163,13 @@ th:first-child, td:first-child {
 								<th>상품 명</th>
 								<th>주문 날짜</th>
 								<th>총 주문금액</th>
+								<th>후기 작성</th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
 							<c:if test="${!empty orderList }">
-								<c:forEach items="${orderList }" var="ol">
-										<tr onclick="location.href='${contextPath}/myPage_MyOrderDetail.me?orderNo='+${ol.orderNo}">
+								<c:forEach items="${orderList }" var="ol" varStatus="status">
+										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/myPage_MyOrderDetail.me?orderNo='+${ol.orderNo}">
 											<td>
 												${ol.orderNo }
 											</td>
@@ -175,8 +186,21 @@ th:first-child, td:first-child {
 												<td>주방도구</td>
 											</c:if>
 											<td>${ol.productName }</td>
-											<td>${ol.orderDate }</td>
+											<td><fmt:formatDate value="${ol.orderDate }" pattern="yyyy-MM-dd"/></td>
 											<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
+											<td>
+												<c:if test="${ !empty reviewList[status.index].reviewNo and ol.orderNo eq reviewList[status.index].orderNo }">
+													<b style="font-size: 16px;">작성 완료</b>
+												</c:if>
+												<c:if test="${ empty reviewList[status.index].reviewNo and ol.orderNo ne reviewList[status.index].orderNo }">
+													<c:if test="${ ol.productType eq 2 }">
+														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ ol.productNo }' + '&page=' + '${pi.currentPage}'">
+													</c:if>
+													<c:if test="${ ol.productType ne 2 }">
+														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/market_detail.ma?productNo=' + '${ ol.productNo }' + '&page=' + '${pi.currentPage}'">
+													</c:if>
+												</c:if>
+											</td>
 										</tr>
 								</c:forEach>
 							</c:if>

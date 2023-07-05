@@ -161,7 +161,7 @@ public class RecipeDAO {
 		sqlSession.insert("recipeMapper.insertNewIngredient", newI);
 	}
 
-	public Ingredient selectNewIngredient(SqlSessionTemplate sqlSession, String newI) {
+	public int selectNewIngredient(SqlSessionTemplate sqlSession, String newI) {
 		return sqlSession.selectOne("recipeMapper.selectNewIngredient", newI);
 	}
 
@@ -184,6 +184,7 @@ public class RecipeDAO {
 	public int updateOrder(SqlSessionTemplate sqlSession, ArrayList<RecipeOrder> orc) {
 		int result = 0;
 		for(int i = 0; i < orc.size(); i++) {
+			System.out.println(orc.get(i));
 			result += sqlSession.update("recipeMapper.updateOrder", orc.get(i));
 		}
 		
@@ -194,6 +195,15 @@ public class RecipeDAO {
 		}
 		
 		return result;
+	}
+
+	public int updateRecipeOrder(SqlSessionTemplate sqlSession, ArrayList<RecipeOrder> ro) {
+		int result = 0;
+		for(int i = 0; i < ro.size(); i++) {
+			result += sqlSession.update("recipeMapper.updateRecipeOrder", ro.get(i));
+		}
+		
+		return result; 
 	}
 
 }

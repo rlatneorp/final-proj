@@ -254,7 +254,7 @@ input[type="text"] {
 						<td class="imgTab">
 							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
 							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-							<input type="hidden" class="storePreOrderNo" value="${cl.preorderNo }">
+							<input type="text" class="storePreOrderNo" value="${cl.preorderNo }">
 						</td>
 						<td style="border-right: 2px solid #dee2e6; text-align: left">
 							<b id="productName-${cl.preorderNo }">${cl.productName}</b><br><br>
@@ -277,7 +277,7 @@ input[type="text"] {
 								</span>원
 							</c:if>
 							<c:if test="${cl. sale eq 0 }">
-								<span id="pp-${cl.productNo }" class="price">
+								<span id="pp-${cl.preorderNo }" class="price">
 									${cl.productPrice}
 								</span>원
 							</c:if>
@@ -615,7 +615,6 @@ input[type="text"] {
                 } else { 
                     addr = data.jibunAddress;
                 }
-                console.log(document.getElementById('sample7_postcode'));
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('sample7_postcode').value = data.zonecode;
@@ -636,7 +635,6 @@ input[type="text"] {
                 } else { 
                     addr = data.jibunAddress;
                 }
-                console.log(document.getElementById('update_postcode'));
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('update_postcode').value = data.zonecode;
@@ -742,7 +740,6 @@ input[type="text"] {
 		const openSecondButton = document.getElementById("openSecondButton");
 		const closeSecondButton = document.getElementById("closeSecondButton");
 		const confirmButton = document.getElementById("confirmButton");
-		console.log(confirmButton);
 		const popup = document.getElementById("popup");
 		const secondPopup = document.getElementById("secondPopup");
 
@@ -762,7 +759,6 @@ input[type="text"] {
 				 
 				  for(datas of data) {
 					  const shippingNo = datas.shippingNo;
-					  console.log(shippingNo);
 					  var row = document.createElement("tr");
 					  row.classList.add('shippingList');
 					  row.innerHTML = 
@@ -775,7 +771,6 @@ input[type="text"] {
 				  }
 			  }, 
 			  error: data => {
-				  console.log(data);
 			  }
 		  })
 		});
@@ -810,7 +805,6 @@ input[type="text"] {
 				popup.style.display = 'none';
 				document.getElementById('updatePopup').style.display = 'block';
 				let shippingNo = checkedShip; 
-				console.log(shippingNo);
 				
 				//닫기 버튼 눌렀을 때 
 				document.getElementById('closeButton3').addEventListener('click', () => {
@@ -824,7 +818,6 @@ input[type="text"] {
 						shippingNo:shippingNo
 					},
 					success: data => {
-						console.log(data);
 						const pullAddress = data.address;
 						const splitPullAddress = pullAddress.split(",");
 						const postNo = splitPullAddress[0].replace("[", "").trim();
@@ -860,7 +853,6 @@ input[type="text"] {
 				for(let i=0; i<ship.length; i++) {
 					if(ship[i].checked) {
 						shippingNo = ship[i].value;
-						console.log(shippingNo);
 						break;
 					  }
 				}
@@ -921,8 +913,6 @@ input[type="text"] {
 				url:'${contextPath}/selectChecShip.ma',
 				data:{shippingNo:shippingNo},
 				success: data => {
-					console.log(data)
-					console.log(data.recipient);
 					popup.style.display = 'none';
 					
 					const pullAddress = data.address;
@@ -953,7 +943,6 @@ input[type="text"] {
 			popup.style.display = 'block';
 			let shippingNo = checkedShip; 
 			
-			console.log('aaaa' + shippingNo);
 			$.ajax({
 				url:'${contextPath}/updateConfirmShipping.ma',
 				data:{
@@ -966,7 +955,6 @@ input[type="text"] {
 					phone:updatePhoneNumber.value
 				},
 				success : data => {
-					console.log(data);
 					popup.style.display = 'none';
 					swal({
 					 text: "수정이 완료되었습니다.",
@@ -1114,7 +1102,6 @@ input[type="text"] {
 					});
 					inputPoint.value = currentPoint + '원';
 					usePoint.innerText = currentPoint;
-					console.log('up1: ' + usePoint.innerText)
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-currentPoint).toLocaleString(); //총금액+배송비-포인트
 				} else if ( value < currentPoint) { //새로 입력한 값보다 보유 포인트 금액이 크면 
 					inputPoint.value = formattedValue + '원';
@@ -1232,7 +1219,6 @@ input[type="text"] {
 			            	const productNo = forProductNo.value
 			            	const preorderNo = forProductNo.nextElementSibling.value;
 			            	const count = document.getElementById('size-' + preorderNo).innerText;
-			            	console.log(preorderNo);
 			            	const sum = parseInt(document.getElementById('sum-' + preorderNo).innerText.replace(/,/g, ''));
 			            	
 			            	/* 상품 단가, 할인률, 적립금, 포인트 사용 금액 */
@@ -1251,7 +1237,6 @@ input[type="text"] {
 	 						const plusPoint = document.getElementById('point-' + preorderNo).innerText; //해당 상품에 대한 포인트 적립  
 	 						//사용 포인트가 없다면 0으로 
 	 						
-	 						console.log('너의 현재 금액은? : ' + usePoint);
 	 						orderInfo.push('적립금 : ' + plusPoint);
 	 						orderInfo.push('사용한 적립금 : ' + usePoint);
 	 						orderInfo.push('/');
@@ -1294,7 +1279,6 @@ input[type="text"] {
 			            
 			          	//insert성공 시 
 			            const p = document.getElementsByClassName('point');
-			            console.log('p : ' + document.getElementsByClassName('point'));
 			            let pp = 0;
 			            for (let i = 0; i < p.length; i++) {
 			            	const pot = parseInt(p[i].innerText);
@@ -1305,7 +1289,6 @@ input[type="text"] {
 						const pr = document.getElementsByClassName('storePreOrderNo');
 						let preOrder = [];
 						for(prs of pr) {
-							console.log(prs.value);
 							const prsNo = prs.value;
 							preOrder.push(prsNo);
 						}

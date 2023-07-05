@@ -200,7 +200,7 @@ public class RecipeServiceImpl implements RecipeService{
 	}
 	
 	@Override
-	public Ingredient selectNewIngredient(String newI) {
+	public int selectNewIngredient(String newI) {
 		return rDAO.selectNewIngredient(sqlSession, newI);
 	}
 	
@@ -227,6 +227,11 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public int updateOrder(ArrayList<RecipeOrder> orc) {
 		return rDAO.updateOrder(sqlSession, orc);
+	}
+	
+	@Override
+	public int updateRecipeOrder(ArrayList<RecipeOrder> ro) {
+		return rDAO.updateRecipeOrder(sqlSession, ro);
 	}
 	
 }

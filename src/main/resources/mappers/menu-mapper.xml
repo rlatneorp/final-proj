@@ -110,6 +110,11 @@
 		order by count desc
 	</select>
 	
+	<select id="loginUserLikeList" resultMap="likeResultSet">
+		select * from likes
+		where users_no = #{ usersNo }
+	</select>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>
@@ -160,10 +165,10 @@
 		<result column="MENU_KIND" property="menuKind"/>
 	</resultMap>
 	
-<!-- 	<resultMap type="Likes" id="likeResultSet"> -->
-<!-- 		<id column="LIKE_NO" property="likeNo"/> -->
-<!-- 		<result column="USERS_NO" property="usersNo"/> -->
-<!-- 		<result column="DIVISION_NO" property="divisionNo"/> -->
-<!-- 		<result column="NUMBER_TYPE" property="numberType"/> -->
-<!-- 	</resultMap> -->
+	<resultMap type="Likes" id="likeResultSet">
+		<id column="LIKE_NO" property="likeNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="DIVISION_NO" property="divisionNo"/>
+		<result column="NUMBER_TYPE" property="numberType"/>
+	</resultMap>
 </mapper>

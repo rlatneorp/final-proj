@@ -6,6 +6,7 @@ public class Board {
 	
 	private int boardNo;
 	private int usersNo;
+	private int replyN;
 	private String nickName;
 	private String boardTitle;
 	private String boardContent;
@@ -25,13 +26,14 @@ public class Board {
 	
 	public Board() {}
 
-	public Board(int boardNo, int usersNo, String nickName, String boardTitle, String boardContent, Date boardDate,
-			String boardStatus, String boardType, int boardCount, int productNo, int orderNo, int reviewNo,
-			String reviewTitle, String reviewContent, int reviewScore, char reviewStatus, Date reviewDate,
+	public Board(int boardNo, int usersNo, int replyN, String nickName, String boardTitle, String boardContent,
+			Date boardDate, String boardStatus, String boardType, int boardCount, int productNo, int orderNo,
+			int reviewNo, String reviewTitle, String reviewContent, int reviewScore, char reviewStatus, Date reviewDate,
 			String reviewWriter) {
 		super();
 		this.boardNo = boardNo;
 		this.usersNo = usersNo;
+		this.replyN = replyN;
 		this.nickName = nickName;
 		this.boardTitle = boardTitle;
 		this.boardContent = boardContent;
@@ -64,6 +66,14 @@ public class Board {
 
 	public void setUsersNo(int usersNo) {
 		this.usersNo = usersNo;
+	}
+
+	public int getReplyN() {
+		return replyN;
+	}
+
+	public void setReplyN(int replyN) {
+		this.replyN = replyN;
 	}
 
 	public String getNickName() {
@@ -196,12 +206,13 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "Board [boardNo=" + boardNo + ", usersNo=" + usersNo + ", nickName=" + nickName + ", boardTitle="
-				+ boardTitle + ", boardContent=" + boardContent + ", boardDate=" + boardDate + ", boardStatus="
-				+ boardStatus + ", boardType=" + boardType + ", boardCount=" + boardCount + ", productNo=" + productNo
-				+ ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle=" + reviewTitle
-				+ ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus=" + reviewStatus
-				+ ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + "]";
+		return "Board [boardNo=" + boardNo + ", usersNo=" + usersNo + ", replyN=" + replyN + ", nickName=" + nickName
+				+ ", boardTitle=" + boardTitle + ", boardContent=" + boardContent + ", boardDate=" + boardDate
+				+ ", boardStatus=" + boardStatus + ", boardType=" + boardType + ", boardCount=" + boardCount
+				+ ", productNo=" + productNo + ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle="
+				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
+				+ reviewStatus + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + "]";
 	}
+
 	
 }

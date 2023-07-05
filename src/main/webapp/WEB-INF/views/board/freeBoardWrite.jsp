@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,13 +71,24 @@ th:first-child, td:first-child {
 #parentDiv{
 	padding:75px; 
 	border:5px solid #B0DAFF;
-	width:900px; 
+	width:1100px; 
 	margin:0 auto;
-	margin-left:330px;
+	margin-left:400px;
 	justify-content: center;
 	border-radius:2em;
 }
 
+#goToLogin{
+	width: 200px; height: 46px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	margin: 10px;
+	font-size: 24px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 5px; 
+}
 .note-modal-content{height:350px}
 </style>
 
@@ -90,54 +102,81 @@ th:first-child, td:first-child {
 	<script src="resources/summernotes/summernote-lite.js"></script>
 	<script src="resources/summernotes/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
-	<br><br><br><br><br><br><br><br><br><br><br>
-	<div id="parentDiv">
-		<div>
-			<label class="intro">제목</label><br>
-			<input type="text" name="introTitle" style="width: 751px; height:35px">
-		</div><br><br>
-		<div>
-			<label class="intro">내용</label><br>
-			<textarea class="summernote" name="introContent" style="resize: none;"></textarea>
+	<br><br><br><br><br><br>
+	<c:if test="${!empty loginUser }">
+		<form action="${contextPath }/freeBoardWriting.bo" method="post">
+			<div id="parentDiv">
+				<div>
+					<label class="intro">제목</label><br>
+					<input required="required" type="text" name="introTitle" style="width: 900px; height:45px">
+				</div><br><br>
+				<div>
+					<label class="intro">내용</label><br>
+					<textarea required="required" class="summernote" name="introContent" style="resize: none;"></textarea>
+				</div>
+			</div><br><br>
+		<!-- 작성 버튼 -->
+		<div style="margin: 0 auto; text-align: center;">
+			<button class="btn-3d blue" id="boardSubmit">작성하기</button>
 		</div>
-	</div>
-	<!-- 작성 버튼 -->
-	<div style="margin: 0 auto; text-align: center;">
-		<a href="${contextPath }/freeBoard.bo" class="btn-3d blue">작성하기</a>
-	</div>
-	<br><br><br><br><br><br><br><br><br><br><br><br>
-	
-
-
+		</form>
+	</c:if>
+	<c:if test="${empty loginUser }">
+		<div class="text-center">
+			<h2>로그인 하셔야 글을 쓰실 수 있습니다.</h2>	
+			<button  id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
+		</div>
+	</c:if>
+	<input type="hidden" value="${login }" id="hDnNick">
+	<br><br><br><br><br><br><br>
 	<%@include file="../common/footer.jsp"%>
 
 
 </body>
 <script>
-	$('.summernote')
-			.summernote(
-					{
-						width : 750,
-						height : 350,
-						lang : "ko-KR",
-						toolbar : [
-								// [groupName, [list of button]]
-								[ 'fontname', [ 'fontname' ] ],
-								[ 'fontsize', [ 'fontsize' ] ],
-								[
-										'style',
-										[ 'bold', 'italic', 'underline',
-												'strikethrough', 'clear' ] ],
-								[ 'color', [ 'forecolor', 'color' ] ],
-								[ 'para', [ 'ul', 'ol', 'paragraph' ] ],
-								[ 'height', [ 'height' ] ],
-								[ 'insert', [ 'picture' ] ] ],
-						fontNames : [ 'Arial', 'Arial Black', 'Comic Sans MS',
-								'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림',
-								'돋움체', '바탕체' ],
-						fontSizes : [ '8', '9', '10', '11', '12', '14', '16',
-								'18', '20', '22', '24', '28', '30', '36', '50',
-								'72' ]
-					});
+const hDnNick = document.querySelector('#hDnNick')
+const form = document.querySelector('form')
+
+const boardSubmit = document.querySelector('#boardSubmit');
+	boardSubmit.addEventListener('click', ()=>{
+		$.ajax({
+			url: 'goToMyBoard.bo',
+			success: data=>{
+				const bId = data.boardNo + 1;
+				const writer = data.nickName;
+				location.href='${contextPath}/detailFreeBoard.bo?bId=' + bId + '&writer=' + writer + '&page=1';
+					
+			}
+			
+		})		
+		
+	})
+
+	$('.summernote').summernote({
+		width : 900,
+		height : 350,
+		lang : "ko-KR",
+		toolbar : [
+				// [groupName, [list of button]]
+				[ 'fontname', [ 'fontname' ] ],
+				[ 'fontsize', [ 'fontsize' ] ],
+				[
+						'style',
+						[ 'bold', 'italic', 'underline',
+								'strikethrough', 'clear' ] ],
+				[ 'color', [ 'forecolor', 'color' ] ],
+				[ 'para', [ 'ul', 'ol', 'paragraph' ] ],
+				[ 'height', [ 'height' ] ],
+				[ 'insert', [ 'picture' ] ] ],
+		fontNames : [ 'Arial', 'Arial Black', 'Comic Sans MS',
+				'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림',
+				'돋움체', '바탕체' ],
+		fontSizes : [ '8', '9', '10', '11', '12', '14', '16',
+				'18', '20', '22', '24', '28', '30', '36', '50',
+				'72' ]
+		
+	});
+	
+	
 </script>
 </html>

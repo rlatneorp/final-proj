@@ -161,7 +161,7 @@ public class RecipeDAO {
 		sqlSession.insert("recipeMapper.insertNewIngredient", newI);
 	}
 
-	public Ingredient selectNewIngredient(SqlSessionTemplate sqlSession, String newI) {
+	public int selectNewIngredient(SqlSessionTemplate sqlSession, String newI) {
 		return sqlSession.selectOne("recipeMapper.selectNewIngredient", newI);
 	}
 
@@ -204,6 +204,14 @@ public class RecipeDAO {
 		}
 		
 		return result; 
+	}
+
+	public void deleteRecipeIngredient(SqlSessionTemplate sqlSession, int foodNo) {
+		sqlSession.delete("recipeMapper.deleteRecipeIngredient", foodNo);
+	}
+
+	public void updateIngredient(SqlSessionTemplate sqlSession, ArrayList<RecipeElement> reelList) {
+		sqlSession.insert("recipeMapper.updateIngredient", reelList);
 	}
 
 }

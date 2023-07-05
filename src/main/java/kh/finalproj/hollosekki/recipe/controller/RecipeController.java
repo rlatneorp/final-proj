@@ -92,7 +92,8 @@ public class RecipeController {
 //	레시피 상세조회
 	@RequestMapping("recipeDetail.rc")
 	public ModelAndView recipeDetail(@RequestParam("rId") String usersId, @RequestParam("rNo") int foodNo,
-			@RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv) {
+			@RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv,
+			@RequestParam(value = "repage", required = false) Integer repage) {
 
 		Users loginUser = (Users) session.getAttribute("loginUser");
 
@@ -115,7 +116,10 @@ public class RecipeController {
 		}
 
 		int reviewCount = rService.getReviewCount(foodNo);
-		PageInfo rpi = ReviewPagination.getPageInfo(1, reviewCount, 5);
+		if(repage == null) {
+			repage = 1;
+		}
+		PageInfo rpi = ReviewPagination.getPageInfo(repage, reviewCount, 5);
 
 		Recipe recipe = rService.recipeDetail(foodNo, yn);
 		ArrayList<RecipeOrder> orderList = rService.recipeDetailOrderText(foodNo);
@@ -137,6 +141,7 @@ public class RecipeController {
 			mv.addObject("eleList", eleList);
 			mv.addObject("myReview", myReview);
 			mv.addObject("reviewCount", reviewCount);
+			mv.addObject("repage", repage);
 			mv.setViewName("recipeDetail");
 
 			return mv;

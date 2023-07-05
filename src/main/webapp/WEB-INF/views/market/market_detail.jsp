@@ -1302,8 +1302,11 @@ p b {
       const reviewStar = document.querySelectorAll(".reviewStar");
       const total = document.querySelector('.totalPrice');
       let totalPriceSet = document.querySelectorAll(".totalPriceSet");
-      const productPrice = document.querySelectorAll(".productPrice");
-      const cartCount = document.querySelectorAll(".cartCount");
+      let productPrice = document.querySelectorAll(".productPrice");
+      const cartCount = document.querySelector(".cartCount");
+      let totalPrice1 = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+//       let totalPrice = document.querySelector(".totalPrice");
+      
       
       
       
@@ -1320,31 +1323,39 @@ p b {
          $('.accordion_i_cont3').toggle(400);
       })
    
-
-      $(document).on("click",".btnbox",function(e){
-         const increBtn = this.childNodes[2]; //증가버튼
-         const decreBtn = this.childNodes[0]; //감소버튼
-         const cartNum = this.childNodes[1];  //카트수량 
-         e.stopPropagation();    //이벤트 버블링 막기
-         if(e.target == increBtn){
-            totalPrice1 = this.childNodes[1].value*${total}+${total};
-         this.childNodes[1].value++;
-         } 
-         if(e.target == decreBtn){
-            totalPrice1 = cartNum.value * ${total}-${total};
-             cartNum.value--;
-             priceSet--;
-            if(cartNum.value < 1){
-               cartNum.value=1;
-            }
-            
-         }
-         
-         if(e.target == this.childNodes[3] || e.target ==this.childNodes[3].childNodes[0]){ //x버튼을 클릭하거나 x이미지를 클릭하거나 상품옵션창을 삭제한다.
-            this.parentNode.parentNode.remove();
-         }
-      })
       
+	      $(document).on("click",".btnbox",function(e){
+	         const increBtn = this.childNodes[2]; //증가버튼
+	         const decreBtn = this.childNodes[0]; //감소버튼
+	         const cartNum = this.childNodes[1];  //카트수량 
+	        
+	         e.stopPropagation();    //이벤트 버블링 막기
+	         if(e.target === increBtn){
+                  totalPrice1 = (this.childNodes[1].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                  this.childNodes[4].innerText=totalPrice1;
+                  cartNum.value++;
+	         } 
+	         if(e.target === decreBtn){
+                 totalPrice1 = (this.childNodes[1].value*${total}-${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                 this.childNodes[4].innerText=totalPrice1;
+                 cartNum.value--;
+                 cartNum.value--;
+		            if(cartNum.value < 1 ){
+		            	cartNum.value=1;
+		               this.childNodes[4].innerText=${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		            }
+	            
+	         }
+	         if(productOptionSet != null){
+		         if(e.target == this.childNodes[3] || e.target ==this.childNodes[3].childNodes[0]){ //x버튼을 클릭하거나 x이미지를 클릭하거나 상품옵션창을 삭제한다.
+		        	 cartNum.value = 0;
+		            this.parentNode.parentNode.remove();
+		         }
+	         }
+	         
+	         
+	      })
+	  
       
       
       const usersNo = '${loginUser.usersNo}';
@@ -1439,7 +1450,6 @@ p b {
       
       
       if(productOptionSet == null){
-    	  		let totalPrice1 = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	  		let productPrice = document.querySelector(".productPrice");
     	  		productPrice.innerText=totalPrice1;
 		          $(document).on("click",".btnbox",function(e){
@@ -1450,20 +1460,19 @@ p b {
 		              if(e.target == increBtn){
 		                 totalPrice1 = (this.childNodes[3].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                 productPrice.innerText=totalPrice1;
-		                 console.log(totalPrice1);
 		              this.childNodes[3].value++;
 		              } 
 		              if(e.target == decreBtn){
-		                 totalPrice1 = cartNum.value * ${total}-${total};
-		                  cartNum.value--;
+		                 totalPrice1 = (this.childNodes[3].value*${total}-${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                 productPrice.innerText=totalPrice1;
+		                 this.childNodes[3].value--;
 // 		                  priceSet--;
 		                 if(cartNum.value < 1){
 		                    cartNum.value=1;
+		                    productPrice.innerText = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                 }
 		                 
 		     	 }
-					  console.log(e.target);
-					  console.log(increBtn);
 		              
 	      		})
       
@@ -1513,7 +1522,6 @@ p b {
 		            }
 		         }else{
 		            const select =  $('.productOptionSet option:selected');
-		            cartCount.value = 1;
 		            let optionName = "${tool.toolName}"+select.text();
 		            const opSearch = document.getElementsByClassName('opSearch');
 		            let YN = "Y";
@@ -1544,7 +1552,7 @@ p b {
 		                                                 +'<img src="resources/images/close.png" style="width: 10px;">'
 		                                           +'<span>'
 		                                           +'</button>'
-		                                           +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
+		                                           +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
 		                                           +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
 		                                        +'</div>'
 		                                         +'<br>'
@@ -1555,11 +1563,9 @@ p b {
 		       })
          }
        if(productOption2Set != null){
-          
            productOption2Set.addEventListener("change", function(){
             const select =  $('.productOptionSet option:selected');
             const select2 = $('.productOption2Set option:selected');
-            cartCount.value = 1;
                let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
 //                let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
                const opSearch = document.getElementsByClassName('opSearch');
@@ -1592,7 +1598,7 @@ p b {
                                               +'<img src="resources/images/close.png" style="width: 10px;">'
                                         +'<span>'
                                         +'</button>'
-                                        +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
+                                        +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
                                         +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
                                      +'</div>'
                                       +'<br>'
@@ -1604,11 +1610,6 @@ p b {
           
        }
             
-      function priceToString() {
-         return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      }
-      
-       
       
       $(document).ready(function() {
          var productNo = null;

@@ -229,4 +229,9 @@ public class RecipeServiceImpl implements RecipeService{
 		return rDAO.updateOrder(sqlSession, orc);
 	}
 	
+	@Override
+	public int updateRecipeOrder(ArrayList<RecipeOrder> ro) {
+		return rDAO.updateRecipeOrder(sqlSession, ro);
+	}
+	
 }

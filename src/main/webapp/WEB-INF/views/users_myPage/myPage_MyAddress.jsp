@@ -89,12 +89,14 @@ th:first-child, td:first-child {
 }
 #tbody tr {height: 70px;}
 .edit{
-	border: none; border-radius: 5px;
-	font-weight: bold; font-size: 12px;
-	width: 50px; height: 30px;
-	background: #B0DAFF;
+	border-radius: 5px;
+	font-weight: bold; font-size: 14px;
+	width: 55px; height: 35px;
+	background: #F3F3F3;
 	box-shadow: none; padding: 0;
 	text-align: center;
+	border: 1px #DADADA solid;
+    outline: none;
 }
 .btn-3d {
 	text-decoration: none;

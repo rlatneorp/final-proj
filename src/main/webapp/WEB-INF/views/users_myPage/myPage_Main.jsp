@@ -224,7 +224,7 @@
 									<i class="bi bi-currency-dollar dollars"></i>
 								</td>
 								<td style="font-size: 18px; color: rgb(52, 152, 219);">
-									<p class="d-inline" id="myP" style="font-weight: bold;"><fmt:formatNumber pattern="###,###,###">${ loginUser.point }</fmt:formatNumber> P</p>
+									<p class="d-inline" id="myP" style="font-weight: bold;">&nbsp;<fmt:formatNumber pattern="###,###,###">${ loginUser.point }</fmt:formatNumber> P</p>
 								</td>
 							</tr>
 						</table>
@@ -260,7 +260,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -306,7 +306,7 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -364,7 +364,7 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 800px; margin-left: 600px;">
+	<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 800px; margin-left: 600px;" data-backdrop="static">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -487,7 +487,7 @@
 			    reader.readAsDataURL(file);
 			  } else {
 				  if (loginUserP) {
-				      profile.src = loginUser;
+				      profile.src = loginUserP;
 				    } else {
 				      profile.src = "https://botsitivity.org/static/media/noprofile.c3f94521.png";
 				    }
@@ -564,6 +564,37 @@
 			    }
 			  });
 		}
+		
+		// 모달 닫을 때 새로고침
+		const reload = () => {
+			location.reload();
+		}
+		
+		// 모달 X버튼
+		const close = document.querySelectorAll('.btn-close');
+		close[0].addEventListener('click', () => {
+			reload();
+		});
+		close[1].addEventListener('click', () => {
+			reload();
+		});
+		
+		// ESC 누르면
+		window.addEventListener('keydown', (e) => {
+			if(e.keyCode == 27){
+				reload();
+			}
+		});
+		
+// 		const modals = document.querySelectorAll('.modal');
+// 		for(const modal of modals){
+// 			console.log(modal);
+// 			modal.addEventListener('click', () => {
+// 			  	reload();
+// 			});
+// 		}
+
+		
 	</script>
 </body>
 </html> 

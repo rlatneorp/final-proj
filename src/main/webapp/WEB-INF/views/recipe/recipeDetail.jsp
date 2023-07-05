@@ -23,11 +23,11 @@
 	#deleteBtn{background-color: lightgray; color: black; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; margin-left: 10px;}
 	
 /* 	재료 */
-	#ingredient{width: 1100px; height: 300px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
+	#ingredient{width: 1100px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
 	#ingrTitle{font-size: 23px; text-align: center; width: 100px; margin-left: 500px; margin-right: 500px; padding-top: 20px; height: 50px; position: relative;}
-	#ingrList{width: 900px; height: 220px; margin-left: 100px; margin-right: 100px;}
+	#ingrList{width: 900px; margin-left: 100px; margin-right: 100px;}
 	.ingrElem{padding-top: 10px; padding-bottom: 10px;}
-	.recipeElement{width: 200px; height: 30px; display: inline-block; padding: 10px 5px 5px 5px;}
+	.recipeElement{height: 30px; display: inline-block; padding: 10px 5px 5px 5px; margin: 10px 0 30px 0;}
 	
 /* 	중간선 */
 	.mid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 30px; margin: 5px 0px; font-weight: bold;}

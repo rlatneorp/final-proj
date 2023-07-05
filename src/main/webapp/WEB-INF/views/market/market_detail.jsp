@@ -1349,81 +1349,90 @@ p b {
       
       const usersNo = '${loginUser.usersNo}';
       const divisionNo = '${p.productNo}';
-      like.addEventListener("click", function() {
-         if(like.innerText === '♡') {
-           //찜이 안 되어 있으면 
-            $.ajax({
-                 url:'${contextPath}/insertLike.ma',
-                 data:{
-                    usersNo:usersNo,
-                    divisionNo:divisionNo
-                 },
-                 success: data=> {
-                    if(data == 'success') {
-                       like.innerText = '♥';
-                       swal({
-                         text: "해당 상품의 찜 등록이 완료되었습니다.",
-                         icon: "success",
-                         button: "확인",
-                        });
-                       setTimeout(function() {
-                          swal.close(); 
-                       }, 3000);
-                    } else { //실패 시 
-                       swal({
-                         text: "해당 상품의 찜 등록이 실패했습니다.",
-                         icon: "error",
-                        });
-                       setTimeout(function() {
-                          swal.close(); 
-                       }, 2000);
-                    }
-                 },
-                 error:data=>{
-                    swal({
-                      text: "해당 상품의 찜 등록이 실패했습니다.",
-                      icon: "error",
-                     });
-                    setTimeout(function() {
-                       swal.close(); 
-                    }, 2000);
-                 }
-              })
-          } else { //찜 등록이 되어 있으면 
-             $.ajax({
-                url:'${contextPath}/deleteLike.ma',
-                data:{
-                   usersNo:usersNo,
-                    divisionNo:divisionNo
-                },
-                success: data => {
-                   console.log(data);
-                   if(data == 'success') {
-                      like.innerText ='♡';
-                       swal({
-                         text: "해당 상품의 찜 해제가 완료되었습니다.",
-                         icon: "success",
-                        });
-                       setTimeout(function() {
-                          swal.close(); 
-                       }, 2000);
-                    } else { //실패 시 
-                       swal({
-                         text: "해당 상품의 찜 해제가 실패했습니다.",
-                         icon: "error",
-                        });
-                       setTimeout(function() {
-                          swal.close(); 
-                       }, 2000);
-                    }
-                },
-                error: data=>{
-                   
-                }
-             })
-          }
-      });
-   
+      
+      if(usersNo != '') {
+	      like.addEventListener("click", function() {
+	         if(like.innerText === '♡') {
+	           //찜이 안 되어 있으면 
+	            $.ajax({
+	                 url:'${contextPath}/insertLike.ma',
+	                 data:{
+	                    usersNo:usersNo,
+	                    divisionNo:divisionNo
+	                 },
+	                 success: data=> {
+	                    if(data == 'success') {
+	                       like.innerText = '♥';
+	                       swal({
+	                         text: "해당 상품의 찜 등록이 완료되었습니다.",
+	                         icon: "success",
+	                         button: "확인",
+	                        });
+	                       setTimeout(function() {
+	                          swal.close(); 
+	                       }, 3000);
+	                    } else { //실패 시 
+	                       swal({
+	                         text: "해당 상품의 찜 등록이 실패했습니다.",
+	                         icon: "error",
+	                        });
+	                       setTimeout(function() {
+	                          swal.close(); 
+	                       }, 2000);
+	                    }
+	                 },
+	                 error:data=>{
+	                    swal({
+	                      text: "해당 상품의 찜 등록이 실패했습니다.",
+	                      icon: "error",
+	                     });
+	                    setTimeout(function() {
+	                       swal.close(); 
+	                    }, 2000);
+	                 }
+	              })
+	          } else { //찜 등록이 되어 있으면 
+	             $.ajax({
+	                url:'${contextPath}/deleteLike.ma',
+	                data:{
+	                   usersNo:usersNo,
+	                    divisionNo:divisionNo
+	                },
+	                success: data => {
+	                   console.log(data);
+	                   if(data == 'success') {
+	                      like.innerText ='♡';
+	                       swal({
+	                         text: "해당 상품의 찜 해제가 완료되었습니다.",
+	                         icon: "success",
+	                        });
+	                       setTimeout(function() {
+	                          swal.close(); 
+	                       }, 2000);
+	                    } else { //실패 시 
+	                       swal({
+	                         text: "해당 상품의 찜 해제가 실패했습니다.",
+	                         icon: "error",
+	                        });
+	                       setTimeout(function() {
+	                          swal.close(); 
+	                       }, 2000);
+	                    }
+	                },
+	                error: data=>{
+	                   
+	                }
+	             })
+	          }
+	      });
+      } else if (usersNo == '') { //null이면 
+    	  like.addEventListener("click", function() {
+    		  swal("로그인 후 이용해주세요.", {
+    			  buttons: false,
+    			  timer: 1000,
+    			});
+    	  });
+      }
       
       let productOp = []; 
       let opTextBox = []; 

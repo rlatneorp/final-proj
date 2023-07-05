@@ -122,6 +122,7 @@ public class MenuController {
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
 		ArrayList<Image> miList = mService.menuDetailImage();
 		ArrayList<Product> pList = mService.healtherInfo(usersNo);
+//		ArrayList<Review> rList = 
 		System.out.println(menu);
 		if(menu != null) {
 			mv.addObject("menu", menu);

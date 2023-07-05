@@ -149,7 +149,7 @@
 			
 <!-- 			재료 -->
 			<div class="recipeInformationBox">
-				<div class="beforeInput d-inline-block">재료 |</div><div class="d-inline-block" style="width: 500px;">최소 4개 작성</div>
+				<div class="beforeInput d-inline-block">재료 |</div><div class="d-inline-block" style="width: 500px;">최소 3개 작성</div>
 				<div></div>
 				<div style="padding: 5px; display: inline-block;">
 					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)" >

@@ -465,6 +465,8 @@ public class UsersController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		ArrayList<Orders> orderList = uService.selectOrderList(usersNo, pi);
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
+		
+		ArrayList<Review> reviewList = null;
 		for(Orders order :orderList) {
 			//productName 가져오기
 			int productNo = order.getProductNo();
@@ -481,11 +483,14 @@ public class UsersController {
 			if (menus != null) {
 				order.setProductName(menus.getMenuName());
 			}
+			
+			reviewList = mkService.selectReview(productNo);
 		}
+		System.out.println(reviewList);
+		
 		model.addAttribute("pi", pi);
 		model.addAttribute("orderList", orderList);
-		
-		
+		model.addAttribute("reviewList", reviewList);
 		
 		return "myPage_MyOrder";
 	}

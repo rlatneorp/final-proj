@@ -149,7 +149,7 @@
 		from recipe
 			 left join users using(users_no)
 			 left join image on(food_no = image_divide_no)
-		where image_level=0 and image_type=2
+		where image_level=0 and image_type=2 and recipe_status = 'Y'
 		order by recipe_modify_date desc
 	</select>
 	
@@ -158,7 +158,7 @@
 		from recipe
 			 left join users using(users_no)
 			 left join image on(food_no = image_divide_no)
-		where image_level=0 and image_type=2
+		where image_level=0 and image_type=2 and recipe_status = 'Y'
 		order by recipe_count desc
 	</select>
 	
@@ -270,6 +270,11 @@
 	<insert id="insertOrderPlus">
 		insert into recipe_order values(seq_order_no.nextval, #{foodNo}, #{recipeOrder}, default, #{recipeProcedure}, #{recipeOriginalName}, #{recipeRenameName}, #{recipeImagePath})
 	</insert>
+	
+	<update id="updateRecipeOrder">
+		update recipe_order set recipe_order=#{recipeOrder}
+		where food_no=#{foodNo} and recipe_procedure=#{recipeProcedure}
+	</update>
 	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>

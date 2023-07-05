@@ -23,8 +23,11 @@
 	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; margin-left: 100px; cursor: pointer;}
 	.group-button{padding: 10px 10px 10px 30px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
 	
-	#recipeList{width: 1150px;}
 	.name-cut{white-space: nowrap; overflow:hidden; text-overflow: ellipsis;}
+	
+	.card{width: 260px; margin-bottom: 10px;}
+	.cardImg{width: 260px; height: 260px; overflow: hidden; border-top-right-radius: 3px; border-top-left-radius: 3px;}
+ 	.image{width: 100%; height: 100%; object-fit: cover; object-position: center;}
 	
 /* 	.height{height: 245px;} */
 	
@@ -123,15 +126,17 @@
 </div>
 
 <div class="album p-5 bg-white">
-	<div class="container px-5">
+	<div class="container px-5" style="width: 1200px;">
 	
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-5 g-2" id="listBox">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-4 g-2" id="listBox">
 			<c:forEach items="${ rList }" var="r">
 				<c:forEach items="${ iList }" var="i">
 					<c:if test="${ r.foodNo eq i.imageDivideNo }">
 						<div class="col height">
 							<div class="card shadow-sm">
-								<img src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }" style="width: 236.39px; height: 160px;">
+							<div class="cardImg">
+								<img src="${ contextPath }/resources/uploadFiles/${i.imageRenameName }" class="image">
+							</div>
 								<div class="card-body">
 									<h5 class="name-cut">${ r.recipeName }</h5>
 									<p class="card-text">${ r.nickName }</p>
@@ -230,10 +235,12 @@
 							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
 						}
 						
+						const cardImg = document.createElement('div');
+						cardImg.classList.add('cardImg');
+						
 						const img = document.createElement('img');
 						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-						img.style.height="160px";
-						img.style.width="236.39px";
+						img.classList.add('image');
 						
 						const cardBody = document.createElement('div');
 						cardBody.classList.add('card-body');
@@ -256,7 +263,9 @@
 						cardBody.appendChild(h5);
 						cardBody.appendChild(p);
 						
-						card.appendChild(img);
+						cardImg.appendChild(img);
+						
+						card.appendChild(cardImg);
 						card.appendChild(cardBody);
 						card.appendChild(uId);
 						card.appendChild(fNo);
@@ -298,10 +307,12 @@
 							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
 						}
 						
+						const cardImg = document.createElement('div');
+						cardImg.classList.add('cardImg');
+						
 						const img = document.createElement('img');
 						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-						img.style.height="160px";
-						img.style.width="236.39px";
+						img.classList.add('image');
 						
 						const cardBody = document.createElement('div');
 						cardBody.classList.add('card-body');
@@ -325,7 +336,9 @@
 						cardBody.appendChild(h5);
 						cardBody.appendChild(p);
 						
-						card.appendChild(img);
+						cardImg.appendChild(img);
+						
+						card.appendChild(cardImg);
 						card.appendChild(cardBody);
 						card.appendChild(uId);
 						card.appendChild(fNo);
@@ -367,10 +380,12 @@
 							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
 						}
 						
+						const cardImg = document.createElement('div');
+						cardImg.classList.add('cardImg');
+						
 						const img = document.createElement('img');
 						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-						img.style.height="160px";
-						img.style.width="236.39px";
+						img.classList.add('image');
 						
 						const cardBody = document.createElement('div');
 						cardBody.classList.add('card-body');
@@ -394,7 +409,9 @@
 						cardBody.appendChild(h5);
 						cardBody.appendChild(p);
 						
-						card.appendChild(img);
+						cardImg.appendChild(img);
+						
+						card.appendChild(cardImg);
 						card.appendChild(cardBody);
 						card.appendChild(uId);
 						card.appendChild(fNo);
@@ -437,10 +454,12 @@
 						location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
 					}
 					
+					const cardImg = document.createElement('div');
+					cardImg.classList.add('cardImg');
+					
 					const img = document.createElement('img');
 					img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-					img.style.height="160px";
-					img.style.width="236.39px";
+					img.classList.add('image');
 					
 					const cardBody = document.createElement('div');
 					cardBody.classList.add('card-body');
@@ -464,7 +483,9 @@
 					cardBody.appendChild(h5);
 					cardBody.appendChild(p);
 					
-					card.appendChild(img);
+					cardImg.appendChild(img);
+					
+					card.appendChild(cardImg);
 					card.appendChild(cardBody);
 					card.appendChild(uId);
 					card.appendChild(fNo);
@@ -503,10 +524,12 @@
 						location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
 					}
 					
+					const cardImg = document.createElement('div');
+					cardImg.classList.add('cardImg');
+					
 					const img = document.createElement('img');
 					img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-					img.style.height="160px";
-					img.style.width="236.39px";
+					img.classList.add('image');
 					
 					const cardBody = document.createElement('div');
 					cardBody.classList.add('card-body');
@@ -530,7 +553,9 @@
 					cardBody.appendChild(h5);
 					cardBody.appendChild(p);
 					
-					card.appendChild(img);
+					cardImg.appendChild(img);
+					
+					card.appendChild(cardImg);
 					card.appendChild(cardBody);
 					card.appendChild(uId);
 					card.appendChild(fNo);

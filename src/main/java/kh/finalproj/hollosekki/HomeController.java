@@ -47,14 +47,15 @@ public class HomeController {
 		Users loginUsers = (Users)model.getAttribute("loginUser");
 		if(loginUsers != null) {
 			Users u = (Users)model.getAttribute("loginUser");
-			
 			Users loginUser = eService.login(u);
-			System.out.println("loginUser : " +loginUser);
 			model.addAttribute("loginUser", loginUser);
 			
 			if(loginUser != null) {
 				Image image = uService.selectImage(loginUser.getUsersNo());
 				model.addAttribute("image", image);
+			} else {
+				Users user = eService.login2(u);
+				model.addAttribute("loginUser", user);
 			}
 			
 			

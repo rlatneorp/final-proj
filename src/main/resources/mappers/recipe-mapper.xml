@@ -229,13 +229,13 @@
 	</insert>
 	
 	<insert id="insertNewIngredient">
-		insert into ingredient values(seq_ingredient_no.nextval, 0, #{newI}, '임의', '임의', default, 1, 'Y')
+		insert into ingredient values(seq_ingredient_no.nextval, 0, #{newI}, '임의', '임의', default, 1, 'N')
 	</insert>
 	
-	<select id="selectNewIngredient" resultMap="ingredientResultSet">
-		select *
+	<select id="selectNewIngredient" resultType="_int">
+		select ingredient_no
 		from ingredient
-		where ingredient_name=#{newI}
+		where ingredient_name=#{newI} and is_accept='N' and product_no = 0
 	</select>
 	
 	<select id="selectRecipeElement" resultMap="recipeElementResultSet">

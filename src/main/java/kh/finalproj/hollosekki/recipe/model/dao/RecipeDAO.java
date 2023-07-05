@@ -161,7 +161,7 @@ public class RecipeDAO {
 		sqlSession.insert("recipeMapper.insertNewIngredient", newI);
 	}
 
-	public Ingredient selectNewIngredient(SqlSessionTemplate sqlSession, String newI) {
+	public int selectNewIngredient(SqlSessionTemplate sqlSession, String newI) {
 		return sqlSession.selectOne("recipeMapper.selectNewIngredient", newI);
 	}
 

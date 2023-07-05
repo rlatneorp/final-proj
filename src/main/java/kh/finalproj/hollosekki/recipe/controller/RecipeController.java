@@ -174,7 +174,7 @@ public class RecipeController {
 			@RequestParam("thum") MultipartFile thum, @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
 			@RequestParam("comPic") ArrayList<MultipartFile> comFiles,
 			@RequestParam("elementQuantity") String elementQuantity,
-			@RequestParam(value = "newIngredient", required = false) ArrayList<String> newIng,
+//			@RequestParam(value = "newIngredient", required = false) ArrayList<String> newIng,
 			@RequestParam("elementIngredient") ArrayList<String> elementIngredient, @ModelAttribute RecipeOrder rc) {
 
 		Users user = (Users) request.getSession().getAttribute("loginUser");
@@ -189,29 +189,33 @@ public class RecipeController {
 
 		result1 = rService.insertRecipe(r);
 
+//		레시피 재료
 		ArrayList<RecipeElement> reelList = new ArrayList<>();
 		String[] quantity = elementQuantity.split(",");
+		
+		System.out.println(elementQuantity);
+		System.out.println(elementIngredient);
 
-		for (int i = 0; i < elementIngredient.size(); i++) {
+		for(int i = 0; i < quantity.length; i++) {
 			if (!quantity[i].equals("") && !elementIngredient.get(i).isEmpty()) {
 				RecipeElement reel = new RecipeElement();
-				reel.setElementQuantity(quantity[i]);
-				reel.setElementName(elementIngredient.get(i).split("-")[0]);
-				reel.setElementNo(Integer.parseInt(elementIngredient.get(i).split("-")[1]));
+				if(elementIngredient.get(i).contains("-")) {
+					reel.setElementQuantity(quantity[i]);
+					reel.setElementName(elementIngredient.get(i).split("-")[0]);
+					reel.setElementNo(Integer.parseInt(elementIngredient.get(i).split("-")[1]));
 
-				reelList.add(reel);
-			} else if (!newIng.isEmpty()) {
-				RecipeElement reel = new RecipeElement();
-				String newI = newIng.get(i);
-				rService.insertNewIngredient(newI);
-				Ingredient ing = rService.selectNewIngredient(newI);
-
-				reel.setElementName(ing.getIngredientName());
-				reel.setElementNo(ing.getIngredientNo());
-				reel.setElementQuantity(quantity[i]);
-
-				reelList.add(reel);
-			}
+					reelList.add(reel);					
+				} else if(!elementIngredient.get(i).contains("-")) {
+					rService.insertNewIngredient(elementIngredient.get(i));
+					int ingredientNo = rService.selectNewIngredient(elementIngredient.get(i));
+					
+					reel.setElementQuantity(quantity[i]);
+					reel.setElementName(elementIngredient.get(i));
+					reel.setElementNo(ingredientNo);
+					
+					reelList.add(reel);
+				}
+			} 
 		}
 
 		rService.insertIngredient(reelList);
@@ -400,7 +404,7 @@ public class RecipeController {
 		return mv;
 	}
 
-//	페시피 수정
+//	레시피 수정
 	@PostMapping("updateRecipe.rc")
 	public String updateRecipe(HttpServletRequest request, Model model, @ModelAttribute Recipe r,
 			@ModelAttribute RecipeOrder rc, @RequestParam(value = "thum", required = false) MultipartFile thum,

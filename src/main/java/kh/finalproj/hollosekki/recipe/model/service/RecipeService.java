@@ -79,7 +79,7 @@ public interface RecipeService {
 
 	void insertNewIngredient(String newI);
 
-	Ingredient selectNewIngredient(String newI);
+	int selectNewIngredient(String newI);
 
 	ArrayList<RecipeElement> selectRecipeElement(int foodNo);
 

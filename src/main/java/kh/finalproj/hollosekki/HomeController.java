@@ -45,16 +45,22 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 		Users loginUsers = (Users)model.getAttribute("loginUser");
+		System.out.println("loginUsers : " + loginUsers);
 		if(loginUsers != null) {
 			Users u = (Users)model.getAttribute("loginUser");
-			
+			System.out.println(u);
 			Users loginUser = eService.login(u);
-			System.out.println("loginUser : " +loginUser);
+			System.out.println("loginUser : " + loginUser);
 			model.addAttribute("loginUser", loginUser);
 			
 			if(loginUser != null) {
 				Image image = uService.selectImage(loginUser.getUsersNo());
 				model.addAttribute("image", image);
+			} else {
+				Users user = eService.login2(u);
+				System.out.println("loginUser : null" + loginUser);
+				System.out.println("user : " + user);
+				model.addAttribute("loginUser", user);
 			}
 			
 			

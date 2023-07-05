@@ -852,5 +852,30 @@
 <!-- 		set image_status = 'N' -->
 <!-- 		where image_divide_no = #{reviewNo} and image_type = 7 -->
 <!-- 	</update> -->
+
+	<select id="selectFoodKindType" resultMap="foodInfo">
+		select * from food where FOOD_TYPE = #{foodType} and FOOD_KIND = #{foodKind}
+	</select>
+	
+	<select id="selectFoodKind" resultMap="foodInfo">
+		select * from food where FOOD_KIND = #{foodKind}
+	</select>
+	
+	<select id="selectFoodType" resultMap="foodInfo">
+		select * from food where FOOD_TYPE = #{foodType}
+	</select>
+	
+	<select id="selectFoodKindCount" resultType="_int">
+		select count(*) from food where FOOD_KIND = #{foodKind}
+	</select>
+	
+	<select id="selectFoodTypeCount" resultType="_int">
+		select count(*) from food where FOOD_TYPE = #{foodType}
+	</select>
+	
+	<select id="selectFoodKindTypeCount" resultType="_int">
+		select count(*) from food where FOOD_KIND = #{foodKind} and FOOD_TYPE = #{foodType}
+	</select>
+	
 	
 </mapper>

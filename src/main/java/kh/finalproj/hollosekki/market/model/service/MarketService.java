@@ -442,9 +442,6 @@ public class MarketService {
 		return mkDAO.deleteReview(sqlSession, reviewNo);
 	}
 
-//	public int deleteReviewImage(int reviewNo) {
-//		return mkDAO.deleteReviewImage(sqlSession, reviewNo);
-//	}
 
 	
 

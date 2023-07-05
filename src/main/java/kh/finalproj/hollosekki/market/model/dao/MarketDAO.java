@@ -495,8 +495,5 @@ public class MarketDAO {
 		return sqlSession.update("marketMapper.deleteReview", reviewNo);
 	}
 
-//	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
-//		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
-//	}
 
 }

@@ -1097,7 +1097,6 @@ public class MarketController {
    @RequestMapping("deleteReview.ma")
    public String deleteReview(@RequestParam("productNo") int productNo, @RequestParam("reviewNo") int reviewNo, Model model) {
 	   int result = mkService.deleteReview(reviewNo);
-//	   int result1 = mkService.deleteReviewImage(reviewNo);
 	   
 	   if(result > 0) {
 		   return "redirect:market_detail.ma?productNo=" + productNo;

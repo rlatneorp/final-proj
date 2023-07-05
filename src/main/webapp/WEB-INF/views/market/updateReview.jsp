@@ -43,6 +43,7 @@ button:hover{
 	color: white;
 	background: rgb(68, 133, 215);
 	border: 0.5px solid white;
+	cursor: pointer;
 }
 
  button:active{
@@ -274,7 +275,7 @@ dl dd div label{
         	swal({
         	    text: '정말 삭제하시겠습니까?',
         	    icon: 'warning',
-        	    buttons: ["취소", "삭제하기"]
+        	    buttons: ["취소", "삭제"]
         	}).then((yes) => {
         		if(yes){
         			location.href = '${contextPath}/deleteReview.ma?productNo=' + productNo + '&reviewNo=' + reviewNo;

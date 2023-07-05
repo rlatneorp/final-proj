@@ -56,9 +56,9 @@
 /* 	최신 식단 */
 	#middle{width: 1250px; height: 50px; font-weight: bold; font-size: 20px; border-bottom: 1px solid black; margin: auto;}
 	.cardColor{background-color: ; text-align: center;}
-	.likeBtn{color: black;}
+	.likeBtn{color: #4485d7;}
 	
-	.card{width: 260px;}
+	.card{width: 260px; margin-bottom: 10px;}
  	.cardImg{width: 260px; height: 260px; overflow: hidden; border-top-right-radius: 3px; border-top-left-radius: 3px;}
  	.image{width: 100%; height: 100%; object-fit: cover; object-position: center;}
 	

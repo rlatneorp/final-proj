@@ -149,7 +149,7 @@
 		from recipe
 			 left join users using(users_no)
 			 left join image on(food_no = image_divide_no)
-		where image_level=0 and image_type=2
+		where image_level=0 and image_type=2 and recipe_status = 'Y'
 		order by recipe_modify_date desc
 	</select>
 	
@@ -158,7 +158,7 @@
 		from recipe
 			 left join users using(users_no)
 			 left join image on(food_no = image_divide_no)
-		where image_level=0 and image_type=2
+		where image_level=0 and image_type=2 and recipe_status = 'Y'
 		order by recipe_count desc
 	</select>
 	

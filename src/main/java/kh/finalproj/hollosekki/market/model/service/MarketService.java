@@ -470,6 +470,10 @@ public class MarketService {
 		return mkDAO.selectLikeOrderByOne(sqlSession);
 	}
 
+	public ArrayList<Product> selectMealKit() {
+		return mkDAO.selectMealKit(sqlSession);
+	}
+
 
 
 

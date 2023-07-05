@@ -538,6 +538,10 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectLikeOrderByOne", sqlSession);
 	}
 
+	public ArrayList<Product> selectMealKit(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectMealKit", sqlSession);
+	}
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

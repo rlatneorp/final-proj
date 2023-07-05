@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <style>
 * {
@@ -263,14 +264,13 @@ p b {
 	.board{border-collapse: collapse; }
 	.boardTop{background-color: #B0DAFF;}
 	.line{border-bottom: 1px solid black; border-top: 1px solid black;}
-	.lineAll{height: 50px;}
+	.lineAll{height: 50px; cursor: pointer;}
 	.lineAll:hover{background-color: #19A7CE; color: white;}
 	
 /* 	입력 박스 */
 	.inputTextBox{width:730px; height: 50px; margin: auto; position: relative;}
 	.profilePic{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
 	.profileImg{width:35px; height: 35px; border-radius: 50%;}
-	.inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px; position: absolute; left: 40px;}
 	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; position: absolute; right: 0;}
 	
 /* 	후기 */
@@ -390,7 +390,69 @@ p b {
 		border:1px solid #19A7CE;
 		border-radius: 100%;
 	}
-
+	.qnaInputBox .inputText{border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 600px; height: 40px; position: absolute; left: 210px;}
+	.qnaInputBox{width:900px; height: 50px; margin: auto; position: relative;}
+	.profile{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
+	fieldset{
+		position: absolute;
+		left: 40px;
+		top: -5px;
+	}
+	
+	#reviewBody fieldset {
+		display: inline-block;
+		direction: rtl;
+		border: 0;
+	}
+	
+	#reviewBody input[type=radio]{
+		display: none;
+	}
+	#reviewBody fieldset label {
+		
+		font-size: 1.8em;
+		color: lightgray;
+	}
+	
+	#reviewBody fieldset label:hover{
+		color: rgb(68, 133, 215);
+	}
+	
+	#reviewBody fieldset label:hover ~ label{
+		color: rgb(68, 133, 215);
+	}
+	
+	#reviewBody fieldset input[type=radio]:checked ~ label{
+		color: rgb(68, 133, 215);
+	}
+	
+	#updateReviewBody fieldset {
+		display: inline-block;
+		direction: rtl;
+		border: 0;
+	}
+	
+	#updateReviewBody input[type=radio]{
+		display: none;
+	}
+	#updateReviewBody fieldset label {
+		
+		font-size: 1.8em;
+		color: lightgray;
+	}
+	
+	#updateReviewBody fieldset label:hover{
+		color: rgb(68, 133, 215);
+	}
+	
+	#updateReviewBody fieldset label:hover ~ label{
+		color: rgb(68, 133, 215);
+	}
+	
+	#updateReviewBody fieldset input[type=radio]:checked ~ label{
+		color: rgb(68, 133, 215);
+	}
+	fieldset label {cursor: pointer;}
 </style>
 <body>
 <span>
@@ -913,78 +975,42 @@ p b {
 	
 	<br>
 	
-	<p class="mid">문의</p>
-	
-	<br>
-	
-	<div id="qna">
-		<table class="board">
-			<tr class="boardTop">
-				<th class="line boardNo">No.</th>
-				<th class="line boardContent">내용</th>
-				<th class="line boardWrite">작성자</th>
-				<th class="line boardDate">날짜</th>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">1</td>
-				<td class="line">문의~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">2</td>
-				<td class="line">문의~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">3</td>
-				<td class="line">문의~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">4</td>
-				<td class="line">문의~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">5</td>
-				<td class="line">문의~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-		</table>
-	</div>
-	
-	<br>
-	
-	<div class="page_wrap">
-	   <div class="page_nation">
-	      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-	      <a href="#" class="active">1</a>
-	      <a href="#">2</a>
-	      <a href="#">3</a>
-	      <a href="#">4</a>
-	      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
-	   </div>
-	</div>
-	
-	<br>
-	
-	<div class="inputTextBox">
-		<div class="profilePic d-inline-block">
-			<img src="resources/images/mudo.png" class="profileImg">
+	<c:if test="${loginUser ne null && myReview ne 0 }">
+		<p class="mid">내가 쓴 후기</p>
+		<br>
+		<div id="qna">
+			<table class="board">
+				<tr class="boardTop">
+					<th class="line boardNo">No.</th>
+					<th class="line star">별점</th>
+					<th class="line boardContent">내용</th>
+					<th class="line boardReviewWrite">작성자</th>
+					<th class="line boardReviewDate">날짜</th>
+				</tr>
+				<c:if test="${myReview eq 0 }">
+					<tr>
+						<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br>내가 등록한 후기가 없습니다.</td>
+					</tr>
+				</c:if>
+				<c:if test="${myReview ne 0 }">
+					<c:forEach items="${ rList }" var="r">
+						<c:if test="${r.reviewWriter eq loginUser.nickName}">
+							<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')"</c:if>>
+								<td class="line" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>${ r.reviewNo }</td>
+								<td class="line">${ r.reviewScore eq 5 ? "★★★★★" : (r.reviewScore eq 4 ? "★★★★" : (r.reviewScore eq 3 ? "★★★" : (r.reviewScore eq 2 ? "★★" : "★"))) }</td>
+								<td class="line">${ r.reviewContent }</td>
+								<td class="line">${ r.reviewWriter }</td>
+								<td class="line">${ r.reviewDate }</td>
+							</tr>
+						</c:if>
+					</c:forEach>
+				</c:if>
+			</table>
 		</div>
-		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuQnaInput">&nbsp;<button class="enter">등록</button>
-	</div>
-	<br><br>
-	
+	</c:if>
+	<br><br><br>
 	<p class="mid">후기</p>
-	
 	<br>
-	
 	<div id="qna">
 		<table class="board">
 			<tr class="boardTop">
@@ -994,45 +1020,25 @@ p b {
 				<th class="line boardReviewWrite">작성자</th>
 				<th class="line boardReviewDate">날짜</th>
 			</tr>
-			<tr class="lineAll">
-				<td class="line">1</td>
-				<td class="line">*****</td>
-				<td class="line">후기~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">2</td>
-				<td class="line">*****</td>
-				<td class="line">후기~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">3</td>
-				<td class="line">*****</td>
-				<td class="line">후기~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">4</td>
-				<td class="line">*****</td>
-				<td class="line">후기~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
-			<tr class="lineAll">
-				<td class="line">5</td>
-				<td class="line">*****</td>
-				<td class="line">후기~~~~~~~내용</td>
-				<td class="line">작성자 아이디or닉네임</td>
-				<td class="line">작성 날짜</td>
-			</tr>
+			<c:if test="${reviewCount eq 0 }">
+				<tr>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br> 등록한 후기가 없습니다.</td>
+				</tr>
+			</c:if>
+			<c:if test="${reviewCount ne 0 }">
+				<c:forEach items="${ rList }" var="r">
+					<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')"</c:if>>
+						<td class="line">${ r.reviewNo }</td>
+						<td class="line">${ r.reviewScore eq 5 ? "★★★★★" : (r.reviewScore eq 4 ? "★★★★" : (r.reviewScore eq 3 ? "★★★" : (r.reviewScore eq 2 ? "★★" : "★"))) }</td>
+						<td class="line">${ r.reviewContent }</td>
+						<td class="line">${ r.reviewWriter }</td>
+						<td class="line">${ r.reviewDate }</td>
+					</tr>
+				</c:forEach>
+			</c:if>
 		</table>
 	</div>
-	<br>
-	
+	<br><br>
 	<div class="page_wrap">
 	   <div class="page_nation">
 	      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
@@ -1044,13 +1050,32 @@ p b {
 	   </div>
 	</div>
 	<br>
-	<div class="inputTextBox">
-		<div class="profilePic d-inline-block">
-			<img src="resources/images/mudo.png" class="profileImg">
-		</div>
-		<input type="text" class="inputText" placeholder=" 내용을 입력해주세요." name="menuReviewInput">&nbsp;<button class="enter">등록</button>
-	</div>
 </div>
+<c:if test="${loginUser != null}">
+  <c:if test="${not empty oList}">
+    <div class="qnaInputBox">
+      <c:set var="canWriteReview" value="true" />
+      <c:forEach items="${oList}" var="o" varStatus="s">
+        <c:forEach items="${rList}" var="r">
+          <c:if test="${o.orderNo eq r.orderNo and r.reviewWriter eq loginUser.nickName}">
+            <c:set var="canWriteReview" value="false" />
+          </c:if>
+        </c:forEach>
+      </c:forEach>
+      <c:if test="${canWriteReview}">
+        <button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
+        <input type="hidden" id="reviewId" value="${loginUser.nickName}">
+        <c:forEach items="${oList}" var="o" varStatus="s">
+          <c:if test="${o.usersNo eq loginUser.usersNo}">
+            <input type="hidden" id="order" value="${o.orderNo}">
+          </c:if>
+        </c:forEach>
+      </c:if>
+    </div>
+  </c:if>
+</c:if>
+<br><br>
+<br>
 
 <!-- 식단 작성자 프로필 -->
 <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1135,6 +1160,82 @@ p b {
 				<button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속<br>쇼핑하기</button>
 				<button type="button" class="button btn-y" id="moveCart" onclick="location.href='${contextPath }/basket.ma'">장바구니로</button>
 			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 댓글 등록 모달 -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 작성</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<br>
+			<form method="post" id="writeReview">
+				<div class="modal-body" id="reviewBody">
+					<input type="hidden" name="productNo" value="${ menu.foodProductNo }">
+					<input type="hidden" name="reviewWriter" value="${ loginUser.nickName }">
+					<input type="hidden" name="orderNo" id="orderNo">
+					<fieldset>
+						<input type="radio" name="reviewScore" value="5" id="reviewScore5">
+							<label for="reviewScore5">★</label>
+						<input type="radio" name="reviewScore" value="4" id="reviewScore4">
+							<label for="reviewScore4">★</label>
+						<input type="radio" name="reviewScore" value="3" id="reviewScore3">
+							<label for="reviewScore3">★</label>
+						<input type="radio" name="reviewScore" value="2" id="reviewScore2">
+							<label for="reviewScore2">★</label>
+						<input type="radio" name="reviewScore" value="1" id="reviewScore1">
+							<label for="reviewScore1">★</label>
+					</fieldset>
+					<br><br>
+					<textarea id="reviewWrite" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100" placeholder="내용을 입력해주세요." name="reviewContent"></textarea>
+				</div>
+				<div class="footer">
+					<button type="button" class="button btn-n" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="button btn-y" id="write">작성하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- 댓글 수정 모달 -->
+<div class="modal fade" id="updateReviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+			<c:if test=""></c:if>
+				<h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 수정</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<br>
+			<form method="post" id="updateReview">
+				<div class="modal-body" id="updateReviewBody">
+					<input type="hidden" name="reviewNo" id="reviewNo">
+					<input type="hidden" name="productNo" value="${recipe.foodNo}">
+					<fieldset>
+						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
+							<label for="reviewUpdateScore5">★</label>
+						<input type="radio" name="reviewScore" value="4" id="reviewUpdateScore4">
+							<label for="reviewUpdateScore4">★</label>
+						<input type="radio" name="reviewScore" value="3" id="reviewUpdateScore3">
+							<label for="reviewUpdateScore3">★</label>
+						<input type="radio" name="reviewScore" value="2" id="reviewUpdateScore2">
+							<label for="reviewUpdateScore2">★</label>
+						<input type="radio" name="reviewScore" value="1" id="reviewUpdateScore1">
+							<label for="reviewUpdateScore1">★</label>
+					</fieldset>
+					<br><br>
+					<textarea id="reviewContentUpdate" name="reviewContent" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100" placeholder="내용을 입력해주세요."></textarea>
+				</div>
+				<div class="footer">
+					<button type="button" class="button btn-n" id="reviewDelete">삭제하기</button>
+					<button type="button" class="button btn-y" id="update">수정하기</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -1430,6 +1531,58 @@ p b {
 //         });
 //     });
 // });
+	
+	const order = document.getElementById('order');
+	const orderNo = document.getElementById('orderNo');
+	const reviewIn = document.getElementById('reviewIn');
+	const content = document.getElementById('reviewWrite');
+	const writeReview = document.getElementById('writeReview');
+	const sub = document.getElementById('write');
+	
+	if(order != null){
+		reviewIn.addEventListener('click', () => {
+			orderNo.value = order.value;
+			sub.addEventListener('click', () => {
+				if(content.value == ''){
+					swal({
+			            text: "리뷰 내용을 입력해주세요.",
+			            icon: "error",
+			            button: "확인",
+			        });
+				} else {
+					writeReview.action = '${contextPath}/writeReview.mn';		
+					writeReview.submit();
+				}
+			});
+		});
+	}
+	
+	const rNo = document.getElementById('reviewNo');
+	const score5 = document.getElementById('reviewUpdateScore5');
+	const score4 = document.getElementById('reviewUpdateScore4');
+	const score3 = document.getElementById('reviewUpdateScore3');
+	const score2 = document.getElementById('reviewUpdateScore2');
+	const score1 = document.getElementById('reviewUpdateScore1');
+	const updateContent = document.getElementById('reviewContentUpdate');
+	const updateForm = docuement.getElementById('updateReview');
+	const updateB = docuement.getElementById('update');
+	const deleteB = docuement.getElementById('reviewDelete');
+	
+	function openReviewModal(reviewNo, reviewContent, reviewScore) {
+	    rNo.value = reviewNo;
+	    updateContent.value = reviewContent;
+	    if(reviewScore == 5){
+	    	score5.checked = true;
+	    } else if(reviewScore == 4){
+	    	score4.checked = true;
+	    } else if(reviewScore == 3){
+	    	score3.checked = true;
+	    } else if(reviewScore == 2){
+	    	score2.checked = true;
+	    } else if(reviewScore == 1){
+	    	score1.checked = true;
+	    }
+	  }
 	
 	
  </script> 

@@ -167,6 +167,7 @@ dl dd div label{
 	background:rgb(68, 133, 215);
 	border: 0.5px solid white;
 }
+fieldset label {cursor: pointer;}
 </style>
 <body>
 	<c:set value="${ pageContext.servletContext.contextPath }" var="contextPath" scope="application"/>
@@ -237,12 +238,16 @@ dl dd div label{
 			const newDiv = document.createElement('div');
 			newDiv.classList.add("mb-3");
 			newDiv.innerHTML = '<input type="file" class="form-control-file form-control-lg" name="file" accept="image/jpg, image/png, image/jpeg">';
+			console.log(document.querySelectorAll(".mb-3").length);
+			console.log(images.length);
 			if (images.length === 0) {
 		        fileArea.append(newDiv);
-		    } else if (images.length == 2 && document.querySelectorAll(".mb-3").length <= 2) {
+		    } else if (images.length == 2 && document.querySelectorAll(".mb-3").length <= 1) {
 		        fileArea.append(newDiv);
 		    } else if (images.length == 3 && document.querySelectorAll(".mb-3").length == 0) {
 		        fileArea.append(newDiv);
+		    } else if(images.length == 1 && document.querySelectorAll(".mb-3").length <= 2){
+		    	fileArea.append(newDiv);
 		    } else {
 		        e.preventDefault();
 		        alert("사진은 최대 3장 까지만 업로드 할 수 있습니다.");

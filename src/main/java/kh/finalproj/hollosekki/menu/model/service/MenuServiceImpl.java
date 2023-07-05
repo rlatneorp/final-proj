@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.menu.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.menu.model.dao.MenuDAO;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
@@ -106,5 +109,30 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public ArrayList<Likes> loginUserLikeList(Users u) {
 		return mDAO.loginUserLikeList(sqlSession, u);
+	}
+	
+	@Override
+	public int getReviewCount(int mNo) {
+		return mDAO.getReviewCount(sqlSession, mNo);
+	}
+	
+	@Override
+	public ArrayList<Review> selectReviewList(PageInfo pi, int mNo) {
+		return mDAO.selectReviewList(sqlSession, pi, mNo);
+	}
+	
+	@Override
+	public int myReview(Review my) {
+		return mDAO.myReview(sqlSession, my);
+	}
+	
+	@Override
+	public ArrayList<Orders> selectMyOrders(HashMap<String, Object> map) {
+		return mDAO.selectMyOrders(sqlSession, map);
+	}
+	
+	@Override
+	public int insertReview(Review r) {
+		return mDAO.insertReview(sqlSession, r);
 	}
 }

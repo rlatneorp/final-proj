@@ -699,7 +699,11 @@ for(const lineAll of lineAlls){
 const updateB = document.getElementById('update');
 updateB.addEventListener('click', () => {
 	if(reviewContentUpdate.value == ''){
-		alert('내용을 입력해주세요');
+		swal({
+            text: "리뷰 내용을 입력해주세요.",
+            icon: "error",
+            button: "확인",
+        });
 	} else {
 		reviewForm.action = '${contextPath}/updateReview.rc';
 		reviewForm.submit();

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
@@ -55,37 +57,26 @@ public class HomeController {
 		
 		
 		// 간단 레시피
+		ArrayList<Recipe> mainRecipeList = eService.mainRecipeList();
+		model.addAttribute("mrList", mainRecipeList);
+//		System.out.println(mainRecipeList);
 		
-		ArrayList<Recipe> AllrecipeList = eService.allRecipeList();
-		ArrayList<Image> recipeImageList = eService.allRecipeImageList();
-		System.out.println(AllrecipeList);
-		System.out.println(recipeImageList);
-		model.addAttribute("aRList", AllrecipeList);
-		model.addAttribute("rImgList", recipeImageList);
+		// 영양사 조회
+		ArrayList<Healther> healtherList = eService.healtherList();
+		model.addAttribute("hList", healtherList);
+		System.out.println(healtherList);
 		
-		
-		
-		
-		
-		
-		
-		
-		
+		// 식단 조회
+		ArrayList<Product> menuList = mkService.menuProductList();
+		model.addAttribute("mList", menuList);
 		
 		//잘 나가는 상품 조회 
-		ArrayList<Product> likeOrderBy = mkService.selectLikeOrderBy();
-		System.out.println("likeOrderBy : " + likeOrderBy);
-		model.addAttribute("likeOrderBy", likeOrderBy);
+		ArrayList<Product> likeOrderByOne = mkService.selectLikeOrderBy();
+		model.addAttribute("likeOrderByOne", likeOrderByOne);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		//밀키트 조회 
+		ArrayList<Product> mealKit = mkService.selectMealKit();
+		model.addAttribute("mealKit", mealKit);
 		
 		if(loginUsers != null) {
 			Users u = (Users)model.getAttribute("loginUser");

@@ -7,8 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonObject;
+
 import kh.finalproj.hollosekki.board.model.dao.BoardDAO;
 import kh.finalproj.hollosekki.board.model.vo.Board;
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 
@@ -53,5 +56,27 @@ public class BoardService {
 	public int reReply(HashMap<String, Object> map) {
 		return bDAO.reReply(sqlSession, map);
 	}
+
+	public int insertImage(Image image) {
+		return bDAO.insertImage(sqlSession, image);
+	}
+
+	public int freeBoardWriting(HashMap<String, Object> map) {
+		return bDAO.freeBoardWriting(sqlSession, map);
+	}
+
+	public Board firstSelectBoard(String login) {
+		return bDAO.firstSelectBoard(sqlSession, login);
+		
+	}
+
+	public int getCategoryFreeCount(HashMap<String, Object> map) {
+		return bDAO.getCategoryFreeCount(sqlSession, map);
+	}
+
+	public ArrayList<Board> freeBList(PageInfo pi, HashMap<String, Object> map) {
+		return bDAO.freeBList(sqlSession, pi, map);
+	}
+
 
 }

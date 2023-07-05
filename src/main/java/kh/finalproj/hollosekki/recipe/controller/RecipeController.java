@@ -174,7 +174,6 @@ public class RecipeController {
 			@RequestParam("thum") MultipartFile thum, @RequestParam("orderFile") ArrayList<MultipartFile> orderFiles,
 			@RequestParam("comPic") ArrayList<MultipartFile> comFiles,
 			@RequestParam("elementQuantity") String elementQuantity,
-			@RequestParam(value = "newIngredient", required = false) ArrayList<String> newIng,
 			@RequestParam("elementIngredient") ArrayList<String> elementIngredient, @ModelAttribute RecipeOrder rc) {
 
 		Users user = (Users) request.getSession().getAttribute("loginUser");
@@ -189,29 +188,33 @@ public class RecipeController {
 
 		result1 = rService.insertRecipe(r);
 
+//		레시피 재료
 		ArrayList<RecipeElement> reelList = new ArrayList<>();
 		String[] quantity = elementQuantity.split(",");
+		
+		System.out.println(elementQuantity);
+		System.out.println(elementIngredient);
 
-		for (int i = 0; i < elementIngredient.size(); i++) {
+		for(int i = 0; i < quantity.length; i++) {
 			if (!quantity[i].equals("") && !elementIngredient.get(i).isEmpty()) {
 				RecipeElement reel = new RecipeElement();
-				reel.setElementQuantity(quantity[i]);
-				reel.setElementName(elementIngredient.get(i).split("-")[0]);
-				reel.setElementNo(Integer.parseInt(elementIngredient.get(i).split("-")[1]));
+				if(elementIngredient.get(i).contains("-")) {
+					reel.setElementQuantity(quantity[i]);
+					reel.setElementName(elementIngredient.get(i).split("-")[0]);
+					reel.setElementNo(Integer.parseInt(elementIngredient.get(i).split("-")[1]));
 
-				reelList.add(reel);
-			} else if (!newIng.isEmpty()) {
-				RecipeElement reel = new RecipeElement();
-				String newI = newIng.get(i);
-				rService.insertNewIngredient(newI);
-				Ingredient ing = rService.selectNewIngredient(newI);
-
-				reel.setElementName(ing.getIngredientName());
-				reel.setElementNo(ing.getIngredientNo());
-				reel.setElementQuantity(quantity[i]);
-
-				reelList.add(reel);
-			}
+					reelList.add(reel);					
+				} else if(!elementIngredient.get(i).contains("-")) {
+					rService.insertNewIngredient(elementIngredient.get(i));
+					int ingredientNo = rService.selectNewIngredient(elementIngredient.get(i));
+					
+					reel.setElementQuantity(quantity[i]);
+					reel.setElementName(elementIngredient.get(i));
+					reel.setElementNo(ingredientNo);
+					
+					reelList.add(reel);
+				}
+			} 
 		}
 
 		rService.insertIngredient(reelList);
@@ -389,25 +392,31 @@ public class RecipeController {
 		ArrayList<RecipeOrder> orderList = rService.recipeDetailOrderText(foodNo);
 		Image thum = rService.recipeDetailThum(foodNo);
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
+		ArrayList<RecipeElement> reList = rService.selectRecipeElement(foodNo);
+		ArrayList<Ingredient> iList = rService.selectIngredient();
 
 		mv.addObject("recipe", recipe);
 		mv.addObject("orderList", orderList);
 		mv.addObject("thum", thum);
 		mv.addObject("cList", cList);
 		mv.addObject("page", page);
+		mv.addObject("reList", reList);
+		mv.addObject("iList", iList);
+		
 		mv.setViewName("recipeEdit");
 
 		return mv;
 	}
 
-//	페시피 수정
+//	레시피 수정
 	@PostMapping("updateRecipe.rc")
 	public String updateRecipe(HttpServletRequest request, Model model, @ModelAttribute Recipe r,
 			@ModelAttribute RecipeOrder rc, @RequestParam(value = "thum", required = false) MultipartFile thum,
 			@RequestParam(value = "orderFile", required = false) ArrayList<MultipartFile> orderFiles,
 			@RequestParam(value = "comPic", required = false) ArrayList<MultipartFile> comFiles,
 			@RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
-			@RequestParam("delComImg") String[] delComImg, @RequestParam("page") int page) {
+			@RequestParam("delComImg") String[] delComImg, @RequestParam("page") int page,
+			@RequestParam("elementQuantity") String elementQuantity, @RequestParam("elementIngredient") ArrayList<String> elementIngredient) {
 
 		int updateRecipeResult = 0;
 		updateRecipeResult = rService.updateRecipe(r);
@@ -455,6 +464,43 @@ public class RecipeController {
 				thumResult = rService.insertThum(img);
 			}
 		}
+		
+//		레시피 재료 변경 삭제
+		
+		rService.deleteRecipeIngredient(r.getFoodNo());
+		
+		ArrayList<RecipeElement> reelList = new ArrayList<>();
+		String[] quantity = elementQuantity.split(",");
+		
+		System.out.println(elementQuantity);
+		System.out.println(elementIngredient);
+
+		for(int i = 0; i < quantity.length; i++) {
+			if (!quantity[i].equals("") && !elementIngredient.get(i).isEmpty()) {
+				RecipeElement reel = new RecipeElement();
+				if(elementIngredient.get(i).contains("-")) {
+					reel.setFoodNo(r.getFoodNo());
+					reel.setElementQuantity(quantity[i]);
+					reel.setElementName(elementIngredient.get(i).split("-")[0]);
+					reel.setElementNo(Integer.parseInt(elementIngredient.get(i).split("-")[1]));
+
+					reelList.add(reel);					
+				} else if(!elementIngredient.get(i).contains("-")) {
+					rService.insertNewIngredient(elementIngredient.get(i));
+					int ingredientNo = rService.selectNewIngredient(elementIngredient.get(i));
+					
+					reel.setFoodNo(r.getFoodNo());
+					reel.setElementQuantity(quantity[i]);
+					reel.setElementName(elementIngredient.get(i));
+					reel.setElementNo(ingredientNo);
+					
+					reelList.add(reel);
+				}
+			} 
+		}
+
+		rService.updateIngredient(reelList);
+		
 
 //		레시피 순서 변경/삭제
 		ArrayList<RecipeOrder> orc = new ArrayList<>();

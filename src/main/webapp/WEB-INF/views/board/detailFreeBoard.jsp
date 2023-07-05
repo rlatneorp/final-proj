@@ -2,10 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>	
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
@@ -13,6 +15,16 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <title>Insert title here</title>
 <style>
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48;
+  vertical-align: text-top;
+  
+}
 
 #floatingText{
 	background-color: white;
@@ -145,12 +157,18 @@
 }
 
 .reBox{
-	width:500px; height: 25px;
-	text-align: center;
+	width:500px; height: 40px;
+  	text-align: center;
 	border: 2px solid black;
-	box-shadow: 0px 1px black;
-	border-radius: 20px;
-	background-color: lighgray;
+/* 	box-shadow: 0px 1px lighgray; */
+	font-size: 18px;
+	margin-left:-250px;
+	border-radius: 10px;
+	background-color: white;
+	cursor: text;
+	position: absolute;
+	z-index: 90;
+	
 }
 
 
@@ -172,7 +190,13 @@
 	
 	<div id="parentDiv">
 		<div class="intro form-floating mb-3">
-		   <input readonly type="text" class="form-control" id="floatingInput" value="${ blist.boardTitle }">
+		   <div readonly type="text" class="form-control" id="floatingInput">
+		   ${ blist.boardTitle }
+		   <c:set var="pic" value="${blist.boardContent}"/>
+		   <c:if test="${fn:contains(pic, 'img')}">
+		   <span class="material-symbols-outlined">hallway</span>
+		   </c:if>
+		   </div>
 		   <label>제목</label>
 		</div>
 		<div class="row text-center">
@@ -187,7 +211,7 @@
 		<input type="hidden" id="hdnBoardNo" value="${blist.boardNo}">
 		<br>
 		<div class="intro form-floating text-start text-wrap">
-		   <textarea name="content" style="resize: none;" readonly class="form-control" id="floatingText">${blist.boardContent}</textarea>
+		   <div name="content" style="resize: none;" readonly class="form-control" id="floatingText">${blist.boardContent}</div>
 		   <label>내용</label>
 		</div>
 	</div><br>
@@ -214,7 +238,7 @@
 									<td style="cursor: pointer;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page=' ">${r.reviewWriter }</td>
 								</c:if>
 							</c:forEach>
-							<td><fmt:formatDate value="${r.reviewDate }" pattern="yyyy-MM-dd HH:mm"/></td>
+							<td><fmt:formatDate value="${r.reviewDate }" pattern="yy-MM-dd HH:mm"/></td>
 							<td>
 								<c:if test="${loginUser.nickName eq r.reviewWriter }">
 									<button type="button" class="reBtn" id="reBtn">수정</button>
@@ -336,7 +360,7 @@ let ind = null;
 		 							$('#deleteModal').modal("hide");
 		 							
 								}else{
-									alert("오류로 인해 삭제가 되지 않았습니다.");
+									alert("오류로 인해 삭제가 되지 않았습니다.(짧은 시간내의 반복되는 삭제)");
 									location.reload();
 								}
 							}
@@ -357,40 +381,43 @@ let ind = null;
 		const reBtnsArr = Array.from(reBtns);
 		for(let i = 0; i < reBtnsArr.length; i++){
 // 			const tds = trs.querySelectorAll('td');
-			reBtnsArr[i].addEventListener('keydown', function(e){
-				if(e.keyCode == 13){
-					reBtnsArr[i].click();
-				}
-			})
-			reBtnsArr[i].addEventListener('click', ()=>{
+
+
+			reBtnsArr[i].addEventListener('click', (ee)=>{
 				const td = Array.from(trArr[i].querySelectorAll('td'));
 				if(reBtnsArr[i].innerText == "수정"){
 					td[0].innerHTML = '<input type="text" class="reBox" value="' + td[0].innerText + '">';
 					reBtnsArr[i].innerText = '확인';
+					reBtnsArr[i].style.background = 'white';
 				}else if(reBtnsArr[i].innerText == "확인"){
 					const reInput = Array.from(trArr[i].querySelectorAll('.reBox'));
-					console.log(reInput[0].value);
 					const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
 					const hdnBoardNo = document.querySelector('#hdnBoardNo');
-					$.ajax({
-						url: 'reReply.bo',
-						data: {
-							reviewContent: reInput[0].value,
-							reviewWriter: '${login}',
-							productNo: hdnBoardNo.value,
-							reviewNo: hdnReplyNo[i].value
-						},
-						success: data=>{
-							if(data == 'success'){
-								td[0].innerText = reInput[0].value;
-								reBtnsArr[i].innerText = '수정';
-							}else{
-								alert("댓글 수정 중 오류가 발생했습니다.");
-								location.reload();
+					if(reInput[0].value != ''){
+						$.ajax({
+							url: 'reReply.bo',
+							data: {
+								reviewContent: reInput[0].value,
+								reviewWriter: '${login}',
+								productNo: hdnBoardNo.value,
+								reviewNo: hdnReplyNo[i].value
+							},
+							success: data=>{
+								if(data == 'success'){
+									td[0].innerText = reInput[0].value;
+									reBtnsArr[i].innerText = '수정';
+									reBtnsArr[i].style.background = '#B0DAFF';
+								}else{
+									alert("댓글 수정 중 오류가 발생했습니다.");
+									location.reload();
+								}
 							}
-						}
-							
-					});
+								
+						});
+					}else{
+						alert("댓글을 공백 상태로 수정할 수 없습니다.");
+						location.reload();
+					}
 					
 				}
 				
@@ -488,6 +515,8 @@ let ind = null;
 				},
 				error: data =>{
 					console.log(data);
+					alert('댓글을 빠르게 반복해서 작성하지 말아주세요.');
+					location.reload();
 				}
 			});
 		})		

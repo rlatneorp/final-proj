@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.Product;
@@ -186,6 +187,14 @@ public class EnrollDAO {
 
 	public Users login(SqlSessionTemplate sqlSession, Users u) {
 		return sqlSession.selectOne("enrollMapper.login", u);
+	}
+
+	public ArrayList<Recipe> mainRecipeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.mainRecipeList");
+	}
+
+	public ArrayList<Healther> healtherList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.healtherList");
 	}
 
 

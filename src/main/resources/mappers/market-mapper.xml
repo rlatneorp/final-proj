@@ -171,6 +171,7 @@
       <result column="FOOD_NAME" property="foodName"/>
       <result column="FOOD_KIND" property="foodKind"/>
       <result column="FOOD_TYPE" property="foodType"/>
+      <result column="FOOD_CONTENT" property="foodContent"/>
    </resultMap>
    
    <resultMap type="Tool" id="toolInfo">
@@ -869,6 +870,82 @@
 	
 	<select id="selectFoodKindTypeCount" resultType="_int">
 		select count(*) from food where FOOD_KIND = #{foodKind} and FOOD_TYPE = #{foodType}
+	</select>
+	
+	<select id="selectMealKit" resultType="map">
+		SELECT p.product_no, p.product_price, p.product_sale, m.menu_name, f.food_name, i.image_renamename
+		FROM product p
+		LEFT JOIN menu m ON p.product_no = m.product_no
+		LEFT JOIN food f ON p.product_no = f.product_no
+		LEFT JOIN image i ON i.image_divide_no = p.product_no
+		WHERE p.product_no IN (
+		    SELECT product_no
+		    FROM menu
+		    WHERE menu_type = 2
+		)
+		OR p.product_no IN (
+		    SELECT product_no
+		    FROM food
+		    WHERE food_type = 2
+		)and i.image_level = 0
+	</select>
+	
+	
+<!-- 	<select id="selectLikeOrderByOne" resultType="map"> -->
+<!-- 		<![CDATA[ -->
+<!-- 			SELECT * -->
+<!-- 			FROM ( -->
+<!-- 			    SELECT p.product_price, p.product_sale, p.product_no, img.image_renamename, l.division_count, f.food_name, i.ingredient_name, t.tool_name, ROW_NUMBER() OVER (ORDER BY l.division_count DESC) AS row_num -->
+<!-- 			    FROM product p -->
+<!-- 			    LEFT JOIN ingredient i ON i.product_no = p.product_no -->
+<!-- 			    LEFT JOIN food f ON f.product_no = p.product_no -->
+<!-- 			    LEFT JOIN tool t ON t.product_no = p.product_no -->
+<!-- 			    LEFT JOIN ( -->
+<!-- 			        SELECT division_no, COUNT(*) AS division_count -->
+<!-- 			        FROM likes -->
+<!-- 			        GROUP BY division_no -->
+<!-- 			    ) l ON l.division_no = p.product_no -->
+<!-- 			    LEFT JOIN image img ON p.product_no = img.image_divide_no -->
+<!-- 			    WHERE p.product_type IN (1, 3, 4) -->
+<!-- 			    AND l.division_count IS NOT NULL  -->
+<!-- 			    AND l.division_count <> 0 -->
+<!-- 			    AND img.image_level = 0 -->
+<!-- 			    ORDER BY l.division_count DESC -->
+<!-- 			) subquery -->
+<!-- 			WHERE row_num BETWEEN 0 AND 4 -->
+<!-- 		]]> -->
+<!-- 	</select>  -->
+	
+<!--상품 검색용 맵퍼 -->
+	<select id="selectViewSearchCount" resultType="_int">
+		select count(*) from product 
+		<if test='searchType == "food"'>
+			 join food using(product_no)
+		where food_name like '%${searchText}%'
+		</if>
+		<if test='searchType == "ingredient"'>
+			 join ingredient using(product_no)
+		where ingredient_name like '%${searchText}%'
+		</if>
+		<if test='searchType == "tool"'>
+			 join tool using(product_no)
+		where tool_name like '%${searchText}%'
+		</if>
+	</select>
+	<select id="selectViewSearch" resultMap="productList" >
+		select * from product
+		<if test='searchType == "food"'>
+			 join food using(product_no)
+		where food_name like '%${searchText}%'
+		</if>
+		<if test='searchType == "ingredient"'>
+			 join ingredient using(product_no)
+		where ingredient_name like '%${searchText}%'
+		</if>
+		<if test='searchType == "tool"'>
+			 join tool using(product_no)
+		where tool_name like '%${searchText}%'
+		</if>
 	</select>
 	
 	

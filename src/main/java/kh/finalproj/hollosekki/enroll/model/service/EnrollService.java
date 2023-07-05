@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.Product;
@@ -87,6 +88,11 @@ public interface EnrollService {
 	void insertPoint(Users u);
 
 	Users login(Users u);
+
+	ArrayList<Recipe> mainRecipeList();
+
+	ArrayList<Healther> healtherList();
+
 
 
 

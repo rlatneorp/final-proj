@@ -369,108 +369,28 @@ ul li {
 		<input type="hidden" name="searchStart" value="Y"> 
 		<div class="text-center searchBox">
 			<select name="searchType" class="border searchSelect" style="padding: 6px 7px;">
-				<option value="food" <c:if test="${ab.searchType eq 'food'}">selected</c:if>>식품</option>
-				<option value="ingredient" <c:if test="${ab.searchType eq 'ingredient'}">selected</c:if>>식재료</option>
-				<option value="tool" <c:if test="${ab.searchType eq 'tool'}">selected</c:if>>도구</option>
+				<option value="food" <c:if test="${searchType eq 'food'}">selected</c:if>>식품</option>
+				<option value="ingredient" <c:if test="${searchType eq 'ingredient'}">selected</c:if>>식재료</option>
+				<option value="tool" <c:if test="${searchType eq 'tool'}">selected</c:if>>도구</option>
 			</select>
 			<div style="width:200px" class="d-inline-block mb-4">
-				<input name="searchText" type="search" class="form-control" value="${ab.searchText}">
+				<input name="searchText" type="search" class="form-control" value="${searchText}">
 			</div>
 			<button style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 70px; height: 38px; font-size: 14px; font-weight: bold;">검색</button>
 		</div>
 	</form>
 	
-	<div style="position:relative;">
-		<div class="bannerTitle"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
-		<br><br>
-	 	<div class="slick">
-	        <div class="list"><img src="resources/images/listProduct.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/06/02/c2136bce9904c2d3bf3b3795b69b8c7c.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/75bcd3ca5e31e19105d9a4a8b16ba1a3.jpg"></div>
-	 	</div><br>
-	</div><br><br>
- 	<h1 class="sider-title" >New 핫딜존</h1>
-	<div class="product-slider">
-		<div class="product-wrapper">
-	        <c:forEach items="${hotDeal }" var="h">
-	        	<div class="productList">
-	          		<input type="hidden" value="${h.productNo }">
-					<a href="market_detail.ma?productNo=${h.productNo }">
-						<c:if test="${h.productImg ne null }">
-							<img style="width:270px" src="${contextPath }/resources/uploadFiles/${h.productImg}">
-						</c:if>
-						<c:if test="${h.productImg eq null }">
-							<img style="width:270px; opacity: 0.5;" src="${contextPath }/resources/images/noImg.png">
-						</c:if>
-					</a>
-					<c:set var="productName" value="${h.productName}" />
-					<c:choose>
-					    <c:when test="${fn:length(productName) > 9}">
-					        <div class="productName">${fn:substring(productName, 0, 9)}...</div>
-					    </c:when>
-					    <c:otherwise>
-					        <div class="productName">${productName}</div>
-					    </c:otherwise>
-					</c:choose>
-					<c:if test="${h.productSale ne 0 }">
-						<span class="originPrice">
-							${h.productPrice }원
-						</span>
-					</c:if>
-					<c:if test="${h.productSale eq 0 }">
-						<span style="font-size:25px;">
-							<fmt:formatNumber value="${h.productPrice }" pattern="###,###,###"/>원
-						</span>
-					</c:if>
-					<div class="discount"></div>
-					<input type="hidden" class="hotDeal" value="${h.productSale }">
-	          	</div>
-	        </c:forEach>
-  		</div>
-	</div><br><br><br><br><br><br>
-	
-	<div class="parent-container">
-		<h1 class="sider-title">추천 상품</h1>
-		<div class="product-slider2">
-			<div class="product-wrapper">
-				<c:forEach items="${like }" var="li">
-					<div class="productList">
-						<a href="market_detail.ma?productNo=${li.PRODUCT_NO }">
-							<c:if test="${li.IMAGE_RENAMENAME ne null }">
-								<img style="width:270px" src="${contextPath }/resources/uploadFiles/${li.IMAGE_RENAMENAME}">
-							</c:if>
-							<c:if test="${li.IMAGE_RENAMENAME eq null }">
-								<img style="width:270px; opacity: 0.5;" src="${contextPath }/resources/images/noImg.png">
-							</c:if>
-						</a>
-						<c:if test="${ li.FOOD_NAME ne null }">
-							<div class="productName">${li.FOOD_NAME }</div>
-						</c:if>
-						<c:if test="${ li.TOOL_NAME ne null }">
-							<div class="productName">${li.TOOL_NAME }</div>
-						</c:if>
-						<c:if test="${ li.INGREDIENT_NAME ne null }">
-							<div class="productName">${li.INGREDIENT_NAME }</div>
-						</c:if>
-						<c:if test="${li.PRODUCT_SALE ne 0 }">
-							<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
-<%-- 							<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="###,###,###"/>원 --%>
-						</c:if>
-						<c:if test="${li.PRODUCT_SALE eq 0 }">
-							<div style="text-decoration: none;">${li.PRODUCT_PRICE }</div>
-						</c:if>
-						<div class="discount" ></div>
-						<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-	</div><br><br><br><br><br><br><br>
 	
 	<h1 class="sider-title">
 		<i class="bi bi-egg-fried"></i>&nbsp;&nbsp;판매 중인 상품&nbsp;&nbsp;<i class="bi bi-egg-fried"></i>
 	</h1>
+	
+	<c:if test="${empty list}">
+		<div style="text-align: center;">
+			<br><br>
+			<h2>검색된 상품이 없습니다.</h2>
+		</div>
+	</c:if>
 	<div class="select-option" id="dropDown">
 		<c:if test="${foodView ne null }">
 			<select>
@@ -522,6 +442,8 @@ ul li {
 	<!-- 		이전 페이지로	 -->
 			<c:url var="goBack" value="${loc }">
 				<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+				<c:param name="searchType" value="${searchType}"></c:param>
+				<c:param name="searchText" value="${searchText}"></c:param>
 			</c:url>
 			<c:if test="${pi.currentPage > 1 }">
 				<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
@@ -531,6 +453,8 @@ ul li {
 			<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 				<c:url var="goNum" value="${loc }">
 					<c:param name="page" value="${p }"></c:param>
+					<c:param name="searchType" value="${searchType}"></c:param>
+					<c:param name="searchText" value="${searchText}"></c:param>
 				</c:url>
 				<c:if test="${ pi.currentPage eq p }">
 					<a class="active">${p }</a>
@@ -542,13 +466,15 @@ ul li {
 			
 			<c:url var="goNext" value="${loc }">
 				<c:param name="page" value="${pi.currentPage + 1 }"></c:param>
+				<c:param name="searchType" value="${searchType}"></c:param>
+				<c:param name="searchText" value="${searchText}"></c:param>
 			</c:url>
 			<c:if test="${pi.currentPage < pi.endPage }">
 				<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
 			</c:if>
 		</div>
 	</div>
-
+	<br><br><br><br><br>
 
 
 

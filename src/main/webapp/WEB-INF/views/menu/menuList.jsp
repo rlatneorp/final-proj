@@ -51,7 +51,7 @@
 	.albumTitle2{position: absolute; width: 300px; height: 40px; top: 340px; left: 30px; text-align: center; font-size: 18px;}
 	.weekendPic-div{overflow: hidden; width: 300px; height: 300px; margin: 0 30px;}
 	.weekendPic{width: 100%; height: 100%; object-fit: cover; object-position: center;}
-	.weekendPic:hover{ transform: scale(1.1);  object-fit: cover; object-position: center; transition: all 0.2s ease 0s;}
+	.weekendPic:hover{  transform: scale(1.1);  object-fit: cover; object-position: center; transition: all 0.2s ease 0s;}
 	
 /* 	최신 식단 */
 	#middle{width: 1250px; height: 50px; font-weight: bold; font-size: 20px; border-bottom: 1px solid black; margin: auto;}
@@ -61,6 +61,7 @@
 	.card{width: 260px; margin-bottom: 10px;}
  	.cardImg{width: 260px; height: 260px; overflow: hidden; border-top-right-radius: 3px; border-top-left-radius: 3px;}
  	.image{width: 100%; height: 100%; object-fit: cover; object-position: center;}
+ 	.image:hover{cursor: pointer; transform: scale(1.05);  object-fit: cover; object-position: center; transition: all 0.2s ease 0s;}
 	
 	.h5-text-align{text-align: center; font-weight: bold;}
 	.menuKind{font-size: 17px; margin-left:50px; margin-right: 30px; text-decoration: none; color: black;}

@@ -31,6 +31,9 @@
 	.categoryItem{width: 100px;}
 	#time{width: 150px;}
 	.term{height: 35px;}
+	.recipeIngredient{height: 30px; width: 235px;}
+	.ingredientNum{width: 50px; height: 30px;}
+	.hiddenText{width: 235px;height: 30px;}
 	
 /* 	레시피 설명 */
 	.recipeInformationBox{width: 1000px; padding: 0 5px;}
@@ -160,10 +163,45 @@
 			<br><br>
 			
 <!-- 			재료 -->
-			<div class="recipeInformationBox">
-				<div class="beforeInput">재료</div>
-				<textarea class="recipeInformation" placeholder=" 재료를 적어주세요." name="recipeIngredient" maxlength=300;></textarea>
+			<div class="recipeInformationBox" id="recipeIngredientBox">
+				<div class="beforeInput d-inline-block">재&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;료</div>
+<!-- 				<div class="d-inline-block" style="width: 500px;">최소 3개 작성</div> -->
+				<div></div>
+				
+				<div style="padding: 5px; display: none;" id="ingCopy" class="ingCopyC">
+					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
+					<select class="recipeIngredient" onchange="change(this)">
+						<option selected disabled>재료 선택</option>
+						<c:forEach items="${iList}" var="i">
+							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
+						</c:forEach>
+						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+					</select>
+					<input type="text" class="ingredientNum" maxlength="10">
+					<div style="padding: 0 1px 0 5px; display:inline-block">|</div>
+				</div>
+				
+				<c:forEach items="${reList}" var="re">
+					<div style="padding: 5px; display: inline-block;" class="ingCopyC">
+						<input type="text" class="hiddenText" style="display:none;" maxlength="10">
+						<select name="elementIngredient" class="recipeIngredient" onchange="change(this)" >
+							<option disabled>재료 선택</option>
+							<c:forEach items="${iList}" var="i">
+								<option value="${i.ingredientName}-${i.ingredientNo}" <c:if test="${re.elementNo eq i.ingredientNo }">selected</c:if>>${i.ingredientName}</option>
+							</c:forEach>
+							<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+						</select>
+						<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10" value="${re.elementQuantity}">
+						|
+					</div>
+				</c:forEach>
+				
+<!-- 				<div id="ingredientAdd"></div> -->
 			</div>
+			
+			<button type="button" id="plusBtn" onclick="ingredientPlus()">+ 재료 추가하기</button>
+			<span> / </span>
+			<button type="button" id="minusBtn" onclick="ingredientRemove()">- 재료 삭제하기</button>
 			
 			<br><br>
 			
@@ -326,6 +364,42 @@ delBtn.addEventListener('click', function(){
 		insertBtn.disabled = false;
 	}
 })
+
+// 재료 임의로 변경시 input으로 변경
+function change(element){
+	console.log(element.value);
+	if(element.value=="임의"){
+		element.style.display = "none";
+		element.previousElementSibling.style.display = "inline-block";
+		element.previousElementSibling.setAttribute("name", "elementIngredient");
+		element.remove();
+	}
+}
+
+// 재료 추가
+const ingredientAdd = document.querySelector('#ingredientAdd');
+const recipeIngredientBox = document.querySelector('#recipeIngredientBox');
+const ingCopy = document.querySelector('#ingCopy');
+var ingCount = document.querySelectorAll('.ingCopyC').length;
+function ingredientPlus(){
+	recipeIngredientBox.appendChild(ingCopy.cloneNode(true));
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].style.display="inline-block";
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3].setAttribute("name", "elementIngredient");
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5].setAttribute("name", "elementQuantity");
+	
+	
+	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3]);
+	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5]);
+	ingCount++;
+}
+
+// 재료 삭제
+function ingredientRemove(){
+	if(ingCount > 4){
+		document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].remove();
+		ingCount--;		
+	}
+}
 
 // 레시피 순서
 function orderImage(obj){

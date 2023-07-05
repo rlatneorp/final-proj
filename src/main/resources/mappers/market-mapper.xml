@@ -171,6 +171,7 @@
       <result column="FOOD_NAME" property="foodName"/>
       <result column="FOOD_KIND" property="foodKind"/>
       <result column="FOOD_TYPE" property="foodType"/>
+      <result column="FOOD_CONTENT" property="foodContent"/>
    </resultMap>
    
    <resultMap type="Tool" id="toolInfo">
@@ -914,5 +915,38 @@
 <!-- 			WHERE row_num BETWEEN 0 AND 4 -->
 <!-- 		]]> -->
 <!-- 	</select>  -->
+	
+<!--상품 검색용 맵퍼 -->
+	<select id="selectViewSearchCount" resultType="_int">
+		select count(*) from product 
+		<if test='searchType == "food"'>
+			 join food using(product_no)
+		where food_name like '%${searchText}%'
+		</if>
+		<if test='searchType == "ingredient"'>
+			 join ingredient using(product_no)
+		where ingredient_name like '%${searchText}%'
+		</if>
+		<if test='searchType == "tool"'>
+			 join tool using(product_no)
+		where tool_name like '%${searchText}%'
+		</if>
+	</select>
+	<select id="selectViewSearch" resultMap="productList" >
+		select * from product
+		<if test='searchType == "food"'>
+			 join food using(product_no)
+		where food_name like '%${searchText}%'
+		</if>
+		<if test='searchType == "ingredient"'>
+			 join ingredient using(product_no)
+		where ingredient_name like '%${searchText}%'
+		</if>
+		<if test='searchType == "tool"'>
+			 join tool using(product_no)
+		where tool_name like '%${searchText}%'
+		</if>
+	</select>
+	
 	
 </mapper>

@@ -2,14 +2,26 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>	
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
 <title>Insert title here</title>
 <style>
+	.material-symbols-outlined {
+	  font-variation-settings:
+	  'FILL' 0,
+	  'wght' 400,
+	  'GRAD' 0,
+	  'opsz' 48;
+	  vertical-align: text-top;
+	  font-size:20px;
+	  
+	}
 	table {
 		text-align: center;
 		margin: 0 auto;
@@ -111,11 +123,10 @@
 
 	<%@include file="../common/top.jsp"%>
 
-	
 	<br><br><br><br>
 	<div id="searchTable">	
 		<div class="search" style="margin:0 auto; left:290px;">
-			<select style="width: 100px; height: 40px; padding-top: 8px;">
+			<select id="categoryBtn" style="width: 100px; height: 40px; padding-top: 8px;">
 				<option value="bId" <c:if test="${ category == 'bId'}">selected</c:if>>글번호</option>
 				<option <c:if test="${ category == 'writer'}">selected</c:if> value="writer">작성자</option>
 				<option <c:if test="${ category == 'title'}">selected</c:if> value="title">제목</option>
@@ -124,7 +135,7 @@
 			<div class="searchBar">
 				<input id="searchInput" type="text" value="<c:if test='${ !empty search }'>${ search }</c:if>" placeholder="내용을 입력해 주세요"> 
 				<div id="searchIcon">
-					<button type="submit" id="searchBtn"><i class="bi bi-search"></i></button>
+					<button type="button" id="searchBtn"><i class="bi bi-search"></i></button>
 				</div>
 			</div>
 		</div>
@@ -145,7 +156,13 @@
 					<tr>
 						<td>${b.boardNo }</td>
 						<td>${b.nickName }
-						<td>${b.boardTitle }</td>
+						<td>
+						${b.boardTitle }
+						<c:set var="pic" value="${b.boardContent}"/>
+						<c:if test="${fn:contains(pic, 'img')}">
+						<span class="material-symbols-outlined">hallway</span>
+						</c:if>
+						</td>
 						<td><fmt:formatDate value="${b.boardDate }" pattern="yyyy-MM-dd"/></td>
 						<td>${b.boardCount }</td>
 					</tr>
@@ -186,20 +203,27 @@
 			</ul>
 		</nav>	
 	</div>
-	<br><br>
+	
 	<!-- 작성 버튼 -->
-	<div style="width: 900px; margin: 0 auto; text-align: right;">
-		<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
-	</div><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
+	<c:if test="${!empty loginUser}">
+		<div style="width: 900px; margin: 0 auto; text-align: right; margin-top: -70px;">
+			<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
+		</div><br><br><br>
+	</c:if>
 	<%@include file="../common/footer.jsp"%>
 
 
 </body>
 <script>
+window.onload=()=>{
 	//테이블에 마우스 올렸을 때 css
 	const tbody = document.getElementById('tbody');
 	const trs = tbody.children;
+	const categoryBtn = document.querySelector('#categoryBtn');
+	const searchBtn = document.getElementById('searchBtn');
+	const searchText = document.getElementById('searchInput');
+	let category = '';
+	let search = '';
 	
 	for(tr of trs) {
 		tr.addEventListener('click', function() {
@@ -220,28 +244,41 @@
 	}
 	
 	//검색 img 클릭했을 때
-	const searchInput = document.getElementById('searchInput');
-	document.getElementById('searchIcon').addEventListener('click', function() {
-		//여기에 ajax
-		searchInput.value = '';
+// 	document.getElementById('searchIcon').addEventListener('click', function() {
+// 		//여기에 ajax
+// 		searchText.value = '';
 		
-	})
+// 	})
 	
-	//검색어 입력 엔터 기능 
-	searchInput.addEventListener('keyup', function(event) {
-	  if (event.key === 'Enter') {
-	    const searchText = searchInput.value
+// 	//검색어 입력 엔터 기능 
+// 	searchText.addEventListener('keyup', function(event) {
+// 	  if (event.key === 'Enter') {
+// 	    const searchText = searchText.value
 	    
 	    
-	    console.log('검색어:', searchText);
-	    searchInput.value = '';
-	  }
+// 	    console.log('검색어:', searchText);
+// 	    searchText.value = '';
+// 	  }
+// 	});
+	
+	searchBtn.addEventListener('click', function(){
+		category = categoryBtn.value;
+		search = searchText.value;
+		this.style.backgroundColor = '#B0DAFF'; 
+		location.href='${contextPath}/freeBoard.bo?category=' + category + '&search=' + search;
+	});
+	
+	searchText.addEventListener('keyup', function(event){
+		if(event.key == 'Enter'){
+			category = categoryBtn.value;
+			search = searchText.value;
+			searchBtn.style.backgroundColor = '#B0DAFF'; 
+			location.href='${contextPath}/freeBoard.bo?category=' + category + '&search=' + search;
+		}
 	});
 	
 	
-	
-	
-	
+}	
 	
 	
 	
@@ -252,6 +289,6 @@
 	
 	
 	//작성하기 버튼 클릭 시 작성하기 페이지로 이동 
-	document.getElementById('')
+// 	document.getElementById('')
 </script>
 </html>

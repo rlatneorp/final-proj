@@ -79,7 +79,7 @@ public interface RecipeService {
 
 	void insertNewIngredient(String newI);
 
-	Ingredient selectNewIngredient(String newI);
+	int selectNewIngredient(String newI);
 
 	ArrayList<RecipeElement> selectRecipeElement(int foodNo);
 
@@ -92,6 +92,10 @@ public interface RecipeService {
 	int updateOrder(ArrayList<RecipeOrder> orc);
 
 	int updateRecipeOrder(ArrayList<RecipeOrder> ro);
+
+	void deleteRecipeIngredient(int foodNo);
+
+	void updateIngredient(ArrayList<RecipeElement> reelList);
 
 
 

@@ -66,7 +66,7 @@ public class UsersController {
 
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
-		// 이미지 조회 - 로그인 조회할때 이미지 리네임, 소셜이미지 조인해서 가져옴
+		// �씠誘몄� 議고쉶 - 濡쒓렇�씤 議고쉶�븷�븣 �씠誘몄� 由щ꽕�엫, �냼�뀥�씠誘몄� 議곗씤�빐�꽌 媛��졇�샂
 		Users u = (Users) model.getAttribute("loginUser");
 		Users loginUser = null;
 		if(u.getImageRenameName() != null) {
@@ -82,7 +82,7 @@ public class UsersController {
 		model.addAttribute("following", following);
 		model.addAttribute("follower", follower);
 
-		// 팔로잉 팔로워 리스트 조회
+		// �뙏濡쒖엵 �뙏濡쒖썙 由ъ뒪�듃 議고쉶
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(loginUser.getUsersNo());
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(loginUser.getUsersNo());
 
@@ -92,7 +92,7 @@ public class UsersController {
 		return "myPage_Main";
 	}
 
-	// 언팔
+	// �뼵�뙏
 	@RequestMapping("myPage_unFollow.me")
 	@ResponseBody
 	public String myPage_unFollow(Model model, @RequestParam("usersNo") int usersNo,
@@ -110,7 +110,7 @@ public class UsersController {
 		}
 	}
 
-	// 팔로
+	// �뙏濡�
 	@RequestMapping("myPage_follow.me")
 	@ResponseBody
 	public String myPage_follow(Model model, @RequestParam("usersNo") int usersNo,
@@ -128,9 +128,9 @@ public class UsersController {
 		}
 	}
 
-	// 파일 저장
+	// �뙆�씪 ���옣
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
-		// 파일 저장소 지정
+		// �뙆�씪 ���옣�냼 吏��젙
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
 		File folder = new File(savePath);
@@ -139,7 +139,7 @@ public class UsersController {
 			folder.mkdirs();
 		}
 
-		// 파일 이름 변경 형식 지정
+		// �뙆�씪 �씠由� 蹂�寃� �삎�떇 吏��젙
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		int ranNum = (int) (Math.random() * 100000);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
@@ -159,7 +159,7 @@ public class UsersController {
 		return returnArr;
 	}
 
-	// 파일 삭제
+	// �뙆�씪 �궘�젣
 	public void deleteFile(String fileName, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
@@ -181,7 +181,7 @@ public class UsersController {
 		if (file != null && !file.isEmpty()) {
 			String[] returnArr = saveFile(file, request);
 
-			if (returnArr[1] != null) {
+			if (returnArr[1] != null) { 
 				image = new Image();
 				image.setImagePath(returnArr[0]);
 				image.setImageOriginalName(file.getOriginalFilename());
@@ -195,7 +195,7 @@ public class UsersController {
 					user.setImageRenameName(image.getImageRenameName());
 					model.addAttribute("image", image);
 				} else {
-					throw new UsersException("사진 실패");
+					throw new UsersException("�궗吏� �떎�뙣");
 				}
 			}
 		}
@@ -204,7 +204,7 @@ public class UsersController {
 			model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
-			throw new UsersException("프로필 수정 실패");
+			throw new UsersException("�봽濡쒗븘 �닔�젙 �떎�뙣");
 		}
 	}
 
@@ -215,7 +215,7 @@ public class UsersController {
 		Users user = uService.selectInfo(u);
 		Image image = null;
 
-		if (file != null && !file.isEmpty()) { // 새파일 들어옴
+		if (file != null && !file.isEmpty()) { // �깉�뙆�씪 �뱾�뼱�샂
 			String[] returnArr = saveFile(file, request);
 
 			if (returnArr[1] != null) {
@@ -227,13 +227,13 @@ public class UsersController {
 				image.setImageDivideNo(u.getUsersNo());
 
 				Image existingImage = uService.selectImage(u.getUsersNo());
-				if (existingImage == null) { // 기존 파일이 없을 때
+				if (existingImage == null) { // 湲곗〈 �뙆�씪�씠 �뾾�쓣 �븣
 					int insertImage = uService.insertImage(image);
 
 					if (insertImage > 0) {
 						model.addAttribute("image", image);
 					} else {
-						throw new UsersException("사진 수정 실패");
+						throw new UsersException("�궗吏� �닔�젙 �떎�뙣");
 					}
 				} else {
 					int deleteImage = uService.deleteImage(existingImage);
@@ -248,16 +248,16 @@ public class UsersController {
 							user.setImageRenameName(image.getImageRenameName());
 							model.addAttribute("image", image);
 						} else {
-							throw new UsersException("사진 수정 실패");
+							throw new UsersException("�궗吏� �닔�젙 �떎�뙣");
 						}
 					} else {
-						throw new UsersException("사진 삭제 실패");
+						throw new UsersException("�궗吏� �궘�젣 �떎�뙣");
 					}
 				}
 			}
 		}
 
-		// 새 파일 안들어옴
+		// �깉 �뙆�씪 �븞�뱾�뼱�샂
 		if (file.isEmpty()) {
 			Image existingImage = uService.selectImage(u.getUsersNo());
 			if (existingImage != null) {
@@ -278,11 +278,11 @@ public class UsersController {
 			model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
-			throw new UsersException("프로필 수정 실패");
+			throw new UsersException("�봽濡쒗븘 �닔�젙 �떎�뙣");
 		}
 	}
 
-	// 내 레시피 조회
+	// �궡 �젅�떆�뵾 議고쉶
 	@RequestMapping("myPage_MyRecipe.me")
 	public String myPage_MyRecipe(Model model, @RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "searchType", required = false) Integer searchType,
@@ -296,7 +296,7 @@ public class UsersController {
 		HashMap<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("usersNo", usersNo);
 		
-		int selectType = 0; // 최신/오래된/조회/스크랩/좋아요
+		int selectType = 0; // 理쒖떊/�삤�옒�맂/議고쉶/�뒪�겕�옪/醫뗭븘�슂
 		if (searchType != null) {
 			selectType = searchType;
 			listMap.put("selectType", selectType);
@@ -326,7 +326,7 @@ public class UsersController {
 		return "myPage_MyRecipe";
 	}
 	
-	// 스크랩 조회
+	// �뒪�겕�옪 議고쉶
 	@RequestMapping("myPage_MyBookMark.me")
 	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "searchType", required = false) Integer searchType,
@@ -340,7 +340,7 @@ public class UsersController {
 		HashMap<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("usersNo", usersNo);
 		
-		int selectType = 0; // 최신/오래된/레시피/식단
+		int selectType = 0; // 理쒖떊/�삤�옒�맂/�젅�떆�뵾/�떇�떒
 		if (searchType != null) {
 			selectType = searchType;
 			listMap.put("selectType", selectType);
@@ -383,7 +383,7 @@ public class UsersController {
 		HashMap<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("usersNo", usersNo);
 		
-		int selectType = 0; // 전체/레시피/식단/식품/식재료/상품
+		int selectType = 0; // �쟾泥�/�젅�떆�뵾/�떇�떒/�떇�뭹/�떇�옱猷�/�긽�뭹
 		if (searchType != null) {
 			selectType = searchType;
 			listMap.put("selectType", selectType);
@@ -395,7 +395,7 @@ public class UsersController {
 			listMap.put("selectTitle", selectTitle);
 		}
 		
-		// 좋아요 리스트 개수...
+		// 醫뗭븘�슂 由ъ뒪�듃 媛쒖닔...
 		int listCount = uService.getLikeListCount(listMap);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
@@ -415,7 +415,7 @@ public class UsersController {
 		return "myPage_MyFavorite";
 	}
 
-	// 스크랩 삭제
+	// �뒪�겕�옪 �궘�젣
 	@RequestMapping("myPage_deleteBookMark.me")
 	@ResponseBody
 	public String myPage_deleteBookMark(@RequestParam("bookmarkNo") String bookmarkNumber) {
@@ -433,7 +433,7 @@ public class UsersController {
 		return result > 0 ? "yes" : "no";
 	}
 
-	// 좋아요 삭제
+	// 醫뗭븘�슂 �궘�젣
 	@RequestMapping("myPage_deleteLike.me")
 	@ResponseBody
 	public String myPage_deleteLike(@RequestParam("likeNo") String likeNumber) {
@@ -457,7 +457,7 @@ public class UsersController {
 		if(currentPage == null) {
 			currentPage = 1;
 		}
-		//주문한 전체 내역 조회 
+		//二쇰Ц�븳 �쟾泥� �궡�뿭 議고쉶 
 		Users users = (Users)session.getAttribute("loginUser");
 		int usersNo = users.getUsersNo();
 		
@@ -466,7 +466,7 @@ public class UsersController {
 		ArrayList<Orders> orderList = uService.selectOrderList(usersNo, pi);
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		for(Orders order :orderList) {
-			//productName 가져오기
+			//productName 媛��졇�삤湲�
 			int productNo = order.getProductNo();
 			foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
 			if (foods != null) { 
@@ -500,22 +500,22 @@ public class UsersController {
 		int productNo = orders.getProductNo();
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
-		if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+		if (foods != null) { //�씠誘몄� ���엯 : 3 ( �떇�뭹 ) 
 			orders.setProductName(foods.getFoodName());
 			String imgName = mkService.selectImg(productNo, 3);
 			orders.setImgName(imgName);
 		}
-		if (tools != null) {//이미지 타입 : 6 ( 주방도구)
+		if (tools != null) {//�씠誘몄� ���엯 : 6 ( 二쇰갑�룄援�)
 			orders.setProductName(tools.getToolName());
 			String imgName = mkService.selectImg(productNo, 6);
 			orders.setImgName(imgName);
 		}
-		if (igs != null) {//이미지 타입 :5 (식재료) 
+		if (igs != null) {//�씠誘몄� ���엯 :5 (�떇�옱猷�) 
 			orders.setProductName(igs.getIngredientName());
 			String imgName = mkService.selectImg(productNo, 5);
 			orders.setImgName(imgName);
 		}
-		if (menus != null) {//이미지 타입 : 4 (식단)
+		if (menus != null) {//�씠誘몄� ���엯 : 4 (�떇�떒)
 			orders.setProductName(menus.getMenuName());
 			String imgName = mkService.selectImg(productNo, 4);
 			orders.setImgName(imgName);
@@ -558,7 +558,7 @@ public class UsersController {
 		if (result > 0) {
 			return "redirect:myPage_MyAddress.me";
 		} else {
-			throw new UsersException("배송지 추가 실패");
+			throw new UsersException("諛곗넚吏� 異붽� �떎�뙣");
 		}
 	}
 
@@ -586,11 +586,11 @@ public class UsersController {
 		if (result > 0) {
 			return "redirect:myPage_MyAddress.me";
 		} else {
-			throw new UsersException("배송지 수정 실패");
+			throw new UsersException("諛곗넚吏� �닔�젙 �떎�뙣");
 		}
 	}
 
-	// 배송지 삭제
+	// 諛곗넚吏� �궘�젣
 	@RequestMapping("myPage_deleteAddress.me")
 	@ResponseBody
 	public String myPage_deleteAddress(@RequestParam("shippingNo") String shippingNumber) {
@@ -609,7 +609,7 @@ public class UsersController {
 		return result > 0 ? "yes" : "no";
 	}
 	
-	// 포인트 내역 조회
+	// �룷�씤�듃 �궡�뿭 議고쉶
 	@RequestMapping("myPage_Point.me")
 	public String myPage_Point(Model model, @RequestParam(value = "page", required = false) Integer page) {
 		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
@@ -624,27 +624,27 @@ public class UsersController {
 		
 		ArrayList<HashMap<String, Object>> list = uService.selectPoint(usersNo, pi);
 		
-		// 세션에서 포인트 소멸 확인 여부를 가져옴
+		// �꽭�뀡�뿉�꽌 �룷�씤�듃 �냼硫� �솗�씤 �뿬遺�瑜� 媛��졇�샂
 //	    boolean pointExpiryChecked = (boolean) model.getAttribute("pointExpiryChecked");
 //	    int result1 = 0;
 //	    int result2 = 0;
 //	    
 //	    if (pointExpiryChecked == true && pointExpiryChecked != null) {
-//	        // 이미 포인트 소멸 확인한 경우, 처리할 필요가 없으므로 바로 반환
+//	        // �씠誘� �룷�씤�듃 �냼硫� �솗�씤�븳 寃쎌슦, 泥섎━�븷 �븘�슂媛� �뾾�쑝誘�濡� 諛붾줈 諛섑솚
 //	    	model.addAttribute("list", list);
 //			model.addAttribute("pi", pi);
 //			
 //			return "myPage_Point";
 //	    } else {
-//		    // 현재 날짜 구하기
+//		    // �쁽�옱 �궇吏� 援ы븯湲�
 //		    LocalDate currentDate = LocalDate.now();
 //		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //		    String formattedCurrentDate = currentDate.format(formatter);
 //	
-//		    // 포인트 소멸 처리 로직 작성
+//		    // �룷�씤�듃 �냼硫� 泥섎━ 濡쒖쭅 �옉�꽦
 //		    for (HashMap<String, Object> p : list) {
 //		    	Integer type = (Integer) p.get("POINT_TYPE");
-//		    	if(type == null) {  // 출첵
+//		    	if(type == null) {  // 異쒖껨
 //		    		String checked = (String) p.get("CHECKED");
 //		    		if(checked.equals(formattedCurrentDate)) {
 //		    			int userNo = (int) p.get("USERS_NO");
@@ -665,7 +665,7 @@ public class UsersController {
 //		    	} else {
 //			        String expirationDate = (String) p.get("MODIFY_DATE");
 //			        if (expirationDate.equals(formattedCurrentDate)) {
-//			            // 포인트 소멸 처리 코드
+//			            // �룷�씤�듃 �냼硫� 泥섎━ 肄붾뱶
 //			        	int userNo = (int) p.get("USERS_NO");
 //			        	int point = (int) p.get("POINT");
 //			        	int before = (int) p.get("POINT_BEFORE");
@@ -689,7 +689,7 @@ public class UsersController {
 //		    }
 //		    
 //		    if(result1 > 0 || result2 > 0) {
-		    	// 포인트 소멸 확인 여부를 세션에 저장
+		    	// �룷�씤�듃 �냼硫� �솗�씤 �뿬遺�瑜� �꽭�뀡�뿉 ���옣
 //	    	model.addAttribute("pointExpiryChecked", true);
 	    	
 	    	model.addAttribute("list", list);
@@ -697,7 +697,7 @@ public class UsersController {
 	    	
 	    	return "myPage_Point";
 //		    } else {
-//		    	throw new UsersException("포인트 머시기 실패");
+//		    	throw new UsersException("�룷�씤�듃 癒몄떆湲� �떎�뙣");
 //		    }
 //	
 //	    }
@@ -727,7 +727,7 @@ public class UsersController {
 		return "myPage_checkPwd";
 	}
 
-	// 회원 정보 수정 전 비밀번호 체크
+	// �쉶�썝 �젙蹂� �닔�젙 �쟾 鍮꾨�踰덊샇 泥댄겕
 	@RequestMapping("myPage_checkPwd.me")
 	@ResponseBody
 	public String myPage_checkPwd(@RequestParam("usersPwd") String usersPwd, Model model) {
@@ -773,11 +773,11 @@ public class UsersController {
 			model.addAttribute("loginUser", eService.login(u));
 			return "yes";
 		} else {
-			throw new UsersException("정보 수정 실패ㅋ");
+			throw new UsersException("�젙蹂� �닔�젙 �떎�뙣�뀑");
 		}
 	}
 
-	// �쉶�썝�깉�눜
+	// 占쎌돳占쎌뜚占쎄퉱占쎈닚
 	@RequestMapping("myPage_deleteInfo.me")
 	public String myPage_deleteInfo(@RequestParam("usersNo") int usersNo) {
 		int result = uService.deleteInfo(usersNo);
@@ -785,7 +785,7 @@ public class UsersController {
 		if (result > 0) {
 			return "redirect:logout.en";
 		} else {
-			throw new UsersException("탈퇴 실패 ㅋ");
+			throw new UsersException("�깉�눜 �떎�뙣 �뀑");
 		}
 	}
 
@@ -797,22 +797,22 @@ public class UsersController {
 //		prop.setProperty("end", end);
 //		
 //		ArrayList<Orders> periodSelec = uService.selectPeriodOrders(prop);
-//		//이름 가져오기 
+//		//�씠由� 媛��졇�삤湲� 
 //		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 //		
 //		for(Orders ps : periodSelec) {
 //			int productNo = ps.getProductNo();
 //			foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
-//			if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+//			if (foods != null) { //�씠誘몄� ���엯 : 3 ( �떇�뭹 ) 
 //				ps.setProductName(foods.getFoodName());
 //			}
-//			if (tools != null) {//이미지 타입 : 6 ( 주방도구)
+//			if (tools != null) {//�씠誘몄� ���엯 : 6 ( 二쇰갑�룄援�)
 //				ps.setProductName(tools.getToolName());
 //			}
-//			if (igs != null) {//이미지 타입 :5 (식재료) 
+//			if (igs != null) {//�씠誘몄� ���엯 :5 (�떇�옱猷�) 
 //				ps.setProductName(igs.getIngredientName());
 //			}
-//			if (menus != null) {//이미지 타입 : 4 (식단)
+//			if (menus != null) {//�씠誘몄� ���엯 : 4 (�떇�떒)
 //				ps.setProductName(menus.getMenuName());
 //			}
 //		}
@@ -845,26 +845,26 @@ public class UsersController {
 		prop.setProperty("end", end);
 		prop.setProperty("usersNo", userNo);
 		
-		int listCount = uService.orderPeriodCount(prop); //기간에 따른 개수 세기 
+		int listCount = uService.orderPeriodCount(prop); //湲곌컙�뿉 �뵲瑜� 媛쒖닔 �꽭湲� 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
 		ArrayList<Orders> periodSelec = uService.selectPeriodOrders(prop, pi);
-//		//이름 가져오기 
+//		//�씠由� 媛��졇�삤湲� 
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 //		
 		for(Orders ps : periodSelec) {
 			int productNo = ps.getProductNo();
 			foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
-			if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+			if (foods != null) { //�씠誘몄� ���엯 : 3 ( �떇�뭹 ) 
 				ps.setProductName(foods.getFoodName());
 			}
-			if (tools != null) {//이미지 타입 : 6 ( 주방도구)
+			if (tools != null) {//�씠誘몄� ���엯 : 6 ( 二쇰갑�룄援�)
 				ps.setProductName(tools.getToolName());
 			}
-			if (igs != null) {//이미지 타입 :5 (식재료) 
+			if (igs != null) {//�씠誘몄� ���엯 :5 (�떇�옱猷�) 
 				ps.setProductName(igs.getIngredientName());
 			}
-			if (menus != null) {//이미지 타입 : 4 (식단)
+			if (menus != null) {//�씠誘몄� ���엯 : 4 (�떇�떒)
 				ps.setProductName(menus.getMenuName());
 			}
 		}
@@ -894,14 +894,14 @@ public class UsersController {
 		prop.setProperty("word", word);
 		prop.setProperty("usersNo", userNo);
 		
-		//당연히 페이징을.... 
+		//�떦�뿰�엳 �럹�씠吏뺤쓣.... 
 		int listCount = 0; PageInfo pi = null; ArrayList<Map<String, Object>> orderSearchList = null;
-		if(start == null) { //전체 조회 
-			listCount = mkService.orderSearchCount(prop); //단어 있는 것 중, 전체 조회 
+		if(start == null) { //�쟾泥� 議고쉶 
+			listCount = mkService.orderSearchCount(prop); //�떒�뼱 �엳�뒗 寃� 以�, �쟾泥� 議고쉶 
 			pi = Pagination.getPageInfo(currentPage, listCount, 10);
-			orderSearchList = mkService.orderSearch(prop, pi); //단어 있는 것 중 페이징처리하여 전체 조회
+			orderSearchList = mkService.orderSearch(prop, pi); //�떒�뼱 �엳�뒗 寃� 以� �럹�씠吏뺤쿂由ы븯�뿬 �쟾泥� 議고쉶
 			System.out.println("orderSearchList" + orderSearchList);
-		} else { //기간이 들어오면,
+		} else { //湲곌컙�씠 �뱾�뼱�삤硫�,
 			prop.setProperty("start", start);
 			prop.setProperty("end", end);
 			listCount = mkService.orderPeriodSearchCount(prop);
@@ -914,7 +914,7 @@ public class UsersController {
 		
 		ArrayList<Orders> orderList = new ArrayList<>();
 		for(Map<String, Object>  order : orderSearchList) {
-			//필요 데이터 : 주문번호, 주문타입, 상품명, 주문날짜, 총 주문금액 
+			//�븘�슂 �뜲�씠�꽣 : 二쇰Ц踰덊샇, 二쇰Ц���엯, �긽�뭹紐�, 二쇰Ц�궇吏�, 珥� 二쇰Ц湲덉븸 
 			Orders orders = new Orders();
 			orders.setOrderNo(Integer.parseInt(order.get("ORDER_NO").toString()));
 			orders.setProductType(Integer.parseInt(order.get("PRODUCT_TYPE").toString()));

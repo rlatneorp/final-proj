@@ -2,19 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">
 
-	<select id="getFreeBoardListCount" resultType="_int">
-		select count(*)
-		from board
-                join users using(users_no)
-		where board_type = 0 and board_status = 'Y'
-	</select>
+<!-- 	<select id="getFreeBoardListCount" resultType="_int"> -->
+<!-- 		select count(*) -->
+<!-- 		from board -->
+<!--                 join users using(users_no) -->
+<!-- 		where board_type = 0 and board_status = 'Y' -->
+<!-- 	</select> -->
 
-	<select id="freeBoardView" resultMap="BoardResultSet">
-		select *
-		from board
-                join users using(users_no)
-		where board_type = 0 and board_status = 'Y'
-	</select>
+<!-- 	<select id="freeBoardView" resultMap="BoardResultSet"> -->
+<!-- 		select * -->
+<!-- 		from board -->
+<!--                 join users using(users_no) -->
+<!-- 		where board_type = 0 and board_status = 'Y' -->
+<!-- 		order by board_date desc -->
+<!-- 	</select> -->
+	
 	
 	<resultMap id="BoardResultSet" type="Board">
 		<id column="BOARD_NO" property="boardNo"/>
@@ -94,7 +96,57 @@
 			and order_no = -1
 	</update>
 	
+	<insert id="freeBoardWriting">
+		insert into board
+		values (seq_freeboard_no.nextval, #{usersNo}, #{introTitle}, #{introContent}, sysdate, 'Y', default, default)
+	</insert>
 	
+	<select id="firstSelecteBoard" resultMap="BoardResultSet">
+	select board_no, nickname
+    from (select * 
+        from board
+        order by board_date desc)
+            join users using(users_no)
+    where nickname = #{login} and rownum = 1
+	</select>
 	
+	<select id="getCategoryFreeCount" resultType="_int">
+		select count(*)
+		from board
+			join users using(users_no)
+		where board_status = 'Y' 
+		<if test="category == 'bId'">
+			  and board_no like '%'|| #{search}||'%'
+		</if>
+		<if test="category == 'writer'">
+			  and nickname like '%'|| #{search}||'%'
+		</if>
+		<if test="category == 'title'">
+			  and board_title like '%'|| #{search} ||'%'
+		</if>
+		<if test="category == 'content'">
+			  and board_content like '%'|| #{search}||'%'
+		</if>
+	</select>
+	
+	<select id="freeBList" resultMap="BoardResultSet">
+		select *
+		from board
+			join users using(users_no)
+		where board_status = 'Y' 
+		<if test="category == 'bId'">
+			  and board_no like '%'|| #{search}||'%'
+		</if>
+		<if test="category == 'writer'">
+			  and nickname like '%'|| #{search}||'%'
+		</if>
+		<if test="category == 'title'">
+			  and board_title like '%'|| #{search} ||'%'
+		</if>
+		<if test="category == 'content'">
+			  and board_content like '%'|| #{search}||'%'
+		</if>
+		order by board_date desc
+	</select>
 	
 </mapper>

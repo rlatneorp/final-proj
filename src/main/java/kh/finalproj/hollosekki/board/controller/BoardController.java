@@ -24,6 +24,7 @@ import kh.finalproj.hollosekki.board.model.service.BoardService;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.customer.model.vo.Customer;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
@@ -36,22 +37,22 @@ public class BoardController {
 	@Autowired
 	private EnrollService eService;
 	
-	@RequestMapping("freeBoard.bo")
-	public String freeBoard(@RequestParam(value="page",required=false) Integer currentPage, Model model, @ModelAttribute Board b) {
-		if(currentPage == null) {
-			currentPage = 1;
-		}
-		int listCount = bService.getFreeBoardListCount(0);
-		
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-		
-		ArrayList<Board> list = bService.freeBoardView(b, pi);
-		
-		model.addAttribute("pi", pi);
-		model.addAttribute("list", list);
-		
-		return "freeBoard";
-	}
+//	@RequestMapping("freeBoard.bo")
+//	public String freeBoard(@RequestParam(value="page",required=false) Integer currentPage, Model model, @ModelAttribute Board b) {
+//		if(currentPage == null) {
+//			currentPage = 1;
+//		}
+//		int listCount = bService.getFreeBoardListCount(0);
+//		
+//		
+//		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+//		
+//		ArrayList<Board> list = bService.freeBoardView(b, pi);
+//		model.addAttribute("pi", pi);
+//		model.addAttribute("list", list);
+//		
+//		return "freeBoard";
+//	}
 	
 	@RequestMapping("detailFreeBoard.bo")
 	public String selectFreeBoard(Model model,HttpSession session, 
@@ -68,6 +69,7 @@ public class BoardController {
 		}
 		ArrayList<Board> list = bService.selectReply(bId);
 		Board blist = bService.selectBoard(bId, yn);
+		
 		ArrayList<Users> AllUsersList = eService.AllUsersList();
 		
 		if(blist != null) {
@@ -79,7 +81,7 @@ public class BoardController {
 
 			return "detailFreeBoard";
 		} else {
-			throw new BoardException("�Խñ� ��ȸ�� �����Ͽ����ϴ�.");
+			throw new BoardException("占쌉시깍옙 占쏙옙회占쏙옙 占쏙옙占쏙옙占싹울옙占쏙옙占싹댐옙.");
 		}
 		
 	}
@@ -124,13 +126,72 @@ public class BoardController {
 		return result == 1 ? "success" : "fail";
 	}
 	
-	
 	@RequestMapping("freeBoardWrite.bo")
-	public String freeBoardWrite() {
-			
-		
-		
+	public String goToWriete() {
 		return "freeBoardWrite";
+	}
+
+	
+	@RequestMapping("freeBoardWriting.bo")
+	public void freeBoardWrite(Model model,HttpSession session,@RequestParam(value="introContent",required=false) String introContent, @RequestParam(value="introTitle",required=false) String introTitle) {
+		Users u = (Users)session.getAttribute("loginUser");
+		int usersNo = 0;
+		
+		if(u != null) {
+			usersNo = u.getUsersNo();
+		}
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("introContent", introContent);
+		map.put("introTitle", introTitle);
+		
+		bService.freeBoardWriting(map);
+		
+	}
+	
+	@RequestMapping("goToMyBoard.bo")
+	public void goToMyBoard(HttpServletResponse response, Model model,HttpSession session) {
+		Users u = (Users)session.getAttribute("loginUser");
+		String login = null;
+		if(u != null) {
+			login = u.getNickName();
+		}
+		Board blist = bService.firstSelectBoard(login);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
+		Gson gson = gb.create();
+		try {
+			gson.toJson(blist, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("freeBoard.bo")
+	public String freeBoardSearch(@RequestParam(value="category", required=false) String category,@RequestParam(value="search", required=false) String search, HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
+			Model model) {
+		if(currentPage == null) {
+			
+			currentPage = 1;
+		}
+		
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+		map.put("search", search);
+		
+		int	listCount = bService.getCategoryFreeCount(map);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+
+		ArrayList<Board> list = bService.freeBList(pi, map);
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+		model.addAttribute("category", category);
+		model.addAttribute("search", search);
+		
+		return "freeBoard";
 	}
 	
 }

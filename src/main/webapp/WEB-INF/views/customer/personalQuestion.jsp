@@ -120,13 +120,13 @@ font-family: 'Noto Sans KR', sans-serif;
 					</div>
 					<br><br>
 					<div class="form-floating mb-3">
-					   <input required type="text" class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요.">
+					   <textarea required type="text" class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요."></textarea>
 					   <label for="floatingInput">제목</label>
 					</div>
 					   <input type="hidden" name="qnaTitle" id="titleSub">
 					   <input type="hidden" name="qnaType" id="typeQna">
  					<div class="form-floating">
-					   <input name="qnaContent" required type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요.">
+					   <textarea name="qnaContent" required type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요."></textarea>
 					   <label for="floatingText">내용</label>
 					</div>
 					<br>

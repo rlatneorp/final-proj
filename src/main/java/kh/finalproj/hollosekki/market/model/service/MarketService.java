@@ -466,6 +466,19 @@ public class MarketService {
 		return mkDAO.selectFoodKindTypeCount(sqlSession,foodKind, foodType);
 	}
 
+	public ArrayList<Product> selectLikeOrderByOne() {
+		return mkDAO.selectLikeOrderByOne(sqlSession);
+	}
+	
+//	검색용 메소드
+	public int selectViewSearchCount(HashMap<String, String> map) {
+		return mkDAO.selectViewSearchCount(sqlSession, map);
+	}
+
+	public ArrayList<Product> selectViewSearch(PageInfo pi, HashMap<String, String> map) {
+		return mkDAO.selectViewSearch(sqlSession, pi, map);
+	}
+
 
 
 

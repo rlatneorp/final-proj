@@ -345,8 +345,6 @@ public class MarketController {
       }
       
       
-      
-      
       model.addAttribute("reviewCount", reviewCount);
       
       
@@ -1128,6 +1126,61 @@ public class MarketController {
 	   
 	   return "kitchenToolMainPage";
    }
+   
+   @RequestMapping("viewSearch.ma")
+   public String viewSearch(@RequestParam(value="page", required=false) Integer currentPage,
+		   					@RequestParam(value="searchStart", required=false) String searchStart,
+		   					@RequestParam("searchType") String searchType,
+		   					@RequestParam("searchText") String searchText,
+		   					Model model){
+	   
+	   if(currentPage == null || (searchStart != null && searchStart.equals("Y"))) {
+		   currentPage = 1;
+	   }
+	   HashMap<String, String> map = new HashMap<String, String>();
+	   map.put("searchType", searchType);
+	   map.put("searchText", searchText);
+	   
+	   int listCount = mkService.selectViewSearchCount(map);
+	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 2);
+	   ArrayList<Product> list = mkService.selectViewSearch(pi, map);
+	   
+	   for(Product p:list) {
+		   System.out.println(p);
+	   }
+	   //전체 상품 조회
+	   if(!list.isEmpty()) {
+		   for(Product lists : list) {
+			   int productNo = lists.getProductNo(); 
+			   String img = null;
+			   switch(lists.getProductType()) {
+			   case 1: Food f = mkService.selectFood(productNo);
+		   				lists.setProductName(f.getFoodName());
+			   			img = mkService.selectImg(productNo, 3); break;
+			   case 3: Ingredient igd = mkService.selectIngrdient(productNo);
+					    lists.setProductName(igd.getIngredientName());
+			   			img = mkService.selectImg(igd.getIngredientNo(), 6); break;
+			   case 4: Tool t = mkService.selectTool(productNo);
+					    lists.setProductName(t.getToolName());
+				   		img = mkService.selectImg(productNo, 5); break;
+			   }
+			   if(img != null) {
+				   lists.setProductImg(img);
+			   }
+		   }
+	   }
+	   
+	   for(Product p:list) {
+		   System.out.println(p);
+	   }
+	   model.addAttribute("searchType", searchType);
+	   model.addAttribute("searchText", searchText);
+	   model.addAttribute("pi", pi);
+	   model.addAttribute("list", list);
+	   
+	   return "kitchenToolMainSearchPage";
+   }
+   
    
    // 후기 조회
    @RequestMapping("editReview.ma")

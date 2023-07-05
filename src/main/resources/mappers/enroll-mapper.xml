@@ -134,6 +134,7 @@
 	<select id="allRecipeList" resultMap="recipeResultSet">
 		select * from recipe
 		where recipe_status = 'Y'
+		order by food_no desc
 	</select>
 	
 	<select id="allRecipeImageList" resultMap="imageResultSet">

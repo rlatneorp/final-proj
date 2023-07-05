@@ -180,7 +180,7 @@
 		from recipe
 			 left join users using(users_no)
 			 left join image on(food_no = image_divide_no)
-		where CATEGORY_INGREDIENT=#{ingredient} and image_level=0 and image_type=2
+		where CATEGORY_INGREDIENT=#{ingredient} and image_level=0 and image_type=2 and recipe_status = 'Y'
 	</select>
 	
 	<select id="situationSearch" resultMap="recipeResultSet">
@@ -188,7 +188,7 @@
 		from recipe
 			 left join users using(users_no)
 			 left join image on(food_no = image_divide_no)
-		where CATEGORY_SITUATION=#{situation} and image_level=0	and image_type=2
+		where CATEGORY_SITUATION=#{situation} and image_level=0	and image_type=2 and recipe_status = 'Y'
 	</select>
 	
 	<select id="typeSearch" resultMap="recipeResultSet">
@@ -196,7 +196,7 @@
 		from recipe
 			 left join users using(users_no)
 			 left join image on(food_no = image_divide_no)
-		where CATEGORY_TYPE=#{type} and image_level=0 and image_type=2
+		where CATEGORY_TYPE=#{type} and image_level=0 and image_type=2 and recipe_status = 'Y'
 	</select>
 	
 	<insert id="reviewWrite">

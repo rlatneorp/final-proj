@@ -23,7 +23,8 @@
 	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; margin-left: 100px; cursor: pointer;}
 	.group-button{padding: 10px 10px 10px 30px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
 	
-	.name-cut{white-space: nowrap; overflow:hidden; text-overflow: ellipsis;}
+	.name-cut{white-space: nowrap; overflow:hidden; text-overflow: ellipsis; font-weight: bold; text-align: center;}
+	.card-text{text-align: center; margin-bottom: 5px;}
 	
 	.card{width: 260px; margin-bottom: 10px;}
 	.cardImg{width: 260px; height: 260px; overflow: hidden; border-top-right-radius: 3px; border-top-left-radius: 3px;}
@@ -127,7 +128,6 @@
 
 <div class="album p-5 bg-white">
 	<div class="container px-5" style="width: 1200px;">
-	
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-4 g-2" id="listBox">
 			<c:forEach items="${ rList }" var="r">
 				<c:forEach items="${ iList }" var="i">
@@ -140,6 +140,7 @@
 								<div class="card-body">
 									<h5 class="name-cut">${ r.recipeName }</h5>
 									<p class="card-text">${ r.nickName }</p>
+									<p class="card-text">${ r.categoryIngredient } ∣ ${ r.categorySituation } ∣ ${ r.categoryType }</p>
 								</div>
 								<input type="hidden" value="${ r.usersId }">
 								<input type="hidden" value="${ r.foodNo }">
@@ -247,10 +248,15 @@
 						
 						const h5 = document.createElement('h5');
 						h5.innerText = post.recipeName;
+						h5.classList.add('name-cut');
 						
 						const p = document.createElement('p');
 						p.innerText = post.nickName;
 						p.classList.add('card-text');
+						
+						const p2 = document.createElement('p');
+						p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
+						p2.classList.add('card-text');
 						
 						const uId = document.createElement('input');
 						uId.setAttribute("type", "hidden");
@@ -262,6 +268,7 @@
 						
 						cardBody.appendChild(h5);
 						cardBody.appendChild(p);
+						cardBody.appendChild(p2);
 						
 						cardImg.appendChild(img);
 						
@@ -325,6 +332,10 @@
 						p.innerText = post.nickName;
 						p.classList.add('card-text');
 						
+						const p2 = document.createElement('p');
+						p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
+						p2.classList.add('card-text');
+						
 						const uId = document.createElement('input');
 						uId.setAttribute("type", "hidden");
 						uId.value= post.usersId;
@@ -335,6 +346,7 @@
 						
 						cardBody.appendChild(h5);
 						cardBody.appendChild(p);
+						cardBody.appendChild(p2);
 						
 						cardImg.appendChild(img);
 						
@@ -398,6 +410,10 @@
 						p.innerText = post.nickName;
 						p.classList.add('card-text');
 						
+						const p2 = document.createElement('p');
+						p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
+						p2.classList.add('card-text');
+						
 						const uId = document.createElement('input');
 						uId.setAttribute("type", "hidden");
 						uId.value= post.usersId;
@@ -408,6 +424,7 @@
 						
 						cardBody.appendChild(h5);
 						cardBody.appendChild(p);
+						cardBody.appendChild(p2);
 						
 						cardImg.appendChild(img);
 						
@@ -472,6 +489,10 @@
 					p.innerText = post.nickName;
 					p.classList.add('card-text');
 					
+					const p2 = document.createElement('p');
+					p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
+					p2.classList.add('card-text');
+					
 					const uId = document.createElement('input');
 					uId.setAttribute("type", "hidden");
 					uId.value= post.usersId;
@@ -482,6 +503,7 @@
 					
 					cardBody.appendChild(h5);
 					cardBody.appendChild(p);
+					cardBody.appendChild(p2);
 					
 					cardImg.appendChild(img);
 					
@@ -542,6 +564,10 @@
 					p.innerText = post.nickName;
 					p.classList.add('card-text');
 					
+					const p2 = document.createElement('p');
+					p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
+					p2.classList.add('card-text');
+					
 					const uId = document.createElement('input');
 					uId.setAttribute("type", "hidden");
 					uId.value= post.usersId;
@@ -552,6 +578,7 @@
 					
 					cardBody.appendChild(h5);
 					cardBody.appendChild(p);
+					cardBody.appendChild(p2);
 					
 					cardImg.appendChild(img);
 					

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
+import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.Product;
@@ -211,6 +212,17 @@ public class EnrollServiceImpl implements EnrollService{
 	public Users login(Users u) {
 		return eDAO.login(sqlSession, u);
 	}
+
+	@Override
+	public ArrayList<Recipe> mainRecipeList() {
+		return eDAO.mainRecipeList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Healther> healtherList() {
+		return eDAO.healtherList(sqlSession);
+	}
+
 
 
 	

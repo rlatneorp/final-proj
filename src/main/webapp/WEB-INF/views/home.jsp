@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,6 +100,15 @@ font-family: 'Noto Sans KR', sans-serif;
 .img-div{width: 230px; height: 250px; overflow: hidden;}
 .recipe-img{width: 100%; height: 100%; object-fit: cover; object-position: center;}
 
+.healther-img-div{
+	width: 100px; height: 100px; overflow: hidden; border-radius: 50%; border: 2px solid gray;
+	margin: 0 auto; }
+.healther-img{width: 100%; height: 100%; object-fit: cover; object-position: center;}
+.healther-name{font-size: 17px; font-weight: bold; margin: 8px;}
+.healther-title{font-size: 14px; margin-bottom: 5px;}
+
+
+
 .foodCategory{
 	font-size: 20px;
 	font-weight: 700;
@@ -177,8 +187,7 @@ font-family: 'Noto Sans KR', sans-serif;
 		<p class="mainTitle">잘 나가는 상품들</p>
 	</div>
 	<br><br>
-	<div id="carousel" class="carousel slide position-relative"  data-bs-touch="false">
-		<div id="carousel3" class="carousel slide position-relative"  data-bs-touch="false">
+		<div id="carousel" class="carousel slide position-relative"  data-bs-touch="false">
 			<div class="carousel-inner">
 				<div class="carousel-item active">
 					<div class="mainFood2" style="display: flex; justify-content: center;">
@@ -217,18 +226,17 @@ font-family: 'Noto Sans KR', sans-serif;
 					</div>
 				</div>	
 			</div>
-			<button class="carousel-control-prev" type="button" data-bs-target="#carousel3" data-bs-slide="prev">
+			<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
 				<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 10px; margin-bottom: 40px; z-index: 9999;">
 	 				<img src="resources/images/leftBtn.png">
 				</div>	    
 			</button>
-			<button class="carousel-control-next" type="button" data-bs-target="#carousel3" data-bs-slide="next"  style="width: 0%">
+			<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next"  style="width: 0%">
 				<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 10px; margin-bottom: 40px; z-index: 9999;">
 	 				<img src="resources/images/rightBtn.png">
 				</div>
 			</button>	
 		</div>	
-	</div>
 	
 	<br><br><br><br><br>
 	
@@ -513,37 +521,29 @@ font-family: 'Noto Sans KR', sans-serif;
 			<div class="carousel-inner">
 				<div class="carousel-item active">
 					<div class="mainFood2" style="display: flex; justify-content: center;">
-						<c:forEach items="${ rImgList }" var="ri" end="4">
-							<c:forEach items="${ aRList }" var="ar">
-								<c:if test="${ ri.imageDivideNo eq ar.foodNo }">
-									<div style="margin: 7px; width: 230px; height: 380px;">
-										<div class="img-div"> 
-											<img src="${ contextPath }/resources/uploadFiles/${ ri.imageRenameName }" class="rounded recipe-img">
-										</div>
-										<div class="recipe-name">${ ar.recipeName }</div>
-										<div class="foodPrice">${ ar.categoryIngredient } ∣ ${ ar.categorySituation } ∣ ${ ar.categoryType }</div>
-										<div><i class="bi bi-eye"></i> ${ ar.recipeCount }</div>
-									</div>
-								</c:if>
-							</c:forEach>
+						<c:forEach items="${ mrList }" var="mr" end="3">
+							<div style="margin: 7px; width: 230px; height: 380px; cursor: pointer;" onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '${ mr.USERS_ID }' + '&rNo=' + ${ mr.FOOD_NO } + '&page='">
+								<div class="img-div"> 
+									<img src="${ contextPath }/resources/uploadFiles/${ mr.IMAGE_RENAMENAME }" class="rounded recipe-img">
+								</div>
+								<div class="recipe-name">${ mr.RECIPE_NAME }</div>
+								<div class="foodPrice">${ mr.CATEGORY_INGREDIENT } ∣ ${ mr.CATEGORY_SITUATION } ∣ ${ mr.CATEGORY_TYPE }</div>
+								<div><i class="bi bi-eye"></i> ${ mr.RECIPE_COUNT }</div>
+							</div>
 						</c:forEach>
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="mainFood2" style="display: flex; justify-content: center;">
-						<c:forEach items="${ rImgList }" var="ri" begin="4" end="7">
-							<c:forEach items="${ aRList }" var="ar">
-								<c:if test="${ ri.imageDivideNo eq ar.foodNo }">
-									<div style="margin: 7px; width: 230px; height: 380px;">
-										<div class="img-div"> 
-											<img src="${ contextPath }/resources/uploadFiles/${ ri.imageRenameName }" class="rounded recipe-img">
-										</div>
-										<div class="recipe-name">${ ar.recipeName }</div>
-										<div class="foodPrice">${ ar.categoryIngredient } ∣ ${ ar.categorySituation } ∣ ${ ar.categoryType }</div>
-										<div><i class="bi bi-eye"></i> ${ ar.recipeCount }</div>
-									</div>
-								</c:if>
-							</c:forEach>
+						<c:forEach items="${ mrList }" var="mr" begin="4" end="7">
+							<div style="margin: 7px; width: 230px; height: 380px; cursor: pointer;" onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '${ mr.USERS_ID }' + '&rNo=' + ${ mr.FOOD_NO } + '&page='">
+								<div class="img-div"> 
+									<img src="${ contextPath }/resources/uploadFiles/${ mr.IMAGE_RENAMENAME }" class="rounded recipe-img">
+								</div>
+								<div class="recipe-name">${ mr.RECIPE_NAME }</div>
+								<div class="foodPrice">${ mr.CATEGORY_INGREDIENT } ∣ ${ mr.CATEGORY_SITUATION } ∣ ${ mr.CATEGORY_TYPE }</div>
+								<div><i class="bi bi-eye"></i> ${ mr.RECIPE_COUNT }</div>
+							</div>
 						</c:forEach>
 					</div>
 				</div>	
@@ -561,117 +561,66 @@ font-family: 'Noto Sans KR', sans-serif;
 		</div>
 	</div>	
 					
-					
-<%-- 						<c:forEach items="${ rImgList }" var="ri" end="4"> --%>
-<%-- 							<c:forEach items="${ aRList }" var="ar"> --%>
-<%-- 								<c:if test="${ ri.imageDivideNo eq ar.foodNo }"> --%>
-<!-- 									<div class="position-relative d-inline">  -->
-<%-- 										<img src="${ contextPath }/resources/uploadFiles/${ ri.imageRenameName }" class="rounded" style="width:230px; height: 300px;"> --%>
-<!-- 									</div> -->
-<%-- 								</c:if> --%>
-<%-- 							</c:forEach> --%>
-<%-- 						</c:forEach> --%>
-<!-- 						<br><br> -->
-<!-- 						<div class="container row row-cols-4" style="width: 1050px; margin-left: 10px;"> -->
-<%-- 							<c:forEach items="${ aRList }" var="ar" end="3"> --%>
-<!-- 								<table class="d-inline col"> -->
-<!-- 									<tr> -->
-<%-- 										<td class="foodName">${ ar.recipeName }<td> --%>
-<!-- 									</tr> -->
-<!-- 									<tr> -->
-<%-- 										<td class="foodPrice">${ ar.categoryIngredient } ∣ ${ ar.categorySituation } ∣ ${ ar.categoryType }<td> --%>
-<!-- 									</tr> -->
-<!-- 									<tr> -->
-<%-- 										<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;"><i class="bi bi-eye"></i></span>${ ar.recipeCount }<td> --%>
-<!-- 									</tr> -->
-<!-- 								</table> -->
-<%-- 							</c:forEach> --%>
-<!-- 						</div> -->
-<!-- 					</div>	 -->
-<!-- 				</div> -->
-<!-- 				<div class="carousel-item"> -->
-<!-- 					<div class="mainFood2"> -->
-<%-- 						<c:forEach items="${ rImgList }" var="ri"> --%>
-<%-- 							<c:forEach items="${ aRList }" var="ar" begin="4" end="7"> --%>
-<%-- 								<c:if test="${ ri.imageDivideNo eq ar.foodNo }"> --%>
-<!-- 									<div class="position-relative d-inline">  -->
-<%-- 										<img src="${ contextPath }/resources/uploadFiles/${ ri.imageRenameName }" class="rounded" style="width:230px; height: 300px;"> --%>
-<!-- 									</div> -->
-<%-- 								</c:if> --%>
-<%-- 							</c:forEach> --%>
-<%-- 						</c:forEach> --%>
-<!-- 						<br><br> -->
-<!-- 						<div class="container row row-cols-4" style="width: 1050px; margin-left: 10px;"> -->
-<%-- 							<c:forEach items="${ aRList }" var="ar" begin="4" end="7"> --%>
-<!-- 								<table class="d-inline col"> -->
-<!-- 									<tr> -->
-<%-- 										<td class="foodName">${ ar.recipeName }<td> --%>
-<!-- 									</tr> -->
-<!-- 									<tr> -->
-<%-- 										<td class="foodPrice">${ ar.categoryIngredient } ∣ ${ ar.categorySituation } ∣ ${ ar.categoryType }<td> --%>
-<!-- 									</tr> -->
-<!-- 									<tr> -->
-<%-- 										<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;"><i class="bi bi-eye"></i> </span>${ ar.recipeCount }<td> --%>
-<!-- 									</tr> -->
-<!-- 								</table> -->
-<%-- 							</c:forEach> --%>
-<!-- 						</div> -->
-<!-- 					</div>	 -->
-<!-- 				</div>		 -->
-<!-- 			</div> -->
-<!-- 			<button class="carousel-control-prev" type="button" data-bs-target="#carousel3" data-bs-slide="prev"> -->
-<!-- 				<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 10px; margin-bottom: 40px; z-index: 9999;"> -->
-<!-- 	 				<img src="resources/images/leftBtn.png"> -->
-<!-- 				</div>	     -->
-<!-- 			</button> -->
-<!-- 			<button class="carousel-control-next" type="button" data-bs-target="#carousel3" data-bs-slide="next"  style="width: 0%"> -->
-<!-- 				<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 10px; margin-bottom: 40px; z-index: 9999;"> -->
-<!-- 	 				<img src="resources/images/rightBtn.png"> -->
-<!-- 				</div> -->
-<!-- 			</button>	 -->
-<!-- 		</div> -->
-<!-- 	</div> -->
 	<br><br><br><br><br>
+	
 	<div>
-		<p class="mainTitle">1인 요리사 소개</p>
-		<p>매주 업데이트 됩니다</p>
+		<p class="mainTitle">홀로세끼 영양사 소개</p>
 		<br><br>
-		<div class="oneCooker"> 
-			<table>
-				<tr>
-					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
-					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
-					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
-					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
-					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
-				</tr>
-				<tr style="text-align: center;">
-					<td><button class="personBtn d-inline">강건강</button></td>
-					<td><button class="foodCategoryBtn d-inline">비건</button></td>
-					<td><button class="personBtn">남나눔</button></td>
-					<td><button class="foodCategoryBtn">양식</button></td>
-					<td><button class="personBtn">도대담</button></td>
-					<td><button class="foodCategoryBtn">중식</button></td>
-					<td><button class="personBtn">라라라</button></td>
-					<td><button class="foodCategoryBtn">비건</button></td>
-					<td><button class="personBtn">마라라</button></td>
-					<td><button class="foodCategoryBtn">케토식</button></td>
-				</tr>
-				<tr>
-					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food1.jpg"></td>
-					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food2.jpg"></td>
-					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food3.jpg"></td>
-					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food4.jpg"></td>
-					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food4.jpg"></td>
-				</tr>
-				<tr>
-					<td colspan="2"><h5>자세히보기</h5></td>
-					<td colspan="2"><h5>자세히보기</h5></td>
-					<td colspan="2"><h5>자세히보기</h5></td>
-					<td colspan="2"><h5>자세히보기</h5></td>
-					<td colspan="2"><h5>자세히보기</h5></td>
-				</tr>
-			</table>
+		<div class="oneCooker" style="display: flex; justify-content: center;"> 
+				<c:forEach items="${ hList }" var="h">
+					<div style="margin: 10px; width: 180px;">
+						<div class="healther-img-div">
+							<img class="healther-img" src="${ contextPath }/resources/uploadFiles/${ h.IMAGE_RENAMENAME }"/>
+						</div>
+						<div class="healther-name">${ h.NAME }</div>
+						<div class="healther-title">${ h.TITLE }</div>
+						<c:forEach items="${fn:split(h.CAREER, ',')}" var="career">
+							<div class="healther-title">
+								• ${career}
+							</div>
+						</c:forEach>
+						<c:forEach items="${ mList }" var="m" end="0">
+							<c:if test="${ m.usersNo eq h.USERS_NO }">
+							여기
+							</c:if>
+						</c:forEach>
+					</div>
+				
+				</c:forEach>
+				
+<!-- 				<tr> -->
+<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
+<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
+<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
+<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
+<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
+<!-- 				</tr> -->
+<!-- 				<tr style="text-align: center;"> -->
+<!-- 					<td><button class="personBtn d-inline">강건강</button></td> -->
+<!-- 					<td><button class="foodCategoryBtn d-inline">비건</button></td> -->
+<!-- 					<td><button class="personBtn">남나눔</button></td> -->
+<!-- 					<td><button class="foodCategoryBtn">양식</button></td> -->
+<!-- 					<td><button class="personBtn">도대담</button></td> -->
+<!-- 					<td><button class="foodCategoryBtn">중식</button></td> -->
+<!-- 					<td><button class="personBtn">라라라</button></td> -->
+<!-- 					<td><button class="foodCategoryBtn">비건</button></td> -->
+<!-- 					<td><button class="personBtn">마라라</button></td> -->
+<!-- 					<td><button class="foodCategoryBtn">케토식</button></td> -->
+<!-- 				</tr> -->
+<!-- 				<tr> -->
+<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food1.jpg"></td> -->
+<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food2.jpg"></td> -->
+<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food3.jpg"></td> -->
+<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food4.jpg"></td> -->
+<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food4.jpg"></td> -->
+<!-- 				</tr> -->
+<!-- 				<tr> -->
+<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
+<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
+<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
+<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
+<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
+<!-- 				</tr> -->
 		</div>
 	</div>
 	<br><br><br><br><br>

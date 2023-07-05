@@ -225,6 +225,22 @@
 		where review_writer = #{nickName} and review_status = 'Y' and order_no = '-1'
 	</select>
 	
+	<select id="mainRecipeList" resultType="map">
+		select * 
+		from recipe
+			 join image on(image_divide_no = food_no)
+			 join users on(recipe.users_no = users.users_no)
+		where recipe_status = 'Y' and image_type=2 and image_level=0 
+		order by food_no desc
+	</select>
+	
+	<select id="healtherList" resultType="map">
+		select *
+		from healther
+    		 join image on(users_no = image_divide_no )
+		where image_type = 8
+	</select>
+	
 	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>

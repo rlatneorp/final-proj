@@ -439,6 +439,7 @@ ul li {
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE ne 0 }">
 							<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
+<%-- 							<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="###,###,###"/>원 --%>
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE eq 0 }">
 							<div style="text-decoration: none;">${li.PRODUCT_PRICE }</div>

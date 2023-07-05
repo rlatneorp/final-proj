@@ -261,6 +261,8 @@ public class MarketController {
                         HttpSession session,  Model model) {
       Users users = (Users)session.getAttribute("loginUser");
       Tool tool = mkService.selectTool(productNo);
+      Food food = mkService.selectFood(productNo);
+      Ingredient ingredient = mkService.selectIngrdient(productNo);
       
 		if(currentPage == null) {
 			currentPage = 1;
@@ -277,7 +279,6 @@ public class MarketController {
       
       
       
-      
       HashMap<String, Integer> map = new HashMap<String, Integer>();
       if(users != null) {
     	  map.put("productNo", productNo);
@@ -291,8 +292,11 @@ public class MarketController {
       ArrayList<Orders> ordList = mkService.orderList(map);
       ArrayList<Options> options = mkService.selectOptionsSet(productNo);
       ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
-      ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
-      ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
+      ArrayList<Image> ToolMainImage = selectImagList(productNo, 6, 0);
+      ArrayList<Image> ToolsubImage = selectImagList(productNo, 6, 1);
+      ArrayList<Image> foodMainImage = selectImagList(productNo, 3, 0);
+      ArrayList<Image> foodsubImage = selectImagList(productNo, 3, 1);
+      
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
 //      System.out.println(imglist);
@@ -300,10 +304,28 @@ public class MarketController {
       
       Integer starAvg = mkService.reviewAvg(productNo);
       
-      if(mainImage != null) {
-    	  model.addAttribute("mainImage", mainImage);
-    	  model.addAttribute("subImage", subImage);
+      if(tool != null) {
+    	  model.addAttribute("toolMainImage", ToolMainImage);
+    	  model.addAttribute("toolsubImage", ToolsubImage);
+    	  model.addAttribute("tool", tool);
+    	  
       }
+      
+      if(food != null) {
+    	  model.addAttribute("food", food);
+    	  model.addAttribute("foodMainImage", foodMainImage);
+    	  model.addAttribute("foodsubImage", foodsubImage);
+    	  
+      }
+      
+      if(ingredient != null) {
+          ArrayList<Image> ingredientMainImage = selectImagList(ingredient.getIngredientNo(), 5, 0);
+          ArrayList<Image> ingredientsubImage = selectImagList(ingredient.getIngredientNo(), 5, 1);
+    	  model.addAttribute("ingredient", ingredient);
+    	  model.addAttribute("ingredientMainImage", ingredientMainImage);
+    	  model.addAttribute("ingredientsubImage", ingredientsubImage);
+      }
+      
       
       if(list != null) {
          model.addAttribute("list", list);
@@ -323,8 +345,11 @@ public class MarketController {
       }
       
       
+      
+      
       model.addAttribute("reviewCount", reviewCount);
-      model.addAttribute("tool", tool);
+      
+      
       model.addAttribute("qna", qna);
       model.addAttribute("qnaCount", qnaCount);
       model.addAttribute("pi", pi);
@@ -660,12 +685,91 @@ public class MarketController {
    }
    
    @RequestMapping("foodMaterialMarcket.ma")
-   public String foodMaterialMarcket() {
+   public String foodMaterialMarcket(@RequestParam("productNo") int productNo,
+					  			     @RequestParam(value="page", required=false) Integer currentPage,
+					                 @ModelAttribute Review r,
+					                 @ModelAttribute QA q,
+					                 @ModelAttribute Image img,
+					                 HttpSession session,  Model model) {
+		Users users = (Users)session.getAttribute("loginUser");
+		Tool tool = mkService.selectTool(productNo);
+		
+		if(currentPage == null) {
+			currentPage = 1;
+		}
+		
+		int qnaCount = mkService.selectQnaCount(productNo);
+		PageInfo pi = Pagination.getPageInfo(currentPage, qnaCount, 5);
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(1000);
+		
+		
+		Product p = mkService.selectProductSet(productNo);
+		r.setProductNo(productNo);
+		
+		
+		
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		if(users != null) {
+		 map.put("productNo", productNo);
+		 map.put("usersNo", users.getUsersNo());
+		}else {
+		 map.put("productNo", productNo);
+		 map.put("usersNo", 0);
+		}
+		
+		
+		ArrayList<Orders> ordList = mkService.orderList(map);
+		ArrayList<Options> options = mkService.selectOptionsSet(productNo);
+		ArrayList<QA> qna = mkService.selectQnaList(pi, productNo);
+		ArrayList<Image> mainImage = selectImagList(productNo, 6, 0);
+		ArrayList<Image> subImage = selectImagList(productNo, 6, 1);
+		ArrayList<Review> list = mkService.selectReview(productNo);
+		ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
+		//System.out.println(imglist);
+		int reviewCount = mkService.selectReviewCount(productNo);
+		
+		Integer starAvg = mkService.reviewAvg(productNo);
+		
+		if(mainImage != null) {
+		 model.addAttribute("mainImage", mainImage);
+		 model.addAttribute("subImage", subImage);
+		}
+		
+		if(list != null) {
+		model.addAttribute("list", list);
+		model.addAttribute("starAvg", starAvg);
+		}
+		
+		if(imglist != null) {
+		model.addAttribute("imglist", imglist);
+		}
+		
+		//로그인 한 회원이라면 
+		if(users != null) {
+		 Integer result = mkService.selectLike(users.getUsersNo(), productNo);
+		 if(result != null && result >= 1) {
+			  model.addAttribute("like", result);
+		 }
+		}
+		
+		
+		model.addAttribute("reviewCount", reviewCount);
+		model.addAttribute("tool", tool);
+		model.addAttribute("qna", qna);
+		model.addAttribute("qnaCount", qnaCount);
+		model.addAttribute("pi", pi);
+		model.addAttribute("p", p);
+		model.addAttribute("options", options);
+		model.addAttribute("ordList", ordList);
+
+	   
 	   return"market_detail_foodMaterial";
    }
    
    
-   private ArrayList<Image> selectImagList(int imageDivideNo, int imageType, int imageLevel) {
+   private ArrayList<Image> selectImagList(Integer imageDivideNo, int imageType, int imageLevel) {
       HashMap<String, Integer> map = new HashMap<String, Integer>();
       map.put("imageDivideNo", imageDivideNo);
       map.put("imageType", imageType);

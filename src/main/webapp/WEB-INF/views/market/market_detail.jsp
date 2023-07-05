@@ -754,19 +754,48 @@ p b {
          <!-- 구매창 컨테이너 -->
          <div class="left">
             <!-- 구매창 왼쪽 사진 넣는 곳 -->
-            <c:forEach items="${mainImage}" var="main">
-               <img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
-            </c:forEach>
-   <!--          <img src="https://recipe1.ezmember.co.kr/cache/data/goods/23/04/16/1000035599/1000035599_detail_046.jpg" style="height: auto;"> -->
+            
+            <c:if test="${ toolMainImage ne null}">
+	            <c:forEach items="${toolMainImage}" var="main">
+	               <img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
+	            </c:forEach>
+	        </c:if>
+	        
+            <c:if test="${ foodMainImage ne null}">
+	            <c:forEach items="${foodMainImage}" var="main">
+	               <img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
+	            </c:forEach>
+	        </c:if>
+	        
+            <c:if test="${ ingredientMainImage ne null}">
+	            <c:forEach items="${ingredientMainImage}" var="main">
+	               <img src="${ contextPath }/resources/uploadFiles/${main.imageRenameName}" style="height: auto;">
+	            </c:forEach>
+	        </c:if>
+	        
          </div>
          <div class="right">
             <!-- like 유무 가리는 용도 -->
             <input type="hidden" id="likeYn" value="${like }">
             <!-- 상품 정보 -->
             <div class="top">
-               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-                   <span style="font-weight: 400; font-size: 42px;">${ tool.toolName } </span>
-               </div>
+            	<c:if test="${ tool ne null }">
+	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
+	                   <span style="font-weight: 400; font-size: 38px;">${ tool.toolName } </span>
+	               </div>
+	            </c:if>
+	            
+            	<c:if test="${ food ne null }" >
+	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
+	                   <span style="font-weight: 400; font-size: 38px;">${ food.foodName } </span>
+	               </div>
+	            </c:if>
+	            
+            	<c:if test="${ ingredient ne null }">
+	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
+	                   <span style="font-weight: 400; font-size: 42px;">${ ingredient.ingredientName } </span>
+	               </div>
+	            </c:if>
                <div style="margin: auto; text-align: center;">
                   <br>
                   <h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
@@ -814,29 +843,78 @@ p b {
                         </dt>
                      </dl>
                      <hr style="margin: 0px;">
-                     
+
+				<c:if test="${ options ne null }">
                      <c:forEach items="${options}" var="op" varStatus="vs">
-                        <c:if test="${vs.index == 0}">
-                           <label for="productOptionSet">${op.optionName}</label>
-                           <select class='productOptionSet'  required>
-                              <option value="">옵션을 선택해주세요</option>
-                              <option value="${op.optionNo}">${op.optionValue}</option>
-                        </c:if>
-                        <c:if test="${op.optionName eq options[vs.index-1].optionName}">
-                           <option value="${op.optionNo}">${op.optionValue}</option>
-                        </c:if>
-                        <c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
-                           </select>
-                           
-                           <label for="productOption2Set">${op.optionName}</label>
-                           <select class='productOption2Set'  required>
-                              <option class='productOption2Set' >옵션을 선택해주세요.</option>
-                              <option value="${op.optionNo}">${op.optionValue}</option>
-                        </c:if>
-                        <c:if test="${vs.last}">
-                           </select>
-                        </c:if>
+	                        <c:if test="${vs.index == 0}">
+	                           <label for="productOptionSet"> ${op.optionName}</label>
+	                           <select class='productOptionSet'  required>
+	                              <option value="">옵션을 선택해주세요</option>
+	                              <option value="${op.optionNo}">${op.optionValue}</option>
+	                        </c:if>
+	                        <c:if test="${op.optionName eq options[vs.index-1].optionName}">
+	                           <option value="${op.optionNo}">${op.optionValue}</option>
+	                        </c:if>
+	                        <c:if test="${vs.index != 0 && op.optionName ne options[vs.index-1].optionName}">
+	                           </select>
+	                           
+	                           <label for="productOption2Set"> ${op.optionName}</label>
+	                           <select class='productOption2Set'  required>
+	                              <option class='productOption2Set' >옵션을 선택해주세요.</option>
+	                              <option value="${op.optionNo}">${op.optionValue}</option>
+	                        </c:if>
+	                        <c:if test="${vs.last}">
+	                           </select>
+	                         </c:if>
                      </c:forEach>
+                 </c:if>
+                 	  		<c:if test="${food ne null }">
+		                 	  	 <div class="productResultSet" style="display:block">
+				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
+				                        <span class="opSearch">${food.foodName}</span>
+				                        <input type="hidden" name="productNo" value="${food.productNo}">
+				                        <input type="hidden" name="productName" value="${food.foodName}">
+				                        <input type="hidden" name="productPrice" value="${total}">
+				                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}>
+				                     </h4>
+		                         <div>
+		                            <div  class="btnbox" style="margin: 0 0 0 -1px; float:right;">
+			                            <button class="decrease" type="button">-</button>
+			                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly>
+			                            <button class="increase" type="button">+</button>
+
+		                          </div>
+		                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>
+		                            <input type="hidden" name="productPrice" value=${p.productPrice}>
+		                         </div>
+		                           <br>
+		                   </div>
+	                   </c:if>
+	                   
+	                     <c:if test="${ingredient ne null }">
+		                 	  <div class="productResultSet" style="display:block">
+				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
+				                        <span class="opSearch">${ingredient.ingredientName}</span>
+				                        <input type="hidden" name="productNo" value="${ingredient.productNo}">
+				                        <input type="hidden" name="productName" value="${ingredient.ingredientName}">
+				                        <input type="hidden" name="productPrice" value="${total}">
+				                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}>
+				                     </h4>
+		                         <div>
+		                            <div  class="btnbox" style="margin: 0 0 0 -1px; float:right;">
+			                            <button class="decrease" type="button">-</button>
+			                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly>
+			                            <button class="increase" type="button">+</button>
+
+		                          </div>
+		                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>
+		                            <input type="hidden" name="productPrice" value=${p.productPrice}>
+		                         </div>
+		                           <br>
+		                   </div>
+	                   </c:if>
+                 
+                 
                   
                   </div>
                </div>
@@ -866,33 +944,53 @@ p b {
 
    <div class="Infobox">
       <!-- 제품 사진 및 소개 칸 -->
-      <c:forEach items="${subImage}" var="subImg">
+      
+      <c:if test="${ingredient ne null}">
+	      <div class="imgbox">
+<%-- 	               <img src="${ contextPath }/resources/images/홀로세끼 로고-001.png" style="height: 500px; width: auto;"> --%>
+				<div style="margin: auto; height: 300px; line-height: center; line-height: 320px; font-size: 28px;">
+					현재 상품 이미지를 준비 중 입니다!
+				</div>
+	         </div>
+	   </c:if>
+      
+    <c:if test="${ toolsubImage ne null}">
+      <c:forEach items="${toolsubImage}" var="subImg">
          <div class="imgbox">
             <c:if test="${ fn:containsIgnoreCase(subImg.imageRenameName, 'jpg') or fn:containsIgnoreCase(subImg.imageRenameName, 'png')}">
                <img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto;">
             </c:if>
          </div>
       </c:forEach>
+    </c:if>
+    
+    <c:if test="${ foodsubImage ne null}">
+      <c:forEach items="${foodsubImage}" var="subImg">
+         <div class="imgbox">
+            <c:if test="${ fn:containsIgnoreCase(subImg.imageRenameName, 'jpg') or fn:containsIgnoreCase(subImg.imageRenameName, 'png')}">
+               <img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto; width: 520px;">
+            </c:if>
+         </div>
+      </c:forEach>
+    </c:if>
+    
+    <c:if test="${ ingredientsubImage ne null}">
+      <c:forEach items="${ingredientsubImage}" var="subImg">
+         <div class="imgbox">
+            <c:if test="${ fn:containsIgnoreCase(subImg.imageRenameName, 'jpg') or fn:containsIgnoreCase(subImg.imageRenameName, 'png')}">
+               <img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto;">
+            </c:if>
+         </div>
+      </c:forEach>
+    </c:if>
+    
+    
 <!--       <div class="DetailMoreBtn"> -->
 <!--          <a>상세정보 더보기</a> -->
 <!--       </div> -->
    </div>
       <br>
-   
-      <div class="Infobox">
-         <!-- 제품 사진 및 소개 칸 -->
-         <c:forEach items="${subImage}" var="subImg">
-            <div class="imgbox">
-               <img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto;">
-            </div>
-         </c:forEach>
-   <!--       <div class="DetailMoreBtn"> -->
-   <!--          <a>상세정보 더보기</a> -->
-   <!--       </div> -->
-      </div>
-      <br>
       
-   
       <div class="reviewWrap" style=" width:1200px;">
    
          <div class="reviewWrap1" style="padding: 10px; border-bottom: 1px solid lightgray;">
@@ -1139,7 +1237,19 @@ p b {
                 </div>
                 <div class="modal-body">
                    <i class="bi bi-check-circle-fill"></i><br>
-                   <h3>${ tool.toolName} </h3><br>
+                   
+                   <c:if test= "${ tool ne null }">
+                  	 <h3>${ tool.toolName} </h3><br>
+                  </c:if> 
+                  
+                   <c:if test="${ food ne null }">
+                  	 <h3>${ food.foodName} </h3><br>
+                  </c:if> 
+                  
+                   <c:if test= "${ ingredient ne null }">
+                  	 <h3>${ ingredient.ingredientName} </h3><br>
+                  </c:if> 
+                  
                    상품이 장바구니에 담겼습니다.
 
                 </div>
@@ -1326,6 +1436,50 @@ p b {
       
       let productOp = []; 
       let opTextBox = []; 
+      
+      
+      if(productOptionSet == null){
+    	  		let totalPrice1 = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    	  		let productPrice = document.querySelector(".productPrice");
+    	  		productPrice.innerText=totalPrice1;
+		          $(document).on("click",".btnbox",function(e){
+		              const increBtn = this.childNodes[5]; //증가버튼
+		              const decreBtn = this.childNodes[1]; //감소버튼
+		              const cartNum = this.childNodes[3];  //카트수량 
+// 		              e.stopPropagation();    //이벤트 버블링 막기
+		              if(e.target == increBtn){
+		                 totalPrice1 = (this.childNodes[3].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                 productPrice.innerText=totalPrice1;
+		                 console.log(totalPrice1);
+		              this.childNodes[3].value++;
+		              } 
+		              if(e.target == decreBtn){
+		                 totalPrice1 = cartNum.value * ${total}-${total};
+		                  cartNum.value--;
+// 		                  priceSet--;
+		                 if(cartNum.value < 1){
+		                    cartNum.value=1;
+		                 }
+		                 
+		     	 }
+					  console.log(e.target);
+					  console.log(increBtn);
+		              
+	      		})
+      
+      }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       if(productOption2Set != null){
          for(prOp of productOption2Set){
             productOp.unshift(prOp.innerText);
@@ -1338,66 +1492,68 @@ p b {
             }
          }
       }
-//        productOptionSet.addEventListener("change", function(){
-//          let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
-//          let o;                                 //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-//          if(result != "") {
-//             o = productOp;
-//          }else if(result == ""){
-//                    o = ["옵션을 선택해주세요."];
-//          }
-         
-//          if(productOption2Set != null){
-//             if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
-//                productOption2Set.options.length=0;
-//             }
-   
-//             for(let i = 0; i < o.length; i++) {
-//                productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
-//             }
-//          }else{
-//             const select =  $('.productOptionSet option:selected');
-//             cartCount.value = 1;
-//             let optionName = "${tool.toolName}"+select.text();
-//             const opSearch = document.getElementsByClassName('opSearch');
-//             let YN = "Y";
-//             for(let k=0; k<opSearch.length; k++){
-//                   if(opSearch[k].innerText == optionName){
-//                      alert("이미 선택한 옵션입니다.");
-//                      YN = "N";
-//                   }
-//                }
-            
-//             if(YN == "Y" && select.val()!="옵션을 선택해주세요."){
-//                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
-//                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-//                                            +'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
-//                                            +'<input type="hidden" name="productNo" value="${tool.productNo}">'
-//                                            +'<input type="hidden" name="productName" value="${tool.toolName}">'
-//                                            +'<input type="hidden" name="productPrice" value="${total}">'
-//                                            +'<input type="hidden" name="productOption" value='+select.val()+'>'
-//                                            +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
-//                                         +'</h4>'
-//                                         +'<div>'
-//                                            +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-//                                               +'<button class="decrease" type="button">-</button>'
-//                                               +'<input type="number" class="cartCount"'
-//                                               +'   value="1" name="cartCount" min="1" readonly>'
-//                                               +'<button class="increase" type="button">+</button>'
-//                                               +'<button class="removeProudct" type="button" style="float: right;">'
-//                                                  +'<img src="resources/images/close.png" style="width: 10px;">'
-//                                            +'<span>'
-//                                            +'</button>'
-//                                            +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-//                                            +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-//                                         +'</div>'
-//                                          +'<br>'
-//                                      +'</div>');
-//                }
-            
-//          }
-//        })
-       
+      
+         if(productOptionSet != null){
+		       productOptionSet.addEventListener("change", function(){
+		         let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
+		         let o;                                 //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
+		         if(result != "") {
+		            o = productOp;
+		         }else if(result == ""){
+		                   o = ["옵션을 선택해주세요."];
+		         }
+		         
+		         if(productOption2Set != null){
+		            if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+		               productOption2Set.options.length=0;
+		            }
+		   
+		            for(let i = 0; i < o.length; i++) {
+		               productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
+		            }
+		         }else{
+		            const select =  $('.productOptionSet option:selected');
+		            cartCount.value = 1;
+		            let optionName = "${tool.toolName}"+select.text();
+		            const opSearch = document.getElementsByClassName('opSearch');
+		            let YN = "Y";
+		            for(let k=0; k<opSearch.length; k++){
+		                  if(opSearch[k].innerText == optionName){
+		                     alert("이미 선택한 옵션입니다.");
+		                     YN = "N";
+		                  }
+		               }
+		            
+		            if(YN == "Y" && select.val()!="옵션을 선택해주세요."){
+		               productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+		                        +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+		                                           +'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
+		                                           +'<input type="hidden" name="productNo" value="${tool.productNo}">'
+		                                           +'<input type="hidden" name="productName" value="${tool.toolName}">'
+		                                           +'<input type="hidden" name="productPrice" value="${total}">'
+		                                           +'<input type="hidden" name="productOption" value='+select.val()+'>'
+		                                           +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+		                                        +'</h4>'
+		                                        +'<div>'
+		                                           +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+		                                              +'<button class="decrease" type="button">-</button>'
+		                                              +'<input type="number" class="cartCount"'
+		                                              +'   value="1" name="cartCount" min="1" readonly>'
+		                                              +'<button class="increase" type="button">+</button>'
+		                                              +'<button class="removeProudct" type="button" style="float: right;">'
+		                                                 +'<img src="resources/images/close.png" style="width: 10px;">'
+		                                           +'<span>'
+		                                           +'</button>'
+		                                           +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
+		                                           +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+		                                        +'</div>'
+		                                         +'<br>'
+		                                     +'</div>');
+		               }
+		            
+		         }
+		       })
+         }
        if(productOption2Set != null){
           
            productOption2Set.addEventListener("change", function(){

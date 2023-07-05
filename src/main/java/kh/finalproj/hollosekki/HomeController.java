@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
-import kh.finalproj.hollosekki.market.model.service.MarketService;
-import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
 /**
@@ -51,6 +50,25 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 		Users loginUsers = (Users)model.getAttribute("loginUser");
+		
+		
+		// 간단 레시피
+		
+		ArrayList<Recipe> AllrecipeList = eService.allRecipeList();
+		ArrayList<Image> recipeImageList = eService.allRecipeImageList();
+		System.out.println(AllrecipeList);
+		System.out.println(recipeImageList);
+		model.addAttribute("aRList", AllrecipeList);
+		model.addAttribute("rImgList", recipeImageList);
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		//잘 나가는 상품 조회 
 		ArrayList<Product> likeOrderBy = mkService.selectLikeOrderBy();

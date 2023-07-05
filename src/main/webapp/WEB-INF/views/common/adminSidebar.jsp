@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>adminMain</title>
 <link href="${pageContext.servletContext.contextPath}/resources/css/sidebars.css" rel="stylesheet">
+<script src="${contextPath}/resources/js/adminJs.js"></script>
 <style>
 	.sidebar{width: 230px; z-index: 10; top: 40px;}
 	.mainBox{margin: 0px 270px; width: 1450px;}

@@ -648,33 +648,15 @@ p b {
 					</tr>
 					<tr class="infoContent">
 					<c:set value="${fn:split(fn:split(f.foodContent,'@')[3], ',')}" var="n"></c:set>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[0]}">kcal
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[1]}">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[2]}">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[3]}">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[4]}">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[5]}">mg
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[6]}">g
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[7]}">mg
-						</td>
-						<td>
-							<input type="number" name="nutrient" min="0" value="${n[8]}">mg
-						</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[0]}">kcal</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[1]}">g</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[2]}">g</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[3]}">g</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[4]}">g</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[5]}">mg</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[6]}">g</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[7]}">mg</td>
+						<td><input type="number" name="nutrient" min="0" value="${n[8]}">mg</td>
 					</tr>
 				</table>
 			
@@ -694,6 +676,7 @@ p b {
 <%@ include file="../common/footer.jsp" %>
 
 	<script>
+		console.log(${fn:split(f.foodContent,'@')[3]});
 		window.onload =()=>{
 // 			이미지 미리보기 함수, 이벤트 (기존값)
 			const imageFiles = document.getElementsByName('imageFile');

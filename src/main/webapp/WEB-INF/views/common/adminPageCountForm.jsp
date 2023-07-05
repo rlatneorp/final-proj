@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
 </head>
 <body>
 
@@ -40,8 +41,6 @@
 			document.getElementsByClassName('deleteBtnBox')[0].style.display="block";
 		}else{
 			document.getElementsByClassName('deleteBtnBox')[0].style.display="none";
-// 			console.log(document.getElementsByClassName('allSelect'));
-// 			console.log(document.getElementsByClassName('allSelect')[0]);
 // 			document.getElementsByClassName('allSelect')[0].parentElement.style.display="none";
 		}
 		

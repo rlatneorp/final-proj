@@ -86,13 +86,18 @@ font-family: 'Noto Sans KR', sans-serif;
   vertical-align: text-bottom;
 }
 
-.foodName{
-   font-size: 20px; text-align: center;
+.recipe-name{ 
+	text-align: center; font-size: 20px; font-weight: bold;
+ 	white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+ 	margin-top: 10px;
 }
 
 .foodPrice{
-   font-weight: 500; text-align: center;
+	text-align: center; 
 }
+
+.img-div{width: 230px; height: 250px; overflow: hidden;}
+.recipe-img{width: 100%; height: 100%; object-fit: cover; object-position: center;}
 
 .foodCategory{
    font-size: 20px;
@@ -101,10 +106,10 @@ font-family: 'Noto Sans KR', sans-serif;
 }
 
 .semiReci{
-   width: 1100px; height: 707px;
-   border: 3px solid black;
-   border-radius: 20px;
-   box-shadow: 0px 10px black;
+	width: 1100px; height: 550px;
+	border: 3px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 10px black;
 }
 
 .foodBtn{
@@ -722,50 +727,636 @@ font-family: 'Noto Sans KR', sans-serif;
                <td colspan="2"><h5>자세히보기</h5></td>
                <td colspan="2"><h5>자세히보기</h5></td>
             </tr>
-         </table>
-      </div>
-   </div>
-   <br><br><br><br><br>
-   <div>
-      <p class="mainTitle">1인 가구를 위한 음식들</p>
-      <br><br>
-      <div class="mainFood">
-         <div class="position-relative d-inline">
-            <img src="resources/images/food1.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
-         </div>
-         <div class="position-relative d-inline">
-            <img src="resources/images/food3.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
-         </div>
-         <div class="position-relative d-inline">
-            <img src="resources/images/food2.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
-         </div>
-         <div class="position-relative d-inline">
-            <img src="resources/images/food4.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
-         </div>
-      </div>
-      <br>
-      <div class="container" style="width: 1120px;">
-         <div class="row">
-            <div class="col">
-               <p class="foodName d-inline">갈비탕 500g</p>
-               <p class="foodCategory d-inline">혼밥</p>
-            </div>
-            <div class="col">
-               <p class="foodName d-inline">감자탕 500g</p>
-               <p class="foodCategory d-inline">에너지</p>
-            </div>   
-            <div class="col">
-               <p class="foodName d-inline">갈비탕 500g</p>
-               <p class="foodCategory d-inline">특별식</p>
-            </div>
-            <div class="col">   
-               <p class="foodName d-inline">쭈꾸미볶음 500g</p>
-               <p class="foodCategory d-inline">비건</p>
-            </div>
-         </div>
-      </div>
-   </div>
-   <br><br><br><br><br>
+          </table>
+        </div>
+      </c:forEach>
+    </div>
+  </div>
+</div>
+			
+		
+		
+		
+		
+		
+		
+<!-- 			<div class="carousel-item active"> -->
+<!-- 				<div class="mainFood" style="width:1200px; height:500px; margin-top: 50px;"> -->
+<%-- 					<c:forEach items="${likeOrderBy }" var="like"> --%>
+<!-- 						<div class="position-relative d-inline">  -->
+<!-- 							<img src="resources/images/food1.jpg" class="rounded" style="width:230px; height: 300px;" alt="..."> -->
+<!-- 							<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;"> -->
+<!-- 								<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="position-absolute bottom-0 end-0" z-index: 9999;"> -->
+<!-- 								<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<div class="" style="width: 1120px; margin-left: 10px;"> -->
+<!-- 							<table class="d-inline col"> -->
+<!-- 								<tr> -->
+<!-- 									<td colspan="2" class="foodName">sdf갈비탕 500g<td> -->
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td colspan="2" class="foodPrice">1000원<td> -->
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td> -->
+<!-- 									<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td> -->
+<!-- 								</tr> -->
+<!-- 							</table> -->
+<!-- 						</div> -->
+<%-- 					</c:forEach> --%>
+<!-- 				</div>	 -->
+<!-- 			</div> -->
+			
+			
+			<!-- ?? -->
+			   <div class="carousel-item">
+				<div class="mainFood" style="width:1200px; height:500px; margin-top: 50px;">
+					<div class="position-relative d-inline"> 
+						<img src="resources/images/food2.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food4.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(238, 238, 238);">2위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food1.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(215, 192, 174);">3위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food3.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank">4위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<br><br>
+					<div class="container row row-cols-4" style="width: 1120px; margin-left: 10px;">
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">갈비탕 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2" class="foodPrice">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">달걀 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">감자탕 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">쭈꾸미 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+					</div>
+				</div>	
+			</div>		
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+			<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 76px; margin-bottom: 40px; z-index: 9999;">
+ 				<img src="resources/images/leftBtn.png">
+			</div>	    
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next"  style="width: 0%">
+			<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 80px; margin-bottom: 40px; z-index: 9999;">
+ 				<img src="resources/images/rightBtn.png">
+			</div>
+		</button>	
+	</div>
+	<br><br><br><br><br>
+	<div>
+		<p class="mainTitle">잘 나가는 밀키트</p>
+	</div>
+	<br><br>
+	<div id="carousel2" class="carousel slide position-relative"  data-bs-touch="false">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<div class="mainFood" style="width:1200px; height:500px; margin-top: 50px;">
+					<div class="position-relative d-inline"> 
+						<img src="resources/images/food1.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food2.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(238, 238, 238);">2위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food3.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(215, 192, 174);">3위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food4.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank">4위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<br><br>
+					<div class="container row row-cols-4" style="width: 1120px; margin-left: 10px;">
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">갈비탕 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2" class="foodPrice">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">달걀 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">감자탕 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">쭈꾸미 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+					</div>
+				</div>	
+			</div>
+			   <div class="carousel-item">
+				<div class="mainFood" style="width:1200px; height:500px; margin-top: 50px;">
+					<div class="position-relative d-inline"> 
+						<img src="resources/images/food2.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food4.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(238, 238, 238);">2위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food1.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank" style="background: rgb(215, 192, 174);">3위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<div class="position-relative d-inline">
+						<img src="resources/images/food3.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+						<div class="position-absolute top-0 start-0" style="margin-top: -150px;" z-index: 9999;">
+							<div class="foodRank">4위</div>
+						</div>
+						<div class="position-absolute bottom-0 end-0" z-index: 9999;">
+							<div style="margin-bottom: -150px; padding-top: 8px; margin-right: 20px;"><img src="resources/images/bas.png"></div>
+						</div>
+					</div>
+					<br><br>
+					<div class="container row row-cols-4" style="width: 1120px; margin-left: 10px;">
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">갈비탕 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2" class="foodPrice">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">달걀 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">감자탕 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+						<table class="d-inline col">
+							<tr>
+								<td colspan="2" class="foodName">쭈꾸미 500g<td>
+							</tr>
+							<tr>
+								<td colspan="2">1000원<td>
+							</tr>
+							<tr>
+								<td><span class="material-symbols-outlined star" style="vertical-align: text-bottom;">grade</span> 4.9<td>
+								<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;">article</span> 9999+<td>
+							</tr>
+						</table>
+					</div>
+				</div>	
+			</div>		
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
+			<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 76px; margin-bottom: 40px; z-index: 9999;">
+ 				<img src="resources/images/leftBtn.png">
+			</div>	    
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next" style="width: 0% ">
+			<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 80px; margin-bottom: 40px; z-index: 9999;">
+ 				<img src="resources/images/rightBtn.png">
+			</div>
+		</button>	
+	</div>
+	<br><br><br><br><br>
+	<div>
+		<table class="mainTitle d-inline">
+			<tr>
+				<td>ㅎㄹ</td>
+			</tr>
+			<tr>
+				<td>ㅅㄲ</td>
+			</tr>
+		</table>
+		<p class="mainTitle d-inline" style="vertical-align: middle;">구독을 원한다면?</p>
+	</div>
+	<br><br>
+	<p class="mainTitle d-inline">레시피 구독</p><span class="material-symbols-outlined nextBtn">navigate_next</span>
+	<br><br><br>
+	<div class="mainTitle reci">
+		<div class="position-relative d-inline"> 
+			<img src="resources/images/reci1.jpg" class="rounded" style="width:320px; height: 180px;" alt="...">
+		</div>
+		<div class="position-relative d-inline">
+			<img src="resources/images/reci2.jpg" class="rounded" style="width:320px; height: 180px;" alt="...">
+		</div>
+		<div class="position-relative d-inline">
+			<img src="resources/images/reci3.jpg" class="rounded" style="width:320px; height: 180px;" alt="...">
+		</div>
+	</div>
+	<br><br><br><br><br>
+	<div>
+		<p class="mainTitle d-inline">식재료 구독</p><span class="material-symbols-outlined nextBtn">navigate_next</span>
+		<br><br><br>
+		<div class="mainFood">
+			<div class="position-relative d-inline">
+				<img src="resources/images/food1.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+			</div>
+			<div class="position-relative d-inline">
+				<img src="resources/images/food3.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+			</div>
+			<div class="position-relative d-inline">
+				<img src="resources/images/food2.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+			</div>
+			<div class="position-relative d-inline">
+				<img src="resources/images/food4.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+			</div>
+		</div>
+		<br>
+		<div class="container row row-cols-4" style="width: 1120px; margin-left: 10px;">
+			<table class="d-inline col">
+				<tr>
+					<td class="foodName">갈비탕 500g<td>
+				</tr>
+			</table>
+			<table class="d-inline col">
+				<tr>
+					<td class="foodName">감자탕 500g<td>
+				</tr>
+			</table>
+			<table class="d-inline col">
+				<tr>
+					<td class="foodName">갈비탕 500g<td>
+				</tr>
+			</table>
+			<table class="d-inline col">
+				<tr>
+					<td class="foodName">쭈꾸미볶음 500g<td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<br><br><br><br><br>
+	<div class="semiReci">
+		<div>
+			<br><br>
+			<p class="mainTitle">새로 등록된 레시피</p>
+		</div>
+		<br>
+		<div id="carousel3" class="carousel slide position-relative"  data-bs-touch="false">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<div class="mainFood2" style="display: flex; justify-content: center;">
+						<c:forEach items="${ rImgList }" var="ri" end="4">
+							<c:forEach items="${ aRList }" var="ar">
+								<c:if test="${ ri.imageDivideNo eq ar.foodNo }">
+									<div style="margin: 7px; width: 230px; height: 380px;">
+										<div class="img-div"> 
+											<img src="${ contextPath }/resources/uploadFiles/${ ri.imageRenameName }" class="rounded recipe-img">
+										</div>
+										<div class="recipe-name">${ ar.recipeName }</div>
+										<div class="foodPrice">${ ar.categoryIngredient } ∣ ${ ar.categorySituation } ∣ ${ ar.categoryType }</div>
+										<div><i class="bi bi-eye"></i> ${ ar.recipeCount }</div>
+									</div>
+								</c:if>
+							</c:forEach>
+						</c:forEach>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="mainFood2" style="display: flex; justify-content: center;">
+						<c:forEach items="${ rImgList }" var="ri" begin="4" end="7">
+							<c:forEach items="${ aRList }" var="ar">
+								<c:if test="${ ri.imageDivideNo eq ar.foodNo }">
+									<div style="margin: 7px; width: 230px; height: 380px;">
+										<div class="img-div"> 
+											<img src="${ contextPath }/resources/uploadFiles/${ ri.imageRenameName }" class="rounded recipe-img">
+										</div>
+										<div class="recipe-name">${ ar.recipeName }</div>
+										<div class="foodPrice">${ ar.categoryIngredient } ∣ ${ ar.categorySituation } ∣ ${ ar.categoryType }</div>
+										<div><i class="bi bi-eye"></i> ${ ar.recipeCount }</div>
+									</div>
+								</c:if>
+							</c:forEach>
+						</c:forEach>
+					</div>
+				</div>	
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carousel3" data-bs-slide="prev">
+				<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 10px; margin-bottom: 40px; z-index: 9999;">
+	 				<img src="resources/images/leftBtn.png">
+				</div>	    
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carousel3" data-bs-slide="next"  style="width: 0%">
+				<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 10px; margin-bottom: 40px; z-index: 9999;">
+	 				<img src="resources/images/rightBtn.png">
+				</div>
+			</button>	
+		</div>
+	</div>	
+					
+					
+<%-- 						<c:forEach items="${ rImgList }" var="ri" end="4"> --%>
+<%-- 							<c:forEach items="${ aRList }" var="ar"> --%>
+<%-- 								<c:if test="${ ri.imageDivideNo eq ar.foodNo }"> --%>
+<!-- 									<div class="position-relative d-inline">  -->
+<%-- 										<img src="${ contextPath }/resources/uploadFiles/${ ri.imageRenameName }" class="rounded" style="width:230px; height: 300px;"> --%>
+<!-- 									</div> -->
+<%-- 								</c:if> --%>
+<%-- 							</c:forEach> --%>
+<%-- 						</c:forEach> --%>
+<!-- 						<br><br> -->
+<!-- 						<div class="container row row-cols-4" style="width: 1050px; margin-left: 10px;"> -->
+<%-- 							<c:forEach items="${ aRList }" var="ar" end="3"> --%>
+<!-- 								<table class="d-inline col"> -->
+<!-- 									<tr> -->
+<%-- 										<td class="foodName">${ ar.recipeName }<td> --%>
+<!-- 									</tr> -->
+<!-- 									<tr> -->
+<%-- 										<td class="foodPrice">${ ar.categoryIngredient } ∣ ${ ar.categorySituation } ∣ ${ ar.categoryType }<td> --%>
+<!-- 									</tr> -->
+<!-- 									<tr> -->
+<%-- 										<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;"><i class="bi bi-eye"></i></span>${ ar.recipeCount }<td> --%>
+<!-- 									</tr> -->
+<!-- 								</table> -->
+<%-- 							</c:forEach> --%>
+<!-- 						</div> -->
+<!-- 					</div>	 -->
+<!-- 				</div> -->
+<!-- 				<div class="carousel-item"> -->
+<!-- 					<div class="mainFood2"> -->
+<%-- 						<c:forEach items="${ rImgList }" var="ri"> --%>
+<%-- 							<c:forEach items="${ aRList }" var="ar" begin="4" end="7"> --%>
+<%-- 								<c:if test="${ ri.imageDivideNo eq ar.foodNo }"> --%>
+<!-- 									<div class="position-relative d-inline">  -->
+<%-- 										<img src="${ contextPath }/resources/uploadFiles/${ ri.imageRenameName }" class="rounded" style="width:230px; height: 300px;"> --%>
+<!-- 									</div> -->
+<%-- 								</c:if> --%>
+<%-- 							</c:forEach> --%>
+<%-- 						</c:forEach> --%>
+<!-- 						<br><br> -->
+<!-- 						<div class="container row row-cols-4" style="width: 1050px; margin-left: 10px;"> -->
+<%-- 							<c:forEach items="${ aRList }" var="ar" begin="4" end="7"> --%>
+<!-- 								<table class="d-inline col"> -->
+<!-- 									<tr> -->
+<%-- 										<td class="foodName">${ ar.recipeName }<td> --%>
+<!-- 									</tr> -->
+<!-- 									<tr> -->
+<%-- 										<td class="foodPrice">${ ar.categoryIngredient } ∣ ${ ar.categorySituation } ∣ ${ ar.categoryType }<td> --%>
+<!-- 									</tr> -->
+<!-- 									<tr> -->
+<%-- 										<td><span class="material-symbols-outlined" style="vertical-align: text-bottom;"><i class="bi bi-eye"></i> </span>${ ar.recipeCount }<td> --%>
+<!-- 									</tr> -->
+<!-- 								</table> -->
+<%-- 							</c:forEach> --%>
+<!-- 						</div> -->
+<!-- 					</div>	 -->
+<!-- 				</div>		 -->
+<!-- 			</div> -->
+<!-- 			<button class="carousel-control-prev" type="button" data-bs-target="#carousel3" data-bs-slide="prev"> -->
+<!-- 				<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 10px; margin-bottom: 40px; z-index: 9999;"> -->
+<!-- 	 				<img src="resources/images/leftBtn.png"> -->
+<!-- 				</div>	     -->
+<!-- 			</button> -->
+<!-- 			<button class="carousel-control-next" type="button" data-bs-target="#carousel3" data-bs-slide="next"  style="width: 0%"> -->
+<!-- 				<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 10px; margin-bottom: 40px; z-index: 9999;"> -->
+<!-- 	 				<img src="resources/images/rightBtn.png"> -->
+<!-- 				</div> -->
+<!-- 			</button>	 -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+	<br><br><br><br><br>
+	<div>
+		<p class="mainTitle">1인 요리사 소개</p>
+		<p>매주 업데이트 됩니다</p>
+		<br><br>
+		<div class="oneCooker"> 
+			<table>
+				<tr>
+					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
+					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
+					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
+					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
+					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td>
+				</tr>
+				<tr style="text-align: center;">
+					<td><button class="personBtn d-inline">강건강</button></td>
+					<td><button class="foodCategoryBtn d-inline">비건</button></td>
+					<td><button class="personBtn">남나눔</button></td>
+					<td><button class="foodCategoryBtn">양식</button></td>
+					<td><button class="personBtn">도대담</button></td>
+					<td><button class="foodCategoryBtn">중식</button></td>
+					<td><button class="personBtn">라라라</button></td>
+					<td><button class="foodCategoryBtn">비건</button></td>
+					<td><button class="personBtn">마라라</button></td>
+					<td><button class="foodCategoryBtn">케토식</button></td>
+				</tr>
+				<tr>
+					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food1.jpg"></td>
+					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food2.jpg"></td>
+					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food3.jpg"></td>
+					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food4.jpg"></td>
+					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food4.jpg"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><h5>자세히보기</h5></td>
+					<td colspan="2"><h5>자세히보기</h5></td>
+					<td colspan="2"><h5>자세히보기</h5></td>
+					<td colspan="2"><h5>자세히보기</h5></td>
+					<td colspan="2"><h5>자세히보기</h5></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<br><br><br><br><br>
+	<div>
+		<p class="mainTitle">1인 가구를 위한 음식들</p>
+		<br><br>
+		<div class="mainFood">
+			<div class="position-relative d-inline">
+				<img src="resources/images/food1.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+			</div>
+			<div class="position-relative d-inline">
+				<img src="resources/images/food3.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+			</div>
+			<div class="position-relative d-inline">
+				<img src="resources/images/food2.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+			</div>
+			<div class="position-relative d-inline">
+				<img src="resources/images/food4.jpg" class="rounded" style="width:230px; height: 300px;" alt="...">
+			</div>
+		</div>
+		<br>
+		<div class="container" style="width: 1120px;">
+			<div class="row">
+				<div class="col">
+					<p class="foodName d-inline">갈비탕 500g</p>
+					<p class="foodCategory d-inline">혼밥</p>
+				</div>
+				<div class="col">
+					<p class="foodName d-inline">감자탕 500g</p>
+					<p class="foodCategory d-inline">에너지</p>
+				</div>	
+				<div class="col">
+					<p class="foodName d-inline">갈비탕 500g</p>
+					<p class="foodCategory d-inline">특별식</p>
+				</div>
+				<div class="col">	
+					<p class="foodName d-inline">쭈꾸미볶음 500g</p>
+					<p class="foodCategory d-inline">비건</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br><br><br><br><br>
 
 
 

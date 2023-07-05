@@ -196,7 +196,7 @@ font-family: 'Noto Sans KR', sans-serif;
 	</div>
 	<br>
 	<div id="carousel" class="carousel slide position-relative"  data-bs-touch="false">
-		<div id="carousel3" class="carousel slide position-relative"  data-bs-touch="false">
+		<div id="carousel" class="carousel slide position-relative"  data-bs-touch="false">
 			<div class="carousel-inner">
 				<div class="carousel-item active">
 					<div class="mainFood2"  style="display: flex; justify-content: center;">
@@ -263,12 +263,12 @@ font-family: 'Noto Sans KR', sans-serif;
 						</c:forEach>
 					</div>
 				</div>
-				<button class="carousel-control-prev" type="button" data-bs-target="#carousel3" data-bs-slide="prev">
+				<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
 					<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 10px; margin-bottom: 40px; z-index: 9999;">
 		 				<img src="resources/images/leftBtn.png">
 					</div>	    
 				</button>
-				<button class="carousel-control-next" type="button" data-bs-target="#carousel3" data-bs-slide="next"  style="width: 0%">
+				<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next"  style="width: 0%">
 					<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 10px; margin-bottom: 40px; z-index: 9999;">
 		 				<img src="resources/images/rightBtn.png">
 					</div>
@@ -434,11 +434,11 @@ font-family: 'Noto Sans KR', sans-serif;
 								• ${career}
 							</div>
 						</c:forEach>
-						<c:forEach items="${ mList }" var="m" end="0">
-							<c:if test="${ m.usersNo eq h.USERS_NO }">
+<%-- 						<c:forEach items="${ mList }" var="m" end="0"> --%>
+<%-- 							<c:if test="${ m.usersNo eq h.USERS_NO }"> --%>
 							여기
-							</c:if>
-						</c:forEach>
+<%-- 							</c:if> --%>
+<%-- 						</c:forEach> --%>
 					</div>
 				
 				</c:forEach>

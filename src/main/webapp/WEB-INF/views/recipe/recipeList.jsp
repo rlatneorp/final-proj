@@ -29,6 +29,7 @@
 	.card{width: 260px; margin-bottom: 10px;}
 	.cardImg{width: 260px; height: 260px; overflow: hidden; border-top-right-radius: 3px; border-top-left-radius: 3px;}
  	.image{width: 100%; height: 100%; object-fit: cover; object-position: center;}
+ 	.image:hover{cursor: pointer; transform: scale(1.05);  object-fit: cover; object-position: center; transition: all 0.2s ease 0s;}
 	
 /* 	.height{height: 245px;} */
 	

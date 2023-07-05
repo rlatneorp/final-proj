@@ -35,6 +35,9 @@ public class HomeController {
 	@Autowired
 	private EnrollService eService;
 	
+	@Autowired
+	private MarketService mkService;
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -67,6 +70,10 @@ public class HomeController {
 		
 		
 		
+		//잘 나가는 상품 조회 
+		ArrayList<Product> likeOrderBy = mkService.selectLikeOrderBy();
+		System.out.println("likeOrderBy : " + likeOrderBy);
+		model.addAttribute("likeOrderBy", likeOrderBy);
 		
 		
 		
@@ -82,7 +89,6 @@ public class HomeController {
 			Users u = (Users)model.getAttribute("loginUser");
 			Users loginUser = eService.login(u);
 			model.addAttribute("loginUser", loginUser);
-			
 			if(loginUser != null) {
 				Image image = uService.selectImage(loginUser.getUsersNo());
 				model.addAttribute("image", image);
@@ -90,8 +96,6 @@ public class HomeController {
 				Users user = eService.login2(u);
 				model.addAttribute("loginUser", user);
 			}
-			
-			
 			return "home";
 		} else {
 			model.addAttribute("serverTime", formattedDate );

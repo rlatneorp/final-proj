@@ -206,4 +206,12 @@ public class RecipeDAO {
 		return result; 
 	}
 
+	public void deleteRecipeIngredient(SqlSessionTemplate sqlSession, int foodNo) {
+		sqlSession.delete("recipeMapper.deleteRecipeIngredient", foodNo);
+	}
+
+	public void updateIngredient(SqlSessionTemplate sqlSession, ArrayList<RecipeElement> reelList) {
+		sqlSession.insert("recipeMapper.updateIngredient", reelList);
+	}
+
 }

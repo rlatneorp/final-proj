@@ -167,40 +167,40 @@
 				<div style="padding: 0 1px 0 5px; display:inline-block">|</div>
 				</div>
 				
-				<div style="padding: 5px; display: inline-block;">
+				<div style="padding: 5px; display: inline-block;" class="riBox">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
-					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)" >
-						<option selected disabled>재료 선택</option>
+					<select name="elementIngredient" class="recipeIngredient el" onchange="change(this)" >
+						<option value="none" selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
-						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+						<option value="none" class="ingreWrite">재료 임의로 적기</option>
 					</select>
-					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
+					<input type="text" name="elementQuantity" class="ingredientNum inn" maxlength="10">
 				</div>
 				|
-				<div style="padding: 5px; display: inline-block;">
+				<div style="padding: 5px; display: inline-block;" class="riBox">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
-					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)">
+					<select name="elementIngredient" class="recipeIngredient el" onchange="change(this)">
 						<option selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
 						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
 					</select>
-					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
+					<input type="text" name="elementQuantity" class="ingredientNum inn" maxlength="10">
 				</div>
 				|
-				<div style="padding: 5px; display: inline-block;">
+				<div style="padding: 5px; display: inline-block;" class="riBox">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
-					<select name="elementIngredient" class="recipeIngredient" onchange="change(this)" >
+					<select name="elementIngredient" class="recipeIngredient el" onchange="change(this)" >
 						<option selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
 						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
 					</select>
-					<input type="text" name="elementQuantity" class="ingredientNum" maxlength="10">
+					<input type="text" name="elementQuantity" class="ingredientNum inn" maxlength="10">
 				</div>
 				|
 				
@@ -329,11 +329,14 @@ const ingCopy = document.querySelector('#ingCopy');
 var ingCount = 4;
 function ingredientPlus(){
 	ingredientAdd.appendChild(ingCopy.cloneNode(true));
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].classList.add('riBox');
 	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].style.display="inline-block";
 	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3].setAttribute("name", "elementIngredient");
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3].classList.add('el');
 	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5].setAttribute("name", "elementQuantity");
+	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5].classList.add("inn");
 	
-	
+	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1]);
 	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3]);
 	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5]);
 	ingCount++;
@@ -431,6 +434,19 @@ function comRemove(){
 const sub = document.getElementById('sub');
 const writeRecipe = document.getElementById('writeRecipe');
 sub.addEventListener('click', function(){
+	
+	const riBox = document.getElementsByClassName('riBox');
+	const el = document.getElementsByClassName('el');
+	const inn = document.getElementsByClassName('inn');
+	let ri = false;
+	
+	for(let i in riBox){
+		if(el[i].value=="none" || inn[i].value==""){
+			ri = true;
+		}
+	}
+	
+	
 	const roCons = document.getElementsByClassName('recipeOrderContent');
 	const oi = document.getElementsByClassName('oi');
 	let roc = false;
@@ -454,11 +470,16 @@ sub.addEventListener('click', function(){
 	} else if(document.querySelector('#ingredient').value=="" || document.querySelector('#situation').value=="" || document.querySelector('#type').value==""){
 		alert('카테고리를 전부 선택해주세요.');
 	} else if(document.querySelector('#recipeInfo').value==""){
-		alert('레시피의 설명을 적어주세요.');
+		alert('레시피에 대해 적어주세요.');
+	} else if(ri){
+		alert('재료를 채워주세요');
+		ri = false;
 	} else if(roc){
 		alert('조리순서에 대해 작성해주세요.');
+		roc = false;
 	} else if(ci){
 		alert('완성된 사진을 추가해주세요')
+		ci = false;
 	} else{
 		writeRecipe.action = "writeRecipe.rc";
 		writeRecipe.submit();

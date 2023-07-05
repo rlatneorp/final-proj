@@ -93,6 +93,10 @@ public interface RecipeService {
 
 	int updateRecipeOrder(ArrayList<RecipeOrder> ro);
 
+	void deleteRecipeIngredient(int foodNo);
+
+	void updateIngredient(ArrayList<RecipeElement> reelList);
+
 
 
 }

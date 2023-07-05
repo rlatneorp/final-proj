@@ -276,6 +276,19 @@
 		where food_no=#{foodNo} and recipe_procedure=#{recipeProcedure}
 	</update>
 	
+	<delete id="deleteRecipeIngredient">
+		delete from recipe_element
+		where food_no=#{foodNo}
+	</delete>
+	
+	<insert id="updateIngredient">
+		insert all 
+		<foreach collection="list" item="item">
+		into recipe_element values(#{item.foodNo}, #{item.elementNo}, #{item.elementQuantity}, #{item.elementName})
+		</foreach>
+		select * from dual
+	</insert>
+	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

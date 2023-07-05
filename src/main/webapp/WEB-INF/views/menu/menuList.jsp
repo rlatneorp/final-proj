@@ -22,7 +22,7 @@
 	#category{width: 550px; margin-left: 350px; margin-top: 30px;}
 	.categoryIcon{width: 100px; height: 150px; text-align: center;}
 	.circle{width: 50px; height: 50px; border-radius: 50%; background-color: white; margin-left: 25px;}
-	.size{font-size: 50px; color: black;}
+	.size{font-size: 32px; color: black; margin-top: 3px;}
 	.categoryBtn:hover{cursor: pointer;}
 	
 	.title{font-weight: bold;}
@@ -51,16 +51,19 @@
 	.albumTitle2{position: absolute; width: 300px; height: 40px; top: 340px; left: 30px; text-align: center; font-size: 18px;}
 	.weekendPic-div{overflow: hidden; width: 300px; height: 300px; margin: 0 30px;}
 	.weekendPic{width: 100%; height: 100%; object-fit: cover; object-position: center;}
-	.weekendPic:hover{ transform: scale(1.2);  object-fit: cover; object-position: center; transition: all 0.2s ease 0s;}
+	.weekendPic:hover{ transform: scale(1.1);  object-fit: cover; object-position: center; transition: all 0.2s ease 0s;}
 	
 /* 	최신 식단 */
 	#middle{width: 1250px; height: 50px; font-weight: bold; font-size: 20px; border-bottom: 1px solid black; margin: auto;}
-	.cardColor{background-color: #B0DAFF;}
-	.likeBtn{color: black;}
+	.cardColor{background-color: ; text-align: center;}
+	.likeBtn{color: #4485d7;}
 	
- 	.cardImg{width:237.06px; height:237.06px; overflow: hidden;}
+	.card{width: 260px; margin-bottom: 10px;}
+ 	.cardImg{width: 260px; height: 260px; overflow: hidden; border-top-right-radius: 3px; border-top-left-radius: 3px;}
  	.image{width: 100%; height: 100%; object-fit: cover; object-position: center;}
 	
+	.h5-text-align{text-align: center; font-weight: bold;}
+	.menuKind{font-size: 17px; margin-left:50px; margin-right: 30px; text-decoration: none; color: black;}
 	
 	/* 	페이지 */
 	.page_wrap {
@@ -123,7 +126,7 @@
 				<a id="diet" class="categoryBtn">
 					<input type="hidden" value="1">
 					<span class="material-symbols-outlined size">
-					fitness_center
+<!-- 					fitness_center -->🥗
 					</span>
 				</a>
 			</div>
@@ -134,7 +137,7 @@
 				<a id="sick" class="categoryBtn">
 					<input type="hidden" value="2">
 					<span class="material-symbols-outlined size">
-					sick
+<!-- 					sick -->🤒
 					</span>
 				</a>
 			</div>
@@ -145,7 +148,7 @@
 				<a id="meal" class="categoryBtn">
 					<input type="hidden" value="3">
 					<span class="material-symbols-outlined size">
-					restaurant_menu
+<!-- 					restaurant_menu -->💪
 					</span>
 				</a>
 			</div>
@@ -156,7 +159,7 @@
 				<a id="egg" class="categoryBtn">
 					<input type="hidden" value="4">
 					<span class="material-symbols-outlined size">
-					egg_alt
+<!-- 					egg_alt -->🥩
 					</span>
 				</a>
 			</div>
@@ -167,7 +170,7 @@
 				<a id="vage" class="categoryBtn">
 					<input type="hidden" value="5">
 					<span class="material-symbols-outlined size">
-					spa
+<!-- 					spa -->🥬
 					</span>
 				</a>
 			</div>
@@ -179,7 +182,7 @@
 <br><br><br>
 
 <div id="weekend">
-	<div id="hotWeekend"><i class="bi bi-fire"></i> 이번주 홀로세끼의 인기 식단 <i class="bi bi-fire"></i></div>
+	<div id="hotWeekend"><i class="bi bi-fire"></i> 홀로세끼의 인기 식단 <i class="bi bi-fire"></i></div>
 	
 	<div id="weekendBox">
 		<c:forEach items="${ menuScore }" var="score" end="2" varStatus="status">
@@ -210,11 +213,11 @@
 				</c:forEach>
 				<div class="albumTitle">${ score.MENU_NAME }</div>
 				<div class="albumTitle2">
-					<c:if test="${ score.MENU_KIND == 1 }"><a>다이어트</a></c:if>
-					<c:if test="${ score.MENU_KIND == 2 }"><a>몸보신</a></c:if>
-					<c:if test="${ score.MENU_KIND == 3 }"><a>든든밥상</a></c:if>
-					<c:if test="${ score.MENU_KIND == 4 }"><a>고단백</a></c:if>
-					<c:if test="${ score.MENU_KIND == 5 }"><a>채식</a></c:if>
+					<c:if test="${ score.MENU_KIND == 1 }">다이어트</c:if>
+					<c:if test="${ score.MENU_KIND == 2 }">몸보신</c:if>
+					<c:if test="${ score.MENU_KIND == 3 }">든든밥상</c:if>
+					<c:if test="${ score.MENU_KIND == 4 }">고단백</c:if>
+					<c:if test="${ score.MENU_KIND == 5 }">채식</c:if>
 					<i class="bi bi-dot lightgray"></i>
 					<c:forEach items="${ uList }" var="u">
 						<c:if test="${ u.usersNo eq score.USERS_NO }">
@@ -225,7 +228,6 @@
 			</div>
 		</c:forEach>
 		
-	
 <!-- 		<div class="d-inline-block wkalbum"> -->
 <!-- 			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;"> -->
 <!-- 				<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div> -->
@@ -233,21 +235,7 @@
 <!-- 			<img src="#" width="300px" height="300px" class="weekendPic"> -->
 <!-- 			<div class="albumTitle">고단백 / 영양사B</div> -->
 <!-- 		</div> -->
-		
-<!-- 		<div class="d-inline-block wkalbum"> -->
-<!-- 			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;"> -->
-<!-- 				<div class="foodRank" style="background: rgb(238, 238, 238);">2위</div> -->
-<!-- 			</div> -->
-<!-- 			<img src="#" width="300px" height="300px" class="weekendPic"> -->
-<!-- 			<div class="albumTitle">다이어트 / 영양사C</div> -->
-<!-- 		</div> -->
-<!-- 		<div class="d-inline-block wkalbum"> -->
-<!-- 			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;"> -->
-<!-- 				<div class="foodRank" style="background: rgb(215, 192, 174);">3위</div> -->
-<!-- 			</div> -->
-<!-- 			<img src="#" width="300px" height="300px" class="weekendPic"> -->
-<!-- 			<div class="albumTitle">든든밥상 / 영양사E</div> -->
-<!-- 		</div> -->
+
 	</div>
 </div>
 
@@ -255,59 +243,77 @@
 
 <div id="middle">최신 식단 목록</div>
 <div class="album p-5 bg-white">
-	<div class="container px-5">
+	<div class="container px-5" style="width: 1200px;">
 	
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-5 g-2" id="menuBox">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-4 g-2" id="menuBox">
 			
 			<c:forEach items="${mList}" var="m">
 				<c:forEach items="${iList}" var="i">
 					<c:if test="${m.foodProductNo eq i.imageDivideNo}">
 						<div class="col">
-							<input type="hidden" value="${m.foodProductNo}">
 							<div class="card shadow-sm">
 								<div class="cardImg">
+									<input type="hidden" id="foodProductNo" value="${m.foodProductNo}">
 									<img src="${contextPath }/resources/uploadFiles/${i.imageRenameName}" class="image">
 								</div>
-								
 								<div class="card-body cardColor">
-									<h5>${m.menuName } / ${ m.menuKind}
-<%-- 										<c:if test="${ m.menuKind == 1 }"><a style="font-size: 25px;">🥗</a></c:if> --%>
-<%-- 										<c:if test="${ m.menuKind == 2 }"><a style="font-size: 25px;">🤒</a></c:if> --%>
-<%-- 										<c:if test="${ m.menuKind == 3 }"><a style="font-size: 25px;">💪</a></c:if> --%>
-<%-- 										<c:if test="${ m.menuKind == 4 }"><a style="font-size: 25px;">🥩</a></c:if> --%>
-<%-- 										<c:if test="${ m.menuKind == 5 }"><a style="font-size: 25px;">🥬</a></c:if> --%>
-									</h5>
-									<div class="d-inline-block" style="width: 130px; height: 50px;"></div>
-									<a class="likeBtn" role="button">
-										<input type="hidden" value="off">
-										<i class='bi bi-heart d-inline-block iconMar'></i>
-									</a>&nbsp;
-									<c:forEach items="${menuScore}" var="score">
-										<c:if test="${score.PRODUCT_NO eq m.foodProductNo}">
-											<c:choose>
-												<c:when test="${empty lList}">
-													<p class="d-inline-block likeNum">0</p>
-												</c:when>
-												<c:otherwise>
-													<c:set var="found" value="false" />
-													<c:forEach items="${lList}" var="l">
-														<c:if test="${score.PRODUCT_NO eq l.PRODUCT_NO}">
-															<p class="d-inline-block likeNum">${l.COUNT}</p>
-															<c:set var="found" value="true" />
-														</c:if>
-													</c:forEach>
-													<c:if test="${found eq false}">
-														<p class="d-inline-block likeNum">0</p>
-													</c:if>
-												</c:otherwise>
-											</c:choose>
-										</c:if>
-									</c:forEach>
-								</div>
-							</div>
-						</div>
-					</c:if>
-				</c:forEach>
+									<h5 class="h5-text-align">${ m.menuName }</h5>
+									<c:if test="${ m.menuKind == 1 }"><a class="menuKind">🥗 다이어트</a></c:if>
+									<c:if test="${ m.menuKind == 2 }"><a class="menuKind">🤒 몸보신</a></c:if>
+									<c:if test="${ m.menuKind == 3 }"><a class="menuKind">💪 든든밥상</a></c:if>
+									<c:if test="${ m.menuKind == 4 }"><a class="menuKind">🥩 고단백</a></c:if>
+									<c:if test="${ m.menuKind == 5 }"><a class="menuKind">🥬 채식</a></c:if>
+									
+									 <c:choose>
+			                            <c:when test="${loginUser == null}">
+			                                <span class="likeBtn" role="button">♡</span>
+			                            </c:when>
+			                            <c:otherwise>
+			                                <c:set var="isLiked" value="false" />
+			                                <c:forEach items="${loginUserLikeList}" var="lLike" varStatus="loop">
+			                                    <c:if test="${lLike.divisionNo eq m.foodProductNo}">
+			                                        <c:set var="isLiked" value="true" />
+			                                    </c:if>
+			                                    <c:if test="${loop.last}"> <!-- 마지막 반복인 경우에만 실행 -->
+			                                        <c:set var="loopFinished" value="true" />
+			                                    </c:if>
+			                                </c:forEach>
+			                                <c:choose>
+			                                    <c:when test="${isLiked eq 'true'}">
+			                                        <span class="likeBtn" role="button">♥</span>
+			                                    </c:when>
+			                                    <c:otherwise>
+			                                        <span class="likeBtn" role="button">♡</span>
+			                                    </c:otherwise>
+			                                </c:choose>
+			                            </c:otherwise>
+			                        </c:choose>
+			                        <c:forEach items="${menuScore}" var="score">
+			                            <c:if test="${score.PRODUCT_NO eq m.foodProductNo}">
+			                                <c:choose>
+			                                    <c:when test="${empty lList}">
+			                                        <p class="d-inline-block likeNum">0</p>
+			                                    </c:when>
+			                                    <c:otherwise>
+			                                        <c:set var="found" value="false" />
+			                                        <c:forEach items="${lList}" var="l">
+			                                            <c:if test="${score.PRODUCT_NO eq l.PRODUCT_NO}">
+			                                                <p class="d-inline-block likeNum">${l.COUNT}</p>
+			                                                <c:set var="found" value="true" />
+			                                            </c:if>
+			                                        </c:forEach>
+			                                        <c:if test="${found eq false}">
+			                                            <p class="d-inline-block likeNum">0</p>
+			                                        </c:if>
+			                                    </c:otherwise>
+			                                </c:choose>
+			                            </c:if>
+			                        </c:forEach>
+			                    </div>
+			                </div>
+			            </div>
+			        </c:if>
+			    </c:forEach>
 			</c:forEach>
 		</div>
 	</div>
@@ -323,7 +329,7 @@
 			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
 		</c:if>
 		
-<!-- 		페이지 -->
+		<!-- 페이지 -->
 		<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
 				<c:param name="page" value="${p }"></c:param>
@@ -356,31 +362,82 @@
 	})
 
 	const likeBtns = document.getElementsByClassName('likeBtn');
+	const usersNo = '${loginUser.usersNo}';
+	
 	for(const likeBtn of likeBtns){
 		likeBtn.addEventListener('click', function(){
-			
+// 			const hidden = likeBtn.firstElementChild;
+			const productNo = this.parentElement.previousElementSibling.firstElementChild.value;
 			const num = parseInt(this.nextElementSibling.innerText);
-			
-			if(this.querySelector('input').value == "off"){
-				this.querySelector('input').value = "on";
-				this.querySelector('i').classList.replace("bi-heart", "bi-heart-fill");
-				this.nextElementSibling.innerText = num + 1;
-			} else if(this.querySelector('input').value == "on"){
-				this.querySelector('input').value = "off";
-				this.querySelector('i').classList.replace("bi-heart-fill", "bi-heart");
-				this.nextElementSibling.innerText = num - 1;
+			if(likeBtn.innerText === '♡'){
+				$.ajax({
+					url: "insertLike.ma",
+					data:{
+		        		usersNo:usersNo,
+		        		divisionNo:productNo
+		        	},
+		        	success: data=> {
+		        		if(data == 'success') {
+		        			likeBtn.innerHTML = '♥';
+		        			this.nextElementSibling.innerText = num + 1;
+		        		} else { //실패 시 
+		        		}
+		        	},
+		        	error:data=>{
+		        	}
+		        })
+			} else {
+				$.ajax({
+		    		url:"deleteLike.ma",
+		    		data:{
+		    			usersNo:usersNo,
+		        		divisionNo:productNo
+		    		},
+		    		success: data => {
+		    			console.log(data);
+		    			if(data == 'success') {
+		    				likeBtn.innerHTML = '♡';
+		    				this.nextElementSibling.innerText = num - 1;
+		        		} else { //실패 시 
+		        		}
+		    		},
+		    		error: data=>{
+		    		}
+		    	})
 			}
+			
+// 			const num = parseInt(this.nextElementSibling.innerText);
+// 			if(this.querySelector('input').value == "off"){
+// 				this.querySelector('input').value = "on";
+// 				this.querySelector('i').classList.replace("bi-heart", "bi-heart-fill");
+// 				this.nextElementSibling.innerText = num + 1;
+// 			} else if(this.querySelector('input').value == "on"){
+// 				this.querySelector('input').value = "off";
+// 				this.querySelector('i').classList.replace("bi-heart-fill", "bi-heart");
+// 				this.nextElementSibling.innerText = num - 1;
+// 			}
 		})
 	}
-	const cols = document.querySelectorAll('.col');
-
-	for(const col of cols){
-		col.addEventListener('click', function(){
+// 	const cols = document.querySelectorAll('.col');
+// 	for(const col of cols){
+// 		col.addEventListener('click', function(){
+// 			const mNo = this.childNodes[1].value;
+// // 			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
+// // 			console.log(this.childNodes[1]);
+// 		})
+// 	}
+	const images = document.querySelectorAll('.cardImg');
+	
+	for(const image of images){
+		image.addEventListener('click', function(){
+			console.log(112343);
 			const mNo = this.childNodes[1].value;
 			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
 // 			console.log(this.childNodes[1]);
 		})
 	}
+	
+	
 	
 	const hots = document.querySelectorAll('.wkalbum');
 	for(const hot of hots){
@@ -389,7 +446,6 @@
 		location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
 		})
 	}
-	
 	
 	const categoryBtns = document.getElementsByClassName('categoryBtn');
 	for(const categoryBtn of categoryBtns){
@@ -407,9 +463,9 @@
 						const col = document.createElement('div');
 						col.classList.add('col');
 						
-						const fPNo = document.createElement('input');
-						fPNo.setAttribute("type", "hidden");
-						fPNo.value = post.foodProductNo;
+// 						const fPNo = document.createElement('input');
+// 						fPNo.setAttribute("type", "hidden");
+// 						fPNo.value = post.foodProductNo;
 						
 						const card = document.createElement('div');
 						card.classList.add('card');
@@ -418,67 +474,89 @@
 						const cardImg = document.createElement('div');
 						cardImg.classList.add('cardImg');
 						
+						const fPNo = document.createElement('input');
+						fPNo.setAttribute("type", "hidden");
+						fPNo.value = post.foodProductNo;
+						
 						const image = document.createElement('img');
 						image.src = '${contextPath}/resources/uploadFiles/' + post.imageRenameName;
 						image.classList.add('image');
-// 						image.style.width = "100%";
-// 						image.style.height = "100%";
 						
 						const cardBody = document.createElement('div');
 						cardBody.classList.add('card-body');
 						cardBody.classList.add('cardColor');						
 						
 						const h5 = document.createElement('h5');
-						h5.innerText = post.menuName + "/" + post.menuKind;
+						h5.innerText = post.menuName;
 						
-						const div = document.createElement('div');
-						div.classList.add('d-inline-block');
-						div.style.width = "130px";
-						div.style.height = "50px";
+						const a2 = document.createElement('a');
+						a2.classList.add('menuKind');
 						
-						const a = document.createElement('a');
+						let menuKindIcon = null;
+						if(post.menuKind == 1){
+							menuKindIcon = '🥗 다이어트';
+						}  else if(post.menuKind == 2){
+							menuKindIcon = '🤒 몸보신';
+						}  else if(post.menuKind == 3){
+							menuKindIcon = '💪 든든밥상';
+						}  else if(post.menuKind == 4){
+							menuKindIcon = '🥩 고단백';
+						}  else if(post.menuKind == 5){
+							menuKindIcon = '🥬 채식';
+						}
+						a2.innerText = menuKindIcon;
+						
+						const a = document.createElement('span');
 						a.classList.add('likeBtn');
 						a.setAttribute("role", "button");
+// 						a.innerText = 
 						
-						const off = document.createElement("input");
-						off.setAttribute("type", "hidden");
-						off.value="off";
+// 						const off = document.createElement("input");
+// 						off.setAttribute("type", "hidden");
+// 						off.value="off";
 						
-						const i = document.createElement('i');
-						i.classList.add('bi');
-						i.classList.add('bi-heart');
-						i.classList.add('d-inline-block');
-						i.classList.add('iconMar');
+// 						const i = document.createElement('i');
+// 						i.classList.add('bi');
+// 						i.classList.add('bi-heart');
+// 						i.classList.add('iconMar');
 						
 						const p = document.createElement('p');
 						p.classList.add('d-inline-block');
 						p.classList.add('likeNum');
 						p.innerText = "1000";
 						
-						a.appendChild(off);
-						a.appendChild(i);
+// 						a.appendChild(off);
+// 						a.appendChild(i);
 						
 						cardBody.appendChild(h5);
-						cardBody.appendChild(div);
+						cardBody.appendChild(a2);
 						cardBody.appendChild(a);
 						cardBody.appendChild(p);
 						
+						cardImg.appendChild(fPNo);
 						cardImg.appendChild(image);
 						
 						card.appendChild(cardImg);
 						card.appendChild(cardBody);
 						
-						col.appendChild(fPNo);
 						col.appendChild(card);
 						
 						menuBox.appendChild(col);
 					});
+					
+					const images = document.querySelectorAll('.cardImg');
+					
+					for(const image of images){
+						image.addEventListener('click', function(){
+							const mNo = this.childNodes[0].value;
+							location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
+						})
+					}
 				},
 				error: data=>{
 					console.log(data);
 				}
 			})
-
 		})
 	}
 	

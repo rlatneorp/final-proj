@@ -1611,7 +1611,10 @@ public class AdminController {
 		map.put("dataStatus", dataStatus);
 		map.put("dataType", dataType);
 //		dataType = 
-//		1~4	-> product	status 업데이트
+//		1	-> product	status 업데이트(food)
+//		2	-> product	status 업데이트(menu)
+//		3	-> product	status 업데이트(ingredient)
+//		4	-> product	status 업데이트(tool)
 //		5	-> users	status 업데이트
 //		6	-> recipe	status 업데이트
 //		7	-> review	status 업데이트

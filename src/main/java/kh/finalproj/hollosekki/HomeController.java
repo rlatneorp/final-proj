@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.service.MarketService;
+import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
@@ -71,9 +73,9 @@ public class HomeController {
 		
 		
 		//잘 나가는 상품 조회 
-		ArrayList<Product> likeOrderBy = mkService.selectLikeOrderBy();
-		System.out.println("likeOrderBy : " + likeOrderBy);
-		model.addAttribute("likeOrderBy", likeOrderBy);
+		ArrayList<Product> likeOrderByOne = mkService.selectLikeOrderByOne();
+		System.out.println("likeOrderByOne : " + likeOrderByOne);
+		model.addAttribute("likeOrderByOne", likeOrderByOne);
 		
 		
 		

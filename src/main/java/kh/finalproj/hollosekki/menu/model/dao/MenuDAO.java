@@ -12,6 +12,7 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 @Repository
@@ -91,6 +92,10 @@ public class MenuDAO {
 
 	public ArrayList<Likes> likeList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("menuMapper.likeList");
+	}
+
+	public ArrayList<Likes> loginUserLikeList(SqlSessionTemplate sqlSession, Users u) {
+		return (ArrayList)sqlSession.selectList("menuMapper.loginUserLikeList", u);
 	}
 
 }

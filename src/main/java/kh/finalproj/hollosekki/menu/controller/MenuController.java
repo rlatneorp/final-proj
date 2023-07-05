@@ -39,11 +39,13 @@ public class MenuController {
 	
 	@RequestMapping("menuList.mn")
 	public String menuList(Model model, @RequestParam(value="page", required=false) Integer page,
-						   @RequestParam(value="input", required=false) String word) {
+						   @RequestParam(value="input", required=false) String word, HttpSession session) {
 		int currentPage=1;
 		if(page != null) {
 			currentPage = page;
 		}
+		
+		Users u = (Users)session.getAttribute("loginUser");
 		
 		int listCount = mService.getListCount();
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
@@ -58,6 +60,8 @@ public class MenuController {
 		model.addAttribute("uList", users);
 		ArrayList<Likes> likeList = mService.likeList();
 		model.addAttribute("lList", likeList);
+		ArrayList<Likes> loginUserLikeList = mService.loginUserLikeList(u);
+		model.addAttribute("loginUserLikeList", loginUserLikeList);
 		
 		if(word == null) {
 			mList = mService.selectMenuList(pi);

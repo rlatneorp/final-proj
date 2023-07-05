@@ -147,7 +147,7 @@
 			 left join users on(following_user_no = users.users_no)
 			 left join image on(following_user_no = image.image_divide_no)
 			 left join social_login on(users.users_id = social_login.social_id)
-		where follow.users_no = #{usersNo}
+		where follow.users_no = #{usersNo} AND (image_type = 1 OR image_type IS NULL) 
 		order by follow_create_date desc
 	</select>
 	
@@ -157,7 +157,7 @@
 			 left join users on(follow.users_no = users.users_no)
     		 left join image on(follow.users_no = image.image_divide_no)
      		 left join social_login on(users.users_id = social_login.social_id)
-		where following_user_no = #{usersNo}
+		where following_user_no = #{usersNo} AND (image_type = 1 OR image_type IS NULL) 
 		order by follow_create_date desc
 	</select>
 	

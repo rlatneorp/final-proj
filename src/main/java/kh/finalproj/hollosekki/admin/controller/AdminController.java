@@ -1596,8 +1596,6 @@ public class AdminController {
 		model.addAttribute("searchText", ab.getSearchText());
 		model.addAttribute("type", ab.getType());
 		model.addAttribute("kind", ab.getKind());
-//		model.addAttribute("duplication", ab.getDuplication());
-//		model.addAttribute("number", ab.getNumber());
 		return model;
 	}
 	

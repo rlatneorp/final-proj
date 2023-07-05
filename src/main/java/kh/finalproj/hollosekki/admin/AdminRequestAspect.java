@@ -94,7 +94,13 @@ public class AdminRequestAspect {
 		request.setAttribute("ab", ab);
 		
 		System.out.println("[Before] " + componentName + type2 + "." + methodName + "()");		
+
+		
+//		메소드 호출
 		Object result = joinPoint.proceed();
+		
+		
+		
 		System.out.println("[After] " + componentName + type2 + "." + methodName + "()");
 
 		HttpServletRequest requestAfter = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

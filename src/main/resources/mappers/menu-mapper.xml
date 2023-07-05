@@ -115,6 +115,35 @@
 		where users_no = #{ usersNo }
 	</select>
 	
+	<select id="getReviewCount" resultType="_int">
+		select count(*)
+		from review
+		where product_no = #{mNo} and review_status = 'Y' and order_no != 0
+	</select>
+	
+	<select id="selectReviewList" resultMap="reviewResultSet">
+		select *
+		from review
+		where product_no = #{mNo} and review_status = 'Y' and order_no != 0
+	</select>
+	
+	<select id="myReview" resultType="_int">
+		select count(*)
+		from review
+		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no != 0
+	</select>
+	
+	<select id="selectMyOrders" resultMap="ordersResultSet">
+		select *
+		from orders
+		where product_no = #{productNo} and users_no = #{usersNo}
+	</select>
+	
+	<insert id="insertReview">
+		insert into review
+		values(#{productNo}, #{orderNo}, seq_review_no.nextval, default, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
+	</insert>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>
@@ -171,4 +200,35 @@
 		<result column="DIVISION_NO" property="divisionNo"/>
 		<result column="NUMBER_TYPE" property="numberType"/>
 	</resultMap>
+	
+	<resultMap type="Review" id="reviewResultSet">
+		<id column="product_no" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="REVIEW_NO" property="reviewNo"/>
+		<result column="REVIEW_TITLE" property="reviewTitle"/>
+		<result column="REVIEW_CONTENT" property="reviewContent"/>
+		<result column="REVIEW_SCORE" property="reviewScore"/>
+		<result column="REVIEW_STATUS" property="reviewStatus"/>
+		<result column="REVIEW_DATE" property="reviewDate"/>
+		<result column="REVIEW_WRITER" property="reviewWriter"/>
+	</resultMap>
+	
+	<resultMap type="Orders" id="ordersResultSet">
+    	<id column="ORDER_NO" property="orderNo"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="USERS_ID" property="usersId"/>
+		<result column="PRODUCT_TYPE" property="productType"/>
+		<result column="ORDER_COUNT" property="orderCount"/>
+		<result column="ORDER_TOTAL_PRICE" property="totalPrice"/>
+		<result column="ORDER_DATE" property="orderDate"/>
+		<result column="ORDER_STATUS" property="orderStatus"/>
+		<result column="ORDER_ADDRESS" property="orderAddress"/>
+		<result column="ORDER_DELIVERY_DATE" property="orderDeliveryDate"/>
+		<result column="ORDER_STOCK" property="orderStock"/>
+		<result column="ORDER_DELIVERY_COMMENT" property="orderDeliveryComment"/>
+		<result column="ORDER_INFO" property="orderInfo"/>
+		<result column="SHIP_PRICE" property="shipPrice"/>
+		<result column="OPTIONS" property="options"/>
+   </resultMap>
 </mapper>

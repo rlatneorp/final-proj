@@ -12,7 +12,9 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 @Repository
@@ -97,5 +99,29 @@ public class MenuDAO {
 	public ArrayList<Likes> loginUserLikeList(SqlSessionTemplate sqlSession, Users u) {
 		return (ArrayList)sqlSession.selectList("menuMapper.loginUserLikeList", u);
 	}
+
+	public int getReviewCount(SqlSessionTemplate sqlSession, int mNo) {
+		return sqlSession.selectOne("menuMapper.getReviewCount", mNo);
+	}
+	
+	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, PageInfo pi, int mNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.selectReviewList", mNo, rowBounds);
+	}
+
+	public int myReview(SqlSessionTemplate sqlSession, Review my) {
+		return sqlSession.selectOne("menuMapper.myReview", my);
+	}
+
+	public ArrayList<Orders> selectMyOrders(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return (ArrayList)sqlSession.selectList("menuMapper.selectMyOrders", map);
+	}
+
+	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
+		return sqlSession.insert("menuMapper.insertReview", r);
+	}
+
 
 }

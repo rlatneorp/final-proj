@@ -64,14 +64,22 @@
 				<br>
 				<label class="profile">비밀번호 확인</label><br><br><br>
 				<div id="check">
+				<br><br><br>
 					<b style="font-size: 20px;">정보수정을 위해 비밀번호를 입력해주세요.</b><br><br>
 					<label style="font-size: 15px;">회원님의 개인정보를 안전하게 보호하기 위해<br>
-					<a style="color: red;">인증 후 변경이 가능</a>합니다.</label><br><br>
-					<b style="font-size: 20px;">아이디 : </b>&nbsp;&nbsp;&nbsp;
-					<label style="margin-right: 215px; font-size: 20px;">${ loginUser.usersId }</label><br><br>
-					<input type="password" name="usersPwd" placeholder="비밀번호를 입력하세요" style="width: 300px; height: 40px;" id="pwd">
+					<a style="color: red;">인증 후 변경이 가능</a>합니다.</label><br>
+					<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
+						<label>소셜 로그인 회원은 네이버 / 카카오에서<br> 정보 수정 가능합니다.</label><br><br><br>
+						<b style="font-size: 20px;">아이디 : 소셜 로그인 회원입니다. </b>&nbsp;&nbsp;&nbsp;
+					</c:if>
+					<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
+						<br>
+						<b style="font-size: 20px;">아이디 : </b>&nbsp;&nbsp;&nbsp;
+						<label style="margin-right: 215px; font-size: 20px;">${ loginUser.usersId }</label><br><br>
+						<input type="password" name="usersPwd" placeholder="비밀번호를 입력하세요" style="width: 300px; height: 40px;" id="pwd">
+						<a class="btn-3d blue" id="checkBtn">확인</a>
+					</c:if>
 					<br><br>
-					<a class="btn-3d blue" id="checkBtn">확인</a>
 				</div>
 			</div>
 		</div>

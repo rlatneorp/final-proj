@@ -1,13 +1,16 @@
 package kh.finalproj.hollosekki.menu.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 public interface MenuService {
@@ -45,5 +48,16 @@ public interface MenuService {
 	ArrayList<Likes> likeList();
 
 	ArrayList<Likes> loginUserLikeList(Users u);
+
+	int getReviewCount(int mNo);
+	
+	ArrayList<Review> selectReviewList(PageInfo pi, int mNo);
+
+	int myReview(Review my);
+
+	ArrayList<Orders> selectMyOrders(HashMap<String, Object> map);
+
+	int insertReview(Review r);
+
 
 }

@@ -1,6 +1,7 @@
 package kh.finalproj.hollosekki.menu.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,23 +9,28 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kh.finalproj.hollosekki.common.Pagination;
+import kh.finalproj.hollosekki.common.ReviewPagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
+import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.menu.model.exception.MenuException;
 import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
+import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 
 @Controller
 public class MenuController {
@@ -33,6 +39,9 @@ public class MenuController {
 	
 	@Autowired
 	private MarketService mkService;
+	
+	@Autowired
+	private RecipeService rService;
 	
 	@Autowired
 	private EnrollService eService;
@@ -97,10 +106,22 @@ public class MenuController {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		String loginId = null;
+		String nickName = null;
+		Review my = new Review();
+		int myReview = 0;
 		if(loginUser != null) {
 			loginId = loginUser.getUsersId();
+			nickName = loginUser.getNickName();
+			
+			my.setReviewWriter(nickName);
+			my.setProductNo(mNo);
+			
+			myReview = mService.myReview(my);
 		}
 		boolean yn = false;
+		
+		int reviewCount = mService.getReviewCount(mNo);
+		PageInfo pi = ReviewPagination.getPageInfo(1, reviewCount, 5);
 		
 		int usersNo = mService.selectUsersNo(mNo);
 		int productNo = mNo;
@@ -116,20 +137,35 @@ public class MenuController {
 		      }
 		}
 		
-		
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
 		ArrayList<Image> miList = mService.menuDetailImage();
 		ArrayList<Product> pList = mService.healtherInfo(usersNo);
-//		ArrayList<Review> rList = 
+		ArrayList<Review> rList = mService.selectReviewList(pi, mNo);
+		
+		// 주문정보 조회
+		int userNo = ((Users)session.getAttribute("loginUser")).getUsersNo();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", userNo);
+		map.put("productNo", mNo);
+		
+		ArrayList<Orders> oList = mService.selectMyOrders(map);
+		
+		System.out.println("oList : " + oList);
+		System.out.println("review : " + rList);
 		System.out.println(menu);
-		if(menu != null) {
+		if(menu != null || myReview == 0) {
 			mv.addObject("menu", menu);
 			mv.addObject("thum", thum);
 			mv.addObject("mlList", mlList);
 			mv.addObject("miList", miList);
 			mv.addObject("pList", pList);
+			mv.addObject("rList", rList);
+			mv.addObject("oList", oList);
+			mv.addObject("myReview", myReview);
+			mv.addObject("reviewCount", reviewCount);
+			mv.addObject("pi", pi);
 			mv.setViewName("menuDetail");
 			
 			return mv;
@@ -176,7 +212,17 @@ public class MenuController {
 		}
 	}
 	
-	
+	@RequestMapping("writeReview.mn")
+	public String writeReview(@ModelAttribute Review r, Model model) {
+		System.out.println(r);
+		int result = mService.insertReview(r);
+		
+		if(result > 0) {
+			return "redirect:menuDetail.mn?mNo=" + r.getProductNo();
+		} else {
+			throw new MenuException("식단 후기 등록 실패");
+		}
+	}
 	
 	
 	

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.market.model.service.MarketService;
+import kh.finalproj.hollosekki.market.model.vo.Product;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 

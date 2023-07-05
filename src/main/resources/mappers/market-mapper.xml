@@ -872,23 +872,45 @@
 		select count(*) from food where FOOD_KIND = #{foodKind} and FOOD_TYPE = #{foodType}
 	</select>
 	
+	<select id="selectLikeOrderByOne" resultType="map">
+		<![CDATA[
+			SELECT *
+			FROM (
+			    SELECT p.product_price, p.product_sale, p.product_no, img.image_renamename, l.division_count, f.food_name, i.ingredient_name, t.tool_name, ROW_NUMBER() OVER (ORDER BY l.division_count DESC) AS row_num
+			    FROM product p
+			    LEFT JOIN ingredient i ON i.product_no = p.product_no
+			    LEFT JOIN food f ON f.product_no = p.product_no
+			    LEFT JOIN tool t ON t.product_no = p.product_no
+			    LEFT JOIN (
+			        SELECT division_no, COUNT(*) AS division_count
+			        FROM likes
+			        GROUP BY division_no
+			    ) l ON l.division_no = p.product_no
+			    LEFT JOIN image img ON p.product_no = img.image_divide_no
+			    WHERE p.product_type IN (1, 3, 4)
+			    AND l.division_count IS NOT NULL 
+			    AND l.division_count <> 0
+			    AND img.image_level = 0
+			    ORDER BY l.division_count DESC
+			) subquery
+			WHERE row_num BETWEEN 0 AND 4
+		]]>
+	</select> 
+	
 <!--상품 검색용 맵퍼 -->
 	<select id="selectViewSearchCount" resultType="_int">
 		select count(*) from product 
 		<if test='searchType == "food"'>
 			 join food using(product_no)
 		where food_name like '%${searchText}%'
-<!-- 			  and product_type = 1 -->
 		</if>
 		<if test='searchType == "ingredient"'>
 			 join ingredient using(product_no)
 		where ingredient_name like '%${searchText}%'
-<!-- 			  and product_type = 3 -->
 		</if>
 		<if test='searchType == "tool"'>
 			 join tool using(product_no)
 		where tool_name like '%${searchText}%'
-<!-- 			  and product_type = 4 -->
 		</if>
 	</select>
 	<select id="selectViewSearch" resultMap="productList" >
@@ -896,17 +918,14 @@
 		<if test='searchType == "food"'>
 			 join food using(product_no)
 		where food_name like '%${searchText}%'
-<!-- 			  and product_type = 1 -->
 		</if>
 		<if test='searchType == "ingredient"'>
 			 join ingredient using(product_no)
 		where ingredient_name like '%${searchText}%'
-<!-- 			  and product_type = 3 -->
 		</if>
 		<if test='searchType == "tool"'>
 			 join tool using(product_no)
 		where tool_name like '%${searchText}%'
-<!-- 			  and product_type = 4 -->
 		</if>
 	</select>
 	

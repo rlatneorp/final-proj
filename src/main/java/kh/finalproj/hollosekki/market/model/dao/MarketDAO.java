@@ -534,6 +534,10 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectFoodKindTypeCount", map);
 	}
 
+	public ArrayList<Product> selectLikeOrderByOne(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("marketMapper.selectLikeOrderByOne", sqlSession);
+	}
+
 //	검색용 메소드
 	public int selectViewSearchCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.selectOne("marketMapper.selectViewSearchCount", map);

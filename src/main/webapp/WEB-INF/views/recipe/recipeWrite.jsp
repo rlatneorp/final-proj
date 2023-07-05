@@ -441,7 +441,7 @@ sub.addEventListener('click', function(){
 	let ri = false;
 	
 	for(let i in riBox){
-		if(el[i].value=="none" || inn[i].value==""){
+		if(el[i].value.trim()=="none" || inn[i].value.trim()==""){
 			ri = true;
 		}
 	}
@@ -451,7 +451,7 @@ sub.addEventListener('click', function(){
 	const oi = document.getElementsByClassName('oi');
 	let roc = false;
 	for(let i in roCons){
-		if(roCons[i].value == "" || oi[i].value == ""){
+		if(roCons[i].value.trim() == "" || oi[i].value == ""){
 			roc = true;
 		}
 	}
@@ -465,11 +465,11 @@ sub.addEventListener('click', function(){
 	
 	if(document.querySelector('#insertBtn').value == ""){
 		alert('레시피 대표 이미지를 등록해주세요.');
-	} else if(document.querySelector('#title').value==""){
+	} else if(document.querySelector('#title').value.trim()==""){
 		alert('레시피 이름을 작성해주세요.');
 	} else if(document.querySelector('#ingredient').value=="" || document.querySelector('#situation').value=="" || document.querySelector('#type').value==""){
 		alert('카테고리를 전부 선택해주세요.');
-	} else if(document.querySelector('#recipeInfo').value==""){
+	} else if(document.querySelector('#recipeInfo').value.trim()==""){
 		alert('레시피에 대해 적어주세요.');
 	} else if(ri){
 		alert('재료를 채워주세요');

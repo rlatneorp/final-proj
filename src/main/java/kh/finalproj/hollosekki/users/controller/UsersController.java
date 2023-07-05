@@ -483,10 +483,12 @@ public class UsersController {
 			if (menus != null) {
 				order.setProductName(menus.getMenuName());
 			}
-			
-			reviewList = mkService.selectReview(productNo);
+			 
+//			reviewList = mkService.selectReview(productNo, users.getNickName());
 		}
-		System.out.println(reviewList);
+		
+		System.out.println("orderList : " + orderList);
+//		System.out.println(reviewList);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("orderList", orderList);
@@ -880,7 +882,7 @@ public class UsersController {
 		model.addAttribute("pi", pi);
 		System.out.println("ps : " + periodSelec);
 		model.addAttribute("orderList", periodSelec);
-		
+		System.out.println("orderList: " + periodSelec);
 		return "myPage_MyOrder";
 		
 	}
@@ -943,7 +945,7 @@ public class UsersController {
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("orderList", orderList);
-		
+		System.out.println("ol : " + orderList);
 		return "myPage_MyOrder";
 	}
 	

@@ -1151,7 +1151,6 @@ public class MarketController {
 		   }
 	   }
 	   
-	   
 	   response.setContentType("application/json; charset=UTF-8");
        GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
        Gson gson = gb.create();

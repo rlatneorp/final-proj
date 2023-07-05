@@ -1239,81 +1239,90 @@ p b {
       
       const usersNo = '${loginUser.usersNo}';
       const divisionNo = '${p.productNo}';
-      like.addEventListener("click", function() {
-         if(like.innerText === '♡') {
-           //찜이 안 되어 있으면 
-            $.ajax({
-                 url:'${contextPath}/insertLike.ma',
-                 data:{
-                    usersNo:usersNo,
-                    divisionNo:divisionNo
-                 },
-                 success: data=> {
-                    if(data == 'success') {
-                       like.innerText = '♥';
-                       swal({
-                         text: "해당 상품의 찜 등록이 완료되었습니다.",
-                         icon: "success",
-                         button: "확인",
-                        });
-                       setTimeout(function() {
-                          swal.close(); 
-                       }, 3000);
-                    } else { //실패 시 
-                       swal({
-                         text: "해당 상품의 찜 등록이 실패했습니다.",
-                         icon: "error",
-                        });
-                       setTimeout(function() {
-                          swal.close(); 
-                       }, 2000);
-                    }
-                 },
-                 error:data=>{
-                    swal({
-                      text: "해당 상품의 찜 등록이 실패했습니다.",
-                      icon: "error",
-                     });
-                    setTimeout(function() {
-                       swal.close(); 
-                    }, 2000);
-                 }
-              })
-          } else { //찜 등록이 되어 있으면 
-             $.ajax({
-                url:'${contextPath}/deleteLike.ma',
-                data:{
-                   usersNo:usersNo,
-                    divisionNo:divisionNo
-                },
-                success: data => {
-                   console.log(data);
-                   if(data == 'success') {
-                      like.innerText ='♡';
-                       swal({
-                         text: "해당 상품의 찜 해제가 완료되었습니다.",
-                         icon: "success",
-                        });
-                       setTimeout(function() {
-                          swal.close(); 
-                       }, 2000);
-                    } else { //실패 시 
-                       swal({
-                         text: "해당 상품의 찜 해제가 실패했습니다.",
-                         icon: "error",
-                        });
-                       setTimeout(function() {
-                          swal.close(); 
-                       }, 2000);
-                    }
-                },
-                error: data=>{
-                   
-                }
-             })
-          }
-      });
-   
+      
+      if(usersNo != '') {
+	      like.addEventListener("click", function() {
+	         if(like.innerText === '♡') {
+	           //찜이 안 되어 있으면 
+	            $.ajax({
+	                 url:'${contextPath}/insertLike.ma',
+	                 data:{
+	                    usersNo:usersNo,
+	                    divisionNo:divisionNo
+	                 },
+	                 success: data=> {
+	                    if(data == 'success') {
+	                       like.innerText = '♥';
+	                       swal({
+	                         text: "해당 상품의 찜 등록이 완료되었습니다.",
+	                         icon: "success",
+	                         button: "확인",
+	                        });
+	                       setTimeout(function() {
+	                          swal.close(); 
+	                       }, 3000);
+	                    } else { //실패 시 
+	                       swal({
+	                         text: "해당 상품의 찜 등록이 실패했습니다.",
+	                         icon: "error",
+	                        });
+	                       setTimeout(function() {
+	                          swal.close(); 
+	                       }, 2000);
+	                    }
+	                 },
+	                 error:data=>{
+	                    swal({
+	                      text: "해당 상품의 찜 등록이 실패했습니다.",
+	                      icon: "error",
+	                     });
+	                    setTimeout(function() {
+	                       swal.close(); 
+	                    }, 2000);
+	                 }
+	              })
+	          } else { //찜 등록이 되어 있으면 
+	             $.ajax({
+	                url:'${contextPath}/deleteLike.ma',
+	                data:{
+	                   usersNo:usersNo,
+	                    divisionNo:divisionNo
+	                },
+	                success: data => {
+	                   console.log(data);
+	                   if(data == 'success') {
+	                      like.innerText ='♡';
+	                       swal({
+	                         text: "해당 상품의 찜 해제가 완료되었습니다.",
+	                         icon: "success",
+	                        });
+	                       setTimeout(function() {
+	                          swal.close(); 
+	                       }, 2000);
+	                    } else { //실패 시 
+	                       swal({
+	                         text: "해당 상품의 찜 해제가 실패했습니다.",
+	                         icon: "error",
+	                        });
+	                       setTimeout(function() {
+	                          swal.close(); 
+	                       }, 2000);
+	                    }
+	                },
+	                error: data=>{
+	                   
+	                }
+	             })
+	          }
+	      });
+      } else if (usersNo == '') { //null이면 
+    	  like.addEventListener("click", function() {
+    		  swal("로그인 후 이용해주세요.", {
+    			  buttons: false,
+    			  timer: 1000,
+    			});
+    	  });
+      }
       
       let productOp = []; 
       let opTextBox = []; 
@@ -1329,65 +1338,65 @@ p b {
             }
          }
       }
-       productOptionSet.addEventListener("change", function(){
-         let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
-         let o;                                 //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
-         if(result != "") {
-            o = productOp;
-         }else if(result == ""){
-                   o = ["옵션을 선택해주세요."];
-         }
+//        productOptionSet.addEventListener("change", function(){
+//          let result = productOptionSet.value;              //상품 1의 옵션이 선택된 값
+//          let o;                                 //색상을 변경 할 시 사이즈를 다시 리셋 시겨줄 공간
+//          if(result != "") {
+//             o = productOp;
+//          }else if(result == ""){
+//                    o = ["옵션을 선택해주세요."];
+//          }
          
-         if(productOption2Set != null){
-            if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
-               productOption2Set.options.length=0;
-            }
+//          if(productOption2Set != null){
+//             if((productOption2Set.value =="") == false){ //상품 옵션이 "옵션을 선택해주세요"가 아닐 경우에 reset을 진행
+//                productOption2Set.options.length=0;
+//             }
    
-            for(let i = 0; i < o.length; i++) {
-               productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
-            }
-         }else{
-            const select =  $('.productOptionSet option:selected');
-            cartCount.value = 1;
-            let optionName = "${tool.toolName}"+select.text();
-            const opSearch = document.getElementsByClassName('opSearch');
-            let YN = "Y";
-            for(let k=0; k<opSearch.length; k++){
-                  if(opSearch[k].innerText == optionName){
-                     alert("이미 선택한 옵션입니다.");
-                     YN = "N";
-                  }
-               }
+//             for(let i = 0; i < o.length; i++) {
+//                productOption2Set.insertAdjacentHTML('afterbegin','<option class="productOption2Set" value="'+ opTextBox[ i ]+'">'+ o[ i ] + '</option>' ); // 다음은 사이즈가 나오게 한다.
+//             }
+//          }else{
+//             const select =  $('.productOptionSet option:selected');
+//             cartCount.value = 1;
+//             let optionName = "${tool.toolName}"+select.text();
+//             const opSearch = document.getElementsByClassName('opSearch');
+//             let YN = "Y";
+//             for(let k=0; k<opSearch.length; k++){
+//                   if(opSearch[k].innerText == optionName){
+//                      alert("이미 선택한 옵션입니다.");
+//                      YN = "N";
+//                   }
+//                }
             
-            if(YN == "Y" && select.val()!="옵션을 선택해주세요."){
-               productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
-                        +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-                                           +'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
-                                           +'<input type="hidden" name="productNo" value="${tool.productNo}">'
-                                           +'<input type="hidden" name="productName" value="${tool.toolName}">'
-                                           +'<input type="hidden" name="productPrice" value="${total}">'
-                                           +'<input type="hidden" name="productOption" value='+select.val()+'>'
-                                           +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
-                                        +'</h4>'
-                                        +'<div>'
-                                           +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-                                              +'<button class="decrease" type="button">-</button>'
-                                              +'<input type="number" class="cartCount"'
-                                              +'   value="1" name="cartCount" min="1" readonly>'
-                                              +'<button class="increase" type="button">+</button>'
-                                              +'<button class="removeProudct" type="button" style="float: right;">'
-                                                 +'<img src="resources/images/close.png" style="width: 10px;">'
-                                           +'<span>'
-                                           +'</button>'
-                                           +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
-                                           +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-                                        +'</div>'
-                                         +'<br>'
-                                     +'</div>');
-               }
+//             if(YN == "Y" && select.val()!="옵션을 선택해주세요."){
+//                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+//                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+//                                            +'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
+//                                            +'<input type="hidden" name="productNo" value="${tool.productNo}">'
+//                                            +'<input type="hidden" name="productName" value="${tool.toolName}">'
+//                                            +'<input type="hidden" name="productPrice" value="${total}">'
+//                                            +'<input type="hidden" name="productOption" value='+select.val()+'>'
+//                                            +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+//                                         +'</h4>'
+//                                         +'<div>'
+//                                            +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+//                                               +'<button class="decrease" type="button">-</button>'
+//                                               +'<input type="number" class="cartCount"'
+//                                               +'   value="1" name="cartCount" min="1" readonly>'
+//                                               +'<button class="increase" type="button">+</button>'
+//                                               +'<button class="removeProudct" type="button" style="float: right;">'
+//                                                  +'<img src="resources/images/close.png" style="width: 10px;">'
+//                                            +'<span>'
+//                                            +'</button>'
+//                                            +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>'
+//                                            +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+//                                         +'</div>'
+//                                          +'<br>'
+//                                      +'</div>');
+//                }
             
-         }
-       })
+//          }
+//        })
        
        if(productOption2Set != null){
           

@@ -534,6 +534,19 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectFoodKindTypeCount", map);
 	}
 
+//	검색용 메소드
+	public int selectViewSearchCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("marketMapper.selectViewSearchCount", map);
+	}
+
+	public ArrayList<Product> selectViewSearch(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("marketMapper.selectViewSearch", map, rowBounds);
+	}
+	
+	
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

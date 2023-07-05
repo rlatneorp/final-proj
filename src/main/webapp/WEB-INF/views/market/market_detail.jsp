@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <!DOCTYPE html>
 <html>
@@ -254,12 +255,12 @@ p b {
 }
 
 .imgbox>img {
-   margin: auto;
+/*    margin: auto; */
    width: auto;
    height: auto;
    margin-top: 20px;
    margin-bottom: 20px;
-   display: block;
+/*    display: block; */
 }
 
 .imgbox {
@@ -965,11 +966,18 @@ p b {
     </c:if>
     
     <c:if test="${ foodsubImage ne null}">
-      <c:forEach items="${foodsubImage}" var="subImg">
-         <div class="imgbox">
+      <c:forEach items="${foodsubImage}" var="subImg" varStatus="vs">
+         <div class="imgbox" style="margin-bottom: 150px;">
+         	<c:set value="${fn:split(fn:split(food.foodContent,'@')[2], '#')[vs.index]}" var="foodContent"></c:set>
+         	<c:if test="${fn:split(foodContent, '-')[1] eq 1}">
+         		<div style="display: inline-block; vertical-align: middle; width: 520px; font-size: 25px; text-align: left; word-break: keep-all">${fn:split(fn:split(foodContent, '-')[2], ',')[0]}</div>
+         	</c:if>
             <c:if test="${ fn:containsIgnoreCase(subImg.imageRenameName, 'jpg') or fn:containsIgnoreCase(subImg.imageRenameName, 'png')}">
                <img src="${ contextPath }/resources/uploadFiles/${subImg.imageRenameName}" style="height: auto; width: 520px;">
             </c:if>
+         	<c:if test="${fn:split(foodContent, '-')[1] eq 2}">
+         		<div style="display: inline-block; vertical-align: middle; width: 520px; font-size: 25px; text-align: right; word-break: keep-all">${fn:split(fn:split(foodContent, '-')[2], ',')[0]}</div>
+         	</c:if>
          </div>
       </c:forEach>
     </c:if>
@@ -1189,17 +1197,13 @@ p b {
                      </c:if>
    <%--                 </c:if> --%>
                   </div>
-   <!--                         <div class="pagination" style="display: block"> -->
-   <!--                         <ul> -->
-   <!--                            <li class="on"> -->
-   <!--                            <span>1</span> -->
-   <!--                            </li> -->
-   <!--                         </ul> -->
+   				<c:set value="${p.productNo}" var="pNo"></c:set>
                   <ul class="pageCustomer pagination justify-content-center">
                       <c:if test="${ pi.currentPage > 1 }">
                       <li class="page-item">
                          <c:url var="goBack" value="${ loc }">
                            <c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+                           <c:param name="productNo" value="${pNo}"></c:param>
                         </c:url>
                         <a class="page-link" href="${ goBack }" aria-label="Previous">
                            <span aria-hidden="true">&laquo;</span>
@@ -1209,6 +1213,7 @@ p b {
                      <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
                            <c:url var="goNum" value="${ loc }">
                            <c:param name="page" value="${ p }"></c:param>
+                           <c:param name="productNo" value="${pNo}"></c:param>
                         </c:url>
                           <li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
                      </c:forEach>
@@ -1216,6 +1221,7 @@ p b {
                      <li class="page-item">
                         <c:url var="goNext" value="${ loc }">
                            <c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+                           <c:param name="productNo" value="${pNo}"></c:param>
                         </c:url>
                         <a class="page-link" href="${ goNext }" aria-label="Next">
                            <span aria-hidden="true">&raquo;</span>

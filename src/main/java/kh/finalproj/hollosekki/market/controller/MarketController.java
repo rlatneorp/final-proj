@@ -1142,7 +1142,7 @@ public class MarketController {
 	   map.put("searchText", searchText);
 	   
 	   int listCount = mkService.selectViewSearchCount(map);
-	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 2);
+	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
 	   ArrayList<Product> list = mkService.selectViewSearch(pi, map);
 	   
 	   for(Product p:list) {

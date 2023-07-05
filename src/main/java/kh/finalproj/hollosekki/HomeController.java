@@ -73,9 +73,9 @@ public class HomeController {
 		
 		
 		//잘 나가는 상품 조회 
-		ArrayList<Product> likeOrderBy = mkService.selectLikeOrderBy();
-		System.out.println("likeOrderBy : " + likeOrderBy);
-		model.addAttribute("likeOrderBy", likeOrderBy);
+		ArrayList<Product> likeOrderByOne = mkService.selectLikeOrderByOne();
+		System.out.println("likeOrderByOne : " + likeOrderByOne);
+		model.addAttribute("likeOrderByOne", likeOrderByOne);
 		
 		
 		

@@ -189,10 +189,10 @@ th:first-child, td:first-child {
 											<td><fmt:formatDate value="${ol.orderDate }" pattern="yyyy-MM-dd"/></td>
 											<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
 											<td>
-												<c:if test="${ ol.productNo eq reviewList[status.index].productNo }">
+												<c:if test="${ !empty reviewList[status.index].reviewNo and ol.orderNo eq reviewList[status.index].orderNo }">
 													<b style="font-size: 16px;">작성 완료</b>
 												</c:if>
-												<c:if test="${ ol.productNo ne reviewList[status.index].productNo }">
+												<c:if test="${ empty reviewList[status.index].reviewNo and ol.orderNo ne reviewList[status.index].orderNo }">
 													<c:if test="${ ol.productType eq 2 }">
 														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ ol.productNo }' + '&page=' + '${pi.currentPage}'">
 													</c:if>

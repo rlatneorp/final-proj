@@ -271,6 +271,11 @@
 		insert into recipe_order values(seq_order_no.nextval, #{foodNo}, #{recipeOrder}, default, #{recipeProcedure}, #{recipeOriginalName}, #{recipeRenameName}, #{recipeImagePath})
 	</insert>
 	
+	<update id="updateRecipeOrder">
+		update recipe_order set recipe_order=#{recipeOrder}
+		where food_no=#{foodNo} and recipe_procedure=#{recipeProcedure}
+	</update>
+	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

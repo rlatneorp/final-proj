@@ -91,6 +91,8 @@ public interface RecipeService {
 	
 	int updateOrder(ArrayList<RecipeOrder> orc);
 
+	int updateRecipeOrder(ArrayList<RecipeOrder> ro);
+
 
 
 }

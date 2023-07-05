@@ -24,6 +24,7 @@
 	background-color: #B0DAFF;
 	padding-top: -20px;
 }
+
 </style>
 </head>
 <body>
@@ -43,7 +44,7 @@
 					<br>
 					<c:if test="${loginUser eq null }">
 					<h1>로그인 후 문의 하실 수 있습니다.</h1>
-					<button  id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
+					<button id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
 					</c:if>
 					<c:if test="${!empty loginUser}">
 						<div class="accordion acCustomer" id="accordionFlushExample">

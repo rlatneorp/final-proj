@@ -57,21 +57,15 @@ public class CustomerController {
 			currentPage = 1;
 		}
 		
-//		int categoryAndSearchCount = csService.getFListCount(category);
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("category", category);
 		map.put("search", search);
 		
 		int	listCount = csService.getCategoryFListCount(map);
-//		System.out.println("category " + category);
-//		System.out.println("search " + search);
-//		System.out.println("count " + listCount);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
-//		System.out.println("p "  + pi);
 
 		ArrayList<Customer> flist = csService.fBoardList(pi, map);
-//		System.out.println("f " + flist);
 		model.addAttribute("flist", flist);
 		model.addAttribute("pi", pi);
 		model.addAttribute("category", category);

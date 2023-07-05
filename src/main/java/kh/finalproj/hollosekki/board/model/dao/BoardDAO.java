@@ -7,7 +7,10 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.google.gson.JsonObject;
+
 import kh.finalproj.hollosekki.board.model.vo.Board;
+import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.market.model.vo.Review;
 
@@ -46,6 +49,28 @@ public class BoardDAO {
 
 	public int reReply(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return sqlSession.update("boardMapper.reReply", map);
+	}
+
+	public int insertImage(SqlSessionTemplate sqlSession, Image image) {
+		return sqlSession.insert("boardMapper.insertImage", image);
+	}
+
+	public int freeBoardWriting(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.insert("boardMapper.freeBoardWriting", map);
+	}
+
+	public Board firstSelectBoard(SqlSessionTemplate sqlSession, String login) {
+		return sqlSession.selectOne("boardMapper.firstSelecteBoard", login);
+	}
+
+	public int getCategoryFreeCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("boardMapper.getCategoryFreeCount", map);
+	}
+
+	public ArrayList<Board> freeBList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(), pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.freeBList", map, rowBounds);
 	}
 
 	

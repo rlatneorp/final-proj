@@ -442,6 +442,37 @@ public class MarketService {
 		return mkDAO.deleteReview(sqlSession, reviewNo);
 	}
 
+	public ArrayList<Food> selectFoodKindType(PageInfo pi, int foodType, int foodKind) {
+		return mkDAO.selectFoodKindType(sqlSession, foodType, foodKind, pi);
+	}
+
+	public ArrayList<Food> selectFoodKind(int foodKind, PageInfo pi) {
+		return mkDAO.selectFoodKind(sqlSession, foodKind, pi);
+	}
+
+	public ArrayList<Food> selectFoodType(int foodType, PageInfo pi) {
+		return mkDAO.selectFoodType(sqlSession, foodType, pi);
+	}
+
+	public int selectFoodKindCount(int foodKind) {
+		return mkDAO.selectFoodKindCount(sqlSession, foodKind);
+	}
+
+	public int selectFoodTypeCount(int foodType) {
+		return mkDAO.selectFoodTypeCount(sqlSession,foodType);
+	}
+
+	public int selectFoodKindTypeCount(int foodType, int foodKind) {
+		return mkDAO.selectFoodKindTypeCount(sqlSession,foodKind, foodType);
+	}
+
+
+
+
+
+//	public int deleteReviewImage(int reviewNo) {
+//		return mkDAO.deleteReviewImage(sqlSession, reviewNo);
+//	}
 
 	
 

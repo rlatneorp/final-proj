@@ -89,7 +89,7 @@
 			<input type="hidden" name="productNo" value="${m.productNo}">
 			<input type="hidden" name="foodPNoAll" value="${m.foodProductNo}">
 			<input type="hidden" name="productStatus" value="${m.productStatus}">
-			<div id="top">
+			<div id="top" style="margin-left: 120px;">
 				<div id="thumImg">
 					<img class="previewImage" src="${contextPath}/resources/uploadFiles/${img.imageRenameName}" style="width: 100%; height: 100%; border-radius: 5px;">
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">

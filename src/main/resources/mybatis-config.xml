@@ -40,7 +40,7 @@
 		<typeAlias type="kh.finalproj.hollosekki.admin.model.vo.AdminMain" alias="AdminMain"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Product" alias="CommonProduct"/>
 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Healther" alias="Healther"/>
-<!-- 		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Likes" alias="Likes"/> -->
+		<typeAlias type="kh.finalproj.hollosekki.common.model.vo.Likes" alias="Likes"/>
 	</typeAliases>
 	
 

@@ -8,7 +8,6 @@
 <head>
 <meta charset="UTF-8">
 <title>admin</title>
-<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -91,51 +90,5 @@
 		<jsp:include page="../common/adminPaging.jsp"/>
 		
 	</div>
-
-	<script>
-		window.onload = () =>{
-// 			상태 버튼 이벤트
-			const statusBtns = document.getElementsByClassName('statusBtn');
-			const uNos = document.getElementsByName('usersNo');
-			
-			for(const i in statusBtns){
-				if(i<statusBtns.length){
-					let j = Math.floor(i/2);
-					if(uNos[j].value != 0){
-						statusBtns[i].addEventListener('click', function(){
-							$.ajax({
-								url: '${contextPath}/adminUpdateStatus.ad',
-								data: {dataNo:uNos[j].value,
-									   dataStatus:statusBtns[i].innerText,
-									   dataType:5},
-								success: data =>{
-									if(data == "success"){
-										if(i%2 == 0){
-											statusBtns[i].style.background = "#19A7CE";
-											statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
-										}else if(i%2 == 1){
-											statusBtns[i].style.background = "#19A7CE";
-											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-										}
-									}else{
-										alert("상태 변경에 실패하였습니다.");
-									}
-								},
-								error: data => {
-									console.log(data);
-								}
-							})
-						})
-					}
-				}
-			}
-		}
-		
-	</script>
-	
-	
-	
-	
-	
 </body>
 </html>

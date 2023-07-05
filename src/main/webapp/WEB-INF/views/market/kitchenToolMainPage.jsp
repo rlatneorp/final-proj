@@ -454,21 +454,23 @@ ul li {
 	<h1 class="sider-title">
 		<i class="bi bi-egg-fried"></i>&nbsp;&nbsp;판매 중인 상품&nbsp;&nbsp;<i class="bi bi-egg-fried"></i>
 	</h1>
-	<div class="select-option">
+	<div class="select-option" id="dropDown">
 		<c:if test="${foodView ne null }">
 			<select>
+				<option>전체보기</option>
 				<option>밀키트</option>
 				<option>식재료</option>
 			</select>
 			<select>
+				<option>전체보기</option>
 				<option>메인</option>
 				<option>서브</option>
 			</select>
-			<button>검색</button>
+			<button id="search">검색</button>
 		</c:if>	
 	</div>
 	<div style="text-align: center;">
-		<ul class="nomalProduct">
+		<ul class="nomalProduct" id="tbody">
 			<c:forEach items="${list }" var="li">
 				<li class="normal">
 					<input type="hidden" value="${li.productNo }">
@@ -587,6 +589,117 @@ ul li {
 		}
 		
 	} //window.onload 
+	
+	if(document.getElementById('search') != null) {
+		document.getElementById('search').addEventListener('click', function() {
+			console.log(document.getElementById('dropDown'));
+			
+			 const select1 = document.querySelector('#dropDown select:nth-of-type(1)');
+			 const select2 = document.querySelector('#dropDown select:nth-of-type(2)');
+			 const selectedOption1 = select1.options[select1.selectedIndex].text;
+			 const selectedOption2 = select2.options[select2.selectedIndex].text;
+			 let foodType = '';
+			 let foodKind = '';
+			 if(selectedOption1 == '밀키트') {
+				 foodType = '1'
+			 } else if (selectedOption1 == '식재료') {
+				 foodType = '2'
+			 } else if (selectedOption1 == '전체보기') {
+				 foodType = '0'
+			 }
+			 if(selectedOption2 == '메인') {
+				 foodKind = '1';
+			 } else if (selectedOption2 == '서브') {
+				 foodKind = '2';
+			 } else if (selectedOption2 == '전체보기') {
+				 foodKind = '0';
+			 }
+			 
+			 $.ajax({
+				 url:'${contextPath}/foodDropDownSelect.ma',
+				 data:{
+					 foodType:foodType,
+					 foodKind:foodKind
+				 },
+				 success: data => {
+					 document.getElementById('tbody').innerHTML = '';
+					 
+					 data.forEach(function(li) {
+				            var liElement = document.createElement('li');
+				            liElement.classList.add('normal');
+
+				            var hiddenInput = document.createElement('input');
+				            hiddenInput.type = 'hidden';
+				            hiddenInput.value = li.productNo;
+				            liElement.appendChild(hiddenInput);
+
+				            var anchor = document.createElement('a');
+				            anchor.href = 'market_detail.ma?productNo=' + li.productNo;
+				            liElement.appendChild(anchor);
+				            console.log('li : ' + li.productImg)
+				            if (li.productImg != null) {
+				                var img = document.createElement('img');
+				                img.src = '${contextPath}/resources/uploadFiles/' + li.productImg;
+				                anchor.appendChild(img);
+				            } else {
+				                var img = document.createElement('img');
+				                img.style.opacity = '0.5';
+				                img.src = '${contextPath}/resources/images/noImg.png';
+				                anchor.appendChild(img);
+				            }
+
+				            var productNameDiv = document.createElement('div');
+				            productNameDiv.classList.add('productName');
+				            productNameDiv.innerText = li.ProductName;
+				            liElement.appendChild(productNameDiv);
+				            
+				            if (li.productSale != 0) { 
+				                var originPriceSpan = document.createElement('span');
+				                originPriceSpan.classList.add('originPrice'); // 밑줄 긋는 css 
+				                originPriceSpan.innerText = li.productPrice + '원';
+				                liElement.appendChild(originPriceSpan);
+				            } else {
+				                var priceSpan = document.createElement('span');
+				                priceSpan.style.fontSize = '25px';
+				                priceSpan.innerText = new Intl.NumberFormat().format(li.productPrice) + '원';
+				                liElement.appendChild(priceSpan);
+				            }
+
+				            var discountSpan = document.createElement('span');
+				            discountSpan.classList.add('discount');
+				            discountSpan.id = 'discount-' + li.productNo;
+				            liElement.appendChild(discountSpan);
+
+				            var saleInput = document.createElement('input');
+				            saleInput.type = 'hidden';
+				            saleInput.value = li.productSale;
+				            liElement.appendChild(saleInput);
+
+				            tbody.appendChild(liElement);
+				        });
+					 
+					 //할인 계산
+					 const normal = document.getElementsByClassName('normal');
+				        for (let np of normal) {
+				            const productNo = np.children[0].value;
+				            // 할인 계산
+				            if (np.children[5].value != '0') {
+				                const originPrice = parseInt(np.children[3].innerText);
+				                const sale = parseInt(np.children[5].value);
+				                const discount = (originPrice * (1 - sale / 100)).toLocaleString();
+				                document.getElementById('discount-' + productNo).innerText = discount + '원';
+				            }
+				        }
+					 
+				 },
+				 error : data => {
+					 console.log(data);
+				 }
+			 })
+			
+		})
+	}
+	
 	
 	
 	

@@ -11,6 +11,7 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.menu.model.dao.MenuDAO;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
@@ -100,5 +101,10 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public ArrayList<Likes> likeList() {
 		return mDAO.likeList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Likes> loginUserLikeList(Users u) {
+		return mDAO.loginUserLikeList(sqlSession, u);
 	}
 }

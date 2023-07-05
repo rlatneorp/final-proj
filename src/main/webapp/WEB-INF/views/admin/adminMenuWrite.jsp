@@ -95,7 +95,7 @@
 	<%@ include file="../common/top.jsp" %>
 	<div class="mainBox">
 		<form id="menuInsertForm" action="${contextPath}/adminMenuInsert.ad" method="post" enctype="multipart/form-data">
-			<div id="top">
+			<div id="top" style="margin-left: 120px;">
 				<div id="thumImg">
 					<img class="previewImage" src="${contextPath}/resources/images/logo.png" style="width: 100%; height: 100%; border-radius: 5px;">
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">

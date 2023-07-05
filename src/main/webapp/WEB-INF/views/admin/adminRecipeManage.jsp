@@ -8,8 +8,6 @@
 <head>
 <meta charset="UTF-8">
 <title>admin</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
-<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 	<%@ include file="../common/top.jsp" %>
@@ -78,101 +76,6 @@
 		<jsp:include page="../common/adminSearchForm.jsp"/>
 		
 		<jsp:include page="../common/adminPaging.jsp"/>
-		
-		
 	</div>
-
-	<script>
-		window.onload = () =>{
-			document.getElementsByClassName('sidebar')[0]
-			
-// 			삭제 체크박스 전체선택 이벤트
-			const allSelect = document.getElementsByClassName('allSelect')[0];
-			allSelect.addEventListener('click', ()=>{
-				selectDeletes = document.getElementsByName('selectDelete');
-				let count = 0;
-				for(const sDel of selectDeletes){
-					if(sDel.checked == true){
-						count += 1;
-					}
-				}
-				if(count == selectDeletes.length){
-					for(const sDel of selectDeletes){
-						sDel.checked = false;
-					}
-				}else{
-					for(const sDel of selectDeletes){
-						sDel.checked = true;
-					}
-				}
-			})
-			
-// 			삭제버튼 클릭 이벤트 (confirm 띄우기)
-			const deleteBtn = document.getElementsByClassName('deleteBtn')[0];
-			deleteBtn.addEventListener('click', ()=>{
-				let count = 0;
-				selectDeletes = document.getElementsByName('selectDelete');
-				for(const sDel of selectDeletes){
-					if(sDel.checked == true){
-						count++;
-					}
-				}
-				if(count > 0){
-					const result = confirm("정말 삭제하시겠습니까?");
-					if(result){
-						document.getElementById('deleteForm').submit();
-					}
-				}else{
-					alert("삭제할 레시피를 선택해주세요.");
-				}
-			})
-			
-// 			상태 버튼 이벤트
-			const statusBtns = document.getElementsByClassName('statusBtn');
-			const fNos = document.getElementsByName('foodNo');
-			
-			for(const i in statusBtns){
-				if(i<statusBtns.length){
-					let j = Math.floor(i/2);
-					if(fNos[j].value != 0){
-						statusBtns[i].addEventListener('click', function(){
-							$.ajax({
-								url: '${contextPath}/adminUpdateStatus.ad',
-								data: {dataNo:fNos[j].value,
-									   dataStatus:statusBtns[i].innerText,
-									   dataType:6},
-								success: data =>{
-									let price = "";
-									let sale = "";
-									if(data == "success"){
-										if(i%2 == 0){
-											statusBtns[i].style.background = "#19A7CE";
-											statusBtns[i].nextElementSibling.style.backgroundColor = "gray";
-										}else if(i%2 == 1){
-											statusBtns[i].style.background = "#19A7CE";
-											statusBtns[i].previousElementSibling.style.backgroundColor = "gray";
-										}
-									}else{
-										alert("상태 변경에 실패하였습니다.");
-									}
-								},
-								error: data => {
-									console.log(data);
-								}
-							})
-						})
-					}
-				}
-			}
-		}
-		
-		
-		
-	</script>
-	
-	
-	
-	
-	
 </body>
 </html>

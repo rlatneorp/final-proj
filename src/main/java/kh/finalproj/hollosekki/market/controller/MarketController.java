@@ -1105,4 +1105,63 @@ public class MarketController {
 	   }
    }
    
-}
+   @RequestMapping(value="foodDropDownSelect.ma", produces="application/json; charset=UTF-8")
+   public void foodDropDownSelect(int foodType, int foodKind, @RequestParam(value="page", required=false) Integer currentPage, HttpServletResponse response) {
+	   
+	   if(currentPage == null) {
+		   currentPage = 1;
+	   }
+	   ArrayList<Food> foodList = new ArrayList<>();
+	   int listCount = 0;
+	   PageInfo pi = null;
+	   if(foodType == 0 && foodKind == 0) {
+		   listCount = mkService.selectViewFoodCount();
+		   pi = Pagination.getPageInfo(currentPage, listCount, 15);
+		   foodList = mkService.selectViewFood(pi);
+	   } else if (foodType >= 1 && foodKind >= 1) {
+		   listCount = mkService.selectFoodKindTypeCount(foodType, foodKind);
+		   pi = Pagination.getPageInfo(currentPage, listCount, 15);
+		   foodList = mkService.selectFoodKindType(pi, foodType, foodKind);
+	   } else if (foodType == 0 && foodKind >= 1) {
+		   listCount = mkService.selectFoodKindCount(foodKind);
+		   pi = Pagination.getPageInfo(currentPage, listCount, 15);
+		   foodList = mkService.selectFoodKind(foodKind, pi);
+	   } else if (foodType >= 1 && foodKind == 0) {
+		   listCount = mkService.selectFoodTypeCount(foodType);
+		   pi = Pagination.getPageInfo(currentPage, listCount, 15);
+		   foodList = mkService.selectFoodType(foodType, pi);
+	   }
+	   
+	   
+	   Food food = null; Product pFood = null;
+//	   int listCount = mkService.selectViewFoodCount();
+//	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
+	    ArrayList<Object> productInfo = new ArrayList<>();
+	   //식품 전체 상품 조회
+	   if(!foodList.isEmpty()) {
+		   for(Food lists : foodList) {
+			   int productNo = lists.getProductNo(); String img = null;
+			   pFood = mkService.selectPfood(productNo); //food productNo에 대한 Product 테이블 조회 
+			   pFood.setProductName(lists.getFoodName());
+			   img = mkService.selectImg(productNo, 3);
+			   if(img != null) {
+				   pFood.setProductImg(img);
+			   }
+			   productInfo.add(pFood); 
+		   }
+	   }
+	   
+	   
+	   response.setContentType("application/json; charset=UTF-8");
+       GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+       Gson gson = gb.create();
+       try {
+          gson.toJson(productInfo, response.getWriter());
+       } catch (JsonIOException | IOException e) {
+          e.printStackTrace();
+       }
+	   
+   	 }
+		   
+   }
+   

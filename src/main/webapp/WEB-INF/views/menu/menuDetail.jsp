@@ -1283,8 +1283,9 @@ p b {
 	</div>
 </div>
 
-<br><br>
-<%@ include file="../common/footer.jsp" %>
+	<br><br><br><br><br>
+   <br><br>
+   <%@ include file="../common/footer.jsp" %>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
 <script>

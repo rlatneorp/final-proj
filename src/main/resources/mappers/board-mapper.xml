@@ -59,7 +59,7 @@
 		select *
 		from board
 			join users using(users_no)
-		where board_type = 0 and board_status = 'Y' and board_no = #{bId}	
+		where board_status = 'Y' and board_no = #{bId}	
 	</select>
 	
 	
@@ -102,12 +102,12 @@
 	</insert>
 	
 	<select id="firstSelecteBoard" resultMap="BoardResultSet">
-	select board_no, nickname
-    from (select * 
-        from board
-        order by board_date desc)
-            join users using(users_no)
-    where nickname = #{login} and rownum = 1
+		select board_no, nickname
+	    from (select * 
+	        from board
+	        order by board_date desc)
+	            join users using(users_no)
+	    where nickname = #{login} and rownum = 1
 	</select>
 	
 	<select id="getCategoryFreeCount" resultType="_int">
@@ -146,7 +146,36 @@
 		<if test="category == 'content'">
 			  and board_content like '%'|| #{search}||'%'
 		</if>
-		order by board_date desc
+		order by board_no desc
 	</select>
+	
+	<select id="reWrieteBoardInfo" resultMap="BoardResultSet">
+		select *
+		from board
+			join users using(users_no)
+		where nickname = #{nickName} and board_no = #{boardNo}
+	</select>
+	
+	
+	<update id="reWriteBoard">
+		update board
+		set board_content = #{boardContent},
+			board_title = #{boardTitle},
+			board_date = sysdate,
+			board_type = 1
+		where users_no = #{usersNo} and board_no = ${boardNo} and board_status = 'Y'	
+	</update>
+	
+	<update id="deleteBoard">
+		update board
+		set board_status = 'N'
+		where board_no = #{boardNo} and users_no = #{usersNo}
+	</update>
+	
+	<update id="deleteReply">
+		update review
+		set review_status = 'N'
+		where product_no = #{boardNo} and review_writer = #{reviewWriter}
+	</update>
 	
 </mapper>

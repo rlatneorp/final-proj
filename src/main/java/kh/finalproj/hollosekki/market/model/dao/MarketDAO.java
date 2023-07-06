@@ -555,6 +555,10 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectMealKit", sqlSession);
 	}
 
+	public void atPointList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		sqlSession.insert("marketMapper.atPointList", map);
+	}
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

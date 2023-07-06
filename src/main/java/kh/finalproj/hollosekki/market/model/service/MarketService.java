@@ -483,6 +483,10 @@ public class MarketService {
 		return mkDAO.selectMealKit(sqlSession);
 	}
 
+	public void atPointList(HashMap<String, Object> map) {
+		mkDAO.atPointList(sqlSession, map);
+	}
+
 
 
 

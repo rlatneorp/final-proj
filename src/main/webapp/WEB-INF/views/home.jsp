@@ -105,10 +105,15 @@ font-family: 'Noto Sans KR', sans-serif;
 	width: 100px; height: 100px; overflow: hidden; border-radius: 50%; border: 2px solid gray;
 	margin: 0 auto; }
 .healther-img{width: 100%; height: 100%; object-fit: cover; object-position: center;}
-.healther-name{font-size: 17px; font-weight: bold; margin: 8px;}
-.healther-title{font-size: 14px; margin-bottom: 5px;}
-
-
+.healther-name{font-size: 17px; font-weight: bold; margin: 8px; margin-top: 12px;}
+.healther-title, .healther-career{font-size: 14px; margin-bottom: 5px;}
+.healther-career-div{font-size: 14px; height: 50px; margin-bottom: 10px;}
+.healther-modal{width: 200px; height: 200px; overflow: hidden; border-radius: 3px;}
+.healther-modal-img{width: 100%; height: 100%; object-fit: cover; object-position: center;}
+.modal-div{width: 452px; display: flex; gap: 20px 20px; flex-wrap: wrap;  position: relative; margin: 23px;}
+.manu-name-modal{font-size: 16px; font-weight: bold; margin: 8px;}
+.modal-footer{cursor: pointer; text-align: center;}
+.modal-footer:hover{font-weight: bold;}
 
 .foodCategory{
 	font-size: 20px;
@@ -419,78 +424,66 @@ font-family: 'Noto Sans KR', sans-serif;
 	<br><br><br><br><br>
 	
 	<div>
-		<p class="mainTitle">홀로세끼 영양사 소개</p>
+		<p class="mainTitle">홀로세끼 <b style="color:#4485d7">영양사</b> 소개</p>
 		<br><br>
 		<div class="oneCooker" style="display: flex; justify-content: center;"> 
-				<c:forEach items="${ hList }" var="h">
-					<div style="margin: 10px; width: 180px;">
-						<div class="healther-img-div">
-							<img class="healther-img" src="${ contextPath }/resources/uploadFiles/${ h.IMAGE_RENAMENAME }"/>
-						</div>
-						<div class="healther-name">${ h.NAME }</div>
-						<div class="healther-title">${ h.TITLE }</div>
+			<c:forEach items="${ hList }" var="h" varStatus="status">
+				<div style="margin: 10px; width: 180px;">
+					<div class="healther-img-div">
+						<img class="healther-img" src="${ contextPath }/resources/uploadFiles/${ h.IMAGE_RENAMENAME }"/>
+					</div>
+					<div class="healther-name">${ h.NAME }</div>
+					<div class="healther-title">${ h.TITLE }</div>
+					<div class="healther-career-div">
 						<c:forEach items="${fn:split(h.CAREER, ',')}" var="career">
-							<div class="healther-title">
+							<div class="healther-career">
 								• ${career}
 							</div>
 						</c:forEach>
-<%-- 						<c:forEach items="${ mList }" var="m" end="0"> --%>
-<%-- 							<c:if test="${ m.usersNo eq h.USERS_NO }"> --%>
-							여기
-<%-- 							</c:if> --%>
-<%-- 						</c:forEach> --%>
 					</div>
-				
+					
+					<button class="personBtn d-inline" data-bs-toggle="modal" data-bs-target="#exampleModal${status.index}">식단보기</button>
+				    
+				    <div class="modal fade" id="exampleModal${status.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				      <div class="modal-dialog modal-dialog-centered">
+				        <div class="modal-content">
+				          <div class="modal-header">
+				            <h1 class="modal-title fs-5" id="exampleModalLabel">${ h.NAME } 영양사의 식단</h1>
+				            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				          </div>
+				          <div class="modal-body">
+				          	<div class="modal-div">
+					          	<c:set var="MatchingMenu" value="false" />
+								<c:forEach items="${ mList }" var="m" end="3">
+								  <c:if test="${ h.USERS_NO eq m.USERS_NO }">
+								    <div style="cursor: pointer;"  onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ m.PRODUCT_NO }' + '&page='">
+								      <div class="healther-modal">
+								        <img class="healther-modal-img" src="${ contextPath }/resources/uploadFiles/${ m.IMAGE_RENAMENAME }"/>
+								      </div>
+								      <div class="manu-name-modal">${ m.MENU_NAME }</div>
+								    </div>
+								    <c:set var="MatchingMenu" value="true" />
+								  </c:if>
+								</c:forEach>
+							</div>
+							<c:if test="${not MatchingMenu}">
+									<p style="font-size: 80px; text-align: center;">🍳</p>
+									<p style="text-align: center; margin-bottom: 60px;">등록한 식단이 없습니다.<p>
+							</c:if>
+				          </div>
+				          <div class="modal-footer" onclick="location.href='${contextPath}/menuList.mn'">
+				          	더 많은 식단 보러가기<i class="bi bi-chevron-compact-right"></i>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				    
+				  </div>
 				</c:forEach>
-				
-<!-- 				<tr> -->
-<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
-<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
-<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
-<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
-<!-- 					<td colspan="2"><img style="width:70%;" src="resources/images/persons.png"/></td> -->
-<!-- 				</tr> -->
-<!-- 				<tr style="text-align: center;"> -->
-<!-- 					<td><button class="personBtn d-inline">강건강</button></td> -->
-<!-- 					<td><button class="foodCategoryBtn d-inline">비건</button></td> -->
-<!-- 					<td><button class="personBtn">남나눔</button></td> -->
-<!-- 					<td><button class="foodCategoryBtn">양식</button></td> -->
-<!-- 					<td><button class="personBtn">도대담</button></td> -->
-<!-- 					<td><button class="foodCategoryBtn">중식</button></td> -->
-<!-- 					<td><button class="personBtn">라라라</button></td> -->
-<!-- 					<td><button class="foodCategoryBtn">비건</button></td> -->
-<!-- 					<td><button class="personBtn">마라라</button></td> -->
-<!-- 					<td><button class="foodCategoryBtn">케토식</button></td> -->
-<!-- 				</tr> -->
-<!-- 				<tr> -->
-<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food1.jpg"></td> -->
-<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food2.jpg"></td> -->
-<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food3.jpg"></td> -->
-<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food4.jpg"></td> -->
-<!-- 					<td colspan="2"><img class="rounded" style="width:140px; height: 170px;" src="resources/images/food4.jpg"></td> -->
-<!-- 				</tr> -->
-<!-- 				<tr> -->
-<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
-<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
-<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
-<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
-<!-- 					<td colspan="2"><h5>자세히보기</h5></td> -->
-<!-- 				</tr> -->
+			</div>
 		</div>
 	</div>
-	<br><br><br><br><br>
-	
-	<br><br><br><br><br>
-
-
-
-
-
-
-
-
-
-
+	<br><br><br><br><br><br>
 
 
 </div>

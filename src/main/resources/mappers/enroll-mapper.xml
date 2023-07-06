@@ -241,6 +241,15 @@
 		where image_type = 8
 	</select>
 	
+	<select id="menuProductList" resultType="map">
+		select *
+		from menu
+		     join image on(product_no = image_divide_no)
+		     join product on(product.product_no = menu.product_no)
+		where product_status = 'Y'
+		order by product.product_no desc
+	</select>
+	
 	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>

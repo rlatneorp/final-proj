@@ -197,6 +197,10 @@ public class EnrollDAO {
 		return (ArrayList)sqlSession.selectList("enrollMapper.healtherList");
 	}
 
+	public ArrayList<Menu> menuProductList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("enrollMapper.menuProductList");
+	}
+
 
 
 

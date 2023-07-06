@@ -67,8 +67,8 @@ public class HomeController {
 		System.out.println(healtherList);
 		
 		// 식단 조회
-//		ArrayList<Product> menuList = mkService.menuProductList();
-//		model.addAttribute("mList", menuList);
+		ArrayList<Menu> menuList = eService.menuProductList();
+		model.addAttribute("mList", menuList);
 		
 		//잘 나가는 상품 조회 
 		ArrayList<Product> likeOrderByOne = mkService.selectLikeOrderBy();

@@ -47,6 +47,7 @@ public class CustomerController {
 		model.addAttribute("pi", pi);
 		
 		return "noticeBoard";
+		
 	}	
 	
 	@RequestMapping("faqBoard.cs")

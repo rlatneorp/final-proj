@@ -941,7 +941,9 @@ p b {
 				for(const i in foodTableTexts){
 					if(i < foodTableTexts.length){
 						if(foodTableTexts[i].value.trim() == ''){
-							alert("상세보기 내용을 입력해주세요.");
+							alert("상세보기 내용을 입력해주세요.\n"
+								 +"(상세보기에는 아래 기호를 입력할 수 없습니다.)\n"
+								 +"( @  #  -  , )");
 							foodTableTexts[i].focus();
 							textYN = "N";
 							break;

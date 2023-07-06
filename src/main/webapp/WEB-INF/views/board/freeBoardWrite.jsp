@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -102,24 +103,28 @@ th:first-child, td:first-child {
 	<script src="resources/summernotes/summernote-lite.js"></script>
 	<script src="resources/summernotes/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
+	
 	<br><br><br><br><br><br>
 	<c:if test="${!empty loginUser }">
 		<form action="${contextPath }/freeBoardWriting.bo" method="post">
 			<div id="parentDiv">
 				<div>
 					<label class="intro">제목</label><br>
-					<input required="required" type="text" name="introTitle" style="width: 900px; height:45px">
+					<input id="title" required="required" type="text" name="introTitle" style="width: 940px; height:45px">
 				</div><br><br>
 				<div>
 					<label class="intro">내용</label><br>
-					<textarea required="required" class="summernote" name="introContent" style="resize: none;"></textarea>
+					<textarea id="content" required="required" class="summernote" name="introContent" style="resize: none;"></textarea>
 				</div>
 			</div><br><br>
 		<!-- 작성 버튼 -->
 		<div style="margin: 0 auto; text-align: center;">
-			<button class="btn-3d blue" id="boardSubmit">작성하기</button>
+			<button class="btn-3d blue" id="boardSubmit" style="display: none;">작성하기</button>
 		</div>
 		</form>
+		<div style="margin: 0 auto; text-align: center;">
+			<button class="btn-3d blue" id="reBoardSubmit" style="display: none;">수정하기</button>
+		</div>
 	</c:if>
 	<c:if test="${empty loginUser }">
 		<div class="text-center">
@@ -128,6 +133,7 @@ th:first-child, td:first-child {
 		</div>
 	</c:if>
 	<input type="hidden" value="${login }" id="hDnNick">
+	<input type="hidden" id="bInfo">
 	<br><br><br><br><br><br><br>
 	<%@include file="../common/footer.jsp"%>
 
@@ -135,9 +141,21 @@ th:first-child, td:first-child {
 </body>
 <script>
 const hDnNick = document.querySelector('#hDnNick')
-const form = document.querySelector('form')
+const form = document.querySelector('form');
+
+const urlParams = new URL(location.href).searchParams;
+const boardNo = urlParams.get('bId');
+const boardWriter = urlParams.get('writer');
+
+const title = document.getElementById('title');
+const content = document.getElementById('content');
+const bInfo = document.getElementById('bInfo');
 
 const boardSubmit = document.querySelector('#boardSubmit');
+const reBoardSubmit = document.querySelector('#reBoardSubmit');
+let pTag = '';
+
+// 글 쓰고 바로 내가 글 쓴 페이지로 가지기
 	boardSubmit.addEventListener('click', ()=>{
 		$.ajax({
 			url: 'goToMyBoard.bo',
@@ -149,11 +167,34 @@ const boardSubmit = document.querySelector('#boardSubmit');
 			}
 			
 		})		
-		
+	})
+// 수정 버튼	
+	reBoardSubmit.addEventListener('click', ()=>{
+		console.log(pTag.innerText);
+		console.log(title.value);
+		console.log(bInfo.value);
+		console.log(boardNo);
+		$.ajax({
+			url: 'reBoard.bo',
+			data: {
+				boardContent: pTag.innerHTML,
+				boardTitle: title.value, 
+				usersNo: bInfo.value,
+				boardNo: boardNo
+			},
+			success: data=>{
+				if(data == 'success'){
+					location.href='${contextPath}/detailFreeBoard.bo?bId=' + boardNo + '&writer=' + boardWriter + '&page=1';
+				}else{
+					alert('글 수정에 실패하였습니다.');
+					location.reload();
+				}
+			}
+		})
 	})
 
 	$('.summernote').summernote({
-		width : 900,
+		width : 940,
 		height : 350,
 		lang : "ko-KR",
 		toolbar : [
@@ -173,9 +214,78 @@ const boardSubmit = document.querySelector('#boardSubmit');
 				'돋움체', '바탕체' ],
 		fontSizes : [ '8', '9', '10', '11', '12', '14', '16',
 				'18', '20', '22', '24', '28', '30', '36', '50',
-				'72' ]
+				'72' ],
+		callbacks: {
+			onImageUpload: function(files, editor, welEditable, image) {
+	            for (var i = files.length - 1; i >= 0; i--) {
+	            	sendFile(files[i], this);
+	            }
+		        var file = image[0];
+		        var reader = new FileReader();
+		        reader.onloadend = function() {
+		           var image = $('<img>').attr('src',  reader.result);
+		              image.attr('width','100%');
+		           $('.summernote').summernote("insertNode", image[0]);
+		        }
+		        reader.readAsDataURL(file);
+	        }
+        
+   
+		}
 		
 	});
+
+//파일명 줄이기
+
+	function sendFile(file, el) {
+		var form_data = new FormData();
+			form_data.append('file', file);
+			$.ajax({
+			data: form_data,
+			type: "POST",
+			url: 'fileUpload.bo',
+			cache: false,
+			contentType: false,
+			enctype: 'multipart/form-data',
+			processData: false,
+			success: function(img_name) {
+		  		$(el).summernote('editor.insertImage', img_name);
+			}
+		});
+	}
+
+
+		window.onload=()=>{
+
+			if(boardNo != null && boardWriter != null){
+				reBoardSubmit.style.display = 'inline-block';
+			}else{
+				boardSubmit.style.display = 'inline-block';
+			}
+			const contentEdit = document.getElementsByClassName('note-editable');
+			
+			for(let i = 0; i < contentEdit.length; i++){
+				pTag = contentEdit[i].querySelector('p');
+				$.ajax({
+					url: 'reWriteBoardInfo.bo',
+					data:{
+						boardNo: boardNo,
+						nickName: boardWriter			
+					},
+					success: data=>{
+						title.value = data.boardTitle;
+						pTag.innerHTML = data.boardContent;
+						bInfo.value = data.usersNo;
+					}
+					
+				})
+				
+			}
+		}
+	
+	
+	
+
 	
 	
 </script>

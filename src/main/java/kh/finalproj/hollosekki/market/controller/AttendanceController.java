@@ -43,6 +43,7 @@ public class AttendanceController {
          mkService.gettedPoint(map);
          mkService.getMonthPoint(map);
          mkService.aDateCheck(map);
+         mkService.atPointList(map);
       }
             
       ArrayList<Attendance> atList = mkService.allAt(u);

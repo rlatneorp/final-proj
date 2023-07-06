@@ -51,7 +51,7 @@ public interface MenuService {
 
 	int getReviewCount(int mNo);
 	
-	ArrayList<Review> selectReviewList(PageInfo pi, int mNo);
+	ArrayList<Review> selectReviewList(PageInfo rpi, int mNo);
 
 	int myReview(Review my);
 
@@ -60,6 +60,10 @@ public interface MenuService {
 	int insertReview(Review r);
 
 	int updateReview(Review r);
+
+	ArrayList<HashMap<String, Object>> notReview(HashMap<String, Object> map);
+
+	ArrayList<Review> selectMyReviewList(PageInfo mpi, HashMap<String, Object> myMap);
 
 
 }

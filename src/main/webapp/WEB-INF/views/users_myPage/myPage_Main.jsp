@@ -35,6 +35,8 @@
 	}
 	.service{
 		font-weight: bold; font-size: 16px;
+		cursor: pointer;
+		text-decoration: none;
 	}
 	.dollars{
 		color: rgb(241, 196, 15); font-size: 35px;
@@ -209,8 +211,8 @@
 						<span class="material-symbols-outlined arrow1">
 						chevron_right
 						</span></a><br><br>
-						<p class="service">자주 묻는 질문</p>
-						<p class="service">1:1문의</p>
+						<a class="service d-block" href="${ contextPath }/faqBoard.cs">자주 묻는 질문</a>
+						<a class="service" href="${ contextPath }/personalBoard.cs">1:1문의</a>
 					</div>
 					<div class="name">
 						<br>
@@ -402,7 +404,7 @@
 						<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
 							<img id="modalP" src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }"/>
 						</c:if>
-						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
+						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file" value="${ loginUser.imageRenameName }">
 						<br>
 						<button type="button" class="base" id="delete-${ loginUser.imageRenameName }">기본 이미지</button>
 						<input type="hidden" name="deletePicture" value="none">

@@ -387,7 +387,7 @@
 <!-- 문의 / 후기 -->
 
 <!-- <p class="mid">후기</p> -->
-<c:if test="${loginUser ne null and myReview ne 0 }">
+<c:if test="${loginUser ne null }">
 	<p class="mid">내가 쓴 후기</p>
 	<br>
 	<div id="qna">
@@ -606,6 +606,7 @@
 	</div>
 </div>
 
+<br><br><br><br>
 <%@ include file="../common/footer.jsp" %>
 
 <script>

@@ -756,7 +756,7 @@ public class AdminController {
 			}
 		}
 		if(igdList != null) {
-			model = adminBasic(model, request, null);
+			model = adminBasic(model, request, pi);
 			model.addAttribute("igdList", igdList);
 			return "adminIngredientManage";
 		}else {
@@ -1528,6 +1528,7 @@ public class AdminController {
 									  HttpServletRequest request) {
 		int resultImg = 0; 
 		int result = aService.insertHealther(h);
+		System.out.println(h);
 		
 		if(result > 0) {
 //			이미지 저장
@@ -1551,6 +1552,7 @@ public class AdminController {
 	public String adminHealtherUpdate(@ModelAttribute Healther h,
 									  @RequestParam("imageFile") MultipartFile imageFile,
 									  HttpServletRequest request) {
+		System.out.println(h);
 		int result = aService.updateHealther(h);
 		int resultImgDel = 1;
 		int resultImg = 1;

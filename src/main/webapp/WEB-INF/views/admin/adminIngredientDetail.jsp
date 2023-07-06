@@ -38,10 +38,20 @@
 	
 					<div class="col-12 row priceBox" <c:if test="${igd.productStatus eq null || igd.productStatus eq 'N'}">style="opacity: 0.3"</c:if>>
 						<span class="col-4">가격</span>
-						<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="${igd.productPrice}">
+						<c:if test="${igd.productPrice eq null}">
+							<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="0">
+						</c:if>
+						<c:if test="${igd.productPrice ne null}">
+							<input type="number" name="productPrice" class="col-6 pb-1 mb-2 rounded" min="0" placeholder="가격을 입력해주세요." value="${igd.productPrice}">
+						</c:if>
 						<span class="col-2">원</span>
 						<span class="col-4">할인율</span>
-						<input type="number" name="productSale" class="col-6 pb-1 mb-2 rounded" min="0" max="99.9" placeholder="할인율을 입력해주세요." value="${igd.productSale}">
+						<c:if test="${igd.productSale eq null}">
+							<input type="number" name="productSale" class="col-6 pb-1 mb-2 rounded" min="0" max="99.9" placeholder="할인율을 입력해주세요." value="0">
+						</c:if>
+						<c:if test="${igd.productSale ne null}">
+							<input type="number" name="productSale" class="col-6 pb-1 mb-2 rounded" min="0" max="99.9" placeholder="할인율을 입력해주세요." value="${igd.productSale}">
+						</c:if>
 						<span class="col-2">%</span>
 						<span class="col-5 text-end">=</span>
 						<input type="number" class="totalPrice col-5 pb-1 mb-2 rounded border" value="0" readonly>
@@ -75,8 +85,8 @@
 				</div>
 				
 				<div class="col-6 ps-5">
-					<div class="border" style="margin-top:56px; width:360px; height:270px;">
-						<img class="previewImage" width="360px" height="270px" src="${contextPath}/resources/uploadFiles/${img[0].imageRenameName}">
+					<div class="border" style="margin-top:56px; width:480px; height:360px;">
+						<img class="previewImage" width="480px" height="360px" src="${contextPath}/resources/uploadFiles/${img[0].imageRenameName}">
 					</div>
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 					<input type="hidden" name="imageChange" value="N">

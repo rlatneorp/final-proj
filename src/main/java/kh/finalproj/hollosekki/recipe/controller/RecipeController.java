@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,12 +34,16 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Review;
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
+import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeElement;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
+import kh.finalproj.hollosekki.users.model.service.UsersService;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -46,12 +51,20 @@ public class RecipeController {
 
 	@Autowired
 	private RecipeService rService;
+	
+	@Autowired
+	private EnrollService eService;
+	
+	@Autowired
+	private UsersService uService;
+	
+	@Autowired
+	private MenuService mService;
 
 //	레시피 리스트 조회
 	@RequestMapping("recipeList.rc")
 	public String recipeList(@ModelAttribute Recipe r, Model model,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "input", required = false) String word) {
+			@RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -60,27 +73,14 @@ public class RecipeController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 
 		ArrayList<Recipe> rList = new ArrayList<>();
-		ArrayList<Recipe> searchList = new ArrayList<>();
 		ArrayList<Image> iList = new ArrayList<>();
-		ArrayList<Image> searchImage = new ArrayList<>();
 
-		if (word == null) {
-			rList = rService.selectRecipeList(pi);
-			iList = rService.selectRecipeImageList();
-		} else if (word != null) {
-			searchList = rService.searchRecipe(word);
-			searchImage = rService.searchImage();
-		}
+		rList = rService.selectRecipeList(pi);
+		iList = rService.selectRecipeImageList();
 
-		if (word == null) {
+		if(!rList.isEmpty()) {
 			model.addAttribute("rList", rList);
 			model.addAttribute("iList", iList);
-			model.addAttribute("pi", pi);
-
-			return "recipeList";
-		} else if (word != null) {
-			model.addAttribute("rList", searchList);
-			model.addAttribute("iList", searchImage);
 			model.addAttribute("pi", pi);
 
 			return "recipeList";
@@ -88,12 +88,49 @@ public class RecipeController {
 			throw new RecipeException("레시피 조회에 실패하였습니다.");
 		}
 	}
+	
+//	레시피 검색
+	@GetMapping("searchRecipe.rc")
+	public String searchRecipe(@ModelAttribute Recipe r, Model model,
+								@RequestParam(value = "page", required = false) Integer page,
+								@RequestParam(value = "word", required = false) String word) {
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = page;
+		}
+		int listCount = rService.getListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		System.out.println(word);
+		
+		
+		ArrayList<Recipe> searchList = new ArrayList<>();
+		ArrayList<Image> searchImage = new ArrayList<>();
+		
+		searchList = rService.searchRecipe(word);
+		searchImage = rService.searchImage();
+		
+		if(searchList.isEmpty()) {
+			String str = "검색된 레시피가 없습니다.";
+			model.addAttribute("str", str);
+			model.addAttribute("rList", searchList);
+			model.addAttribute("iList", searchImage);
+			model.addAttribute("pi", pi);
+
+			return "recipeList";
+		} else {
+			model.addAttribute("rList", searchList);
+			model.addAttribute("iList", searchImage);
+			model.addAttribute("pi", pi);
+			return "recipeList";
+		}
+	}
 
 //	레시피 상세조회
 	@RequestMapping("recipeDetail.rc")
 	public ModelAndView recipeDetail(@RequestParam("rId") String usersId, @RequestParam("rNo") int foodNo,
 			@RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv,
-			@RequestParam(value = "repage", required = false) Integer repage) {
+			@RequestParam(value = "repage", required = false) Integer repage, Model model) {
 
 		Users loginUser = (Users) session.getAttribute("loginUser");
 
@@ -127,7 +164,25 @@ public class RecipeController {
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
 		ArrayList<Review> reList = rService.selectReviewList(rpi, foodNo);
 		ArrayList<RecipeElement> eleList = rService.selectRecipeElement(foodNo);
-
+		
+		// 레시피 등록 유저 정보
+		String id = usersId;
+		SocialLogin social = eService.SocialLogin(id);
+		model.addAttribute("social", social);
+		
+		Users user = eService.userInfo(id);
+		int usersNo = user.getUsersNo();
+		Image userImage = uService.selectImage(usersNo);
+		model.addAttribute("userImage", userImage);
+		
+		// 북마크 정보
+		int productNo = foodNo;
+		if(loginUser != null) {
+			int result = rService.selectRecipeBookmark(loginUser.getUsersNo(), productNo);
+			model.addAttribute("bookmark", result);
+		}
+		
+		
 //		System.out.println(reList);
 
 		if (recipe != null) {
@@ -780,6 +835,29 @@ public class RecipeController {
 			return "redirect:recipeDetail.rc?rId=" + usersId + "&rNo=" + foodNo;
 		} else {
 			throw new RecipeException("레시피 후기 삭제 실패");
+		}
+	}
+	
+	@RequestMapping("insertBookmark.rc")
+	@ResponseBody
+	public String insertRecipeBookmark(int usersNo, int divisionNo) {
+		int result = rService.insertRecipeBookmark(usersNo, divisionNo);
+		if(result > 0) {
+			   return "success";
+		   } else {
+			   return "fail";
+		   }
+	}
+	
+	@RequestMapping("deleteBookmark.rc")
+	@ResponseBody
+	public String deleteRecipeBookmark(int usersNo, int divisionNo) {
+		int result = rService.deleteRecipeBookmark(usersNo, divisionNo);
+		
+		if(result > 0) {
+			   return "success";
+		} else {
+			   return "fail";
 		}
 	}
 

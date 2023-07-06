@@ -483,8 +483,11 @@ public class MarketService {
 		return mkDAO.selectMealKit(sqlSession);
 	}
 
-	public void atPointList(HashMap<String, Object> map) {
-		mkDAO.atPointList(sqlSession, map);
+	public int selectReview(int orderNo, String nickName) {
+		return mkDAO.selectReview(sqlSession, orderNo, nickName);}
+	
+	public int goToPay(Cart c) {
+		return mkDAO.goToPay(sqlSession, c);
 	}
 
 

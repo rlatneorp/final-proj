@@ -404,7 +404,7 @@
 						<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
 							<img id="modalP" src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }"/>
 						</c:if>
-						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
+						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file" value="${ loginUser.imageRenameName }">
 						<br>
 						<button type="button" class="base" id="delete-${ loginUser.imageRenameName }">기본 이미지</button>
 						<input type="hidden" name="deletePicture" value="none">

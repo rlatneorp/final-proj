@@ -201,6 +201,10 @@ public class EnrollDAO {
 		return (ArrayList)sqlSession.selectList("enrollMapper.menuProductList");
 	}
 
+	public Users userInfo(SqlSessionTemplate sqlSession, String id) {
+		return sqlSession.selectOne("enrollMapper.userInfo", id);
+	}
+
 
 
 

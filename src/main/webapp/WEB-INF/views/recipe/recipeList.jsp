@@ -82,10 +82,10 @@
 <br><br>
 
 <div id="search">
-	<form role="search" action="recipeList.rc">
+	<form role="search" id="searchBar">
 		<div id="searchBar">
 			<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
-			<div id="searchIcon"><button type="submit" id="searchBtn"><i class="bi bi-search"></i></button></div>
+			<div id="searchIcon"><button type="button" id="searchBtn"><i class="bi bi-search"></i></button></div>
 		</div>
 	</form>
 	<div id="category">
@@ -126,6 +126,12 @@
 		<button class="group-button" id="most" data-value="조회" onclick="mostAl()">조회순</button>
 	</div>
 </div>
+
+<c:if test="${empty rList }">
+	<div style="text-align: center;">
+		<h2>${str}</h2>	
+	</div>
+</c:if>
 
 <div class="album p-5 bg-white">
 	<div class="container px-5" style="width: 1200px;">
@@ -187,15 +193,25 @@
 	</div>
 </div>
 
-<br>
+<br><br><br><br>
 <%@ include file="../common/footer.jsp" %>
 
 <script>
 	const search = document.getElementById('searchBtn');
+	const searchBar = document.getElementById('searchBar');
+// 	action="recipeList.rc" 
+	
 	search.addEventListener('click', function(){
-		const text = document.getElementById('inputText').value;
-		location.href="${contextPath}/searchRecipe.rc?word="+text;
+		if(document.getElementById('inputText').value.trim() == ""){
+			alert('검색어를 입력해주세요.');
+		} else{
+			const text = document.getElementById('inputText').value;
+			searchBar.action="searchRecipe.rc";
+			searchBar.submit();
+			location.href="${contextPath}/searchRecipe.rc?word="+text;
+		}
 	})
+	
 
 	window.onload = () =>{
 		const recipes = document.getElementsByClassName('card');

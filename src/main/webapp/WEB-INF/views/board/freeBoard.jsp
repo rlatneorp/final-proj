@@ -237,6 +237,8 @@
 			<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
 		</div><br><br><br>
 	</c:if>
+	
+	<br><br><br><br>
 	<%@include file="../common/footer.jsp"%>
 
 

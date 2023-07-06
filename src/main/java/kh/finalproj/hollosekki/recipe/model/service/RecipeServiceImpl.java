@@ -243,4 +243,19 @@ public class RecipeServiceImpl implements RecipeService{
 	public void updateIngredient(ArrayList<RecipeElement> reelList) {
 		rDAO.updateIngredient(sqlSession, reelList);
 	}
+
+	@Override
+	public int insertRecipeBookmark(int usersNo, int divisionNo) {
+		return rDAO.insertRecipeBookmark(sqlSession, usersNo, divisionNo);
+	}
+
+	@Override
+	public int deleteRecipeBookmark(int usersNo, int divisionNo) {
+		return rDAO.deleteRecipeBookmark(sqlSession, usersNo, divisionNo);
+	}
+
+	@Override
+	public int selectRecipeBookmark(int usersNo, int productNo) {
+		return rDAO.selectRecipeBookmark(sqlSession, usersNo, productNo);
+	}
 }

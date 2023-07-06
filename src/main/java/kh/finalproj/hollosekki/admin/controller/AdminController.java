@@ -959,19 +959,43 @@ public class AdminController {
 	@PostMapping("adminFoodUpdate.ad")
 	public String adminFoodUpdate(HttpServletRequest request,
 								  Model model,
-								  @ModelAttribute Food f) {
+								  @ModelAttribute Food f,
+								  @RequestParam("imageNo") ArrayList<Integer> imageNos,
+								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
+
+		ArrayList<Image> oldImageList = selectAllImageList(f.getProductNo(), 5, -1);
+		ArrayList<Image> newImageList = new ArrayList<Image>();
 		
-		int resultF = aService.updateFood(f);
-		int resultPd = aService.updateProduct(f);
-		
-		if(resultF+resultPd == 2) {
-			model = adminBasic(model, request, null);
-			return "redirect:adminFoodManage.ad";
-		}else {
-			throw new AdminException("식품 수정에 실패하였습니다.");
+		int countNos = 0;
+		int countImages = 0;
+		for(int i:imageNos) {
+			if(i == 0) {
+				countNos++;
+			}
 		}
+		for(MultipartFile imageFile: imageFiles) {
+			if(imageFile != null && !imageFile.isEmpty()) {
+				countImages++;
+			}
+		}
+		if(countNos == countImages);
+		System.out.println(imageNos);
+		System.out.println(imageFiles);
+		System.out.println(countNos);
+		System.out.println(countImages);
+		return "";
+		
+//		int resultF = aService.updateFood(f);
+//		int resultPd = aService.updateProduct(f);
+//		
+//		if(resultF+resultPd == 2) {
+//			model = adminBasic(model, request, null);
+//			return "redirect:adminFoodManage.ad";
+//		}else {
+//			throw new AdminException("식품 수정에 실패하였습니다.");
+//		}
 	}
 	@GetMapping("adminFoodDeleteable.ad")
 	public void adminFoodDeleteable(@RequestParam("pNo") int pNo,

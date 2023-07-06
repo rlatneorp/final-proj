@@ -13,6 +13,7 @@
 	href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <title>Insert title here</title>
 <style>
 
@@ -28,7 +29,7 @@
 
 #floatingText{
 	background-color: white;
-	height: 500px;
+	height: 100%;
 	vertical-align: baseline;
 }
 #floatingInput{
@@ -146,21 +147,20 @@
 	background-color: #B0DAFF;
 	padding: 2px; 
 }
-#xBtn:active{
-	width: 47px; height: 28px;
-	border: 2px solid black;
-	border-radius: 20px;
-	font-size: 14px;
-	font-weight: 500;
-	background-color: white;
-	padding: 2px; 
-}
+/* #xBtn:active{ */
+/* 	width: 47px; height: 28px; */
+/* 	border: 2px solid black; */
+/* 	border-radius: 20px; */
+/* 	font-size: 14px; */
+/* 	font-weight: 500; */
+/* 	background-color: white; */
+/* 	padding: 2px;  */
+/* } */
 
 .reBox{
 	width:500px; height: 40px;
   	text-align: center;
 	border: 2px solid black;
-/* 	box-shadow: 0px 1px lighgray; */
 	font-size: 18px;
 	margin-left:-250px;
 	border-radius: 10px;
@@ -171,6 +171,48 @@
 	
 }
 
+#rBoardBtn{
+	width: 100px; height: 40px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	font-size: 20px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 2px; 
+
+}
+
+#dBoardBtn{
+	width: 100px; height: 40px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	font-size: 20px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 2px; 
+}
+
+#boardList{
+	width: 100px; height: 40px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	font-size: 20px;
+	font-weight: 500;
+	background-color: #B0DAFF;
+	padding: 2px; 
+}
+.reThread{
+	width: 40px; height: 25px;
+	border: 1px solid black;
+	border-radius: 20px;
+	font-size: 10px;
+	font-weight: 500;
+	background-color: white;
+	padding: 2px; 
+}
 
 </style>
 
@@ -188,13 +230,24 @@
 	<script src="resources/summernotes/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
 	
+	
+	<div class="row text-center" style="width:1850px;">
+		<div class="col-6"><button id="boardList" onclick="location.href='${contextPath}/freeBoard.bo'">목록</button></div>
+		<c:if test="${loginUser.nickName eq blist.nickName }">
+		<div class="col-6"><button id="rBoardBtn">수정</button>&nbsp;&nbsp;&nbsp;<button id="dBoardBtn">삭제</button></div>
+		</c:if>
+	</div>
+	<br>
 	<div id="parentDiv">
 		<div class="intro form-floating mb-3">
-		   <div readonly type="text" class="form-control" id="floatingInput">
+		   <div type="text" class="form-control" id="floatingInput">
 		   ${ blist.boardTitle }
 		   <c:set var="pic" value="${blist.boardContent}"/>
 		   <c:if test="${fn:contains(pic, 'img')}">
 		   <span class="material-symbols-outlined">hallway</span>
+		   </c:if>
+		   <c:if test="${ blist.boardType eq 1}">
+		  	 <button type="button" class="reThread">수정됨</button>
 		   </c:if>
 		   </div>
 		   <label>제목</label>
@@ -209,9 +262,10 @@
 			<p class="d-inline col-4">작성날짜 : <fmt:formatDate value="${blist.boardDate }" pattern="yyyy년 MM월 dd일 HH시 mm분"/></p>
 		</div>
 		<input type="hidden" id="hdnBoardNo" value="${blist.boardNo}">
+		<input type="hidden" id="hdnUsersNo" value="${ blist.usersNo }">
 		<br>
 		<div class="intro form-floating text-start text-wrap">
-		   <div name="content" style="resize: none;" readonly class="form-control" id="floatingText">${blist.boardContent}</div>
+		   <div class="form-control" id="floatingText">${blist.boardContent}</div>
 		   <label>내용</label>
 		</div>
 	</div><br>
@@ -287,11 +341,11 @@
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title">댓글 삭제</h5>
+	        <h5 class="modal-title">삭제</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	        <p>댓글을 삭제하시겠습니까?</p>
+	        <p>삭제하시겠습니까?</p>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
@@ -300,42 +354,84 @@
 	    </div>
 	  </div>
 	</div>
-
-	<br><br><br><br>
+		<br><br><br><br>
 	<%@include file="../common/footer.jsp"%>
 
 </body>
 <script>
-
-
-window.onload=()=>{
+	const deleteModal = document.getElementById('deleteModal');
+	const xBtn = document.querySelectorAll('.xBtn');
+	const deleteYes = document.getElementsByClassName('deleteYes');
+	const replySubmit = document.getElementById('replySubmit');
+	const reBtns = document.querySelectorAll('.reBtn');
+	const reviewCont = document.querySelector('#commentWrite');
+	const hdnBoardNo = document.querySelector('#hdnBoardNo');
+	const hdnUsersNo = document.querySelector('#hdnUsersNo');
+	const hiddenNickName = document.getElementById('hiddenNickName');
+	const rBoardBtn = document.getElementById('rBoardBtn');
+	let beforeData = null;
+	let beforeText = null;
+	let ind = null;
 	
-	replySubSuccess();
-	xDel();
-	reReply();
 	
+	window.onload=()=>{
+		
+		replySubSuccess();
+		xDel();
+		reReply();
+		
+		
+		rBoardBtn.addEventListener('click', ()=>{
+			const boardWriter = hiddenNickName.value;
+			const boardNo = hdnBoardNo.value;
+			location.href="${contextPath}/freeBoardWrite.bo?bId=" + boardNo + "&writer=" + boardWriter;
+		})
+		
+		$('#dBoardBtn').click(function(ev){
+			ev.preventDefault();
+			$('#deleteModal').modal("show");
+ 			for(const yes of deleteYes){
+ 				yes.focus();
+ 				yes.addEventListener('keydown', function(event){
+ 					if(event.keyCode == 13){
+ 						yes.click();
+ 					}
+ 				})
+				yes.addEventListener('click', ()=>{
+					const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
+					$.ajax({
+						url:'deleteBoard.bo',
+						data: {
+							boardNo: hdnBoardNo.value,
+							usersNo: hdnUsersNo.value,
+							reviewWriter: hiddenNickName.value
+						},
+						success: data=>{
+							if(data == 'success'){
+								$('#deleteModal').modal("hide");
+								location.href="${contextPath}/freeBoard.bo";
+							}else{
+								swal({
+									 text: "게시글 삭제를 실패하였습니다.",
+									 icon: "error",
+									 button: "확인",
+								});
+							}
+						},
+						error: data=>{
+							console.log(data);
+						}
+					})
+				})
+			}
+		})	
+	}	
 	
-	
-}	
-
-const deleteModal = document.getElementById('deleteModal');
-const xBtn = document.querySelectorAll('.xBtn');
-const deleteYes = document.getElementsByClassName('deleteYes');
-const replySubmit = document.getElementById('replySubmit');
-const reBtns = document.querySelectorAll('.reBtn');
-const reviewCont = document.querySelector('#commentWrite');
-const hdnBoardNo = document.querySelector('#hdnBoardNo');
-let beforeData = null;
-let beforeText = null;
-let ind = null;
-
-
 	function xDel(){
 		$('.xBtn').each(function(index, item){
 			$(this).click(function(e){
 				e.preventDefault();
 				$('#deleteModal').modal("show");
-				ind = index;
 	 			const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
 	 			for(const yes of deleteYes){
 	 				yes.focus();
@@ -358,10 +454,15 @@ let ind = null;
 									const tbody = document.querySelector('tbody');
 		 							const trs = tbody.querySelectorAll('tr');
 		 							trs[index].innerHTML = '';
+		 							this.style.background = 'white';
 		 							$('#deleteModal').modal("hide");
 		 							
 								}else{
-									alert("오류로 인해 삭제가 되지 않았습니다.(짧은 시간내의 반복되는 삭제)");
+									swal({
+										 text: "오류로 인해 삭제가 되지 않았습니다.(짧은 시간내의 반복되는 삭제)",
+										 icon: "error",
+										 button: "확인",
+									});
 									location.reload();
 								}
 							}
@@ -416,7 +517,11 @@ let ind = null;
 								
 						});
 					}else{
-						alert("댓글을 공백 상태로 수정할 수 없습니다.");
+						swal({
+							 text: "댓글을 공백 상태로 수정할 수 없습니다.",
+							 icon: "error",
+							 button: "확인",
+							});
 						location.reload();
 					}
 					
@@ -516,7 +621,11 @@ let ind = null;
 				},
 				error: data =>{
 					console.log(data);
-					alert('댓글을 빠르게 반복해서 작성하지 말아주세요.');
+					swal({
+						 text: "댓글을 빠르게 반복해서 작성하지 말아주세요.",
+						 icon: "error",
+						 button: "확인",
+						});
 					location.reload();
 				}
 			});

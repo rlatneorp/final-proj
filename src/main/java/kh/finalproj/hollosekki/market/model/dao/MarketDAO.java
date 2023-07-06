@@ -560,11 +560,17 @@ public class MarketDAO {
 		map.put("orderNo", orderNo);
 		map.put("nickName", nickName);
 		
-		return sqlSession.selectOne("marketMapper.selReviewCount", map);}
-	
+		return sqlSession.selectOne("marketMapper.selReviewCount", map);
+	}
 	public int goToPay(SqlSessionTemplate sqlSession, Cart c) {
 		 sqlSession.insert("marketMapper.goToPay", c);
 	      return c.getPreorderNo();
+	}
+
+	
+	public void atPointList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		sqlSession.insert("marketMapper.atPointList", map);
+
 	}
 
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {

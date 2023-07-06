@@ -157,11 +157,11 @@
 				<div style="padding: 5px; display: none;" id="ingCopy" class="ingCopyC">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
 					<select class="recipeIngredient" onchange="change(this)">
-						<option selected disabled>재료 선택</option>
+						<option value="noneno" selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
-						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+						<option value="none" class="ingreWrite">재료 임의로 적기</option>
 					</select>
 					<input type="text" class="ingredientNum" maxlength="10">
 				<div style="padding: 0 1px 0 5px; display:inline-block">|</div>
@@ -170,7 +170,7 @@
 				<div style="padding: 5px; display: inline-block;" class="riBox">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
 					<select name="elementIngredient" class="recipeIngredient el" onchange="change(this)" >
-						<option value="none" selected disabled>재료 선택</option>
+						<option value="noneno" selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
@@ -182,11 +182,11 @@
 				<div style="padding: 5px; display: inline-block;" class="riBox">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
 					<select name="elementIngredient" class="recipeIngredient el" onchange="change(this)">
-						<option selected disabled>재료 선택</option>
+						<option value="noneno" selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
-						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+						<option value="none" class="ingreWrite">재료 임의로 적기</option>
 					</select>
 					<input type="text" name="elementQuantity" class="ingredientNum inn" maxlength="10">
 				</div>
@@ -194,11 +194,11 @@
 				<div style="padding: 5px; display: inline-block;" class="riBox">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
 					<select name="elementIngredient" class="recipeIngredient el" onchange="change(this)" >
-						<option selected disabled>재료 선택</option>
+						<option value="noneno" selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
-						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+						<option value="none" class="ingreWrite">재료 임의로 적기</option>
 					</select>
 					<input type="text" name="elementQuantity" class="ingredientNum inn" maxlength="10">
 				</div>
@@ -314,9 +314,10 @@ function setThumbnail(event){
 
 // 재료 임의로 변경시 input으로 변경
 function change(element){
-	console.log(element.value);
-	if(element.value=="임의"){
+	console.log(element.previousElementSibling);
+	if(element.value=="none"){
 		element.style.display = "none";
+		element.previousElementSibling.classList.add("el");
 		element.previousElementSibling.style.display = "inline-block";
 		element.previousElementSibling.setAttribute("name", "elementIngredient");
 		element.remove();
@@ -336,9 +337,9 @@ function ingredientPlus(){
 	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5].setAttribute("name", "elementQuantity");
 	document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5].classList.add("inn");
 	
-	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1]);
-	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3]);
-	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5]);
+// 	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1]);
+// 	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[3]);
+// 	console.log(document.querySelectorAll('.ingCopyC')[document.querySelectorAll('.ingCopyC').length -1].childNodes[5]);
 	ingCount++;
 }
 
@@ -441,7 +442,8 @@ sub.addEventListener('click', function(){
 	let ri = false;
 	
 	for(let i in riBox){
-		if(el[i].value.trim()=="none" || inn[i].value.trim()==""){
+		console.log(el[i].value);
+		if(el[i].value=="noneno" || el[i].value=="" || inn[i].value==""){
 			ri = true;
 		}
 	}
@@ -451,7 +453,7 @@ sub.addEventListener('click', function(){
 	const oi = document.getElementsByClassName('oi');
 	let roc = false;
 	for(let i in roCons){
-		if(roCons[i].value.trim() == "" || oi[i].value == ""){
+		if(roCons[i].value == "" || oi[i].value == ""){
 			roc = true;
 		}
 	}

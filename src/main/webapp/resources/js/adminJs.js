@@ -50,6 +50,11 @@ function adminUpdateStatus(dataType){
 						}
 					})
 				})
+			}else{
+				statusBtns[i].style.background = "gray";
+				statusBtns[i].addEventListener('click', ()=>{
+					alert("상품 등록을 해야 상태 변경이 가능합니다.");
+				})
 			}
 		}
 	}

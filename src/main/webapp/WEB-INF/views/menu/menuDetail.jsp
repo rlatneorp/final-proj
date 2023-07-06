@@ -520,9 +520,9 @@ p b {
 						<label>[필수] 수량을 선택해주세요.</label><br>
 						<div id="period" class="inputBox">
 							<label for="first">${menu.menuName} : </label>
-							<button type="button" id="decrease" onclick="decreaseClick()">-</button>
+							<button type="button" style="background: none;" id="decrease" onclick="decreaseClick()">-</button>
 							<div id="quantity" style="display: inline-block;">1</div>
-							<button type="button" id="increase" onclick="increaseClick()">+</button>
+							<button type="button" style="background: none;" id="increase" onclick="increaseClick()">+</button>
 						</div>
 						
 						<br>

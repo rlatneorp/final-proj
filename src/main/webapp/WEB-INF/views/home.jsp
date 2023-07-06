@@ -107,7 +107,7 @@ font-family: 'Noto Sans KR', sans-serif;
 .healther-img{width: 100%; height: 100%; object-fit: cover; object-position: center;}
 .healther-name{font-size: 17px; font-weight: bold; margin: 8px; margin-top: 12px;}
 .healther-title, .healther-career{font-size: 14px; margin-bottom: 5px;}
-.healther-career-div{font-size: 14px; height: 50px; margin-bottom: 10px;}
+.healther-career-div{font-size: 14px; height: 60px; margin-bottom: 10px;}
 .healther-modal{width: 200px; height: 200px; overflow: hidden; border-radius: 3px;}
 .healther-modal-img{width: 100%; height: 100%; object-fit: cover; object-position: center;}
 .modal-div{width: 452px; display: flex; gap: 20px 20px; flex-wrap: wrap;  position: relative; margin: 23px;}

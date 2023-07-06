@@ -214,4 +214,25 @@ public class RecipeDAO {
 		sqlSession.insert("recipeMapper.updateIngredient", reelList);
 	}
 
+	public int insertRecipeBookmark(SqlSessionTemplate sqlSession, int usersNo, int divisionNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("divisionNo", divisionNo);
+		return sqlSession.insert("recipeMapper.insertRecipeBookmark", map);
+	}
+
+	public int deleteRecipeBookmark(SqlSessionTemplate sqlSession, int usersNo, int divisionNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("divisionNo", divisionNo);
+		return sqlSession.delete("recipeMapper.deleteRecipeBookmark", map);
+	}
+
+	public int selectRecipeBookmark(SqlSessionTemplate sqlSession, int usersNo, int productNo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("usersNo", usersNo);
+		map.put("productNo", productNo);
+		return sqlSession.selectOne("recipeMapper.selectRecipeBookmark", map);
+	}
+
 }

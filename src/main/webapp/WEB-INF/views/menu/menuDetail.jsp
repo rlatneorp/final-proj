@@ -349,6 +349,7 @@ p b {
 .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
 .moCon{height: 150px; border-radius: 10px;}
 .moCon:hover{cursor: pointer;}
+.cut{white-space: nowrap; overflow: hidden; text-overflow:ellipsis;}
 
 /* 	페이지 */
 	.page_wrap {
@@ -509,7 +510,7 @@ p b {
 						<dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
                             	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립) | 0,000원</p>
+                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
@@ -974,8 +975,9 @@ p b {
 	
 	<br>
 	
-	<c:if test="${loginUser ne null && myReview ne 0 }">
-		<p class="mid">내가 쓴 후기</p>
+	<c:if test="${loginUser ne null and myReview ne 0 }">
+		<p class="mid">내가 쓴 후기</p><br>
+		<p style="margin-left: 830px;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 		<br>
 		<div id="qna">
 			<table class="board">
@@ -992,10 +994,10 @@ p b {
 					</tr>
 				</c:if>
 				<c:if test="${myReview ne 0 }">
-					<c:forEach items="${ rList }" var="r">
+					<c:forEach items="${ mrList }" var="r">
 						<c:if test="${r.reviewWriter eq loginUser.nickName}">
 							<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')"</c:if>>
-								<td class="line" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>${ r.reviewNo }</td>
+								<td class="line">${ r.reviewNo }</td>
 								<td class="line">${ r.reviewScore eq 5 ? "★★★★★" : (r.reviewScore eq 4 ? "★★★★" : (r.reviewScore eq 3 ? "★★★" : (r.reviewScore eq 2 ? "★★" : "★"))) }</td>
 								<td class="line">${ r.reviewContent }</td>
 								<td class="line">${ r.reviewWriter }</td>
@@ -1006,10 +1008,48 @@ p b {
 				</c:if>
 			</table>
 		</div>
+		<br><br>
+		<div class="page_wrap">
+		   <div class="page_nation">
+		      <!-- 		이전 페이지로	 -->
+				<c:url var="goBack" value="${loc }">
+					<c:param name="myrepage" value="${mpi.currentPage - 1 }"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${mpi.currentPage > 1 }">
+					<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
+				</c:if>
+				
+		<!-- 		페이지 -->
+				<c:forEach begin="${ mpi.startPage }" end="${ mpi.endPage }" var="mp">
+					<c:url var="goNum" value="${loc }">
+						<c:param name="myrepage" value="${ mp }"></c:param>
+						<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+						<c:param name="page" value="${page}"></c:param>
+					</c:url>
+					<c:if test="${ mpi.currentPage eq mp }">
+						<a class="active">${ mp }</a>
+					</c:if>
+					<c:if test="${ !(mpi.currentPage eq mp) }">
+						<a href="${ goNum }">${ mp }</a>
+					</c:if>
+				</c:forEach>
+				
+				<c:url var="goNext" value="${loc }">
+					<c:param name="myrepage" value="${mpi.currentPage + 1 }"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${mpi.currentPage < mpi.endPage }">
+					<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
+				</c:if>
+		   </div>
+		</div>
 	</c:if>
 	<br><br><br>
-	<p class="mid">후기</p>
-	<br>
+	<p class="mid">후기</p><br>
+	<p style="margin-left: 830px;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 	<div id="qna">
 		<table class="board">
 			<tr class="boardTop">
@@ -1043,8 +1083,7 @@ p b {
 	      <!-- 		이전 페이지로	 -->
 			<c:url var="goBack" value="${loc }">
 				<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
-				<c:param name="rId" value="${recipe.usersId}"></c:param>
-				<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 				<c:param name="page" value="${page}"></c:param>
 			</c:url>
 			<c:if test="${rpi.currentPage > 1 }">
@@ -1059,22 +1098,20 @@ p b {
 			<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
 				<c:url var="goNum" value="${loc }">
 					<c:param name="repage" value="${p }"></c:param>
-					<c:param name="rId" value="${recipe.usersId}"></c:param>
-					<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
 				<c:if test="${ rpi.currentPage eq p }">
-					<a class="active">${p }</a>
+					<a class="active">${ p }</a>
 				</c:if>
 				<c:if test="${ !(rpi.currentPage eq p) }">
-					<a href="${goNum }">${p }</a>
+					<a href="${ goNum }">${ p }</a>
 				</c:if>
 			</c:forEach>
 			
 			<c:url var="goNext" value="${loc }">
 				<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
-				<c:param name="rId" value="${recipe.usersId}"></c:param>
-				<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 				<c:param name="page" value="${page}"></c:param>
 			</c:url>
 			<c:if test="${rpi.currentPage < rpi.endPage }">
@@ -1085,36 +1122,20 @@ p b {
 	<br>
 </div>
 <c:if test="${loginUser != null}">
-    <c:if test="${not empty oList}">
-        <div class="qnaInputBox">
-            <c:set var="canWriteReview" value="false" />
-            <c:forEach items="${oList}" var="o" varStatus="s">
-                <c:set var="hasReview" value="false" />
-                <c:forEach items="${rList}" var="r">
-                    <c:if test="${o.orderNo eq r.orderNo and r.reviewWriter eq loginUser.nickName}">
-                        <c:set var="hasReview" value="true" />
-                    </c:if>
-                </c:forEach>
-                <c:if test="${o.usersNo eq loginUser.usersNo and !hasReview}">
-                    <c:set var="canWriteReview" value="true" />
-                    <input type="hidden" id="order" value="${o.orderNo}">
-                    <input type="hidden" id="product" value="${o.productNo}">
-                </c:if>
-                <c:if test="${canWriteReview}">
-                    <button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
-                    <input type="hidden" id="reviewId" value="${loginUser.nickName}">
-                </c:if>
-                <c:if test="${canWriteReview}">
-                    <!-- 루프 중단을 위한 조건 체크 -->
-                    <c:set var="canWriteReview" value="false" />
-                </c:if>
-            </c:forEach>
-        </div>
-    </c:if>
+	<c:if test="${ notReviewCount > 0 }">
+		<c:set var="foundReview" value="false" />
+		<c:forEach items="${ notReview }" var="n">
+			<c:if test="${!foundReview}">
+				<div class="qnaInputBox">
+					<button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
+					<input type="hidden" id="reviewId" value="${loginUser.nickName}">
+					<input type="hidden" id="order" value="${n.ORDER_NO}">
+				</div>
+				<c:set var="foundReview" value="true" />
+			</c:if>
+		</c:forEach>
+	</c:if>
 </c:if>
-
-
-
 
 <br><br>
 <br>
@@ -1149,7 +1170,7 @@ p b {
 								<div class="col">
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray">
-											<h6 style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</a></h6>
+											<h6 style="font-weight: bold;"><a class="cut" style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</a></h6>
 											<img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" width="150px" height="100px" style="border-radius: 10px;">
 											<input type="hidden" value="${p.productNo}">
 										</div>
@@ -1168,7 +1189,7 @@ p b {
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">구매하시겠습니까?</h1>
+				<h1 class="modal-title fs-5" id="exampleModalLabel">하시겠습니까?</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body" id="">
@@ -1271,6 +1292,7 @@ p b {
 							<label for="reviewUpdateScore1">★</label>
 					</fieldset>
 					<br><br>
+					수정할 내용을 입력해주세요.<br><br>
 					<textarea id="reviewContentUpdate" name="reviewContent" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100" placeholder="내용을 입력해주세요."></textarea>
 				</div>
 				<div class="footer">
@@ -1282,8 +1304,9 @@ p b {
 	</div>
 </div>
 
-<br><br>
-<%@ include file="../common/footer.jsp" %>
+	<br><br><br><br><br>
+   <br><br>
+   <%@ include file="../common/footer.jsp" %>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
 <script>
@@ -1316,9 +1339,41 @@ p b {
 	const usersNo = '${loginUser.usersNo}';
 	
 	
+// 	function buybtn(){
+// 		const quantity = document.getElementById('quantity');
+// 		const buyMenuCount =document.getElementById('buyMenuCount');
+		
+// 		const buyMenuPrice = document.getElementById('buyMenuPrice');
+// 		const total = document.getElementById('total');
+		
+// 		buyMenuCount.innerText = quantity.innerText;
+// 		buyMenuPrice.innerText = total.innerText;
+		
+// 		console.log("quantity : " + buyMenuCount.innerText);
+// 		console.log("productNo : " + productNo);
+// 		console.log("usersNo : " + usersNo);
+		
+// 		$.ajax({
+//             url: "insertCart.ma",
+//             async: false,
+//             data: {
+//         		"productNo":productNo, 
+// 	        	"cartCount":buyMenuCount.innerText,
+// 	        	"usersNo":usersNo,
+// 	        },
+//             success: data =>{
+//         		console.log("success");
+//             },
+//             error: data => {
+//             	console.log("error");
+//             	 alert("카트 담기 실패");
+//             }
+//         }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
+// 	}
+
 	const buybtn = document.getElementById('buybtn');
 	buybtn.addEventListener('click', function(){
-		const quantity = document.getElementById('quantity');
+	const quantity = document.getElementById('quantity');
 		const buyMenuCount =document.getElementById('buyMenuCount');
 		
 		const buyMenuPrice = document.getElementById('buyMenuPrice');
@@ -1346,10 +1401,40 @@ p b {
             	console.log("error");
             	 alert("카트 담기 실패");
             }
-        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
-		
+        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)	
 	})
 	
+// 	function cartbtn(){
+// 		const quantity = document.getElementById('quantity');
+// 		const cartMenuCount =document.getElementById('cartMenuCount');
+		
+// 		const cartMenuPrice = document.getElementById('cartMenuPrice');
+// 		const total = document.getElementById('total');
+		
+// 		cartMenuCount.innerText = quantity.innerText;
+// 		cartMenuPrice.innerText = total.innerText;
+		
+// 		console.log("quantity : " + cartMenuCount.innerText);
+// 		console.log("productNo : " + productNo);
+// 		console.log("usersNo : " + usersNo);
+		
+// 		$.ajax({
+// 	            url: "insertCart.ma",
+// 	            async: false,
+// 	            data: {
+// 	        		"productNo":productNo, 
+// 		        	"cartCount":cartMenuCount.innerText,
+// 		        	"usersNo":usersNo,
+// 		        },
+// 	            success: data =>{
+//             		console.log("success");
+// 	            },
+// 	            error: data => {
+// 	            	console.log("error");
+// 	            	 alert("카트 담기 실패");
+// 	            }
+// 			})
+// 	}
 	const cartbtn = document.getElementById('cartbtn');
 	cartbtn.addEventListener('click', function(){
 		const quantity = document.getElementById('quantity');
@@ -1366,21 +1451,21 @@ p b {
 		console.log("usersNo : " + usersNo);
 		
 		$.ajax({
-	            url: "insertCart.ma",
-	            async: false,
-	            data: {
-	        		"productNo":productNo, 
-		        	"cartCount":cartMenuCount.innerText,
-		        	"usersNo":usersNo,
-		        },
-	            success: data =>{
-            		console.log("success");
-	            },
-	            error: data => {
-	            	console.log("error");
-	            	 alert("카트 담기 실패");
-	            }
-			})
+            url: "insertCart.ma",
+            async: false,
+            data: {
+        		"productNo":productNo, 
+	        	"cartCount":cartMenuCount.innerText,
+	        	"usersNo":usersNo,
+	        },
+            success: data =>{
+           		console.log("success");
+            },
+            error: data => {
+            	console.log("error");
+            	 alert("카트 담기 실패");
+            }
+		})
 	})
 	
 	const moCons = document.getElementsByClassName('moCon');
@@ -1582,9 +1667,13 @@ p b {
 	const sub = document.getElementById('write');
 	
 	if(order != null){
+		console.log('들어왓나');
 		reviewIn.addEventListener('click', () => {
 			orderNo.value = order.value;
+			console.log(order.value);
+			console.log('ㅎㅇ?');
 			sub.addEventListener('click', () => {
+				console.log('ㅎㅇ');
 				if(content.value == ''){
 					swal({
 			            text: "리뷰 내용을 입력해주세요.",
@@ -1598,6 +1687,28 @@ p b {
 			});
 		});
 	}
+
+// 	document.addEventListener("DOMContentLoaded", function() {
+// 		const writeBtn = document.getElementById("write");
+// 		if (order != null) {
+// 			writeBtn.addEventListener("click", function() {
+// 				orderNo.value = order.value;
+// 				console.log(orderNo.value);
+// 				sub.addEventListener('click', () => {
+// 					if(content.value == ''){
+// 						swal({
+// 							text: "리뷰 내용을 입력해주세요.",
+// 							icon: "error",
+// 							button: "확인",
+// 						});
+// 					} else {
+// 						writeReview.action = '${contextPath}/writeReview.mn';		
+// 						writeReview.submit();
+// 					}
+// 				});
+// 			});
+// 		}
+// 	});
 	
 	const rNo = document.getElementById('reviewNo');
 	const score5 = document.getElementById('reviewUpdateScore5');
@@ -1625,6 +1736,7 @@ p b {
 	    } else if(reviewScore == 1){
 	    	score1.checked = true;
 	    }
+		updateContent.focus();
 	  }
 	
 	updateB.addEventListener('click', () => {

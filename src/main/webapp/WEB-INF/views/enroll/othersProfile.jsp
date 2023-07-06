@@ -538,7 +538,7 @@
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
-									<div class="recipe-content div-box2" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ users.usersNo }' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
+									<div class="recipe-content div-box2" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
 										<c:forEach items="${ recipeImageList}" var="ri">
 											<c:if test="${ ri.imageDivideNo == a.foodNo }">
 												<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${ri.imageRenameName}"></div>

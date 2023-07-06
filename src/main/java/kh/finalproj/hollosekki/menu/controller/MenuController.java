@@ -194,7 +194,6 @@ public class MenuController {
 			mv.addObject("myrepage", myrepage);
 			mv.addObject("notReview", notReview);
 			mv.addObject("notReviewCount", notReview.size());
-			mv.addObject("pi", pi);
 			mv.addObject("qnaCount", qnaCount);
 			mv.addObject("qList", qList);
 			mv.setViewName("menuDetail");

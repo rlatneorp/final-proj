@@ -977,7 +977,7 @@ p b {
 	
 	<c:if test="${loginUser ne null and myReview ne 0 }">
 		<p class="mid">내가 쓴 후기</p><br>
-		<p style="margin-left: 830px;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
+		<p style="margin-left: 830px;">* 후기 삭제 시 재등록이 불가합니다.${pi }</p><br>
 		<br>
 		<div id="qna">
 			<table class="board">
@@ -1014,17 +1014,19 @@ p b {
 		      <!-- 		이전 페이지로	 -->
 				<c:url var="goBack" value="${loc }">
 					<c:param name="myrepage" value="${mpi.currentPage - 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
 					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
 				<c:if test="${mpi.currentPage > 1 }">
-					<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
+					<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
 				</c:if>
 				
 		<!-- 		페이지 -->
 				<c:forEach begin="${ mpi.startPage }" end="${ mpi.endPage }" var="mp">
 					<c:url var="goNum" value="${loc }">
 						<c:param name="myrepage" value="${ mp }"></c:param>
+						<c:param name="repage" value="${rpi.currentPage}"></c:param>
 						<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 						<c:param name="page" value="${page}"></c:param>
 					</c:url>
@@ -1032,17 +1034,18 @@ p b {
 						<a class="active">${ mp }</a>
 					</c:if>
 					<c:if test="${ !(mpi.currentPage eq mp) }">
-						<a href="${ goNum }">${ mp }</a>
+						<a href="${ goNum }" onclick="saveScrollPosition();">${ mp }</a>
 					</c:if>
 				</c:forEach>
 				
 				<c:url var="goNext" value="${loc }">
 					<c:param name="myrepage" value="${mpi.currentPage + 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
 					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
 				<c:if test="${mpi.currentPage < mpi.endPage }">
-					<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
+					<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
 				</c:if>
 		   </div>
 		</div>
@@ -1082,22 +1085,20 @@ p b {
 	   <div class="page_nation">
 	      <!-- 		이전 페이지로	 -->
 			<c:url var="goBack" value="${loc }">
-				<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
+				<c:param name="repage" value="${rpi.currentPage - 1 }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 				<c:param name="page" value="${page}"></c:param>
 			</c:url>
 			<c:if test="${rpi.currentPage > 1 }">
-				<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
-	<%-- 			<c:param name="rId" value="${recipe.usersId}"></c:param> --%>
-	<%-- 			<c:param name="rNo" value="${recipe.foodNo}"></c:param> --%>
-	<%-- 			<c:param name="page" value="${page}"></c:param> --%>
-	<%-- 			<c:param name="repage" value="${repage}"></c:param> --%>
+				<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
 			</c:if>
 			
 	<!-- 		페이지 -->
 			<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
 				<c:url var="goNum" value="${loc }">
 					<c:param name="repage" value="${p }"></c:param>
+					<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
@@ -1105,17 +1106,18 @@ p b {
 					<a class="active">${ p }</a>
 				</c:if>
 				<c:if test="${ !(rpi.currentPage eq p) }">
-					<a href="${ goNum }">${ p }</a>
+					<a href="${ goNum }" onclick="saveScrollPosition();">${ p }</a>
 				</c:if>
 			</c:forEach>
 			
 			<c:url var="goNext" value="${loc }">
 				<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 				<c:param name="page" value="${page}"></c:param>
 			</c:url>
 			<c:if test="${rpi.currentPage < rpi.endPage }">
-				<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
+				<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
 			</c:if>
 	   </div>
 	</div>
@@ -1762,6 +1764,25 @@ p b {
 			}
 		});
 	});
+	
+	// 원래 위치 정보를 저장하는 함수
+	function saveScrollPosition() {
+	  sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop);
+	}
+
+	// 페이지 로드 후 저장된 위치로 스크롤하는 함수
+	function scrollToSavedPosition() {
+	  var scrollPosition = sessionStorage.getItem('scrollPosition');
+	  if (scrollPosition) {
+	    setTimeout(function() {
+	      window.scrollTo(0, scrollPosition);
+	      sessionStorage.removeItem('scrollPosition'); // 위치 정보 삭제
+	    }, 0);
+	  }
+	}
+
+	// 페이지 로드 시 저장된 위치로 스크롤
+	window.addEventListener('load', scrollToSavedPosition);
  </script> 
 
 </body>

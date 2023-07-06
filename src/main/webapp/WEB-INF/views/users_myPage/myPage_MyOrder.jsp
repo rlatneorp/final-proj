@@ -187,6 +187,7 @@ th:first-child, td:first-child {
 											</c:if>
 											<td>${ol.productName }</td>
 											<td><fmt:formatDate value="${ol.orderDate }" pattern="yyyy-MM-dd"/></td>
+											
 											<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
 											<td>
 												<c:if test="${ ol.reviewCount ne 0 }">

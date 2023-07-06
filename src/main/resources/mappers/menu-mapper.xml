@@ -118,20 +118,21 @@
 	<select id="getReviewCount" resultType="_int">
 		select count(*)
 		from review
-		where product_no = #{mNo} and review_status = 'Y' and order_no != 0
+		where product_no = #{mNo} and review_status = 'Y' and order_no > 0
 	</select>
 	
 	<select id="selectReviewList" resultMap="reviewResultSet">
 		select *
 		from review
-		where product_no = #{mNo} and review_status = 'Y' and order_no != 0
+		where product_no = #{mNo} and review_status = 'Y' and order_no > 0
 		order by review_no desc
 	</select>
 	
 	<select id="myReview" resultType="_int">
 		select count(*)
 		from review
-		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no != 0
+		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no > 0
+		order by review_no desc
 	</select>
 	
 	<select id="selectMyOrders" resultMap="ordersResultSet">
@@ -161,7 +162,8 @@
 	<select id="selectMyReviewList" resultMap="reviewResultSet">
 		select *
 		from review
-		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no != 0
+		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no > 0
+		order by review_no desc
 	</select>
 	
 	<resultMap type="Menu" id="menuResultSet">

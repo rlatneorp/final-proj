@@ -95,6 +95,8 @@ public interface EnrollService {
 
 	ArrayList<Menu> menuProductList();
 
+	Users userInfo(String id);
+
 
 
 

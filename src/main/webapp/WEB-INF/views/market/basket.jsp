@@ -224,12 +224,12 @@ input[type="text"] {
 							<c:if test="${cl.sale ne 0 }">
 								<span id="sale-${cl.preorderNo }" class="highlight"><b>${cl.sale }% 할인</b></span>
 								<br><br> <span style="text-decoration: line-through;" id="originP-${cl.preorderNo }">${cl.productPrice}</span>
-								<br><span id="pp-${cl.preorderNo }" style="font-size:25px; font-weight:bold" class="price">
+								<br><span id="pp-${cl.preorderNo }" style="font-size:20px; font-weight:bold" class="price">
 									${cl.productPrice}
 								</span>원
 							</c:if>
 							<c:if test="${cl. sale eq 0 }">
-								<span id="pp-${cl.productNo }" class="price">
+								<span id="pp-${cl.preorderNo }" class="price">
 									${cl.productPrice}
 								</span>원
 							</c:if>
@@ -238,7 +238,7 @@ input[type="text"] {
 							<span class="point" id="point-${cl.preorderNo }"></span>P 적립
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:160px">
-							<span class="sum" id="sum-${cl.preorderNo }">
+							<span class="sum" style="font-size:25px; font-weight:bold" id="sum-${cl.preorderNo }">
 							${cl.sum }
 							</span>원
 						</td>
@@ -341,24 +341,30 @@ input[type="text"] {
 			
 			const count = parseInt(document.getElementById('orderSize').innerText);
 			if (checkbox.checked) {
-				const plus = parseInt(document.getElementById('trTotalSum').innerText) + intCheckSum;
+				console.log('check')
+				const plus = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + intCheckSum;
 				document.getElementById('trTotalSum').innerText = plus;
-				
 				document.getElementById('orderSize').innerText = count + intCheckCount;
 				
 				//배송비 - 총합 
 				let shipping = parseInt(document.getElementById('shipSum').innerText);  
 				if(plus >= 30000) { //합계금액 
 					document.getElementById('shipPrice').innerText = '0';
-					document.getElementById('shipSum').innerText = plus;
+					document.getElementById('shipSum').innerText = parseInt(plus).toLocaleString();
 				} else {
 					document.getElementById('shipPrice').innerText = '3,000';
 	 				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
-	 				document.getElementById('shipSum').innerText = plus+shipPrice;
+	 				document.getElementById('shipSum').innerText = parseInt(plus+shipPrice).toLocaleString();
 				}
 			}else if (document.getElementById('trTotalSum').innerText != '0') {  
-				const minus = parseInt(document.getElementById('trTotalSum').innerText) - intCheckSum;
-				document.getElementById('trTotalSum').innerText = minus;
+				console.log('noCHeck')
+				console.log('is : ' +intCheckSum) //체크한 금액의 인트
+				console.log(document.getElementById('trTotalSum').innerText) // 총 금액 
+				const intTrTotal = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, ''));
+				console.log('intTrTotal : ' + intTrTotal);
+				const minus = intTrTotal - intCheckSum; //총 금액에서 체크한 금액의 합계를 뺀다.
+				console.log('m : ' + minus);
+				document.getElementById('trTotalSum').innerText = minus;  
 				if(intCheckCount != '0') {
 					document.getElementById('orderSize').innerText = count - intCheckCount;
 				}
@@ -366,20 +372,22 @@ input[type="text"] {
 				//배송비
 				if(minus >= 30000) { //합계금액 
 					document.getElementById('shipPrice').innerText = '0';
-					document.getElementById('shipSum').innerText = minus;
+					document.getElementById('shipSum').innerText = parseInt(minus).toLocaleString();
 				} else {
 					document.getElementById('shipPrice').innerText = '3,000';
 	 				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
-	 				document.getElementById('shipSum').innerText = minus+shipPrice;
+	 				document.getElementById('shipSum').innerText = parseInt(minus+shipPrice).toLocaleString();
 				}
 			}
 			
+			var totalSum = document.getElementById('trTotalSum').innerText;
+			var formattedTotalSum = parseInt(totalSum).toLocaleString();
+			document.getElementById('trTotalSum').innerText = formattedTotalSum;			
 		} //change 함수 끝 
 		
 		
 		//상품가격 금액 형태로 변환 
 		const prices = document.getElementsByClassName('price');
-		console.log(prices)
 		for(originPrice of prices) {
 			const detailPrice = originPrice.innerText;
 			const numericPrice = parseFloat(detailPrice);// 숫자로 변환
@@ -412,6 +420,8 @@ input[type="text"] {
 			const priceWithoutCurrency = formattedPrice.replace('KRW', '').trim()
 			sum.innerText = priceWithoutCurrency;
 		}
+		
+		
 				
 	} //window.onload 
 			
@@ -432,11 +442,9 @@ input[type="text"] {
 			document.getElementById('sum-' + preOrder).innerText = (size * discountedPrice);
 		}
 		
-		
 		//적립금(POINT)
 		const sum = parseFloat(document.getElementById('sum-' + preOrder).innerText.replace(/,/g, ''));
 		let pointRate = Math.round(sum*0.005);
-		
 		
 		document.getElementById('point-' + preOrder).innerText = pointRate; 
 		
@@ -472,25 +480,22 @@ input[type="text"] {
 					let clickPlusSum= parseInt(sum.replace(/,/g, '')); //플러스 눌렀을 때 금액 
 					//플러스 버튼 누를 때마다 해당 tr이 나옴 
 					if(document.getElementById('chec-' + preOrder).checked) {
-						console.log(parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price);
 						let zz = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price;
 						
 						//요약 수량 증가
 						let count = parseInt(document.getElementById('orderSize').innerText);
 						count++;
 						document.getElementById('orderSize').innerText = count;
-						
-						document.getElementById('trTotalSum').innerText = zz;
-						
+						document.getElementById('trTotalSum').innerText = parseInt(zz).toLocaleString();
 						//배송비 - 총합 
 						let shipping = parseInt(document.getElementById('shipSum').innerText);  
 						if(zz >= 30000) { //합계금액 
 							document.getElementById('shipPrice').innerText = '0';
-							document.getElementById('shipSum').innerText = zz;
+							document.getElementById('shipSum').innerText = parseInt(zz).toLocaleString();
 						} else {
 							document.getElementById('shipPrice').innerText = '3,000';
 			 				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
-			 				document.getElementById('shipSum').innerText = zz+shipPrice;
+			 				document.getElementById('shipSum').innerText = parseInt(zz+shipPrice).toLocaleString();
 						}
 					} else {}
 				},
@@ -505,7 +510,6 @@ input[type="text"] {
 		if(minSize != 1) {
 			size--;
 			document.getElementById('size-'+ preOrder).innerText = size; //감소 수량 삽입 
-			console.log(preOrder);
 			$.ajax({
 				url:'${contextPath}/minusCount.ma',
 				data:{
@@ -526,7 +530,7 @@ input[type="text"] {
 					if(document.getElementById('chec-' + preOrder).checked) {
 						console.log(parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price);
 						let zz = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) - price;
-						document.getElementById('trTotalSum').innerText = zz;
+						document.getElementById('trTotalSum').innerText = parseInt(zz).toLocaleString();
 						
 						//요약 수량 감소
 						let count = parseInt(document.getElementById('orderSize').innerText);
@@ -537,11 +541,11 @@ input[type="text"] {
 						let shipping = parseInt(document.getElementById('shipSum').innerText);  
 						if(zz >= 30000) { //합계금액 
 							document.getElementById('shipPrice').innerText = '0';
-							document.getElementById('shipSum').innerText = zz;
+							document.getElementById('shipSum').innerText = parseInt(zz).toLocaleString();
 						} else {
 							document.getElementById('shipPrice').innerText = '3,000';
 			 				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
-			 				document.getElementById('shipSum').innerText = zz+shipPrice;
+			 				document.getElementById('shipSum').innerText = parseInt(zz+shipPrice).toLocaleString();
 						}
 					} else {} 
 				},

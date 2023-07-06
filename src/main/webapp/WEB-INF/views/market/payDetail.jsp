@@ -254,7 +254,7 @@ input[type="text"] {
 						<td class="imgTab">
 							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
 							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-							<input type="text" class="storePreOrderNo" value="${cl.preorderNo }">
+							<input type="hidden" class="storePreOrderNo" value="${cl.preorderNo }">
 						</td>
 						<td style="border-right: 2px solid #dee2e6; text-align: left">
 							<b id="productName-${cl.preorderNo }">${cl.productName}</b><br><br>
@@ -367,7 +367,7 @@ input[type="text"] {
 			<td class="address"><b>배송지 명</b></td>
 			<td style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
 				<div>
-					<input type="text" id="shippingName" class="payContent" style="width: 400px; margin-left: 15px" name="payName">
+					<input type="text" id="shippingName" class="payContent" style="width: 400px; margin-left: 15px"  name="payName">
 				</div>
 			</td>
 		</tr>
@@ -416,20 +416,20 @@ input[type="text"] {
 			<td
 				style="text-align: left; border-top: 2px solid #dee2e6; border-bottom: 2px solid #dee2e6">
 				<div>
-					<input type="text" style="width: 200px; margin-left: 15px" class="payContent" name="payName">
+					<input type="text" style="width: 250px; margin-left: 15px" value="${loginUser.usersName }" class="payContent" name="payName">
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>휴대폰 번호</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
-				<input type="text" class="payContent" style="width: 200px; margin-left: 15px;" maxlength="14" name="phone">
+				<input type="text" class="payContent" value="${loginUser.phone }" style="width: 250px; margin-left: 15px;" maxlength="14" name="phone">
 			</td>
 		</tr>
 		<tr>
 			<td class="address"><b>이메일</b></td>
 			<td style="width: 400px; text-align: left; height: 50px; border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6">
-				<input type="email" class="payContent" style="width: 200px; height: 35px; margin-left: 15px;" name="payName">
+				<input type="email" class="payContent" value="${loginUser.email }"style=" width: 250px; height: 35px; margin-left: 15px;" name="payName">
 			</td>
 	</table>
 
@@ -1072,16 +1072,29 @@ input[type="text"] {
 		const inputPoint = document.getElementById('inputPoint'); 
 		const usePoint = document.getElementById('usePoint');
 		
-		//포인트 전액 사용 클릭 시
+		//포인트 전액 사용 버튼 클릭 시
+		let isFullUsed = false; // 전액 사용 여부 : 전액 사용이 아닌 경우 
 		document.getElementById('totalPointCheck').addEventListener('click', () => {
 			const trTotalSum = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, ''));
 			const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
+			//첫 번째 클릭 시 현재 포인트를 조회해 value와 usePoint에 저장 
 			
-			inputPoint.value = currentPoint + '원';
-			usePoint.innerText = currentPoint;
-			document.getElementById('shipSum').innerText = (trTotalSum + shipPrice - currentPoint ).toLocaleString();
-			
-		})
+			if (isFullUsed) { //전액사용 취소 시
+				inputPoint.value = '';
+				usePoint.innerText = '0'
+			    document.getElementById('shipSum').innerText = (trTotalSum + shipPrice).toLocaleString();
+				document.getElementById('payInfoSum').innerText = document.getElementById('shipSum').innerText;
+			    document.getElementById('totalPointCheck').innerText = '전액 사용'; 
+			    isFullUsed = false;
+		  	} else { //전액사용 시 
+				inputPoint.value = currentPoint + '원';
+		  		usePoint.innerText = parseInt(currentPoint).toLocaleString();
+			    document.getElementById('shipSum').innerText = (trTotalSum + shipPrice - currentPoint).toLocaleString();
+			    document.getElementById('payInfoSum').innerText = document.getElementById('shipSum').innerText
+			    document.getElementById('totalPointCheck').innerText = '사용 취소';
+			    isFullUsed = true;
+		  	}
+		});
 		
 		//input 금액화
 		inputPoint.addEventListener('change', () => {
@@ -1089,10 +1102,11 @@ input[type="text"] {
 			const formattedValue = value.toLocaleString(); //새로 입력한 값
 			const trTotalSum = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, ''));
 			const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''));
-			
+			const payInfoSum = document.getElementById('payInfoSum');
 			if(inputPoint.value.trim() == '') { //값이 없으면 
 				usePoint.innerText = '0';
 				document.getElementById('shipSum').innerText = (trTotalSum + shipPrice).toLocaleString();
+				payInfoSum.innerText = document.getElementById('shipSum').innerText;
 			} else { //값이 들어오면 
 				if(value > currentPoint) { //새로 입력한 값이 보유 포인트 금액보다 크면 
 					swal({
@@ -1103,14 +1117,17 @@ input[type="text"] {
 					inputPoint.value = currentPoint + '원';
 					usePoint.innerText = currentPoint;
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-currentPoint).toLocaleString(); //총금액+배송비-포인트
+					payInfoSum.innerText = document.getElementById('shipSum').innerText;
 				} else if ( value < currentPoint) { //새로 입력한 값보다 보유 포인트 금액이 크면 
 					inputPoint.value = formattedValue + '원';
 					usePoint.innerText = value;
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-value).toLocaleString();
+					payInfoSum.innerText = document.getElementById('shipSum').innerText;
 				} else if (value == currentPoint) {
 					inputPoint.value = formattedValue + '원';
 					usePoint.innerText = value;
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-value).toLocaleString();
+					payInfoSum.innerText = document.getElementById('shipSum').innerText;
 				}
 
 			}
@@ -1142,16 +1159,27 @@ input[type="text"] {
 	const payContent = document.getElementsByClassName('payContent');
 	requestPay = () => {
 		//모든 입력값 기재하지 않았을 때
+		const emailInputs = document.querySelectorAll('input[type="email"]')[0];
 		for(pc of payContent) {
 			//길이가 다르게 됨 
-				if(pc.value.trim() === '') {
-					swal({
-						 text: "결제 시 모든 입력값은 필수사항입니다.",
-						 icon: "error",
-						 button: "확인",
-						});
+			if(!emailInputs.value.includes('@')) {
+				swal({
+					 text: "이메일 형식이 올바르지 않습니다.",
+					 icon: "error",
+					 button: "확인",
+				});
 				return;
 			}
+			
+			if(pc.value.trim() === '') {
+				swal({
+					 text: "결제 시 모든 입력값은 필수사항입니다.",
+					 icon: "error",
+					 button: "확인",
+					});
+				return;
+			}
+			
 		}
 		const parentNo = document.getElementsByClassName('imgTab');
 		const shipSum = parseInt(document.getElementById('shipSum').innerText.replace(/,/g, '')); //총합 금액 
@@ -1175,7 +1203,6 @@ input[type="text"] {
 			const preorderNo = pn.firstChild.nextSibling.value; 
 			const orderCountMinus1 = parentNo.length - 1;
 			const productName = document.getElementById('productName-' + preorderNo).innerText;
-// 			const preorderNo = document.getElementById('preorderNo-' + preorderNo).value;
 			let name = '';
 			if(orderCountMinus1 == 0) {
 	        	name = '주문명:' + productName;

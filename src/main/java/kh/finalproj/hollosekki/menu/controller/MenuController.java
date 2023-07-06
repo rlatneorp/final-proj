@@ -141,11 +141,9 @@ public class MenuController {
 		if(loginUser != null) {
 			int result = mkService.selectLike(loginUser.getUsersNo(), productNo);
 			int result2 = mService.selectBookmark(loginUser.getUsersNo(), productNo);
+			model.addAttribute("bookmark", result2);
 		      if(result >= 1) {
 		    	  model.addAttribute("like", result);
-		      }
-		      if(result >= 1) {
-		    	  model.addAttribute("bookmark", result2);
 		      }
 		}
 		

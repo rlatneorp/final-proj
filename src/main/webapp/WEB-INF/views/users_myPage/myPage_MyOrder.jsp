@@ -189,15 +189,15 @@ th:first-child, td:first-child {
 											<td><fmt:formatDate value="${ol.orderDate }" pattern="yyyy-MM-dd"/></td>
 											<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
 											<td>
-												<c:if test="${ !empty reviewList[status.index].reviewNo and ol.orderNo eq reviewList[status.index].orderNo }">
+												<c:if test="${ ol.reviewCount ne 0 }">
 													<b style="font-size: 16px;">작성 완료</b>
 												</c:if>
-												<c:if test="${ empty reviewList[status.index].reviewNo and ol.orderNo ne reviewList[status.index].orderNo }">
+												<c:if test="${ ol.reviewCount eq 0 }">
 													<c:if test="${ ol.productType eq 2 }">
-														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ ol.productNo }' + '&page=' + '${pi.currentPage}'">
+														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ ol.productNo }'">
 													</c:if>
 													<c:if test="${ ol.productType ne 2 }">
-														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/market_detail.ma?productNo=' + '${ ol.productNo }' + '&page=' + '${pi.currentPage}'">
+														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/createReview.ma?productNo=' + '${ ol.productNo }'">
 													</c:if>
 												</c:if>
 											</td>
@@ -217,8 +217,8 @@ th:first-child, td:first-child {
 				</div>
 				<br><br>
 				<div style="margin:0 auto">
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 										<a class="page-link disabled" aria-label="Previous">

@@ -507,7 +507,7 @@
 	<select id="getIngredientCount" resultType="_int">
 		select count(*)
 		from ingredient
-		<if test="searchText != null">
+		<if test="searchText != null and searchText != ''">
 			<if test='searchType == "name"'>
 				where ingredient_name like '%${searchText}%'
 			</if>
@@ -519,7 +519,7 @@
 		from (select * 
 			  from ingredient
 			  order by ingredient_no desc) 
-		<if test="searchText != null">
+		<if test="searchText != null and searchText != ''">
 			<if test='searchType == "name"'>
 				where ingredient_name like '%${searchText}%'
 			</if>

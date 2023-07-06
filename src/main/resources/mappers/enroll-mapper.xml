@@ -238,7 +238,7 @@
 	<select id="healtherList" resultType="map">
 		select *
 		from healther
-    		 join image on(users_no = image_divide_no )
+    		 join image on(users_no = image_divide_no)
 		where image_type = 8
 	</select>
 	
@@ -249,6 +249,12 @@
 		     join product on(product.product_no = menu.product_no)
 		where product_status = 'Y'
 		order by product.product_no desc
+	</select>
+	
+	<select id="userInfo" resultMap="usersResultSet">
+		select *
+		from users
+		where users_id = #{ id }
 	</select>
 	
 	<resultMap type="Users" id="usersResultSet">

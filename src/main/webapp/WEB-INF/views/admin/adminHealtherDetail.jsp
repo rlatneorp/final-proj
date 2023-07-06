@@ -10,6 +10,9 @@
 <title>admin</title>
 <style>
 	span, input{height:30px;}
+	.careerBox button{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 40px; height: 30px; font-size: 14px;}
+	.careerBox .addBox{margin-left: 8px; background: #19A7CE;}
+	.careerBox .subBox{margin-left: 2px; background: gray;}
 </style>
 </head>
 <body>
@@ -26,17 +29,27 @@
 				<input type="hidden" name="usersNo" value="${loginUser.usersNo}">
 				<input type="hidden" name="imageChange" value="N">
 				<div class="row">
-					<div class="col-6 row">
+					<div class="col-6 row h-100">
 						<h5 class="my-3">- 소개 -</h5>
 						<hr>
-						<span class="col-4">이름</span>
-						<input type="text" name="name" class="col-8 pb-1 mb-2 rounded" value="${h.name}">
+						<span class="col-3">이름</span>
+						<input type="text" name="name" class="col-9 ps-1 pb-1 mb-3 rounded" value="${h.name}">
 						<hr>
-						<span class="col-4">프로필 제목</span>
-						<input type="text" name="title" class="col-8 pb-1 mb-2 rounded" value="${h.title}">
+						<span class="col-3">프로필 제목</span>
+						<input type="text" name="title" class="col-9 ps-1 pb-1 mb-3 rounded" value="${h.title}">
 						<hr>
-						<span class="col-4">경력사항</span>
-						<textarea rows="6" name="career" class="col-12 rounded">${h.career}</textarea>
+						<span class="col-3">경력사항</span>
+						<div class="col-9 p-0">
+							<div class="careerBox p-0">
+								<c:forEach items="${fn:split(h.career, ',')}" var="career" varStatus="vs">
+									<input name="career" type="text" class="career col-8 pb-1 mb-3 rounded" value="${career}">
+									<c:if test="${vs.index == 0}">
+										<button onclick="addCareerEvent()" type="button" class="addBox">+</button>
+										<button onclick="subCareerEvent()" type="button" class="subBox">-</button>
+									</c:if>
+								</c:forEach>
+							</div>
+						</div>
 						<hr>
 						<br><br>
 					</div>
@@ -94,7 +107,25 @@
 			    readImage(e.target);
 			    document.getElementsByName('imageChange')[0].value="Y";
 			})
+			
 		}
+		
+		function addCareerEvent(){
+			const careerBox = document.getElementsByClassName('careerBox')[0];
+			careerBox.innerHTML +=  '<input name="career" type="text" class="career col-8 pb-1 mb-3 rounded">';
+		}
+		
+		function subCareerEvent(){
+			const careerBox = document.getElementsByClassName('careerBox')[0];
+			const careers = careerBox.querySelectorAll('.career');
+			if(careers.length > 1){
+				careers[careers.length-1].remove();
+			}
+		}
+		
+		
+		
+// 		form submit 전 체크, submit 함수
 		function submitForm(){
 			const name = document.getElementsByName('name')[0];
 			const title = document.getElementsByName('title')[0];
@@ -119,6 +150,8 @@
 				healtherForm.submit();
 			}
 		}
+		
+		
 		
 		
 		

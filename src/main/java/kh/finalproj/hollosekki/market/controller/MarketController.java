@@ -81,10 +81,8 @@ public class MarketController {
          
          //카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
          foods = mkService.selectFood(productNo);
-         System.out.println("foods : " + foods);
          tools = mkService.selectTool(productNo);
          igs = mkService.selectIngrdient(productNo);
-         System.out.println("igs : " + igs);
          menus = mkService.selectMenu(productNo);
          
          //productNo에 대한 모든 정보를 하나하나 가져옴 
@@ -112,12 +110,12 @@ public class MarketController {
           if (tools != null) { //이미지 타입 : 6 ( 주방도구)
              cart.setProductName(tools.getToolName());
              String imgName = mkService.selectImg(productNo, 6);
-            cart.setImgName(imgName);
+             cart.setImgName(imgName);
           }
           if (igs != null) { //이미지 타입 :5 (식재료) 
              cart.setProductName(igs.getIngredientName());
-             String imgName = mkService.selectImg(productNo, 5);
-            cart.setImgName(imgName);
+             String imgName = mkService.selectImg(igs.getIngredientNo(), 5);
+             cart.setImgName(imgName);
           }
           if (menus != null) { //이미지 타입 : 4 (식단)
              cart.setProductName(menus.getMenuName());
@@ -177,7 +175,7 @@ public class MarketController {
               }
               if (igs != null) { //이미지 타입 : 5 (식재료) 
             	  checCart.setProductName(igs.getIngredientName());
-            	  String imgName = mkService.selectImg(productNo, 5);
+            	  String imgName = mkService.selectImg(igs.getIngredientNo(), 5);
             	  checCart.setImgName(imgName);
               }
               if (menus != null) { //이미지 타입 : 4 (식단)
@@ -1048,7 +1046,9 @@ public class MarketController {
 	   //식재료 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Ingredient lists : list) {
+			   System.out.println("ingreNo : " +  lists.getIngredientNo());
 			   int productNo = lists.getProductNo(); String img = null;
+			   System.out.println("pNo : " + productNo);
 			   pIngre = mkService.selectPIngre(productNo); //food productNo에 대한 Product 테이블 조회 
 			   if(pIngre != null) {
 				   pIngre.setProductName(lists.getIngredientName());

@@ -920,7 +920,10 @@ p b {
                   </div>
                </div>
             </div>
-            <div class="totalPrice"></div>
+            <div class="totalPriceBox">
+<!--             	<span class="totalPrice"></span> -->
+            	<input type="text" class="totalPrice" readonly value="0"> 원
+            </div>
             <br>
             <button type="button" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 <!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
@@ -1346,6 +1349,7 @@ p b {
       
       
 	      $(document).on("click",".btnbox",function(e){
+	    	 
 	         const increBtn = this.childNodes[2]; //증가버튼
 	         const decreBtn = this.childNodes[0]; //감소버튼
 	         const cartNum = this.childNodes[1];  //카트수량 
@@ -1385,7 +1389,7 @@ p b {
 		         }
 	         }
 	         
-
+	         cal();
 	      })
 	      
 	      
@@ -1642,6 +1646,7 @@ p b {
                                       +'<br>'
                                   +'</div>');
             }
+            cal()
          })
        }else{
           
@@ -1920,6 +1925,23 @@ p b {
             })
       })
    }
+   function cal(){
+	   const productPrices = document.getElementsByClassName('productPrice');
+	   const totalPrice = document.getElementsByClassName('totalPrice')[0];
+	   totalCost = 0;
+	   cost = 0;
+	   for(let price of productPrices){
+		   for(let i = 0; i < price.innerText.split(',').length; i++){
+			   if(i == 0){
+				   cost = 0;
+			   }
+			   cost += price.innerText.split(',')[i]; 
+		   }
+		   totalCost = totalCost*1 + cost*1;
+	   }
+	   totalPrice.value = totalCost*1;
+   }
+   
     </script> 
 </body>
 </html>

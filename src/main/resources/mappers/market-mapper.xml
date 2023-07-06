@@ -640,7 +640,7 @@
 <!-- 	</select> -->
 	
 	<select id="selectViewIngredient" resultMap="ingredientInfo" >
-		select * from ingredient
+		select * from ingredient where is_accept = 'Y'
 	</select>
 	
 	<select id="selectViewTool" resultMap="toolInfo" >
@@ -709,6 +709,7 @@
 			    ) l ON l.division_no = p.product_no
 			    LEFT JOIN image img ON p.product_no = img.image_divide_no
 			    WHERE p.product_type IN (1, 3, 4)
+			    AND img.image_type in (3,4,5,6)
 			    AND l.division_count IS NOT NULL 
 			    AND l.division_count <> 0
 			    AND img.image_level = 0
@@ -956,6 +957,9 @@
 		</if>
 	</select>
 	
+	<select id="selReviewCount" resultType="_int">
+		select count(*) from review where order_no = #{orderNo} and review_writer = #{nickName}
+	</select>
 	   <insert id="goToPay">
       <if test="preorderNo == 0">
          insert all 

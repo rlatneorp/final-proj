@@ -97,6 +97,12 @@ public interface RecipeService {
 
 	void updateIngredient(ArrayList<RecipeElement> reelList);
 
+	int insertRecipeBookmark(int usersNo, int divisionNo);
+
+	int deleteRecipeBookmark(int usersNo, int divisionNo);
+
+	int selectRecipeBookmark(int usersNo, int productNo);
+
 
 
 }

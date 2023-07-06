@@ -228,6 +228,11 @@ public class EnrollServiceImpl implements EnrollService{
 		return eDAO.menuProductList(sqlSession);
 	}
 
+	@Override
+	public Users userInfo(String id) {
+		return eDAO.userInfo(sqlSession, id);
+	}
+
 
 
 	

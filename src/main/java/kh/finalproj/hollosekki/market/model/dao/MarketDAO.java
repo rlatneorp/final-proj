@@ -555,6 +555,12 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectMealKit", sqlSession);
 	}
 
+	public int selectReview(SqlSessionTemplate sqlSession, int orderNo, String nickName) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("orderNo", orderNo);
+		map.put("nickName", nickName);
+		
+		return sqlSession.selectOne("marketMapper.selReviewCount", map);
 	public int goToPay(SqlSessionTemplate sqlSession, Cart c) {
 		 sqlSession.insert("marketMapper.goToPay", c);
 	      return c.getPreorderNo();

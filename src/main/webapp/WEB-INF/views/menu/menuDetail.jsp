@@ -349,6 +349,7 @@ p b {
 .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
 .moCon{height: 150px; border-radius: 10px;}
 .moCon:hover{cursor: pointer;}
+.cut{white-space: nowrap; overflow: hidden; text-overflow:ellipsis;}
 
 /* 	페이지 */
 	.page_wrap {
@@ -509,7 +510,7 @@ p b {
 						<dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
                             	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립) | 0,000원</p>
+                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
@@ -1149,7 +1150,7 @@ p b {
 								<div class="col">
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray">
-											<h6 style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</a></h6>
+											<h6 style="font-weight: bold;"><a class="cut" style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</a></h6>
 											<img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" width="150px" height="100px" style="border-radius: 10px;">
 											<input type="hidden" value="${p.productNo}">
 										</div>
@@ -1316,9 +1317,41 @@ p b {
 	const usersNo = '${loginUser.usersNo}';
 	
 	
+// 	function buybtn(){
+// 		const quantity = document.getElementById('quantity');
+// 		const buyMenuCount =document.getElementById('buyMenuCount');
+		
+// 		const buyMenuPrice = document.getElementById('buyMenuPrice');
+// 		const total = document.getElementById('total');
+		
+// 		buyMenuCount.innerText = quantity.innerText;
+// 		buyMenuPrice.innerText = total.innerText;
+		
+// 		console.log("quantity : " + buyMenuCount.innerText);
+// 		console.log("productNo : " + productNo);
+// 		console.log("usersNo : " + usersNo);
+		
+// 		$.ajax({
+//             url: "insertCart.ma",
+//             async: false,
+//             data: {
+//         		"productNo":productNo, 
+// 	        	"cartCount":buyMenuCount.innerText,
+// 	        	"usersNo":usersNo,
+// 	        },
+//             success: data =>{
+//         		console.log("success");
+//             },
+//             error: data => {
+//             	console.log("error");
+//             	 alert("카트 담기 실패");
+//             }
+//         }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
+// 	}
+
 	const buybtn = document.getElementById('buybtn');
 	buybtn.addEventListener('click', function(){
-		const quantity = document.getElementById('quantity');
+	const quantity = document.getElementById('quantity');
 		const buyMenuCount =document.getElementById('buyMenuCount');
 		
 		const buyMenuPrice = document.getElementById('buyMenuPrice');
@@ -1346,10 +1379,40 @@ p b {
             	console.log("error");
             	 alert("카트 담기 실패");
             }
-        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
-		
+        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)	
 	})
 	
+// 	function cartbtn(){
+// 		const quantity = document.getElementById('quantity');
+// 		const cartMenuCount =document.getElementById('cartMenuCount');
+		
+// 		const cartMenuPrice = document.getElementById('cartMenuPrice');
+// 		const total = document.getElementById('total');
+		
+// 		cartMenuCount.innerText = quantity.innerText;
+// 		cartMenuPrice.innerText = total.innerText;
+		
+// 		console.log("quantity : " + cartMenuCount.innerText);
+// 		console.log("productNo : " + productNo);
+// 		console.log("usersNo : " + usersNo);
+		
+// 		$.ajax({
+// 	            url: "insertCart.ma",
+// 	            async: false,
+// 	            data: {
+// 	        		"productNo":productNo, 
+// 		        	"cartCount":cartMenuCount.innerText,
+// 		        	"usersNo":usersNo,
+// 		        },
+// 	            success: data =>{
+//             		console.log("success");
+// 	            },
+// 	            error: data => {
+// 	            	console.log("error");
+// 	            	 alert("카트 담기 실패");
+// 	            }
+// 			})
+// 	}
 	const cartbtn = document.getElementById('cartbtn');
 	cartbtn.addEventListener('click', function(){
 		const quantity = document.getElementById('quantity');
@@ -1366,21 +1429,21 @@ p b {
 		console.log("usersNo : " + usersNo);
 		
 		$.ajax({
-	            url: "insertCart.ma",
-	            async: false,
-	            data: {
-	        		"productNo":productNo, 
-		        	"cartCount":cartMenuCount.innerText,
-		        	"usersNo":usersNo,
-		        },
-	            success: data =>{
-            		console.log("success");
-	            },
-	            error: data => {
-	            	console.log("error");
-	            	 alert("카트 담기 실패");
-	            }
-			})
+            url: "insertCart.ma",
+            async: false,
+            data: {
+        		"productNo":productNo, 
+	        	"cartCount":cartMenuCount.innerText,
+	        	"usersNo":usersNo,
+	        },
+            success: data =>{
+           		console.log("success");
+            },
+            error: data => {
+            	console.log("error");
+            	 alert("카트 담기 실패");
+            }
+		})
 	})
 	
 	const moCons = document.getElementsByClassName('moCon');

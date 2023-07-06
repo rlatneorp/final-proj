@@ -1005,12 +1005,12 @@ p b {
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
             <c:forEach	items="${ordList}" var="orders">
-<%--                <c:if test="${ orders >=  1 }"> --%>
+               <c:if test="${ orders >=  1 }">
 	               <div class="review_btn">
 	                  <a href="createReview.ma?productNo=${p.productNo}">
 	                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 	               </div>
-<%--             </c:if>  --%>
+            </c:if> 
             </c:forEach>   
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |

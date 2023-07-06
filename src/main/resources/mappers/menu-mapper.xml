@@ -125,6 +125,7 @@
 		select *
 		from review
 		where product_no = #{mNo} and review_status = 'Y' and order_no != 0
+		order by review_no desc
 	</select>
 	
 	<select id="myReview" resultType="_int">
@@ -149,6 +150,19 @@
 		set review_content = #{reviewContent}, review_score = #{reviewScore}
 		where review_no = #{reviewNo}
 	</update>
+	
+	<select id="notReview" resultType="map">
+		select *
+		from orders o
+		     left join review using(order_no)
+		where users_no = #{usersNo} and o.product_no = #{productNo} and review_content is null
+	</select>
+	
+	<select id="selectMyReviewList" resultMap="reviewResultSet">
+		select *
+		from review
+		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no != 0
+	</select>
 	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>

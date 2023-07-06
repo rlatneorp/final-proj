@@ -69,7 +69,9 @@
 						</tr>
 						<tr>
 							<td class="detail">주문날짜</td>
-							<td>${orders.orderDate }</td>
+							<td>
+								<fmt:formatDate value="${orders.orderDate }" pattern="yyyy-MM-dd"/>
+							</td>
 						</tr>
 						<tr>
 							<td class="detail">주문자</td>
@@ -124,6 +126,7 @@
 							<td class="order">
 								<input type="hidden" id="productNo" value="${orders.productNo }">
 								<img src="${contextPath }/resources/uploadFiles/${orders.imgName}"/>
+								<input type="hidden" id="type" value="${orders.productType }">
 							</td>
 							<td>
 								${orders.productName }<br>
@@ -140,12 +143,6 @@
 							</td>
 						</tr>
 					</table>
-<!-- 					<div id="delivery"> -->
-<!-- 						<p style="margin-left: 20px;"> -->
-<!-- 							<br> -->
-<!-- 							상품구매금액 25,000 + 배송비 0<br>합계 : <b>₩25,000</b> -->
-<!-- 						</p> -->
-<!-- 					</div> -->
 					<br><br>
 					<p class="orderInfo">배송지 정보</p>
 					<table>
@@ -224,9 +221,14 @@
 			console.log(addresses);
 			addresses.split
 			
-			document.getElementById('detailProduct').addEventListener('click', () => {
+			document.getElementById('detailProduct').addEventListener('click', function() {
+				const type = this.children[0].children[2].value;
 				const productNo = document.getElementById('productNo').value;
-				location.href='${contextPath}/menuDetail.mn?mNo=' + productNo;
+				if(type == '2') {
+					location.href='${contextPath}/menuDetail.mn?mNo=' + productNo;
+				} else {
+					location.href='${contextPath}/market_detail.ma?productNo=' + productNo;
+				}
 			})
 		}
 	</script>

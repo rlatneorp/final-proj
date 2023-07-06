@@ -396,13 +396,13 @@
    <select id="reviewAvg" resultType="_integer">
 	  select round(avg(review_Score))
 	  from review 
-	  where product_no = #{productNo} and review_status = 'Y'
+	  where product_no = #{productNo} and  order_no > 0 and review_status = 'Y'
    </select>
    
    <select id="reviewAvgDesc" resultMap="reviewResultSet">
    	  select *
       from review
-      where product_no = #{productNo} and review_status = 'Y'
+      where product_no = #{productNo} and order_no > 0 and review_status = 'Y'
       order by review_score desc, review_no desc
    </select>
    
@@ -419,7 +419,7 @@
       from (select *
            from review
            order by review_date desc)   
-      where product_no = #{productNo} and review_status = 'Y'
+      where product_no = #{productNo} and  order_no > 0  and review_status = 'Y'
    </select>
    
    <select id="selectImageList" resultMap="imageResultSet">

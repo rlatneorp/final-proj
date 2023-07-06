@@ -922,7 +922,7 @@ p b {
             </div>
             <div class="totalPrice"></div>
             <br>
-            <button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+            <button type="submit" id="buybtn" style="display: inline-block; width: 60%;" formaction="${ contextPath }/payDetail.ma">구매하기</button>
 <!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
    
@@ -1005,12 +1005,14 @@ p b {
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
             <c:forEach	items="${ordList}" var="orders">
-<%--                <c:if test="${ orders >=  1 }"> --%>
-	               <div class="review_btn">
-	                  <a href="createReview.ma?productNo=${p.productNo}">
-	                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
-	               </div>
-<%--             </c:if>  --%>
+               <c:if test="${ orders >=  1 }">
+               		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}">
+		               <div class="review_btn">
+		                  <a href="createReview.ma?productNo=${p.productNo}">
+		                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
+		               </div>
+		            </c:if>
+            </c:if> 
             </c:forEach>   
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
@@ -1300,8 +1302,8 @@ p b {
       const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 //       const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
       const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
-       const buyBtn = document.getElementById("buyBtn");
-      const result = document.getElementById("productResult");
+       const buyBtn = document.getElementById("buybtn");
+      const result = document.querySelectorAll(".productResult");
       const like = document.querySelector(".like");
       const productSet = document.querySelector(".productSet");
       const increase = document.querySelectorAll(".increase");   
@@ -1311,11 +1313,18 @@ p b {
       let productPrice = document.querySelectorAll(".productPrice");
       const cartCount = document.querySelector(".cartCount");
       let totalPrice1 = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-//       let totalPrice = document.querySelector(".totalPrice");
+      let totalPrice = document.querySelector(".totalPrice");
       
       
       
-      
+//       buyBtn.addEventListener("click", function(){
+//     	  if(${loginUser == null}){
+//     		  swal("로그인 후 이용해주세요.", {
+//     			  buttons: false,
+//     			  timer: 1000,
+//     			});
+//     	  }
+//       })
       
       
       
@@ -1330,25 +1339,41 @@ p b {
       })
    
       
+      
+      
+    
+      
+      
 	      $(document).on("click",".btnbox",function(e){
 	         const increBtn = this.childNodes[2]; //증가버튼
 	         const decreBtn = this.childNodes[0]; //감소버튼
 	         const cartNum = this.childNodes[1];  //카트수량 
-	        
+	         const productPrice = this.childNodes[4];
+	         
+	         function cartNumber(a){
+	        	 a.value*totalPrice1
+	    		console.log(cartNum*totalPrice1);
+	    	};
+	          
+	         
 	         e.stopPropagation();    //이벤트 버블링 막기
+	         
 	         if(e.target === increBtn){
                   totalPrice1 = (this.childNodes[1].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                  this.childNodes[4].innerText=totalPrice1;
+                  productPrice.innerText=totalPrice1;
                   cartNum.value++;
+                  cartNumber(cartNum.value);
 	         } 
 	         if(e.target === decreBtn){
                  totalPrice1 = (this.childNodes[1].value*${total}-${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                 this.childNodes[4].innerText=totalPrice1;
+                 productPrice.innerText=totalPrice1;
                  cartNum.value--;
-                 cartNum.value--;
+                 cartNumber(cartNum.value);
+              
 		            if(cartNum.value < 1 ){
 		            	cartNum.value=1;
-		               this.childNodes[4].innerText=${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		            	totalPrice1 = (this.childNodes[1].value*${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		            	productPrice.innerText=totalPrice1;
 		            }
 	            
 	         }
@@ -1359,8 +1384,52 @@ p b {
 		         }
 	         }
 	         
-	         
+
 	      })
+	      
+	      
+	      
+	      if(productOptionSet == null){
+  	  		let productPrice = document.querySelector(".productPrice");
+  	  		productPrice.innerText=totalPrice1;
+		          $(document).on("click",".btnbox",function(e){
+		              const increBtn = this.childNodes[5]; //증가버튼
+		              const decreBtn = this.childNodes[1]; //감소버튼
+		              const cartNum = this.childNodes[3];  //카트수량 
+//		              e.stopPropagation();    //이벤트 버블링 막기
+		              if(e.target == increBtn){
+		                 totalPrice1 = (this.childNodes[3].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                 productPrice.innerText=totalPrice1;
+		              this.childNodes[3].value++;
+		              } 
+		              if(e.target == decreBtn){
+		                 totalPrice1 = (this.childNodes[3].value*${total}-${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                 productPrice.innerText=totalPrice1;
+		                 this.childNodes[3].value--;
+//		                  priceSet--;
+		                 if(cartNum.value < 1){
+		                    cartNum.value=1;
+		                    productPrice.innerText = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                 }
+		                 
+		     	 }
+					
+		              
+	      		})
+    
+    }
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
 	  
       
       
@@ -1455,45 +1524,6 @@ p b {
       let opTextBox = []; 
       
       
-      if(productOptionSet == null){
-    	  		let productPrice = document.querySelector(".productPrice");
-    	  		productPrice.innerText=totalPrice1;
-		          $(document).on("click",".btnbox",function(e){
-		              const increBtn = this.childNodes[5]; //증가버튼
-		              const decreBtn = this.childNodes[1]; //감소버튼
-		              const cartNum = this.childNodes[3];  //카트수량 
-// 		              e.stopPropagation();    //이벤트 버블링 막기
-		              if(e.target == increBtn){
-		                 totalPrice1 = (this.childNodes[3].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                 productPrice.innerText=totalPrice1;
-		              this.childNodes[3].value++;
-		              } 
-		              if(e.target == decreBtn){
-		                 totalPrice1 = (this.childNodes[3].value*${total}-${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                 productPrice.innerText=totalPrice1;
-		                 this.childNodes[3].value--;
-// 		                  priceSet--;
-		                 if(cartNum.value < 1){
-		                    cartNum.value=1;
-		                    productPrice.innerText = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                 }
-		                 
-		     	 }
-		              
-	      		})
-      
-      }
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       
       if(productOption2Set != null){
          for(prOp of productOption2Set){
@@ -1563,6 +1593,7 @@ p b {
 		                                        +'</div>'
 		                                         +'<br>'
 		                                     +'</div>');
+
 		               }
 		            
 		         }

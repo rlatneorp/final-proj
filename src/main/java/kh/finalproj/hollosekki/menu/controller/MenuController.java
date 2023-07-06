@@ -104,7 +104,7 @@ public class MenuController {
 	public ModelAndView menuDetail(@RequestParam("mNo") int mNo, @RequestParam(value="page", required=false) Integer page,
 								   HttpSession session, ModelAndView mv, Model model,
 								   @RequestParam(value = "repage", required = false) Integer repage,
-								   @RequestParam(value = "repage", required = false) Integer myrepage) {
+								   @RequestParam(value = "myrepage", required = false) Integer myrepage) {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		String loginId = null;

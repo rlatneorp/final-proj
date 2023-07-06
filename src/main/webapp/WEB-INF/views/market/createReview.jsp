@@ -213,7 +213,7 @@ dl dd div label{
 
 					<label for="content" style="font-weight: 800;">내용</label>
 					
-					<textarea class="form-control" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  maxlength="200" required="required"></textarea>
+					<textarea class="reviewContent" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  maxlength="200" required="required"></textarea>
 
 				</div>
 				
@@ -233,7 +233,7 @@ dl dd div label{
 								</h5>
 <%-- 							</c:forEach> --%>
 						</div>					
-					<button type="submit" class="button" id="Save">작성하기</button>
+					<button  class="submit" type="button" class="button" id="Save">작성하기</button>
 				<button type="button" class="button" id="btnList" onclick="javascript:history.back();">취소</button>
 					
 
@@ -248,6 +248,7 @@ dl dd div label{
 	window.onload = () =>{
 		const fileArea = document.querySelector('#fileArea');
 		const deleteAttm = document.querySelector('.deleteAttm');
+		const submit = document.querySelector(".submit");
 		document.querySelector(".addImage").addEventListener('click', (e)=>{
 			const newDiv = document.createElement('div');
 			newDiv.classList.add("mb-3");
@@ -267,7 +268,16 @@ dl dd div label{
 					att.remove();
 			}
 			
-
+		})
+		
+		submit.addEventListener("click", function(){
+			
+				if(document.querySelector(".reviewContent").innerText.trim()==""){
+					alert("후기를 작성해주세요!");
+				}else if(document.querySelector(".reviewContent").innerText.trim()!=""){
+					location.href="market_detail.ma?productNo=${p.productNo}";
+				}
+			
 		})
 		
 	}

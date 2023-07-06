@@ -246,11 +246,12 @@
 			<div id="title">
 				<h2 style="display: inline-block; width: 580px;">${recipe.recipeName }</h2>
 				<c:if test="${ loginUser != null }">
+				
 					<c:if test="${ bookmark == 0 }">
-						<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
+						<button type="button" id="bookmark" value="noBookmark" style="border: none; background: none;"><i class="bi bi-bookmark" style="font-size: 25px;"></i></button>
 					</c:if>
 					<c:if test="${ bookmark != 0 }">
-						<a href="#"><i class="bi bi-bookmark-fill" style="font-size: 20px;"></i></a>
+						<button type="button" id="bookmark" value="Bookmark" style="border: none; background: none;"><i class="bi bi-bookmark-fill" style="font-size: 25px;"></i></button>
 					</c:if>
 				</c:if>
 			</div>
@@ -763,6 +764,86 @@ function ingreBuy(){
 	location.href = '${contextPath}/viewIngredient.ma';
 }
 
+const bookmark = document.querySelector('#bookmark');
+const usersNo = '${ loginUser.usersNo}';
+const divisionNo = '${ recipe.foodNo }';
+console.log(usersNo);
+console.log(divisionNo);
+console.log(bookmark.value);
+bookmark.addEventListener('click', function(){
+	if(bookmark.value == 'noBookmark'){
+		$.ajax({
+			url: "insertBookmark.rc",
+			data:{
+        		usersNo:usersNo,
+        		divisionNo:divisionNo
+        	},
+        	success: data=> {
+        		if(data == 'success') {
+        			bookmark.innerHTML = '<i class="bi bi-bookmark-fill" style="font-size: 25px;"></i>';
+        			bookmark.value = 'bookmark';
+        			swal({
+						 text: "해당 상품의 스크랩이 완료되었습니다.",
+						 icon: "success",
+						 button: "확인",
+						});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 3000);
+        		} else { //실패 시 
+        			swal({
+						 text: "해당 상품의 스크랩에 실패했습니다.",
+						 icon: "error",
+						});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 2000);
+        		}
+        	},
+        	error:data=>{
+    			swal({
+					 text: "해당 상품의 스크랩에 실패했습니다.",
+					 icon: "error",
+					});
+        		setTimeout(function() {
+        			swal.close(); 
+        		}, 2000);
+        	}
+        })
+	} else {
+		$.ajax({
+    		url:"deleteBookmark.rc",
+    		data:{
+    			usersNo:usersNo,
+        		divisionNo:divisionNo
+    		},
+    		success: data => {
+    			console.log(data);
+    			if(data == 'success') {
+    				bookmark.innerHTML = '<i class="bi bi-bookmark" style="font-size: 25px;"></i>';
+    				bookmark.value = 'noBookmark';
+        			swal({
+						 text: "해당 상품의 스크랩이 해제되었습니다.",
+						 icon: "success",
+						});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 2000);
+        		} else { //실패 시 
+        			swal({
+						 text: "해당 상품의 스크랩 해제에 실패했습니다.",
+						 icon: "error",
+						});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 2000);
+        		}
+    		},
+    		error: data=>{
+    		}
+    	})
+	}
+})
 
 </script>
 	

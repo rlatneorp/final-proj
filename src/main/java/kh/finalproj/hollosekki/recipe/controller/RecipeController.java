@@ -130,7 +130,8 @@ public class RecipeController {
 	@RequestMapping("recipeDetail.rc")
 	public ModelAndView recipeDetail(@RequestParam("rId") String usersId, @RequestParam("rNo") int foodNo,
 			@RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv,
-			@RequestParam(value = "repage", required = false) Integer repage, Model model) {
+			@RequestParam(value = "repage", required = false) Integer repage, Model model,
+			@RequestParam(value = "myrepage", required = false) Integer myrepage) {
 
 		Users loginUser = (Users) session.getAttribute("loginUser");
 
@@ -156,7 +157,13 @@ public class RecipeController {
 		if(repage == null) {
 			repage = 1;
 		}
+		
+		if(myrepage == null) {
+			myrepage = 1;
+		}
+		
 		PageInfo rpi = ReviewPagination.getPageInfo(repage, reviewCount, 5);
+		PageInfo mpi = ReviewPagination.getPageInfo(myrepage, myReview, 5); // 내 리뷰
 
 		Recipe recipe = rService.recipeDetail(foodNo, yn);
 		ArrayList<RecipeOrder> orderList = rService.recipeDetailOrderText(foodNo);
@@ -164,6 +171,13 @@ public class RecipeController {
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
 		ArrayList<Review> reList = rService.selectReviewList(rpi, foodNo);
 		ArrayList<RecipeElement> eleList = rService.selectRecipeElement(foodNo);
+		
+		// 내 후기
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("reviewWriter", nickName);
+		map.put("productNo", foodNo);
+		
+		ArrayList<Review> mrList = rService.selectMyReviewList(mpi, map);
 		
 		// 레시피 등록 유저 정보
 		String id = usersId;
@@ -183,7 +197,7 @@ public class RecipeController {
 		}
 		
 		
-//		System.out.println(reList);
+		System.out.println(recipe);
 
 		if (recipe != null) {
 			mv.addObject("recipe", recipe);
@@ -191,12 +205,15 @@ public class RecipeController {
 			mv.addObject("thum", thum);
 			mv.addObject("cList", cList);
 			mv.addObject("reList", reList);
+			mv.addObject("mrList", mrList);
 			mv.addObject("page", page);
 			mv.addObject("rpi", rpi);
+			mv.addObject("mpi", mpi);
 			mv.addObject("eleList", eleList);
 			mv.addObject("myReview", myReview);
 			mv.addObject("reviewCount", reviewCount);
 			mv.addObject("repage", repage);
+			mv.addObject("myrepage", myrepage);
 			mv.setViewName("recipeDetail");
 
 			return mv;

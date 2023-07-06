@@ -214,7 +214,6 @@ public class UsersController {
 		int result = uService.updateProfile(u);
 		Users user = uService.selectInfo(u);
 		Image image = null;
-		System.out.println(file);
 
 		if (file != null && !file.isEmpty()) { // 새파일 들어옴
 			String[] returnArr = saveFile(file, request);

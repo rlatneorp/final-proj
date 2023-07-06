@@ -190,6 +190,7 @@ public class MenuController {
 			mv.addObject("reviewCount", reviewCount);
 			mv.addObject("rpi", rpi);
 			mv.addObject("mpi", mpi);
+			mv.addObject("page", page);
 			mv.addObject("repage", repage);
 			mv.addObject("myrepage", myrepage);
 			mv.addObject("notReview", notReview);
@@ -244,6 +245,7 @@ public class MenuController {
 	
 	@RequestMapping("writeReview.mn")
 	public String writeReview(@ModelAttribute Review r) {
+		System.out.println(r.getOrderNo());
 		int result = mService.insertReview(r);
 		
 		if(result > 0) {

@@ -305,6 +305,13 @@
 		where users_no = #{usersNo} and division_no = #{ productNo } and number_type = 1
 	</select>
 	
+	<select id="selectMyReviewList" resultMap="reviewResultSet">
+		select *
+		from review
+		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no = 0
+		order by review_no desc
+	</select>
+	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

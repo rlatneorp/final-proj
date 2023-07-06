@@ -235,4 +235,12 @@ public class RecipeDAO {
 		return sqlSession.selectOne("recipeMapper.selectRecipeBookmark", map);
 	}
 
+	public ArrayList<Review> selectMyReviewList(SqlSessionTemplate sqlSession, PageInfo mpi,
+			HashMap<String, Object> map) {
+		int offset = (mpi.getCurrentPage() - 1) * mpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, mpi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("recipeMapper.selectMyReviewList", map, rowBounds);
+	}
+
 }

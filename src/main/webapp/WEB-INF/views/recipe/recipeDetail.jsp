@@ -237,7 +237,7 @@
 	<div id="top">
 	<input type="hidden" value="${recipe.foodNo}" name="foodNo" id="foodNo">
 	<input type="hidden" value="${page}" name="page" id="recipePage">
-	<input type="hidden" value="${loginUser.usersId }" id="recipeWriter">
+	<input type="hidden" value="${recipe.usersId }" id="recipeWriter">
 		<div id="thumImg">
 			<img src="${contextPath }/resources/uploadFiles/${thum.imageRenameName}" style="width: 100%; height: 100%; border-radius: 5px;">
 		</div>
@@ -387,9 +387,9 @@
 <!-- 문의 / 후기 -->
 
 <!-- <p class="mid">후기</p> -->
-<c:if test="${loginUser ne null }">
+<c:if test="${ loginUser ne null and myReview ne 0 }">
 	<p class="mid">내가 쓴 후기</p>
-	<br>
+	<br><p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 	<div id="qna">
 		<table class="board">
 			<tr class="boardTop">
@@ -405,9 +405,9 @@
 				</tr>
 			</c:if>
 			<c:if test="${myReview ne 0 }">
-				<c:forEach items="${reList }" var="re">
+				<c:forEach items="${mrList }" var="re">
 					<c:if test="${re.reviewWriter eq loginUser.nickName}">
-						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
+						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" style="cursor: pointer;"</c:if>>
 							<td class="line">${re.reviewNo }</td>
 							<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
 							<td class="line">${re.reviewContent}</td>
@@ -419,10 +419,54 @@
 			</c:if>
 		</table>
 	</div>
-<br><br>
+	<br><br>
+	<div class="page_wrap">
+		   <div class="page_nation">
+		      <!-- 		이전 페이지로	 -->
+				<c:url var="goBack" value="${loc }">
+					<c:param name="myrepage" value="${mpi.currentPage - 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
+					<c:param name="rId" value="${recipe.usersId}"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${mpi.currentPage > 1 }">
+					<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
+				</c:if>
+				
+		<!-- 		페이지 -->
+				<c:forEach begin="${ mpi.startPage }" end="${ mpi.endPage }" var="mp">
+					<c:url var="goNum" value="${loc }">
+						<c:param name="myrepage" value="${ mp }"></c:param>
+						<c:param name="repage" value="${rpi.currentPage}"></c:param>
+						<c:param name="rId" value="${recipe.usersId}"></c:param>
+						<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+						<c:param name="page" value="${page}"></c:param>
+					</c:url>
+					<c:if test="${ mpi.currentPage eq mp }">
+						<a class="active">${ mp }</a>
+					</c:if>
+					<c:if test="${ !(mpi.currentPage eq mp) }">
+						<a href="${ goNum }" onclick="saveScrollPosition();">${ mp }</a>
+					</c:if>
+				</c:forEach>
+				
+				<c:url var="goNext" value="${loc }">
+					<c:param name="myrepage" value="${mpi.currentPage + 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
+					<c:param name="rId" value="${recipe.usersId}"></c:param>
+					<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${mpi.currentPage < mpi.endPage }">
+					<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
+				</c:if>
+		   </div>
+		</div>
 </c:if>
+<br><br><br>
 <p class="mid">후기</p>
-<br>
+<br><p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 <div id="qna">
 	<table class="board">
 		<tr class="boardTop">
@@ -440,15 +484,13 @@
 			</c:if>
 			<c:if test="${reviewCount ne 0 }">
 				<c:forEach items="${reList}" var="re">
-					<c:if test="${re.reviewWriter ne loginUser.nickName }">
-						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
-							<td class="line">${re.reviewNo }</td>
-							<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
-							<td class="line">${re.reviewContent}</td>
-							<td class="line">${re.reviewWriter}</td>
-							<td class="line">${re.reviewDate}</td>
-						</tr>
-					</c:if>
+					<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" style="cursor: pointer;"</c:if>>
+						<td class="line">${re.reviewNo }</td>
+						<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
+						<td class="line">${re.reviewContent}</td>
+						<td class="line">${re.reviewWriter}</td>
+						<td class="line">${re.reviewDate}</td>
+					</tr>
 				</c:forEach>
 			</c:if>
 		</tbody>
@@ -461,23 +503,21 @@
    <div class="page_nation">
       <!-- 		이전 페이지로	 -->
 		<c:url var="goBack" value="${loc }">
-			<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
+			<c:param name="repage" value="${ rpi.currentPage - 1 }"></c:param>
+			<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 			<c:param name="rId" value="${recipe.usersId}"></c:param>
 			<c:param name="rNo" value="${recipe.foodNo}"></c:param>
 			<c:param name="page" value="${page}"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage > 1 }">
-			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
-<%-- 			<c:param name="rId" value="${recipe.usersId}"></c:param> --%>
-<%-- 			<c:param name="rNo" value="${recipe.foodNo}"></c:param> --%>
-<%-- 			<c:param name="page" value="${page}"></c:param> --%>
-<%-- 			<c:param name="repage" value="${repage}"></c:param> --%>
+			<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
 		</c:if>
 		
 <!-- 		페이지 -->
 		<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
 				<c:param name="repage" value="${p }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 				<c:param name="rId" value="${recipe.usersId}"></c:param>
 				<c:param name="rNo" value="${recipe.foodNo}"></c:param>
 				<c:param name="page" value="${page}"></c:param>
@@ -486,18 +526,19 @@
 				<a class="active">${p }</a>
 			</c:if>
 			<c:if test="${ !(rpi.currentPage eq p) }">
-				<a href="${goNum }">${p }</a>
+				<a href="${goNum }" onclick="saveScrollPosition();">${p }</a>
 			</c:if>
 		</c:forEach>
 		
 		<c:url var="goNext" value="${loc }">
 			<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
+			<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 			<c:param name="rId" value="${recipe.usersId}"></c:param>
 			<c:param name="rNo" value="${recipe.foodNo}"></c:param>
 			<c:param name="page" value="${page}"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage < rpi.endPage }">
-			<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
+			<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
 		</c:if>
    </div>
 </div>
@@ -846,6 +887,25 @@ bookmark.addEventListener('click', function(){
     	})
 	}
 })
+
+	// 원래 위치 정보를 저장하는 함수
+	function saveScrollPosition() {
+	  sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop);
+	}
+
+	// 페이지 로드 후 저장된 위치로 스크롤하는 함수
+	function scrollToSavedPosition() {
+	  var scrollPosition = sessionStorage.getItem('scrollPosition');
+	  if (scrollPosition) {
+	    setTimeout(function() {
+	      window.scrollTo(0, scrollPosition);
+	      sessionStorage.removeItem('scrollPosition'); // 위치 정보 삭제
+	    }, 0);
+	  }
+	}
+
+	// 페이지 로드 시 저장된 위치로 스크롤
+	window.addEventListener('load', scrollToSavedPosition);
 
 </script>
 	

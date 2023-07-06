@@ -258,4 +258,9 @@ public class RecipeServiceImpl implements RecipeService{
 	public int selectRecipeBookmark(int usersNo, int productNo) {
 		return rDAO.selectRecipeBookmark(sqlSession, usersNo, productNo);
 	}
+	
+	@Override
+	public ArrayList<Review> selectMyReviewList(PageInfo mpi, HashMap<String, Object> map) {
+		return rDAO.selectMyReviewList(sqlSession, mpi, map);
+	}
 }

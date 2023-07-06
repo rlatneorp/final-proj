@@ -632,7 +632,7 @@
 <!-- 	</select> -->
 	
 	<select id="selectViewIngredient" resultMap="ingredientInfo" >
-		select * from ingredient
+		select * from ingredient where is_accept = 'Y'
 	</select>
 	
 	<select id="selectViewTool" resultMap="toolInfo" >
@@ -701,6 +701,7 @@
 			    ) l ON l.division_no = p.product_no
 			    LEFT JOIN image img ON p.product_no = img.image_divide_no
 			    WHERE p.product_type IN (1, 3, 4)
+			    AND img.image_type in (3,4,5,6)
 			    AND l.division_count IS NOT NULL 
 			    AND l.division_count <> 0
 			    AND img.image_level = 0

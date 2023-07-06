@@ -1018,7 +1018,7 @@ p b {
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
 				<c:if test="${mpi.currentPage > 1 }">
-					<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
+					<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
 				</c:if>
 				
 		<!-- 		페이지 -->
@@ -1032,7 +1032,7 @@ p b {
 						<a class="active">${ mp }</a>
 					</c:if>
 					<c:if test="${ !(mpi.currentPage eq mp) }">
-						<a href="${ goNum }">${ mp }</a>
+						<a href="${ goNum }" onclick="saveScrollPosition();">${ mp }</a>
 					</c:if>
 				</c:forEach>
 				
@@ -1042,7 +1042,7 @@ p b {
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
 				<c:if test="${mpi.currentPage < mpi.endPage }">
-					<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
+					<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
 				</c:if>
 		   </div>
 		</div>
@@ -1087,11 +1087,7 @@ p b {
 				<c:param name="page" value="${page}"></c:param>
 			</c:url>
 			<c:if test="${rpi.currentPage > 1 }">
-				<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
-	<%-- 			<c:param name="rId" value="${recipe.usersId}"></c:param> --%>
-	<%-- 			<c:param name="rNo" value="${recipe.foodNo}"></c:param> --%>
-	<%-- 			<c:param name="page" value="${page}"></c:param> --%>
-	<%-- 			<c:param name="repage" value="${repage}"></c:param> --%>
+				<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
 			</c:if>
 			
 	<!-- 		페이지 -->
@@ -1105,7 +1101,7 @@ p b {
 					<a class="active">${ p }</a>
 				</c:if>
 				<c:if test="${ !(rpi.currentPage eq p) }">
-					<a href="${ goNum }">${ p }</a>
+					<a href="${ goNum }" onclick="saveScrollPosition();">${ p }</a>
 				</c:if>
 			</c:forEach>
 			
@@ -1115,7 +1111,7 @@ p b {
 				<c:param name="page" value="${page}"></c:param>
 			</c:url>
 			<c:if test="${rpi.currentPage < rpi.endPage }">
-				<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
+				<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
 			</c:if>
 	   </div>
 	</div>
@@ -1762,6 +1758,25 @@ p b {
 			}
 		});
 	});
+	
+	// 원래 위치 정보를 저장하는 함수
+	function saveScrollPosition() {
+	  sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop);
+	}
+
+	// 페이지 로드 후 저장된 위치로 스크롤하는 함수
+	function scrollToSavedPosition() {
+	  var scrollPosition = sessionStorage.getItem('scrollPosition');
+	  if (scrollPosition) {
+	    setTimeout(function() {
+	      window.scrollTo(0, scrollPosition);
+	      sessionStorage.removeItem('scrollPosition'); // 위치 정보 삭제
+	    }, 0);
+	  }
+	}
+
+	// 페이지 로드 시 저장된 위치로 스크롤
+	window.addEventListener('load', scrollToSavedPosition);
  </script> 
 
 </body>

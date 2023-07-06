@@ -483,6 +483,10 @@ public class MarketService {
 		return mkDAO.selectMealKit(sqlSession);
 	}
 
+	public int goToPay(Cart c) {
+		return mkDAO.goToPay(sqlSession, c);
+	}
+
 
 
 

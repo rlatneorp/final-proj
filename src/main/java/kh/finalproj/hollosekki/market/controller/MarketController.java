@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -569,6 +570,29 @@ public class MarketController {
          e.printStackTrace();
       } 
    }
+   
+   @RequestMapping("goToPay.ma")
+   public void goToPay(@ModelAttribute Cart c,HttpServletResponse response, Model model) {
+   
+   int result = mkService.goToPay(c);
+   
+   model.addAttribute("c", c);
+   System.out.println(c);
+   
+   response.setContentType("application/json; charset=utf-8");
+   GsonBuilder gb = new GsonBuilder();
+   Gson gson = gb.create();
+   try {
+      gson.toJson(result, response.getWriter());
+   } catch (JsonIOException e) {
+      e.printStackTrace();
+   } catch (IOException e) {
+      e.printStackTrace();
+   } 
+//   
+//   return "payDetail";
+   
+}
    
    
 

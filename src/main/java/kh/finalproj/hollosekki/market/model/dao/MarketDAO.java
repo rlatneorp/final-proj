@@ -555,6 +555,11 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectMealKit", sqlSession);
 	}
 
+	public int goToPay(SqlSessionTemplate sqlSession, Cart c) {
+		 sqlSession.insert("marketMapper.goToPay", c);
+	      return c.getPreorderNo();
+	}
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

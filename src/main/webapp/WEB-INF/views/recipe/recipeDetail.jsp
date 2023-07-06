@@ -254,6 +254,7 @@
 					</c:if>
 				</c:if>
 			</div>
+			<div style="margin: 15px 15px;">${recipe.categoryIngredient} ∣ ${recipe.categorySituation} ∣ ${recipe.categoryType}</div>
 			<div id="grade">
 				<div class="d-inline-block" style="width: 50px; font-weight: bold">난이도</div>
 				<div class="d-inline-block" style="width: 210px; text-align: center; font-weight: bolder; font-size: 20px;">${recipe.recipeDifficulty }</div>

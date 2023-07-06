@@ -34,12 +34,16 @@ import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Review;
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
+import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
+import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeElement;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
+import kh.finalproj.hollosekki.users.model.service.UsersService;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -47,6 +51,15 @@ public class RecipeController {
 
 	@Autowired
 	private RecipeService rService;
+	
+	@Autowired
+	private EnrollService eService;
+	
+	@Autowired
+	private UsersService uService;
+	
+	@Autowired
+	private MenuService mService;
 
 //	레시피 리스트 조회
 	@RequestMapping("recipeList.rc")
@@ -117,7 +130,7 @@ public class RecipeController {
 	@RequestMapping("recipeDetail.rc")
 	public ModelAndView recipeDetail(@RequestParam("rId") String usersId, @RequestParam("rNo") int foodNo,
 			@RequestParam(value = "page", required = false) Integer page, HttpSession session, ModelAndView mv,
-			@RequestParam(value = "repage", required = false) Integer repage) {
+			@RequestParam(value = "repage", required = false) Integer repage, Model model) {
 
 		Users loginUser = (Users) session.getAttribute("loginUser");
 
@@ -151,7 +164,25 @@ public class RecipeController {
 		ArrayList<Image> cList = rService.recipeDetailComp(foodNo);
 		ArrayList<Review> reList = rService.selectReviewList(rpi, foodNo);
 		ArrayList<RecipeElement> eleList = rService.selectRecipeElement(foodNo);
-
+		
+		// 레시피 등록 유저 정보
+		String id = usersId;
+		SocialLogin social = eService.SocialLogin(id);
+		model.addAttribute("social", social);
+		
+		Users user = eService.userInfo(id);
+		int usersNo = user.getUsersNo();
+		Image userImage = uService.selectImage(usersNo);
+		model.addAttribute("userImage", userImage);
+		
+		// 북마크 정보
+		int productNo = foodNo;
+		if(loginUser != null) {
+			int result = mService.selectBookmark(loginUser.getUsersNo(), productNo);
+			model.addAttribute("bookmark", result);
+		}
+		
+		
 //		System.out.println(reList);
 
 		if (recipe != null) {

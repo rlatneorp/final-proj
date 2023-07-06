@@ -245,7 +245,14 @@
 		<div id="imformation">
 			<div id="title">
 				<h2 style="display: inline-block; width: 580px;">${recipe.recipeName }</h2>
-				<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
+				<c:if test="${ loginUser != null }">
+					<c:if test="${ bookmark == 0 }">
+						<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
+					</c:if>
+					<c:if test="${ bookmark != 0 }">
+						<a href="#"><i class="bi bi-bookmark-fill" style="font-size: 20px;"></i></a>
+					</c:if>
+				</c:if>
 			</div>
 			<div id="grade">
 				<div class="d-inline-block" style="width: 50px; font-weight: bold">난이도</div>
@@ -256,7 +263,31 @@
 			</div>
 			
 			<div id="userInfo">
-				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'">
+				<c:if test="${ social eq null }"> <!-- 일반유저일때 -->
+					<c:if test="${ userImage eq null }"> <!-- 일반유저-프사없을때 -->
+						<div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto; margin-top: 25px; margin-bottom: 15px; cursor: pointer;" >
+							<img style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" >
+						</div>	
+					</c:if>
+					<c:if test="${ userImage ne null }"> <!-- 일반유저-프사있을때 -->
+						<div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto; margin-top: 25px; margin-bottom: 15px; cursor: pointer;">
+							<img src="${ contextPath }/resources/uploadFiles/${userImage.imageRenameName}" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'">
+						</div>
+					</c:if>
+				</c:if>
+
+				<c:if test="${ social ne null }"> <!-- 소셜유저일때 -->
+					<c:if test="${ userImage.imageDivideNo != user.usersNo }">
+						<div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto; margin-top: 25px; margin-bottom: 15px; cursor: pointer;" >
+							<img src="${ social.socialProfileImg }" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'"/>
+						</div>
+					</c:if>
+					<c:if test="${ userImage.imageDivideNo == user.usersNo and userImage.imageType == '1' }">
+						<div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto; margin-top: 25px; margin-bottom: 15px; cursor: pointer;" >
+							<img src="${contextPath}/resources/uploadFiles/${ userImage.imageRenameName }" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'"/>
+						</div>
+					</c:if>	
+				</c:if>
 				<p>${recipe.nickName }</p>
 				<p>${recipe.recipeContent }</p>
 			</div>

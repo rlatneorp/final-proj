@@ -119,8 +119,8 @@ public class MenuServiceImpl implements MenuService{
 	}
 	
 	@Override
-	public ArrayList<Review> selectReviewList(PageInfo pi, int mNo) {
-		return mDAO.selectReviewList(sqlSession, pi, mNo);
+	public ArrayList<Review> selectReviewList(PageInfo rpi, int mNo) {
+		return mDAO.selectReviewList(sqlSession, rpi, mNo);
 	}
 	
 	@Override
@@ -141,6 +141,16 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public int updateReview(Review r) {
 		return mDAO.updateReview(sqlSession, r);
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, Object>> notReview(HashMap<String, Object> map) {
+		return mDAO.notReview(sqlSession, map);
+	}
+	
+	@Override
+	public ArrayList<Review> selectMyReviewList(PageInfo mpi, HashMap<String, Object> myMap) {
+		return mDAO.selectMyReviewList(sqlSession, myMap, mpi);
 	}
 	
 	@Override

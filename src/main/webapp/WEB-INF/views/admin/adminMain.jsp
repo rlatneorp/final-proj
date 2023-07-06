@@ -34,7 +34,7 @@
 				</table>
 				<div class="text-end">
 					<a href="${contextPath}/adminSalesManage.ad">
-						<h6 class="mt-2 d-inline-block">더보기</h6>
+						<h6 class="mt-2 d-inline-block">매출관리</h6>
 					</a>
 				</div>
 			</div>
@@ -58,7 +58,7 @@
 				</table>
 				<div class="text-end">
 					<a href="${contextPath}/adminRecipeManage.ad">
-						<h6 class="mt-2 d-inline-block">더보기</h6>
+						<h6 class="mt-2 d-inline-block">레시피관리</h6>
 					</a>
 				</div>
 			</div>
@@ -81,8 +81,8 @@
 					</c:forEach>
 				</table>
 				<div class="text-end">
-					<a href="${contextPath}/adminMemberManage.ad">
-						<h6 class="mt-2 d-inline-block">더보기</h6>
+					<a href="${contextPath}/adminUsersManage.ad">
+						<h6 class="mt-2 d-inline-block">회원관리</h6>
 					</a>
 				</div>
 			</div>
@@ -106,7 +106,7 @@
 				</table>
 				<div class="text-end">
 					<a href="${contextPath}/adminMenuManage.ad">
-						<h6 class="mt-2 d-inline-block">더보기</h6>
+						<h6 class="mt-2 d-inline-block">식단관리</h6>
 					</a>
 				</div>
 			</div>

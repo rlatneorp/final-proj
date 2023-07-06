@@ -43,8 +43,13 @@ public class AttendanceController {
          mkService.gettedPoint(map);
          mkService.getMonthPoint(map);
          mkService.aDateCheck(map);
+         mkService.atPointList(map);
       }
-            
+      Attendance monthAt = mkService.monthCheckUser(map);
+      if(monthAt != null) {
+    	  mkService.monthChecked(monthAt);
+      }
+      
       ArrayList<Attendance> atList = mkService.allAt(u);
       GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
       Gson gson = gb.create();
@@ -55,7 +60,6 @@ public class AttendanceController {
          e.printStackTrace();
       }
       model.addAttribute("result", result);
-      
     }
              
 
@@ -92,7 +96,6 @@ public class AttendanceController {
       } catch (JsonIOException | IOException e) {
          e.printStackTrace();
       }
-      
-
    }
+   
 }

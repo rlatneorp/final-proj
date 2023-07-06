@@ -1528,7 +1528,6 @@ p b {
       let opTextBox = []; 
       
       
-      
       if(productOption2Set != null){
          for(prOp of productOption2Set){
             productOp.unshift(prOp.innerText);

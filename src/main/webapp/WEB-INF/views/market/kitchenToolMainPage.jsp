@@ -381,7 +381,7 @@ ul li {
 	</form>
 	
 	<div style="position:relative;">
-		<div class="bannerTitle" style="margin-left:180px;"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
+		<div class="bannerTitle" style="margin-left:90px;"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
 		<br><br>
 	 	<div class="slick">
 	        <div class="list"><img src="resources/images/listProduct.jpg"></div>
@@ -455,7 +455,7 @@ ul li {
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE ne 0 }">
 							<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
-<%-- 							<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="###,###,###"/>원 --%>
+							
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE eq 0 }">
 							<div style="text-decoration: none;">${li.PRODUCT_PRICE }</div>
@@ -502,12 +502,12 @@ ul li {
 					<div class="productName">${li.productName }</div>
 					<c:if test="${li.productSale ne 0 }">
 						<span class="originPrice">
-							${li.productPrice }원
+						<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
 						</span>
 					</c:if>
 					<c:if test="${li.productSale eq 0 }">
 						<span style="font-size:25px;">
-							<fmt:formatNumber value="${li.productPrice }" pattern="###,###,###"/>원
+							${li.productPrice }
 						</span>
 					</c:if>
 					<span class="discount" id="discount-${li.productNo }"></span>

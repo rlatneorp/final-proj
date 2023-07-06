@@ -12,7 +12,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-
 </head>
 <body>
 <%@ include file="../common/top.jsp" %>
@@ -26,8 +25,8 @@
 		    <div class="tab-content" id="v-pills-tabContent">
 				<div class="tab-pane show text-center active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
 					<br>
-					<h1 style="text-align: left;">공지사항</h1>
-					<br>
+					<h1 style="text-align: left;">공지사항</h1><p style="text-align: left;">공지사항 제목을 클릭해주세요.</p>
+					
 					<hr>
 					<br>
 					<table class="table cols-12 table-bordered text-center">
@@ -38,11 +37,12 @@
 				    	</tr>
 				    	<c:if test="${ empty faqType || faqType == 1 }">
 				    	<c:forEach items="${ nlist }" var="i">
-					    <tr>
+					    <tr class="modalNotice">
 					        <th class="col-1">${i.faqNo }</th>
-					        <th class="col-9 text-cetner">${i.faqTitle }</th>
-					        <th class="col-2"><fmt:formatDate value="${i.faqDate }" pattern="yyyy-MM-dd"/></th>
+					        <th class="col-9 text-cetner ntitle" style="cursor: pointer;">${i.faqTitle }</th>
+					        <th class="col-2 ntime"><fmt:formatDate value="${i.faqDate }" pattern="yyyy-MM-dd"/></th>
 					    </tr>
+					   		<input type="hidden" class="ncontent" value="${i.faqContent}">
 					    </c:forEach>
 					    </c:if>
 					</table>
@@ -84,6 +84,41 @@
 		</div>
 	</div>
 	<br><br><br><br><br>
+	
+	<div class="modal fade" id="modalNotice" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="title" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-5" id="title"></h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="content">
+	      
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 <%@ include file="../common/footer.jsp" %>	
+
+<script>
+
+	$('.modalNotice').each(function(index, item){
+		$(this).click(function(e){
+			e.preventDefault();
+			$('#modalNotice').modal("show");
+			const title = document.querySelector('#title');
+			const content = document.querySelector('#content');
+			const ntitle = document.querySelectorAll('.ntitle');
+			const ncontent = document.querySelectorAll('.ncontent');
+			const ntime = document.querySelectorAll('.ntime');
+			title.innerText = ntitle[index].innerText;
+			content.innerHTML = '<h5>' + ntime[index].innerText + '</h5>' + '<br><p>' + ncontent[index].value + '</p>';
+		})
+	})
+
+</script>
 </body>
 </html>

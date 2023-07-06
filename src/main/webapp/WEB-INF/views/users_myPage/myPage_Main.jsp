@@ -35,6 +35,8 @@
 	}
 	.service{
 		font-weight: bold; font-size: 16px;
+		cursor: pointer;
+		text-decoration: none;
 	}
 	.dollars{
 		color: rgb(241, 196, 15); font-size: 35px;
@@ -209,8 +211,8 @@
 						<span class="material-symbols-outlined arrow1">
 						chevron_right
 						</span></a><br><br>
-						<p class="service">자주 묻는 질문</p>
-						<p class="service">1:1문의</p>
+						<a class="service d-block" href="${ contextPath }/faqBoard.cs">자주 묻는 질문</a>
+						<a class="service" href="${ contextPath }/personalBoard.cs">1:1문의</a>
 					</div>
 					<div class="name">
 						<br>
@@ -260,7 +262,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -306,7 +308,7 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -364,7 +366,7 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 800px; margin-left: 600px;" data-backdrop="static">
+	<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 800px; margin-left: 600px;" data-bs-backdrop="static">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -402,7 +404,7 @@
 						<c:if test="${ fn:contains(loginUser.usersPw, '$2a$')}">
 							<img id="modalP" src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }"/>
 						</c:if>
-						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file">
+						<input id="fileInput" type="file" style="display: none;" accept="image/*" name="file" value="${ loginUser.imageRenameName }">
 						<br>
 						<button type="button" class="base" id="delete-${ loginUser.imageRenameName }">기본 이미지</button>
 						<input type="hidden" name="deletePicture" value="none">
@@ -576,6 +578,9 @@
 			reload();
 		});
 		close[1].addEventListener('click', () => {
+			reload();
+		});
+		close[2].addEventListener('click', () => {
 			reload();
 		});
 		

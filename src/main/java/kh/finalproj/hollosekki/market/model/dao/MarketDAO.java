@@ -555,6 +555,30 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectMealKit", sqlSession);
 	}
 
+	public int selectReview(SqlSessionTemplate sqlSession, int orderNo, String nickName) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("orderNo", orderNo);
+		map.put("nickName", nickName);
+		
+		return sqlSession.selectOne("marketMapper.selReviewCount", map);
+	}
+	public int goToPay(SqlSessionTemplate sqlSession, Cart c) {
+		 sqlSession.insert("marketMapper.goToPay", c);
+	      return c.getPreorderNo();
+	}
+
+	public void atPointList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		sqlSession.insert("marketMapper.atPointList", map);
+	}
+
+	public Attendance monthCheckUser(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("marketMapper.monthCheckUser", map);
+	}
+
+	public void monthChecked(SqlSessionTemplate sqlSession, Attendance monthAt) {
+		sqlSession.insert("marketMapper.monthChecked", monthAt);
+	}
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

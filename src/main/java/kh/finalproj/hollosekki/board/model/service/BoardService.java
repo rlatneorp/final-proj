@@ -78,5 +78,23 @@ public class BoardService {
 		return bDAO.freeBList(sqlSession, pi, map);
 	}
 
+	public int reWriteBoard(HashMap<String, Object> map) {
+		return bDAO.reWriteBoard(sqlSession, map);
+	}
+
+
+
+	public Board reWrieteBoardInfo(HashMap<String, Object> map) {
+		return bDAO.reWrieteBoardInfo(sqlSession, map);
+	}
+
+	public int deleteBoard(HashMap<String, Object> map) {
+		return bDAO.deleteBoard(sqlSession, map);
+	}
+
+	public int deleteReply(HashMap<String, Object> map) {
+		return bDAO.deleteReply(sqlSession, map);
+	}
+
 
 }

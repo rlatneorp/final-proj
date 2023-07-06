@@ -178,7 +178,7 @@ public class RecipeController {
 		// 북마크 정보
 		int productNo = foodNo;
 		if(loginUser != null) {
-			int result = mService.selectBookmark(loginUser.getUsersNo(), productNo);
+			int result = rService.selectRecipeBookmark(loginUser.getUsersNo(), productNo);
 			model.addAttribute("bookmark", result);
 		}
 		
@@ -835,6 +835,29 @@ public class RecipeController {
 			return "redirect:recipeDetail.rc?rId=" + usersId + "&rNo=" + foodNo;
 		} else {
 			throw new RecipeException("레시피 후기 삭제 실패");
+		}
+	}
+	
+	@RequestMapping("insertBookmark.rc")
+	@ResponseBody
+	public String insertRecipeBookmark(int usersNo, int divisionNo) {
+		int result = rService.insertRecipeBookmark(usersNo, divisionNo);
+		if(result > 0) {
+			   return "success";
+		   } else {
+			   return "fail";
+		   }
+	}
+	
+	@RequestMapping("deleteBookmark.rc")
+	@ResponseBody
+	public String deleteRecipeBookmark(int usersNo, int divisionNo) {
+		int result = rService.deleteRecipeBookmark(usersNo, divisionNo);
+		
+		if(result > 0) {
+			   return "success";
+		} else {
+			   return "fail";
 		}
 	}
 

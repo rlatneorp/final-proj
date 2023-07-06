@@ -2,7 +2,6 @@ package kh.finalproj.hollosekki.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -961,11 +960,24 @@ public class AdminController {
 								  Model model,
 								  @ModelAttribute Food f,
 								  @RequestParam("imageNo") ArrayList<Integer> imageNos,
-								  @RequestParam("imageFile") ArrayList<MultipartFile> imageFiles) {
+								  @RequestParam("imageFile") ArrayList<MultipartFile> oldImageFiles) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
+//		foodTable값 일부 수정
+		String foodTable = "";
+		for(String str:f.getFoodTable().split(",")) {
+			foodTable += str;
+		}
+		f.setFoodTable(foodTable);
+		
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
 
-		ArrayList<Image> oldImageList = selectAllImageList(f.getProductNo(), 5, -1);
+		int resultImg = 0;
+		int resultDelImg = 0;
+		int resultF = 0;
+		int resultPd = 0;
+		
+		ArrayList<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
+		ArrayList<Image> oldImageList = selectAllImageList(f.getProductNo(), 3, -1);
 		ArrayList<Image> newImageList = new ArrayList<Image>();
 		
 		int countNos = 0;
@@ -975,27 +987,82 @@ public class AdminController {
 				countNos++;
 			}
 		}
-		for(MultipartFile imageFile: imageFiles) {
+		for(MultipartFile imageFile: oldImageFiles) {
 			if(imageFile != null && !imageFile.isEmpty()) {
 				countImages++;
+				imageFiles.add(imageFile);
 			}
 		}
-		if(countNos == countImages);
-		System.out.println(imageNos);
-		System.out.println(imageFiles);
-		System.out.println(countNos);
-		System.out.println(countImages);
-		return "";
 		
-//		int resultF = aService.updateFood(f);
-//		int resultPd = aService.updateProduct(f);
-//		
-//		if(resultF+resultPd == 2) {
-//			model = adminBasic(model, request, null);
-//			return "redirect:adminFoodManage.ad";
-//		}else {
-//			throw new AdminException("식품 수정에 실패하였습니다.");
-//		}
+		int imageTurn = 0;
+//		(추가된 이미지 갯수 확인 후) 저장할 imageList에 옮겨담기
+		if(countNos == countImages) {
+			int i = 0;
+			for(int no:imageNos) {
+				if(no != 0) {
+					for(Image img:oldImageList) {
+						if(no == img.getImageNo()) {
+							newImageList.add(img);
+							break;
+						}
+					}
+				}else {
+//					이미지 저장
+					Image image = new Image();
+					MultipartFile imageFile = imageFiles.get(imageTurn);
+					imageTurn++;
+					if(imageFile != null && !imageFile.isEmpty()) {
+						
+						System.out.println(imageFile);
+						
+						String[] returnArr = saveFile(imageFile, request);
+						if(returnArr[1] != null) {
+							image = setImage(f.getProductNo(), 3, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 1);
+							if(i==0) {
+								image.setImageLevel(0);
+							}
+						}
+					}
+					newImageList.add(image);
+				}
+				i++;
+			}
+		};
+		
+//		기존 이미지 모두 삭제(imageNos에 없는 번호는, 파일도 삭제)
+		if(countImages == imageTurn) {
+			for(Image image : oldImageList) {
+//				db이미지정보 삭제
+				resultDelImg = aService.deleteImage(image);
+				
+//				로컬이미지파일 삭제 선택
+				String deleteable = "Y";
+				for(int no : imageNos) {
+					if(no == image.getImageNo()) {
+						deleteable = "N";
+					}
+				}
+				if(deleteable.equals("Y")) {
+					deleteFile(image.getImageRenameName(), request);
+				}
+			}
+		}
+		
+//		db에 새 이미지리스트 저장
+		for(Image image:newImageList) {
+			resultImg += aService.insertImage(image);
+		}
+		
+		
+		resultF = aService.updateFood(f);
+		resultPd = aService.updateProduct(f);
+		
+		if(resultF+resultPd == 2) {
+			model = adminBasic(model, request, null);
+			return "redirect:adminFoodManage.ad";
+		}else {
+			throw new AdminException("식품 수정에 실패하였습니다.");
+		}
 	}
 	@GetMapping("adminFoodDeleteable.ad")
 	public void adminFoodDeleteable(@RequestParam("pNo") int pNo,
@@ -1027,6 +1094,13 @@ public class AdminController {
 		
 		Users user = (Users)session.getAttribute("loginUser");
 		f.setUsersNo(user.getUsersNo());
+		
+//		foodTable값 일부 수정
+		String foodTable = "";
+		for(String str:f.getFoodTable().split(",")) {
+			foodTable += str;
+		}
+		f.setFoodTable(foodTable);
 		
 //		foodContent값 합치기
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());

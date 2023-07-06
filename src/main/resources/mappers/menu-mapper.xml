@@ -77,7 +77,7 @@
 		where users_no=#{usersNo} and product_type=2
 	</select>
 	
-	<select id="selectBookmark" resultType="_int">
+	<select id="selectBookmark" resultType="_int"> <!-- 식단에대한 북마크 -->
 		select count(*)
 		from bookmark
 		where users_no = #{usersNo} and division_no = #{productNo} and number_type = 2
@@ -118,19 +118,21 @@
 	<select id="getReviewCount" resultType="_int">
 		select count(*)
 		from review
-		where product_no = #{mNo} and review_status = 'Y' and order_no != 0
+		where product_no = #{mNo} and review_status = 'Y' and order_no > 0
 	</select>
 	
 	<select id="selectReviewList" resultMap="reviewResultSet">
 		select *
 		from review
-		where product_no = #{mNo} and review_status = 'Y' and order_no != 0
+		where product_no = #{mNo} and review_status = 'Y' and order_no > 0
+		order by review_no desc
 	</select>
 	
 	<select id="myReview" resultType="_int">
 		select count(*)
 		from review
-		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no != 0
+		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no > 0
+		order by review_no desc
 	</select>
 	
 	<select id="selectMyOrders" resultMap="ordersResultSet">
@@ -149,6 +151,20 @@
 		set review_content = #{reviewContent}, review_score = #{reviewScore}
 		where review_no = #{reviewNo}
 	</update>
+	
+	<select id="notReview" resultType="map">
+		select *
+		from orders o
+		     left join review using(order_no)
+		where users_no = #{usersNo} and o.product_no = #{productNo} and review_content is null
+	</select>
+	
+	<select id="selectMyReviewList" resultMap="reviewResultSet">
+		select *
+		from review
+		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no > 0
+		order by review_no desc
+	</select>
 	
 	<select id="getQnaCount" resultType="_int">
 		select count(*)

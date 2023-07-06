@@ -106,9 +106,9 @@ public class MenuDAO {
 		return sqlSession.selectOne("menuMapper.getReviewCount", mNo);
 	}
 	
-	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, PageInfo pi, int mNo) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, PageInfo rpi, int mNo) {
+		int offset = (rpi.getCurrentPage() - 1) * rpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, rpi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("menuMapper.selectReviewList", mNo, rowBounds);
 	}
@@ -129,6 +129,17 @@ public class MenuDAO {
 		return sqlSession.update("menuMapper.updateReview", r);
 	}
 
+	public ArrayList<HashMap<String, Object>> notReview(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return (ArrayList)sqlSession.selectList("menuMapper.notReview", map);
+	}
+
+	public ArrayList<Review> selectMyReviewList(SqlSessionTemplate sqlSession, HashMap<String, Object> myMap, PageInfo mpi) {
+		int offset = (mpi.getCurrentPage() - 1) * mpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, mpi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.selectMyReviewList", myMap, rowBounds);
+	}
+	
 	public int getQnaCount(SqlSessionTemplate sqlSession, int mNo) {
 		return sqlSession.selectOne("menuMapper.getQnaCount", mNo);
 	}

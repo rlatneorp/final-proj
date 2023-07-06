@@ -104,7 +104,9 @@ public class MenuController {
 	
 	@RequestMapping("menuDetail.mn")
 	public ModelAndView menuDetail(@RequestParam("mNo") int mNo, @RequestParam(value="page", required=false) Integer page,
-							 HttpSession session, ModelAndView mv, Model model) {
+								   HttpSession session, ModelAndView mv, Model model,
+								   @RequestParam(value = "repage", required = false) Integer repage,
+								   @RequestParam(value = "myrepage", required = false) Integer myrepage) {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		String loginId = null;
@@ -125,7 +127,15 @@ public class MenuController {
 		boolean yn = false;
 		
 		int reviewCount = mService.getReviewCount(mNo);
-		PageInfo pi = ReviewPagination.getPageInfo(1, reviewCount, 5);
+		if(repage == null) {
+			repage = 1;
+		}
+		if(myrepage == null) {
+			myrepage = 1;
+		}
+		
+		PageInfo rpi = ReviewPagination.getPageInfo(repage, reviewCount, 5);
+		PageInfo mpi = ReviewPagination.getPageInfo(myrepage, myReview, 5); // 내 리뷰
 		
 		int qnaCount = mService.getQnaCount(mNo);
 		PageInfo qpi = ReviewPagination.getPageInfo(1, qnaCount, 5);
@@ -136,11 +146,9 @@ public class MenuController {
 		if(loginUser != null) {
 			int result = mkService.selectLike(loginUser.getUsersNo(), productNo);
 			int result2 = mService.selectBookmark(loginUser.getUsersNo(), productNo);
+			model.addAttribute("bookmark", result2);
 		      if(result >= 1) {
 		    	  model.addAttribute("like", result);
-		      }
-		      if(result >= 1) {
-		    	  model.addAttribute("bookmark", result2);
 		      }
 		}
 		
@@ -149,7 +157,16 @@ public class MenuController {
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
 		ArrayList<Image> miList = mService.menuDetailImage();
 		ArrayList<Product> pList = mService.healtherInfo(usersNo);
-		ArrayList<Review> rList = mService.selectReviewList(pi, mNo);
+		ArrayList<Review> rList = mService.selectReviewList(rpi, mNo);
+		
+		HashMap<String, Object> myMap = new HashMap<String, Object>();
+		myMap.put("reviewWriter", nickName);
+		myMap.put("productNo", mNo);
+		
+		ArrayList<Review> mrList = mService.selectMyReviewList(mpi, myMap);
+		System.out.println(menu);
+		System.out.println(mrList);
+		
 		ArrayList<QA> qList = mService.selectQnaList(qpi, mNo);
 		
 		// 주문정보 조회
@@ -158,10 +175,8 @@ public class MenuController {
 		map.put("productNo", mNo);
 		
 		ArrayList<Orders> oList = mService.selectMyOrders(map);
+		ArrayList<HashMap<String, Object>> notReview = mService.notReview(map); // 주문번호 있는데 리뷰 작성안한
 		
-		System.out.println("oList : " + oList);
-		System.out.println("review : " + rList);
-		System.out.println(menu);
 		if(menu != null || myReview == 0) {
 			mv.addObject("menu", menu);
 			mv.addObject("thum", thum);
@@ -169,9 +184,16 @@ public class MenuController {
 			mv.addObject("miList", miList);
 			mv.addObject("pList", pList);
 			mv.addObject("rList", rList);
+			mv.addObject("mrList", mrList);
 			mv.addObject("oList", oList);
 			mv.addObject("myReview", myReview);
 			mv.addObject("reviewCount", reviewCount);
+			mv.addObject("rpi", rpi);
+			mv.addObject("mpi", mpi);
+			mv.addObject("repage", repage);
+			mv.addObject("myrepage", myrepage);
+			mv.addObject("notReview", notReview);
+			mv.addObject("notReviewCount", notReview.size());
 			mv.addObject("pi", pi);
 			mv.addObject("qnaCount", qnaCount);
 			mv.addObject("qList", qList);

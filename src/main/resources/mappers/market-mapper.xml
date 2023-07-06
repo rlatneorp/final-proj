@@ -949,5 +949,9 @@
 		</if>
 	</select>
 	
+	<select id="selReviewCount" resultType="_int">
+		select count(*) from review where order_no = #{orderNo} and review_writer = #{nickName}
+	</select>
+	
 	
 </mapper>

@@ -381,7 +381,7 @@ ul li {
 	</form>
 	
 	<div style="position:relative;">
-		<div class="bannerTitle" style="margin-left:180px;"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
+		<div class="bannerTitle" style="margin-left:90px;"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
 		<br><br>
 	 	<div class="slick">
 	        <div class="list"><img src="resources/images/listProduct.jpg"></div>

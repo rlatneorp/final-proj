@@ -977,7 +977,7 @@ p b {
 	
 	<c:if test="${loginUser ne null and myReview ne 0 }">
 		<p class="mid">내가 쓴 후기</p><br>
-		<p style="margin-left: 830px;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
+		<p style="margin-left: 830px;">* 후기 삭제 시 재등록이 불가합니다.${pi }</p><br>
 		<br>
 		<div id="qna">
 			<table class="board">
@@ -1014,6 +1014,7 @@ p b {
 		      <!-- 		이전 페이지로	 -->
 				<c:url var="goBack" value="${loc }">
 					<c:param name="myrepage" value="${mpi.currentPage - 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
 					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
@@ -1025,6 +1026,7 @@ p b {
 				<c:forEach begin="${ mpi.startPage }" end="${ mpi.endPage }" var="mp">
 					<c:url var="goNum" value="${loc }">
 						<c:param name="myrepage" value="${ mp }"></c:param>
+						<c:param name="repage" value="${rpi.currentPage}"></c:param>
 						<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 						<c:param name="page" value="${page}"></c:param>
 					</c:url>
@@ -1038,6 +1040,7 @@ p b {
 				
 				<c:url var="goNext" value="${loc }">
 					<c:param name="myrepage" value="${mpi.currentPage + 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
 					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
@@ -1082,7 +1085,8 @@ p b {
 	   <div class="page_nation">
 	      <!-- 		이전 페이지로	 -->
 			<c:url var="goBack" value="${loc }">
-				<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
+				<c:param name="repage" value="${rpi.currentPage - 1 }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 				<c:param name="page" value="${page}"></c:param>
 			</c:url>
@@ -1094,6 +1098,7 @@ p b {
 			<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
 				<c:url var="goNum" value="${loc }">
 					<c:param name="repage" value="${p }"></c:param>
+					<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 					<c:param name="page" value="${page}"></c:param>
 				</c:url>
@@ -1107,6 +1112,7 @@ p b {
 			
 			<c:url var="goNext" value="${loc }">
 				<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
 				<c:param name="page" value="${page}"></c:param>
 			</c:url>

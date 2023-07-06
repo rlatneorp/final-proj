@@ -560,8 +560,8 @@ public class MarketDAO {
 		map.put("orderNo", orderNo);
 		map.put("nickName", nickName);
 		
-		return sqlSession.selectOne("marketMapper.selReviewCount", map);}
-	
+		return sqlSession.selectOne("marketMapper.selReviewCount", map);
+	}
 	public int goToPay(SqlSessionTemplate sqlSession, Cart c) {
 		 sqlSession.insert("marketMapper.goToPay", c);
 	      return c.getPreorderNo();

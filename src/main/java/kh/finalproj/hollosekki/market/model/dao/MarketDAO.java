@@ -567,6 +567,12 @@ public class MarketDAO {
 	      return c.getPreorderNo();
 	}
 
+	
+	public void atPointList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		sqlSession.insert("marketMapper.atPointList", map);
+
+	}
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

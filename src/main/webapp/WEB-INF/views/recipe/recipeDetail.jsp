@@ -300,6 +300,12 @@
 					<button type="button" id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
 				</div>
 			</c:if>
+			<c:if test="${!(loginUser.usersId eq recipe.usersId) }">
+				<div id="buttonBox">
+					<button type="button" id="mealkitBuy" class="buy" onclick="mealkit()">밀키트 구매</button>
+					<button type="button" id="ingredientBuy" class="buy" onclick="ingreBuy()">식재료 구매</button>
+				</div>
+			</c:if>
 		</div>
 	</div>
 	
@@ -372,13 +378,6 @@
 	</div>
 </div>
 <br>
-
-<c:if test="${!(loginUser.usersId eq recipe.usersId) }">
-	<div id="buttonBox">
-		<button type="button" id="mealkitBuy" class="buy">밀키트 구매</button>
-		<button type="button" id="ingredientBuy" class="buy">식재료 구매</button>
-	</div>
-</c:if>
 
 </form>
 <br><br>
@@ -752,6 +751,18 @@ reviewDelete.addEventListener('click', () => {
 		}
 	});
 });
+
+function mealkit(){
+	var recipe = '${recipe.recipeName}';
+	var name = recipe.replace(/ /gi, "+");
+	location.href = '${contextPath}/viewSearch.ma?searchStart=Y&searchType=food&searchText=' + name;
+}
+
+
+function ingreBuy(){
+	location.href = '${contextPath}/viewIngredient.ma';
+}
+
 
 </script>
 	

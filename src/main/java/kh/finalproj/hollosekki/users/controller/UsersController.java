@@ -214,8 +214,9 @@ public class UsersController {
 		int result = uService.updateProfile(u);
 		Users user = uService.selectInfo(u);
 		Image image = null;
+		System.out.println(file);
 
-		if (file != null && !file.isEmpty()) { // �깉�뙆�씪 �뱾�뼱�샂
+		if (file != null && !file.isEmpty()) { // 새파일 들어옴
 			String[] returnArr = saveFile(file, request);
 
 			if (returnArr[1] != null) {
@@ -257,7 +258,7 @@ public class UsersController {
 			}
 		}
 
-		// �깉 �뙆�씪 �븞�뱾�뼱�샂
+		// 새파일 안들어옴
 		if (file.isEmpty()) {
 			Image existingImage = uService.selectImage(u.getUsersNo());
 			if (existingImage != null) {

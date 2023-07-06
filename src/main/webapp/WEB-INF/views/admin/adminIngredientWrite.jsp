@@ -70,8 +70,8 @@
 				</div>
 				
 				<div class="col-6 ps-5">
-					<div class="border" style="margin-top:56px; width:360px; height:270px;">
-						<img class="previewImage" width="360px" height="270px">
+					<div class="border" style="margin-top:56px; width:480px; height:360px;">
+						<img class="previewImage" width="480px" height="360px">
 					</div>
 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 					<p style="font-size: 12px; color: gray">최적 이미지 비율은 4:3입니다.</p>

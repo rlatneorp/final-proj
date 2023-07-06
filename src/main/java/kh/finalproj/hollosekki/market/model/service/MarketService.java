@@ -484,7 +484,10 @@ public class MarketService {
 	}
 
 	public int selectReview(int orderNo, String nickName) {
-		return mkDAO.selectReview(sqlSession, orderNo, nickName);
+		return mkDAO.selectReview(sqlSession, orderNo, nickName);}
+	
+	public int goToPay(Cart c) {
+		return mkDAO.goToPay(sqlSession, c);
 	}
 
 

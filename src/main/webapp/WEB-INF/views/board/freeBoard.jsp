@@ -116,6 +116,18 @@
 	#searchInput{width: 250px; height: 40px;}
 	#searchIcon{position: absolute; left: 300px; top: 6px;}
 	#searchBtn{border-radius: 50%; width: 30px; height: 30px; border: none; background-color: #B0DAFF; cursor:pointer;}
+
+.reThread{
+	width: 40px; height: 25px;
+	border: 1px solid black;
+	border-radius: 20px;
+	font-size: 10px;
+	font-weight: 500;
+	background-color: white;
+	padding: 2px; 
+}
+	
+
 </style>
 
 </head>
@@ -155,15 +167,30 @@
 				<c:forEach items="${list }" var="b" > 
 					<tr>
 						<td>${b.boardNo }</td>
-						<td>${b.nickName }
+						<td>${b.nickName }</td>
 						<td>
-						${b.boardTitle }
-						<c:set var="pic" value="${b.boardContent}"/>
-						<c:if test="${fn:contains(pic, 'img')}">
-						<span class="material-symbols-outlined">hallway</span>
-						</c:if>
+							${b.boardTitle }
+							<c:set var="pic" value="${b.boardContent}"/>
+							<c:if test="${fn:contains(pic, 'img')}">
+								<span class="material-symbols-outlined">hallway</span>
+							</c:if>
+						    <c:if test="${ b.boardType eq 1}">
+						  		<button type="button" class="reThread">수정됨</button>
+						    </c:if>
 						</td>
-						<td><fmt:formatDate value="${b.boardDate }" pattern="yyyy-MM-dd"/></td>
+						<td>
+							<c:set var="today" value="<%=new java.util.Date()%>"/>
+							<c:set var="sys"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd"/></c:set>
+							<c:set var="bNow"><fmt:formatDate value="${b.boardDate}" pattern="yyyy-MM-dd"/></c:set>
+							
+							<c:if test="${bNow ne sys}">
+								<fmt:formatDate value="${b.boardDate}" pattern="yyyy-MM-dd"/>
+							</c:if>
+							
+							<c:if test="${bNow eq sys}">
+								<fmt:formatDate value="${b.boardDate }" pattern="HH:mm:ss"/>
+							</c:if>
+						</td>
 						<td>${b.boardCount }</td>
 					</tr>
 				</c:forEach>
@@ -210,6 +237,8 @@
 			<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
 		</div><br><br><br>
 	</c:if>
+	
+	<br><br><br><br>
 	<%@include file="../common/footer.jsp"%>
 
 
@@ -243,24 +272,6 @@ window.onload=()=>{
 		  }); 
 	}
 	
-	//검색 img 클릭했을 때
-// 	document.getElementById('searchIcon').addEventListener('click', function() {
-// 		//여기에 ajax
-// 		searchText.value = '';
-		
-// 	})
-	
-// 	//검색어 입력 엔터 기능 
-// 	searchText.addEventListener('keyup', function(event) {
-// 	  if (event.key === 'Enter') {
-// 	    const searchText = searchText.value
-	    
-	    
-// 	    console.log('검색어:', searchText);
-// 	    searchText.value = '';
-// 	  }
-// 	});
-	
 	searchBtn.addEventListener('click', function(){
 		category = categoryBtn.value;
 		search = searchText.value;
@@ -280,15 +291,5 @@ window.onload=()=>{
 	
 }	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	//작성하기 버튼 클릭 시 작성하기 페이지로 이동 
-// 	document.getElementById('')
 </script>
 </html>

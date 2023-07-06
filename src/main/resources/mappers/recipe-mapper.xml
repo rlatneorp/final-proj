@@ -289,6 +289,22 @@
 		select * from dual
 	</insert>
 	
+	<insert id="insertRecipeBookmark">
+		insert into bookmark
+		values(SEQ_BOOKMARK_NO.nextval, #{usersNo}, #{divisionNo}, 1)
+	</insert>
+	
+	<delete id="deleteRecipeBookmark">
+		delete from bookmark
+		where users_no = #{usersNo} and division_no = #{divisionNo} and number_type = 1
+	</delete>
+	
+	<select id="selectRecipeBookmark" resultType="_int"> <!-- 레시피에 대한 북마크 -->
+		select count(*)
+		from bookmark
+		where users_no = #{usersNo} and division_no = #{ productNo } and number_type = 1
+	</select>
+	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

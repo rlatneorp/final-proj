@@ -47,6 +47,15 @@
        values (#{u.usersId}, #{at.date}, #{at.dateStr}, to_char(sysdate, 'YYYY-MM-DD'), #{at.title})
    </insert>
    
+   <insert id="atPointList">
+   		insert point
+   		values (#{SEQ_POINT_NO.nextval}, #{u.usersNo}, 1, #{u.point}, #{u.point}+10, sysdate)
+   </insert>
+   
+<!--    <insert id="monthAtPointList"> -->
+<!--    		insert point -->
+<!--    </insert> -->
+   
    
    <insert id="insertShipping">
         insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
@@ -435,16 +444,24 @@
    
    
    <!-- 포인트 조회  -->
+<!--    <select id="selectPoint" resultType="_int"> -->
+<!--       <![CDATA[ -->
+<!--       SELECT POINT_CHANGE -->
+<!--       FROM ( -->
+<!-- 	    SELECT * -->
+<!-- 	    FROM point -->
+<!-- 	    WHERE USERS_NO = #{usersNo} -->
+<!-- 	    ORDER BY POINT_NO DESC -->
+<!-- 	    ) WHERE ROWNUM = 1 -->
+<!--  	  ]]>  -->
+<!--    </select> -->
+
    <select id="selectPoint" resultType="_int">
       <![CDATA[
-      SELECT POINT_CHANGE
-      FROM (
-	    SELECT *
-	    FROM point
-	    WHERE USERS_NO = #{usersNo}
-	    ORDER BY POINT_NO DESC
-	    ) WHERE ROWNUM = 1
-	  ]]>
+      SELECT POINT
+      FROM USERS
+	  WHERE USERS_NO = #{usersNo}
+ 	  ]]> 
    </select>
    
    <!-- 장바구니 상품에 대한 이미지 조회 -->
@@ -952,6 +969,23 @@
 	<select id="selReviewCount" resultType="_int">
 		select count(*) from review where order_no = #{orderNo} and review_writer = #{nickName}
 	</select>
+	   <insert id="goToPay">
+      <if test="preorderNo == 0">
+         insert all 
+         into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, seq_pre_no.nextval)
+           into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, seq_pre_no.currval)
+           select * from dual
+      </if>
+      <selectKey keyProperty="preorderNo" resultType="int" order="AFTER" >
+         select seq_pre_no.currval from dual
+      </selectKey>
+        <if test="preorderNo != 0">
+           insert all 
+         into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, #{preorderNo})
+           into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, #{preorderNo})
+           select * from dual
+        </if>   
+   </insert>
 	
 	
 </mapper>

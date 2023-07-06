@@ -73,5 +73,21 @@ public class BoardDAO {
 		return (ArrayList)sqlSession.selectList("boardMapper.freeBList", map, rowBounds);
 	}
 
+	public int reWriteBoard(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.update("boardMapper.reWriteBoard", map);
+	}
+
+	public Board reWrieteBoardInfo(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("boardMapper.reWrieteBoardInfo", map);
+	}
+
+	public int deleteBoard(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.update("boardMapper.deleteBoard", map);
+	}
+
+	public int deleteReply(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.update("boardMapper.deleteReply", map);
+	}
+
 	
 }

@@ -925,9 +925,10 @@ p b {
             	<input type="text" class="totalPrice" readonly value="0"> 원
             </div>
             <br>
-            <button type="submit" id="buybtn" style="display: inline-block; width: 60%;" formaction="${ contextPath }/payDetail.ma">구매하기</button>
+            <button type="button" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 <!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+            
    
          </div>
       </main>
@@ -1008,14 +1009,14 @@ p b {
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
             <c:forEach	items="${ordList}" var="orders">
-               <c:if test="${ orders >=  1 }">
-               		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}">
+<%--                <c:if test="${ orders >=  1 }"> --%>
+<%--                		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}"> --%>
 		               <div class="review_btn">
 		                  <a href="createReview.ma?productNo=${p.productNo}">
 		                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 		               </div>
-		            </c:if>
-            </c:if> 
+<%-- 		            </c:if> --%>
+<%--             </c:if>  --%>
             </c:forEach>   
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
@@ -1674,6 +1675,68 @@ p b {
          });
          
          
+         $("#buybtn").click(function() {
+             productNo = $("input[name='productNo']").val();
+             var cartCount = $(".cartCount").val();
+             var productOption = $(".productOption").val();
+             var productOption2 = $(".productOption2").val();
+             var preorderNo = 0;
+             
+             var productNoValues=[];
+             var cartCountValues=[];
+             var productOptionValues=[];
+             var productOption2Values=[];
+             var usersNoValues=[];
+             
+             
+             $("input[name='productNo']").each(function(){
+                productNoValues.push($(this).val());
+             })
+             
+             $(".cartCount").each(function(){
+                cartCountValues.push($(this).val());
+             })
+             
+             $("input[name='productOption']").each(function(){
+                productOptionValues.push($(this).val());
+             })
+             
+             $("input[name='productOption2']").each(function(){
+                productOption2Values.push($(this).val());
+             })
+             
+             $("input[name='usersNo']").each(function(){
+                usersNoValues.push($(this).val());
+             })
+             
+             let count = 0;
+             let str = '';
+                for(i=0; i<productNoValues.length; i++){
+                   $.ajax({
+                       url: "goToPay.ma",
+                       async: false,
+                       data: {
+                         "productNo":productNoValues[i], 
+                         "cartCount":cartCountValues[i],
+                         "productOption":productOptionValues[i], 
+                         "productOption2":productOption2Values[i],
+                         "usersNo":usersNoValues[i],
+                      },
+                       success: preNo =>{
+                    	   if(i==0){
+	                    	   str += "preorderNos="+preNo;
+                    	   }else{
+	                    	   str += "&preorderNos="+preNo;
+                    	   }
+                       },
+                       error: allData => {
+                          console.log("error");
+                       }
+                   })
+                }
+               	location.href='${contextPath}/payDetail.ma?'+str;
+                
+         })
          
          
           $("#cartbtn").click(function() {
@@ -1723,7 +1786,7 @@ p b {
                           "usersNo":usersNoValues[i],
                        },
                         success: preNo =>{
-                            count++;
+                        	
                         },
                         error: allData => {
                            console.log("error");

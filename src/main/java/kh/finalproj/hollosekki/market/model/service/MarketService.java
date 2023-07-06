@@ -490,6 +490,18 @@ public class MarketService {
 		return mkDAO.goToPay(sqlSession, c);
 	}
 
+	public void atPointList(HashMap<String, Object> map) {
+		mkDAO.atPointList(sqlSession, map);	
+	}
+
+	public Attendance monthCheckUser(HashMap<String, Object> map) {
+		return mkDAO.monthCheckUser(sqlSession,map);
+	}
+
+	public void monthChecked(Attendance monthAt) {
+		mkDAO.monthChecked(sqlSession, monthAt);
+	}
+
 
 
 

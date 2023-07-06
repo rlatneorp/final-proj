@@ -567,10 +567,16 @@ public class MarketDAO {
 	      return c.getPreorderNo();
 	}
 
-	
 	public void atPointList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		sqlSession.insert("marketMapper.atPointList", map);
+	}
 
+	public Attendance monthCheckUser(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("marketMapper.monthCheckUser", map);
+	}
+
+	public void monthChecked(SqlSessionTemplate sqlSession, Attendance monthAt) {
+		sqlSession.insert("marketMapper.monthChecked", monthAt);
 	}
 
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {

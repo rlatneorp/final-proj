@@ -48,13 +48,25 @@
    </insert>
    
    <insert id="atPointList">
-   		insert point
-   		values (#{SEQ_POINT_NO.nextval}, #{u.usersNo}, 1, #{u.point}, #{u.point}+10, sysdate)
+   		insert into point 
+   		values (SEQ_POINT_NO.nextval, #{u.usersNo}, 1, #{u.point}, #{u.point}+10, sysdate)
    </insert>
    
-<!--    <insert id="monthAtPointList"> -->
-<!--    		insert point -->
-<!--    </insert> -->
+   <select id="monthCheckUser" resultMap="AttendanceResultSet">
+  		select *
+        from attendance
+              join users using(users_id)
+        where dateStr = to_char(sysdate, 'YYYY-MM-DD')
+            and users_id = #{u.usersId}
+            and check_day = to_char(last_day(sysdate),'dd')
+        	and sysdate = last_day(sysdate)
+   </select>
+   
+   
+   <insert id="monthAtPointList">
+   		insert into point
+   		values (seq_point_no.nextval, #{usersNo}, 1, #{point}, #{point}+1000, sysdate)
+   </insert>
    
    
    <insert id="insertShipping">

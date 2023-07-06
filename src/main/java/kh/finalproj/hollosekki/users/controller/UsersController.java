@@ -467,6 +467,7 @@ public class UsersController {
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		
 		ArrayList<Review> reviewList = null;
+		int rCount = 0;
 		for(Orders order :orderList) {
 			//productName 媛��졇�삤湲�
 			int productNo = order.getProductNo();
@@ -483,12 +484,13 @@ public class UsersController {
 			if (menus != null) {
 				order.setProductName(menus.getMenuName());
 			}
+			 rCount = mkService.selectReview(order.getOrderNo(), users.getNickName());
+			 order.setReviewCount(rCount);
 			 
-//			reviewList = mkService.selectReview(productNo, users.getNickName());
 		}
 		
 		System.out.println("orderList : " + orderList);
-//		System.out.println(reviewList);
+		
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("orderList", orderList);

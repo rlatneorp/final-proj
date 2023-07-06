@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,8 +64,7 @@ public class RecipeController {
 //	레시피 리스트 조회
 	@RequestMapping("recipeList.rc")
 	public String recipeList(@ModelAttribute Recipe r, Model model,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "input", required = false) String word) {
+			@RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -73,32 +73,56 @@ public class RecipeController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 
 		ArrayList<Recipe> rList = new ArrayList<>();
-		ArrayList<Recipe> searchList = new ArrayList<>();
 		ArrayList<Image> iList = new ArrayList<>();
-		ArrayList<Image> searchImage = new ArrayList<>();
 
-		if (word == null) {
-			rList = rService.selectRecipeList(pi);
-			iList = rService.selectRecipeImageList();
-		} else if (word != null) {
-			searchList = rService.searchRecipe(word);
-			searchImage = rService.searchImage();
-		}
+		rList = rService.selectRecipeList(pi);
+		iList = rService.selectRecipeImageList();
 
-		if (word == null) {
+		if(!rList.isEmpty()) {
 			model.addAttribute("rList", rList);
 			model.addAttribute("iList", iList);
 			model.addAttribute("pi", pi);
 
 			return "recipeList";
-		} else if (word != null) {
+		} else {
+			throw new RecipeException("레시피 조회에 실패하였습니다.");
+		}
+	}
+	
+//	레시피 검색
+	@GetMapping("searchRecipe.rc")
+	public String searchRecipe(@ModelAttribute Recipe r, Model model,
+								@RequestParam(value = "page", required = false) Integer page,
+								@RequestParam(value = "word", required = false) String word) {
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = page;
+		}
+		int listCount = rService.getListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		
+		System.out.println(word);
+		
+		
+		ArrayList<Recipe> searchList = new ArrayList<>();
+		ArrayList<Image> searchImage = new ArrayList<>();
+		
+		searchList = rService.searchRecipe(word);
+		searchImage = rService.searchImage();
+		
+		if(searchList.isEmpty()) {
+			String str = "검색된 레시피가 없습니다.";
+			model.addAttribute("str", str);
 			model.addAttribute("rList", searchList);
 			model.addAttribute("iList", searchImage);
 			model.addAttribute("pi", pi);
 
 			return "recipeList";
 		} else {
-			throw new RecipeException("레시피 조회에 실패하였습니다.");
+			model.addAttribute("rList", searchList);
+			model.addAttribute("iList", searchImage);
+			model.addAttribute("pi", pi);
+			return "recipeList";
 		}
 	}
 

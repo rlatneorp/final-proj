@@ -22,11 +22,13 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.menu.model.exception.MenuException;
 import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
@@ -125,6 +127,9 @@ public class MenuController {
 		int reviewCount = mService.getReviewCount(mNo);
 		PageInfo pi = ReviewPagination.getPageInfo(1, reviewCount, 5);
 		
+		int qnaCount = mService.getQnaCount(mNo);
+		PageInfo qpi = ReviewPagination.getPageInfo(1, qnaCount, 5);
+		
 		int usersNo = mService.selectUsersNo(mNo);
 		int productNo = mNo;
 		
@@ -145,6 +150,7 @@ public class MenuController {
 		ArrayList<Image> miList = mService.menuDetailImage();
 		ArrayList<Product> pList = mService.healtherInfo(usersNo);
 		ArrayList<Review> rList = mService.selectReviewList(pi, mNo);
+		ArrayList<QA> qList = mService.selectQnaList(qpi, mNo);
 		
 		// 주문정보 조회
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -167,6 +173,8 @@ public class MenuController {
 			mv.addObject("myReview", myReview);
 			mv.addObject("reviewCount", reviewCount);
 			mv.addObject("pi", pi);
+			mv.addObject("qnaCount", qnaCount);
+			mv.addObject("qList", qList);
 			mv.setViewName("menuDetail");
 			
 			return mv;
@@ -243,6 +251,18 @@ public class MenuController {
 			return "redirect:menuDetail.mn?mNo=" + mNo;
 		} else {
 			throw new MenuException("식단 후기 등록 실패");
+		}
+	}
+	
+	@RequestMapping("insertQna.mn")
+	public String insertQna(@ModelAttribute QA qna) {
+		
+		int result = mService.insertQna(qna);
+		
+		if(result > 0) {
+			return "redirect:menuDetail.mn?mNo=" + qna.getProductNo();
+		} else {
+			throw new MenuException("식단 문의 등록 실패");
 		}
 	}
 	

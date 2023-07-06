@@ -259,12 +259,15 @@ p b {
 	.boardNo{width: 100px;}
 	.boardContent{width: 540px;}
 	.boardWrite{width: 150px;}
-	.boardDate{width: 210px;}
+	.boardTitle{width: 575px;}
+	.qnaAnswer{width: 100px;}
+	.qnaDate{width: 125px;}
 	.board{border-collapse: collapse; }
 	.boardTop{background-color: #B0DAFF;}
 	.line{border-bottom: 1px solid black; border-top: 1px solid black;}
 	.lineAll{height: 50px; cursor: pointer;}
 	.lineAll:hover{background-color: #19A7CE; color: white;}
+	.form-control{height: 35px;}
 	
 /* 	입력 박스 */
 	.inputTextBox{width:730px; height: 50px; margin: auto; position: relative;}
@@ -295,7 +298,7 @@ p b {
 	  font-weight: 500;
 	  color: #000;
 	  background-color: #B0DAFF;
-	  border: 1px solid black;
+ 	  border: 1px solid black;
 	  border-radius: 10px;
 	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 	  transition: all 0.3s ease 0s;
@@ -312,7 +315,7 @@ p b {
 	  font-weight: 500;
 	  color: #000;
 	  background-color: #lightgray;
-	  border: 1px solid black;
+ 	  border: 1px solid black; 
 	  border-radius: 10px;
 	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 	  transition: all 0.3s ease 0s;
@@ -462,6 +465,7 @@ p b {
 
 	<form action="${contextPath}" method="get">
 	<main id="order-wrap">
+	<input type="hidden" id="thisProductNo" value="${menu.foodProductNo}">
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
@@ -975,6 +979,46 @@ p b {
 	
 	<br>
 	
+<!-- 	문의 -->
+	<p class="mid">문의</p>
+		<br>
+		<div id="qna">
+			<table class="board">
+				<tr class="boardTop">
+					<th class="line boardNo">No.</th>
+					<th class="line boardTitle">문의 제목</th>
+					<th class="line boardReviewWrite">작성자</th>
+					<th class="line qnaDate">날짜</th>
+					<th class="line qnaAnswer">문의 상태</th>
+				</tr>
+				<c:if test="${qnaCount eq 0}">
+					<tr>
+						<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br>해당 상품에 등록된 문의가 없습니다.</td>
+					</tr>
+				</c:if>
+				<c:if test="${qnaCount ne 0}">
+					<c:forEach items="${qList}" var="q">
+						<tr class="lineAll qnaLine">
+							<td class="line">${q.qnaNo}</td>
+							<td class="line">[${q.qnaType eq 1 ? "배송" : (q.qnaType eq 2 ? "결제" : (q.qnaType eq 3 ? "회원" : (q.qnaType eq 4 ? "상품" : "기타")))}] ${q.qnaTitle}</td>
+							<td class="line" id="${q.usersNo}">${q.nickName }</td>
+							<td class="line">${q.qnaDate }</td>
+							<td class="line">${q.answerContent eq null ? "답변 대기" : "답변 완료"}</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+			</table>
+		</div>
+		
+	<c:if test="${loginUser != null }">
+		<div class="qnaInputBox" style="margin-top: 10px;">
+			<button data-bs-toggle="modal" data-bs-target="#qnaModal" id="qnaIn" class="enter">문의 등록</button>
+			<input type="hidden" id="qnaId" value="${loginUser.nickName }">
+		</div>
+	</c:if>
+
+	
+<!-- 	내가 쓴 후기 -->
 	<c:if test="${loginUser ne null && myReview ne 0 }">
 		<p class="mid">내가 쓴 후기</p>
 		<br>
@@ -1207,6 +1251,44 @@ p b {
 	</div>
 </div>
 
+<!-- 문의 등록 모달 -->
+<div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">문의 작성</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<br>
+			<form method="post" id="writeQna">
+				<div class="modal-body" id="qnaBody" style="text-align: left;">
+					<input type="hidden" name="productNo" value="${menu.foodProductNo }">
+					<input type="hidden" name="usersNo" value="${loginUser.usersNo }">
+					<input type="hidden" name="orderNo" id="orderNo">
+					
+					<select class="form-control" name="qnaType">
+						<option value="1">배송</option>
+						<option value="2">결제</option>
+						<option value="3">회원</option>
+						<option value="4">상품</option>
+						<option value="0">기타</option>
+					</select>
+					
+					<label style="margin-bottom: 5px;">문의 제목</label><br>
+					<input type="text" name="qnaTitle" placeholder=" 문의 제목을 입력하세요." style="margin-bottom: 15px; border: 1px solid black; height: 30px; width: 465px; border-radius: 5px;" required>
+					<br>
+					<label style="margin-bottom: 5px;">문의 내용</label>
+					<textarea id="qnaContent" style="width: 465px; height: 150px; border-radius: 10px; resize: none;" maxlength="100" placeholder="내용을 입력해주세요." name="qnaContent" required></textarea>
+				</div>
+				<div class="footer">
+					<button type="button" class="button btn-n" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="button btn-y" id="qnaWrite">작성하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <!-- 댓글 등록 모달 -->
 <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
@@ -1258,7 +1340,7 @@ p b {
 			<form method="post" id="updateReview">
 				<div class="modal-body" id="updateReviewBody">
 					<input type="hidden" name="reviewNo" id="reviewNo">
-					<input type="hidden" name="productNo" value="${ menu.foodProductNo }" id="mNo">
+					<input type="hidden" name="productNo" value="${menu.foodProductNo}" id="mNo">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
 							<label for="reviewUpdateScore5">★</label>
@@ -1713,6 +1795,35 @@ p b {
 			}
 		});
 	});
+	
+	const qnaWrite = document.getElementById('qnaWrite');
+	const writeQna= document.getElementById('writeQna');
+	const qnaBody = document.getElementById("qnaBody");
+	qnaWrite.addEventListener('click', function(){
+		const fNo = qnaBody.childNodes[1].value;
+		const nick = qnaBody.childNodes[3].value;
+		const qnaType = qnaBody.childNodes[7].value;
+		const qnaTitle = qnaBody.childNodes[12].value;
+		const qnaContent = qnaBody.childNodes[18].value;
+		
+		if(qnaTitle != null && qnaContent != null){
+			writeQna.action = '${contextPath}/insertQna.mn';
+			writeQna.submit();
+		}
+	})
+	
+	const qnaLine = document.querySelectorAll('.qnaLine');
+	for(const qline of qnaLine){
+		qline.addEventListener('click', function(){
+			const qnaNo = this.childNodes[1].innerText;
+			const usersNo = this.childNodes[5].id;
+			const productNo = document.getElementById('thisProductNo').value;
+			
+			console.log(this.childNodes[5].id);
+			
+			location.href='${contextPath}/QnAdetail.ma?usersNo=' + usersNo + '&productNo=' + productNo + '&qnaNo=' + qnaNo;
+		})
+	}
  </script> 
 
 </body>

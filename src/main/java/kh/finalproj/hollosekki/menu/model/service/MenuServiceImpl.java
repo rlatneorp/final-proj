@@ -12,9 +12,11 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.menu.model.dao.MenuDAO;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
@@ -139,5 +141,20 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public int updateReview(Review r) {
 		return mDAO.updateReview(sqlSession, r);
+	}
+	
+	@Override
+	public int getQnaCount(int mNo) {
+		return mDAO.getQnaCount(sqlSession, mNo);
+	}
+	
+	@Override
+	public ArrayList<QA> selectQnaList(PageInfo qpi, int mNo) {
+		return mDAO.selectQnaList(sqlSession, qpi, mNo);
+	}
+	
+	@Override
+	public int insertQna(QA qna) {
+		return mDAO.insertQna(sqlSession, qna);
 	}
 }

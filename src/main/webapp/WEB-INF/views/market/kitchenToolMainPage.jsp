@@ -418,15 +418,17 @@ ul li {
 					</c:choose>
 					<c:if test="${h.productSale ne 0 }">
 						<span class="originPrice">
-							${h.productPrice }원
-						</span>
-					</c:if>
-					<c:if test="${h.productSale eq 0 }">
-						<span style="font-size:25px;">
 							<fmt:formatNumber value="${h.productPrice }" pattern="###,###,###"/>원
 						</span>
 					</c:if>
-					<div class="discount"></div>
+					<c:if test="${h.productSale eq 0 }">
+						<div style="height:38px;"></div>
+<!-- 						<span style="font-size:25px;"> -->
+<!-- 						</span> -->
+					</c:if>
+					<div class="discount">
+						<fmt:formatNumber value="${h.productPrice * (100 - h.productSale) / 100 }" pattern="###,###,###"/>원
+					</div>
 					<input type="hidden" class="hotDeal" value="${h.productSale }">
 	          	</div>
 	        </c:forEach>
@@ -457,13 +459,14 @@ ul li {
 							<div class="productName">${li.INGREDIENT_NAME }</div>
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE ne 0 }">
-							<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
-							
+							<div class="originPrice" style="padding-top:1px;"><fmt:formatNumber value="${li.PRODUCT_PRICE}" pattern="###,###,###"/>원</div>
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE eq 0 }">
-							<div style="text-decoration: none;">${li.PRODUCT_PRICE }</div>
+							<div style="height:38px;"></div>
 						</c:if>
-						<div class="discount" ></div>
+						<div class="discount" >
+							<fmt:formatNumber value="${li.PRODUCT_PRICE * (100-li.PRODUCT_SALE) / 100 }" pattern="###,###,###"/>원
+						</div>
 						<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
 					</div>
 				</c:forEach>
@@ -505,15 +508,14 @@ ul li {
 					<div class="productName">${li.productName }</div>
 					<c:if test="${li.productSale ne 0 }">
 						<span class="originPrice">
-						<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
+							<fmt:formatNumber value="${li.productPrice }" pattern="###,###,###"/>원
 						</span>
 					</c:if>
 					<c:if test="${li.productSale eq 0 }">
-						<span style="font-size:25px;">
-							${li.productPrice }
-						</span>
 					</c:if>
-					<span class="discount" id="discount-${li.productNo }"></span>
+					<span class="discount" id="discount-${li.productNo }">
+						<fmt:formatNumber value="${li.productPrice }" pattern="###,###,###"/>원
+					</span>
 					<input type="hidden" value="${li.productSale }">
 				</li>
 			</c:forEach>
@@ -572,42 +574,42 @@ ul li {
 
 		
 		//normal
-		const normal = document.getElementsByClassName('normal');
-		for(np of normal) {
-			const productNo = np.children[0].value;
-			//할인 계산 
-			if(np.children[5].value != '0') {
-				const originPrice = parseInt(np.children[3].innerText);
-				const sale = parseInt(np.children[5].value);
-				const discount = (originPrice * (1- sale/100)).toLocaleString();
-				document.getElementById('discount-'+productNo).innerText = discount + '원'
-			} 
-		}
+// 		const normal = document.getElementsByClassName('normal');
+// 		for(np of normal) {
+// 			const productNo = np.children[0].value;
+// 			//할인 계산 
+// 			if(np.children[5].value != '0') {
+// 				const originPrice = parseInt(np.children[3].innerText);
+// 				const sale = parseInt(np.children[5].value);
+// 				const discount = (originPrice * (1- sale/100)).toLocaleString();
+// 				document.getElementById('discount-'+productNo).innerText = discount + '원'
+// 			} 
+// 		}
 		
 		//핫딜존 
-		const hotDealList = document.getElementsByClassName('hotDeal');
-		for(pl of hotDealList) {
-// 			const productNo = pl.parentElement.children[0].value;
-			//할인 계산 
-			if(pl.value != '0') {
-				console.log(pl.previousElementSibling)
-				const originPrice = parseInt(pl.previousElementSibling.previousElementSibling.innerText.replace(/원/g, ''));
-				const sale = parseInt(pl.value);
-				const discount = (originPrice * (1- sale/100)).toLocaleString();
-				pl.previousElementSibling.innerText = discount + '원'
-			} 
-		}
+// 		const hotDealList = document.getElementsByClassName('hotDeal');
+// 		for(pl of hotDealList) {
+// // 			const productNo = pl.parentElement.children[0].value;
+// 			//할인 계산 
+// 			if(pl.value != '0') {
+// 				console.log(pl.previousElementSibling)
+// 				const originPrice = parseInt(pl.previousElementSibling.previousElementSibling.innerText.replace(/원/g, ''));
+// 				const sale = parseInt(pl.value);
+// 				const discount = (originPrice * (1- sale/100)).toLocaleString();
+// 				pl.previousElementSibling.innerText = discount + '원'
+// 			} 
+// 		}
 		
 		//추천 상품
-		const likeOrders = document.getElementsByClassName('likeOrders');
-		for(lo of likeOrders) {
-			if(lo.value != '0') {
-				const originPrice = parseInt(lo.previousElementSibling.previousElementSibling.innerText.replace(/원/g, ''));
-				const sale = parseInt(lo.value);
-				const discount = (originPrice * (1- sale/100)).toLocaleString();
-				lo.previousElementSibling.innerText = discount + '원'
-			}	
-		}
+// 		const likeOrders = document.getElementsByClassName('likeOrders');
+// 		for(lo of likeOrders) {
+// 			if(lo.value != '0') {
+// 				const originPrice = parseInt(lo.previousElementSibling.previousElementSibling.innerText.replace(/원/g, ''));
+// 				const sale = parseInt(lo.value);
+// 				const discount = (originPrice * (1- sale/100)).toLocaleString();
+// 				lo.previousElementSibling.innerText = discount + '원'
+// 			}	
+// 		}
 		
 	} //window.onload 
 	

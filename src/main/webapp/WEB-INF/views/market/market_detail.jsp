@@ -142,8 +142,10 @@ ul, li {
    text-decoration: line-through;
 }
 
-#totalPrice {
-   font-size: 24px;
+.totalPrice {
+   font-size: 16px;
+   font-color: #ebebeb;
+   border: none;
 }
 
 
@@ -858,7 +860,7 @@ p b {
 	                        <c:if test="${vs.index == 0}">
 	                           <label for="productOptionSet"> ${op.optionName}</label>
 	                           <select class='productOptionSet'  required>
-	                              <option value="">옵션을 선택해주세요</option>
+	                              <option value="0">옵션을 선택해주세요</option>
 	                              <option value="${op.optionNo}">${op.optionValue}</option>
 	                        </c:if>
 	                        <c:if test="${op.optionName eq options[vs.index-1].optionName}">
@@ -869,7 +871,7 @@ p b {
 	                           
 	                           <label for="productOption2Set"> ${op.optionName}</label>
 	                           <select class='productOption2Set'  required>
-	                              <option class='productOption2Set' >옵션을 선택해주세요.</option>
+	                              <option value="0" class='productOption2Set' >옵션을 선택해주세요.</option>
 	                              <option value="${op.optionNo}">${op.optionValue}</option>
 	                        </c:if>
 	                        <c:if test="${vs.last}">
@@ -929,9 +931,9 @@ p b {
             <div class="totalPriceBox">
 <!--             	<span class="totalPrice"></span> -->
 
-			<c:if test="${ tool eq null }">
-            	<input type="text" class="totalPrice" readonly value="0" style="display:none">
-            </c:if>
+<%-- 			<c:if test="${ tool eq null }"> --%>
+<!--             	<input type="text" class="totalPrice" readonly value="0" style="display:none"> -->
+<%--             </c:if> --%>
             
 			
             <c:if test="${ tool ne null }">
@@ -1017,10 +1019,7 @@ p b {
       </c:forEach>
     </c:if>
     
-    
-<!--       <div class="DetailMoreBtn"> -->
-<!--          <a>상세정보 더보기</a> -->
-<!--       </div> -->
+
    </div>
       <br>
       
@@ -1029,16 +1028,16 @@ p b {
          <div class="reviewWrap1" style="padding: 10px; border-bottom: 1px solid lightgray;">
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
-<%--             <c:forEach	items="${ordList}" var="orders">ㅊ --%>
-<%--                <c:if test="${ orders >=  1 }"> --%>
-<%--                		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}"> --%>
+            <c:forEach	items="${ordList}" var="orders">
+               <c:if test="${ orders >=  1 }">
+               		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}">
 		               <div class="review_btn">
 		                  <a href="createReview.ma?productNo=${p.productNo}">
 		                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 		               </div>
-<%-- 		            </c:if> --%>
-<%--             </c:if>  --%>
-<%--             </c:forEach>    --%>
+		            </c:if>
+            </c:if> 
+            </c:forEach>   
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
          <span class="review_stardesc" style="font-size: 500;">별점순</span>
@@ -1620,48 +1619,54 @@ p b {
 		       
          }
        if(productOption2Set != null){
-           productOption2Set.addEventListener("change", function(){
-            const select =  $('.productOptionSet option:selected');
-            const select2 = $('.productOption2Set option:selected');
-               let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
-//                let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
-               const opSearch = document.getElementsByClassName('opSearch');
-               let YN = "Y";
-               for(let k=0; k<opSearch.length; k++){
-                  if(opSearch[k].innerText == optionName){
-                     alert("이미 선택한 옵션입니다.");
-                     YN = "N";
-                  }
-               }
-   
-            if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
-            productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
-                     +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-                                        +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
-                                        +'<input type="hidden" name="productNo" value="${tool.productNo}">'
-                                        +'<input type="hidden" name="productName" value="${tool.toolName}">'
-                                        +'<input type="hidden" name="productPrice" value="${total}">'
-                                        +'<input type="hidden" name="productOption" value='+select.val()+'>'
-                                        +'<input type="hidden" name="productOption2" value='+select2.val()+'>'
-                                        +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
-                                     +'</h4>'
-                                     +'<div>'
-                                        +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-                                           +'<button class="decrease" type="button">-</button>'
-                                           +'<input type="number" class="cartCount"'
-                                           +'   value="1" name="cartCount" min="1" readonly>'
-                                           +'<button class="increase" type="button">+</button>'
-                                           +'<button class="removeProudct" type="button" style="float: right;">'
-                                              +'<img src="resources/images/close.png" style="width: 10px;">'
-                                        +'<span>'
-                                        +'</button>'
-                                        +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
-                                        +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-                                     +'</div>'
-                                      +'<br>'
-                                  +'</div>');
-            }
-            cal()
+           const select =  $('.productOptionSet option:selected');
+           const select2 = $('.productOption2Set option:selected');
+           
+	           productOption2Set.addEventListener("change", function(){
+	        	   
+	        	if(select[0].value  == 0 ){
+	        		
+	                   let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
+	//                    let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
+	                   const opSearch = document.getElementsByClassName('opSearch');
+	                   let YN = "Y";
+	                   for(let k=0; k<opSearch.length; k++){
+	                      if(opSearch[k].innerText == optionName){
+	                         alert("이미 선택한 옵션입니다.");
+	                         YN = "N";
+	                      }
+	                   }
+	       
+	                if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
+	                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+	                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+	                                            +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
+	                                            +'<input type="hidden" name="productNo" value="${tool.productNo}">'
+	                                            +'<input type="hidden" name="productName" value="${tool.toolName}">'
+	                                            +'<input type="hidden" name="productPrice" value="${total}">'
+	                                            +'<input type="hidden" name="productOption" value='+select.val()+'>'
+	                                            +'<input type="hidden" name="productOption2" value='+select2.val()+'>'
+	                                            +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+	                                         +'</h4>'
+	                                         +'<div>'
+	                                            +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+	                                               +'<button class="decrease" type="button">-</button>'
+	                                               +'<input type="number" class="cartCount"'
+	                                               +'   value="1" name="cartCount" min="1" readonly>'
+	                                               +'<button class="increase" type="button">+</button>'
+	                                               +'<button class="removeProudct" type="button" style="float: right;">'
+	                                                  +'<img src="resources/images/close.png" style="width: 10px;">'
+	                                            +'<span>'
+	                                            +'</button>'
+	                                            +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
+	                                            +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+	                                         +'</div>'
+	                                          +'<br>'
+	                                      +'</div>');
+	                }
+	                cal()
+	        	}
+
          })
          
          

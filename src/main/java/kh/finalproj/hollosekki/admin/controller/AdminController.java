@@ -807,13 +807,17 @@ public class AdminController {
 		resultIgd = aService.updateIngredient(igd);
 			
 		if(resultPd != 0 && resultIgd != 0 && imageChange.equals("Y")) {
+//			기존 이미지 존재여부 확인후 있다면 삭제
+			ArrayList<Image> imgList = selectAllImageList(igd.getIngredientNo(), 5, -1);
+			if(!imgList.isEmpty()) {
+				Image img = imgList.get(0);
+//				데이터 서버 이미지 삭제
+				deleteFile(img.getImageRenameName(), request);
+				
+//				DB서버 이미지 삭제
+				resultImgDel = aService.deleteImage(img);
+			}
 			
-//			데이터 서버 이미지 삭제
-			Image img = selectAllImageList(igd.getIngredientNo(), 5, 0).get(0);
-			deleteFile(img.getImageRenameName(), request);
-			
-//			DB서버 이미지 삭제
-			resultImgDel = aService.deleteImage(img);
 			
 //			이미지 저장
 			Image image = new Image();
@@ -1233,14 +1237,12 @@ public class AdminController {
 		int resultImgDel = 0;
 		int resultImgIn = 0;
 		int upImageCount = 0;
-		System.out.println(t);
 		resultPd = aService.updateProduct(t);
 		
 		resultT = aService.updateTool(t);
 		
 		if(t.getProductOption().equals("Y") && t.getOptionTotal() != null) {
-			String[] delList = {t.getProductNo()+""};
-			resultOpDel = aService.deletesOptions(delList);
+			resultOpDel = aService.deleteOptions(t.getProductNo());
 			
 			ArrayList<Options> oList = new ArrayList<Options>();
 			for(String op:t.getOptionTotal()) {
@@ -1342,7 +1344,7 @@ public class AdminController {
 				if(imageFile != null && !imageFile.isEmpty()) {
 					String[] returnArr = saveFile(imageFile, request);
 					if(returnArr[1] != null) {
-						Image image = setImage(nowToolNo, 6, returnArr[0], imageFile.getOriginalFilename(), returnArr[1], 1);
+						Image image = setImage(nowToolNo, 6, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 1);
 						if(i==0) {
 							image.setImageLevel(0);
 						}
@@ -1656,12 +1658,17 @@ public class AdminController {
 		int resultImg = 1;
 //		이미지 변경저장
 		if(h.getImageChange().equals("Y")) {
-//			데이터 서버 이미지 삭제
-			Image img = selectAllImageList(h.getUsersNo(), 8, 0).get(0);
-			deleteFile(img.getImageRenameName(), request);
-			
-//			DB서버 이미지 삭제
-			resultImgDel = aService.deleteImage(img);
+			ArrayList<Image> imgList = selectAllImageList(h.getUsersNo(), 8, 0);
+//			기존 이미지가 있다면
+			if(!imgList.isEmpty()) {
+				Image img = imgList.get(0);
+				
+//				데이터 서버 이미지 삭제
+				deleteFile(img.getImageRenameName(), request);
+				
+//				DB서버 이미지 삭제
+				resultImgDel = aService.deleteImage(img);
+			}
 			
 			if(resultImgDel > 0) {
 //				이미지 저장

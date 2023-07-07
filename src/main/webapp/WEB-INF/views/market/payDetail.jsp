@@ -17,6 +17,9 @@
 
 <style>
 /* Normal white Button as seen on Google.com*/
+
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 .shipButton {
 	
     color: #444444;

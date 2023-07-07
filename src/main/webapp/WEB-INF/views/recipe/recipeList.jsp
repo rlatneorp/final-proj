@@ -72,6 +72,9 @@
 		border:1px solid #B0DAFF;
 		border-radius: 100%;
 	}
+	
+	#recipeMenu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+	
 </style>
 	
 </head>
@@ -197,6 +200,7 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
+	
 	const search = document.getElementById('searchBtn');
 	const searchBar = document.getElementById('searchBar');
 // 	action="recipeList.rc" 

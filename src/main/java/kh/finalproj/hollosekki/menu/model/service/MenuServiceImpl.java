@@ -167,4 +167,9 @@ public class MenuServiceImpl implements MenuService{
 	public int insertQna(QA qna) {
 		return mDAO.insertQna(sqlSession, qna);
 	}
+	
+	@Override
+	public Image selectProfile(int usersNo) {
+		return mDAO.selectProfile(sqlSession, usersNo);
+	}
 }

@@ -10,6 +10,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <style>
+	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 	#btn{
 		width: 85px; height: 40px;
 		border: 2px solid black;
@@ -75,7 +77,7 @@
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -159,7 +161,6 @@
 		</div>
 	</div>
 	
-	<br><br><br><br><br><br><br><br>
 	<br><br><br><br><br><br><br>
 	
 	<%@ include file="../common/footer.jsp" %>

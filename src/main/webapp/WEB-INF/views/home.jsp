@@ -428,21 +428,23 @@ font-family: 'Noto Sans KR', sans-serif;
 		<br><br>
 		<div class="oneCooker" style="display: flex; justify-content: center;"> 
 			<c:forEach items="${ hList }" var="h" varStatus="status">
-				<div style="margin: 10px; width: 180px;">
-					<div class="healther-img-div">
+				<div style="margin: 10px; width: 300px;">
+					<div class="healther-img-div" >
 						<img class="healther-img" src="${ contextPath }/resources/uploadFiles/${ h.IMAGE_RENAMENAME }"/>
 					</div>
-					<div class="healther-name">${ h.NAME }</div>
-					<div class="healther-title">${ h.TITLE }</div>
-					<div class="healther-career-div">
+					<div class="healther-name" style=" padding-bottom:-7px">${ h.NAME }</div>
+					<button class="personBtn d-inline" data-bs-toggle="modal" style="margin-bottom:25px" data-bs-target="#exampleModal${status.index}">식단보기</button>
+					<br>
+					<div class="healther-title"><b>${ h.TITLE }</b></div>
+					<div class="healther-career-div" style="height:70px;">
 						<c:forEach items="${fn:split(h.CAREER, ',')}" var="career">
 							<div class="healther-career">
 								• ${career}
 							</div>
 						</c:forEach>
 					</div>
-					
-					<button class="personBtn d-inline" data-bs-toggle="modal" data-bs-target="#exampleModal${status.index}">식단보기</button>
+					<br><br><br><br><br>
+<%-- 					<button class="personBtn d-inline" data-bs-toggle="modal" data-bs-target="#exampleModal${status.index}">식단보기</button> --%>
 				    
 				    <div class="modal fade" id="exampleModal${status.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				      <div class="modal-dialog modal-dialog-centered">

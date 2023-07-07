@@ -18,6 +18,8 @@
 </head>
 <style>
 
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 * {
 	outline: none;
 	margin: 0px;

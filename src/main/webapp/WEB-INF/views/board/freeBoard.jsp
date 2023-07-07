@@ -12,6 +12,9 @@
 	href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
 <title>Insert title here</title>
 <style>
+	
+	#board{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+	
 	.material-symbols-outlined {
 	  font-variation-settings:
 	  'FILL' 0,

@@ -8,6 +8,8 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 주문 상세조회</title>
 <style>
+	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+	
 	#btn{
 		width: 85px; height: 40px;
 		border: 2px solid black;
@@ -51,7 +53,7 @@
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -82,6 +84,7 @@
 					<p class="orderInfo">결제정보</p>
 					<table>
 						<tr>
+						
 							<td class="detail">배송비</td>
 							<td>${orders.shipPrice }원</td>
 						</tr>
@@ -122,7 +125,7 @@
 					<label class="orderInfo">주문 상품 정보</label>&nbsp;<label>(총 ${orders.orderCount }개 / <fmt:formatNumber type="number" maxFractionDigits="3" pattern="'\ '#,###" value="${orders.totalPrice }"/>)</label>
 					<br><br>
 					<table>
-						<tr id="detailProduct" style="border-bottom: 1px solid black;">
+						<tr id="detailProduct" style="border-bottom: 1px solid black; cursor: pointer;">
 							<td class="order">
 								<input type="hidden" id="productNo" value="${orders.productNo }">
 								<img src="${contextPath }/resources/uploadFiles/${orders.imgName}"/>
@@ -182,7 +185,6 @@
 		</div>
 	</div>
 	
-	<br><br><br><br><br><br><br><br>
 	<br><br><br><br><br><br><br>
 	
 	<%@ include file="../common/footer.jsp" %>
@@ -197,7 +199,7 @@
 			const sal = document.getElementById('sal').value.split(':')[1];
 			const plusPoint = document.getElementById('plusPoint').value.split(':')[1];
 			const pPoint = document.getElementById('pPoint');
-			const minusPoint = document.getElementById('minusPoint').value.split(':')[1];
+			const minusPoint = document.getElementById('minusPoint').value.split(':')[1].split('/')[0];
 			const mPoint = document.getElementById('mPoint');
 			
 			originPrice.innerText = price + '원';

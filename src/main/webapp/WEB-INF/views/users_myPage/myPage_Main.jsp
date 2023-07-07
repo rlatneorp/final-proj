@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <title>마이페이지</title>
 <style>
+	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 	.arrow1{
 		font-size: 30px; color: black;
   		margin-bottom: 10px;
@@ -85,6 +87,7 @@
 		transform: scale(1.2);
 		margin-left: 200px;
 		margin-top: 10px;
+		white-space: nowrap;
 	}
 	.modalFollower{
 		border: none; border-radius: 5px;
@@ -94,6 +97,7 @@
 		transform: scale(1.2);
 		margin-left: 200px;
 		margin-top: 10px;
+		white-space: nowrap;
 	}
     .modalFollow:hover {
 	    border: 1px #C6C6C6 solid;

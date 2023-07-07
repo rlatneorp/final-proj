@@ -116,6 +116,12 @@
 	.cart:hover{background: #1f8acb; color: white;  transition: all 0.3s ease 0s;}
 	.menu-list{display: none; width: 90px; background: rgba(176, 218, 255, 0.4); margin: 5px;}
 	.menu-div:hover .menu-list{display: block;} 
+	#cartCount{
+		width: 20px; height: 20px; border-radius: 50px;
+		font-size: 13px; font-weight: bold;
+		color: white;  background: red;
+		text-align: center;
+		margin-top: 8px; margin-left: -8px;}
 </style>
 </head>
 <body>
@@ -233,8 +239,9 @@
 					</div>
 					<div style="width:80px"></div>
 					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
-					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div></c:if>
-					
+					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+						<div id="cartCount">${ cart }</div>
+					</c:if>
 				</div>
 			</div>
 		</header>

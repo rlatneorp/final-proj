@@ -84,6 +84,7 @@
 					<p class="orderInfo">결제정보</p>
 					<table>
 						<tr>
+						
 							<td class="detail">배송비</td>
 							<td>${orders.shipPrice }원</td>
 						</tr>
@@ -198,7 +199,7 @@
 			const sal = document.getElementById('sal').value.split(':')[1];
 			const plusPoint = document.getElementById('plusPoint').value.split(':')[1];
 			const pPoint = document.getElementById('pPoint');
-			const minusPoint = document.getElementById('minusPoint').value.split(':')[1];
+			const minusPoint = document.getElementById('minusPoint').value.split(':')[1].split('/')[0];
 			const mPoint = document.getElementById('mPoint');
 			
 			originPrice.innerText = price + '원';

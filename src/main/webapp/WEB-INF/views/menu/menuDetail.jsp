@@ -458,7 +458,7 @@ p b {
 	fieldset label {cursor: pointer;}
 	
 	#menu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
-	
+	.like{cursor: pointer;}
 </style>
 <body>
 <span>
@@ -495,8 +495,17 @@ p b {
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
+					<c:set value="${menu.productPrice - (menu.productPrice * (menu.productSale * 0.01))}" var="price"/>
+					<div style="width: 300px; margin-left: 60px;">
+						<label style="font-size: 30px; color:gray; text-decoration: line-through lightgray 2px;">
+							<fmt:formatNumber value="${menu.productPrice}"/>원
+						</label>
+						<label style="font-size: 25px; color: red;">
+							&nbsp;&nbsp;<fmt:formatNumber value="${menu.productSale}"/>%<br>
+						</label>
+					</div>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						<fmt:formatNumber value="${menu.productPrice}"/>원
+						<fmt:formatNumber value="${price}"/>원
 					</h2>
 					&nbsp;&nbsp;
 					<c:if test="${ loginUser != null }">
@@ -507,15 +516,14 @@ p b {
 							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 						</c:if>
 <!-- 						<h4 id="bookmark" class="bookmark" style="display: inline-block; font-size: 35px; color: #4485d7; "><i class="bi bi-bookmark"></i></h4> -->
-						
 					</c:if>
 				</div>
 				<div>
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px; margin-top: 20px;">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;배송 | 3,000원 
+<!--                             	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;"> -->
+<!--                             	&nbsp;배송 | 3,000원  -->
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
@@ -543,7 +551,7 @@ p b {
 						<div id="productResult">
 							<div>
 								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
-									총 상품 가격 : <label id="total"><fmt:formatNumber value="${menu.productPrice}"/>원</label>
+									총 상품 가격 : <label id="total"><fmt:formatNumber value="${price}"/>원</label>
 								</h4>
 							</div>
 							<br>
@@ -1411,7 +1419,7 @@ p b {
 		if(parseQuan >= 2){
 			console.log(total);
 			quantity.innerText = parseQuan - 1;
-			var result = ${menu.productPrice} * quantity.innerText;
+			var result = ${price} * quantity.innerText;
 			
 			total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 		}
@@ -1423,7 +1431,7 @@ p b {
 		var total = document.getElementById('total');
 		
 		quantity.innerText = parseQuan + 1;
-		var result = ${menu.productPrice} * quantity.innerText;
+		var result = ${price} * quantity.innerText;
 		
 		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
@@ -1555,7 +1563,12 @@ p b {
 		        	"usersNo":usersNo,
 		        },
 	            success: data =>{
+	            	console.log("data : " + data);
 	           		console.log("success");
+	           		const jsonString = JSON.stringify(data);
+	           		const values = jsonString.substring(1, jsonString.length - 1).split(",");
+	           		const cart = values[1].trim().replace(/]/g, '');
+	           		document.getElementById("cartCount").innerText = cart;;
 	            },
 	            error: data => {
 	            	console.log("error");
@@ -1574,10 +1587,17 @@ p b {
 	}
 
 	const like = document.querySelector(".like");
+	const name = '${menu.name}';
+	const loginName = '${loginUser.usersName}';
 	
 	if(like != null){
 		like.addEventListener("click", function() {
-		    if(like.innerText === '♡') {
+			if(name == loginName){
+				swal("내가 쓴 글은 찜할 수 없습니다.", {
+					  buttons: false,
+					  timer: 1000,
+				});
+			} else if(like.innerText === '♡') {
 		        //찜이 안 되어 있으면 
 		        $.ajax({
 		        	url:'${contextPath}/insertLike.ma',
@@ -1656,7 +1676,12 @@ p b {
 	
 	if(bookmark != null){
 		bookmark.addEventListener('click', function(){
-			if(bookmark.value == 'noBookmark'){
+			if(name == loginName){
+				swal("내가 쓴 글은 스크랩할 수 없습니다.", {
+					  buttons: false,
+					  timer: 1000,
+				});
+			} else if(bookmark.value == 'noBookmark'){
 				$.ajax({
 					url: "insertBookmark.mn",
 					data:{

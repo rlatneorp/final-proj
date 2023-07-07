@@ -1108,7 +1108,7 @@ p b {
 	</c:if>
 	<br><br><br>
 	<p class="mid">후기</p><br>
-	<p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
+	<p style="margin-left: 43.5%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 	<div id="qna">
 		<table class="board">
 			<tr class="boardTop">
@@ -1568,7 +1568,9 @@ p b {
 	           		const jsonString = JSON.stringify(data);
 	           		const values = jsonString.substring(1, jsonString.length - 1).split(",");
 	           		const cart = values[1].trim().replace(/]/g, '');
-	           		document.getElementById("cartCount").innerText = cart;;
+	           		console.log(cart);
+	           		document.getElementById("cartCount").innerText = cart;
+	           		document.getElementById("cartCount").classList.add('cart-count');
 	            },
 	            error: data => {
 	            	console.log("error");

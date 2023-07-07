@@ -118,7 +118,7 @@
 <br><br>
 
 <div id="search">
-	<form role="search" action="menuList.mn">
+	<form role="search" action="menuList.mn" onsubmit="return false;">
 		<div id="searchBar">
 			<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
 			<div id="searchIcon"><button id="searchBtn"><i class="bi bi-search"></i></button></div>
@@ -232,21 +232,21 @@
 				</div>
 			</div>
 		</c:forEach>
-		
-<!-- 		<div class="d-inline-block wkalbum"> -->
-<!-- 			<div class="position-absolute top-0 start-0" style="margin-top: -40px;" z-index: 9999;"> -->
-<!-- 				<div class="foodRank" style="background: rgb(255, 217, 102);">1위</div> -->
-<!-- 			</div> -->
-<!-- 			<img src="#" width="300px" height="300px" class="weekendPic"> -->
-<!-- 			<div class="albumTitle">고단백 / 영양사B</div> -->
-<!-- 		</div> -->
-
 	</div>
 </div>
 
 <br><br><br><br>
 
 <div id="middle">최신 식단 목록</div>
+
+<br><br>
+<c:if test="${empty mList }">
+	<div style="text-align: center;">
+		<h2>${str}</h2>	
+	</div>
+</c:if>
+
+
 <div class="album p-5 bg-white">
 	<div class="container px-5" style="width: 1200px;">
 	
@@ -329,6 +329,7 @@
       <!-- 		이전 페이지로	 -->
 		<c:url var="goBack" value="${loc }">
 			<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+			<c:param name="${cate}" value="${value}"></c:param>
 		</c:url>
 		<c:if test="${pi.currentPage > 1 }">
 			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
@@ -338,6 +339,7 @@
 		<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
 				<c:param name="page" value="${p }"></c:param>
+				<c:param name="${cate}" value="${value}"></c:param>
 			</c:url>
 			<c:if test="${ pi.currentPage eq p }">
 				<a class="active">${p }</a>
@@ -349,6 +351,7 @@
 		
 		<c:url var="goNext" value="${loc }">
 			<c:param name="page" value="${pi.currentPage + 1 }"></c:param>
+			<c:param name="${cate}" value="${value}"></c:param>
 		</c:url>
 		<c:if test="${pi.currentPage < pi.endPage }">
 			<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
@@ -420,26 +423,8 @@
 		    	})
 			}
 			
-// 			const num = parseInt(this.nextElementSibling.innerText);
-// 			if(this.querySelector('input').value == "off"){
-// 				this.querySelector('input').value = "on";
-// 				this.querySelector('i').classList.replace("bi-heart", "bi-heart-fill");
-// 				this.nextElementSibling.innerText = num + 1;
-// 			} else if(this.querySelector('input').value == "on"){
-// 				this.querySelector('input').value = "off";
-// 				this.querySelector('i').classList.replace("bi-heart-fill", "bi-heart");
-// 				this.nextElementSibling.innerText = num - 1;
-// 			}
 		})
 	}
-// 	const cols = document.querySelectorAll('.col');
-// 	for(const col of cols){
-// 		col.addEventListener('click', function(){
-// 			const mNo = this.childNodes[1].value;
-// // 			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
-// // 			console.log(this.childNodes[1]);
-// 		})
-// 	}
 	const images = document.querySelectorAll('.cardImg');
 	
 	for(const image of images){
@@ -447,11 +432,8 @@
 			console.log(112343);
 			const mNo = this.childNodes[1].value;
 			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
-// 			console.log(this.childNodes[1]);
 		})
 	}
-	
-	
 	
 	const hots = document.querySelectorAll('.wkalbum');
 	for(const hot of hots){
@@ -465,112 +447,9 @@
 	for(const categoryBtn of categoryBtns){
 		const cate = categoryBtn.childNodes[1].value;
 		categoryBtn.addEventListener('click', function(){
-			$.ajax({
-				url: "menuCategory.mn",
-				data: {"cate": cate},
-				success: data=>{
-					console.log(data);
-					const menuBox = document.getElementById('menuBox');
-					menuBox.innerHTML = "";
-					
-					data.forEach(post =>{
-						const col = document.createElement('div');
-						col.classList.add('col');
-						
-// 						const fPNo = document.createElement('input');
-// 						fPNo.setAttribute("type", "hidden");
-// 						fPNo.value = post.foodProductNo;
-						
-						const card = document.createElement('div');
-						card.classList.add('card');
-						card.classList.add('shadow-sm');
-						
-						const cardImg = document.createElement('div');
-						cardImg.classList.add('cardImg');
-						
-						const fPNo = document.createElement('input');
-						fPNo.setAttribute("type", "hidden");
-						fPNo.value = post.foodProductNo;
-						
-						const image = document.createElement('img');
-						image.src = '${contextPath}/resources/uploadFiles/' + post.imageRenameName;
-						image.classList.add('image');
-						
-						const cardBody = document.createElement('div');
-						cardBody.classList.add('card-body');
-						cardBody.classList.add('cardColor');						
-						
-						const h5 = document.createElement('h5');
-						h5.innerText = post.menuName;
-						
-						const a2 = document.createElement('a');
-						a2.classList.add('menuKind');
-						
-						let menuKindIcon = null;
-						if(post.menuKind == 1){
-							menuKindIcon = '🥗 다이어트';
-						}  else if(post.menuKind == 2){
-							menuKindIcon = '🤒 몸보신';
-						}  else if(post.menuKind == 3){
-							menuKindIcon = '💪 든든밥상';
-						}  else if(post.menuKind == 4){
-							menuKindIcon = '🥩 고단백';
-						}  else if(post.menuKind == 5){
-							menuKindIcon = '🥬 채식';
-						}
-						a2.innerText = menuKindIcon;
-						
-						const a = document.createElement('span');
-						a.classList.add('likeBtn');
-						a.setAttribute("role", "button");
-// 						a.innerText = 
-						
-// 						const off = document.createElement("input");
-// 						off.setAttribute("type", "hidden");
-// 						off.value="off";
-						
-// 						const i = document.createElement('i');
-// 						i.classList.add('bi');
-// 						i.classList.add('bi-heart');
-// 						i.classList.add('iconMar');
-						
-						const p = document.createElement('p');
-						p.classList.add('d-inline-block');
-						p.classList.add('likeNum');
-						p.innerText = "1000";
-						
-// 						a.appendChild(off);
-// 						a.appendChild(i);
-						
-						cardBody.appendChild(h5);
-						cardBody.appendChild(a2);
-						cardBody.appendChild(a);
-						cardBody.appendChild(p);
-						
-						cardImg.appendChild(fPNo);
-						cardImg.appendChild(image);
-						
-						card.appendChild(cardImg);
-						card.appendChild(cardBody);
-						
-						col.appendChild(card);
-						
-						menuBox.appendChild(col);
-					});
-					
-					const images = document.querySelectorAll('.cardImg');
-					
-					for(const image of images){
-						image.addEventListener('click', function(){
-							const mNo = this.childNodes[0].value;
-							location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${pi.currentPage};
-						})
-					}
-				},
-				error: data=>{
-					console.log(data);
-				}
-			})
+			
+			location.href='${contextPath}/menuCategory.mn?cate=' + cate;
+			
 		})
 	}
 	

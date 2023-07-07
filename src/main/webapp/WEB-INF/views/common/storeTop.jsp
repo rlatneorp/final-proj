@@ -116,7 +116,7 @@
 	.cart:hover{background: #1f8acb; color: white;  transition: all 0.3s ease 0s;}
 	.menu-list{display: none; width: 90px; background: rgba(176, 218, 255, 0.4); margin: 5px;}
 	.menu-div:hover .menu-list{display: block;} 
-	#cartCount{
+	.cart-count{
 		width: 20px; height: 20px; border-radius: 50px;
 		font-size: 13px; font-weight: bold;
 		color: white;  background: red;
@@ -230,7 +230,7 @@
 						  			</div>
 						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="storeP"></p> P</div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
-						  			<div class="dropdown-item"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
+						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
 						  		</div>
 							</c:if>
@@ -243,7 +243,10 @@
 					<c:if test="${ loginUser != null }">
 						<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
 						<c:if test="${ cart != 0 }">
-							<div id="cartCount">${ cart }</div>
+							<div id="cartCount" class="cart-count">${ cart }</div>
+						</c:if>
+						<c:if test="${ cart == 0 }">
+							<div id="cartCount"></div>
 						</c:if>
 					</c:if>
 				</div>

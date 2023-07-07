@@ -461,7 +461,11 @@ ul li {
 							
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE eq 0 }">
-							<div style="text-decoration: none;">${li.PRODUCT_PRICE }</div>
+							<div style="text-decoration: none;">
+								<span style="font-size:25px;">
+									<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="#,###"/>원
+								</span>
+							</div>
 						</c:if>
 						<div class="discount" ></div>
 						<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
@@ -504,13 +508,15 @@ ul li {
 					</a>
 					<div class="productName">${li.productName }</div>
 					<c:if test="${li.productSale ne 0 }">
+						<!-- 세일 금액이 있을 때  -->
 						<span class="originPrice">
 						<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
 						</span>
 					</c:if>
 					<c:if test="${li.productSale eq 0 }">
+						<!-- 세일 금액이 없을 때  -->
 						<span style="font-size:25px;">
-							${li.productPrice }
+							<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
 						</span>
 					</c:if>
 					<span class="discount" id="discount-${li.productNo }"></span>
@@ -571,13 +577,13 @@ ul li {
 		}
 
 		
-		//normal
+		//판매중인 상품 
 		const normal = document.getElementsByClassName('normal');
 		for(np of normal) {
 			const productNo = np.children[0].value;
 			//할인 계산 
 			if(np.children[5].value != '0') {
-				const originPrice = parseInt(np.children[3].innerText);
+				const originPrice = parseInt(np.children[3].innerText.replace(/,/g, ''));
 				const sale = parseInt(np.children[5].value);
 				const discount = (originPrice * (1- sale/100)).toLocaleString();
 				document.getElementById('discount-'+productNo).innerText = discount + '원'
@@ -622,9 +628,9 @@ ul li {
 			 let foodType = '';
 			 let foodKind = '';
 			 if(selectedOption1 == '밀키트') {
-				 foodType = '1'
-			 } else if (selectedOption1 == '식재료') {
 				 foodType = '2'
+			 } else if (selectedOption1 == '식재료') {
+				 foodType = '1'
 			 } else if (selectedOption1 == '전체보기') {
 				 foodType = '0'
 			 }

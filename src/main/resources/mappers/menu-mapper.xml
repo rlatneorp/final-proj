@@ -188,6 +188,18 @@
 		where image_type = 1 and image_level = 0 and image_divide_no = #{usersNo}
 	</select>
 	
+	<select id="getCateListCount" resultType="_int">
+		select count(*)
+		from menu
+		where menu_kind = #{cate}
+	</select>
+	
+	<select id="getSearchListCount" resultType="_int">
+		select count(*)
+		from menu
+		where menu_name like '%${word}%'
+	</select>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>

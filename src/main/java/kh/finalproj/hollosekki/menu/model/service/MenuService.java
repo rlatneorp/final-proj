@@ -31,9 +31,9 @@ public interface MenuService {
 
 	ArrayList<Image> menuDetailImage();
 
-	ArrayList<Menu> searchMenu(String word);
+	ArrayList<Menu> searchMenu(PageInfo pi, String word);
 
-	ArrayList<Menu> menuCategory(int cate);
+	ArrayList<Menu> menuCategory(PageInfo pi, int cate);
 
 	int selectUsersNo(int mNo);
 
@@ -74,6 +74,10 @@ public interface MenuService {
 	int insertQna(QA qna);
 
 	Image selectProfile(int usersNo);
+
+	int getCateListCount(int cate);
+
+	int getSearchListCount(String word);
 
 
 }

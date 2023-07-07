@@ -9,7 +9,7 @@
 	
 	<insert id="insertPoint">
 		insert into point
-		values(SEQ_POINT_NO.nextval, SEQ_USERS_NO.CURRVAL, 2, 0, 1000, sysdate )
+		values(SEQ_POINT_NO.nextval, SEQ_USERS_NO.CURRVAL, 4, 0, 1000, sysdate )
 	</insert>
 	
 	<select id="login2" resultMap="usersResultSet">

@@ -1108,7 +1108,7 @@ p b {
 	</c:if>
 	<br><br><br>
 	<p class="mid">후기</p><br>
-	<p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
+	<p style="margin-left: 43.5%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 	<div id="qna">
 		<table class="board">
 			<tr class="boardTop">

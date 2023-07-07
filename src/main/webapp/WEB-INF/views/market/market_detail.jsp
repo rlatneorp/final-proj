@@ -1904,7 +1904,7 @@ p b {
                         	console.log(cart);
                         	
                        		document.getElementById("cartCount").innerText = cart;
-//                        		document.getElementById("cartCount").classList.add();
+                        	document.getElementById("cartCount").classList.add('cart-count');
                         	preNo = count++;
                         },
                         error: allData => {

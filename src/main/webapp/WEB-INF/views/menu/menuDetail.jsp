@@ -1570,6 +1570,7 @@ p b {
 	           		const cart = values[1].trim().replace(/]/g, '');
 	           		console.log(cart);
 	           		document.getElementById("cartCount").innerText = cart;
+	           		document.getElementById("cartCount").classList.add('cart-count');
 	            },
 	            error: data => {
 	            	console.log("error");

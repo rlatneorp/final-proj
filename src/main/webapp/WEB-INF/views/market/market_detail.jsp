@@ -918,8 +918,6 @@ p b {
 		                           <br>
 		                   </div>
 	                   </c:if>
-                 
-                 
                   
                   </div>
                </div>
@@ -1670,12 +1668,15 @@ p b {
          
          
          
-         
        }
             
       
       $(document).ready(function() {
          var productNo = null;
+         
+        if(productOption2Set == null){
+        	document.getElementsByClassName("totalPrice")[0].style.display = "none";
+        }
          
          $(function(){
         	 if($(".reviews").length >= 6){
@@ -1898,9 +1899,7 @@ p b {
                        },
                         success: data =>{
                         	const jsonString = JSON.stringify(data); // JSON 배열을 문자열로 변환
-
                         	const values = jsonString.substring(1, jsonString.length - 1).split(","); // 문자열을 자르고 배열로 분할
-
                         	const cart = values[1].trim().replace(/]/g, ''); // 두 번째 값 출력 (2)
                         	
                         	if(cart != null){

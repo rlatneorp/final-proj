@@ -56,7 +56,7 @@
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -88,8 +88,7 @@
 		</div>
 	</div>
 	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br><br><br>
 	
 	<%@ include file="../common/footer.jsp" %>
 	

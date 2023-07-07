@@ -48,7 +48,7 @@
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -91,6 +91,10 @@
 			</div>
 		</div>
 	</div>
+	
+	<br><br><br><br><br><br><br>
+	
+	<%@ include file="../common/footer.jsp" %>
 	
 	<script>
 	   function sample6_execDaumPostcode() { //우편번호 찾기 클릭 시
@@ -151,10 +155,5 @@
 		});
 	</script>
 	
-	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
-	
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

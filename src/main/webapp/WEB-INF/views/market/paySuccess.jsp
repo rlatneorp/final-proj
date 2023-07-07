@@ -87,7 +87,7 @@
 </head>
 <body>
 	
-	<%@include file="../common/top.jsp" %>
+	<%@include file="../common/storeTop.jsp" %>
 
 	<div id="successPage">
 		<i class="bi bi-bag-heart-fill" style=" font-size:120px;  text-shadow: 3px 2px 2px gray;color:#B0DAFF"></i>

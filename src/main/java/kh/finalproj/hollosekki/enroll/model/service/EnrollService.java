@@ -97,6 +97,8 @@ public interface EnrollService {
 
 	Users userInfo(String id);
 
+	int cartCount(int usersNo);
+
 
 
 

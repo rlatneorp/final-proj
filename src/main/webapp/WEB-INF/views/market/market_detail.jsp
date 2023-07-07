@@ -14,6 +14,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <style>
+
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 * {
    outline: none;
    margin: 0px;
@@ -120,9 +123,9 @@ ul, li {
     display: none;   
 }
 
-.right {
-   width: 40%;
-}
+/* .right { */
+/*    width: 40%; */
+/* } */
 
 .left {
    width: 50%;
@@ -775,7 +778,7 @@ p b {
 	        </c:if>
 	        
          </div>
-         <div class="right">
+         <div class="right" style="width: 40%">
             <!-- like 유무 가리는 용도 -->
             <input type="hidden" id="likeYn" value="${like }">
             <!-- 상품 정보 -->
@@ -1291,6 +1294,16 @@ p b {
    </div>
 
    <br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <%@ include file="../common/footer.jsp" %>
    <script>
    
    window.onload = function(){

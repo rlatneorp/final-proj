@@ -145,7 +145,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='#'">공 지</div>
+							<div class="menu3" onclick="location.href='${contextPath}/noticeBoard.cs'">공 지</div>
 							<div class="menu4"></div>
 						</div>
 						
@@ -175,7 +175,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div id="menu-div">
-							<div class="menu3" id="menu3" onclick="location.href='${contextPath}/kitchenToolMain.ma'">쇼 핑</div>
+							<div class="menu3" id="shop" onclick="location.href='${contextPath}/kitchenToolMain.ma'">쇼 핑</div>
 							<div class="menu4"></div>
 								<div class="menu-list">
 									<div>list1</div>

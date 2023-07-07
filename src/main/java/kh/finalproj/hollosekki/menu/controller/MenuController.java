@@ -152,6 +152,8 @@ public class MenuController {
 		      }
 		}
 		
+		Image menuProfile = mService.selectProfile(usersNo);
+		
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
@@ -197,6 +199,7 @@ public class MenuController {
 			mv.addObject("notReviewCount", notReview.size());
 			mv.addObject("qnaCount", qnaCount);
 			mv.addObject("qList", qList);
+			mv.addObject("menuProfile", menuProfile);
 			mv.setViewName("menuDetail");
 			
 			return mv;

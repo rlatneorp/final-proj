@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <title>마이페이지</title>
 <style>
+	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 	.arrow1{
 		font-size: 30px; color: black;
   		margin-bottom: 10px;

@@ -233,6 +233,11 @@ public class EnrollServiceImpl implements EnrollService{
 		return eDAO.userInfo(sqlSession, id);
 	}
 
+	@Override
+	public int cartCount(int usersNo) {
+		return eDAO.cartCount(sqlSession, usersNo);
+	}
+
 
 
 	

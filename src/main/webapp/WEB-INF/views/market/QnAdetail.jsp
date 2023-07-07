@@ -16,6 +16,8 @@
 
 <style>
 
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 body {
 
   padding-top: 70px;

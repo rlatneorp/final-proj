@@ -40,7 +40,7 @@ import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
 
-@SessionAttributes({"loginUser", "socialUser"})
+@SessionAttributes({"loginUser", "socialUser", "cart"})
 @Controller
 public class EnrollController {
 		
@@ -106,6 +106,8 @@ public class EnrollController {
 			} else {
 				if(bcrypt.matches(u.getUsersPw(), loginUser.getUsersPw())) {
 					model.addAttribute("loginUser", loginUser);
+					int cart = eService.cartCount(loginUser.getUsersNo());
+					model.addAttribute("cart", cart);
 					return "redirect:home.do";
 				} else {
 					return "loginfalse";

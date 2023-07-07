@@ -205,6 +205,10 @@ public class EnrollDAO {
 		return sqlSession.selectOne("enrollMapper.userInfo", id);
 	}
 
+	public int cartCount(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("enrollMapper.cartCount", usersNo);
+	}
+
 
 
 

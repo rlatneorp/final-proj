@@ -17,6 +17,9 @@
 
 <style>
 /* Normal white Button as seen on Google.com*/
+
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 .shipButton {
 	
     color: #444444;
@@ -1213,8 +1216,8 @@ input[type="text"] {
 				pg: 'html5_inicis',
 				pay_method: 'card',
 				name:name,
-// 				amount:shipSum
-				amount:100
+				amount:shipSum
+// 				amount:100
 // 				buyer_name:
 				//가격
 				//	        buyer_email: 'iamport@siot.do',

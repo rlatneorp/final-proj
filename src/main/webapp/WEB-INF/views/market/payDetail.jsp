@@ -1087,15 +1087,25 @@ input[type="text"] {
 				usePoint.innerText = '0'
 			    document.getElementById('shipSum').innerText = (trTotalSum + shipPrice).toLocaleString();
 				document.getElementById('payInfoSum').innerText = document.getElementById('shipSum').innerText;
-			    document.getElementById('totalPointCheck').innerText = '전액 사용'; 
 			    isFullUsed = false;
 		  	} else { //전액사용 시 
-				inputPoint.value = currentPoint + '원';
-		  		usePoint.innerText = parseInt(currentPoint).toLocaleString();
-			    document.getElementById('shipSum').innerText = (trTotalSum + shipPrice - currentPoint).toLocaleString();
-			    document.getElementById('payInfoSum').innerText = document.getElementById('shipSum').innerText
-			    document.getElementById('totalPointCheck').innerText = '사용 취소';
-			    isFullUsed = true;
+		  		const shipS = parseInt(document.getElementById('shipSum').innerText.replace(/,/g, ''));
+		  		if(shipS < currentPoint) {
+		  			 swal("포인트는 결제 금액을 초과할 수 없습니다.", {
+		    			  buttons: false,
+		    			  timer: 1000,
+		    			});
+		  			inputPoint.value = shipS.toLocaleString();
+		  			usePoint.innerText = parseInt(inputPoint.value.replace(/,/g,'')).toLocaleString();
+		  		} else {
+		  			inputPoint.value = currentPoint + '원';
+			  		usePoint.innerText = parseInt(currentPoint).toLocaleString();
+				    document.getElementById('payInfoSum').innerText = document.getElementById('shipSum').innerText
+				    
+		  		}
+		  		isFullUsed = true;
+		  		document.getElementById('shipSum').innerText = (trTotalSum + shipPrice - parseInt(usePoint.innerText.replace(/,/g,''))).toLocaleString();
+		  		document.getElementById('payInfoSum').innerText = document.getElementById('shipSum').innerText;
 		  	}
 		});
 		
@@ -1111,28 +1121,38 @@ input[type="text"] {
 				document.getElementById('shipSum').innerText = (trTotalSum + shipPrice).toLocaleString();
 				payInfoSum.innerText = document.getElementById('shipSum').innerText;
 			} else { //값이 들어오면 
-				if(value > currentPoint) { //새로 입력한 값이 보유 포인트 금액보다 크면 
+				const shipS = parseInt(document.getElementById('shipSum').innerText.replace(/,/g, ''));
+				const ip = parseInt(inputPoint.value.trim())
+		  		if((trTotalSum + shipPrice) < ip) {
+		  			 swal("포인트는 결제 금액을 초과할 수 없습니다.", {
+		    			  buttons: false,
+		    			  timer: 1000,
+		    			});
+		  			inputPoint.value = trTotalSum + shipPrice;
+		  			usePoint.innerText = parseInt(inputPoint.value.replace(/,/g,'')).toLocaleString();
+		  			document.getElementById('shipSum').innerText = '0';
+		  			payInfoSum.innerText = document.getElementById('shipSum').innerText;
+		  		} else if(value > currentPoint) { //새로 입력한 값이 보유 포인트 금액보다 크면 
 					swal({
 						 text: "보유 포인트를 초과했습니다.",
 						 icon: "error",
 						 button: "확인",
 					});
 					inputPoint.value = currentPoint + '원';
-					usePoint.innerText = currentPoint;
+					usePoint.innerText = currentPoint.toLocaleString();
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-currentPoint).toLocaleString(); //총금액+배송비-포인트
 					payInfoSum.innerText = document.getElementById('shipSum').innerText;
 				} else if ( value < currentPoint) { //새로 입력한 값보다 보유 포인트 금액이 크면 
 					inputPoint.value = formattedValue + '원';
-					usePoint.innerText = value;
+					usePoint.innerText = value.toLocaleString();
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-value).toLocaleString();
 					payInfoSum.innerText = document.getElementById('shipSum').innerText;
 				} else if (value == currentPoint) {
 					inputPoint.value = formattedValue + '원';
-					usePoint.innerText = value;
+					usePoint.innerText = value.toLocaleString();
 					document.getElementById('shipSum').innerText = (trTotalSum+shipPrice-value).toLocaleString();
 					payInfoSum.innerText = document.getElementById('shipSum').innerText;
 				}
-
 			}
 		})
 	} //window.onload
@@ -1161,6 +1181,14 @@ input[type="text"] {
 	
 	const payContent = document.getElementsByClassName('payContent');
 	requestPay = () => {
+		if(document.getElementById('payInfoSum').innerText == '0') {
+			swal({
+				 text: "결제 금액은 100원 이상이어야 합니다.",
+				 icon: "error",
+				 button: "확인",
+			});
+			return;
+		}
 		//모든 입력값 기재하지 않았을 때
 		const emailInputs = document.querySelectorAll('input[type="email"]')[0];
 		for(pc of payContent) {
@@ -1311,7 +1339,8 @@ input[type="text"] {
 			            const p = document.getElementsByClassName('point');
 			            let pp = 0;
 			            for (let i = 0; i < p.length; i++) {
-			            	const pot = parseInt(p[i].innerText);
+			            	const pot = parseInt(p[i].innerText.replace(/,/g,''));
+			            	
 			            	if (i > 0) {
 			            		pp += pot;
 			            	}
@@ -1322,7 +1351,7 @@ input[type="text"] {
 							const prsNo = prs.value;
 							preOrder.push(prsNo);
 						}
-						location.href='${contextPath}/paySuccess.ma?use=' + usePoint + '&plus=' + pp + '&preNo=' + preOrder;
+						location.href='${contextPath}/paySuccess.ma?use=' + usePoint.replace(/,/g,'') + '&plus=' + pp + '&preNo=' + preOrder;
 						usePoint = 0;
 					
 					 	            

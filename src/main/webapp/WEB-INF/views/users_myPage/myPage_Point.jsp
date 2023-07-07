@@ -74,6 +74,14 @@
 						</tr>
 					</thead>
 					<tbody id="tbody">
+						<c:if test="${ empty list }">
+							<tr>
+								<td colspan="4" height="215">
+									<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+									<b>포인트 내역이 없습니다.</b>
+								</td>
+							</tr>
+						</c:if>
 						<c:forEach items="${ list }" var="p">
 							<c:if test="${ p.USERS_NO != null }">
 								<tr>
@@ -91,11 +99,11 @@
 									<c:if test="${ p.POINT_TYPE == 2 }">
 										<script>
 					                        var modifyDate = new Date("${p.MODIFY_DATE}");
-					                        modifyDate.setMonth(modifyDate.getMonth() + 6);
+					                        modifyDate.setMonth(modifyDate.getMonth() + 1);
 					                        var formattedDate = modifyDate.toISOString().split('T')[0];
 					                    </script>
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
-										<td>회원가입 축하 적립금</td>
+										<td>관리자 지급 (이벤트 참여)</td>
 										<td class="extinction"><script>document.write(formattedDate);</script></td>
 										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
@@ -110,6 +118,17 @@
 										<td class="extinction"><script>document.write(formattedDate);</script></td>
 										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
+									<c:if test="${ p.POINT_TYPE == 4 }">
+										 <script>
+					                        var modifyDate = new Date("${p.MODIFY_DATE}");
+					                        modifyDate.setMonth(modifyDate.getMonth() + 12);
+					                        var formattedDate = modifyDate.toISOString().split('T')[0];
+					                    </script>
+										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
+										<td>회원가입 축하 포인트 지급</td>
+										<td class="extinction"><script>document.write(formattedDate);</script></td>
+										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
+									</c:if>
 									<c:if test="${ p.POINT_TYPE == 11 }">
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
 										<td>구매 포인트 차감</td>
@@ -117,6 +136,12 @@
 										<td><fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
 									<c:if test="${ p.POINT_TYPE == 12 }">
+										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
+										<td>이벤트 참여</td>
+										<td>-</td>
+										<td><fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
+									</c:if>
+									<c:if test="${ p.POINT_TYPE == 13 }">
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
 										<c:if test="${ p.POINT_CHANGE - p.POINT_BEFORE > -10 }">
 											<td>구매 포인트 소멸</td>

@@ -289,8 +289,6 @@ public class MarketController {
 		
 		int qnaCount = mkService.selectQnaCount(productNo);
 		PageInfo pi = Pagination.getPageInfo(currentPage, qnaCount, 5);
-		pi.setCurrentPage(1);
-		pi.setBoardLimit(1000);
 		
   
       Product p = mkService.selectProductSet(productNo);
@@ -1092,22 +1090,21 @@ public class MarketController {
 	   }
 	   int listCount = mkService.selectViewIngreCount();
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
-	   
+	   System.out.println("listCount : " + listCount);
 	   ArrayList<Ingredient> list = mkService.selectViewIngredient(pi);
+	   System.out.println("list : " + list);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pIngre = new Product();
 	   //식재료 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Ingredient lists : list) {
-			   System.out.println("ingreNo : " +  lists.getIngredientNo());
 			   int productNo = lists.getProductNo(); String img = null;
-			   System.out.println("pNo : " + productNo);
 			   pIngre = mkService.selectPIngre(productNo); //food productNo에 대한 Product 테이블 조회 
+			   img = mkService.selectImg(lists.getIngredientNo(), 5);
 			   if(pIngre != null) {
 				   pIngre.setProductName(lists.getIngredientName());
-			   }
-			   img = mkService.selectImg(lists.getIngredientNo(), 5);
-			   if(img != null) {
-				   pIngre.setProductImg(img);
+				   if(img != null) {
+					   pIngre.setProductImg(img);
+				   }
 			   }
 			   productInfo.add(pIngre); 
 		   }
@@ -1152,7 +1149,7 @@ public class MarketController {
 	   if(currentPage == null) {
 		   currentPage = 1;
 	   }
-	   int listCount = mkService.selectViewIngreCount();
+	   int listCount = mkService.selectViewToolCount();
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
 	   ArrayList<Tool> list = mkService.selectViewTool(pi);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pTool = new Product();

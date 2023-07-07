@@ -171,7 +171,7 @@ th:first-child, td:first-child {
 						<tbody id="tbody">
 							<c:if test="${ empty list }">
 								<tr>
-									<td colspan="6" height="330">
+									<td colspan="6" height="390">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										등록한 배송지가 없습니다.
 									</td>

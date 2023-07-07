@@ -204,7 +204,7 @@ th:first-child, td:first-child {
 							</c:if>
 							<c:if test="${ empty orderList }">
 								<tr>
-									<td colspan="6" height="330">
+									<td colspan="6" height="315">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										<b>조회 된 구매내역이 없습니다.</b>
 									</td>

@@ -680,7 +680,9 @@
 		FETCH FIRST 8 ROWS ONLY
 	</select>
 	
-	
+	<select id="selectViewToolCount" resultType="_int">
+		select count(*) from tool
+	</select>
 	
 	<select id="selectDetailReview" resultType="map">
 		select *
@@ -848,7 +850,7 @@
 	</select>
 	
 	<select id="selectViewIngreCount" resultType="_int">
-		select count(*) from ingredient
+		select count(*) from ingredient where is_accept = 'Y'
 	</select>
 	
 <!-- 	<select id="selectPfood" resultMap="productList"> -->

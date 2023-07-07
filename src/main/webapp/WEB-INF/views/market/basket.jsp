@@ -165,6 +165,9 @@ input[type="text"] {
 
 #shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
+.custom-font-size {
+	padding-top:30px; font-size: 17px; font-weight: 400;
+}
 /* 구매버튼 */
 #goPay{cursor:pointer;}
 </style>
@@ -599,15 +602,15 @@ input[type="text"] {
 				totalCount += size;
 			} 
 		}
-		document.getElementById('trTotalSum').innerText = trTotalSum;
+		document.getElementById('trTotalSum').innerText = parseInt(trTotalSum).toLocaleString();
 		document.getElementById('orderSize').innerText = totalCount;
 		//3. 배송비 및 총 합계 
 		if(trTotalSum >= 30000) {
 			document.getElementById('shipPrice').innerText = 0;
-			document.getElementById('shipSum').innerText = trTotalSum;
+			document.getElementById('shipSum').innerText = trTotalSum.toLocaleString();
 		} else {
-			document.getElementById('shipPrice').innerText = 3000;
-			document.getElementById('shipSum').innerText = (trTotalSum+3000);
+			document.getElementById('shipPrice').innerText = '3,000';
+			document.getElementById('shipSum').innerText = parseInt((trTotalSum+3000)).toLocaleString();
 		}
 		
 	})
@@ -689,10 +692,12 @@ input[type="text"] {
 		if(checkProducts.length == 0){
 			Swal.fire({
 				  position: 'center',
-				  icon: 'error',
 				  title: '상품을 한 개 이상 선택해주세요.',
 				  showConfirmButton: false,
-				  timer: 1000
+				  timer: 1000,
+				  customClass: {
+					    title: 'custom-font-size' // CSS 클래스 이름 지정
+				  }
 				})
 		} else {
 			let preorderNos = [];

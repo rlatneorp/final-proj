@@ -115,11 +115,27 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<c:if test="${ empty list }">
+							<c:if test="${ empty list and empty searchTitle and empty searchType }">
 								<tr>
-									<td colspan="6" height="305">
+									<td colspan="6" height="370">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										작성한 레시피가 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchTitle }">
+								<tr>
+									<td colspan="6" height="370">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchType }">
+								<tr>
+									<td colspan="6" height="370">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
 									</td>
 								</tr>
 							</c:if>

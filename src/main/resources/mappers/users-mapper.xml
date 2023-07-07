@@ -283,17 +283,18 @@
 	<!-- 좋아요 조회 -->
 	<select id="myLikeList" resultType="map">
         select l.like_no, l.number_type, i.image_renamename, h.name, m.menu_name, p.product_modify_date, f.food_name, 
-		       f.food_type, p.product_type, t.tool_name, p.product_price, p.product_no, g.ingredient_name, 
-		       i.image_level
+		       f.food_type, p.product_type, t.tool_name, p.product_price, p.product_no, g.ingredient_name, gi.image_renamename ingreImage,
+		       i.image_level, gi.image_level ingreImageLevel
 		from likes l
-		     left join image i on (l.division_no = i.image_divide_no)
+		     left join image i on (l.division_no = i.image_divide_no) and i.image_level = 0 and i.image_type in (3,4,6)
              left join menu m on (l.division_no = m.product_no)
              left join product p on (l.division_no = p.product_no) and product_status = 'Y'
              left join healther h on (p.users_no = h.users_no)
              left join food f on (l.division_no = f.product_no) and product_type = 1
              left join tool t on (p.product_no = t.product_no)
              left join ingredient g on (l.division_no = g.product_no)
-		where l.users_no = 22 and i.image_level = 0 and i.image_type in (3,4,5,6)
+             left join image gi on (g.ingredient_no = gi.image_divide_no) and gi.image_level = 0 and gi.image_type = 5
+		where l.users_no = #{usersNo}
 		<if test="selectType == 2">
 			and product_type = 2
 		</if>

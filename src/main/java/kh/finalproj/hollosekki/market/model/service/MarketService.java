@@ -503,6 +503,10 @@ public class MarketService {
 		mkDAO.monthChecked(sqlSession, monthAt);
 	}
 
+	public int selectViewToolCount() {
+		return mkDAO.selectViewToolCount(sqlSession);
+	}
+
 
 
 

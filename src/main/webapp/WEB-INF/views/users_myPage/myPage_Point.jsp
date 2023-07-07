@@ -74,6 +74,14 @@
 						</tr>
 					</thead>
 					<tbody id="tbody">
+						<c:if test="${ empty list }">
+							<tr>
+								<td colspan="4" height="215">
+									<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+									<b>포인트 내역이 없습니다.</b>
+								</td>
+							</tr>
+						</c:if>
 						<c:forEach items="${ list }" var="p">
 							<c:if test="${ p.USERS_NO != null }">
 								<tr>

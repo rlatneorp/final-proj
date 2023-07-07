@@ -5,8 +5,10 @@
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style>
 
@@ -627,13 +629,11 @@ input[type="text"] {
 		   
 		   reverseButtons: true, // 버튼 순서 거꾸로
 		   
-		}).then(result => {
-		   // 만약 Promise리턴을 받으면,
-		   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+		}).then(result => { //결과를 받았을 때 로직 
+		   if (result.isConfirmed) { // 삭제 버튼 클릭 시 
 		   
 		 		for(basketNo of basketNos) {
 		 			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
-					
 		 			if(basketNo.nextSibling.nextSibling.checked) {
 		 				const delBasket = basketNo.value;
 		 				$.ajax({
@@ -643,20 +643,30 @@ input[type="text"] {
 		 					},
 		 					success: (data) => {
 		 						//해당 상품 삭제
-		 						for(const checkProduct of checkProducts) {
-		 							let list = checkProduct.parentNode.parentNode;
-		 							list.remove(); 
-		 						}
-// 		 						swal({
-// 		 							 text: "성공적으로 삭제 되었습니다.",
-// 		 							 icon: "success",
-// 		 							 button: "확인",
-// 		 							}).then(() => {
-// 		 								//포문 돌려서 
-// 		 								if(document.getElementsByClassName('productInfos').length == 0) {
-// 		 									location.reload();
-// 		 								}
-// 		 							});
+		 						const Toast = Swal.mixin({
+					 			  toast: true,
+					 			  position: 'center',
+					 			  showConfirmButton: false,
+					 			  timer: 1000,
+					 			  timerProgressBar: true,
+					 			  didOpen: (toast) => {
+					 			    toast.addEventListener('mouseenter', Swal.stopTimer)
+					 			    toast.addEventListener('mouseleave', Swal.resumeTimer)
+					 			  }
+					 			});
+		 						Toast.fire({
+		 							  icon: 'success',
+		 							  title: 'Signed in successfully'
+		 							});
+	 							setTimeout(() => {
+	 							  for (const checkProduct of checkProducts) {
+	 							    let list = checkProduct.parentNode.parentNode;
+	 							    list.remove();
+	 							  }
+	 							 if(document.getElementsByClassName('productInfos').length == 0) {
+										location.reload();
+									}
+	 							}, 1000); // 1초 후에 삭제 작업 실행
 		 						//초기화
 		 						document.getElementById('orderSize').innerText = '0'; 
 		 						document.getElementById('trTotalSum').innerText = '0';
@@ -668,71 +678,8 @@ input[type="text"] {
 		 				})
 		 			}
 		 		}
-		 		const Toast = Swal.mixin({
-		 			  toast: true,
-		 			  position: 'center',
-		 			  showConfirmButton: false,
-		 			  timer: 1000,
-		 			  timerProgressBar: true,
-		 			  didOpen: (toast) => {
-		 			    toast.addEventListener('mouseenter', Swal.stopTimer)
-		 			    toast.addEventListener('mouseleave', Swal.resumeTimer)
-		 			  }
-		 			})
-
-		 			Toast.fire({
-		 			  icon: 'success',
-		 			  title: 'Signed in successfully'
-		 			})
-// 		      Swal.fire('삭제가 완료되었습니다.', '', 'success');
-// 		 		swal({
-//                     text: "해당 상품의 찜 해제가 실패했습니다.",
-//                     icon: "success",
-//                    });
-//                   setTimeout(function() {
-//                      swal.close(); 
-//                   }, 2000);
 		   }
 		});
-// 		for(basketNo of basketNos) {
-// 			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
-			
-// 			if(basketNo.nextSibling.nextSibling.checked) {
-// 				const delBasket = basketNo.value;
-				
-				
-// 				$.ajax({
-// 					url:'${contextPath}/delBasket.ma',
-// 					data:{ 
-// 						preorderNo:delPreOrder
-// 					},
-// 					success: (data) => {
-// 						//해당 상품 삭제
-// 						for(const checkProduct of checkProducts) {
-// 							let list = checkProduct.parentNode.parentNode;
-// 							list.remove(); 
-// 						}
-// 						swal({
-// 							 text: "성공적으로 삭제 되었습니다.",
-// 							 icon: "success",
-// 							 button: "확인",
-// 							}).then(() => {
-// 								//포문 돌려서 
-// 								if(document.getElementsByClassName('productInfos').length == 0) {
-// 									location.reload();
-// 								}
-// 							});
-// 						//초기화
-// 						document.getElementById('orderSize').innerText = '0'; 
-// 						document.getElementById('trTotalSum').innerText = '0';
-// 						document.getElementById('shipPrice').innerText = '3,000';
-// 						document.getElementById('shipSum').innerText = '0';
-// 						},
-// 					error: (data) => {
-// 					}
-// 				})
-// 			}
-// 		}
 	}
 	
 	//장바구니 내 상품 한 개 이상 클릭 시 구매 버튼 실행 
@@ -740,11 +687,13 @@ input[type="text"] {
 		const products = document.getElementById('products');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
 		if(checkProducts.length == 0){
-			swal({
-				 text: "상품을 한 개 이상 선택해주세요.",
-				 icon: "error",
-				 button: "확인",
-				});
+			Swal.fire({
+				  position: 'center',
+				  icon: 'error',
+				  title: '상품을 한 개 이상 선택해주세요.',
+				  showConfirmButton: false,
+				  timer: 1000
+				})
 		} else {
 			let preorderNos = [];
 			for(cp of checkProducts) { //체크 된 input type checkbox 

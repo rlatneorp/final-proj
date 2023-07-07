@@ -427,7 +427,64 @@ font-family: 'Noto Sans KR', sans-serif;
 		<p class="mainTitle">홀로세끼 <b style="color:#4485d7">영양사</b> 소개</p>
 		<br><br>
 		<div class="oneCooker" style="display: flex; justify-content: center;"> 
-			<c:forEach items="${ hList }" var="h" varStatus="status">
+			<c:forEach items="${ hList }" var="h" varStatus="status" begin="0" end="3">
+				<div style="margin: 10px; width: 300px;">
+					<div class="healther-img-div" >
+						<img class="healther-img" src="${ contextPath }/resources/uploadFiles/${ h.IMAGE_RENAMENAME }"/>
+					</div>
+					<div class="healther-name" style=" padding-bottom:-7px">${ h.NAME }</div>
+					<button class="personBtn d-inline" data-bs-toggle="modal" style="margin-bottom:25px" data-bs-target="#exampleModal${status.index}">식단보기</button>
+					<br>
+					<div class="healther-title"><b>${ h.TITLE }</b></div>
+					<div class="healther-career-div" style="height:30px;">
+						<c:forEach items="${fn:split(h.CAREER, ',')}" var="career">
+							<div class="healther-career">
+								• ${career}
+							</div>
+						</c:forEach>
+					</div>
+					<br><br><br><br><br>
+<%-- 					<button class="personBtn d-inline" data-bs-toggle="modal" data-bs-target="#exampleModal${status.index}">식단보기</button> --%>
+				    
+				    <div class="modal fade" id="exampleModal${status.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				      <div class="modal-dialog modal-dialog-centered">
+				        <div class="modal-content">
+				          <div class="modal-header">
+				            <h1 class="modal-title fs-5" id="exampleModalLabel">${ h.NAME } 영양사의 식단</h1>
+				            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				          </div>
+				          <div class="modal-body">
+				          	<div class="modal-div">
+					          	<c:set var="MatchingMenu" value="false" />
+								<c:forEach items="${ mList }" var="m" end="3">
+								  <c:if test="${ h.USERS_NO eq m.USERS_NO }">
+								    <div style="cursor: pointer;"  onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ m.PRODUCT_NO }' + '&page='">
+								      <div class="healther-modal">
+								        <img class="healther-modal-img" src="${ contextPath }/resources/uploadFiles/${ m.IMAGE_RENAMENAME }"/>
+								      </div>
+								      <div class="manu-name-modal">${ m.MENU_NAME }</div>
+								    </div>
+								    <c:set var="MatchingMenu" value="true" />
+								  </c:if>
+								</c:forEach>
+							</div>
+							<c:if test="${not MatchingMenu}">
+									<p style="font-size: 80px; text-align: center;">🍳</p>
+									<p style="text-align: center; margin-bottom: 60px;">등록한 식단이 없습니다.<p>
+							</c:if>
+				          </div>
+				          <div class="modal-footer" onclick="location.href='${contextPath}/menuList.mn'">
+				          	더 많은 식단 보러가기<i class="bi bi-chevron-compact-right"></i>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				    
+				  </div>
+				</c:forEach>
+			</div>
+		<div class="oneCooker" style="display: flex; justify-content: center;"> 
+			<c:forEach items="${ hList }" var="h" varStatus="status" begin="4" end="5">
 				<div style="margin: 10px; width: 300px;">
 					<div class="healther-img-div" >
 						<img class="healther-img" src="${ contextPath }/resources/uploadFiles/${ h.IMAGE_RENAMENAME }"/>

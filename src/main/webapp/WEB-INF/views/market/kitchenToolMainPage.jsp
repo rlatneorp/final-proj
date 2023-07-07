@@ -624,9 +624,9 @@ ul li {
 			 let foodType = '';
 			 let foodKind = '';
 			 if(selectedOption1 == '밀키트') {
-				 foodType = '1'
-			 } else if (selectedOption1 == '식재료') {
 				 foodType = '2'
+			 } else if (selectedOption1 == '식재료') {
+				 foodType = '1'
 			 } else if (selectedOption1 == '전체보기') {
 				 foodType = '0'
 			 }

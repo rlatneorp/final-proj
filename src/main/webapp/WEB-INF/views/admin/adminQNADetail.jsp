@@ -24,9 +24,7 @@
 					<span class="col-12">분류</span>
 					
 					<input type="text" class="col-2 mb-3" 
-						value='<c:if test="${qna.qnaType eq 1}">배송</c:if><c:if test="${qna.qnaType eq 2}">결제</c:if>
-							   <c:if test="${qna.qnaType eq 3}">회원</c:if><c:if test="${qna.qnaType eq 4}">상품</c:if>
-							   <c:if test="${qna.qnaType eq 0}">기타</c:if>' readonly>
+						value='<c:if test="${qna.qnaType eq 1}">배송</c:if><c:if test="${qna.qnaType eq 2}">결제</c:if><c:if test="${qna.qnaType eq 3}">회원</c:if><c:if test="${qna.qnaType eq 4}">상품</c:if><c:if test="${qna.qnaType eq 0}">기타</c:if>' readonly>
 					<span class="col-12">제목</span>
 					<input type="text" name="qnaTitle" class="col-11 pb-1 mb-5" placeholder="제목을 입력해주세요." value="${qna.qnaTitle}" readonly>
 					

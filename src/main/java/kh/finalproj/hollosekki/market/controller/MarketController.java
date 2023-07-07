@@ -53,7 +53,6 @@ import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
-//@SessionAttributes("cart")
 @Controller
 public class MarketController {
 

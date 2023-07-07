@@ -239,8 +239,9 @@
 					</div>
 					<div style="width:80px"></div>
 					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
-					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div></c:if>
-					<div id="cartCount">${ cart }</div>
+					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+						<div id="cartCount">${ cart }</div>
+					</c:if>
 				</div>
 			</div>
 		</header>

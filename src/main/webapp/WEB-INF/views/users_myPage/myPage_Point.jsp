@@ -77,6 +77,17 @@
 						<c:forEach items="${ list }" var="p">
 							<c:if test="${ p.USERS_NO != null }">
 								<tr>
+									<c:if test="${ p.POINT_TYPE == 1 }">
+										<script>
+					                        var modifyDate = new Date("${p.MODIFY_DATE}");
+					                        modifyDate.setMonth(modifyDate.getMonth() + 2);
+					                        var formattedDate = modifyDate.toISOString().split('T')[0];
+					                    </script>
+										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
+										<td>출석체크 적립</td>
+										<td class="extinction"><script>document.write(formattedDate);</script></td>
+										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
+									</c:if>
 									<c:if test="${ p.POINT_TYPE == 2 }">
 										<script>
 					                        var modifyDate = new Date("${p.MODIFY_DATE}");
@@ -118,26 +129,13 @@
 									</c:if>
 								</tr>
 							</c:if>
-							<c:if test="${ p.USERS_NO == null }">
-								<tr>
-									<script>
-					                    var checkedDate = new Date("${p.CHECKED}");
-					                    checkedDate.setMonth(checkedDate.getMonth() + 2);
-					                    var formattedDate = checkedDate.toISOString().split('T')[0];
-					                </script>
-									<td>${ p.CHECKED }</td>
-									<td>출석체크 적립</td>
-									<td class="extinction"><script>document.write(formattedDate);</script></td>
-									<td>+10</td>
-								</tr>
-							</c:if>
 						</c:forEach>
 					</tbody>
 				</table>
 				<br><br>
-				<div>
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+				<div style="margin:0 auto">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 									<a class="page-link disabled" aria-label="Previous">

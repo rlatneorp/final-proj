@@ -266,9 +266,9 @@ th:first-child, td:first-child {
 					</table>
 				</div>
 				<br><br>
-				<div>
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+				<div style="margin:0 auto">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 									<a class="page-link disabled" aria-label="Previous">

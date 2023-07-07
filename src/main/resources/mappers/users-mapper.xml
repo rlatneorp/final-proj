@@ -383,38 +383,17 @@
 	</select>
 	
 	<select id="getPointCount" resultType="_int">
-		SELECT COUNT(*)
-		FROM (
-		    SELECT point_no, p.users_no, point_type, point_before, point_change, modify_date, 
-		    	   NULL AS users_id, NULL AS date1, NULL AS datestr, NULL AS checked, NULL AS title
-		    FROM point p
-		    WHERE users_no = #{usersNo}
-		
-		    UNION
-		
-		    SELECT NULL AS point_no, NULL AS users_no, NULL AS point_type, NULL AS point_before, NULL AS point_change, NULL AS modify_date, 
-		    	   a.users_id, date1, datestr, checked, title
-		    FROM attendance a
-		    LEFT JOIN users u ON a.users_id = u.users_id
-		    WHERE u.users_no = #{usersNo})
+		select count(*)
+		from point 
+		where users_no = #{usersNo}
+		order by point_no desc
 	</select>
 	
 	<select id="selectPoint" resultType="map">
-		SELECT *
-		FROM (
-		    SELECT point_no, p.users_no, point_type, point_before, point_change, modify_date, 
-		           NULL AS users_id, NULL AS date1, NULL AS datestr, NULL AS checked, NULL AS title, NULL AS point
-		    FROM point p
-		    WHERE users_no = #{usersNo}
-		
-		    UNION
-		
-		    SELECT NULL AS point_no, NULL AS users_no, NULL AS point_type, NULL AS point_before, NULL AS point_change, NULL AS modify_date, 
-		           a.users_id, date1, datestr, checked, title, point
-		    FROM attendance a
-		    LEFT JOIN users u ON a.users_id = u.users_id
-		    WHERE u.users_no = #{usersNo})
-		ORDER BY COALESCE(modify_date, TO_DATE(checked, 'YYYY-MM-DD HH24:MI:SS')) DESC
+		select *
+		from point 
+		where users_no = #{usersNo}
+		order by point_no desc
 	</select>
 	
 <!-- 	<insert id="deletePoint"> -->

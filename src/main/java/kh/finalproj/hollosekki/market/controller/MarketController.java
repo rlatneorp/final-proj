@@ -275,6 +275,14 @@ public class MarketController {
       Food food = mkService.selectFood(productNo);
       Ingredient ingredient = mkService.selectIngrdient(productNo);
       
+     
+		if(users != null) {
+			int cart = eService.cartCount(users.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+      
+      
+      
 		if(currentPage == null) {
 			currentPage = 1;
 		}

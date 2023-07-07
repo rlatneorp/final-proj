@@ -1739,7 +1739,10 @@ p b {
 
                         	const cart = values[1].trim().replace(/]/g, ''); // 두 번째 값 출력 (2)
                         	
-                        	document.getElementById("cartCount").innerText = cart;
+                        	if(cart != null){
+                        		document.getElementById("cartCount").innerText = cart;
+                        	}
+                        	
                         	preNo = count++;
                         },
                         error: allData => {

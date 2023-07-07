@@ -142,8 +142,8 @@
 	.modal-header{background: #B0DAFF;}
 	.followName{
 		font-size: 17px; font-weight: bold;
-		margin-right: 200px; margin-top: 10px; margin-left: 10px;
-		width: 100px;
+		margin-right: 10px; margin-top: 10px; margin-left: 10px;
+		width: 300px;
 		cursor: pointer;
 	}
 	.modalFollow{
@@ -648,7 +648,7 @@
 									</c:if>
 								</c:if>
 								
-								<div><label class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'">${ ing.NICKNAME }</label></div>
+								<div class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'">${ ing.NICKNAME }</div>
 								
 								<c:set var="follow" value="false"/>
 							    <c:forEach items="${lList}" var="fl">
@@ -717,7 +717,7 @@
 									</c:if>
 								</c:if>
 								
-								<div><label class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'">${ wo.NICKNAME }</label></div>
+								<div class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'">${ wo.NICKNAME }</div>
 								
 								<c:set var="following" value="false"/>
 							    <c:forEach items="${lList}" var="fl">

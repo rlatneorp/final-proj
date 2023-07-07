@@ -124,9 +124,8 @@
 					<label class="orderInfo">주문 상품 정보</label>&nbsp;<label>(총 ${orders.orderCount }개 / <fmt:formatNumber type="number" maxFractionDigits="3" pattern="'\ '#,###" value="${orders.totalPrice }"/>)</label>
 					<br><br>
 					<table>
-					
-						<tr id="detailProduct" style="border-bottom: 1px solid black;">
-							<td class="order">${orders }
+						<tr id="detailProduct" style="border-bottom: 1px solid black; cursor: pointer;">
+							<td class="order">
 								<input type="hidden" id="productNo" value="${orders.productNo }">
 								<img src="${contextPath }/resources/uploadFiles/${orders.imgName}"/>
 								<input type="hidden" id="type" value="${orders.productType }">

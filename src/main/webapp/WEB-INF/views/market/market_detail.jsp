@@ -1738,11 +1738,10 @@ p b {
                         	const values = jsonString.substring(1, jsonString.length - 1).split(","); // 문자열을 자르고 배열로 분할
 
                         	const cart = values[1].trim().replace(/]/g, ''); // 두 번째 값 출력 (2)
+                        	console.log(cart);
                         	
-                        	if(cart != null){
-                        		document.getElementById("cartCount").innerText = cart;
-                        	}
-                        	
+                       		document.getElementById("cartCount").innerText = cart;
+//                        		document.getElementById("cartCount").classList.add();
                         	preNo = count++;
                         },
                         error: allData => {

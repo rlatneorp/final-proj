@@ -245,6 +245,9 @@
 						<c:if test="${ cart != 0 }">
 							<div id="cartCount">${ cart }</div>
 						</c:if>
+						<c:if test="${ cart == 0 }">
+							<div id="cartCount">${ cart }</div>
+						</c:if>
 					</c:if>
 				</div>
 			</div>

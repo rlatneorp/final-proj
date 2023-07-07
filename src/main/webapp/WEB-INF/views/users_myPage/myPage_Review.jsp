@@ -179,7 +179,7 @@ th:first-child, td:first-child {
 							</c:if>
 							<c:forEach items="${ list }" var="r">
 								<c:if test="${ r.ORDER_NO == 0 }">
-									<tr onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '&rNo=' + '${ r.PRODUCT_NO }' + '&page=' + '${ pi.currentPage }'">
+									<tr onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '${ r.USERS_ID }' + '&rNo=' + '${ r.PRODUCT_NO }' + '&page=' + '${ pi.currentPage }'">
 										<td>${ r.REVIEW_NO }</td>
 										<td>레시피</td>
 										<td>${ r.RECIPE_NAME }</td>

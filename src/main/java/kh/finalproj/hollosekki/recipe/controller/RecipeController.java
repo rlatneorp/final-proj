@@ -74,7 +74,7 @@ public class RecipeController {
 			currentPage = page;
 		}
 		int listCount = rService.getListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 12);
 
 		ArrayList<Recipe> rList = new ArrayList<>();
 		ArrayList<Image> iList = new ArrayList<>();

@@ -53,9 +53,9 @@ html{
 	margin: 5px 20px;
 }
 
-.right {
-	width: 40%;
-}
+/* .right { */
+/* 	width: 40%; */
+/* } */
 
 .left {
 	width: 50%;
@@ -191,7 +191,7 @@ p b {
 /* 추천대상 */
 	#target{
 		width: 500px;
-		height: 200px;
+		height: 150px;
 		margin: auto;
 		background-color: lightgray;
 		border-radius: 10px;
@@ -206,7 +206,7 @@ p b {
 	}
 	
 	#target ul{
-		padding: 0 100px;
+		padding: 0 50px;
 	}
 	
 	#detailInfo{
@@ -476,11 +476,16 @@ p b {
 			<br>
 			<br>
 			<div id="userInfo">
-				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
-				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
+				<c:if test="${menuProfile eq null }">
+					<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				</c:if>
+				<c:if test="${menuProfile ne null }">
+					<img src="${contextPath}/resources/uploadFiles/${menuProfile.imageRenameName}" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				</c:if>
+				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">${menu.name}</p>
 			</div>
 		</div>
-		<div class="right">
+		<div class="right" style="width: 40%;">
 			<!-- like 유무 가리는 용도 -->
 <%-- 			<input type="hidden" id="likeYn" value="${ like }"> --%>
 			<!-- 상품 정보 -->
@@ -490,8 +495,17 @@ p b {
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
+					<c:set value="${menu.productPrice - (menu.productPrice * (menu.productSale * 0.01))}" var="price"/>
+					<div style="width: 300px; margin-left: 60px;">
+						<label style="font-size: 30px; color:gray; text-decoration: line-through lightgray 2px;">
+							<fmt:formatNumber value="${menu.productPrice}"/>원
+						</label>
+						<label style="font-size: 25px; color: red;">
+							&nbsp;&nbsp;<fmt:formatNumber value="${menu.productSale}"/>%<br>
+						</label>
+					</div>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						<fmt:formatNumber value="${menu.productPrice}"/>원
+						<fmt:formatNumber value="${price}"/>원
 					</h2>
 					&nbsp;&nbsp;
 					<c:if test="${ loginUser != null }">
@@ -502,15 +516,14 @@ p b {
 							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 						</c:if>
 <!-- 						<h4 id="bookmark" class="bookmark" style="display: inline-block; font-size: 35px; color: #4485d7; "><i class="bi bi-bookmark"></i></h4> -->
-						
 					</c:if>
 				</div>
 				<div>
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px; margin-top: 20px;">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;배송 | 3,000원 
+<!--                             	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;"> -->
+<!--                             	&nbsp;배송 | 3,000원  -->
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
@@ -538,7 +551,7 @@ p b {
 						<div id="productResult">
 							<div>
 								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
-									총 상품 가격 : <label id="total"><fmt:formatNumber value="${menu.productPrice}"/>원</label>
+									총 상품 가격 : <label id="total"><fmt:formatNumber value="${price}"/>원</label>
 								</h4>
 							</div>
 							<br>
@@ -569,23 +582,22 @@ p b {
 
 	<div id="target">
 		<i id="pushPin" class="bi bi-pin-fill"></i>
-		<h2 style="padding: 30px 0 10px 100px;">추천대상</h2>
+		<h2 style="padding: 30px 0 10px 50px;">식단 설명</h2>
 		<ul>
-			<li>식단 관리가 필요하신 분</li>
-			<li>식단 관리가 필요하신 분</li>
-			<li>식단 관리가 필요하신 분</li>
+			<li>${menu.menuContent }</li>
 		</ul>
 	</div>
 	
 	<br>
 	
-	<p class="mid">상세 설명</p>
+	<p class="mid">식단</p>
 	
-	<br>
+	<c:set var="value" value="${mlList }"/>
+	
 	<div id="detailInfo">
 		<div class="detailInfoElem">
 			<i class="bi bi-calendar-check detailIcon"></i><br>
-			<p>1주일 치 식단을 기간별로 선택 가능</p>
+			<p>1주일 치 식단을 한번에</p>
 		</div>
 		
 		<div class="detailInfoElem">
@@ -603,10 +615,6 @@ p b {
 			<p>전문 영양사가 직접 구성한 식단</p>
 		</div>
 	</div>
-	
-	<p class="mid">식단</p>
-	
-	<c:set var="value" value="${mlList }"/>
 	
 	<div class="menuABCD">
 		<h2>1일차</h2>
@@ -1200,7 +1208,12 @@ p b {
 			</div>
 			<div class="modal-body">
 				<div id="modalNick">
-					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					<c:if test="${menuProfile eq null }">
+						<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					</c:if>
+					<c:if test="${menuProfile ne null }">
+						<img src="${contextPath}/resources/uploadFiles/${menuProfile.imageRenameName}" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					</c:if>
 					<p style="font-weight: bold;">${menu.name}</p>
 				</div>
 				<div id="modalInfo">
@@ -1328,7 +1341,7 @@ p b {
 				<div class="modal-body" id="reviewBody">
 					<input type="hidden" name="productNo" value="${ menu.foodProductNo }">
 					<input type="hidden" name="reviewWriter" value="${ loginUser.nickName }">
-					<input type="hidden" name="orderNo" id="orderNo">
+					<input type="hidden" name="orderNo" id="orderNos">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewScore5">
 							<label for="reviewScore5">★</label>
@@ -1406,7 +1419,7 @@ p b {
 		if(parseQuan >= 2){
 			console.log(total);
 			quantity.innerText = parseQuan - 1;
-			var result = ${menu.productPrice} * quantity.innerText;
+			var result = ${price} * quantity.innerText;
 			
 			total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 		}
@@ -1418,7 +1431,7 @@ p b {
 		var total = document.getElementById('total');
 		
 		quantity.innerText = parseQuan + 1;
-		var result = ${menu.productPrice} * quantity.innerText;
+		var result = ${price} * quantity.innerText;
 		
 		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
@@ -1761,7 +1774,7 @@ p b {
 // });
 	
 	const order = document.getElementById('orders');
-	const orderNo = document.getElementById('orderNo');
+	const orderNo = document.getElementById('orderNos');
 	const reviewIn = document.getElementById('reviewIn');
 	const content = document.getElementById('reviewWrite');
 	const writeReview = document.getElementById('writeReview');
@@ -1785,27 +1798,6 @@ p b {
 		});
 	}
 
-// 	document.addEventListener("DOMContentLoaded", function() {
-// 		const writeBtn = document.getElementById("write");
-// 		if (order != null) {
-// 			writeBtn.addEventListener("click", function() {
-// 				orderNo.value = order.value;
-// 				console.log(orderNo.value);
-// 				sub.addEventListener('click', () => {
-// 					if(content.value == ''){
-// 						swal({
-// 							text: "리뷰 내용을 입력해주세요.",
-// 							icon: "error",
-// 							button: "확인",
-// 						});
-// 					} else {
-// 						writeReview.action = '${contextPath}/writeReview.mn';		
-// 						writeReview.submit();
-// 					}
-// 				});
-// 			});
-// 		}
-// 	});
 	
 	const rNo = document.getElementById('reviewNo');
 	const score5 = document.getElementById('reviewUpdateScore5');

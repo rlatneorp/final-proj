@@ -1342,7 +1342,7 @@ public class AdminController {
 				if(imageFile != null && !imageFile.isEmpty()) {
 					String[] returnArr = saveFile(imageFile, request);
 					if(returnArr[1] != null) {
-						Image image = setImage(nowToolNo, 6, returnArr[0], imageFile.getOriginalFilename(), returnArr[1], 1);
+						Image image = setImage(nowToolNo, 6, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 1);
 						if(i==0) {
 							image.setImageLevel(0);
 						}
@@ -1656,12 +1656,17 @@ public class AdminController {
 		int resultImg = 1;
 //		이미지 변경저장
 		if(h.getImageChange().equals("Y")) {
-//			데이터 서버 이미지 삭제
-			Image img = selectAllImageList(h.getUsersNo(), 8, 0).get(0);
-			deleteFile(img.getImageRenameName(), request);
-			
-//			DB서버 이미지 삭제
-			resultImgDel = aService.deleteImage(img);
+			ArrayList<Image> imgList = selectAllImageList(h.getUsersNo(), 8, 0);
+//			기존 이미지가 있다면
+			if(!imgList.isEmpty()) {
+				Image img = imgList.get(0);
+				
+//				데이터 서버 이미지 삭제
+				deleteFile(img.getImageRenameName(), request);
+				
+//				DB서버 이미지 삭제
+				resultImgDel = aService.deleteImage(img);
+			}
 			
 			if(resultImgDel > 0) {
 //				이미지 저장

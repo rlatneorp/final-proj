@@ -25,8 +25,8 @@
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>
 					<th style="width: 8%">작성자</th>
-					<th style="width: 19%">제목</th>
-					<th style="width: 30%">내용</th>
+					<th style="width: 49%">제목</th>
+<!-- 					<th style="width: 30%">내용</th> -->
 					<th style="width: 7%">종류</th>
 					<th style="width: 6%">조회수</th>
 					<th style="width: 8%">날짜</th>
@@ -44,7 +44,7 @@
 						<td>
 							<a href="${contextPath}/adminBoardDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&boardNo=${b.boardNo}">${fn:substring(b.boardTitle, 0, 20)}</a>
 						</td>
-						<td>${fn:substring(b.boardContent, 0, 30)}</td>
+<%-- 						<td>${fn:substring(b.boardContent, 0, 30)}</td> --%>
 						<td>
 							<c:if test="${b.boardType eq 0}">
 								 자유게시판

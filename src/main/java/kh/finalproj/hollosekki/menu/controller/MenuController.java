@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import kh.finalproj.hollosekki.common.Pagination;
@@ -34,6 +35,7 @@ import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 
+@SessionAttributes("cart")
 @Controller
 public class MenuController {
 	@Autowired
@@ -57,6 +59,11 @@ public class MenuController {
 		}
 		
 		Users u = (Users)session.getAttribute("loginUser");
+		
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
 		
 		int listCount = mService.getListCount();
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);

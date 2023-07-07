@@ -191,7 +191,7 @@ p b {
 /* 추천대상 */
 	#target{
 		width: 500px;
-		height: 200px;
+		height: 150px;
 		margin: auto;
 		background-color: lightgray;
 		border-radius: 10px;
@@ -206,7 +206,7 @@ p b {
 	}
 	
 	#target ul{
-		padding: 0 100px;
+		padding: 0 50px;
 	}
 	
 	#detailInfo{
@@ -495,8 +495,17 @@ p b {
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
+					<c:set value="${menu.productPrice - (menu.productPrice * (menu.productSale * 0.01))}" var="price"/>
+					<div style="width: 300px; margin-left: 60px;">
+						<label style="font-size: 30px; color:gray; text-decoration: line-through lightgray 2px;">
+							<fmt:formatNumber value="${menu.productPrice}"/>원
+						</label>
+						<label style="font-size: 25px; color: red;">
+							&nbsp;&nbsp;<fmt:formatNumber value="${menu.productSale}"/>%<br>
+						</label>
+					</div>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						<fmt:formatNumber value="${menu.productPrice}"/>원
+						<fmt:formatNumber value="${price}"/>원
 					</h2>
 					&nbsp;&nbsp;
 					<c:if test="${ loginUser != null }">
@@ -507,15 +516,14 @@ p b {
 							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 						</c:if>
 <!-- 						<h4 id="bookmark" class="bookmark" style="display: inline-block; font-size: 35px; color: #4485d7; "><i class="bi bi-bookmark"></i></h4> -->
-						
 					</c:if>
 				</div>
 				<div>
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px; margin-top: 20px;">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;배송 | 3,000원 
+<!--                             	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;"> -->
+<!--                             	&nbsp;배송 | 3,000원  -->
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
@@ -543,7 +551,7 @@ p b {
 						<div id="productResult">
 							<div>
 								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
-									총 상품 가격 : <label id="total"><fmt:formatNumber value="${menu.productPrice}"/>원</label>
+									총 상품 가격 : <label id="total"><fmt:formatNumber value="${price}"/>원</label>
 								</h4>
 							</div>
 							<br>
@@ -574,23 +582,22 @@ p b {
 
 	<div id="target">
 		<i id="pushPin" class="bi bi-pin-fill"></i>
-		<h2 style="padding: 30px 0 10px 100px;">추천대상</h2>
+		<h2 style="padding: 30px 0 10px 50px;">식단 설명</h2>
 		<ul>
-			<li>식단 관리가 필요하신 분</li>
-			<li>식단 관리가 필요하신 분</li>
-			<li>식단 관리가 필요하신 분</li>
+			<li>${menu.menuContent }</li>
 		</ul>
 	</div>
 	
 	<br>
 	
-	<p class="mid">상세 설명</p>
+	<p class="mid">식단</p>
 	
-	<br>
+	<c:set var="value" value="${mlList }"/>
+	
 	<div id="detailInfo">
 		<div class="detailInfoElem">
 			<i class="bi bi-calendar-check detailIcon"></i><br>
-			<p>1주일 치 식단을 기간별로 선택 가능</p>
+			<p>1주일 치 식단을 한번에</p>
 		</div>
 		
 		<div class="detailInfoElem">
@@ -608,10 +615,6 @@ p b {
 			<p>전문 영양사가 직접 구성한 식단</p>
 		</div>
 	</div>
-	
-	<p class="mid">식단</p>
-	
-	<c:set var="value" value="${mlList }"/>
 	
 	<div class="menuABCD">
 		<h2>1일차</h2>
@@ -1416,7 +1419,7 @@ p b {
 		if(parseQuan >= 2){
 			console.log(total);
 			quantity.innerText = parseQuan - 1;
-			var result = ${menu.productPrice} * quantity.innerText;
+			var result = ${price} * quantity.innerText;
 			
 			total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 		}
@@ -1428,7 +1431,7 @@ p b {
 		var total = document.getElementById('total');
 		
 		quantity.innerText = parseQuan + 1;
-		var result = ${menu.productPrice} * quantity.innerText;
+		var result = ${price} * quantity.innerText;
 		
 		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
@@ -1560,7 +1563,12 @@ p b {
 		        	"usersNo":usersNo,
 		        },
 	            success: data =>{
+	            	console.log("data : " + data);
 	           		console.log("success");
+	           		const jsonString = JSON.stringify(data);
+	           		const values = jsonString.substring(1, jsonString.length - 1).split(",");
+	           		const cart = values[1].trim().replace(/]/g, '');
+	           		document.getElementById("cartCount").innerText = cart;;
 	            },
 	            error: data => {
 	            	console.log("error");

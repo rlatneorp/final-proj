@@ -87,7 +87,7 @@
 <div id="search">
 	<form role="search" id="searchBar">
 		<div id="searchBar">
-			<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
+			<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요." onsubmit="return false;">
 			<div id="searchIcon"><button type="button" id="searchBtn"><i class="bi bi-search"></i></button></div>
 		</div>
 	</form>
@@ -167,8 +167,9 @@
 	<div class="page_nation">
 	
 <!-- 		이전 페이지로	 -->
-		<c:url var="goBack" value="${loc }">
+		<c:url var="goBack" value="${loc}">
 			<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
+			<c:param name="${cate}" value="${value}"></c:param>
 		</c:url>
 		<c:if test="${pi.currentPage > 1 }">
 			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
@@ -178,6 +179,7 @@
 		<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
 				<c:param name="page" value="${p }"></c:param>
+				<c:param name="${cate}" value="${value}"></c:param>
 			</c:url>
 			<c:if test="${ pi.currentPage eq p }">
 				<a class="active">${p }</a>
@@ -189,6 +191,7 @@
 		
 		<c:url var="goNext" value="${loc }">
 			<c:param name="page" value="${pi.currentPage + 1 }"></c:param>
+			<c:param name="${cate}" value="${value}"></c:param>
 		</c:url>
 		<c:if test="${pi.currentPage < pi.endPage }">
 			<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
@@ -226,7 +229,7 @@
 				const rNo = chi[3].value;
 				console.log("rId : " + rId); 
 				console.log("rNo : " + rNo); 
-				location.href="${contextPath}/recipeDetail.rc?rId=" + rId + "&rNo=" + rNo + "&page=" + ${pi.currentPage}; 
+				location.href="${contextPath}/recipeDetail.rc?rId=" + rId + "&rNo=" + rNo + "&page=" + ${pi.currentPage == null ? 0 : pi.currentPage}; 
 			})
 		}
 	}
@@ -235,388 +238,35 @@
 	for(groupBtn1 of groupBtn1s){
 		const ingredient = groupBtn1.innerText;
 		groupBtn1.addEventListener('click', function(){
-			$.ajax({
-				url:"recipeIngredient.rc",
-				data: {"ingredient" : ingredient},
-				success: data=>{
-					console.log(data);
-					const listBox = document.getElementById('listBox');
-					listBox.innerHTML ="";
-					
-					data.forEach(post =>{
-						
-						console.log(post);
-						
-						const col = document.createElement('div');
-						col.classList.add('col');
-						
-						const card = document.createElement('div');
-						card.classList.add('card');
-						card.classList.add('shadow-sm');
-						card.onclick=function(){
-							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
-						}
-						
-						const cardImg = document.createElement('div');
-						cardImg.classList.add('cardImg');
-						
-						const img = document.createElement('img');
-						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-						img.classList.add('image');
-						
-						const cardBody = document.createElement('div');
-						cardBody.classList.add('card-body');
-						
-						const h5 = document.createElement('h5');
-						h5.innerText = post.recipeName;
-						h5.classList.add('name-cut');
-						
-						const p = document.createElement('p');
-						p.innerText = post.nickName;
-						p.classList.add('card-text');
-						
-						const p2 = document.createElement('p');
-						p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
-						p2.classList.add('card-text');
-						
-						const uId = document.createElement('input');
-						uId.setAttribute("type", "hidden");
-						uId.value= post.usersId;
-
-						const fNo = document.createElement('input');
-						fNo.setAttribute("type", "hidden");
-						fNo.value= post.foodNo;
-						
-						cardBody.appendChild(h5);
-						cardBody.appendChild(p);
-						cardBody.appendChild(p2);
-						
-						cardImg.appendChild(img);
-						
-						card.appendChild(cardImg);
-						card.appendChild(cardBody);
-						card.appendChild(uId);
-						card.appendChild(fNo);
-						
-						col.appendChild(card);
-						
-						listBox.appendChild(col);
-					});
-				},
-				error: data =>{
-					console.log("실패");
-				}
-			})
+			console.log(ingredient);
+			location.href='${contextPath}/recipeIngredient.rc?ingredient=' + ingredient;
 		})
 	}
+	
 	const groupBtn2s = document.getElementsByClassName("group-button2");
 	for(groupBtn2 of groupBtn2s){
 		const situation = groupBtn2.innerText;
 		groupBtn2.addEventListener('click', function(){
-			$.ajax({
-				url:"recipeSituation.rc",
-				data: {"situation" : situation},
-				success: data=>{
-					console.log(data);
-					const listBox = document.getElementById('listBox');
-					listBox.innerHTML ="";
-					
-					data.forEach(post =>{
-						
-						console.log(post);
-						
-						const col = document.createElement('div');
-						col.classList.add('col');
-						
-						const card = document.createElement('div');
-						card.classList.add('card');
-						card.classList.add('shadow-sm');
-						card.onclick=function(){
-							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
-						}
-						
-						const cardImg = document.createElement('div');
-						cardImg.classList.add('cardImg');
-						
-						const img = document.createElement('img');
-						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-						img.classList.add('image');
-						
-						const cardBody = document.createElement('div');
-						cardBody.classList.add('card-body');
-						
-						const h5 = document.createElement('h5');
-						h5.classList.add('name-cut');
-						h5.innerText = post.recipeName;
-						
-						const p = document.createElement('p');
-						p.innerText = post.nickName;
-						p.classList.add('card-text');
-						
-						const p2 = document.createElement('p');
-						p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
-						p2.classList.add('card-text');
-						
-						const uId = document.createElement('input');
-						uId.setAttribute("type", "hidden");
-						uId.value= post.usersId;
-
-						const fNo = document.createElement('input');
-						fNo.setAttribute("type", "hidden");
-						fNo.value= post.foodNo;
-						
-						cardBody.appendChild(h5);
-						cardBody.appendChild(p);
-						cardBody.appendChild(p2);
-						
-						cardImg.appendChild(img);
-						
-						card.appendChild(cardImg);
-						card.appendChild(cardBody);
-						card.appendChild(uId);
-						card.appendChild(fNo);
-						
-						col.appendChild(card);
-						
-						listBox.appendChild(col);
-					});
-				},
-				error: data =>{
-					console.log("실패");
-				}
-			})
+			
+			location.href='${contextPath}/recipeSituation.rc?situation=' + situation;
+			
 		})
 	}
 	const groupBtn3s = document.getElementsByClassName("group-button3");
 	for(groupBtn3 of groupBtn3s){
 		const type = groupBtn3.innerText;
 		groupBtn3.addEventListener('click', function(){
-			$.ajax({
-				url:"recipeType.rc",
-				data: {"type" : type},
-				success: data=>{
-					console.log(data);
-					const listBox = document.getElementById('listBox');
-					listBox.innerHTML ="";
-					
-					data.forEach(post =>{
-						
-						console.log(post);
-						
-						const col = document.createElement('div');
-						col.classList.add('col');
-						
-						const card = document.createElement('div');
-						card.classList.add('card');
-						card.classList.add('shadow-sm');
-						card.onclick=function(){
-							location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
-						}
-						
-						const cardImg = document.createElement('div');
-						cardImg.classList.add('cardImg');
-						
-						const img = document.createElement('img');
-						img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-						img.classList.add('image');
-						
-						const cardBody = document.createElement('div');
-						cardBody.classList.add('card-body');
-						
-						const h5 = document.createElement('h5');
-						h5.classList.add('name-cut');
-						h5.innerText = post.recipeName;
-						
-						const p = document.createElement('p');
-						p.innerText = post.nickName;
-						p.classList.add('card-text');
-						
-						const p2 = document.createElement('p');
-						p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
-						p2.classList.add('card-text');
-						
-						const uId = document.createElement('input');
-						uId.setAttribute("type", "hidden");
-						uId.value= post.usersId;
-
-						const fNo = document.createElement('input');
-						fNo.setAttribute("type", "hidden");
-						fNo.value= post.foodNo;
-						
-						cardBody.appendChild(h5);
-						cardBody.appendChild(p);
-						cardBody.appendChild(p2);
-						
-						cardImg.appendChild(img);
-						
-						card.appendChild(cardImg);
-						card.appendChild(cardBody);
-						card.appendChild(uId);
-						card.appendChild(fNo);
-						
-						col.appendChild(card);
-						
-						listBox.appendChild(col);
-					});
-				},
-				error: data =>{
-					console.log("실패");
-				}
-			})
+			
+			location.href='${contextPath}/recipeType.rc?type=' + type;
 		})
 	}
 	
-	
-	const recent = document.getElementById('recent');
-	const most = document.getElementById('most');
 	function recentAl(){
-// 		console.log(1);
-		$.ajax({
-			url:"recentRecipe.rc",
-			success: data => {
-				console.log(data);
-				const listBox = document.getElementById('listBox');
-				listBox.innerHTML ="";
-				
-				data.forEach(post =>{
-					
-					console.log(post);
-					
-					const col = document.createElement('div');
-					col.classList.add('col');
-					
-					const card = document.createElement('div');
-					card.classList.add('card');
-					card.classList.add('shadow-sm');
-					card.onclick=function(){
-						location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
-					}
-					
-					const cardImg = document.createElement('div');
-					cardImg.classList.add('cardImg');
-					
-					const img = document.createElement('img');
-					img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-					img.classList.add('image');
-					
-					const cardBody = document.createElement('div');
-					cardBody.classList.add('card-body');
-					
-					const h5 = document.createElement('h5');
-					h5.classList.add('name-cut');
-					h5.innerText = post.recipeName;
-					
-					const p = document.createElement('p');
-					p.innerText = post.nickName;
-					p.classList.add('card-text');
-					
-					const p2 = document.createElement('p');
-					p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
-					p2.classList.add('card-text');
-					
-					const uId = document.createElement('input');
-					uId.setAttribute("type", "hidden");
-					uId.value= post.usersId;
-
-					const fNo = document.createElement('input');
-					fNo.setAttribute("type", "hidden");
-					fNo.value= post.foodNo;
-					
-					cardBody.appendChild(h5);
-					cardBody.appendChild(p);
-					cardBody.appendChild(p2);
-					
-					cardImg.appendChild(img);
-					
-					card.appendChild(cardImg);
-					card.appendChild(cardBody);
-					card.appendChild(uId);
-					card.appendChild(fNo);
-					
-					col.appendChild(card);
-					
-					listBox.appendChild(col);
-				});
-			},
-			error: data =>{
-				console.log("실패");
-			}
-		})
+		location.href='${contextPath}/recipeList.rc';
 	}
 	
 	function mostAl(){
-		console.log(2);
-		$.ajax({
-			url:"mostRecipe.rc",
-			success: data => {
-				console.log(data);
-				const listBox = document.getElementById('listBox');
-				listBox.innerHTML ="";
-				
-				data.forEach(post =>{
-					
-					console.log(post);
-					
-					const col = document.createElement('div');
-					col.classList.add('col');
-					
-					const card = document.createElement('div');
-					card.classList.add('card');
-					card.classList.add('shadow-sm');
-					card.onclick=function(){
-						location.href="${contextPath}/recipeDetail.rc?rId="+post.usersId+"&rNo="+post.foodNo+"&page="+${pi.currentPage};
-					}
-					
-					const cardImg = document.createElement('div');
-					cardImg.classList.add('cardImg');
-					
-					const img = document.createElement('img');
-					img.src="${ contextPath }/resources/uploadFiles/" + post.imageRenameName;
-					img.classList.add('image');
-					
-					const cardBody = document.createElement('div');
-					cardBody.classList.add('card-body');
-					
-					const h5 = document.createElement('h5');
-					h5.classList.add('name-cut');
-					h5.innerText = post.recipeName;
-					
-					const p = document.createElement('p');
-					p.innerText = post.nickName;
-					p.classList.add('card-text');
-					
-					const p2 = document.createElement('p');
-					p2.innerText = post.categoryIngredient +' ∣ '+ post.categorySituation +' ∣ '+ post.categoryType;
-					p2.classList.add('card-text');
-					
-					const uId = document.createElement('input');
-					uId.setAttribute("type", "hidden");
-					uId.value= post.usersId;
-
-					const fNo = document.createElement('input');
-					fNo.setAttribute("type", "hidden");
-					fNo.value= post.foodNo;
-					
-					cardBody.appendChild(h5);
-					cardBody.appendChild(p);
-					cardBody.appendChild(p2);
-					
-					cardImg.appendChild(img);
-					
-					card.appendChild(cardImg);
-					card.appendChild(cardBody);
-					card.appendChild(uId);
-					card.appendChild(fNo);
-					
-					col.appendChild(card);
-					
-					listBox.appendChild(col);
-				});
-			},
-			error: data =>{
-				console.log("실패");
-			}
-		})
+		location.href='${contextPath}/mostRecipe.rc';
 	}
 		
 </script>

@@ -153,7 +153,7 @@
 		order by recipe_modify_date desc
 	</select>
 	
-	<select id="mostRecipeList" resultMap="recipeResultSet">
+	<select id="mostClickRecipeList" resultMap="recipeResultSet">
 		select *
 		from recipe
 			 left join users using(users_no)
@@ -310,6 +310,30 @@
 		from review
 		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no = 0
 		order by review_no desc
+	</select>
+	
+	<select id="getSearchListCount" resultType="_int">
+		select count(*)
+		from recipe
+		where recipe_status = 'Y' and recipe_name like '%${word}%'
+	</select>
+	
+	<select id="getIngredientListCount" resultType="_int">
+		select count(*)
+		from recipe
+		where recipe_status = 'Y' and CATEGORY_INGREDIENT=#{ingredient}
+	</select>
+	
+	<select id="getSituationListCount" resultType="_int">
+		select count(*)
+		from recipe
+		where recipe_status = 'Y' and category_situation=#{situation}
+	</select>
+	
+	<select id="getTypeListCount" resultType="_int">
+		select count(*)
+		from recipe
+		where recipe_status = 'Y' and category_type=#{type}		
 	</select>
 	
 	<resultMap type="Recipe" id="recipeResultSet">

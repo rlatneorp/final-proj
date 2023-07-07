@@ -118,7 +118,7 @@
 <br><br>
 
 <div id="search">
-	<form role="search" action="menuList.mn">
+	<form role="search" action="menuList.mn" onsubmit="return false;">
 		<div id="searchBar">
 			<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
 			<div id="searchIcon"><button id="searchBtn"><i class="bi bi-search"></i></button></div>

@@ -61,7 +61,7 @@ public class RecipeController {
 //	레시피 리스트 조회
 	@RequestMapping("recipeList.rc")
 	public String recipeList(@ModelAttribute Recipe r, Model model,
-			@RequestParam(value = "page", required = false) Integer page) {
+			@RequestParam(value = "page", required = false) Integer currentPage) {
 		
 		Users u = (Users) model.getAttribute("loginUser");
 		if(u != null) {

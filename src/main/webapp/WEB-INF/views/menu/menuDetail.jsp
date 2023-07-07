@@ -1550,7 +1550,12 @@ p b {
 		        	"usersNo":usersNo,
 		        },
 	            success: data =>{
+	            	console.log("data : " + data);
 	           		console.log("success");
+	           		const jsonString = JSON.stringify(data);
+	           		const values = jsonString.substring(1, jsonString.length - 1).split(",");
+	           		const cart = values[1].trim().replace(/]/g, '');
+	           		document.getElementById("cartCount").innerText = cart;;
 	            },
 	            error: data => {
 	            	console.log("error");

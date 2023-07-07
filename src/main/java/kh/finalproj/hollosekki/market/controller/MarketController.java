@@ -14,16 +14,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -36,6 +38,7 @@ import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.exception.MarketException;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
@@ -50,17 +53,27 @@ import kh.finalproj.hollosekki.market.model.vo.Review;
 import kh.finalproj.hollosekki.market.model.vo.ShippingAddress;
 import kh.finalproj.hollosekki.market.model.vo.Tool;
 
+//@SessionAttributes("cart")
 @Controller
 public class MarketController {
 
    @Autowired
    private MarketService mkService;
+   
+   @Autowired
+   private EnrollService eService;
 
    @RequestMapping("basket.ma")
    public String pay(HttpSession session, Model model) {
       
       Users users = (Users)session.getAttribute("loginUser");
       int userNo = users.getUsersNo();
+      
+      if(users != null) {
+			int cart = eService.cartCount(users.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+
       
       ArrayList<Cart> cartList = mkService.selectCartList(userNo);
       
@@ -551,22 +564,38 @@ public class MarketController {
          }
    }
    
-   
+   @ResponseBody
    @RequestMapping("insertCart.ma")
-      public void insertCart(@ModelAttribute Cart c,HttpServletResponse response) {
+      public String insertCart(@ModelAttribute Cart c,HttpServletResponse response, Model model) {
       
       int result = mkService.insertCart(c);
+      int cart = eService.cartCount(c.getUsersNo());
+      System.out.println(cart);
       
-      response.setContentType("application/json; charset=utf-8");
-      GsonBuilder gb = new GsonBuilder();
-      Gson gson = gb.create();
-      try {
-         gson.toJson(result, response.getWriter());
-      } catch (JsonIOException e) {
-         e.printStackTrace();
-      } catch (IOException e) {
-         e.printStackTrace();
-      } 
+//      response.setContentType("application/json; charset=utf-8");
+//      GsonBuilder gb = new GsonBuilder();
+//      Gson gson = gb.create();
+//      
+//      try {
+//         gson.toJson(result, response.getWriter());
+//         gson.toJson(cart, response.getWriter());
+//         
+//      } catch (JsonIOException e) {
+//         e.printStackTrace();
+//      } catch (IOException e) {
+//         e.printStackTrace();
+//      } 
+      
+      	JSONArray jArr = new JSONArray();
+      	jArr.put(result);
+      	jArr.put(cart);
+		
+		return jArr.toString();
+      
+//		JSONObject json = new JSONObject(); // map(키, 벨류)에 값 집어넣을때 "put" 이용
+//		json.put("preNo", result);
+//		json.put("cart", cart);
+//		return json.toString();
    }
    
    @RequestMapping("goToPay.ma")
@@ -917,7 +946,14 @@ public class MarketController {
    
    //전체보기
    @RequestMapping("viewWhole.ma")
-   public String viewWhole(Model model, @RequestParam(value="page", required=false) Integer currentPage) {
+   public String viewWhole(Model model, @RequestParam(value="page", required=false) Integer currentPage, HttpSession session) {
+	   
+	   Users u = (Users)session.getAttribute("loginUser");
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+	   
 	   if(currentPage == null) {
 		   currentPage = 1;
 	   }

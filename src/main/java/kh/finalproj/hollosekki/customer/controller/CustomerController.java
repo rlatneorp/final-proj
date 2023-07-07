@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,18 +24,31 @@ import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.customer.model.service.CustomerService;
 import kh.finalproj.hollosekki.customer.model.vo.Customer;
 import kh.finalproj.hollosekki.customer.model.vo.Qna;
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
 
+@SessionAttributes("cart")
 @Controller
 public class CustomerController {
 	
 	@Autowired
 	private CustomerService csService;
 	
+	@Autowired
+	private EnrollService eService;
+	
 	@RequestMapping("noticeBoard.cs")
 	public String nBoard(HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
 			 Model model) {
+		
+		Users u = (Users)session.getAttribute("loginUser");
+		System.out.println(u);
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		if(currentPage == null) {
 			currentPage = 1;
 		}

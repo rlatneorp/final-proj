@@ -44,7 +44,7 @@ import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.users.model.exception.UsersException;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
-@SessionAttributes({"loginUser"})
+@SessionAttributes({"loginUser", "cart"})
 @Controller
 public class UsersController {
 	
@@ -69,6 +69,12 @@ public class UsersController {
 		// �씠誘몄� 議고쉶 - 濡쒓렇�씤 議고쉶�븷�븣 �씠誘몄� 由щ꽕�엫, �냼�뀥�씠誘몄� 議곗씤�빐�꽌 媛��졇�샂
 		Users u = (Users) model.getAttribute("loginUser");
 		Users loginUser = null;
+		
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		if(u.getImageRenameName() != null) {
 			loginUser = eService.login(u);
 			model.addAttribute("loginUser", loginUser);
@@ -332,6 +338,13 @@ public class UsersController {
 			@RequestParam(value = "searchType", required = false) Integer searchType,
 			@RequestParam(value = "searchTitle", required = false) String searchTitle) {
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
+		
+		Users u = (Users) model.getAttribute("loginUser");
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;

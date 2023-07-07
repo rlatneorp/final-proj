@@ -45,7 +45,7 @@ import kh.finalproj.hollosekki.recipe.model.vo.RecipeElement;
 import kh.finalproj.hollosekki.recipe.model.vo.RecipeOrder;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser", "cart"})
 @Controller
 public class RecipeController {
 
@@ -58,13 +58,17 @@ public class RecipeController {
 	@Autowired
 	private UsersService uService;
 	
-	@Autowired
-	private MenuService mService;
-
 //	레시피 리스트 조회
 	@RequestMapping("recipeList.rc")
 	public String recipeList(@ModelAttribute Recipe r, Model model,
 			@RequestParam(value = "page", required = false) Integer page) {
+		
+		Users u = (Users) model.getAttribute("loginUser");
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -87,6 +91,8 @@ public class RecipeController {
 		} else {
 			throw new RecipeException("레시피 조회에 실패하였습니다.");
 		}
+		
+		
 	}
 	
 //	레시피 검색

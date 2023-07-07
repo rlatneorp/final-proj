@@ -807,13 +807,17 @@ public class AdminController {
 		resultIgd = aService.updateIngredient(igd);
 			
 		if(resultPd != 0 && resultIgd != 0 && imageChange.equals("Y")) {
+//			기존 이미지 존재여부 확인후 있다면 삭제
+			ArrayList<Image> imgList = selectAllImageList(igd.getIngredientNo(), 5, -1);
+			if(!imgList.isEmpty()) {
+				Image img = imgList.get(0);
+//				데이터 서버 이미지 삭제
+				deleteFile(img.getImageRenameName(), request);
+				
+//				DB서버 이미지 삭제
+				resultImgDel = aService.deleteImage(img);
+			}
 			
-//			데이터 서버 이미지 삭제
-			Image img = selectAllImageList(igd.getIngredientNo(), 5, 0).get(0);
-			deleteFile(img.getImageRenameName(), request);
-			
-//			DB서버 이미지 삭제
-			resultImgDel = aService.deleteImage(img);
 			
 //			이미지 저장
 			Image image = new Image();
@@ -1233,14 +1237,12 @@ public class AdminController {
 		int resultImgDel = 0;
 		int resultImgIn = 0;
 		int upImageCount = 0;
-		System.out.println(t);
 		resultPd = aService.updateProduct(t);
 		
 		resultT = aService.updateTool(t);
 		
 		if(t.getProductOption().equals("Y") && t.getOptionTotal() != null) {
-			String[] delList = {t.getProductNo()+""};
-			resultOpDel = aService.deletesOptions(delList);
+			resultOpDel = aService.deleteOptions(t.getProductNo());
 			
 			ArrayList<Options> oList = new ArrayList<Options>();
 			for(String op:t.getOptionTotal()) {

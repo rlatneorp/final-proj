@@ -51,8 +51,8 @@ public class AdminService {
 		return aDAO.insertOptions(sqlSession, oList);
 	}
 
-	public int deletesOptions(String[] selDeletes) {
-		return aDAO.deletesOptions(sqlSession, selDeletes);
+	public int deleteOptions(int pNo) {
+		return aDAO.deleteOptions(sqlSession, pNo);
 	}
 
 	public ArrayList<Options> selectOptions(int pNo) {

@@ -129,7 +129,6 @@ th:first-child, td:first-child {
 								<th width=150>사진</th>
 								<th>종류</th>
 								<th>제목</th>
-								<th>작성자</th>
 								<th>가격</th>
 								<th><input type="checkbox" id="selectAllCheckBox"></th>
 							</tr>
@@ -150,7 +149,6 @@ th:first-child, td:first-child {
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>식품 - 밀키트</td>
 											<td>${ l.FOOD_NAME }</td>
-											<td>-</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
@@ -160,7 +158,6 @@ th:first-child, td:first-child {
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>식품 - 식재료</td>
 											<td>${ l.FOOD_NAME }</td>
-											<td>-</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
@@ -170,7 +167,6 @@ th:first-child, td:first-child {
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>식단</td>
 											<td>${ l.MENU_NAME }</td>
-											<td>${ l.NAME }</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
@@ -180,7 +176,6 @@ th:first-child, td:first-child {
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>식재료</td>
 											<td>${ l.INGREDIENT_NAME }</td>
-											<td>-</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
@@ -190,7 +185,6 @@ th:first-child, td:first-child {
 											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
 											<td>상품</td>
 											<td>${ l.TOOL_NAME }</td>
-											<td>-</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
@@ -201,9 +195,9 @@ th:first-child, td:first-child {
 					</table>
 				</div>
 				<br><br>
-				<div>
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+				<div style="margin:0 auto">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 									<a class="page-link disabled" aria-label="Previous">

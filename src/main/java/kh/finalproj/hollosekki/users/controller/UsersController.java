@@ -632,6 +632,7 @@ public class UsersController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
 		ArrayList<HashMap<String, Object>> list = uService.selectPoint(usersNo, pi);
+		System.out.println(list);
 		
 		// �꽭�뀡�뿉�꽌 �룷�씤�듃 �냼硫� �솗�씤 �뿬遺�瑜� 媛��졇�샂
 //	    boolean pointExpiryChecked = (boolean) model.getAttribute("pointExpiryChecked");

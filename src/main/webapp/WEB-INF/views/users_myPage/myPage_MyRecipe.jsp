@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 내 레시피</title>
 <style>
+#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
 .search {
 	position: relative;

@@ -227,6 +227,9 @@
 		border:1px solid #19A7CE;
 		border-radius: 100%;
 	}
+	
+	#recipeMenu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+	
 </style>
 </head>
 <body>
@@ -248,10 +251,10 @@
 				<c:if test="${ loginUser != null }">
 				
 					<c:if test="${ bookmark == 0 }">
-						<button type="button" id="bookmark" value="noBookmark" style="border: none; background: none;"><i class="bi bi-bookmark" style="font-size: 25px;"></i></button>
+						<button type="button" id="bookmark" value="noBookmark" style="color: #4485d7; border: none; background: none;"><i class="bi bi-bookmark" style="font-size: 25px;"></i></button>
 					</c:if>
 					<c:if test="${ bookmark != 0 }">
-						<button type="button" id="bookmark" value="Bookmark" style="border: none; background: none;"><i class="bi bi-bookmark-fill" style="font-size: 25px;"></i></button>
+						<button type="button" id="bookmark" value="Bookmark" style="color: #4485d7; border: none; background: none;"><i class="bi bi-bookmark-fill" style="font-size: 25px;"></i></button>
 					</c:if>
 				</c:if>
 			</div>
@@ -784,11 +787,10 @@ bookmark.addEventListener('click', function(){
         		if(data == 'success') {
         			bookmark.innerHTML = '<i class="bi bi-bookmark-fill" style="font-size: 25px;"></i>';
         			bookmark.value = 'bookmark';
-        			swal({
-						 text: "해당 상품의 스크랩이 완료되었습니다.",
-						 icon: "success",
-						 button: "확인",
-						});
+        			swal("레세피가 스크랩 되었습니다.", {
+	          			  buttons: false,
+	          			  timer: 1000,
+	          			});
 	        		setTimeout(function() {
 	        			swal.close(); 
 	        		}, 3000);
@@ -824,13 +826,10 @@ bookmark.addEventListener('click', function(){
     			if(data == 'success') {
     				bookmark.innerHTML = '<i class="bi bi-bookmark" style="font-size: 25px;"></i>';
     				bookmark.value = 'noBookmark';
-        			swal({
-						 text: "해당 상품의 스크랩이 해제되었습니다.",
-						 icon: "success",
-						});
-	        		setTimeout(function() {
-	        			swal.close(); 
-	        		}, 2000);
+    				swal("스크랩이 해제 되었습니다.", {
+	          			  buttons: false,
+	          			  timer: 1000,
+	          			});
         		} else { //실패 시 
         			swal({
 						 text: "해당 상품의 스크랩 해제에 실패했습니다.",

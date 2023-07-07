@@ -27,7 +27,7 @@ import kh.finalproj.hollosekki.users.model.service.UsersService;
 /**
  * Handles requests for the application home page.
  */
-@SessionAttributes({"loginUser"})
+@SessionAttributes({"loginUser", "cart"})
 @Controller
 public class HomeController {
 	
@@ -82,6 +82,11 @@ public class HomeController {
 			Users u = (Users)model.getAttribute("loginUser");
 			Users loginUser = eService.login(u);
 			model.addAttribute("loginUser", loginUser);
+			
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+			
+			
 			if(loginUser != null) {
 				Image image = uService.selectImage(loginUser.getUsersNo());
 				model.addAttribute("image", image);

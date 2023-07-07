@@ -453,6 +453,9 @@ p b {
 		color: rgb(68, 133, 215);
 	}
 	fieldset label {cursor: pointer;}
+	
+	#menu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+	
 </style>
 <body>
 <span>
@@ -1373,39 +1376,41 @@ p b {
 //         }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
 // 	}
 
-	const buybtn = document.getElementById('buybtn');
-	buybtn.addEventListener('click', function(){
-	const quantity = document.getElementById('quantity');
-		const buyMenuCount =document.getElementById('buyMenuCount');
-		
-		const buyMenuPrice = document.getElementById('buyMenuPrice');
-		const total = document.getElementById('total');
-		
-		buyMenuCount.innerText = quantity.innerText;
-		buyMenuPrice.innerText = total.innerText;
-		
-		console.log("quantity : " + buyMenuCount.innerText);
-		console.log("productNo : " + productNo);
-		console.log("usersNo : " + usersNo);
-		
-		$.ajax({
-            url: "insertCart.ma",
-            async: false,
-            data: {
-        		"productNo":productNo, 
-	        	"cartCount":buyMenuCount.innerText,
-	        	"usersNo":usersNo,
-	        },
-            success: data =>{
-        		console.log("success");
-            },
-            error: data => {
-            	console.log("error");
-            	 alert("카트 담기 실패");
-            }
-        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)	
-	})
-	
+	const loginUser2 = '${loginUser}';
+	if(loginUser2 != ''){
+		const buybtn = document.getElementById('buybtn');
+		buybtn.addEventListener('click', function(){
+		const quantity = document.getElementById('quantity');
+			const buyMenuCount =document.getElementById('buyMenuCount');
+			
+			const buyMenuPrice = document.getElementById('buyMenuPrice');
+			const total = document.getElementById('total');
+			
+			buyMenuCount.innerText = quantity.innerText;
+			buyMenuPrice.innerText = total.innerText;
+			
+			console.log("quantity : " + buyMenuCount.innerText);
+			console.log("productNo : " + productNo);
+			console.log("usersNo : " + usersNo);
+			
+			$.ajax({
+	            url: "insertCart.ma",
+	            async: false,
+	            data: {
+	        		"productNo":productNo, 
+		        	"cartCount":buyMenuCount.innerText,
+		        	"usersNo":usersNo,
+		        },
+	            success: data =>{
+	        		console.log("success");
+	            },
+	            error: data => {
+	            	console.log("error");
+	            	 alert("카트 담기 실패");
+	            }
+	        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)	
+		})
+	}
 // 	function cartbtn(){
 // 		const quantity = document.getElementById('quantity');
 // 		const cartMenuCount =document.getElementById('cartMenuCount');
@@ -1437,38 +1442,41 @@ p b {
 // 	            }
 // 			})
 // 	}
-	const cartbtn = document.getElementById('cartbtn');
-	cartbtn.addEventListener('click', function(){
-		const quantity = document.getElementById('quantity');
-		const cartMenuCount =document.getElementById('cartMenuCount');
-		
-		const cartMenuPrice = document.getElementById('cartMenuPrice');
-		const total = document.getElementById('total');
-		
-		cartMenuCount.innerText = quantity.innerText;
-		cartMenuPrice.innerText = total.innerText;
-		
-		console.log("quantity : " + cartMenuCount.innerText);
-		console.log("productNo : " + productNo);
-		console.log("usersNo : " + usersNo);
-		
-		$.ajax({
-            url: "insertCart.ma",
-            async: false,
-            data: {
-        		"productNo":productNo, 
-	        	"cartCount":cartMenuCount.innerText,
-	        	"usersNo":usersNo,
-	        },
-            success: data =>{
-           		console.log("success");
-            },
-            error: data => {
-            	console.log("error");
-            	 alert("카트 담기 실패");
-            }
+
+	if(loginUser2 != ''){
+		const cartbtn = document.getElementById('cartbtn');
+		cartbtn.addEventListener('click', function(){
+			const quantity = document.getElementById('quantity');
+			const cartMenuCount =document.getElementById('cartMenuCount');
+			
+			const cartMenuPrice = document.getElementById('cartMenuPrice');
+			const total = document.getElementById('total');
+			
+			cartMenuCount.innerText = quantity.innerText;
+			cartMenuPrice.innerText = total.innerText;
+			
+			console.log("quantity : " + cartMenuCount.innerText);
+			console.log("productNo : " + productNo);
+			console.log("usersNo : " + usersNo);
+			
+			$.ajax({
+	            url: "insertCart.ma",
+	            async: false,
+	            data: {
+	        		"productNo":productNo, 
+		        	"cartCount":cartMenuCount.innerText,
+		        	"usersNo":usersNo,
+		        },
+	            success: data =>{
+	           		console.log("success");
+	            },
+	            error: data => {
+	            	console.log("error");
+	            	 alert("카트 담기 실패");
+	            }
+			})
 		})
-	})
+	}
 	
 	const moCons = document.getElementsByClassName('moCon');
 	for(const moCon of moCons){
@@ -1478,29 +1486,40 @@ p b {
 		})
 	}
 
-	const like = document.querySelector(".like");
-	
-	like.addEventListener("click", function() {
-	    if(like.innerText === '♡') {
-	        //찜이 안 되어 있으면 
-	        $.ajax({
-	        	url:'${contextPath}/insertLike.ma',
-	        	data:{
-	        		usersNo:usersNo,
-	        		divisionNo:productNo
-	        	},
-	        	success: data=> {
-	        		if(data == 'success') {
-	        			like.innerText = '♥';
-	        			swal({
-							 text: "해당 상품의 찜 등록이 완료되었습니다.",
-							 icon: "success",
-							 button: "확인",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 3000);
-	        		} else { //실패 시 
+	if(loginUser2 != ''){
+		const like = document.querySelector(".like");
+		
+		like.addEventListener("click", function() {
+		    if(like.innerText === '♡') {
+		        //찜이 안 되어 있으면 
+		        $.ajax({
+		        	url:'${contextPath}/insertLike.ma',
+		        	data:{
+		        		usersNo:usersNo,
+		        		divisionNo:productNo
+		        	},
+		        	success: data=> {
+		        		if(data == 'success') {
+		        			like.innerText = '♥';
+		        			swal({
+								 text: "해당 상품의 찜 등록이 완료되었습니다.",
+								 icon: "success",
+								 button: "확인",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 3000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 찜 등록이 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		        	},
+		        	error:data=>{
 	        			swal({
 							 text: "해당 상품의 찜 등록이 실패했습니다.",
 							 icon: "error",
@@ -1508,130 +1527,121 @@ p b {
 		        		setTimeout(function() {
 		        			swal.close(); 
 		        		}, 2000);
-	        		}
-	        	},
-	        	error:data=>{
-        			swal({
-						 text: "해당 상품의 찜 등록이 실패했습니다.",
-						 icon: "error",
-						});
-	        		setTimeout(function() {
-	        			swal.close(); 
-	        		}, 2000);
-	        	}
-	        })
-	    } else { //찜 등록이 되어 있으면 
-	    	$.ajax({
-	    		url:'${contextPath}/deleteLike.ma',
-	    		data:{
-	    			usersNo:usersNo,
-	        		divisionNo:productNo
-	    		},
-	    		success: data => {
-	    			console.log(data);
-	    			if(data == 'success') {
-	    				like.innerText ='♡';
-	        			swal({
-							 text: "해당 상품의 찜 해제가 완료되었습니다.",
-							 icon: "success",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 2000);
-	        		} else { //실패 시 
-	        			swal({
-							 text: "해당 상품의 찜 해제가 실패했습니다.",
-							 icon: "error",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 2000);
-	        		}
-	    		},
-	    		error: data=>{
-	    			
-	    		}
-	    	})
-	    }
-	});
-	
-	const bookmark = document.querySelector('#bookmark');
-	console.log(bookmark.value);
-	bookmark.addEventListener('click', function(){
-		if(bookmark.value == 'noBookmark'){
-			$.ajax({
-				url: "insertBookmark.mn",
-				data:{
-	        		usersNo:usersNo,
-	        		divisionNo:productNo
-	        	},
-	        	success: data=> {
-	        		if(data == 'success') {
-	        			bookmark.innerHTML = '<i class="bi bi-bookmark-fill"></i>';
-	        			bookmark.value = 'bookmark';
-	        			swal({
-							 text: "해당 상품의 스크랩이 완료되었습니다.",
-							 icon: "success",
-							 button: "확인",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 3000);
-	        		} else { //실패 시 
-	        			swal({
+		        	}
+		        })
+		    } else { //찜 등록이 되어 있으면 
+		    	$.ajax({
+		    		url:'${contextPath}/deleteLike.ma',
+		    		data:{
+		    			usersNo:usersNo,
+		        		divisionNo:productNo
+		    		},
+		    		success: data => {
+		    			console.log(data);
+		    			if(data == 'success') {
+		    				like.innerText ='♡';
+		        			swal({
+								 text: "해당 상품의 찜 해제가 완료되었습니다.",
+								 icon: "success",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 찜 해제가 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		    		},
+		    		error: data=>{
+		    			
+		    		}
+		    	})
+		    }
+		});
+		
+		const bookmark = document.querySelector('#bookmark');
+		console.log(bookmark.value);
+		bookmark.addEventListener('click', function(){
+			if(bookmark.value == 'noBookmark'){
+				$.ajax({
+					url: "insertBookmark.mn",
+					data:{
+		        		usersNo:usersNo,
+		        		divisionNo:productNo
+		        	},
+		        	success: data=> {
+		        		if(data == 'success') {
+		        			bookmark.innerHTML = '<i class="bi bi-bookmark-fill"></i>';
+		        			bookmark.value = 'bookmark';
+		        			swal({
+								 text: "해당 상품의 스크랩이 완료되었습니다.",
+								 icon: "success",
+								 button: "확인",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 3000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 스크랩에 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		        	},
+		        	error:data=>{
+		    			swal({
 							 text: "해당 상품의 스크랩에 실패했습니다.",
 							 icon: "error",
 							});
 		        		setTimeout(function() {
 		        			swal.close(); 
 		        		}, 2000);
-	        		}
-	        	},
-	        	error:data=>{
-	    			swal({
-						 text: "해당 상품의 스크랩에 실패했습니다.",
-						 icon: "error",
-						});
-	        		setTimeout(function() {
-	        			swal.close(); 
-	        		}, 2000);
-	        	}
-	        })
-		} else {
-			$.ajax({
-	    		url:"deleteBookmark.mn",
-	    		data:{
-	    			usersNo:usersNo,
-	        		divisionNo:productNo
-	    		},
-	    		success: data => {
-	    			console.log(data);
-	    			if(data == 'success') {
-	    				bookmark.innerHTML = '<i class="bi bi-bookmark"></i>';
-	    				bookmark.value = 'noBookmark';
-	        			swal({
-							 text: "해당 상품의 스크랩이 해제되었습니다.",
-							 icon: "success",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 2000);
-	        		} else { //실패 시 
-	        			swal({
-							 text: "해당 상품의 스크랩 해제에 실패했습니다.",
-							 icon: "error",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 2000);
-	        		}
-	    		},
-	    		error: data=>{
-	    		}
-	    	})
-		}
-	})
-	
+		        	}
+		        })
+			} else {
+				$.ajax({
+		    		url:"deleteBookmark.mn",
+		    		data:{
+		    			usersNo:usersNo,
+		        		divisionNo:productNo
+		    		},
+		    		success: data => {
+		    			console.log(data);
+		    			if(data == 'success') {
+		    				bookmark.innerHTML = '<i class="bi bi-bookmark"></i>';
+		    				bookmark.value = 'noBookmark';
+		        			swal({
+								 text: "해당 상품의 스크랩이 해제되었습니다.",
+								 icon: "success",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 스크랩 해제에 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		    		},
+		    		error: data=>{
+		    		}
+		    	})
+			}
+		});
+	}
+		
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {
 //         var productNo = $("input[name='productNo']").val();

@@ -158,6 +158,9 @@ input[type="text"] {
 		inset, 0 0 0 1px rgba(0, 0, 0, 0.4);
 }
 
+
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 /* 구매버튼 */
 #goPay{cursor:pointer;}
 </style>

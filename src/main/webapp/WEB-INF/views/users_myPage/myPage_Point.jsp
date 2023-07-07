@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 포인트 관리</title>
 <style>
+	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 	#point{
 		width: 940px; height: 200px;
 		text-align: center;

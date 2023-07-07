@@ -14,6 +14,8 @@
 <script src="resources/summernotes/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
 <style>
+	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 	#btn{
 		width: 85px; height: 40px;
 		border: 2px solid black;

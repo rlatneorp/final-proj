@@ -25,7 +25,7 @@
 	padding-top: -20px;
 }
 
-
+#admin{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
 </style>
 </head>

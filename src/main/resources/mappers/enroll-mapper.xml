@@ -257,6 +257,12 @@
 		where users_id = #{ id }
 	</select>
 	
+	<select id="cartCount" resultType="_int">
+		select count(*)/2
+		from cart
+		where users_no = #{usersNo}
+	</select>
+	
 	<resultMap type="Users" id="usersResultSet">
 		<id column="USERS_NO" property="usersNo"/>
 		<result column="USERS_ID" property="usersId"/>

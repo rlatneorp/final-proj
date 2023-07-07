@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 프로필</title>
 <style>
+	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 	#btn{
 		width: 85px; height: 40px;
 		border: 2px solid black;

@@ -922,9 +922,15 @@ p b {
             </div>
             <div class="totalPrice"></div>
             <br>
-            <button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-<!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
-            <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+             <c:if test="${loginUser eq null}">
+            	<button type="button" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+             </c:if>	
+            	
+            <c:if test="${loginUser ne null}">
+            	<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+           	</c:if>
+<!--            	 <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
+            	<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
    
          </div>
       </main>
@@ -1300,7 +1306,7 @@ p b {
       const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 //       const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
       const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
-       const buyBtn = document.getElementById("buyBtn");
+      const buybtn = document.getElementById("buybtn");
       const result = document.getElementById("productResult");
       const like = document.querySelector(".like");
       const productSet = document.querySelector(".productSet");
@@ -1314,10 +1320,11 @@ p b {
 //       let totalPrice = document.querySelector(".totalPrice");
       
       
-      
-      
-      
-      
+      buybtn.addEventListener("click",function(){
+    	  if(${loginUser == null}){
+    		  alert("로그인 후 이용해주세요");
+    	  }
+      })
       
       $('.accordion_i_tit').click(function(){
          $('.accordion_i_cont').toggle(400);

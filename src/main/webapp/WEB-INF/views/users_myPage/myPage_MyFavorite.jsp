@@ -134,11 +134,27 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<c:if test="${ empty list }">
+							<c:if test="${ empty list and empty searchTitle and empty searchType }">
 								<tr>
-									<td colspan="6" height="260">
+									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										찜 내역이 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchTitle }">
+								<tr>
+									<td colspan="6" height="320">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchType }">
+								<tr>
+									<td colspan="6" height="320">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
 									</td>
 								</tr>
 							</c:if>
@@ -146,7 +162,14 @@ th:first-child, td:first-child {
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
 									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 2 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/market_detail.ma?productNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.IMAGE_RENAMENAME }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>식품 - 밀키트</td>
 											<td>${ l.FOOD_NAME }</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
@@ -155,7 +178,14 @@ th:first-child, td:first-child {
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 1 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/market_detail.ma?productNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.IMAGE_RENAMENAME }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>식품 - 식재료</td>
 											<td>${ l.FOOD_NAME }</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
@@ -164,7 +194,14 @@ th:first-child, td:first-child {
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 2 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/menuDetail.mn?mNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.IMAGE_RENAMENAME }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>식단</td>
 											<td>${ l.MENU_NAME }</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
@@ -173,7 +210,14 @@ th:first-child, td:first-child {
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 3 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/market_detail.ma?productNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.INGREIMAGE }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.INGREIMAGE }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.INGREIMAGE}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>식재료</td>
 											<td>${ l.INGREDIENT_NAME }</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
@@ -182,7 +226,14 @@ th:first-child, td:first-child {
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 4 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/market_detail.ma?productNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.IMAGE_RENAMENAME }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>상품</td>
 											<td>${ l.TOOL_NAME }</td>
 											<td>${ l.PRODUCT_PRICE }원</td>

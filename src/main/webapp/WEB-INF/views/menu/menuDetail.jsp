@@ -53,9 +53,9 @@ html{
 	margin: 5px 20px;
 }
 
-.right {
-	width: 40%;
-}
+/* .right { */
+/* 	width: 40%; */
+/* } */
 
 .left {
 	width: 50%;
@@ -480,7 +480,7 @@ p b {
 				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
 			</div>
 		</div>
-		<div class="right">
+		<div class="right" style="width: 40%;">
 			<!-- like 유무 가리는 용도 -->
 <%-- 			<input type="hidden" id="likeYn" value="${ like }"> --%>
 			<!-- 상품 정보 -->
@@ -1328,7 +1328,7 @@ p b {
 				<div class="modal-body" id="reviewBody">
 					<input type="hidden" name="productNo" value="${ menu.foodProductNo }">
 					<input type="hidden" name="reviewWriter" value="${ loginUser.nickName }">
-					<input type="hidden" name="orderNo" id="orderNo">
+					<input type="hidden" name="orderNo" id="orderNos">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewScore5">
 							<label for="reviewScore5">★</label>
@@ -1756,7 +1756,7 @@ p b {
 // });
 	
 	const order = document.getElementById('orders');
-	const orderNo = document.getElementById('orderNo');
+	const orderNo = document.getElementById('orderNos');
 	const reviewIn = document.getElementById('reviewIn');
 	const content = document.getElementById('reviewWrite');
 	const writeReview = document.getElementById('writeReview');
@@ -1780,27 +1780,6 @@ p b {
 		});
 	}
 
-// 	document.addEventListener("DOMContentLoaded", function() {
-// 		const writeBtn = document.getElementById("write");
-// 		if (order != null) {
-// 			writeBtn.addEventListener("click", function() {
-// 				orderNo.value = order.value;
-// 				console.log(orderNo.value);
-// 				sub.addEventListener('click', () => {
-// 					if(content.value == ''){
-// 						swal({
-// 							text: "리뷰 내용을 입력해주세요.",
-// 							icon: "error",
-// 							button: "확인",
-// 						});
-// 					} else {
-// 						writeReview.action = '${contextPath}/writeReview.mn';		
-// 						writeReview.submit();
-// 					}
-// 				});
-// 			});
-// 		}
-// 	});
 	
 	const rNo = document.getElementById('reviewNo');
 	const score5 = document.getElementById('reviewUpdateScore5');

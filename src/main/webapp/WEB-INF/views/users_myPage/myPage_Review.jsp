@@ -146,7 +146,7 @@ th:first-child, td:first-child {
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -315,6 +315,10 @@ th:first-child, td:first-child {
 		</div>
 	</div>
 	
+	<br><br><br><br><br><br><br>
+	
+	<%@ include file="../common/footer.jsp" %>
+	
 	<script>
 	   //테이블에 마우스 올렸을 때 css
 	   const tbody = document.getElementById('tbody');
@@ -332,9 +336,5 @@ th:first-child, td:first-child {
 	   }
 	</script>	
 	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
-	
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

@@ -87,7 +87,11 @@
 		insert into options(option_no, product_no, option_name, option_value)
 		values(seq_option_no.nextval, #{productNo}, #{optionName}, #{optionValue})
 	</insert>
-	
+
+	<delete id="deleteOptions">
+		delete options
+		where product_no = #{pNo}
+	</delete>	
 
 	<select id="selectOptions" resultMap="optionsResultSet">
 		select *

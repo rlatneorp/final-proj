@@ -677,6 +677,7 @@ p b {
     text-align: center;
 }
 
+
 .decrease{
    color:#4485d7;
    font-size:20px;
@@ -925,10 +926,25 @@ p b {
             </div>
             <div class="totalPriceBox">
 <!--             	<span class="totalPrice"></span> -->
-            	<input type="text" class="totalPrice" readonly value="0"> 원
+			<c:if test="${ tool eq null }">
+            	<input type="text" class="totalPrice" readonly value="0" style="display:none">
+            </c:if>
+            
+			
+            <c:if test="${ tool ne null }">
+            	<input type="text" class="totalPrice" readonly value="0">
+            </c:if>
+            
             </div>
             <br>
-            <button type="submit" id="buybtn" style="display: inline-block; width: 60%;" formaction="${ contextPath }/payDetail.ma">구매하기</button>
+            
+<%--             <c:if test="${ loginUser eq null }"> --%>
+<!--             	<button type="button" id="buybtn" class="buybtn" onclick="javascript:loginArlet()"; style="display: inline-block; width: 60%;">구매하기</button> -->
+<%--             </c:if> --%>
+            
+<%--             <c:if test="${ loginUser ne null }"> --%>
+            	<button type="button" id="buybtn"  class="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+<%--             </c:if> --%>
 <!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
    
@@ -1010,16 +1026,16 @@ p b {
          <div class="reviewWrap1" style="padding: 10px; border-bottom: 1px solid lightgray;">
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
-            <c:forEach	items="${ordList}" var="orders">
-               <c:if test="${ orders >=  1 }">
-               		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}">
+<%--             <c:forEach	items="${ordList}" var="orders">ㅊ --%>
+<%--                <c:if test="${ orders >=  1 }"> --%>
+<%--                		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}"> --%>
 		               <div class="review_btn">
 		                  <a href="createReview.ma?productNo=${p.productNo}">
 		                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 		               </div>
-		            </c:if>
-            </c:if> 
-            </c:forEach>   
+<%-- 		            </c:if> --%>
+<%--             </c:if>  --%>
+<%--             </c:forEach>    --%>
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
          <span class="review_stardesc" style="font-size: 500;">별점순</span>
@@ -1206,37 +1222,37 @@ p b {
    <%--                 </c:if> --%>
                   </div>
    				<c:set value="${p.productNo}" var="pNo"></c:set>
-                  <ul class="pageCustomer pagination justify-content-center">
-                      <c:if test="${ pi.currentPage > 1 }">
-                      <li class="page-item">
-                         <c:url var="goBack" value="${ loc }">
-                           <c:param name="page" value="${ pi.currentPage-1 }"></c:param>
-                           <c:param name="productNo" value="${pNo}"></c:param>
-                        </c:url>
-                        <a class="page-link" href="${ goBack }" aria-label="Previous">
-                           <span aria-hidden="true">&laquo;</span>
-                        </a>   
-                     </li>
-                     </c:if>
-                     <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-                           <c:url var="goNum" value="${ loc }">
-                           <c:param name="page" value="${ p }"></c:param>
-                           <c:param name="productNo" value="${pNo}"></c:param>
-                        </c:url>
-                          <li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
-                     </c:forEach>
-                     <c:if test="${ pi.currentPage < pi.maxPage }">
-                     <li class="page-item">
-                        <c:url var="goNext" value="${ loc }">
-                           <c:param name="page" value="${ pi.currentPage+1 }"></c:param>
-                           <c:param name="productNo" value="${pNo}"></c:param>
-                        </c:url>
-                        <a class="page-link" href="${ goNext }" aria-label="Next">
-                           <span aria-hidden="true">&raquo;</span>
-                        </a>
-                     </li>
-                     </c:if>
-                  </ul>
+	                  <ul class="pageCustomer pagination justify-content-center">
+	                      <c:if test="${ pi.currentPage > 1 }">
+	                      <li class="page-item">
+	                         <c:url var="goBack" value="${ loc }">
+	                           <c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+	                           <c:param name="productNo" value="${pNo}"></c:param>
+	                        </c:url>
+	                        <a class="page-link" href="${ goBack }" aria-label="Previous">
+	                           <span aria-hidden="true">&laquo;</span>
+	                        </a>   
+	                     </li>
+	                     </c:if>
+	                     <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+	                           <c:url var="goNum" value="${ loc }">
+	                           <c:param name="page" value="${ p }"></c:param>
+	                           <c:param name="productNo" value="${pNo}"></c:param>
+	                        </c:url>
+	                          <li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
+	                     </c:forEach>
+	                     <c:if test="${ pi.currentPage < pi.maxPage }">
+	                     <li class="page-item">
+	                        <c:url var="goNext" value="${ loc }">
+	                           <c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+	                           <c:param name="productNo" value="${pNo}"></c:param>
+	                        </c:url>
+	                        <a class="page-link" href="${ goNext }" aria-label="Next">
+	                           <span aria-hidden="true">&raquo;</span>
+	                        </a>
+	                     </li>
+	                     </c:if>
+	                  </ul>
                </div>
             </div>
          </div>
@@ -1318,7 +1334,7 @@ p b {
       const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 //       const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
       const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
-       const buyBtn = document.getElementById("buybtn");
+      const buyBtn = document.querySelector(".buybtn");
       const result = document.querySelectorAll(".productResult");
       const like = document.querySelector(".like");
       const productSet = document.querySelector(".productSet");
@@ -1333,15 +1349,12 @@ p b {
       
       
       
-//       buyBtn.addEventListener("click", function(){
-//     	  if(${loginUser == null}){
-//     		  swal("로그인 후 이용해주세요.", {
-//     			  buttons: false,
-//     			  timer: 1000,
-//     			});
-//     	  }
-//       })
-      
+      function loginArlet(){
+		  swal("로그인 후 이용해주세요.", {
+			  buttons: false,
+			  timer: 1000,
+			});
+      }
       
       
       $('.accordion_i_tit').click(function(){
@@ -1436,19 +1449,6 @@ p b {
     
     }
 	      
-	      
-	      
-	      
-	      
-	      
-	      
-	      
-	      
-	      
-	      
-	      
-	  
-      
       
       const usersNo = '${loginUser.usersNo}';
       const divisionNo = '${p.productNo}';
@@ -1614,6 +1614,7 @@ p b {
 		            
 		         }
 		       })
+		       
          }
        if(productOption2Set != null){
            productOption2Set.addEventListener("change", function(){
@@ -1659,9 +1660,16 @@ p b {
             }
             cal()
          })
-       }else{
-          
-          
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
        }
             
       
@@ -1685,6 +1693,161 @@ p b {
          
          
          
+         
+         productNo = $("input[name='productNo']").val();
+         var cartCount = $(".cartCount").val();
+         var productOption = $(".productOption").val();
+         var productOption2 = $(".productOption2").val();
+         var preorderNo = 0;
+         
+         var productNoValues=[];
+         var cartCountValues=[];
+         var productOptionValues=[];
+         var productOption2Values=[];
+         var usersNoValues=[];
+         
+         
+      if(usersNo != "" && productOption2Set != null){
+         $("#buybtn").click(function() {
+        	 if(document.getElementsByClassName("totalPrice")[0].value == 0 ){
+           		  swal("상품을 선택해주세요.", {
+           			  buttons: false,
+           			  timer: 1000,
+           			});
+       		  }else{
+                  $("input[name='productNo']").each(function(){
+                      productNoValues.push($(this).val());
+                   })
+                   
+                   $(".cartCount").each(function(){
+                      cartCountValues.push($(this).val());
+                   })
+                   
+                   $("input[name='productOption']").each(function(){
+                      productOptionValues.push($(this).val());
+                   })
+                   
+                   $("input[name='productOption2']").each(function(){
+                      productOption2Values.push($(this).val());
+                   })
+                   
+                   $("input[name='usersNo']").each(function(){
+                      usersNoValues.push($(this).val());
+                   })
+                   
+                   let count = 0;
+                   let str = '';
+                      for(i=0; i<productNoValues.length; i++){
+                         $.ajax({
+                             url: "goToPay.ma",
+                             async: false,
+                             data: {
+                               "productNo":productNoValues[i], 
+                               "cartCount":cartCountValues[i],
+                               "productOption":productOptionValues[i], 
+                               "productOption2":productOption2Values[i],
+                               "usersNo":usersNoValues[i],
+                            },
+                             success: preNo =>{
+                          	   if(i==0){
+      	                    	   str += "preorderNos="+preNo;
+                          	   }else{
+      	                    	   str += "&preorderNos="+preNo;
+                          	   }
+                             },
+                             error: allData => {
+                                console.log("error");
+                             }
+                         })
+                      }
+                     	location.href='${contextPath}/payDetail.ma?'+str;
+       			  
+       			  
+       		  }
+        	 
+
+             })
+      }else if(usersNo == ""){
+    	  $("#buybtn").click(function() {
+    		  swal("로그인 후 이용해주세요.", {
+    			  buttons: false,
+    			  timer: 1000,
+    			});
+		  })
+	  
+	  }
+         
+         
+      if(usersNo != "" && productOption2Set == null){
+    	 console.log(document.getElementsByClassName("productResultSet")[0]);
+         $("#buybtn").click(function() {
+        	 if(document.getElementsByClassName("productResultSet")[0] == undefined ){
+           		  swal("상품을 선택해주세요.", {
+           			  buttons: false,
+           			  timer: 1000,
+           			});
+       		  }else{
+                  $("input[name='productNo']").each(function(){
+                      productNoValues.push($(this).val());
+                   })
+                   
+                   $(".cartCount").each(function(){
+                      cartCountValues.push($(this).val());
+                   })
+                   
+                   $("input[name='productOption']").each(function(){
+                      productOptionValues.push($(this).val());
+                   })
+                   
+                   $("input[name='productOption2']").each(function(){
+                      productOption2Values.push($(this).val());
+                   })
+                   
+                   $("input[name='usersNo']").each(function(){
+                      usersNoValues.push($(this).val());
+                   })
+                   
+                   let count = 0;
+                   let str = '';
+                      for(i=0; i<productNoValues.length; i++){
+                         $.ajax({
+                             url: "goToPay.ma",
+                             async: false,
+                             data: {
+                               "productNo":productNoValues[i], 
+                               "cartCount":cartCountValues[i],
+                               "productOption":productOptionValues[i], 
+                               "productOption2":productOption2Values[i],
+                               "usersNo":usersNoValues[i],
+                            },
+                             success: preNo =>{
+                          	   if(i==0){
+      	                    	   str += "preorderNos="+preNo;
+                          	   }else{
+      	                    	   str += "&preorderNos="+preNo;
+                          	   }
+                             },
+                             error: allData => {
+                                console.log("error");
+                             }
+                         })
+                      }
+                     	location.href='${contextPath}/payDetail.ma?'+str;
+       		  }
+
+             })
+      }else if(usersNo == ""){
+    	  $("#buybtn").click(function() {
+    		  swal("로그인 후 이용해주세요.", {
+    			  buttons: false,
+    			  timer: 1000,
+    			});
+		  })
+	  
+	  }
+      
+      
+ 
          
           $("#cartbtn").click(function() {
               productNo = $("input[name='productNo']").val();
@@ -1738,8 +1901,10 @@ p b {
                         	const values = jsonString.substring(1, jsonString.length - 1).split(","); // 문자열을 자르고 배열로 분할
  
                         	const cart = values[1].trim().replace(/]/g, ''); // 두 번째 값 출력 (2)
+                        	console.log(cart);
                         	
-                        	document.getElementById("cartCount").innerText = cart;
+                       		document.getElementById("cartCount").innerText = cart;
+                        	document.getElementById("cartCount").classList.add('cart-count');
                         	preNo = count++;
                         },
                         error: allData => {
@@ -1880,7 +2045,10 @@ p b {
              })
             })
       })
+      
    }
+   
+   
    function cal(){
 	   const productPrices = document.getElementsByClassName('productPrice');
 	   const totalPrice = document.getElementsByClassName('totalPrice')[0];

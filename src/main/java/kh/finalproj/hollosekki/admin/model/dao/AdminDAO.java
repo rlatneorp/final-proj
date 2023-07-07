@@ -50,8 +50,8 @@ public class AdminDAO {
 		return result; 
 	}
 	
-	public int deletesOptions(SqlSessionTemplate sqlSession, String[] selDeletes) {
-		return sqlSession.delete("adminMapper.deletesOptions", selDeletes);
+	public int deleteOptions(SqlSessionTemplate sqlSession, int pNo) {
+		return sqlSession.delete("adminMapper.deleteOptions", pNo);
 	}
 
 	public ArrayList<Options> selectOptions(SqlSessionTemplate sqlSession, int pNo) {

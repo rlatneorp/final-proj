@@ -275,14 +275,20 @@ public class MarketController {
       Food food = mkService.selectFood(productNo);
       Ingredient ingredient = mkService.selectIngrdient(productNo);
       
+     
+		if(users != null) {
+			int cart = eService.cartCount(users.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+      
+      
+      
 		if(currentPage == null) {
 			currentPage = 1;
 		}
 		
 		int qnaCount = mkService.selectQnaCount(productNo);
 		PageInfo pi = Pagination.getPageInfo(currentPage, qnaCount, 5);
-		pi.setCurrentPage(1);
-		pi.setBoardLimit(1000);
 		
   
       Product p = mkService.selectProductSet(productNo);

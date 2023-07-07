@@ -1586,7 +1586,7 @@ p b {
 		                  }
 		               }
 		            
-		            if(YN == "Y" && select.val()!="옵션을 선택해주세요."){
+		            if(YN == "Y" && select.val()!=0){
 		               productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		                        +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 		                                           +'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
@@ -1619,25 +1619,22 @@ p b {
 		       
          }
        if(productOption2Set != null){
-           const select =  $('.productOptionSet option:selected');
-           const select2 = $('.productOption2Set option:selected');
-           
+    	   let YN = "Y";
 	           productOption2Set.addEventListener("change", function(){
-	        	   
-	        	if(select[0].value  == 0 ){
-	        		
+	               const select =  $('.productOptionSet option:selected');
+	               const select2 = $('.productOption2Set option:selected');
 	                   let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
 	//                    let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
 	                   const opSearch = document.getElementsByClassName('opSearch');
-	                   let YN = "Y";
+	   					console.log(select2.val());
 	                   for(let k=0; k<opSearch.length; k++){
 	                      if(opSearch[k].innerText == optionName){
 	                         alert("이미 선택한 옵션입니다.");
 	                         YN = "N";
 	                      }
-	                   }
-	       
-	                if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
+	       				
+	                if(YN == "Y" && select2.val() != 0){
+	                	
 	                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 	                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 	                                            +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'

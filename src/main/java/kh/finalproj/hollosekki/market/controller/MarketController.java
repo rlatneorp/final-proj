@@ -480,6 +480,9 @@ public class MarketController {
 	  int usePoint = Integer.parseInt(use.split("원")[0]); //사용 포인트 
       Users users = (Users)session.getAttribute("loginUser");
       
+      System.out.println("plus : " + plus);
+      System.out.println("use : " + use);
+      
       //포인트 테이블에 minus, plus 포인트 반영 
       Point p = new Point();
       p.setUsersNo(users.getUsersNo());
@@ -492,6 +495,11 @@ public class MarketController {
     	  p.setPointChange(minus); //현재-사용 금액
     	  p.setPointType(11);
     	  mkService.updatePointTable(p);
+    	  
+    	  int currentPointForUsers1 = mkService.selectPoint(users.getUsersNo());
+    	  int minusForUsers = (currentPointForUsers1 - usePoint);
+    	  users.setPoint(minusForUsers);
+          mkService.updatePoint(users);
       }
       if(plus != 0) { // 추가 된 포인트가 있다면 
     	  int currentPoint2 = mkService.selectPoint(users.getUsersNo()); //33900원이 떠야 되는데....차감이 안됨 ?
@@ -500,11 +508,12 @@ public class MarketController {
           p.setPointChange(plusPoint);
           p.setPointType(3);
           mkService.updatePointTable(p);
+          
+          int currentPointForUsers2 = mkService.selectPoint(users.getUsersNo());
+    	  int plusForUsers = (currentPointForUsers2 + plus);
+    	  users.setPoint(plusForUsers);
+          mkService.updatePoint(users);
       }
-      //users테이블에 총 포인트 반영 
-      int currentPointForUsers = mkService.selectPoint(users.getUsersNo());
-      users.setPoint(currentPointForUsers);
-      mkService.updatePoint(users);
       
       //장바구니에서 제거 
       String[] preorderNoArr = preorderNo.split(",");

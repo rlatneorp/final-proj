@@ -803,10 +803,12 @@ p b {
 	            </c:if>
                <div style="margin: auto; text-align: center;">
                   <br>
-                  <h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
-                     ${ p.productSale }<span>%</span>
-                     <!-- 할인율 -->
-                  </h2>
+                  <c:if test="${p.productSale ne 0 }">
+	                  <h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
+	                     ${ p.productSale }<span>%</span>
+	                     <!-- 할인율 -->
+	                  </h2>
+                  </c:if>
                   <h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
                      <c:set var="total" value="${ p.productPrice - (p.productPrice * (p.productSale *0.01))}" />
                      <fmt:formatNumber value="${ total }" groupingUsed="true"/>원
@@ -818,9 +820,11 @@ p b {
                   <c:if test="${like eq null}">
                      <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; cursor: pointer;">♡</h4>
                   </c:if>
-                  <h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-                     <fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
-                  </h2>
+                  <c:if test="${p.productSale ne 0 }">
+	                  <h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
+	                     <fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
+	                  </h2>
+                  </c:if>
                </div>
                <div>
                   <div class="productSet">
@@ -1900,12 +1904,12 @@ p b {
                         success: data =>{
                         	const jsonString = JSON.stringify(data); // JSON 배열을 문자열로 변환
                         	const values = jsonString.substring(1, jsonString.length - 1).split(","); // 문자열을 자르고 배열로 분할
+ 
                         	const cart = values[1].trim().replace(/]/g, ''); // 두 번째 값 출력 (2)
+                        	console.log(cart);
                         	
-                        	if(cart != null){
-                        		document.getElementById("cartCount").innerText = cart;
-                        	}
-                        	
+                       		document.getElementById("cartCount").innerText = cart;
+                        	document.getElementById("cartCount").classList.add('cart-count');
                         	preNo = count++;
                         },
                         error: allData => {

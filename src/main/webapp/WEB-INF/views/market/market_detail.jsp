@@ -831,7 +831,7 @@ p b {
                <div>
                   <div class="productSet">
                      <div style="text-align: center">
-                        <span style="font-size: 40px; font-weight: 400; color:#4485d7; class="reviewStar">
+                        <span style="font-size: 40px; font-weight: 400; color:#4485d7;" class="reviewStar">
                            <c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
                            <c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
                            <c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>

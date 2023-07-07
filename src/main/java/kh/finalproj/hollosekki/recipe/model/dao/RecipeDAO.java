@@ -111,24 +111,36 @@ public class RecipeDAO {
 		return (ArrayList)sqlSession.selectList("recipeMapper.mostRecipeList");
 	}
 
-	public ArrayList<Recipe> searchRecipe(SqlSessionTemplate sqlSession, String word) {
-		return (ArrayList)sqlSession.selectList("recipeMapper.searchRecipe", word);
+	public ArrayList<Recipe> searchRecipe(SqlSessionTemplate sqlSession, PageInfo pi, String word) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList)sqlSession.selectList("recipeMapper.searchRecipe", word, rowBounds);
 	}
 
 	public ArrayList<Image> searchImage(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("recipeMapper.searchImage", sqlSession);
 	}
 
-	public ArrayList<Recipe> ingredientSearch(SqlSessionTemplate sqlSession, String ingredient) {
-		return (ArrayList)sqlSession.selectList("recipeMapper.ingredientSearch", ingredient);
+	public ArrayList<Recipe> ingredientSearch(SqlSessionTemplate sqlSession, PageInfo pi, String ingredient) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("recipeMapper.ingredientSearch", ingredient, rowBounds);
 	}
 
-	public ArrayList<Recipe> situationSearch(SqlSessionTemplate sqlSession, String situation) {
-		return (ArrayList)sqlSession.selectList("recipeMapper.situationSearch", situation);
+	public ArrayList<Recipe> situationSearch(SqlSessionTemplate sqlSession, PageInfo pi, String situation) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("recipeMapper.situationSearch", situation, rowBounds);
 	}
 
-	public ArrayList<Recipe> typeSearch(SqlSessionTemplate sqlSession, String type) {
-		return (ArrayList)sqlSession.selectList("recipeMapper.typeSearch", type);
+	public ArrayList<Recipe> typeSearch(SqlSessionTemplate sqlSession, PageInfo pi, String type) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("recipeMapper.typeSearch", type, rowBounds);
 	}
 
 	public int reviewWrite(SqlSessionTemplate sqlSession, Review re) {
@@ -241,6 +253,29 @@ public class RecipeDAO {
 		RowBounds rowBounds = new RowBounds(offset, mpi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("recipeMapper.selectMyReviewList", map, rowBounds);
+	}
+
+	public int getSearchListCount(SqlSessionTemplate sqlSession, String word) {
+		return sqlSession.selectOne("recipeMapper.getSearchListCount", word);
+	}
+
+	public int getIngredientListCount(SqlSessionTemplate sqlSession, String ingredient) {
+		return sqlSession.selectOne("recipeMapper.getIngredientListCount", ingredient);
+	}
+
+	public int getSituationListCount(SqlSessionTemplate sqlSession, String situation) {
+		return sqlSession.selectOne("recipeMapper.getSituationListCount", situation);
+	}
+
+	public int getTypeListCount(SqlSessionTemplate sqlSession, String type) {
+		return sqlSession.selectOne("recipeMapper.getTypeListCount", type);
+	}
+
+	public ArrayList<Recipe> mostClickRecipeList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("recipeMapper.mostClickRecipeList", null, rowBounds);
 	}
 
 }

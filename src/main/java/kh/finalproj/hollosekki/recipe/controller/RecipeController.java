@@ -99,11 +99,17 @@ public class RecipeController {
 	public String searchRecipe(@ModelAttribute Recipe r, Model model,
 								@RequestParam(value = "page", required = false) Integer currentPage,
 								@RequestParam("word") String word) {
+		
+		Users u = (Users) model.getAttribute("loginUser");
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		if (currentPage == null) {
 			currentPage = 1;
 		}
 		int listCount = rService.getSearchListCount(word);
-		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
 		
 		ArrayList<Recipe> searchList = new ArrayList<>();

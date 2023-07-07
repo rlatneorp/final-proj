@@ -52,7 +52,7 @@ public class MenuController {
 	
 	@RequestMapping("menuList.mn")
 	public String menuList(Model model, @RequestParam(value="page", required=false) Integer page,
-						   @RequestParam(value="input", required=false) String word, HttpSession session) {
+						   HttpSession session) {
 		int currentPage=1;
 		if(page != null) {
 			currentPage = page;
@@ -68,9 +68,8 @@ public class MenuController {
 		int listCount = mService.getListCount();
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
 		ArrayList<Menu> mList = new ArrayList<>();
-		ArrayList<Menu> searchList = new ArrayList<>();
 		ArrayList<Image> iList = new ArrayList<>();
-		ArrayList<Image> searchImage = new ArrayList<>();
+		
 		
 		ArrayList<Menu> menuScore = mService.menuScore();
 		model.addAttribute("menuScore", menuScore);
@@ -81,31 +80,73 @@ public class MenuController {
 		ArrayList<Likes> loginUserLikeList = mService.loginUserLikeList(u);
 		model.addAttribute("loginUserLikeList", loginUserLikeList);
 		
-		if(word == null) {
-			mList = mService.selectMenuList(pi);
-			iList = mService.selectMenuImage();
-		} else if(word != null) {
-			searchList = mService.searchMenu(word);
-			iList = mService.selectMenuImage();
-		}
+		mList = mService.selectMenuList(pi);
+		iList = mService.selectMenuImage();
 		
-//		System.out.println(mList);
-//		System.out.println(iList);
-		
-		if(word == null) {
+		if(!mList.isEmpty()) {
 			model.addAttribute("mList", mList);
 			model.addAttribute("iList", iList);
 			model.addAttribute("pi", pi);
 			
 			return "menuList";
-		} else if(word != null) {
+		}  else {
+			throw new MenuException("식단 조회를 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("searchMenu.mn")
+	public String searchMenu(Model model, @RequestParam(value="page", required=false) Integer page,
+						   @RequestParam(value="word", required=false) String word, HttpSession session) {
+		
+		int currentPage=1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		Users u = (Users)session.getAttribute("loginUser");
+		
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
+		int listCount = mService.getSearchListCount(word);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
+		
+		ArrayList<Menu> searchList = new ArrayList<>();
+		ArrayList<Image> iList = new ArrayList<>();
+		
+		searchList = mService.searchMenu(pi, word);
+		iList = mService.selectMenuImage();
+		
+		ArrayList<Menu> menuScore = mService.menuScore();
+		model.addAttribute("menuScore", menuScore);
+		ArrayList<Users> users = eService.AllUsersList();
+		model.addAttribute("uList", users);
+		ArrayList<Likes> likeList = mService.likeList();
+		model.addAttribute("lList", likeList);
+		ArrayList<Likes> loginUserLikeList = mService.loginUserLikeList(u);
+		model.addAttribute("loginUserLikeList", loginUserLikeList);
+		
+		String category = "word";
+		String value = word;
+		
+		if(searchList.isEmpty()) {
+			String str = "검색된 식단이 없습니다.";
+			model.addAttribute("str", str);
+			model.addAttribute("pi", pi);
+			model.addAttribute("mList", searchList);
+			model.addAttribute("iList", iList);
+			
+			return "menuList";
+		} else {
+			model.addAttribute("cate", category);
+			model.addAttribute("value", value);
 			model.addAttribute("mList", searchList);
 			model.addAttribute("iList", iList);
 			model.addAttribute("pi", pi);
 			
 			return "menuList";
-		} else {
-			throw new MenuException("식단 조회를 실패하였습니다.");
 		}
 	}
 	
@@ -216,13 +257,57 @@ public class MenuController {
 	}
 	
 	// 카테고리 검색
-	@RequestMapping(value="menuCategory.mn", produces="application/json; charset=UTF-8")
-	@ResponseBody
-	public ArrayList<Menu> menuCategory(HttpServletRequest request, Model model, @RequestParam("cate") int cate){
+	@RequestMapping("menuCategory.mn")
+	public String menuCategory(HttpServletRequest request, Model model, HttpSession session,
+										@RequestParam(value="page", required=false) Integer currentPage,							
+										@RequestParam("cate") int cate){
 		
-		ArrayList<Menu> mList = mService.menuCategory(cate);
+		if(currentPage == null) {
+			currentPage = 1;
+		}
 		
-		return mList;
+		Users u = (Users)session.getAttribute("loginUser");
+		
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
+		int listCount = mService.getCateListCount(cate);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
+		
+		ArrayList<Menu> mList = mService.menuCategory(pi, cate);
+		ArrayList<Image> iList = mService.selectMenuImage();
+		
+		String category = "cate";
+		int value = cate;
+		
+		ArrayList<Menu> menuScore = mService.menuScore();
+		model.addAttribute("menuScore", menuScore);
+		ArrayList<Users> users = eService.AllUsersList();
+		model.addAttribute("uList", users);
+		ArrayList<Likes> likeList = mService.likeList();
+		model.addAttribute("lList", likeList);
+		ArrayList<Likes> loginUserLikeList = mService.loginUserLikeList(u);
+		model.addAttribute("loginUserLikeList", loginUserLikeList);
+		
+		if(mList.isEmpty()) {
+			String str = "해당 카테고리 레시피가 없습니다.";
+			model.addAttribute("str", str);
+			model.addAttribute("pi", pi);
+			model.addAttribute("mList", mList);
+			model.addAttribute("iList", iList);
+			
+			return "menuList";
+		} else {
+			model.addAttribute("mList", mList);
+			model.addAttribute("iList", iList);
+			model.addAttribute("cate", category);
+			model.addAttribute("value", value);
+			model.addAttribute("pi", pi);
+			
+			return "menuList";
+		}
 	}
 	
 	@RequestMapping("insertBookmark.mn")

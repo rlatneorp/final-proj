@@ -259,12 +259,15 @@ p b {
 	.boardNo{width: 100px;}
 	.boardContent{width: 540px;}
 	.boardWrite{width: 150px;}
-	.boardDate{width: 210px;}
+	.boardTitle{width: 575px;}
+	.qnaAnswer{width: 100px;}
+	.qnaDate{width: 125px;}
 	.board{border-collapse: collapse; }
 	.boardTop{background-color: #B0DAFF;}
 	.line{border-bottom: 1px solid black; border-top: 1px solid black;}
-	.lineAll{height: 50px; cursor: pointer;}
+	.lineAll{height: 50px;}
 	.lineAll:hover{background-color: #19A7CE; color: white;}
+	.form-control{height: 35px;}
 	
 /* 	입력 박스 */
 	.inputTextBox{width:730px; height: 50px; margin: auto; position: relative;}
@@ -295,7 +298,7 @@ p b {
 	  font-weight: 500;
 	  color: #000;
 	  background-color: #B0DAFF;
-	  border: 1px solid black;
+ 	  border: 1px solid black;
 	  border-radius: 10px;
 	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 	  transition: all 0.3s ease 0s;
@@ -312,7 +315,7 @@ p b {
 	  font-weight: 500;
 	  color: #000;
 	  background-color: #lightgray;
-	  border: 1px solid black;
+ 	  border: 1px solid black; 
 	  border-radius: 10px;
 	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 	  transition: all 0.3s ease 0s;
@@ -465,6 +468,7 @@ p b {
 
 	<form action="${contextPath}" method="get">
 	<main id="order-wrap">
+	<input type="hidden" id="thisProductNo" value="${menu.foodProductNo}">
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
@@ -976,11 +980,52 @@ p b {
 		</div>
 	</div>
 	
-	<br>
+	<br><br>
 	
-	<c:if test="${loginUser ne null and myReview ne 0 }">
+<!-- 	문의 -->
+	<p class="mid">문의</p>
+		<br>
+		<div id="qna">
+			<table class="board">
+				<tr class="boardTop">
+					<th class="line boardNo">No.</th>
+					<th class="line boardTitle">문의 제목</th>
+					<th class="line boardReviewWrite">작성자</th>
+					<th class="line qnaDate">날짜</th>
+					<th class="line qnaAnswer">문의 상태</th>
+				</tr>
+				<c:if test="${qnaCount eq 0}">
+					<tr>
+						<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br>해당 상품에 등록된 문의가 없습니다.</td>
+					</tr>
+				</c:if>
+				<c:if test="${qnaCount ne 0}">
+					<c:forEach items="${qList}" var="q">
+						<tr class="lineAll qnaLine">
+							<td class="line">${q.qnaNo}</td>
+							<td class="line">[${q.qnaType eq 1 ? "배송" : (q.qnaType eq 2 ? "결제" : (q.qnaType eq 3 ? "회원" : (q.qnaType eq 4 ? "상품" : "기타")))}] ${q.qnaTitle}</td>
+							<td class="line" id="${q.usersNo}">${q.nickName }</td>
+							<td class="line">${q.qnaDate }</td>
+							<td class="line">${q.answerContent eq null ? "답변 대기" : "답변 완료"}</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+			</table>
+		</div>
+		
+	<c:if test="${loginUser != null }">
+		<div class="qnaInputBox" style="margin-top: 10px;">
+			<button data-bs-toggle="modal" data-bs-target="#qnaModal" id="qnaIn" class="enter">문의 등록</button>
+			<input type="hidden" id="qnaId" value="${loginUser.nickName }">
+		</div>
+	</c:if>
+	
+	<br><br>
+	
+<!-- 	내가 쓴 후기 -->
+	<c:if test="${ loginUser ne null and myReview ne 0 }">
 		<p class="mid">내가 쓴 후기</p><br>
-		<p style="margin-left: 830px;">* 후기 삭제 시 재등록이 불가합니다.${pi }</p><br>
+		<p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 		<br>
 		<div id="qna">
 			<table class="board">
@@ -999,7 +1044,7 @@ p b {
 				<c:if test="${myReview ne 0 }">
 					<c:forEach items="${ mrList }" var="r">
 						<c:if test="${r.reviewWriter eq loginUser.nickName}">
-							<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')"</c:if>>
+							<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')" style="cursor: pointer;"</c:if>>
 								<td class="line">${ r.reviewNo }</td>
 								<td class="line">${ r.reviewScore eq 5 ? "★★★★★" : (r.reviewScore eq 4 ? "★★★★" : (r.reviewScore eq 3 ? "★★★" : (r.reviewScore eq 2 ? "★★" : "★"))) }</td>
 								<td class="line">${ r.reviewContent }</td>
@@ -1055,7 +1100,7 @@ p b {
 	</c:if>
 	<br><br><br>
 	<p class="mid">후기</p><br>
-	<p style="margin-left: 830px;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
+	<p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 	<div id="qna">
 		<table class="board">
 			<tr class="boardTop">
@@ -1072,7 +1117,7 @@ p b {
 			</c:if>
 			<c:if test="${reviewCount ne 0 }">
 				<c:forEach items="${ rList }" var="r">
-					<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')"</c:if>>
+					<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')" style="cursor: pointer;"</c:if>>
 						<td class="line">${ r.reviewNo }</td>
 						<td class="line">${ r.reviewScore eq 5 ? "★★★★★" : (r.reviewScore eq 4 ? "★★★★" : (r.reviewScore eq 3 ? "★★★" : (r.reviewScore eq 2 ? "★★" : "★"))) }</td>
 						<td class="line">${ r.reviewContent }</td>
@@ -1134,7 +1179,7 @@ p b {
 				<div class="qnaInputBox">
 					<button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
 					<input type="hidden" id="reviewId" value="${loginUser.nickName}">
-					<input type="hidden" id="order" value="${n.ORDER_NO}">
+					<input type="hidden" id="orders" value="${n.ORDER_NO}">
 				</div>
 				<c:set var="foundReview" value="true" />
 			</c:if>
@@ -1232,6 +1277,44 @@ p b {
 	</div>
 </div>
 
+<!-- 문의 등록 모달 -->
+<div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">문의 작성</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<br>
+			<form method="post" id="writeQna">
+				<div class="modal-body" id="qnaBody" style="text-align: left;">
+					<input type="hidden" name="productNo" value="${menu.foodProductNo }">
+					<input type="hidden" name="usersNo" value="${loginUser.usersNo }">
+					<input type="hidden" name="orderNo" id="orderNo">
+					
+					<select class="form-control" name="qnaType">
+						<option value="1">배송</option>
+						<option value="2">결제</option>
+						<option value="3">회원</option>
+						<option value="4">상품</option>
+						<option value="0">기타</option>
+					</select>
+					
+					<label style="margin-bottom: 5px;">문의 제목</label><br>
+					<input type="text" name="qnaTitle" placeholder=" 문의 제목을 입력하세요." style="margin-bottom: 15px; border: 1px solid black; height: 30px; width: 465px; border-radius: 5px;" required>
+					<br>
+					<label style="margin-bottom: 5px;">문의 내용</label>
+					<textarea id="qnaContent" style="width: 465px; height: 150px; border-radius: 10px; resize: none;" maxlength="100" placeholder="내용을 입력해주세요." name="qnaContent" required></textarea>
+				</div>
+				<div class="footer">
+					<button type="button" class="button btn-n" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="button btn-y" id="qnaWrite">작성하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <!-- 댓글 등록 모달 -->
 <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
@@ -1283,7 +1366,7 @@ p b {
 			<form method="post" id="updateReview">
 				<div class="modal-body" id="updateReviewBody">
 					<input type="hidden" name="reviewNo" id="reviewNo">
-					<input type="hidden" name="productNo" value="${ menu.foodProductNo }" id="mNo">
+					<input type="hidden" name="productNo" value="${menu.foodProductNo}" id="mNo">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
 							<label for="reviewUpdateScore5">★</label>
@@ -1297,7 +1380,7 @@ p b {
 							<label for="reviewUpdateScore1">★</label>
 					</fieldset>
 					<br><br>
-					수정할 내용을 입력해주세요.<br><br>
+					* 수정할 내용을 입력해주세요.<br><br>
 					<textarea id="reviewContentUpdate" name="reviewContent" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100" placeholder="내용을 입력해주세요."></textarea>
 				</div>
 				<div class="footer">
@@ -1376,9 +1459,8 @@ p b {
 //         }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
 // 	}
 
-	const loginUser2 = '${loginUser}';
-	if(loginUser2 != ''){
-		const buybtn = document.getElementById('buybtn');
+	const buybtn = document.getElementById('buybtn');
+	if(buybtn != null){
 		buybtn.addEventListener('click', function(){
 		const quantity = document.getElementById('quantity');
 			const buyMenuCount =document.getElementById('buyMenuCount');
@@ -1411,6 +1493,7 @@ p b {
 	        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)	
 		})
 	}
+	
 // 	function cartbtn(){
 // 		const quantity = document.getElementById('quantity');
 // 		const cartMenuCount =document.getElementById('cartMenuCount');
@@ -1442,9 +1525,8 @@ p b {
 // 	            }
 // 			})
 // 	}
-
-	if(loginUser2 != ''){
-		const cartbtn = document.getElementById('cartbtn');
+	const cartbtn = document.getElementById('cartbtn');
+	if(cartbtn != null){
 		cartbtn.addEventListener('click', function(){
 			const quantity = document.getElementById('quantity');
 			const cartMenuCount =document.getElementById('cartMenuCount');
@@ -1486,9 +1568,9 @@ p b {
 		})
 	}
 
-	if(loginUser2 != ''){
-		const like = document.querySelector(".like");
-		
+	const like = document.querySelector(".like");
+	
+	if(like != null){
 		like.addEventListener("click", function() {
 		    if(like.innerText === '♡') {
 		        //찜이 안 되어 있으면 
@@ -1563,9 +1645,11 @@ p b {
 		    	})
 		    }
 		});
-		
-		const bookmark = document.querySelector('#bookmark');
-		console.log(bookmark.value);
+	}
+	
+	const bookmark = document.querySelector('#bookmark');
+	
+	if(bookmark != null){
 		bookmark.addEventListener('click', function(){
 			if(bookmark.value == 'noBookmark'){
 				$.ajax({
@@ -1641,7 +1725,7 @@ p b {
 			}
 		});
 	}
-		
+	
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {
 //         var productNo = $("input[name='productNo']").val();
@@ -1671,7 +1755,7 @@ p b {
 //     });
 // });
 	
-	const order = document.getElementById('order');
+	const order = document.getElementById('orders');
 	const orderNo = document.getElementById('orderNo');
 	const reviewIn = document.getElementById('reviewIn');
 	const content = document.getElementById('reviewWrite');
@@ -1679,13 +1763,9 @@ p b {
 	const sub = document.getElementById('write');
 	
 	if(order != null){
-		console.log('들어왓나');
 		reviewIn.addEventListener('click', () => {
 			orderNo.value = order.value;
-			console.log(order.value);
-			console.log('ㅎㅇ?');
 			sub.addEventListener('click', () => {
-				console.log('ㅎㅇ');
 				if(content.value == ''){
 					swal({
 			            text: "리뷰 내용을 입력해주세요.",
@@ -1748,7 +1828,6 @@ p b {
 	    } else if(reviewScore == 1){
 	    	score1.checked = true;
 	    }
-		updateContent.focus();
 	  }
 	
 	updateB.addEventListener('click', () => {
@@ -1759,6 +1838,7 @@ p b {
 	            button: "확인",
 	        });
 		} else {
+			scrollToSavedPosition();
 			updateForm.action = '${contextPath}/updateReview.mn';		
 			updateForm.submit();
 		}
@@ -1793,6 +1873,35 @@ p b {
 
 	// 페이지 로드 시 저장된 위치로 스크롤
 	window.addEventListener('load', scrollToSavedPosition);
+	
+	const qnaWrite = document.getElementById('qnaWrite');
+	const writeQna= document.getElementById('writeQna');
+	const qnaBody = document.getElementById("qnaBody");
+	qnaWrite.addEventListener('click', function(){
+		const fNo = qnaBody.childNodes[1].value;
+		const nick = qnaBody.childNodes[3].value;
+		const qnaType = qnaBody.childNodes[7].value;
+		const qnaTitle = qnaBody.childNodes[12].value;
+		const qnaContent = qnaBody.childNodes[18].value;
+		
+		if(qnaTitle != null && qnaContent != null){
+			writeQna.action = '${contextPath}/insertQna.mn';
+			writeQna.submit();
+		}
+	})
+	
+	const qnaLine = document.querySelectorAll('.qnaLine');
+	for(const qline of qnaLine){
+		qline.addEventListener('click', function(){
+			const qnaNo = this.childNodes[1].innerText;
+			const usersNo = this.childNodes[5].id;
+			const productNo = document.getElementById('thisProductNo').value;
+			
+			console.log(this.childNodes[5].id);
+			
+			location.href='${contextPath}/QnAdetail.ma?usersNo=' + usersNo + '&productNo=' + productNo + '&qnaNo=' + qnaNo;
+		})
+	}
  </script> 
 
 </body>

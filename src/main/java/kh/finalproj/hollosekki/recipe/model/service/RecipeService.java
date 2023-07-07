@@ -103,6 +103,8 @@ public interface RecipeService {
 
 	int selectRecipeBookmark(int usersNo, int productNo);
 
+	ArrayList<Review> selectMyReviewList(PageInfo mpi, HashMap<String, Object> map);
+
 
 
 }

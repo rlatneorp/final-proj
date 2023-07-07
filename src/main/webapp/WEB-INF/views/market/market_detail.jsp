@@ -812,10 +812,10 @@ p b {
                   </h2>
                   &nbsp;&nbsp;
                   <c:if test="${like ne null}">
-                     <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+                     <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; cursor: pointer;">♥</h4>
                   </c:if>
                   <c:if test="${like eq null}">
-                     <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+                     <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; cursor: pointer;">♡</h4>
                   </c:if>
                   <h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
                      <fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원

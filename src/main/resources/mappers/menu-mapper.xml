@@ -132,7 +132,6 @@
 		select count(*)
 		from review
 		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no > 0
-		order by review_no desc
 	</select>
 	
 	<select id="selectMyOrders" resultMap="ordersResultSet">
@@ -165,6 +164,23 @@
 		where product_no = #{productNo} and review_writer = #{reviewWriter} and review_status = 'Y' and order_no > 0
 		order by review_no desc
 	</select>
+	
+	<select id="getQnaCount" resultType="_int">
+		select count(*)
+		from qna
+		where qna_status='Y' and product_no=#{mNo}
+	</select>
+	
+	<select id="selectQnaList" resultMap="qnaResultSet">
+		select *
+		from qna
+			 left join users using(users_no)
+		where qna_status='Y' and product_no=#{mNo} 
+	</select>
+	
+	<insert id="insertQna">
+		insert into qna values(seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, null, null, null, default, #{qnaType}, null, #{productNo})
+	</insert>
 	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
@@ -253,4 +269,19 @@
 		<result column="SHIP_PRICE" property="shipPrice"/>
 		<result column="OPTIONS" property="options"/>
    </resultMap>
+   
+   <resultMap type="QA" id="qnaResultSet">
+		<id column="QNA_NO" property="qnaNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="QNA_DATE" property="qnaDate"/>
+		<result column="QNA_TITLE" property="qnaTitle"/>
+		<result column="QNA_CONTENT" property="qnaContent"/>
+		<result column="ADMIN_NO" property="adminNo"/>
+		<result column="ANSWER_DATE" property="answerDate"/>
+		<result column="ANSWER_CONTENT" property="answerContent"/>
+		<result column="QNA_STATUS" property="qnaStatus"/>
+		<result column="QNA_TYPE" property="qnaType"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+	</resultMap>
 </mapper>

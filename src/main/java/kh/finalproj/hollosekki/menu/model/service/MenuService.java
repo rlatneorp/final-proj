@@ -8,9 +8,11 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 public interface MenuService {
@@ -64,6 +66,12 @@ public interface MenuService {
 	ArrayList<HashMap<String, Object>> notReview(HashMap<String, Object> map);
 
 	ArrayList<Review> selectMyReviewList(PageInfo mpi, HashMap<String, Object> myMap);
+	
+	int getQnaCount(int mNo);
+
+	ArrayList<QA> selectQnaList(PageInfo qpi, int mNo);
+
+	int insertQna(QA qna);
 
 
 }

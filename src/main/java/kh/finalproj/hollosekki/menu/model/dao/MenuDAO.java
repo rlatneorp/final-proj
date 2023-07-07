@@ -12,9 +12,11 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 @Repository
@@ -136,6 +138,21 @@ public class MenuDAO {
 		RowBounds rowBounds = new RowBounds(offset, mpi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("menuMapper.selectMyReviewList", myMap, rowBounds);
+	}
+	
+	public int getQnaCount(SqlSessionTemplate sqlSession, int mNo) {
+		return sqlSession.selectOne("menuMapper.getQnaCount", mNo);
+	}
+
+	public ArrayList<QA> selectQnaList(SqlSessionTemplate sqlSession, PageInfo qpi, int mNo) {
+		int offset = (qpi.getCurrentPage() - 1) * qpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, qpi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.selectQnaList", mNo, rowBounds);
+	}
+
+	public int insertQna(SqlSessionTemplate sqlSession, QA qna) {
+		return sqlSession.insert("menuMapper.insertQna", qna);
 	}
 
 

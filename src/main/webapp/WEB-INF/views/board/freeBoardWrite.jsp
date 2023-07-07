@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <title>Insert title here</title>
 <style>
+
+#board{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 table {
 	text-align: center;
 	margin: 0 auto;
@@ -102,24 +106,29 @@ th:first-child, td:first-child {
 	<script src="resources/summernotes/summernote-lite.js"></script>
 	<script src="resources/summernotes/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+	
 	<br><br><br><br><br><br>
 	<c:if test="${!empty loginUser }">
-		<form action="${contextPath }/freeBoardWriting.bo" method="post">
 			<div id="parentDiv">
 				<div>
 					<label class="intro">제목</label><br>
-					<input required="required" type="text" name="introTitle" style="width: 900px; height:45px">
+					<input id="title" required="required" type="text"  style="width: 940px; height:45px">
 				</div><br><br>
 				<div>
 					<label class="intro">내용</label><br>
-					<textarea required="required" class="summernote" name="introContent" style="resize: none;"></textarea>
+					<textarea id="content" required="required" class="summernote"  style="resize: none;"></textarea>
 				</div>
 			</div><br><br>
 		<!-- 작성 버튼 -->
+		
 		<div style="margin: 0 auto; text-align: center;">
-			<button class="btn-3d blue" id="boardSubmit">작성하기</button>
+			<button class="btn-3d blue" id="boardSubmit" style="display: none;">작성하기</button>
 		</div>
-		</form>
+		<div style="margin: 0 auto; text-align: center;">
+			<button class="btn-3d blue" id="reBoardSubmit" style="display: none;">수정하기</button>
+		</div>
 	</c:if>
 	<c:if test="${empty loginUser }">
 		<div class="text-center">
@@ -128,6 +137,7 @@ th:first-child, td:first-child {
 		</div>
 	</c:if>
 	<input type="hidden" value="${login }" id="hDnNick">
+	<input type="hidden" id="bInfo">
 	<br><br><br><br><br><br><br>
 	<%@include file="../common/footer.jsp"%>
 
@@ -135,25 +145,109 @@ th:first-child, td:first-child {
 </body>
 <script>
 const hDnNick = document.querySelector('#hDnNick')
-const form = document.querySelector('form')
+const form = document.querySelector('form');
 
+const urlParams = new URL(location.href).searchParams;
+const boardNo = urlParams.get('bId');
+const boardWriter = urlParams.get('writer');
+
+const title = document.getElementById('title');
+const content = document.getElementById('content');
+const bInfo = document.getElementById('bInfo');
+
+const firstBoardSubm = document.querySelector('#firstBoardSubm');
 const boardSubmit = document.querySelector('#boardSubmit');
-	boardSubmit.addEventListener('click', ()=>{
-		$.ajax({
-			url: 'goToMyBoard.bo',
-			success: data=>{
-				const bId = data.boardNo + 1;
-				const writer = data.nickName;
-				location.href='${contextPath}/detailFreeBoard.bo?bId=' + bId + '&writer=' + writer + '&page=1';
-					
-			}
-			
-		})		
-		
-	})
+const reBoardSubmit = document.querySelector('#reBoardSubmit');
+const goToLogin = document.querySelector('#goToLogin');
+let pTag = '';
+let firstWriter = '';
 
+// 글 쓰고 바로 내가 글 쓴 페이지로 가지기
+
+// 	boardSubmit.addEventListener('click', ()=>{
+// 		$.ajax({
+// 			type: 'POST',
+// 			url: 'goToMyBoard.bo',
+// 			success: data=>{
+// 					const bId = data.boardNo +1;
+// 					const writer = data.nickName;
+// 						location.href='${contextPath}/detailFreeBoard.bo?bId=' + bId + '&writer=' + writer;
+// 						location.reload();
+// 			},
+// 			error: data=>{
+// 				swal({
+// 					 text: "글 작성에 실패하였습니다.",
+// 					 icon: "error",
+// 					 button: "확인",
+// 				});
+// 			}
+		
+			
+// 		})		
+// 	})
+	boardSubmit.addEventListener('click', ()=>{
+		const contentEdit = document.getElementsByClassName('note-editable');
+		for(let i = 0; i < contentEdit.length; i++){
+			const contents = contentEdit[i].querySelector('p').innerHTML;
+			$.ajax({
+				type: 'POST',
+				url: 'freeBoardWriting.bo',
+				data: {
+					boardTitle: title.value,
+					boardContent: contents
+				},
+				success: data=>{
+					if(data == 'success'){
+						$.ajax({
+							url: 'goToMyBoard.bo',
+							success: data=>{
+								const bId = data.boardNo;
+								const writer = data.nickName;
+								location.href='${contextPath}/detailFreeBoard.bo?bId='+ bId + '&writer=' + writer;
+							}
+						})		
+					}else{
+						swal({
+							 text: "글 작성에 실패하였습니다.",
+							 icon: "error",
+							 button: "확인",
+						});
+					}	
+				}
+				
+			})
+		}
+	})
+	reBoardSubmit.addEventListener('click', ()=>{
+		console.log(pTag.innerText);
+		console.log(title.value);
+		console.log(bInfo.value);
+		console.log(boardNo);
+		$.ajax({
+			type: 'POST',
+			url: 'reBoard.bo',
+			data: {
+				boardContent: pTag.innerHTML,
+				boardTitle: title.value, 
+				usersNo: bInfo.value,
+				boardNo: boardNo
+			},
+			success: data=>{
+				if(data == 'success'){
+					location.href='${contextPath}/detailFreeBoard.bo?bId=' + boardNo + '&writer=' + boardWriter + '&page=1';
+				}else{
+					swal({
+						 text: "글 수정에 실패하였습니다.",
+						 icon: "error",
+						 button: "확인",
+						});
+					location.reload();
+				}
+			}
+		})
+	})
 	$('.summernote').summernote({
-		width : 900,
+		width : 940,
 		height : 350,
 		lang : "ko-KR",
 		toolbar : [
@@ -176,6 +270,66 @@ const boardSubmit = document.querySelector('#boardSubmit');
 				'72' ]
 		
 	});
+	
+// 수정 버튼	
+
+//파일명 줄이기
+
+// 	function sendFile(file, el) {
+// 		var form_data = new FormData();
+// 			form_data.append('file', file);
+// 			$.ajax({
+// 			data: form_data,
+// 			type: "POST",
+// 			url: 'fileUpload.bo',
+// 			cache: false,
+// 			contentType: false,
+// 			enctype: 'multipart/form-data',
+// 			processData: false,
+// 			success: function(img_name) {
+// 		  		$(el).summernote('editor.insertImage', img_name);
+// 			}
+// 		});
+// 	}
+
+
+ 	window.onload = ()=>{
+ 		
+		if(boardNo != null && boardWriter != null){
+			reBoardSubmit.style.display = 'inline-block';
+		}else{
+			boardSubmit.style.display = 'inline-block';
+		}
+		
+// 			firstBoardSubm.style.display = 'inline-block';
+			
+		const contentEdit = document.getElementsByClassName('note-editable');
+		if(boardNo != null && boardWriter !=null){
+			
+			for(let i = 0; i < contentEdit.length; i++){
+				pTag = contentEdit[i].querySelector('p');
+				$.ajax({
+					type: 'POST',
+					url: 'reWriteBoardInfo.bo',
+					data:{
+						boardNo: boardNo,
+						nickName: boardWriter		
+					},
+					success: data=>{
+						title.value = data.boardTitle;
+						pTag.innerHTML = data.boardContent;
+						bInfo.value = data.usersNo;
+						firstWriter.value = data.nickName;
+					}
+					
+				})
+				
+			}
+		}
+ 	}
+	
+	
+
 	
 	
 </script>

@@ -8,9 +8,11 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 public interface MenuService {
@@ -29,9 +31,9 @@ public interface MenuService {
 
 	ArrayList<Image> menuDetailImage();
 
-	ArrayList<Menu> searchMenu(String word);
+	ArrayList<Menu> searchMenu(PageInfo pi, String word);
 
-	ArrayList<Menu> menuCategory(int cate);
+	ArrayList<Menu> menuCategory(PageInfo pi, int cate);
 
 	int selectUsersNo(int mNo);
 
@@ -51,13 +53,31 @@ public interface MenuService {
 
 	int getReviewCount(int mNo);
 	
-	ArrayList<Review> selectReviewList(PageInfo pi, int mNo);
+	ArrayList<Review> selectReviewList(PageInfo rpi, int mNo);
 
 	int myReview(Review my);
 
 	ArrayList<Orders> selectMyOrders(HashMap<String, Object> map);
 
 	int insertReview(Review r);
+
+	int updateReview(Review r);
+
+	ArrayList<HashMap<String, Object>> notReview(HashMap<String, Object> map);
+
+	ArrayList<Review> selectMyReviewList(PageInfo mpi, HashMap<String, Object> myMap);
+	
+	int getQnaCount(int mNo);
+
+	ArrayList<QA> selectQnaList(PageInfo qpi, int mNo);
+
+	int insertQna(QA qna);
+
+	Image selectProfile(int usersNo);
+
+	int getCateListCount(int cate);
+
+	int getSearchListCount(String word);
 
 
 }

@@ -12,9 +12,11 @@ import kh.finalproj.hollosekki.common.model.vo.Likes;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
+import kh.finalproj.hollosekki.common.model.vo.QNA;
 import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.QA;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 
 @Repository
@@ -51,12 +53,18 @@ public class MenuDAO {
 		return (ArrayList)sqlSession.selectList("menuMapper.menuDetailImage");
 	}
 
-	public ArrayList<Menu> searchMenu(SqlSessionTemplate sqlSession, String word) {
-		return (ArrayList)sqlSession.selectList("menuMapper.searchMenu", word);
+	public ArrayList<Menu> searchMenu(SqlSessionTemplate sqlSession, PageInfo pi, String word) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.searchMenu", word, rowBounds);
 	}
 
-	public ArrayList<Menu> menuCategory(SqlSessionTemplate sqlSession, int cate) {
-		return (ArrayList)sqlSession.selectList("menuMapper.menuCategory", cate);
+	public ArrayList<Menu> menuCategory(SqlSessionTemplate sqlSession, PageInfo pi, int cate) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.menuCategory", cate, rowBounds);
 	}
 
 	public int selectUsersNo(SqlSessionTemplate sqlSession, int mNo) {
@@ -104,9 +112,9 @@ public class MenuDAO {
 		return sqlSession.selectOne("menuMapper.getReviewCount", mNo);
 	}
 	
-	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, PageInfo pi, int mNo) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, PageInfo rpi, int mNo) {
+		int offset = (rpi.getCurrentPage() - 1) * rpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, rpi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("menuMapper.selectReviewList", mNo, rowBounds);
 	}
@@ -121,6 +129,48 @@ public class MenuDAO {
 
 	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
 		return sqlSession.insert("menuMapper.insertReview", r);
+	}
+
+	public int updateReview(SqlSessionTemplate sqlSession, Review r) {
+		return sqlSession.update("menuMapper.updateReview", r);
+	}
+
+	public ArrayList<HashMap<String, Object>> notReview(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return (ArrayList)sqlSession.selectList("menuMapper.notReview", map);
+	}
+
+	public ArrayList<Review> selectMyReviewList(SqlSessionTemplate sqlSession, HashMap<String, Object> myMap, PageInfo mpi) {
+		int offset = (mpi.getCurrentPage() - 1) * mpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, mpi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.selectMyReviewList", myMap, rowBounds);
+	}
+	
+	public int getQnaCount(SqlSessionTemplate sqlSession, int mNo) {
+		return sqlSession.selectOne("menuMapper.getQnaCount", mNo);
+	}
+
+	public ArrayList<QA> selectQnaList(SqlSessionTemplate sqlSession, PageInfo qpi, int mNo) {
+		int offset = (qpi.getCurrentPage() - 1) * qpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, qpi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.selectQnaList", mNo, rowBounds);
+	}
+
+	public int insertQna(SqlSessionTemplate sqlSession, QA qna) {
+		return sqlSession.insert("menuMapper.insertQna", qna);
+	}
+
+	public Image selectProfile(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("menuMapper.selectProfile", usersNo);
+	}
+
+	public int getCateListCount(SqlSessionTemplate sqlSession, int cate) {
+		return sqlSession.selectOne("menuMapper.getCateListCount", cate);
+	}
+
+	public int getSearchListCount(SqlSessionTemplate sqlSession, String word) {
+		return sqlSession.selectOne("menuMapper.getSearchListCount", word);
 	}
 
 

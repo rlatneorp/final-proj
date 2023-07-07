@@ -93,6 +93,12 @@ public interface EnrollService {
 
 	ArrayList<Healther> healtherList();
 
+	ArrayList<Menu> menuProductList();
+
+	Users userInfo(String id);
+
+	int cartCount(int usersNo);
+
 
 
 

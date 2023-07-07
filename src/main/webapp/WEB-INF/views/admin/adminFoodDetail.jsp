@@ -416,10 +416,10 @@ p b {
 			<!-- 구매창 컨테이너 -->
 			<div class="left">
 				<!-- 구매창 왼쪽 사진 넣는 곳 -->
-				
+				<input name="imageNo" type="hidden" value="${thumbnail.imageNo}">
 				<img class="previewImage" src="${contextPath}/resources/uploadFiles/${thumbnail.imageRenameName}">
 				<div style="text-align: center; padding-top:10px;">
-<%-- 					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg"> --%>
+					<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 				</div>
 			</div>
 			<div class="right">
@@ -476,7 +476,7 @@ p b {
 <!-- 												<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button> -->
 											</c:if>
 											<c:if test="${f.foodKind eq 2}">
-												<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
+												<button type="button" class="foodKindBtn d-inline-block" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
 <!-- 												<button type="button" class="foodKindBtn d-inline-block" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button> -->
 											</c:if>
 										</div>
@@ -570,18 +570,18 @@ p b {
 												<input type="hidden" name="foodTable">
 												<input type="hidden" name="tableType" value="1">
 												<div style="width: 360px; height: 270px;" class="d-flex justify-content-center">
+													<input name="imageNo" type="hidden" value="${imgList[i.index].imageNo}">
 													<img class="previewImage" src="${contextPath}/resources/uploadFiles/${imgList[i.index].imageRenameName}" width="360" height="270" class="d-flex">
 												</div>
-<!-- 												<input name="imageFile" type="file" accept=".png, .jpg, .jpeg"> -->
+												<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 												<p style="font-size: 12px; color: gray; margin-bottom: 0px;">최적 이미지 비율은 4:3입니다.</p>
 											</td>
 											<td style="width: 58%;">
-												<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요.">${fn:split(fn:split(table,'-')[2],',')[0]}</textarea>
+												<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요.">${fn:split(table,'-')[2]}</textarea>
 											</td>
-<!-- 											<td style="width: 7%; text-align: center"> -->
-<!-- 												삭제버튼 보류 -->
-<!-- 												<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button> -->
-<!-- 											</td> -->
+											<td style="width: 7%; text-align: center">
+												<button onclick="del(this)" type="button" style="width: 50px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>
+											</td>
 										</tr>
 									</table>
 								</div>
@@ -591,22 +591,22 @@ p b {
 									<table class="mb-3 w-100">
 										<tr>
 											<td style="width: 58%;">
-												<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요.">${fn:split(fn:split(table,'-')[2],',')[0]}</textarea>
+												<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요.">${fn:split(table,'-')[2]}</textarea>
 											</td>
 											<td style="width: 30%;">
 												<input type="hidden" name="foodTable">
 												<input type="hidden" name="tableType" value="2">
 												<div style="width: 360px; height: 270px;" class="d-flex justify-content-center">
+													<input name="imageNo" type="hidden" value="${imgList[i.index].imageNo}">
 													<img class="previewImage" src="${contextPath}/resources/uploadFiles/${imgList[i.index].imageRenameName}" width="360" height="270" class="d-flex">
 												</div>
-<!-- 												<input name="imageFile" type="file" accept=".png, .jpg, .jpeg"> -->
+												<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">
 												<p style="font-size: 12px; color: gray; margin-bottom: 0px;">최적 이미지 비율은 4:3입니다.</p>
 											</td>
 											<td class="num" style="width: 5%; text-align: center">${fn:split(table,'-')[0]}</td>
-<!-- 											<td style="width: 7%; text-align: center"> -->
-<!-- 												삭제버튼 보류 -->
-<!-- 												<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button> -->
-<!-- 											</td> -->
+											<td style="width: 7%; text-align: center">
+												<button onclick="del(this)" type="button" style="width: 50px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>
+											</td>
 										</tr>
 									</table>
 								</div>
@@ -617,13 +617,12 @@ p b {
 					</div>
 					 
 					<br>
-<!-- 					내용 추가 버튼 보류 -->
-<!-- 					<div style="padding: 40px 30px;"> -->
-<!-- 						<div class="text-end mb-5"> -->
-<!-- 							<button id="addLeft" type="button" style="width: 100px; border: 2px solid rgba(0,0,0,0.3); border-radius: 10px;">왼쪽사진<br>내용추가</button> -->
-<!-- 							<button id="addRight" type="button" style="width: 100px; border: 2px solid rgba(0,0,0,0.3); border-radius: 10px;">오른쪽사진<br>내용추가</button> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
+					<div style="padding: 40px 30px;">
+						<div class="text-end mb-5">
+							<button id="addLeft" type="button" style="width: 100px; border: 2px solid rgba(0,0,0,0.3); border-radius: 10px;">왼쪽사진<br>내용추가</button>
+							<button id="addRight" type="button" style="width: 100px; border: 2px solid rgba(0,0,0,0.3); border-radius: 10px;">오른쪽사진<br>내용추가</button>
+						</div>
+					</div>
 				</div>
 				
 				
@@ -676,7 +675,6 @@ p b {
 <%@ include file="../common/footer.jsp" %>
 
 	<script>
-		console.log(${fn:split(f.foodContent,'@')[3]});
 		window.onload =()=>{
 // 			이미지 미리보기 함수, 이벤트 (기존값)
 			const imageFiles = document.getElementsByName('imageFile');
@@ -689,6 +687,7 @@ p b {
 							const reader = new FileReader();
 							reader.onload = e =>{
 								previewImages[i].src = e.target.result
+								previewImages[i].parentElement.querySelector('input').value = 0;
 							}
 							reader.readAsDataURL(imageFiles[i].files[0])
 						}
@@ -759,70 +758,72 @@ p b {
 // 				foodTypeBtns[0].style.backgroundColor="gray";
 // 			});
 			
-// 			const menuTable1 = 
-// 				'<div class="menuTable1">'
-// 			+		'<table class="mb-3 w-100">'
-// 			+			'<tr>'
-// 			+				'<td class="num" style="width: 5%; text-align: center"></td>'
-// 			+				'<td style="width: 30%;">'
-// 			+					'<input type="hidden" name="foodTable">'
-// 			+					'<input type="hidden" name="tableType" value="1">'
-// 			+					'<div style="width: 360px; height: 270px;" class="d-flex justify-content-center">'
-// 			+						'<img class="previewImage" src="${contextPath}/resources/images/logo_360x270.png" width="360" height="270" class="d-flex">'
-// 			+					'</div>'
-// // 			+					'<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">'
-// 			+					'<p style="font-size: 12px; color: gray; margin-bottom: 0px;">최적 이미지 비율은 4:3입니다.</p>'
-// 			+				'</td>'
-// 			+				'<td style="width: 58%;">'
-// 			+					'<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요."></textarea>'
-// 			+				'</td>'
-// 			+				'<td style="width: 7%; text-align: center">'
-// 			+					'<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>'
-// 			+				'</td>'
-// 			+			'</tr>'
-// 			+		'</table>'
-// 			+	'</div>'
+			const menuTable1 = 
+				'<div class="menuTable1">'
+			+		'<table class="mb-3 w-100">'
+			+			'<tr>'
+			+				'<td class="num" style="width: 5%; text-align: center"></td>'
+			+				'<td style="width: 30%;">'
+			+					'<input type="hidden" name="foodTable">'
+			+					'<input type="hidden" name="tableType" value="1">'
+			+					'<div style="width: 360px; height: 270px;" class="d-flex justify-content-center">'
+			+						'<input name="imageNo" type="hidden" value="0">'
+			+						'<img class="previewImage" src="${contextPath}/resources/images/logo_360x270.png" width="360" height="270" class="d-flex">'
+			+					'</div>'
+			+					'<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">'
+			+					'<p style="font-size: 12px; color: gray; margin-bottom: 0px;">최적 이미지 비율은 4:3입니다.</p>'
+			+				'</td>'
+			+				'<td style="width: 58%;">'
+			+					'<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요."></textarea>'
+			+				'</td>'
+			+				'<td style="width: 7%; text-align: center">'
+			+					'<button onclick="del(this)" type="button" style="width: 50px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>'
+			+				'</td>'
+			+			'</tr>'
+			+		'</table>'
+			+	'</div>'
 			
-// 			const menuTable2 = 
-// 				'<div class="menuTable2">'
-// 			+		'<table class="mb-3 w-100">'
-// 			+			'<tr>'
-// 			+				'<td style="width: 58%;">'
-// 			+					'<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요."></textarea>'
-// 			+				'</td>'
-// 			+				'<td style="width: 30%;">'
-// 			+					'<input type="hidden" name="foodTable">'
-// 			+					'<input type="hidden" name="tableType" value="1">'
-// 			+					'<div style="width: 360px; height: 270px;" class="d-flex justify-content-center">'
-// 			+						'<img class="previewImage" src="${contextPath}/resources/images/logo_360x270.png" width="360" height="270" class="d-flex">'
-// 			+					'</div>'
-// // 			+					'<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">'
-// 			+					'<p style="font-size: 12px; color: gray; margin-bottom: 0px;">최적 이미지 비율은 4:3입니다.</p>'
-// 			+				'</td>'
-// 			+				'<td class="num" style="width: 5%; text-align: center"></td>'
-// 			+				'<td style="width: 7%; text-align: center">'
-// 			+					'<button onclick="del(this)" type="button" style="width: 45px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>'
-// 			+				'</td>'
-// 			+			'</tr>'
-// 			+		'</table>'
-// 			+	'</div>'
+			const menuTable2 = 
+				'<div class="menuTable2">'
+			+		'<table class="mb-3 w-100">'
+			+			'<tr>'
+			+				'<td style="width: 58%;">'
+			+					'<textarea name="foodTableText" rows="12" style="width: 100%" maxlength="300" placeholder="내용을 입력해주세요."></textarea>'
+			+				'</td>'
+			+				'<td style="width: 30%;">'
+			+					'<input type="hidden" name="foodTable">'
+			+					'<input type="hidden" name="tableType" value="2">'
+			+					'<div style="width: 360px; height: 270px;" class="d-flex justify-content-center">'
+			+						'<input name="imageNo" type="hidden" value="0">'
+			+						'<img class="previewImage" src="${contextPath}/resources/images/logo_360x270.png" width="360" height="270" class="d-flex">'
+			+					'</div>'
+			+					'<input name="imageFile" type="file" accept=".png, .jpg, .jpeg">'
+			+					'<p style="font-size: 12px; color: gray; margin-bottom: 0px;">최적 이미지 비율은 4:3입니다.</p>'
+			+				'</td>'
+			+				'<td class="num" style="width: 5%; text-align: center"></td>'
+			+				'<td style="width: 7%; text-align: center">'
+			+					'<button onclick="del(this)" type="button" style="width: 50px; border: 2px solid rgba(0,0,0,0.3); border-radius: 5px;" class="deleteBtn">삭제</button>'
+			+				'</td>'
+			+			'</tr>'
+			+		'</table>'
+			+	'</div>'
 			
-// 			const addLeft = document.getElementById('addLeft');
-// 			const addRight = document.getElementById('addRight');
+			const addLeft = document.getElementById('addLeft');
+			const addRight = document.getElementById('addRight');
 			
-// // 			왼쪽사진내용추가 버튼 이벤트
-// 			addLeft.addEventListener('click', () => {
-// 				detailBox.insertAdjacentHTML("beforeend", menuTable1);
-// 				numbering();
-// 				imageLoad();
-// 			})
+// 			왼쪽사진내용추가 버튼 이벤트
+			addLeft.addEventListener('click', () => {
+				detailBox.insertAdjacentHTML("beforeend", menuTable1);
+				numbering();
+				imageLoad();
+			})
 			
-// // 			오른쪽사진내용추가 버튼 이벤트
-// 			addRight.addEventListener('click', () => {
-// 				detailBox.insertAdjacentHTML("beforeend", menuTable2);
-// 				numbering();
-// 				imageLoad();
-// 			})
+// 			오른쪽사진내용추가 버튼 이벤트
+			addRight.addEventListener('click', () => {
+				detailBox.insertAdjacentHTML("beforeend", menuTable2);
+				numbering();
+				imageLoad();
+			})
 		}
 		
 // 		가격 계산 함수
@@ -893,6 +894,7 @@ p b {
 			const productPrice = document.getElementsByName('productPrice')[0];
 			const productSale = document.getElementsByName('productSale')[0];
 			const imageFiles = document.getElementsByName('imageFile');
+			const previewImages = document.getElementsByClassName('previewImage'); 
 			
 // 			개발용 임시 값 넣기
 // 			foodName.value="식품이름";
@@ -909,18 +911,33 @@ p b {
 			if(foodName.value.trim()==''){
 				alert("식품 이름을 입력해주세요.");
 				foodName.focus();
+			}else if(foodName.value.split('@').length > 1){
+				alert("식품 이름에는 아래 기호를 입력할 수 없습니다.\n"
+					 +"( @ )");
+				foodName.focus();
 			}else if(foodContent.value.trim()==''){
 				alert("식품 소개를 입력해주세요.");
 				foodName.focus();
 			}else if(foodTargets[0].value.trim()=='' && foodTargets[1].value.trim()=='' && foodTargets[2].value.trim()==''){
 				alert("추천대상을 입력해주세요.");
 				foodTargets[0].focus();
+			}else if(foodTargets[0].value.split('@').length > 1){
+				alert("추천대상에는 아래 기호를 입력할 수 없습니다.\n"
+					 +"( @ )");
+				foodTargets[0].focus();
 			}else{
 				let textYN = "Y";
 				for(const i in foodTableTexts){
 					if(i < foodTableTexts.length){
-						if(foodTableTexts[i].value.trim() == ''){
+						const text = foodTableTexts[i].value;
+						if(text.trim() == ''){
 							alert("상세보기 내용을 입력해주세요.");
+							foodTableTexts[i].focus();
+							textYN = "N";
+							break;
+						}else if(text.split('@').length > 1 || text.split('#').length > 1 || text.split('-').length > 1){
+							alert("상세보기에는 아래 기호를 입력할 수 없습니다.\n"
+								 +"( @  #  - )");
 							foodTableTexts[i].focus();
 							textYN = "N";
 							break;
@@ -928,7 +945,15 @@ p b {
 					}
 				}
 				let imageYN = "Y"
-// 				if(textYN == "Y"){
+				if(textYN == "Y"){
+					for(let i = 0; i < previewImages.length; i++){
+						if(previewImages[i].src == 'http://localhost:8079/hollosekki/resources/images/logo_360x270.png'){
+							alert("사진을 등록해주세요.");
+							previewImages[i].focus();
+							imageYN = "N";
+							break;
+						}
+					}
 // 					for(const i in imageFiles){
 // 						if(i<imageFiles.length){
 // 							if(imageFiles[i].value == false){
@@ -939,7 +964,7 @@ p b {
 // 							}
 // 						}
 // 					}
-// 				}
+				}
 				if(textYN == "Y" && imageYN == "Y"){
 					if(productPrice.value == 0){
 						if(!confirm("가격을 0원으로 설정하시겠습니까?")){

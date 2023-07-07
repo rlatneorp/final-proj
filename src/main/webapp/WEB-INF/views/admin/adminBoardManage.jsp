@@ -25,8 +25,8 @@
 				<tr style="border-bottom: 1px solid rgba(0,0,0,0.2); background: rgba(176, 218, 255, 0.5);">
 					<th style="width: 6%">번호</th>
 					<th style="width: 8%">작성자</th>
-					<th style="width: 19%">제목</th>
-					<th style="width: 30%">내용</th>
+					<th style="width: 49%">제목</th>
+<!-- 					<th style="width: 30%">내용</th> -->
 					<th style="width: 7%">종류</th>
 					<th style="width: 6%">조회수</th>
 					<th style="width: 8%">날짜</th>
@@ -42,11 +42,11 @@
 							<input type="hidden" name="boardNo" value="${b.boardNo}"></td>
 						<td>${b.nickName}</td>
 						<td>
-							<a href="${contextPath}/adminBoardDetail.ad?page=${pi.currentPage}&pageCount=${ab.pageCount}&searchType=${ab.searchType}&searchText=${ab.searchText}&boardNo=${b.boardNo}">${fn:substring(b.boardTitle, 0, 20)}</a>
+							<a href="${contextPath}/detailFreeBoard.bo?bId=149&writer=나눔의%20행복&page=1">${fn:substring(b.boardTitle, 0, 20)}</a>
 						</td>
-						<td>${fn:substring(b.boardContent, 0, 30)}</td>
+<%-- 						<td>${fn:substring(b.boardContent, 0, 30)}</td> --%>
 						<td>
-							<c:if test="${b.boardType eq 0}">
+							<c:if test="${b.boardType eq 0 || b.boardType eq 1}">
 								 자유게시판
 							</c:if>
 						</td>
@@ -67,11 +67,6 @@
 				</c:forEach>
 			</table>
 		</form>
-		<div class="d-flex justify-content-end mb-5">
-			<div class="d-flex">
-				<button type="button" onclick="location.href='${contextPath}/adminRecipeWrite.ad'" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 100px; height: 40px; font-size: 14px; font-weight: bold;">레시피등록</button>
-			</div>
-		</div>
 		
 		<jsp:include page="../common/adminSearchForm.jsp"/>
 		

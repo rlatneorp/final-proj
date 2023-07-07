@@ -134,7 +134,7 @@ select .form-control {
 	
 }
 
-
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
 </style>
 
@@ -192,7 +192,7 @@ select .form-control {
 
 <!-- 				</div> -->
 
-					<button type="submit" class="button" >작성하기</button>
+					<button class="submit"  type="button" class="button" >작성하기</button>
 
 				<button type="button" class="button" id="btnList" onclick="history.back();">취소</button>
 					
@@ -208,6 +208,33 @@ select .form-control {
 
 	</article>
 	
+	<script>
+	const formControl = document.querySelector("#content");
+	const qnaTitle = document.querySelector("#qnaTitle");
+	const submit = document.querySelector(".submit");
+	
+	submit.addEventListener("click", function(){
+		if(formControl.value.trim() == ""){
+			formControl.value = ""
+			formControl.focus();
+			alert("후기를 작성해주세요!");
+		
+		}else if(qnaTitle.value.trim() == ""){
+				qnaTitle.value = ""
+				qnaTitle.focus();
+				alert("제목을 입력해주세요!");
+				return false;
+				
+		}else if(formControl.value.trim() != "" && qnaTitle.value.trim() != "") {
+			submit.type = 'submt';
+//				location.href = '${contextPath}/selectBoard.bo?bId='+boardId+'&writer='+writer+'&page='+${pi.currentPage};
+		}
+		
+
+	
+})
+	
+	</script>
 	
 
 </body>

@@ -5,7 +5,11 @@
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style>
 
 .carrier {
@@ -158,6 +162,12 @@ input[type="text"] {
 		inset, 0 0 0 1px rgba(0, 0, 0, 0.4);
 }
 
+
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
+.custom-font-size {
+	padding-top:30px; font-size: 17px; font-weight: 400;
+}
 /* 구매버튼 */
 #goPay{cursor:pointer;}
 </style>
@@ -224,12 +234,12 @@ input[type="text"] {
 							<c:if test="${cl.sale ne 0 }">
 								<span id="sale-${cl.preorderNo }" class="highlight"><b>${cl.sale }% 할인</b></span>
 								<br><br> <span style="text-decoration: line-through;" id="originP-${cl.preorderNo }">${cl.productPrice}</span>
-								<br><span id="pp-${cl.preorderNo }" style="font-size:25px; font-weight:bold" class="price">
+								<br><span id="pp-${cl.preorderNo }" style="font-size:20px; font-weight:bold" class="price">
 									${cl.productPrice}
 								</span>원
 							</c:if>
 							<c:if test="${cl. sale eq 0 }">
-								<span id="pp-${cl.productNo }" class="price">
+								<span id="pp-${cl.preorderNo }" class="price">
 									${cl.productPrice}
 								</span>원
 							</c:if>
@@ -238,7 +248,7 @@ input[type="text"] {
 							<span class="point" id="point-${cl.preorderNo }"></span>P 적립
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:160px">
-							<span class="sum" id="sum-${cl.preorderNo }">
+							<span class="sum" style="font-size:25px; font-weight:bold" id="sum-${cl.preorderNo }">
 							${cl.sum }
 							</span>원
 						</td>
@@ -341,24 +351,24 @@ input[type="text"] {
 			
 			const count = parseInt(document.getElementById('orderSize').innerText);
 			if (checkbox.checked) {
-				const plus = parseInt(document.getElementById('trTotalSum').innerText) + intCheckSum;
+				const plus = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + intCheckSum;
 				document.getElementById('trTotalSum').innerText = plus;
-				
 				document.getElementById('orderSize').innerText = count + intCheckCount;
 				
 				//배송비 - 총합 
 				let shipping = parseInt(document.getElementById('shipSum').innerText);  
 				if(plus >= 30000) { //합계금액 
 					document.getElementById('shipPrice').innerText = '0';
-					document.getElementById('shipSum').innerText = plus;
+					document.getElementById('shipSum').innerText = parseInt(plus).toLocaleString();
 				} else {
 					document.getElementById('shipPrice').innerText = '3,000';
 	 				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
-	 				document.getElementById('shipSum').innerText = plus+shipPrice;
+	 				document.getElementById('shipSum').innerText = parseInt(plus+shipPrice).toLocaleString();
 				}
 			}else if (document.getElementById('trTotalSum').innerText != '0') {  
-				const minus = parseInt(document.getElementById('trTotalSum').innerText) - intCheckSum;
-				document.getElementById('trTotalSum').innerText = minus;
+				const intTrTotal = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, ''));
+				const minus = intTrTotal - intCheckSum; //총 금액에서 체크한 금액의 합계를 뺀다.
+				document.getElementById('trTotalSum').innerText = minus;  
 				if(intCheckCount != '0') {
 					document.getElementById('orderSize').innerText = count - intCheckCount;
 				}
@@ -366,20 +376,22 @@ input[type="text"] {
 				//배송비
 				if(minus >= 30000) { //합계금액 
 					document.getElementById('shipPrice').innerText = '0';
-					document.getElementById('shipSum').innerText = minus;
+					document.getElementById('shipSum').innerText = parseInt(minus).toLocaleString();
 				} else {
 					document.getElementById('shipPrice').innerText = '3,000';
 	 				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
-	 				document.getElementById('shipSum').innerText = minus+shipPrice;
+	 				document.getElementById('shipSum').innerText = parseInt(minus+shipPrice).toLocaleString();
 				}
 			}
 			
+			var totalSum = document.getElementById('trTotalSum').innerText;
+			var formattedTotalSum = parseInt(totalSum).toLocaleString();
+			document.getElementById('trTotalSum').innerText = formattedTotalSum;			
 		} //change 함수 끝 
 		
 		
 		//상품가격 금액 형태로 변환 
 		const prices = document.getElementsByClassName('price');
-		console.log(prices)
 		for(originPrice of prices) {
 			const detailPrice = originPrice.innerText;
 			const numericPrice = parseFloat(detailPrice);// 숫자로 변환
@@ -412,6 +424,8 @@ input[type="text"] {
 			const priceWithoutCurrency = formattedPrice.replace('KRW', '').trim()
 			sum.innerText = priceWithoutCurrency;
 		}
+		
+		
 				
 	} //window.onload 
 			
@@ -432,11 +446,9 @@ input[type="text"] {
 			document.getElementById('sum-' + preOrder).innerText = (size * discountedPrice);
 		}
 		
-		
 		//적립금(POINT)
 		const sum = parseFloat(document.getElementById('sum-' + preOrder).innerText.replace(/,/g, ''));
 		let pointRate = Math.round(sum*0.005);
-		
 		
 		document.getElementById('point-' + preOrder).innerText = pointRate; 
 		
@@ -472,25 +484,22 @@ input[type="text"] {
 					let clickPlusSum= parseInt(sum.replace(/,/g, '')); //플러스 눌렀을 때 금액 
 					//플러스 버튼 누를 때마다 해당 tr이 나옴 
 					if(document.getElementById('chec-' + preOrder).checked) {
-						console.log(parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price);
 						let zz = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price;
 						
 						//요약 수량 증가
 						let count = parseInt(document.getElementById('orderSize').innerText);
 						count++;
 						document.getElementById('orderSize').innerText = count;
-						
-						document.getElementById('trTotalSum').innerText = zz;
-						
+						document.getElementById('trTotalSum').innerText = parseInt(zz).toLocaleString();
 						//배송비 - 총합 
 						let shipping = parseInt(document.getElementById('shipSum').innerText);  
 						if(zz >= 30000) { //합계금액 
 							document.getElementById('shipPrice').innerText = '0';
-							document.getElementById('shipSum').innerText = zz;
+							document.getElementById('shipSum').innerText = parseInt(zz).toLocaleString();
 						} else {
 							document.getElementById('shipPrice').innerText = '3,000';
 			 				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
-			 				document.getElementById('shipSum').innerText = zz+shipPrice;
+			 				document.getElementById('shipSum').innerText = parseInt(zz+shipPrice).toLocaleString();
 						}
 					} else {}
 				},
@@ -505,7 +514,6 @@ input[type="text"] {
 		if(minSize != 1) {
 			size--;
 			document.getElementById('size-'+ preOrder).innerText = size; //감소 수량 삽입 
-			console.log(preOrder);
 			$.ajax({
 				url:'${contextPath}/minusCount.ma',
 				data:{
@@ -524,9 +532,8 @@ input[type="text"] {
 					let clickPlusSum= parseInt(sum.replace(/,/g, '')); // 개당 합계 금액 
 					let trTotalPrice = 0;
 					if(document.getElementById('chec-' + preOrder).checked) {
-						console.log(parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) + price);
 						let zz = parseInt(document.getElementById('trTotalSum').innerText.replace(/,/g, '')) - price;
-						document.getElementById('trTotalSum').innerText = zz;
+						document.getElementById('trTotalSum').innerText = parseInt(zz).toLocaleString();
 						
 						//요약 수량 감소
 						let count = parseInt(document.getElementById('orderSize').innerText);
@@ -537,11 +544,11 @@ input[type="text"] {
 						let shipping = parseInt(document.getElementById('shipSum').innerText);  
 						if(zz >= 30000) { //합계금액 
 							document.getElementById('shipPrice').innerText = '0';
-							document.getElementById('shipSum').innerText = zz;
+							document.getElementById('shipSum').innerText = parseInt(zz).toLocaleString();
 						} else {
 							document.getElementById('shipPrice').innerText = '3,000';
 			 				const shipPrice = parseInt(document.getElementById('shipPrice').innerText.replace(/,/g, ''))
-			 				document.getElementById('shipSum').innerText = zz+shipPrice;
+			 				document.getElementById('shipSum').innerText = parseInt(zz+shipPrice).toLocaleString();
 						}
 					} else {} 
 				},
@@ -579,7 +586,6 @@ input[type="text"] {
 		
 		//수량 반영 
 		const trSum = document.getElementsByClassName('sum');
-		console.log(trSum);
 		let trTotalSum = 0;
 		let totalCount = 0;
 		for(sum of trSum) {
@@ -588,7 +594,6 @@ input[type="text"] {
 			const checNo = sum.parentElement.parentElement.children[0].children[1].value;
 			const preOrder = sum.parentElement.parentElement.children[0].children[0].value;
 			const size = parseInt(document.getElementById('size-' + preOrder).innerText);
-			console.log(size);
 			
 			if(checBox.checked) {
 				//1. 합계 금액 
@@ -597,15 +602,15 @@ input[type="text"] {
 				totalCount += size;
 			} 
 		}
-		document.getElementById('trTotalSum').innerText = trTotalSum;
+		document.getElementById('trTotalSum').innerText = parseInt(trTotalSum).toLocaleString();
 		document.getElementById('orderSize').innerText = totalCount;
 		//3. 배송비 및 총 합계 
 		if(trTotalSum >= 30000) {
 			document.getElementById('shipPrice').innerText = 0;
-			document.getElementById('shipSum').innerText = trTotalSum;
+			document.getElementById('shipSum').innerText = trTotalSum.toLocaleString();
 		} else {
-			document.getElementById('shipPrice').innerText = 3000;
-			document.getElementById('shipSum').innerText = (trTotalSum+3000);
+			document.getElementById('shipPrice').innerText = '3,000';
+			document.getElementById('shipSum').innerText = parseInt((trTotalSum+3000)).toLocaleString();
 		}
 		
 	})
@@ -615,44 +620,69 @@ input[type="text"] {
 		const basketNos = document.getElementsByClassName('basketNos');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
 		//체크 된 부분만 삭제 처리 
-		for(basketNo of basketNos) {
-			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
-			
-			if(basketNo.nextSibling.nextSibling.checked) {
-				console.log(delPreOrder)
-				const delBasket = basketNo.value;
-				$.ajax({
-					url:'${contextPath}/delBasket.ma',
-					data:{ 
-						preorderNo:delPreOrder
-					},
-					success: (data) => {
-						//해당 상품 삭제
-						for(const checkProduct of checkProducts) {
-							let list = checkProduct.parentNode.parentNode;
-							list.remove(); 
-						}
-						swal({
-							 text: "성공적으로 삭제 되었습니다.",
-							 icon: "success",
-							 button: "확인",
-							}).then(() => {
-								//포문 돌려서 
-								if(document.getElementsByClassName('productInfos').length == 0) {
-									location.reload();
-								}
-							});
-						//초기화
-						document.getElementById('orderSize').innerText = '0'; 
-						document.getElementById('trTotalSum').innerText = '0';
-						document.getElementById('shipPrice').innerText = '3,000';
-						document.getElementById('shipSum').innerText = '0';
-						},
-					error: (data) => {
-					}
-				})
-			}
-		}
+		Swal.fire({
+		   title: '정말 삭제하시겠습니까?',
+		   icon: 'warning',
+		   
+		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+		   confirmButtonText: '삭제', // confirm 버튼 텍스트 지정
+		   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+		   
+		   reverseButtons: true, // 버튼 순서 거꾸로
+		   
+		}).then(result => { //결과를 받았을 때 로직 
+		   if (result.isConfirmed) { // 삭제 버튼 클릭 시 
+		   
+		 		for(basketNo of basketNos) {
+		 			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
+		 			if(basketNo.nextSibling.nextSibling.checked) {
+		 				const delBasket = basketNo.value;
+		 				$.ajax({
+		 					url:'${contextPath}/delBasket.ma',
+		 					data:{ 
+		 						preorderNo:delPreOrder
+		 					},
+		 					success: (data) => {
+		 						//해당 상품 삭제
+		 						const Toast = Swal.mixin({
+					 			  toast: true,
+					 			  position: 'center',
+					 			  showConfirmButton: false,
+					 			  timer: 1000,
+					 			  timerProgressBar: true,
+					 			  didOpen: (toast) => {
+					 			    toast.addEventListener('mouseenter', Swal.stopTimer)
+					 			    toast.addEventListener('mouseleave', Swal.resumeTimer)
+					 			  }
+					 			});
+		 						Toast.fire({
+		 							  icon: 'success',
+		 							  title: 'Signed in successfully'
+		 							});
+	 							setTimeout(() => {
+	 							  for (const checkProduct of checkProducts) {
+	 							    let list = checkProduct.parentNode.parentNode;
+	 							    list.remove();
+	 							  }
+	 							 if(document.getElementsByClassName('productInfos').length == 0) {
+										location.reload();
+									}
+	 							}, 1000); // 1초 후에 삭제 작업 실행
+		 						//초기화
+		 						document.getElementById('orderSize').innerText = '0'; 
+		 						document.getElementById('trTotalSum').innerText = '0';
+		 						document.getElementById('shipPrice').innerText = '3,000';
+		 						document.getElementById('shipSum').innerText = '0';
+		 						},
+		 					error: (data) => {
+		 					}
+		 				})
+		 			}
+		 		}
+		   }
+		});
 	}
 	
 	//장바구니 내 상품 한 개 이상 클릭 시 구매 버튼 실행 
@@ -660,18 +690,21 @@ input[type="text"] {
 		const products = document.getElementById('products');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
 		if(checkProducts.length == 0){
-			swal({
-				 text: "상품을 한 개 이상 선택해주세요.",
-				 icon: "error",
-				 button: "확인",
-				});
+			Swal.fire({
+				  position: 'center',
+				  title: '상품을 한 개 이상 선택해주세요.',
+				  showConfirmButton: false,
+				  timer: 1000,
+				  customClass: {
+					    title: 'custom-font-size' // CSS 클래스 이름 지정
+				  }
+				})
 		} else {
 			let preorderNos = [];
 			for(cp of checkProducts) { //체크 된 input type checkbox 
 				const preorderNo = cp.parentElement.lastElementChild.value;
 				preorderNos.push(preorderNo);
 			}
-			console.log('preorderNos  : ' + preorderNos);
 			
 			const form = document.createElement('form');
 			form.method = 'POST';

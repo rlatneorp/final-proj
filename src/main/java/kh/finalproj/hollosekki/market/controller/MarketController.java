@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -35,6 +38,7 @@ import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Point;
+import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.exception.MarketException;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
@@ -54,12 +58,21 @@ public class MarketController {
 
    @Autowired
    private MarketService mkService;
+   
+   @Autowired
+   private EnrollService eService;
 
    @RequestMapping("basket.ma")
    public String pay(HttpSession session, Model model) {
       
       Users users = (Users)session.getAttribute("loginUser");
       int userNo = users.getUsersNo();
+      
+      if(users != null) {
+			int cart = eService.cartCount(users.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+
       
       ArrayList<Cart> cartList = mkService.selectCartList(userNo);
       
@@ -80,10 +93,8 @@ public class MarketController {
          
          //카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
          foods = mkService.selectFood(productNo);
-         System.out.println("foods : " + foods);
          tools = mkService.selectTool(productNo);
          igs = mkService.selectIngrdient(productNo);
-         System.out.println("igs : " + igs);
          menus = mkService.selectMenu(productNo);
          
          //productNo에 대한 모든 정보를 하나하나 가져옴 
@@ -111,12 +122,12 @@ public class MarketController {
           if (tools != null) { //이미지 타입 : 6 ( 주방도구)
              cart.setProductName(tools.getToolName());
              String imgName = mkService.selectImg(productNo, 6);
-            cart.setImgName(imgName);
+             cart.setImgName(imgName);
           }
           if (igs != null) { //이미지 타입 :5 (식재료) 
              cart.setProductName(igs.getIngredientName());
-             String imgName = mkService.selectImg(productNo, 5);
-            cart.setImgName(imgName);
+             String imgName = mkService.selectImg(igs.getIngredientNo(), 5);
+             cart.setImgName(imgName);
           }
           if (menus != null) { //이미지 타입 : 4 (식단)
              cart.setProductName(menus.getMenuName());
@@ -176,7 +187,7 @@ public class MarketController {
               }
               if (igs != null) { //이미지 타입 : 5 (식재료) 
             	  checCart.setProductName(igs.getIngredientName());
-            	  String imgName = mkService.selectImg(productNo, 5);
+            	  String imgName = mkService.selectImg(igs.getIngredientNo(), 5);
             	  checCart.setImgName(imgName);
               }
               if (menus != null) { //이미지 타입 : 4 (식단)
@@ -264,14 +275,20 @@ public class MarketController {
       Food food = mkService.selectFood(productNo);
       Ingredient ingredient = mkService.selectIngrdient(productNo);
       
+     
+		if(users != null) {
+			int cart = eService.cartCount(users.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+      
+      
+      
 		if(currentPage == null) {
 			currentPage = 1;
 		}
 		
 		int qnaCount = mkService.selectQnaCount(productNo);
 		PageInfo pi = Pagination.getPageInfo(currentPage, qnaCount, 5);
-		pi.setCurrentPage(1);
-		pi.setBoardLimit(1000);
 		
   
       Product p = mkService.selectProductSet(productNo);
@@ -481,6 +498,9 @@ public class MarketController {
 	  int usePoint = Integer.parseInt(use.split("원")[0]); //사용 포인트 
       Users users = (Users)session.getAttribute("loginUser");
       
+      System.out.println("plus : " + plus);
+      System.out.println("use : " + use);
+      
       //포인트 테이블에 minus, plus 포인트 반영 
       Point p = new Point();
       p.setUsersNo(users.getUsersNo());
@@ -493,6 +513,11 @@ public class MarketController {
     	  p.setPointChange(minus); //현재-사용 금액
     	  p.setPointType(11);
     	  mkService.updatePointTable(p);
+    	  
+    	  int currentPointForUsers1 = mkService.selectPoint(users.getUsersNo());
+    	  int minusForUsers = (currentPointForUsers1 - usePoint);
+    	  users.setPoint(minusForUsers);
+          mkService.updatePoint(users);
       }
       if(plus != 0) { // 추가 된 포인트가 있다면 
     	  int currentPoint2 = mkService.selectPoint(users.getUsersNo()); //33900원이 떠야 되는데....차감이 안됨 ?
@@ -501,11 +526,12 @@ public class MarketController {
           p.setPointChange(plusPoint);
           p.setPointType(3);
           mkService.updatePointTable(p);
+          
+          int currentPointForUsers2 = mkService.selectPoint(users.getUsersNo());
+    	  int plusForUsers = (currentPointForUsers2 + plus);
+    	  users.setPoint(plusForUsers);
+          mkService.updatePoint(users);
       }
-      //users테이블에 총 포인트 반영 
-      int currentPointForUsers = mkService.selectPoint(users.getUsersNo());
-      users.setPoint(currentPointForUsers);
-      mkService.updatePoint(users);
       
       //장바구니에서 제거 
       String[] preorderNoArr = preorderNo.split(",");
@@ -552,23 +578,62 @@ public class MarketController {
          }
    }
    
-   
+   @ResponseBody
    @RequestMapping("insertCart.ma")
-      public void insertCart(@ModelAttribute Cart c,HttpServletResponse response) {
+      public String insertCart(@ModelAttribute Cart c,HttpServletResponse response, Model model) {
       
       int result = mkService.insertCart(c);
+      int cart = eService.cartCount(c.getUsersNo());
+      System.out.println(cart);
       
-      response.setContentType("application/json; charset=utf-8");
-      GsonBuilder gb = new GsonBuilder();
-      Gson gson = gb.create();
-      try {
-         gson.toJson(result, response.getWriter());
-      } catch (JsonIOException e) {
-         e.printStackTrace();
-      } catch (IOException e) {
-         e.printStackTrace();
-      } 
+//      response.setContentType("application/json; charset=utf-8");
+//      GsonBuilder gb = new GsonBuilder();
+//      Gson gson = gb.create();
+//      
+//      try {
+//         gson.toJson(result, response.getWriter());
+//         gson.toJson(cart, response.getWriter());
+//         
+//      } catch (JsonIOException e) {
+//         e.printStackTrace();
+//      } catch (IOException e) {
+//         e.printStackTrace();
+//      } 
+      
+      	JSONArray jArr = new JSONArray();
+      	jArr.put(result);
+      	jArr.put(cart);
+		
+		return jArr.toString();
+      
+//		JSONObject json = new JSONObject(); // map(키, 벨류)에 값 집어넣을때 "put" 이용
+//		json.put("preNo", result);
+//		json.put("cart", cart);
+//		return json.toString();
    }
+   
+   @RequestMapping("goToPay.ma")
+   public void goToPay(@ModelAttribute Cart c,HttpServletResponse response, Model model) {
+   
+   int result = mkService.goToPay(c);
+   
+   model.addAttribute("c", c);
+   System.out.println(c);
+   
+   response.setContentType("application/json; charset=utf-8");
+   GsonBuilder gb = new GsonBuilder();
+   Gson gson = gb.create();
+   try {
+      gson.toJson(result, response.getWriter());
+   } catch (JsonIOException e) {
+      e.printStackTrace();
+   } catch (IOException e) {
+      e.printStackTrace();
+   } 
+//   
+//   return "payDetail";
+   
+}
    
    
 
@@ -895,7 +960,14 @@ public class MarketController {
    
    //전체보기
    @RequestMapping("viewWhole.ma")
-   public String viewWhole(Model model, @RequestParam(value="page", required=false) Integer currentPage) {
+   public String viewWhole(Model model, @RequestParam(value="page", required=false) Integer currentPage, HttpSession session) {
+	   
+	   Users u = (Users)session.getAttribute("loginUser");
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+	   
 	   if(currentPage == null) {
 		   currentPage = 1;
 	   }
@@ -1018,20 +1090,21 @@ public class MarketController {
 	   }
 	   int listCount = mkService.selectViewIngreCount();
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
-	   
+	   System.out.println("listCount : " + listCount);
 	   ArrayList<Ingredient> list = mkService.selectViewIngredient(pi);
+	   System.out.println("list : " + list);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pIngre = new Product();
 	   //식재료 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Ingredient lists : list) {
 			   int productNo = lists.getProductNo(); String img = null;
 			   pIngre = mkService.selectPIngre(productNo); //food productNo에 대한 Product 테이블 조회 
+			   img = mkService.selectImg(lists.getIngredientNo(), 5);
 			   if(pIngre != null) {
 				   pIngre.setProductName(lists.getIngredientName());
-			   }
-			   img = mkService.selectImg(lists.getIngredientNo(), 5);
-			   if(img != null) {
-				   pIngre.setProductImg(img);
+				   if(img != null) {
+					   pIngre.setProductImg(img);
+				   }
 			   }
 			   productInfo.add(pIngre); 
 		   }
@@ -1076,7 +1149,7 @@ public class MarketController {
 	   if(currentPage == null) {
 		   currentPage = 1;
 	   }
-	   int listCount = mkService.selectViewIngreCount();
+	   int listCount = mkService.selectViewToolCount();
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
 	   ArrayList<Tool> list = mkService.selectViewTool(pi);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pTool = new Product();

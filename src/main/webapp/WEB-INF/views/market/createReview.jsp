@@ -166,6 +166,7 @@ dl dd div label{
 	border: 0.5px solid white;
 }
 
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
 </style>
 
@@ -233,7 +234,7 @@ dl dd div label{
 								</h5>
 <%-- 							</c:forEach> --%>
 						</div>					
-					<button type="submit" class="button" id="Save">작성하기</button>
+					<button  class="submit" type="button" class="button" id="Save">작성하기</button>
 				<button type="button" class="button" id="btnList" onclick="javascript:history.back();">취소</button>
 					
 
@@ -247,7 +248,9 @@ dl dd div label{
 	<script>
 	window.onload = () =>{
 		const fileArea = document.querySelector('#fileArea');
+		const formControl = document.querySelector("#content");
 		const deleteAttm = document.querySelector('.deleteAttm');
+		const submit = document.querySelector(".submit");
 		document.querySelector(".addImage").addEventListener('click', (e)=>{
 			const newDiv = document.createElement('div');
 			newDiv.classList.add("mb-3");
@@ -267,7 +270,20 @@ dl dd div label{
 					att.remove();
 			}
 			
-
+		})
+		
+		submit.addEventListener("click", function(){
+				if(formControl.value.trim() == ""){
+					formControl.value = ""
+					formControl.focus();
+					alert("후기를 작성해주세요!");
+					return false
+				}else if(formControl.value.trim() != "") {
+					submit.type = 'submt';
+					window.location.href="${ contextPath }/insertReview.ma";
+// 					location.href = '${contextPath}/selectBoard.bo?bId='+boardId+'&writer='+writer+'&page='+${pi.currentPage};
+				}
+			
 		})
 		
 	}

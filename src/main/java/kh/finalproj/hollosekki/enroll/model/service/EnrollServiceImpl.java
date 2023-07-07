@@ -223,6 +223,21 @@ public class EnrollServiceImpl implements EnrollService{
 		return eDAO.healtherList(sqlSession);
 	}
 
+	@Override
+	public ArrayList<Menu> menuProductList() {
+		return eDAO.menuProductList(sqlSession);
+	}
+
+	@Override
+	public Users userInfo(String id) {
+		return eDAO.userInfo(sqlSession, id);
+	}
+
+	@Override
+	public int cartCount(int usersNo) {
+		return eDAO.cartCount(sqlSession, usersNo);
+	}
+
 
 
 	

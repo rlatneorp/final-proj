@@ -7,21 +7,18 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.google.gson.JsonObject;
-
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
-import kh.finalproj.hollosekki.market.model.vo.Review;
 
 @Repository
 public class BoardDAO {
 
-	public ArrayList<Board> freeBoardView(SqlSessionTemplate sqlSession, Board b, PageInfo pi) {
-		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(), pi.getBoardLimit());
-		
-		return (ArrayList)sqlSession.selectList("boardMapper.freeBoardView", b, rowBounds);
-	}
+//	public ArrayList<LongBoard> freeBoardView(SqlSessionTemplate sqlSession, LongBoard b, PageInfo pi) {
+//		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(), pi.getBoardLimit());
+//		
+//		return (ArrayList)sqlSession.selectList("boardMapper.freeBoardView", b, rowBounds);
+//	}
 
 	public int getFreeBoardListCount(SqlSessionTemplate sqlSession, int i) {
 		return sqlSession.selectOne("boardMapper.getFreeBoardListCount", i);
@@ -71,6 +68,30 @@ public class BoardDAO {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() -1 ) * pi.getBoardLimit(), pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("boardMapper.freeBList", map, rowBounds);
+	}
+
+	public int reWriteBoard(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.update("boardMapper.reWriteBoard", map);
+	}
+
+	public Board reWrieteBoardInfo(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("boardMapper.reWrieteBoardInfo", map);
+	}
+
+	public int deleteBoard(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.update("boardMapper.deleteBoard", map);
+	}
+
+	public int deleteReply(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.update("boardMapper.deleteReply", map);
+	}
+
+	public Board preDetailBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.selectOne("boardMapper.preDetailBoard", boardNo);
+	}
+
+	public Board nextDetailBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.selectOne("boardMapper.nextDetailBoard", boardNo);
 	}
 
 	

@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
@@ -227,6 +227,9 @@
 		border:1px solid #19A7CE;
 		border-radius: 100%;
 	}
+	
+	#recipeMenu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+	
 </style>
 </head>
 <body>
@@ -237,7 +240,7 @@
 	<div id="top">
 	<input type="hidden" value="${recipe.foodNo}" name="foodNo" id="foodNo">
 	<input type="hidden" value="${page}" name="page" id="recipePage">
-	<input type="hidden" value="${loginUser.usersId }" id="recipeWriter">
+	<input type="hidden" value="${recipe.usersId }" id="recipeWriter">
 		<div id="thumImg">
 			<img src="${contextPath }/resources/uploadFiles/${thum.imageRenameName}" style="width: 100%; height: 100%; border-radius: 5px;">
 		</div>
@@ -245,8 +248,17 @@
 		<div id="imformation">
 			<div id="title">
 				<h2 style="display: inline-block; width: 580px;">${recipe.recipeName }</h2>
-				<a href="#"><i class="bi bi-bookmark" style="font-size: 20px;"></i></a>
+				<c:if test="${ loginUser != null }">
+				
+					<c:if test="${ bookmark == 0 }">
+						<button type="button" id="bookmark" value="noBookmark" style="color: #4485d7; border: none; background: none;"><i class="bi bi-bookmark" style="font-size: 25px;"></i></button>
+					</c:if>
+					<c:if test="${ bookmark != 0 }">
+						<button type="button" id="bookmark" value="Bookmark" style="color: #4485d7; border: none; background: none;"><i class="bi bi-bookmark-fill" style="font-size: 25px;"></i></button>
+					</c:if>
+				</c:if>
 			</div>
+			<div style="margin: 15px 15px;">${recipe.categoryIngredient} ∣ ${recipe.categorySituation} ∣ ${recipe.categoryType}</div>
 			<div id="grade">
 				<div class="d-inline-block" style="width: 50px; font-weight: bold">난이도</div>
 				<div class="d-inline-block" style="width: 210px; text-align: center; font-weight: bolder; font-size: 20px;">${recipe.recipeDifficulty }</div>
@@ -256,7 +268,31 @@
 			</div>
 			
 			<div id="userInfo">
-				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'">
+				<c:if test="${ social eq null }"> <!-- 일반유저일때 -->
+					<c:if test="${ userImage eq null }"> <!-- 일반유저-프사없을때 -->
+						<div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto; margin-top: 25px; margin-bottom: 15px; cursor: pointer;" >
+							<img style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'" src="https://botsitivity.org/static/media/noprofile.c3f94521.png" >
+						</div>	
+					</c:if>
+					<c:if test="${ userImage ne null }"> <!-- 일반유저-프사있을때 -->
+						<div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto; margin-top: 25px; margin-bottom: 15px; cursor: pointer;">
+							<img src="${ contextPath }/resources/uploadFiles/${userImage.imageRenameName}" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'">
+						</div>
+					</c:if>
+				</c:if>
+
+				<c:if test="${ social ne null }"> <!-- 소셜유저일때 -->
+					<c:if test="${ userImage.imageDivideNo != user.usersNo }">
+						<div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto; margin-top: 25px; margin-bottom: 15px; cursor: pointer;" >
+							<img src="${ social.socialProfileImg }" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'"/>
+						</div>
+					</c:if>
+					<c:if test="${ userImage.imageDivideNo == user.usersNo and userImage.imageType == '1' }">
+						<div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto; margin-top: 25px; margin-bottom: 15px; cursor: pointer;" >
+							<img src="${contextPath}/resources/uploadFiles/${ userImage.imageRenameName }" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${recipe.usersId}' + '&uNo=' + '${recipe.usersNo}' + '&page=' + '${page}'"/>
+						</div>
+					</c:if>	
+				</c:if>
 				<p>${recipe.nickName }</p>
 				<p>${recipe.recipeContent }</p>
 			</div>
@@ -267,6 +303,12 @@
 				<div id="updateBox">
 					<button type="button" id="updateBtn" onclick="update()">수정</button>
 					<button type="button" id="deleteBtn" data-bs-toggle="modal" data-bs-target="#exampleModal1">삭제</button>
+				</div>
+			</c:if>
+			<c:if test="${!(loginUser.usersId eq recipe.usersId) }">
+				<div id="buttonBox">
+					<button type="button" id="mealkitBuy" class="buy" onclick="mealkit()">밀키트 구매</button>
+					<button type="button" id="ingredientBuy" class="buy" onclick="ingreBuy()">식재료 구매</button>
 				</div>
 			</c:if>
 		</div>
@@ -342,22 +384,15 @@
 </div>
 <br>
 
-<c:if test="${!(loginUser.usersId eq recipe.usersId) }">
-	<div id="buttonBox">
-		<button type="button" id="mealkitBuy" class="buy">밀키트 구매</button>
-		<button type="button" id="ingredientBuy" class="buy">식재료 구매</button>
-	</div>
-</c:if>
-
 </form>
 <br><br>
 
 <!-- 문의 / 후기 -->
 
 <!-- <p class="mid">후기</p> -->
-<c:if test="${loginUser ne null }">
+<c:if test="${ loginUser ne null and myReview ne 0 }">
 	<p class="mid">내가 쓴 후기</p>
-	<br>
+	<br><p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 	<div id="qna">
 		<table class="board">
 			<tr class="boardTop">
@@ -369,13 +404,13 @@
 			</tr>
 			<c:if test="${myReview eq 0 }">
 				<tr>
-					<td colspan=5 style="font-weight: bolder; font-size: 20px;">내가 등록한 후기가 없습니다.</td>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br>내가 등록한 후기가 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${myReview ne 0 }">
-				<c:forEach items="${reList }" var="re">
+				<c:forEach items="${mrList }" var="re">
 					<c:if test="${re.reviewWriter eq loginUser.nickName}">
-						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
+						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" style="cursor: pointer;"</c:if>>
 							<td class="line">${re.reviewNo }</td>
 							<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
 							<td class="line">${re.reviewContent}</td>
@@ -387,10 +422,54 @@
 			</c:if>
 		</table>
 	</div>
-<br><br>
+	<br><br>
+	<div class="page_wrap">
+		   <div class="page_nation">
+		      <!-- 		이전 페이지로	 -->
+				<c:url var="goBack" value="${loc }">
+					<c:param name="myrepage" value="${mpi.currentPage - 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
+					<c:param name="rId" value="${recipe.usersId}"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${mpi.currentPage > 1 }">
+					<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
+				</c:if>
+				
+		<!-- 		페이지 -->
+				<c:forEach begin="${ mpi.startPage }" end="${ mpi.endPage }" var="mp">
+					<c:url var="goNum" value="${loc }">
+						<c:param name="myrepage" value="${ mp }"></c:param>
+						<c:param name="repage" value="${rpi.currentPage}"></c:param>
+						<c:param name="rId" value="${recipe.usersId}"></c:param>
+						<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+						<c:param name="page" value="${page}"></c:param>
+					</c:url>
+					<c:if test="${ mpi.currentPage eq mp }">
+						<a class="active">${ mp }</a>
+					</c:if>
+					<c:if test="${ !(mpi.currentPage eq mp) }">
+						<a href="${ goNum }" onclick="saveScrollPosition();">${ mp }</a>
+					</c:if>
+				</c:forEach>
+				
+				<c:url var="goNext" value="${loc }">
+					<c:param name="myrepage" value="${mpi.currentPage + 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
+					<c:param name="rId" value="${recipe.usersId}"></c:param>
+					<c:param name="rNo" value="${recipe.foodNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${mpi.currentPage < mpi.endPage }">
+					<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
+				</c:if>
+		   </div>
+		</div>
 </c:if>
+<br><br><br>
 <p class="mid">후기</p>
-<br>
+<br><p style="margin-left: 43%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 <div id="qna">
 	<table class="board">
 		<tr class="boardTop">
@@ -403,20 +482,18 @@
 		<tbody id="reviewBody">
 			<c:if test="${reviewCount eq 0 }">
 				<tr>
-					<td colspan=5 style="font-weight: bolder; font-size: 20px;">등록된 후기가 없습니다.</td>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br>등록된 후기가 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${reviewCount ne 0 }">
 				<c:forEach items="${reList}" var="re">
-					<c:if test="${re.reviewWriter ne loginUser.nickName }">
-						<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>
-							<td class="line">${re.reviewNo }</td>
-							<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
-							<td class="line">${re.reviewContent}</td>
-							<td class="line">${re.reviewWriter}</td>
-							<td class="line">${re.reviewDate}</td>
-						</tr>
-					</c:if>
+					<tr class="lineAll" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" style="cursor: pointer;"</c:if>>
+						<td class="line">${re.reviewNo }</td>
+						<td class="line">${re.reviewScore eq 5 ? "★★★★★" : (re.reviewScore eq 4 ? "★★★★" : (re.reviewScore eq 3 ? "★★★" : (re.reviewScore eq 2 ? "★★" : "★"))) }</td>
+						<td class="line">${re.reviewContent}</td>
+						<td class="line">${re.reviewWriter}</td>
+						<td class="line">${re.reviewDate}</td>
+					</tr>
 				</c:forEach>
 			</c:if>
 		</tbody>
@@ -429,23 +506,21 @@
    <div class="page_nation">
       <!-- 		이전 페이지로	 -->
 		<c:url var="goBack" value="${loc }">
-			<c:param name="repage" value="${pi.currentPage - 1 }"></c:param>
+			<c:param name="repage" value="${ rpi.currentPage - 1 }"></c:param>
+			<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 			<c:param name="rId" value="${recipe.usersId}"></c:param>
 			<c:param name="rNo" value="${recipe.foodNo}"></c:param>
 			<c:param name="page" value="${page}"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage > 1 }">
-			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
-<%-- 			<c:param name="rId" value="${recipe.usersId}"></c:param> --%>
-<%-- 			<c:param name="rNo" value="${recipe.foodNo}"></c:param> --%>
-<%-- 			<c:param name="page" value="${page}"></c:param> --%>
-<%-- 			<c:param name="repage" value="${repage}"></c:param> --%>
+			<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
 		</c:if>
 		
 <!-- 		페이지 -->
 		<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
 				<c:param name="repage" value="${p }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 				<c:param name="rId" value="${recipe.usersId}"></c:param>
 				<c:param name="rNo" value="${recipe.foodNo}"></c:param>
 				<c:param name="page" value="${page}"></c:param>
@@ -454,18 +529,19 @@
 				<a class="active">${p }</a>
 			</c:if>
 			<c:if test="${ !(rpi.currentPage eq p) }">
-				<a href="${goNum }">${p }</a>
+				<a href="${goNum }" onclick="saveScrollPosition();">${p }</a>
 			</c:if>
 		</c:forEach>
 		
 		<c:url var="goNext" value="${loc }">
 			<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
+			<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
 			<c:param name="rId" value="${recipe.usersId}"></c:param>
 			<c:param name="rNo" value="${recipe.foodNo}"></c:param>
 			<c:param name="page" value="${page}"></c:param>
 		</c:url>
 		<c:if test="${rpi.currentPage < rpi.endPage }">
-			<a class="arrow next" href="${goNext}"><i class="bi bi-chevron-right"></i></a>
+			<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
 		</c:if>
    </div>
 </div>
@@ -574,6 +650,7 @@
 	</div>
 </div>
 
+<br><br><br><br>
 <%@ include file="../common/footer.jsp" %>
 
 <script>
@@ -722,8 +799,122 @@ reviewDelete.addEventListener('click', () => {
 	});
 });
 
+function mealkit(){
+	var recipe = '${recipe.recipeName}';
+	var name = recipe.replace(/ /gi, "+");
+	location.href = '${contextPath}/viewSearch.ma?searchStart=Y&searchType=food&searchText=' + name;
+}
+
+
+function ingreBuy(){
+	location.href = '${contextPath}/viewIngredient.ma';
+}
+
+const bookmark = document.querySelector('#bookmark');
+const usersNo = '${ loginUser.usersNo}';
+const loginId = '${loginUser.usersId}'
+const writeUser = '${recipe.usersId}'
+const divisionNo = '${ recipe.foodNo }';
+console.log(usersNo);
+console.log(divisionNo);
+console.log(bookmark.value);
+bookmark.addEventListener('click', function(){
+	if(loginId == writeUser){
+		swal("내가 쓴 글은 스크랩할 수 없습니다.", {
+			  buttons: false,
+			  timer: 1000,
+		});
+	} else if(bookmark.value == 'noBookmark' && loginId != writeUser){
+		$.ajax({
+			url: "insertBookmark.rc",
+			data:{
+        		usersNo:usersNo,
+        		divisionNo:divisionNo
+        	},
+        	success: data=> {
+        		if(data == 'success') {
+        			bookmark.innerHTML = '<i class="bi bi-bookmark-fill" style="font-size: 25px;"></i>';
+        			bookmark.value = 'bookmark';
+        			swal("레시피가 스크랩 되었습니다.", {
+	          			  buttons: false,
+	          			  timer: 1000,
+	          			});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 3000);
+        		} else { //실패 시 
+        			swal({
+						 text: "해당 상품의 스크랩에 실패했습니다.",
+						 icon: "error",
+						});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 2000);
+        		}
+        	},
+        	error:data=>{
+    			swal({
+					 text: "해당 상품의 스크랩에 실패했습니다.",
+					 icon: "error",
+					});
+        		setTimeout(function() {
+        			swal.close(); 
+        		}, 2000);
+        	}
+        })
+	} else {
+		$.ajax({
+    		url:"deleteBookmark.rc",
+    		data:{
+    			usersNo:usersNo,
+        		divisionNo:divisionNo
+    		},
+    		success: data => {
+    			console.log(data);
+    			if(data == 'success') {
+    				bookmark.innerHTML = '<i class="bi bi-bookmark" style="font-size: 25px;"></i>';
+    				bookmark.value = 'noBookmark';
+    				swal("스크랩이 해제 되었습니다.", {
+	          			  buttons: false,
+	          			  timer: 1000,
+	          			});
+        		} else { //실패 시 
+        			swal({
+						 text: "해당 상품의 스크랩 해제에 실패했습니다.",
+						 icon: "error",
+						});
+	        		setTimeout(function() {
+	        			swal.close(); 
+	        		}, 2000);
+        		}
+    		},
+    		error: data=>{
+    		}
+    	})
+	}
+})
+
+	// 원래 위치 정보를 저장하는 함수
+	function saveScrollPosition() {
+	  sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop);
+	}
+
+	// 페이지 로드 후 저장된 위치로 스크롤하는 함수
+	function scrollToSavedPosition() {
+	  var scrollPosition = sessionStorage.getItem('scrollPosition');
+	  if (scrollPosition) {
+	    setTimeout(function() {
+	      window.scrollTo(0, scrollPosition);
+	      sessionStorage.removeItem('scrollPosition'); // 위치 정보 삭제
+	    }, 0);
+	  }
+	}
+
+	// 페이지 로드 시 저장된 위치로 스크롤
+	window.addEventListener('load', scrollToSavedPosition);
+
 </script>
 	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>	 -->
 </body>
 </html>

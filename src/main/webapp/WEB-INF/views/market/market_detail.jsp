@@ -14,6 +14,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <style>
+
+#shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 * {
    outline: none;
    margin: 0px;
@@ -120,9 +123,9 @@ ul, li {
     display: none;   
 }
 
-.right {
-   width: 40%;
-}
+/* .right { */
+/*    width: 40%; */
+/* } */
 
 .left {
    width: 50%;
@@ -139,8 +142,10 @@ ul, li {
    text-decoration: line-through;
 }
 
-#totalPrice {
-   font-size: 24px;
+.totalPrice {
+   font-size: 16px;
+   font-color: #ebebeb;
+   border: none;
 }
 
 
@@ -674,6 +679,7 @@ p b {
     text-align: center;
 }
 
+
 .decrease{
    color:#4485d7;
    font-size:20px;
@@ -775,7 +781,7 @@ p b {
 	        </c:if>
 	        
          </div>
-         <div class="right">
+         <div class="right" style="width: 40%">
             <!-- like 유무 가리는 용도 -->
             <input type="hidden" id="likeYn" value="${like }">
             <!-- 상품 정보 -->
@@ -799,29 +805,33 @@ p b {
 	            </c:if>
                <div style="margin: auto; text-align: center;">
                   <br>
-                  <h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
-                     ${ p.productSale }<span>%</span>
-                     <!-- 할인율 -->
-                  </h2>
+                  <c:if test="${p.productSale ne 0 }">
+	                  <h2 id="discount" style="color: red; font-weight: 200; display: inline-block;" >
+	                     ${ p.productSale }<span>%</span>
+	                     <!-- 할인율 -->
+	                  </h2>
+                  </c:if>
                   <h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
                      <c:set var="total" value="${ p.productPrice - (p.productPrice * (p.productSale *0.01))}" />
                      <fmt:formatNumber value="${ total }" groupingUsed="true"/>원
                   </h2>
                   &nbsp;&nbsp;
                   <c:if test="${like ne null}">
-                     <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
+                     <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; cursor: pointer;">♥</h4>
                   </c:if>
                   <c:if test="${like eq null}">
-                     <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
+                     <h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; cursor: pointer;">♡</h4>
                   </c:if>
-                  <h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
-                     <fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
-                  </h2>
+                  <c:if test="${p.productSale ne 0 }">
+	                  <h2 style="font-weight: 100; font-size: 40px; text-decoration: line-through; text-decoration-thickness: 2px; margin-left: 30px;  color: gray;">
+	                     <fmt:formatNumber value="${ p.productPrice }" groupingUsed="true"/>원
+	                  </h2>
+                  </c:if>
                </div>
                <div>
                   <div class="productSet">
                      <div style="text-align: center">
-                        <span style="font-size: 40px; font-weight: 400; color:#4485d7; class="reviewStar">
+                        <span style="font-size: 40px; font-weight: 400; color:#4485d7;" class="reviewStar">
                            <c:if test="${starAvg  eq  5 }" >★★★★★&nbsp&nbsp(5)</c:if>
                            <c:if test="${starAvg  eq  4 }" >★★★★☆&nbsp&nbsp(4)</c:if>
                            <c:if test="${starAvg  eq  3 }" >★★★☆☆&nbsp&nbsp(3)</c:if>
@@ -850,7 +860,7 @@ p b {
 	                        <c:if test="${vs.index == 0}">
 	                           <label for="productOptionSet"> ${op.optionName}</label>
 	                           <select class='productOptionSet'  required>
-	                              <option value="">옵션을 선택해주세요</option>
+	                              <option value="0">옵션을 선택해주세요</option>
 	                              <option value="${op.optionNo}">${op.optionValue}</option>
 	                        </c:if>
 	                        <c:if test="${op.optionName eq options[vs.index-1].optionName}">
@@ -861,7 +871,7 @@ p b {
 	                           
 	                           <label for="productOption2Set"> ${op.optionName}</label>
 	                           <select class='productOption2Set'  required>
-	                              <option class='productOption2Set' >옵션을 선택해주세요.</option>
+	                              <option value="0" class='productOption2Set' >옵션을 선택해주세요.</option>
 	                              <option value="${op.optionNo}">${op.optionValue}</option>
 	                        </c:if>
 	                        <c:if test="${vs.last}">
@@ -914,23 +924,34 @@ p b {
 		                           <br>
 		                   </div>
 	                   </c:if>
-                 
-                 
                   
                   </div>
                </div>
             </div>
-            <div class="totalPrice"></div>
+            <div class="totalPriceBox">
+<!--             	<span class="totalPrice"></span> -->
+
+<%-- 			<c:if test="${ tool eq null }"> --%>
+<!--             	<input type="text" class="totalPrice" readonly value="0" style="display:none"> -->
+<%--             </c:if> --%>
+            
+			
+            <c:if test="${ tool ne null }">
+            	<input type="text" class="totalPrice" readonly value="0">
+            </c:if>
+            
+            </div>
             <br>
-             <c:if test="${loginUser eq null}">
-            	<button type="button" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-             </c:if>	
-            	
-            <c:if test="${loginUser ne null}">
-            	<button type="submit" id="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
-           	</c:if>
-<!--            	 <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
-            	<button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+            
+<%--             <c:if test="${ loginUser eq null }"> --%>
+<!--             	<button type="button" id="buybtn" class="buybtn" onclick="javascript:loginArlet()"; style="display: inline-block; width: 60%;">구매하기</button> -->
+<%--             </c:if> --%>
+            
+<%--             <c:if test="${ loginUser ne null }"> --%>
+            	<button type="button" id="buybtn"  class="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
+<%--             </c:if> --%>
+<!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
+            <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
    
          </div>
       </main>
@@ -998,10 +1019,7 @@ p b {
       </c:forEach>
     </c:if>
     
-    
-<!--       <div class="DetailMoreBtn"> -->
-<!--          <a>상세정보 더보기</a> -->
-<!--       </div> -->
+
    </div>
       <br>
       
@@ -1011,12 +1029,14 @@ p b {
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
             <c:forEach	items="${ordList}" var="orders">
-<%--                <c:if test="${ orders >=  1 }"> --%>
-	               <div class="review_btn">
-	                  <a href="createReview.ma?productNo=${p.productNo}">
-	                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
-	               </div>
-<%--             </c:if>  --%>
+               <c:if test="${ orders >=  1 }">
+               		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}">
+		               <div class="review_btn">
+		                  <a href="createReview.ma?productNo=${p.productNo}">
+		                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
+		               </div>
+		            </c:if>
+            </c:if> 
             </c:forEach>   
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
@@ -1204,37 +1224,37 @@ p b {
    <%--                 </c:if> --%>
                   </div>
    				<c:set value="${p.productNo}" var="pNo"></c:set>
-                  <ul class="pageCustomer pagination justify-content-center">
-                      <c:if test="${ pi.currentPage > 1 }">
-                      <li class="page-item">
-                         <c:url var="goBack" value="${ loc }">
-                           <c:param name="page" value="${ pi.currentPage-1 }"></c:param>
-                           <c:param name="productNo" value="${pNo}"></c:param>
-                        </c:url>
-                        <a class="page-link" href="${ goBack }" aria-label="Previous">
-                           <span aria-hidden="true">&laquo;</span>
-                        </a>   
-                     </li>
-                     </c:if>
-                     <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-                           <c:url var="goNum" value="${ loc }">
-                           <c:param name="page" value="${ p }"></c:param>
-                           <c:param name="productNo" value="${pNo}"></c:param>
-                        </c:url>
-                          <li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
-                     </c:forEach>
-                     <c:if test="${ pi.currentPage < pi.maxPage }">
-                     <li class="page-item">
-                        <c:url var="goNext" value="${ loc }">
-                           <c:param name="page" value="${ pi.currentPage+1 }"></c:param>
-                           <c:param name="productNo" value="${pNo}"></c:param>
-                        </c:url>
-                        <a class="page-link" href="${ goNext }" aria-label="Next">
-                           <span aria-hidden="true">&raquo;</span>
-                        </a>
-                     </li>
-                     </c:if>
-                  </ul>
+	                  <ul class="pageCustomer pagination justify-content-center">
+	                      <c:if test="${ pi.currentPage > 1 }">
+	                      <li class="page-item">
+	                         <c:url var="goBack" value="${ loc }">
+	                           <c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+	                           <c:param name="productNo" value="${pNo}"></c:param>
+	                        </c:url>
+	                        <a class="page-link" href="${ goBack }" aria-label="Previous">
+	                           <span aria-hidden="true">&laquo;</span>
+	                        </a>   
+	                     </li>
+	                     </c:if>
+	                     <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+	                           <c:url var="goNum" value="${ loc }">
+	                           <c:param name="page" value="${ p }"></c:param>
+	                           <c:param name="productNo" value="${pNo}"></c:param>
+	                        </c:url>
+	                          <li class="page-item pageCustomer"><a class="page-link" href="${ goNum }">${ p }</a></li>
+	                     </c:forEach>
+	                     <c:if test="${ pi.currentPage < pi.maxPage }">
+	                     <li class="page-item">
+	                        <c:url var="goNext" value="${ loc }">
+	                           <c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+	                           <c:param name="productNo" value="${pNo}"></c:param>
+	                        </c:url>
+	                        <a class="page-link" href="${ goNext }" aria-label="Next">
+	                           <span aria-hidden="true">&raquo;</span>
+	                        </a>
+	                     </li>
+	                     </c:if>
+	                  </ul>
                </div>
             </div>
          </div>
@@ -1292,6 +1312,16 @@ p b {
    </div>
 
    <br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <%@ include file="../common/footer.jsp" %>
    <script>
    
    window.onload = function(){
@@ -1306,8 +1336,8 @@ p b {
       const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 //       const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
       const productOption2Set = document.querySelector(".productOption2Set"); //사이즈 선택 창
-      const buybtn = document.getElementById("buybtn");
-      const result = document.getElementById("productResult");
+      const buyBtn = document.querySelector(".buybtn");
+      const result = document.querySelectorAll(".productResult");
       const like = document.querySelector(".like");
       const productSet = document.querySelector(".productSet");
       const increase = document.querySelectorAll(".increase");   
@@ -1317,14 +1347,17 @@ p b {
       let productPrice = document.querySelectorAll(".productPrice");
       const cartCount = document.querySelector(".cartCount");
       let totalPrice1 = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-//       let totalPrice = document.querySelector(".totalPrice");
+      let totalPrice = document.querySelector(".totalPrice");
       
       
-      buybtn.addEventListener("click",function(){
-    	  if(${loginUser == null}){
-    		  alert("로그인 후 이용해주세요");
-    	  }
-      })
+      
+      function loginArlet(){
+		  swal("로그인 후 이용해주세요.", {
+			  buttons: false,
+			  timer: 1000,
+			});
+      }
+      
       
       $('.accordion_i_tit').click(function(){
          $('.accordion_i_cont').toggle(400);
@@ -1337,25 +1370,42 @@ p b {
       })
    
       
+      
+      
+    
+      
+      
 	      $(document).on("click",".btnbox",function(e){
+	    	 
 	         const increBtn = this.childNodes[2]; //증가버튼
 	         const decreBtn = this.childNodes[0]; //감소버튼
 	         const cartNum = this.childNodes[1];  //카트수량 
-	        
+	         const productPrice = this.childNodes[4];
+	         
+	         function cartNumber(a){
+	        	 a.value*totalPrice1
+	    		console.log(cartNum*totalPrice1);
+	    	};
+	          
+	         
 	         e.stopPropagation();    //이벤트 버블링 막기
+	         
 	         if(e.target === increBtn){
                   totalPrice1 = (this.childNodes[1].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                  this.childNodes[4].innerText=totalPrice1;
+                  productPrice.innerText=totalPrice1;
                   cartNum.value++;
+                  cartNumber(cartNum.value);
 	         } 
 	         if(e.target === decreBtn){
                  totalPrice1 = (this.childNodes[1].value*${total}-${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                 this.childNodes[4].innerText=totalPrice1;
+                 productPrice.innerText=totalPrice1;
                  cartNum.value--;
-                 cartNum.value--;
+                 cartNumber(cartNum.value);
+              
 		            if(cartNum.value < 1 ){
 		            	cartNum.value=1;
-		               this.childNodes[4].innerText=${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		            	totalPrice1 = (this.childNodes[1].value*${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		            	productPrice.innerText=totalPrice1;
 		            }
 	            
 	         }
@@ -1366,10 +1416,41 @@ p b {
 		         }
 	         }
 	         
-	         
+	         cal();
 	      })
-	  
-      
+	      
+	      
+	      
+	      if(productOptionSet == null){
+  	  		let productPrice = document.querySelector(".productPrice");
+  	  		productPrice.innerText=totalPrice1;
+		          $(document).on("click",".btnbox",function(e){
+		              const increBtn = this.childNodes[5]; //증가버튼
+		              const decreBtn = this.childNodes[1]; //감소버튼
+		              const cartNum = this.childNodes[3];  //카트수량 
+//		              e.stopPropagation();    //이벤트 버블링 막기
+		              if(e.target == increBtn){
+		                 totalPrice1 = (this.childNodes[3].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                 productPrice.innerText=totalPrice1;
+		              this.childNodes[3].value++;
+		              } 
+		              if(e.target == decreBtn){
+		                 totalPrice1 = (this.childNodes[3].value*${total}-${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                 productPrice.innerText=totalPrice1;
+		                 this.childNodes[3].value--;
+//		                  priceSet--;
+		                 if(cartNum.value < 1){
+		                    cartNum.value=1;
+		                    productPrice.innerText = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                 }
+		                 
+		     	 }
+					
+		              
+	      		})
+    
+    }
+	      
       
       const usersNo = '${loginUser.usersNo}';
       const divisionNo = '${p.productNo}';
@@ -1462,46 +1543,6 @@ p b {
       let opTextBox = []; 
       
       
-      if(productOptionSet == null){
-    	  		let productPrice = document.querySelector(".productPrice");
-    	  		productPrice.innerText=totalPrice1;
-		          $(document).on("click",".btnbox",function(e){
-		              const increBtn = this.childNodes[5]; //증가버튼
-		              const decreBtn = this.childNodes[1]; //감소버튼
-		              const cartNum = this.childNodes[3];  //카트수량 
-// 		              e.stopPropagation();    //이벤트 버블링 막기
-		              if(e.target == increBtn){
-		                 totalPrice1 = (this.childNodes[3].value*${total}+${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                 productPrice.innerText=totalPrice1;
-		              this.childNodes[3].value++;
-		              } 
-		              if(e.target == decreBtn){
-		                 totalPrice1 = (this.childNodes[3].value*${total}-${total}).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                 productPrice.innerText=totalPrice1;
-		                 this.childNodes[3].value--;
-// 		                  priceSet--;
-		                 if(cartNum.value < 1){
-		                    cartNum.value=1;
-		                    productPrice.innerText = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                 }
-		                 
-		     	 }
-		              
-	      		})
-      
-      }
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       if(productOption2Set != null){
          for(prOp of productOption2Set){
             productOp.unshift(prOp.innerText);
@@ -1545,7 +1586,7 @@ p b {
 		                  }
 		               }
 		            
-		            if(YN == "Y" && select.val()!="옵션을 선택해주세요."){
+		            if(YN == "Y" && select.val()!=0){
 		               productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		                        +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 		                                           +'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
@@ -1570,62 +1611,78 @@ p b {
 		                                        +'</div>'
 		                                         +'<br>'
 		                                     +'</div>');
+
 		               }
 		            
 		         }
 		       })
+		       
          }
        if(productOption2Set != null){
-           productOption2Set.addEventListener("change", function(){
-            const select =  $('.productOptionSet option:selected');
-            const select2 = $('.productOption2Set option:selected');
-               let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
-//                let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
-               const opSearch = document.getElementsByClassName('opSearch');
-               let YN = "Y";
-               for(let k=0; k<opSearch.length; k++){
-                  if(opSearch[k].innerText == optionName){
-                     alert("이미 선택한 옵션입니다.");
-                     YN = "N";
-                  }
-               }
-   
-            if(YN == "Y" && select2.val()!="옵션을 선택해주세요."){
-            productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
-                     +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-                                        +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
-                                        +'<input type="hidden" name="productNo" value="${tool.productNo}">'
-                                        +'<input type="hidden" name="productName" value="${tool.toolName}">'
-                                        +'<input type="hidden" name="productPrice" value="${total}">'
-                                        +'<input type="hidden" name="productOption" value='+select.val()+'>'
-                                        +'<input type="hidden" name="productOption2" value='+select2.val()+'>'
-                                        +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
-                                     +'</h4>'
-                                     +'<div>'
-                                        +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-                                           +'<button class="decrease" type="button">-</button>'
-                                           +'<input type="number" class="cartCount"'
-                                           +'   value="1" name="cartCount" min="1" readonly>'
-                                           +'<button class="increase" type="button">+</button>'
-                                           +'<button class="removeProudct" type="button" style="float: right;">'
-                                              +'<img src="resources/images/close.png" style="width: 10px;">'
-                                        +'<span>'
-                                        +'</button>'
-                                        +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
-                                        +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-                                     +'</div>'
-                                      +'<br>'
-                                  +'</div>');
-            }
+    	   let YN = "Y";
+	           productOption2Set.addEventListener("change", function(){
+	               const select =  $('.productOptionSet option:selected');
+	               const select2 = $('.productOption2Set option:selected');
+	                   let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
+	//                    let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
+	                   const opSearch = document.getElementsByClassName('opSearch');
+	   					console.log(select2.val());
+	                   for(let k=0; k<opSearch.length; k++){
+	                      if(opSearch[k].innerText == optionName){
+	                         alert("이미 선택한 옵션입니다.");
+	                         YN = "N";
+	                      }
+	       				
+	                if(YN == "Y" && select2.val() != 0){
+	                	
+	                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+	                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+	                                            +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
+	                                            +'<input type="hidden" name="productNo" value="${tool.productNo}">'
+	                                            +'<input type="hidden" name="productName" value="${tool.toolName}">'
+	                                            +'<input type="hidden" name="productPrice" value="${total}">'
+	                                            +'<input type="hidden" name="productOption" value='+select.val()+'>'
+	                                            +'<input type="hidden" name="productOption2" value='+select2.val()+'>'
+	                                            +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+	                                         +'</h4>'
+	                                         +'<div>'
+	                                            +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+	                                               +'<button class="decrease" type="button">-</button>'
+	                                               +'<input type="number" class="cartCount"'
+	                                               +'   value="1" name="cartCount" min="1" readonly>'
+	                                               +'<button class="increase" type="button">+</button>'
+	                                               +'<button class="removeProudct" type="button" style="float: right;">'
+	                                                  +'<img src="resources/images/close.png" style="width: 10px;">'
+	                                            +'<span>'
+	                                            +'</button>'
+	                                            +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
+	                                            +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+	                                         +'</div>'
+	                                          +'<br>'
+	                                      +'</div>');
+	                }
+	                cal()
+	        	}
+
          })
-       }else{
-          
-          
+         
+         
+         
+         
+         
+         
+         
+         
+         
        }
             
       
       $(document).ready(function() {
          var productNo = null;
+         
+        if(productOption2Set == null){
+        	document.getElementsByClassName("totalPrice")[0].style.display = "none";
+        }
          
          $(function(){
         	 if($(".reviews").length >= 6){
@@ -1644,6 +1701,161 @@ p b {
          
          
          
+         
+         productNo = $("input[name='productNo']").val();
+         var cartCount = $(".cartCount").val();
+         var productOption = $(".productOption").val();
+         var productOption2 = $(".productOption2").val();
+         var preorderNo = 0;
+         
+         var productNoValues=[];
+         var cartCountValues=[];
+         var productOptionValues=[];
+         var productOption2Values=[];
+         var usersNoValues=[];
+         
+         
+      if(usersNo != "" && productOption2Set != null){
+         $("#buybtn").click(function() {
+        	 if(document.getElementsByClassName("totalPrice")[0].value == 0 ){
+           		  swal("상품을 선택해주세요.", {
+           			  buttons: false,
+           			  timer: 1000,
+           			});
+       		  }else{
+                  $("input[name='productNo']").each(function(){
+                      productNoValues.push($(this).val());
+                   })
+                   
+                   $(".cartCount").each(function(){
+                      cartCountValues.push($(this).val());
+                   })
+                   
+                   $("input[name='productOption']").each(function(){
+                      productOptionValues.push($(this).val());
+                   })
+                   
+                   $("input[name='productOption2']").each(function(){
+                      productOption2Values.push($(this).val());
+                   })
+                   
+                   $("input[name='usersNo']").each(function(){
+                      usersNoValues.push($(this).val());
+                   })
+                   
+                   let count = 0;
+                   let str = '';
+                      for(i=0; i<productNoValues.length; i++){
+                         $.ajax({
+                             url: "goToPay.ma",
+                             async: false,
+                             data: {
+                               "productNo":productNoValues[i], 
+                               "cartCount":cartCountValues[i],
+                               "productOption":productOptionValues[i], 
+                               "productOption2":productOption2Values[i],
+                               "usersNo":usersNoValues[i],
+                            },
+                             success: preNo =>{
+                          	   if(i==0){
+      	                    	   str += "preorderNos="+preNo;
+                          	   }else{
+      	                    	   str += "&preorderNos="+preNo;
+                          	   }
+                             },
+                             error: allData => {
+                                console.log("error");
+                             }
+                         })
+                      }
+                     	location.href='${contextPath}/payDetail.ma?'+str;
+       			  
+       			  
+       		  }
+        	 
+
+             })
+      }else if(usersNo == ""){
+    	  $("#buybtn").click(function() {
+    		  swal("로그인 후 이용해주세요.", {
+    			  buttons: false,
+    			  timer: 1000,
+    			});
+		  })
+	  
+	  }
+         
+         
+      if(usersNo != "" && productOption2Set == null){
+    	 console.log(document.getElementsByClassName("productResultSet")[0]);
+         $("#buybtn").click(function() {
+        	 if(document.getElementsByClassName("productResultSet")[0] == undefined ){
+           		  swal("상품을 선택해주세요.", {
+           			  buttons: false,
+           			  timer: 1000,
+           			});
+       		  }else{
+                  $("input[name='productNo']").each(function(){
+                      productNoValues.push($(this).val());
+                   })
+                   
+                   $(".cartCount").each(function(){
+                      cartCountValues.push($(this).val());
+                   })
+                   
+                   $("input[name='productOption']").each(function(){
+                      productOptionValues.push($(this).val());
+                   })
+                   
+                   $("input[name='productOption2']").each(function(){
+                      productOption2Values.push($(this).val());
+                   })
+                   
+                   $("input[name='usersNo']").each(function(){
+                      usersNoValues.push($(this).val());
+                   })
+                   
+                   let count = 0;
+                   let str = '';
+                      for(i=0; i<productNoValues.length; i++){
+                         $.ajax({
+                             url: "goToPay.ma",
+                             async: false,
+                             data: {
+                               "productNo":productNoValues[i], 
+                               "cartCount":cartCountValues[i],
+                               "productOption":productOptionValues[i], 
+                               "productOption2":productOption2Values[i],
+                               "usersNo":usersNoValues[i],
+                            },
+                             success: preNo =>{
+                          	   if(i==0){
+      	                    	   str += "preorderNos="+preNo;
+                          	   }else{
+      	                    	   str += "&preorderNos="+preNo;
+                          	   }
+                             },
+                             error: allData => {
+                                console.log("error");
+                             }
+                         })
+                      }
+                     	location.href='${contextPath}/payDetail.ma?'+str;
+       		  }
+
+             })
+      }else if(usersNo == ""){
+    	  $("#buybtn").click(function() {
+    		  swal("로그인 후 이용해주세요.", {
+    			  buttons: false,
+    			  timer: 1000,
+    			});
+		  })
+	  
+	  }
+      
+      
+ 
          
           $("#cartbtn").click(function() {
               productNo = $("input[name='productNo']").val();
@@ -1691,8 +1903,16 @@ p b {
                           "productOption2":productOption2Values[i],
                           "usersNo":usersNoValues[i],
                        },
-                        success: preNo =>{
-                            count++;
+                        success: data =>{
+                        	const jsonString = JSON.stringify(data); // JSON 배열을 문자열로 변환
+                        	const values = jsonString.substring(1, jsonString.length - 1).split(","); // 문자열을 자르고 배열로 분할
+ 
+                        	const cart = values[1].trim().replace(/]/g, ''); // 두 번째 값 출력 (2)
+                        	console.log(cart);
+                        	
+                       		document.getElementById("cartCount").innerText = cart;
+                        	document.getElementById("cartCount").classList.add('cart-count');
+                        	preNo = count++;
                         },
                         error: allData => {
                            console.log("error");
@@ -1832,7 +2052,27 @@ p b {
              })
             })
       })
+      
    }
+   
+   
+   function cal(){
+	   const productPrices = document.getElementsByClassName('productPrice');
+	   const totalPrice = document.getElementsByClassName('totalPrice')[0];
+	   totalCost = 0;
+	   cost = 0;
+	   for(let price of productPrices){
+		   for(let i = 0; i < price.innerText.split(',').length; i++){
+			   if(i == 0){
+				   cost = 0;
+			   }
+			   cost += price.innerText.split(',')[i]; 
+		   }
+		   totalCost = totalCost*1 + cost*1;
+	   }
+	   totalPrice.value = totalCost*1;
+   }
+   
     </script> 
 </body>
 </html>

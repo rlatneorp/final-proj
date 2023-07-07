@@ -483,6 +483,30 @@ public class MarketService {
 		return mkDAO.selectMealKit(sqlSession);
 	}
 
+	public int selectReview(int orderNo, String nickName) {
+		return mkDAO.selectReview(sqlSession, orderNo, nickName);
+	}
+	
+	public int goToPay(Cart c) {
+		return mkDAO.goToPay(sqlSession, c);
+	}
+
+	public void atPointList(HashMap<String, Object> map) {
+		mkDAO.atPointList(sqlSession, map);	
+	}
+
+	public Attendance monthCheckUser(HashMap<String, Object> map) {
+		return mkDAO.monthCheckUser(sqlSession,map);
+	}
+
+	public void monthChecked(Attendance monthAt) {
+		mkDAO.monthChecked(sqlSession, monthAt);
+	}
+
+	public int selectViewToolCount() {
+		return mkDAO.selectViewToolCount(sqlSession);
+	}
+
 
 
 

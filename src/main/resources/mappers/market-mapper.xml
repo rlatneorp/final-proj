@@ -47,6 +47,27 @@
        values (#{u.usersId}, #{at.date}, #{at.dateStr}, to_char(sysdate, 'YYYY-MM-DD'), #{at.title})
    </insert>
    
+   <insert id="atPointList">
+   		insert into point 
+   		values (SEQ_POINT_NO.nextval, #{u.usersNo}, 1, #{u.point}, #{u.point}+10, sysdate)
+   </insert>
+   
+   <select id="monthCheckUser" resultMap="AttendanceResultSet">
+  		select *
+        from attendance
+              join users using(users_id)
+        where dateStr = to_char(sysdate, 'YYYY-MM-DD')
+            and users_id = #{u.usersId}
+            and check_day = to_char(last_day(sysdate),'dd')
+        	and sysdate = last_day(sysdate)
+   </select>
+   
+   
+   <insert id="monthAtPointList">
+   		insert into point
+   		values (seq_point_no.nextval, #{usersNo}, 1, #{point}, #{point}+1000, sysdate)
+   </insert>
+   
    
    <insert id="insertShipping">
         insert into shipping_address (USERS_NO, RECIPIENT, ADDRESS, HOME_PHONE, PHONE, SHIPPING_NO, SHIPPING_NAME)
@@ -396,13 +417,13 @@
    <select id="reviewAvg" resultType="_integer">
 	  select round(avg(review_Score))
 	  from review 
-	  where product_no = #{productNo} and review_status = 'Y'
+	  where product_no = #{productNo} and  order_no > 0 and review_status = 'Y'
    </select>
    
    <select id="reviewAvgDesc" resultMap="reviewResultSet">
    	  select *
       from review
-      where product_no = #{productNo} and review_status = 'Y'
+      where product_no = #{productNo} and order_no > 0 and review_status = 'Y'
       order by review_score desc, review_no desc
    </select>
    
@@ -419,7 +440,7 @@
       from (select *
            from review
            order by review_date desc)   
-      where product_no = #{productNo} and review_status = 'Y'
+      where product_no = #{productNo} and  order_no > 0  and review_status = 'Y'
    </select>
    
    <select id="selectImageList" resultMap="imageResultSet">
@@ -435,16 +456,24 @@
    
    
    <!-- 포인트 조회  -->
+<!--    <select id="selectPoint" resultType="_int"> -->
+<!--       <![CDATA[ -->
+<!--       SELECT POINT_CHANGE -->
+<!--       FROM ( -->
+<!-- 	    SELECT * -->
+<!-- 	    FROM point -->
+<!-- 	    WHERE USERS_NO = #{usersNo} -->
+<!-- 	    ORDER BY POINT_NO DESC -->
+<!-- 	    ) WHERE ROWNUM = 1 -->
+<!--  	  ]]>  -->
+<!--    </select> -->
+
    <select id="selectPoint" resultType="_int">
       <![CDATA[
-      SELECT POINT_CHANGE
-      FROM (
-	    SELECT *
-	    FROM point
-	    WHERE USERS_NO = #{usersNo}
-	    ORDER BY POINT_NO DESC
-	    ) WHERE ROWNUM = 1
-	  ]]>
+      SELECT POINT
+      FROM USERS
+	  WHERE USERS_NO = #{usersNo}
+ 	  ]]> 
    </select>
    
    <!-- 장바구니 상품에 대한 이미지 조회 -->
@@ -632,7 +661,7 @@
 <!-- 	</select> -->
 	
 	<select id="selectViewIngredient" resultMap="ingredientInfo" >
-		select * from ingredient
+		select * from ingredient where is_accept = 'Y'
 	</select>
 	
 	<select id="selectViewTool" resultMap="toolInfo" >
@@ -651,7 +680,9 @@
 		FETCH FIRST 8 ROWS ONLY
 	</select>
 	
-	
+	<select id="selectViewToolCount" resultType="_int">
+		select count(*) from tool
+	</select>
 	
 	<select id="selectDetailReview" resultType="map">
 		select *
@@ -701,6 +732,7 @@
 			    ) l ON l.division_no = p.product_no
 			    LEFT JOIN image img ON p.product_no = img.image_divide_no
 			    WHERE p.product_type IN (1, 3, 4)
+			    AND img.image_type in (3,4,5,6)
 			    AND l.division_count IS NOT NULL 
 			    AND l.division_count <> 0
 			    AND img.image_level = 0
@@ -818,7 +850,7 @@
 	</select>
 	
 	<select id="selectViewIngreCount" resultType="_int">
-		select count(*) from ingredient
+		select count(*) from ingredient where is_accept = 'Y'
 	</select>
 	
 <!-- 	<select id="selectPfood" resultMap="productList"> -->
@@ -947,6 +979,27 @@
 		where tool_name like '%${searchText}%'
 		</if>
 	</select>
+	
+	<select id="selReviewCount" resultType="_int">
+		select count(*) from review where order_no = #{orderNo} and review_writer = #{nickName}
+	</select>
+	   <insert id="goToPay">
+      <if test="preorderNo == 0">
+         insert all 
+         into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, seq_pre_no.nextval)
+           into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, seq_pre_no.currval)
+           select * from dual
+      </if>
+      <selectKey keyProperty="preorderNo" resultType="int" order="AFTER" >
+         select seq_pre_no.currval from dual
+      </selectKey>
+        <if test="preorderNo != 0">
+           insert all 
+         into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption}, #{cartCount}, #{preorderNo})
+           into cart values (get_cart, #{usersNo}, #{productNo}, #{productOption2}, #{cartCount}, #{preorderNo})
+           select * from dual
+        </if>   
+   </insert>
 	
 	
 </mapper>

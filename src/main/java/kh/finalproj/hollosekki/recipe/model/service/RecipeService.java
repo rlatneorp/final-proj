@@ -55,15 +55,15 @@ public interface RecipeService {
 
 	ArrayList<Recipe> mostRecipeList();
 
-	ArrayList<Recipe> searchRecipe(String word);
+	ArrayList<Recipe> searchRecipe(PageInfo pi, String word);
 
 	ArrayList<Image> searchImage();
 
-	ArrayList<Recipe> ingredientSearch(String ingredient);
+	ArrayList<Recipe> ingredientSearch(PageInfo pi, String ingredient);
 
-	ArrayList<Recipe> situationSearch(String situation);
+	ArrayList<Recipe> situationSearch(PageInfo pi, String situation);
 
-	ArrayList<Recipe> typeSearch(String type);
+	ArrayList<Recipe> typeSearch(PageInfo pi, String type);
 
 	int reviewWrite(Review re);
 
@@ -96,6 +96,24 @@ public interface RecipeService {
 	void deleteRecipeIngredient(int foodNo);
 
 	void updateIngredient(ArrayList<RecipeElement> reelList);
+
+	int insertRecipeBookmark(int usersNo, int divisionNo);
+
+	int deleteRecipeBookmark(int usersNo, int divisionNo);
+
+	int selectRecipeBookmark(int usersNo, int productNo);
+
+	ArrayList<Review> selectMyReviewList(PageInfo mpi, HashMap<String, Object> map);
+
+	int getSearchListCount(String word);
+
+	int getIngredientListCount(String ingredient);
+
+	int getSituationListCount(String situation);
+
+	int getTypeListCount(String type);
+
+	ArrayList<Recipe> mostClickRecipeList(PageInfo pi);
 
 
 

@@ -27,7 +27,7 @@ import kh.finalproj.hollosekki.users.model.service.UsersService;
 /**
  * Handles requests for the application home page.
  */
-@SessionAttributes({"loginUser"})
+@SessionAttributes({"loginUser", "cart"})
 @Controller
 public class HomeController {
 	
@@ -67,13 +67,13 @@ public class HomeController {
 		System.out.println(healtherList);
 		
 		// 식단 조회
-		ArrayList<Product> menuList = mkService.menuProductList();
+		ArrayList<Menu> menuList = eService.menuProductList();
 		model.addAttribute("mList", menuList);
 		
 		//잘 나가는 상품 조회 
 		ArrayList<Product> likeOrderByOne = mkService.selectLikeOrderBy();
 		model.addAttribute("likeOrderByOne", likeOrderByOne);
-		
+		System.out.println("likeOrderByOne"+ likeOrderByOne);
 		//밀키트 조회 
 		ArrayList<Product> mealKit = mkService.selectMealKit();
 		model.addAttribute("mealKit", mealKit);
@@ -82,6 +82,11 @@ public class HomeController {
 			Users u = (Users)model.getAttribute("loginUser");
 			Users loginUser = eService.login(u);
 			model.addAttribute("loginUser", loginUser);
+			
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+			
+			
 			if(loginUser != null) {
 				Image image = uService.selectImage(loginUser.getUsersNo());
 				model.addAttribute("image", image);

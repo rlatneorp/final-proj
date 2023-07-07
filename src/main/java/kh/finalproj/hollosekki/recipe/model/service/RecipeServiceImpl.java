@@ -140,8 +140,8 @@ public class RecipeServiceImpl implements RecipeService{
 	}
 	
 	@Override
-	public ArrayList<Recipe> searchRecipe(String word) {
-		return rDAO.searchRecipe(sqlSession, word);
+	public ArrayList<Recipe> searchRecipe(PageInfo pi, String word) {
+		return rDAO.searchRecipe(sqlSession, pi, word);
 	}
 	
 	@Override
@@ -150,18 +150,18 @@ public class RecipeServiceImpl implements RecipeService{
 	}
 	
 	@Override
-	public ArrayList<Recipe> ingredientSearch(String ingredient) {
-		return rDAO.ingredientSearch(sqlSession, ingredient);
+	public ArrayList<Recipe> ingredientSearch(PageInfo pi, String ingredient) {
+		return rDAO.ingredientSearch(sqlSession, pi, ingredient);
 	}
 	
 	@Override
-	public ArrayList<Recipe> situationSearch(String situation) {
-		return rDAO.situationSearch(sqlSession, situation);
+	public ArrayList<Recipe> situationSearch(PageInfo pi, String situation) {
+		return rDAO.situationSearch(sqlSession, pi, situation);
 	}
 	
 	@Override
-	public ArrayList<Recipe> typeSearch(String type) {
-		return rDAO.typeSearch(sqlSession, type);
+	public ArrayList<Recipe> typeSearch(PageInfo pi, String type) {
+		return rDAO.typeSearch(sqlSession, pi, type);
 	}
 	
 	@Override
@@ -242,5 +242,50 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public void updateIngredient(ArrayList<RecipeElement> reelList) {
 		rDAO.updateIngredient(sqlSession, reelList);
+	}
+
+	@Override
+	public int insertRecipeBookmark(int usersNo, int divisionNo) {
+		return rDAO.insertRecipeBookmark(sqlSession, usersNo, divisionNo);
+	}
+
+	@Override
+	public int deleteRecipeBookmark(int usersNo, int divisionNo) {
+		return rDAO.deleteRecipeBookmark(sqlSession, usersNo, divisionNo);
+	}
+
+	@Override
+	public int selectRecipeBookmark(int usersNo, int productNo) {
+		return rDAO.selectRecipeBookmark(sqlSession, usersNo, productNo);
+	}
+	
+	@Override
+	public ArrayList<Review> selectMyReviewList(PageInfo mpi, HashMap<String, Object> map) {
+		return rDAO.selectMyReviewList(sqlSession, mpi, map);
+	}
+	
+	@Override
+	public int getSearchListCount(String word) {
+		return rDAO.getSearchListCount(sqlSession, word);
+	}
+	
+	@Override
+	public int getIngredientListCount(String ingredient) {
+		return rDAO.getIngredientListCount(sqlSession, ingredient);
+	}
+	
+	@Override
+	public int getSituationListCount(String situation) {
+		return rDAO.getSituationListCount(sqlSession, situation);
+	}
+	
+	@Override
+	public int getTypeListCount(String type) {
+		return rDAO.getTypeListCount(sqlSession, type);
+	}
+	
+	@Override
+	public ArrayList<Recipe> mostClickRecipeList(PageInfo pi) {
+		return rDAO.mostClickRecipeList(sqlSession, pi);
 	}
 }

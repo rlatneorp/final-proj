@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 상품 구매내역</title>
 <style>
+#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
 .search {
 	position: relative;
@@ -115,7 +116,7 @@ th:first-child, td:first-child {
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -149,11 +150,7 @@ th:first-child, td:first-child {
 						<input type="button" value="조회" id="selectDate" style="width:70px;">
 					</div>
 				</div>
-				<br>
-<!-- 				<p class="info">- 주문이 <b>[상품준비중]</b>일 경우 취소 및 변경이 가능합니다.</p> -->
-<!-- 				<p class="info">- <b>[배송준비중]</b>은 배송이 준비 중인 상태이므로 배송 전 취소를 원하실 경우 고객센터로 문의 부탁드립니다.</p> -->
-<!-- 				<p class="info">- 제품 수령 후 교환/반품 신청은 배송 완료일 기준 7일 이내 부탁드립니다.</p> -->
-				<br>
+				<br><br>
 				<div id="tableDiv">
 					<table>
 						<thead>
@@ -187,17 +184,18 @@ th:first-child, td:first-child {
 											</c:if>
 											<td>${ol.productName }</td>
 											<td><fmt:formatDate value="${ol.orderDate }" pattern="yyyy-MM-dd"/></td>
+											
 											<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${ol.totalPrice}" />원</td>
 											<td>
-												<c:if test="${ !empty reviewList[status.index].reviewNo and ol.orderNo eq reviewList[status.index].orderNo }">
+												<c:if test="${ ol.reviewCount ne 0 }">
 													<b style="font-size: 16px;">작성 완료</b>
 												</c:if>
-												<c:if test="${ empty reviewList[status.index].reviewNo and ol.orderNo ne reviewList[status.index].orderNo }">
+												<c:if test="${ ol.reviewCount eq 0 }">
 													<c:if test="${ ol.productType eq 2 }">
-														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ ol.productNo }' + '&page=' + '${pi.currentPage}'">
+														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ ol.productNo }'">
 													</c:if>
 													<c:if test="${ ol.productType ne 2 }">
-														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/market_detail.ma?productNo=' + '${ ol.productNo }' + '&page=' + '${pi.currentPage}'">
+														<input type="button" value="후기 작성" class="write" onclick="location.href='${contextPath}/createReview.ma?productNo=' + '${ ol.productNo }'">
 													</c:if>
 												</c:if>
 											</td>
@@ -206,7 +204,7 @@ th:first-child, td:first-child {
 							</c:if>
 							<c:if test="${ empty orderList }">
 								<tr>
-									<td colspan="6" height="330">
+									<td colspan="6" height="315">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										<b>조회 된 구매내역이 없습니다.</b>
 									</td>
@@ -217,8 +215,8 @@ th:first-child, td:first-child {
 				</div>
 				<br><br>
 				<div style="margin:0 auto">
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 										<a class="page-link disabled" aria-label="Previous">
@@ -266,6 +264,10 @@ th:first-child, td:first-child {
 			</div>
 		</div>
 	</div>
+	
+	<br><br><br><br><br><br><br>
+	
+	<%@ include file="../common/footer.jsp" %>
 	
 	<script>
 		
@@ -401,7 +403,7 @@ th:first-child, td:first-child {
 	   //페이징 (start, end 처리)
 	   function goToPage(page) {
 		   if(document.getElementById('requestStart') == null) { //기간이 없으면 
-			   if(document.getElementById('requestWord') == null) {
+			   if(document.getElementById('requestWord').value == '') {
 				   const url = '${contextPath}/myPage_MyOrder.me?page=' + page;
 				   window.location.href = url;
 			   } else {
@@ -457,9 +459,5 @@ th:first-child, td:first-child {
 	</script>
 	
 	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
-	
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

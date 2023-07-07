@@ -8,6 +8,8 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 
+#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 .search {
 	position: relative;
 	width: 300px;
@@ -143,7 +145,7 @@ th:first-child, td:first-child {
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -169,7 +171,7 @@ th:first-child, td:first-child {
 						<tbody id="tbody">
 							<c:if test="${ empty list }">
 								<tr>
-									<td colspan="6" height="330">
+									<td colspan="6" height="390">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										등록한 배송지가 없습니다.
 									</td>
@@ -194,6 +196,10 @@ th:first-child, td:first-child {
 			</div>
 		</div>
 	</div>
+	
+	<br><br><br><br><br><br><br>
+	
+	<%@ include file="../common/footer.jsp" %>
 	
 	<script>
 	   //테이블에 마우스 올렸을 때 css
@@ -290,9 +296,5 @@ th:first-child, td:first-child {
 	</script>
 	
 	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
-	
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

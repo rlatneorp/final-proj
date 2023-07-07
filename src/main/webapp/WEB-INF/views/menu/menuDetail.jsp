@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <style>
 * {
@@ -54,9 +53,9 @@ html{
 	margin: 5px 20px;
 }
 
-.right {
-	width: 40%;
-}
+/* .right { */
+/* 	width: 40%; */
+/* } */
 
 .left {
 	width: 50%;
@@ -192,7 +191,7 @@ p b {
 /* 추천대상 */
 	#target{
 		width: 500px;
-		height: 200px;
+		height: 150px;
 		margin: auto;
 		background-color: lightgray;
 		border-radius: 10px;
@@ -207,7 +206,7 @@ p b {
 	}
 	
 	#target ul{
-		padding: 0 100px;
+		padding: 0 50px;
 	}
 	
 	#detailInfo{
@@ -260,12 +259,15 @@ p b {
 	.boardNo{width: 100px;}
 	.boardContent{width: 540px;}
 	.boardWrite{width: 150px;}
-	.boardDate{width: 210px;}
+	.boardTitle{width: 575px;}
+	.qnaAnswer{width: 100px;}
+	.qnaDate{width: 125px;}
 	.board{border-collapse: collapse; }
 	.boardTop{background-color: #B0DAFF;}
 	.line{border-bottom: 1px solid black; border-top: 1px solid black;}
-	.lineAll{height: 50px; cursor: pointer;}
+	.lineAll{height: 50px;}
 	.lineAll:hover{background-color: #19A7CE; color: white;}
+	.form-control{height: 35px;}
 	
 /* 	입력 박스 */
 	.inputTextBox{width:730px; height: 50px; margin: auto; position: relative;}
@@ -296,7 +298,7 @@ p b {
 	  font-weight: 500;
 	  color: #000;
 	  background-color: #B0DAFF;
-	  border: 1px solid black;
+ 	  border: 1px solid black;
 	  border-radius: 10px;
 	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 	  transition: all 0.3s ease 0s;
@@ -313,7 +315,7 @@ p b {
 	  font-weight: 500;
 	  color: #000;
 	  background-color: #lightgray;
-	  border: 1px solid black;
+ 	  border: 1px solid black; 
 	  border-radius: 10px;
 	  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 	  transition: all 0.3s ease 0s;
@@ -350,6 +352,7 @@ p b {
 .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
 .moCon{height: 150px; border-radius: 10px;}
 .moCon:hover{cursor: pointer;}
+.cut{white-space: nowrap; overflow: hidden; text-overflow:ellipsis;}
 
 /* 	페이지 */
 	.page_wrap {
@@ -453,6 +456,9 @@ p b {
 		color: rgb(68, 133, 215);
 	}
 	fieldset label {cursor: pointer;}
+	
+	#menu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+	.like{cursor: pointer;}
 </style>
 <body>
 <span>
@@ -462,6 +468,7 @@ p b {
 
 	<form action="${contextPath}" method="get">
 	<main id="order-wrap">
+	<input type="hidden" id="thisProductNo" value="${menu.foodProductNo}">
 		<!-- 구매창 컨테이너 -->
 		<div class="left">
 			<!-- 구매창 왼쪽 사진 넣는 곳 -->
@@ -469,11 +476,16 @@ p b {
 			<br>
 			<br>
 			<div id="userInfo">
-				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
-				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
+				<c:if test="${menuProfile eq null }">
+					<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				</c:if>
+				<c:if test="${menuProfile ne null }">
+					<img src="${contextPath}/resources/uploadFiles/${menuProfile.imageRenameName}" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				</c:if>
+				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">${menu.name}</p>
 			</div>
 		</div>
-		<div class="right">
+		<div class="right" style="width: 40%;">
 			<!-- like 유무 가리는 용도 -->
 <%-- 			<input type="hidden" id="likeYn" value="${ like }"> --%>
 			<!-- 상품 정보 -->
@@ -483,8 +495,17 @@ p b {
 				</div>
 				<div style="margin: auto; text-align: center;">
 				<br>
+					<c:set value="${menu.productPrice - (menu.productPrice * (menu.productSale * 0.01))}" var="price"/>
+					<div style="width: 300px; margin-left: 60px;">
+						<label style="font-size: 30px; color:gray; text-decoration: line-through lightgray 2px;">
+							<fmt:formatNumber value="${menu.productPrice}"/>원
+						</label>
+						<label style="font-size: 25px; color: red;">
+							&nbsp;&nbsp;<fmt:formatNumber value="${menu.productSale}"/>%<br>
+						</label>
+					</div>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
-						<fmt:formatNumber value="${menu.productPrice}"/>원
+						<fmt:formatNumber value="${price}"/>원
 					</h2>
 					&nbsp;&nbsp;
 					<c:if test="${ loginUser != null }">
@@ -495,22 +516,21 @@ p b {
 							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♡</h4>
 						</c:if>
 <!-- 						<h4 id="bookmark" class="bookmark" style="display: inline-block; font-size: 35px; color: #4485d7; "><i class="bi bi-bookmark"></i></h4> -->
-						
 					</c:if>
 				</div>
 				<div>
 					<div class="info_delivery_area">
                         <dl class="info_delivery">
                             <dt style="font-size: 20px; padding: 5px; margin-top: 20px;">
-                            	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;배송 | 3,000원 
+<!--                             	<img src="resources/images/delivery.png" alt="배송아이콘" style="width: 28px; vertical-align: -8px;"> -->
+<!--                             	&nbsp;배송 | 3,000원  -->
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
 						<dl class="info_point">
                             <dt style="font-size: 20px; padding: 5px;">
                             	<img src="resources/images/point.png" alt="포인트아이콘" style="width: 28px; vertical-align: -8px;">
-                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립) | 0,000원</p>
+                            	&nbsp;<p style="font-size: 15px; display: inline-block;">적립(구매가격의 0.5% 적립)</p>
                             </dt>
 							<hr style="margin: 0px;">
 						</dl>
@@ -521,9 +541,9 @@ p b {
 						<label>[필수] 수량을 선택해주세요.</label><br>
 						<div id="period" class="inputBox">
 							<label for="first">${menu.menuName} : </label>
-							<button type="button" id="decrease" onclick="decreaseClick()">-</button>
+							<button type="button" style="background: none;" id="decrease" onclick="decreaseClick()">-</button>
 							<div id="quantity" style="display: inline-block;">1</div>
-							<button type="button" id="increase" onclick="increaseClick()">+</button>
+							<button type="button" style="background: none;" id="increase" onclick="increaseClick()">+</button>
 						</div>
 						
 						<br>
@@ -531,7 +551,7 @@ p b {
 						<div id="productResult">
 							<div>
 								<h4 class="productName" style="color: #19A7CE; margin-left: 20px;">
-									총 상품 가격 : <label id="total"><fmt:formatNumber value="${menu.productPrice}"/>원</label>
+									총 상품 가격 : <label id="total"><fmt:formatNumber value="${price}"/>원</label>
 								</h4>
 							</div>
 							<br>
@@ -562,23 +582,22 @@ p b {
 
 	<div id="target">
 		<i id="pushPin" class="bi bi-pin-fill"></i>
-		<h2 style="padding: 30px 0 10px 100px;">추천대상</h2>
+		<h2 style="padding: 30px 0 10px 50px;">식단 설명</h2>
 		<ul>
-			<li>식단 관리가 필요하신 분</li>
-			<li>식단 관리가 필요하신 분</li>
-			<li>식단 관리가 필요하신 분</li>
+			<li>${menu.menuContent }</li>
 		</ul>
 	</div>
 	
 	<br>
 	
-	<p class="mid">상세 설명</p>
+	<p class="mid">식단</p>
 	
-	<br>
+	<c:set var="value" value="${mlList }"/>
+	
 	<div id="detailInfo">
 		<div class="detailInfoElem">
 			<i class="bi bi-calendar-check detailIcon"></i><br>
-			<p>1주일 치 식단을 기간별로 선택 가능</p>
+			<p>1주일 치 식단을 한번에</p>
 		</div>
 		
 		<div class="detailInfoElem">
@@ -596,10 +615,6 @@ p b {
 			<p>전문 영양사가 직접 구성한 식단</p>
 		</div>
 	</div>
-	
-	<p class="mid">식단</p>
-	
-	<c:set var="value" value="${mlList }"/>
 	
 	<div class="menuABCD">
 		<h2>1일차</h2>
@@ -973,10 +988,52 @@ p b {
 		</div>
 	</div>
 	
-	<br>
+	<br><br>
 	
-	<c:if test="${loginUser ne null && myReview ne 0 }">
-		<p class="mid">내가 쓴 후기</p>
+<!-- 	문의 -->
+	<p class="mid">문의</p>
+		<br>
+		<div id="qna">
+			<table class="board">
+				<tr class="boardTop">
+					<th class="line boardNo">No.</th>
+					<th class="line boardTitle">문의 제목</th>
+					<th class="line boardReviewWrite">작성자</th>
+					<th class="line qnaDate">날짜</th>
+					<th class="line qnaAnswer">문의 상태</th>
+				</tr>
+				<c:if test="${qnaCount eq 0}">
+					<tr>
+						<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br>해당 상품에 등록된 문의가 없습니다.</td>
+					</tr>
+				</c:if>
+				<c:if test="${qnaCount ne 0}">
+					<c:forEach items="${qList}" var="q">
+						<tr class="lineAll qnaLine">
+							<td class="line">${q.qnaNo}</td>
+							<td class="line">[${q.qnaType eq 1 ? "배송" : (q.qnaType eq 2 ? "결제" : (q.qnaType eq 3 ? "회원" : (q.qnaType eq 4 ? "상품" : "기타")))}] ${q.qnaTitle}</td>
+							<td class="line" id="${q.usersNo}">${q.nickName }</td>
+							<td class="line">${q.qnaDate }</td>
+							<td class="line">${q.answerContent eq null ? "답변 대기" : "답변 완료"}</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+			</table>
+		</div>
+		
+	<c:if test="${loginUser != null }">
+		<div class="qnaInputBox" style="margin-top: 10px;">
+			<button data-bs-toggle="modal" data-bs-target="#qnaModal" id="qnaIn" class="enter">문의 등록</button>
+			<input type="hidden" id="qnaId" value="${loginUser.nickName }">
+		</div>
+	</c:if>
+	
+	<br><br>
+	
+<!-- 	내가 쓴 후기 -->
+	<c:if test="${ loginUser ne null and myReview ne 0 }">
+		<p class="mid">내가 쓴 후기</p><br>
+		<p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 		<br>
 		<div id="qna">
 			<table class="board">
@@ -993,10 +1050,10 @@ p b {
 					</tr>
 				</c:if>
 				<c:if test="${myReview ne 0 }">
-					<c:forEach items="${ rList }" var="r">
+					<c:forEach items="${ mrList }" var="r">
 						<c:if test="${r.reviewWriter eq loginUser.nickName}">
-							<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')"</c:if>>
-								<td class="line" <c:if test="${re.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal"</c:if>>${ r.reviewNo }</td>
+							<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')" style="cursor: pointer;"</c:if>>
+								<td class="line">${ r.reviewNo }</td>
 								<td class="line">${ r.reviewScore eq 5 ? "★★★★★" : (r.reviewScore eq 4 ? "★★★★" : (r.reviewScore eq 3 ? "★★★" : (r.reviewScore eq 2 ? "★★" : "★"))) }</td>
 								<td class="line">${ r.reviewContent }</td>
 								<td class="line">${ r.reviewWriter }</td>
@@ -1007,10 +1064,51 @@ p b {
 				</c:if>
 			</table>
 		</div>
+		<br><br>
+		<div class="page_wrap">
+		   <div class="page_nation">
+		      <!-- 		이전 페이지로	 -->
+				<c:url var="goBack" value="${loc }">
+					<c:param name="myrepage" value="${mpi.currentPage - 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${mpi.currentPage > 1 }">
+					<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
+				</c:if>
+				
+		<!-- 		페이지 -->
+				<c:forEach begin="${ mpi.startPage }" end="${ mpi.endPage }" var="mp">
+					<c:url var="goNum" value="${loc }">
+						<c:param name="myrepage" value="${ mp }"></c:param>
+						<c:param name="repage" value="${rpi.currentPage}"></c:param>
+						<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+						<c:param name="page" value="${page}"></c:param>
+					</c:url>
+					<c:if test="${ mpi.currentPage eq mp }">
+						<a class="active">${ mp }</a>
+					</c:if>
+					<c:if test="${ !(mpi.currentPage eq mp) }">
+						<a href="${ goNum }" onclick="saveScrollPosition();">${ mp }</a>
+					</c:if>
+				</c:forEach>
+				
+				<c:url var="goNext" value="${loc }">
+					<c:param name="myrepage" value="${mpi.currentPage + 1 }"></c:param>
+					<c:param name="repage" value="${rpi.currentPage}"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${mpi.currentPage < mpi.endPage }">
+					<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
+				</c:if>
+		   </div>
+		</div>
 	</c:if>
 	<br><br><br>
-	<p class="mid">후기</p>
-	<br>
+	<p class="mid">후기</p><br>
+	<p style="margin-left: 43.5%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 	<div id="qna">
 		<table class="board">
 			<tr class="boardTop">
@@ -1022,12 +1120,12 @@ p b {
 			</tr>
 			<c:if test="${reviewCount eq 0 }">
 				<tr>
-					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br> 등록한 후기가 없습니다.</td>
+					<td colspan=5 style="font-weight: bolder; font-size: 20px;"><br> 등록된 후기가 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${reviewCount ne 0 }">
 				<c:forEach items="${ rList }" var="r">
-					<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')"</c:if>>
+					<tr class="lineAll" <c:if test="${r.reviewWriter eq loginUser.nickName }"> data-bs-toggle="modal" data-bs-target="#updateReviewModal" onclick="openReviewModal('${r.reviewNo}', '${r.reviewContent}', '${r.reviewScore}')" style="cursor: pointer;"</c:if>>
 						<td class="line">${ r.reviewNo }</td>
 						<td class="line">${ r.reviewScore eq 5 ? "★★★★★" : (r.reviewScore eq 4 ? "★★★★" : (r.reviewScore eq 3 ? "★★★" : (r.reviewScore eq 2 ? "★★" : "★"))) }</td>
 						<td class="line">${ r.reviewContent }</td>
@@ -1041,39 +1139,62 @@ p b {
 	<br><br>
 	<div class="page_wrap">
 	   <div class="page_nation">
-	      <a class="arrow prev" href="#"><i class="bi bi-chevron-left"></i></a>
-	      <a href="#" class="active">1</a>
-	      <a href="#">2</a>
-	      <a href="#">3</a>
-	      <a href="#">4</a>
-	      <a class="arrow next" href="#"><i class="bi bi-chevron-right"></i></a>
+	      <!-- 		이전 페이지로	 -->
+			<c:url var="goBack" value="${loc }">
+				<c:param name="repage" value="${rpi.currentPage - 1 }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
+				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+				<c:param name="page" value="${page}"></c:param>
+			</c:url>
+			<c:if test="${rpi.currentPage > 1 }">
+				<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
+			</c:if>
+			
+	<!-- 		페이지 -->
+			<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
+				<c:url var="goNum" value="${loc }">
+					<c:param name="repage" value="${p }"></c:param>
+					<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${ rpi.currentPage eq p }">
+					<a class="active">${ p }</a>
+				</c:if>
+				<c:if test="${ !(rpi.currentPage eq p) }">
+					<a href="${ goNum }" onclick="saveScrollPosition();">${ p }</a>
+				</c:if>
+			</c:forEach>
+			
+			<c:url var="goNext" value="${loc }">
+				<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
+				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+				<c:param name="page" value="${page}"></c:param>
+			</c:url>
+			<c:if test="${rpi.currentPage < rpi.endPage }">
+				<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
+			</c:if>
 	   </div>
 	</div>
 	<br>
 </div>
 <c:if test="${loginUser != null}">
-  <c:if test="${not empty oList}">
-    <div class="qnaInputBox">
-      <c:set var="canWriteReview" value="true" />
-      <c:forEach items="${oList}" var="o" varStatus="s">
-        <c:forEach items="${rList}" var="r">
-          <c:if test="${o.orderNo eq r.orderNo and r.reviewWriter eq loginUser.nickName}">
-            <c:set var="canWriteReview" value="false" />
-          </c:if>
-        </c:forEach>
-      </c:forEach>
-      <c:if test="${canWriteReview}">
-        <button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
-        <input type="hidden" id="reviewId" value="${loginUser.nickName}">
-        <c:forEach items="${oList}" var="o" varStatus="s">
-          <c:if test="${o.usersNo eq loginUser.usersNo}">
-            <input type="hidden" id="order" value="${o.orderNo}">
-          </c:if>
-        </c:forEach>
-      </c:if>
-    </div>
-  </c:if>
+	<c:if test="${ notReviewCount > 0 }">
+		<c:set var="foundReview" value="false" />
+		<c:forEach items="${ notReview }" var="n">
+			<c:if test="${!foundReview}">
+				<div class="qnaInputBox">
+					<button data-bs-toggle="modal" data-bs-target="#reviewModal" id="reviewIn" class="enter">등록</button>
+					<input type="hidden" id="reviewId" value="${loginUser.nickName}">
+					<input type="hidden" id="orders" value="${n.ORDER_NO}">
+				</div>
+				<c:set var="foundReview" value="true" />
+			</c:if>
+		</c:forEach>
+	</c:if>
 </c:if>
+
 <br><br>
 <br>
 
@@ -1087,7 +1208,12 @@ p b {
 			</div>
 			<div class="modal-body">
 				<div id="modalNick">
-					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					<c:if test="${menuProfile eq null }">
+						<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					</c:if>
+					<c:if test="${menuProfile ne null }">
+						<img src="${contextPath}/resources/uploadFiles/${menuProfile.imageRenameName}" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					</c:if>
 					<p style="font-weight: bold;">${menu.name}</p>
 				</div>
 				<div id="modalInfo">
@@ -1107,7 +1233,7 @@ p b {
 								<div class="col">
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray">
-											<h6 style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</a></h6>
+											<h6 style="font-weight: bold;"><a class="cut" style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</a></h6>
 											<img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" width="150px" height="100px" style="border-radius: 10px;">
 											<input type="hidden" value="${p.productNo}">
 										</div>
@@ -1126,7 +1252,7 @@ p b {
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">구매하시겠습니까?</h1>
+				<h1 class="modal-title fs-5" id="exampleModalLabel">하시겠습니까?</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body" id="">
@@ -1164,6 +1290,44 @@ p b {
 	</div>
 </div>
 
+<!-- 문의 등록 모달 -->
+<div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">문의 작성</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<br>
+			<form method="post" id="writeQna">
+				<div class="modal-body" id="qnaBody" style="text-align: left;">
+					<input type="hidden" name="productNo" value="${menu.foodProductNo }">
+					<input type="hidden" name="usersNo" value="${loginUser.usersNo }">
+					<input type="hidden" name="orderNo" id="orderNo">
+					
+					<select class="form-control" name="qnaType">
+						<option value="1">배송</option>
+						<option value="2">결제</option>
+						<option value="3">회원</option>
+						<option value="4">상품</option>
+						<option value="0">기타</option>
+					</select>
+					
+					<label style="margin-bottom: 5px;">문의 제목</label><br>
+					<input type="text" name="qnaTitle" placeholder=" 문의 제목을 입력하세요." style="margin-bottom: 15px; border: 1px solid black; height: 30px; width: 465px; border-radius: 5px;" required>
+					<br>
+					<label style="margin-bottom: 5px;">문의 내용</label>
+					<textarea id="qnaContent" style="width: 465px; height: 150px; border-radius: 10px; resize: none;" maxlength="100" placeholder="내용을 입력해주세요." name="qnaContent" required></textarea>
+				</div>
+				<div class="footer">
+					<button type="button" class="button btn-n" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="button btn-y" id="qnaWrite">작성하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <!-- 댓글 등록 모달 -->
 <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
@@ -1177,7 +1341,7 @@ p b {
 				<div class="modal-body" id="reviewBody">
 					<input type="hidden" name="productNo" value="${ menu.foodProductNo }">
 					<input type="hidden" name="reviewWriter" value="${ loginUser.nickName }">
-					<input type="hidden" name="orderNo" id="orderNo">
+					<input type="hidden" name="orderNo" id="orderNos">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewScore5">
 							<label for="reviewScore5">★</label>
@@ -1215,7 +1379,7 @@ p b {
 			<form method="post" id="updateReview">
 				<div class="modal-body" id="updateReviewBody">
 					<input type="hidden" name="reviewNo" id="reviewNo">
-					<input type="hidden" name="productNo" value="${recipe.foodNo}">
+					<input type="hidden" name="productNo" value="${menu.foodProductNo}" id="mNo">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
 							<label for="reviewUpdateScore5">★</label>
@@ -1229,6 +1393,7 @@ p b {
 							<label for="reviewUpdateScore1">★</label>
 					</fieldset>
 					<br><br>
+					* 수정할 내용을 입력해주세요.<br><br>
 					<textarea id="reviewContentUpdate" name="reviewContent" style="width: 400px; height: 150px; border-radius: 10px; resize: none;" maxlength="100" placeholder="내용을 입력해주세요."></textarea>
 				</div>
 				<div class="footer">
@@ -1240,8 +1405,9 @@ p b {
 	</div>
 </div>
 
-<br><br>
-<%@ include file="../common/footer.jsp" %>
+	<br><br><br><br><br>
+   <br><br>
+   <%@ include file="../common/footer.jsp" %>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
 <script>
@@ -1253,7 +1419,7 @@ p b {
 		if(parseQuan >= 2){
 			console.log(total);
 			quantity.innerText = parseQuan - 1;
-			var result = ${menu.productPrice} * quantity.innerText;
+			var result = ${price} * quantity.innerText;
 			
 			total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 		}
@@ -1265,7 +1431,7 @@ p b {
 		var total = document.getElementById('total');
 		
 		quantity.innerText = parseQuan + 1;
-		var result = ${menu.productPrice} * quantity.innerText;
+		var result = ${price} * quantity.innerText;
 		
 		total.innerText = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
 	}
@@ -1274,56 +1440,121 @@ p b {
 	const usersNo = '${loginUser.usersNo}';
 	
 	
+// 	function buybtn(){
+// 		const quantity = document.getElementById('quantity');
+// 		const buyMenuCount =document.getElementById('buyMenuCount');
+		
+// 		const buyMenuPrice = document.getElementById('buyMenuPrice');
+// 		const total = document.getElementById('total');
+		
+// 		buyMenuCount.innerText = quantity.innerText;
+// 		buyMenuPrice.innerText = total.innerText;
+		
+// 		console.log("quantity : " + buyMenuCount.innerText);
+// 		console.log("productNo : " + productNo);
+// 		console.log("usersNo : " + usersNo);
+		
+// 		$.ajax({
+//             url: "insertCart.ma",
+//             async: false,
+//             data: {
+//         		"productNo":productNo, 
+// 	        	"cartCount":buyMenuCount.innerText,
+// 	        	"usersNo":usersNo,
+// 	        },
+//             success: data =>{
+//         		console.log("success");
+//             },
+//             error: data => {
+//             	console.log("error");
+//             	 alert("카트 담기 실패");
+//             }
+//         }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
+// 	}
+
 	const buybtn = document.getElementById('buybtn');
-	buybtn.addEventListener('click', function(){
+	if(buybtn != null){
+		buybtn.addEventListener('click', function(){
 		const quantity = document.getElementById('quantity');
-		const buyMenuCount =document.getElementById('buyMenuCount');
-		
-		const buyMenuPrice = document.getElementById('buyMenuPrice');
-		const total = document.getElementById('total');
-		
-		buyMenuCount.innerText = quantity.innerText;
-		buyMenuPrice.innerText = total.innerText;
-		
-		console.log("quantity : " + buyMenuCount.innerText);
-		console.log("productNo : " + productNo);
-		console.log("usersNo : " + usersNo);
-		
-		$.ajax({
-            url: "insertCart.ma",
-            async: false,
-            data: {
-        		"productNo":productNo, 
-	        	"cartCount":buyMenuCount.innerText,
-	        	"usersNo":usersNo,
-	        },
-            success: data =>{
-        		console.log("success");
-            },
-            error: data => {
-            	console.log("error");
-            	 alert("카트 담기 실패");
-            }
-        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)
-		
-	})
+			const buyMenuCount =document.getElementById('buyMenuCount');
+			
+			const buyMenuPrice = document.getElementById('buyMenuPrice');
+			const total = document.getElementById('total');
+			
+			buyMenuCount.innerText = quantity.innerText;
+			buyMenuPrice.innerText = total.innerText;
+			
+			console.log("quantity : " + buyMenuCount.innerText);
+			console.log("productNo : " + productNo);
+			console.log("usersNo : " + usersNo);
+			
+			$.ajax({
+	            url: "insertCart.ma",
+	            async: false,
+	            data: {
+	        		"productNo":productNo, 
+		        	"cartCount":buyMenuCount.innerText,
+		        	"usersNo":usersNo,
+		        },
+	            success: data =>{
+	        		console.log("success");
+	            },
+	            error: data => {
+	            	console.log("error");
+	            	 alert("카트 담기 실패");
+	            }
+	        }) // 우선 장바구니에 담고 -> 구매하기버튼 누르면 구매페이지로 이동(cartNo 젤 최신꺼 들고가야함)	
+		})
+	}
 	
+// 	function cartbtn(){
+// 		const quantity = document.getElementById('quantity');
+// 		const cartMenuCount =document.getElementById('cartMenuCount');
+		
+// 		const cartMenuPrice = document.getElementById('cartMenuPrice');
+// 		const total = document.getElementById('total');
+		
+// 		cartMenuCount.innerText = quantity.innerText;
+// 		cartMenuPrice.innerText = total.innerText;
+		
+// 		console.log("quantity : " + cartMenuCount.innerText);
+// 		console.log("productNo : " + productNo);
+// 		console.log("usersNo : " + usersNo);
+		
+// 		$.ajax({
+// 	            url: "insertCart.ma",
+// 	            async: false,
+// 	            data: {
+// 	        		"productNo":productNo, 
+// 		        	"cartCount":cartMenuCount.innerText,
+// 		        	"usersNo":usersNo,
+// 		        },
+// 	            success: data =>{
+//             		console.log("success");
+// 	            },
+// 	            error: data => {
+// 	            	console.log("error");
+// 	            	 alert("카트 담기 실패");
+// 	            }
+// 			})
+// 	}
 	const cartbtn = document.getElementById('cartbtn');
-	cartbtn.addEventListener('click', function(){
-		const quantity = document.getElementById('quantity');
-		const cartMenuCount =document.getElementById('cartMenuCount');
-		
-		const cartMenuPrice = document.getElementById('cartMenuPrice');
-		const total = document.getElementById('total');
-		
-		cartMenuCount.innerText = quantity.innerText;
-		cartMenuPrice.innerText = total.innerText;
-		
-		console.log("quantity : " + cartMenuCount.innerText);
-		console.log("productNo : " + productNo);
-		console.log("usersNo : " + usersNo);
-		
-		$.ajax({
+	if(cartbtn != null){
+		cartbtn.addEventListener('click', function(){
+			const quantity = document.getElementById('quantity');
+			const cartMenuCount =document.getElementById('cartMenuCount');
+			
+			const cartMenuPrice = document.getElementById('cartMenuPrice');
+			const total = document.getElementById('total');
+			
+			cartMenuCount.innerText = quantity.innerText;
+			cartMenuPrice.innerText = total.innerText;
+			
+			console.log("quantity : " + cartMenuCount.innerText);
+			console.log("productNo : " + productNo);
+			console.log("usersNo : " + usersNo);
+			
+			$.ajax({
 	            url: "insertCart.ma",
 	            async: false,
 	            data: {
@@ -1332,14 +1563,22 @@ p b {
 		        	"usersNo":usersNo,
 		        },
 	            success: data =>{
-            		console.log("success");
+	            	console.log("data : " + data);
+	           		console.log("success");
+	           		const jsonString = JSON.stringify(data);
+	           		const values = jsonString.substring(1, jsonString.length - 1).split(",");
+	           		const cart = values[1].trim().replace(/]/g, '');
+	           		console.log(cart);
+	           		document.getElementById("cartCount").innerText = cart;
+	           		document.getElementById("cartCount").classList.add('cart-count');
 	            },
 	            error: data => {
 	            	console.log("error");
 	            	 alert("카트 담기 실패");
 	            }
 			})
-	})
+		})
+	}
 	
 	const moCons = document.getElementsByClassName('moCon');
 	for(const moCon of moCons){
@@ -1350,28 +1589,46 @@ p b {
 	}
 
 	const like = document.querySelector(".like");
+	const name = '${menu.name}';
+	const loginName = '${loginUser.usersName}';
 	
-	like.addEventListener("click", function() {
-	    if(like.innerText === '♡') {
-	        //찜이 안 되어 있으면 
-	        $.ajax({
-	        	url:'${contextPath}/insertLike.ma',
-	        	data:{
-	        		usersNo:usersNo,
-	        		divisionNo:productNo
-	        	},
-	        	success: data=> {
-	        		if(data == 'success') {
-	        			like.innerText = '♥';
-	        			swal({
-							 text: "해당 상품의 찜 등록이 완료되었습니다.",
-							 icon: "success",
-							 button: "확인",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 3000);
-	        		} else { //실패 시 
+	if(like != null){
+		like.addEventListener("click", function() {
+			if(name == loginName){
+				swal("내가 쓴 글은 찜할 수 없습니다.", {
+					  buttons: false,
+					  timer: 1000,
+				});
+			} else if(like.innerText === '♡') {
+		        //찜이 안 되어 있으면 
+		        $.ajax({
+		        	url:'${contextPath}/insertLike.ma',
+		        	data:{
+		        		usersNo:usersNo,
+		        		divisionNo:productNo
+		        	},
+		        	success: data=> {
+		        		if(data == 'success') {
+		        			like.innerText = '♥';
+		        			swal({
+								 text: "해당 상품의 찜 등록이 완료되었습니다.",
+								 icon: "success",
+								 button: "확인",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 3000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 찜 등록이 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		        	},
+		        	error:data=>{
 	        			swal({
 							 text: "해당 상품의 찜 등록이 실패했습니다.",
 							 icon: "error",
@@ -1379,129 +1636,127 @@ p b {
 		        		setTimeout(function() {
 		        			swal.close(); 
 		        		}, 2000);
-	        		}
-	        	},
-	        	error:data=>{
-        			swal({
-						 text: "해당 상품의 찜 등록이 실패했습니다.",
-						 icon: "error",
-						});
-	        		setTimeout(function() {
-	        			swal.close(); 
-	        		}, 2000);
-	        	}
-	        })
-	    } else { //찜 등록이 되어 있으면 
-	    	$.ajax({
-	    		url:'${contextPath}/deleteLike.ma',
-	    		data:{
-	    			usersNo:usersNo,
-	        		divisionNo:productNo
-	    		},
-	    		success: data => {
-	    			console.log(data);
-	    			if(data == 'success') {
-	    				like.innerText ='♡';
-	        			swal({
-							 text: "해당 상품의 찜 해제가 완료되었습니다.",
-							 icon: "success",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 2000);
-	        		} else { //실패 시 
-	        			swal({
-							 text: "해당 상품의 찜 해제가 실패했습니다.",
-							 icon: "error",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 2000);
-	        		}
-	    		},
-	    		error: data=>{
-	    			
-	    		}
-	    	})
-	    }
-	});
+		        	}
+		        })
+		    } else { //찜 등록이 되어 있으면 
+		    	$.ajax({
+		    		url:'${contextPath}/deleteLike.ma',
+		    		data:{
+		    			usersNo:usersNo,
+		        		divisionNo:productNo
+		    		},
+		    		success: data => {
+		    			console.log(data);
+		    			if(data == 'success') {
+		    				like.innerText ='♡';
+		        			swal({
+								 text: "해당 상품의 찜 해제가 완료되었습니다.",
+								 icon: "success",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 찜 해제가 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		    		},
+		    		error: data=>{
+		    			
+		    		}
+		    	})
+		    }
+		});
+	}
 	
 	const bookmark = document.querySelector('#bookmark');
-	console.log(bookmark.value);
-	bookmark.addEventListener('click', function(){
-		if(bookmark.value == 'noBookmark'){
-			$.ajax({
-				url: "insertBookmark.mn",
-				data:{
-	        		usersNo:usersNo,
-	        		divisionNo:productNo
-	        	},
-	        	success: data=> {
-	        		if(data == 'success') {
-	        			bookmark.innerHTML = '<i class="bi bi-bookmark-fill"></i>';
-	        			bookmark.value = 'bookmark';
-	        			swal({
-							 text: "해당 상품의 스크랩이 완료되었습니다.",
-							 icon: "success",
-							 button: "확인",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 3000);
-	        		} else { //실패 시 
-	        			swal({
+	
+	if(bookmark != null){
+		bookmark.addEventListener('click', function(){
+			if(name == loginName){
+				swal("내가 쓴 글은 스크랩할 수 없습니다.", {
+					  buttons: false,
+					  timer: 1000,
+				});
+			} else if(bookmark.value == 'noBookmark'){
+				$.ajax({
+					url: "insertBookmark.mn",
+					data:{
+		        		usersNo:usersNo,
+		        		divisionNo:productNo
+		        	},
+		        	success: data=> {
+		        		if(data == 'success') {
+		        			bookmark.innerHTML = '<i class="bi bi-bookmark-fill"></i>';
+		        			bookmark.value = 'bookmark';
+		        			swal({
+								 text: "해당 상품의 스크랩이 완료되었습니다.",
+								 icon: "success",
+								 button: "확인",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 3000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 스크랩에 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		        	},
+		        	error:data=>{
+		    			swal({
 							 text: "해당 상품의 스크랩에 실패했습니다.",
 							 icon: "error",
 							});
 		        		setTimeout(function() {
 		        			swal.close(); 
 		        		}, 2000);
-	        		}
-	        	},
-	        	error:data=>{
-	    			swal({
-						 text: "해당 상품의 스크랩에 실패했습니다.",
-						 icon: "error",
-						});
-	        		setTimeout(function() {
-	        			swal.close(); 
-	        		}, 2000);
-	        	}
-	        })
-		} else {
-			$.ajax({
-	    		url:"deleteBookmark.mn",
-	    		data:{
-	    			usersNo:usersNo,
-	        		divisionNo:productNo
-	    		},
-	    		success: data => {
-	    			console.log(data);
-	    			if(data == 'success') {
-	    				bookmark.innerHTML = '<i class="bi bi-bookmark"></i>';
-	    				bookmark.value = 'noBookmark';
-	        			swal({
-							 text: "해당 상품의 스크랩이 해제되었습니다.",
-							 icon: "success",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 2000);
-	        		} else { //실패 시 
-	        			swal({
-							 text: "해당 상품의 스크랩 해제에 실패했습니다.",
-							 icon: "error",
-							});
-		        		setTimeout(function() {
-		        			swal.close(); 
-		        		}, 2000);
-	        		}
-	    		},
-	    		error: data=>{
-	    		}
-	    	})
-		}
-	})
+		        	}
+		        })
+			} else {
+				$.ajax({
+		    		url:"deleteBookmark.mn",
+		    		data:{
+		    			usersNo:usersNo,
+		        		divisionNo:productNo
+		    		},
+		    		success: data => {
+		    			console.log(data);
+		    			if(data == 'success') {
+		    				bookmark.innerHTML = '<i class="bi bi-bookmark"></i>';
+		    				bookmark.value = 'noBookmark';
+		        			swal({
+								 text: "해당 상품의 스크랩이 해제되었습니다.",
+								 icon: "success",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		} else { //실패 시 
+		        			swal({
+								 text: "해당 상품의 스크랩 해제에 실패했습니다.",
+								 icon: "error",
+								});
+			        		setTimeout(function() {
+			        			swal.close(); 
+			        		}, 2000);
+		        		}
+		    		},
+		    		error: data=>{
+		    		}
+		    	})
+			}
+		});
+	}
 	
 // 	$(document).ready(function() {
 //     $(".cartbtn").click(function() {
@@ -1532,8 +1787,8 @@ p b {
 //     });
 // });
 	
-	const order = document.getElementById('order');
-	const orderNo = document.getElementById('orderNo');
+	const order = document.getElementById('orders');
+	const orderNo = document.getElementById('orderNos');
 	const reviewIn = document.getElementById('reviewIn');
 	const content = document.getElementById('reviewWrite');
 	const writeReview = document.getElementById('writeReview');
@@ -1556,6 +1811,7 @@ p b {
 			});
 		});
 	}
+
 	
 	const rNo = document.getElementById('reviewNo');
 	const score5 = document.getElementById('reviewUpdateScore5');
@@ -1564,9 +1820,10 @@ p b {
 	const score2 = document.getElementById('reviewUpdateScore2');
 	const score1 = document.getElementById('reviewUpdateScore1');
 	const updateContent = document.getElementById('reviewContentUpdate');
-	const updateForm = docuement.getElementById('updateReview');
-	const updateB = docuement.getElementById('update');
-	const deleteB = docuement.getElementById('reviewDelete');
+	const updateForm = document.getElementById('updateReview');
+	const updateB = document.getElementById('update');
+	const deleteB = document.getElementById('reviewDelete');
+	const mNo = document.getElementById('mNo');
 	
 	function openReviewModal(reviewNo, reviewContent, reviewScore) {
 	    rNo.value = reviewNo;
@@ -1584,7 +1841,78 @@ p b {
 	    }
 	  }
 	
+	updateB.addEventListener('click', () => {
+		if(updateContent.value == ''){
+			swal({
+	            text: "리뷰 내용을 입력해주세요.",
+	            icon: "error",
+	            button: "확인",
+	        });
+		} else {
+			scrollToSavedPosition();
+			updateForm.action = '${contextPath}/updateReview.mn';		
+			updateForm.submit();
+		}
+	});
+	reviewDelete.addEventListener('click', () => {
+		swal({
+		    text: '정말 삭제하시겠습니까?',
+		    icon: 'warning',
+		    buttons: ["취소", "삭제하기"]
+		}).then((yes) => {
+			if(yes){
+				location.href = '${contextPath}/deleteReview.mn?reviewNo=' + rNo.value + '&mNo=' + mNo.value;
+			}
+		});
+	});
 	
+	// 원래 위치 정보를 저장하는 함수
+	function saveScrollPosition() {
+	  sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop);
+	}
+
+	// 페이지 로드 후 저장된 위치로 스크롤하는 함수
+	function scrollToSavedPosition() {
+	  var scrollPosition = sessionStorage.getItem('scrollPosition');
+	  if (scrollPosition) {
+	    setTimeout(function() {
+	      window.scrollTo(0, scrollPosition);
+	      sessionStorage.removeItem('scrollPosition'); // 위치 정보 삭제
+	    }, 0);
+	  }
+	}
+
+	// 페이지 로드 시 저장된 위치로 스크롤
+	window.addEventListener('load', scrollToSavedPosition);
+	
+	const qnaWrite = document.getElementById('qnaWrite');
+	const writeQna= document.getElementById('writeQna');
+	const qnaBody = document.getElementById("qnaBody");
+	qnaWrite.addEventListener('click', function(){
+		const fNo = qnaBody.childNodes[1].value;
+		const nick = qnaBody.childNodes[3].value;
+		const qnaType = qnaBody.childNodes[7].value;
+		const qnaTitle = qnaBody.childNodes[12].value;
+		const qnaContent = qnaBody.childNodes[18].value;
+		
+		if(qnaTitle != null && qnaContent != null){
+			writeQna.action = '${contextPath}/insertQna.mn';
+			writeQna.submit();
+		}
+	})
+	
+	const qnaLine = document.querySelectorAll('.qnaLine');
+	for(const qline of qnaLine){
+		qline.addEventListener('click', function(){
+			const qnaNo = this.childNodes[1].innerText;
+			const usersNo = this.childNodes[5].id;
+			const productNo = document.getElementById('thisProductNo').value;
+			
+			console.log(this.childNodes[5].id);
+			
+			location.href='${contextPath}/QnAdetail.ma?usersNo=' + usersNo + '&productNo=' + productNo + '&qnaNo=' + qnaNo;
+		})
+	}
  </script> 
 
 </body>

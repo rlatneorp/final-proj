@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,10 +25,10 @@ import kh.finalproj.hollosekki.board.model.service.BoardService;
 import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
-import kh.finalproj.hollosekki.customer.model.vo.Customer;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 
+@SessionAttributes("cart")
 @Controller
 public class BoardController {
 
@@ -71,17 +72,16 @@ public class BoardController {
 		Board blist = bService.selectBoard(bId, yn);
 		
 		ArrayList<Users> AllUsersList = eService.AllUsersList();
-		
 		if(blist != null) {
 			model.addAttribute("blist", blist);
 			model.addAttribute("list", list);
 			model.addAttribute("page", page);
 			model.addAttribute("login", login);
 			model.addAttribute("aList", AllUsersList);
-
+			
 			return "detailFreeBoard";
 		} else {
-			throw new BoardException("占쌉시깍옙 占쏙옙회占쏙옙 占쏙옙占쏙옙占싹울옙占쏙옙占싹댐옙.");
+			throw new BoardException("게시글 열람에 실패했습니다.");
 		}
 		
 	}
@@ -93,7 +93,7 @@ public class BoardController {
 		ArrayList<Board> rlist = bService.selectReply(b.getProductNo());
 		
 		response.setContentType("application/json; charset=UTF-8");
-		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yy-MM-dd HH:mm");
 		Gson gson = gb.create();
 		try {
 			gson.toJson(rlist, response.getWriter());
@@ -133,7 +133,9 @@ public class BoardController {
 
 	
 	@RequestMapping("freeBoardWriting.bo")
-	public void freeBoardWrite(Model model,HttpSession session,@RequestParam(value="introContent",required=false) String introContent, @RequestParam(value="introTitle",required=false) String introTitle) {
+	@ResponseBody
+	public String freeBoardWrite(Model model,HttpSession session,@RequestParam(value="boardContent",required=false) String boardContent, 
+			@RequestParam(value="boardTitle",required=false) String boardTitle) {
 		Users u = (Users)session.getAttribute("loginUser");
 		int usersNo = 0;
 		
@@ -143,11 +145,12 @@ public class BoardController {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("usersNo", usersNo);
-		map.put("introContent", introContent);
-		map.put("introTitle", introTitle);
+		map.put("boardContent", boardContent);
+		map.put("boardTitle", boardTitle);
 		
-		bService.freeBoardWriting(map);
-		
+		int b = bService.freeBoardWriting(map);
+		System.out.println(b);
+		return b == 1 ? "success" : "fail"; 
 	}
 	
 	@RequestMapping("goToMyBoard.bo")
@@ -157,13 +160,13 @@ public class BoardController {
 		if(u != null) {
 			login = u.getNickName();
 		}
-		Board blist = bService.firstSelectBoard(login);
-		
+		Board bblist = bService.firstSelectBoard(login);
+		System.out.println(bblist);
 		response.setContentType("application/json; charset=UTF-8");
-		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm");
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yy-MM-dd HH:mm");
 		Gson gson = gb.create();
 		try {
-			gson.toJson(blist, response.getWriter());
+			gson.toJson(bblist, response.getWriter());
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
@@ -172,6 +175,13 @@ public class BoardController {
 	@RequestMapping("freeBoard.bo")
 	public String freeBoardSearch(@RequestParam(value="category", required=false) String category,@RequestParam(value="search", required=false) String search, HttpSession session, @RequestParam(value="page", required=false) Integer currentPage,
 			Model model) {
+		
+		Users u = (Users)session.getAttribute("loginUser");
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		if(currentPage == null) {
 			
 			currentPage = 1;
@@ -183,7 +193,7 @@ public class BoardController {
 		map.put("search", search);
 		
 		int	listCount = bService.getCategoryFreeCount(map);
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 
 		ArrayList<Board> list = bService.freeBList(pi, map);
 		model.addAttribute("list", list);
@@ -193,5 +203,114 @@ public class BoardController {
 		
 		return "freeBoard";
 	}
+	
+//	@RequestMapping("fileUpload.bo")
+//	public void fileUpload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		response.setContentType("text/html;charset=utf-8");
+//		PrintWriter out = response.getWriter();
+//		String realFolder = request.getSession().getServletContext().getRealPath("fileUpload");
+//		UUID uuid = UUID.randomUUID();
+//		
+//		String org_filename = file.getOriginalFilename();
+//		String str_filename = uuid.toString() + org_filename;
+//		
+//
+//		String filepath = realFolder + "\\" + str_filename;
+//		
+//		File f = new File(filepath);
+//		if (!f.exists()) {
+//			f.mkdirs();
+//		}
+//		file.transferTo(f);
+//		
+//		out.println("fileUpload/" + str_filename);
+//		out.close();
+//	}
+	
+	@RequestMapping("reWriteBoardInfo.bo")
+	public void reWrieteBoardInfo(HttpServletResponse response,@RequestParam(value="boardNo", required=false) Integer boardNo,
+			@RequestParam(value="nickName", required=false) String nickName,Model model) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("boardNo", boardNo);
+		map.put("nickName", nickName);
+		
+		Board bInfo = bService.reWrieteBoardInfo(map);
+		System.out.println(bInfo);
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yy-MM-dd HH:mm");
+		Gson gson = gb.create();
+		try {
+			gson.toJson(bInfo, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("bInfo", bInfo);
+	}
+	
+	@RequestMapping("reBoard.bo")
+	@ResponseBody
+	public String reWriteBoard(@RequestParam(value="boardNo", required=false) int boardNo,
+			@RequestParam(value="usersNo", required=false) int usersNo,
+			@RequestParam(value="boardTitle", required=false) String boardTitle,
+			@RequestParam(value="boardContent", required=false) String boardContent,
+			Model model) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("boardNo", boardNo);
+		map.put("usersNo", usersNo);
+		map.put("boardContent", boardContent);
+		map.put("boardTitle", boardTitle);
+		
+		int result = bService.reWriteBoard(map);
+		
+		return result == 1 ? "success" : "fail";
+	}
+	
+	@RequestMapping("deleteBoard.bo")
+	@ResponseBody
+	public String deleteBoardAndReply(HttpSession session, @RequestParam(value="boardNo", required=false) int boardNo,
+			@RequestParam(value="usersNo", required=false) int usersNo,
+		@RequestParam(value="reviewWriter", required=false) String reviewWriter) {
+		
+		int checkUsersNo = 0;
+		String isAdmin = null;
+		Users u = (Users)session.getAttribute("loginUser");
+		if(u != null) {
+			isAdmin = u.getIsAdmin();
+			checkUsersNo = u.getUsersNo();
+		}
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		if(isAdmin.equals('N') || usersNo == checkUsersNo) {
+			map.put("boardNo", boardNo);
+			map.put("usersNo", usersNo);
+			map.put("reviewWriter", reviewWriter);
+		}
+		
+		
+		int result1 = bService.deleteBoard(map);
+		bService.deleteReply(map);
+		
+		return result1 == 1 ? "success" : "fail";
+	}
+	
+	@RequestMapping("preDetailBoard.bo")
+	@ResponseBody
+	public Board preDetailBoard(@RequestParam(value="boardNo",required=false) Integer boardNo) {
+		Board result = bService.preDetailBoard(boardNo);
+		
+		return result;
+	}
+	
+	@RequestMapping("nextDetailBoard.bo")
+	@ResponseBody
+	public Board nextDetailBoard(@RequestParam(value="boardNo",required=false) Integer boardNo) {
+		Board result = bService.nextDetailBoard(boardNo);
+		
+		return result;
+	}
+	
 	
 }

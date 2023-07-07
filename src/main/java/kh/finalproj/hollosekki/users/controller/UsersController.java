@@ -44,7 +44,7 @@ import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.users.model.exception.UsersException;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
-@SessionAttributes({"loginUser"})
+@SessionAttributes({"loginUser", "cart"})
 @Controller
 public class UsersController {
 	
@@ -69,6 +69,12 @@ public class UsersController {
 		// �씠誘몄� 議고쉶 - 濡쒓렇�씤 議고쉶�븷�븣 �씠誘몄� 由щ꽕�엫, �냼�뀥�씠誘몄� 議곗씤�빐�꽌 媛��졇�샂
 		Users u = (Users) model.getAttribute("loginUser");
 		Users loginUser = null;
+		
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		if(u.getImageRenameName() != null) {
 			loginUser = eService.login(u);
 			model.addAttribute("loginUser", loginUser);
@@ -215,7 +221,7 @@ public class UsersController {
 		Users user = uService.selectInfo(u);
 		Image image = null;
 
-		if (file != null && !file.isEmpty()) { // �깉�뙆�씪 �뱾�뼱�샂
+		if (file != null && !file.isEmpty()) { // 새파일 들어옴
 			String[] returnArr = saveFile(file, request);
 
 			if (returnArr[1] != null) {
@@ -257,7 +263,7 @@ public class UsersController {
 			}
 		}
 
-		// �깉 �뙆�씪 �븞�뱾�뼱�샂
+		// 새파일 안들어옴
 		if (file.isEmpty()) {
 			Image existingImage = uService.selectImage(u.getUsersNo());
 			if (existingImage != null) {
@@ -332,6 +338,13 @@ public class UsersController {
 			@RequestParam(value = "searchType", required = false) Integer searchType,
 			@RequestParam(value = "searchTitle", required = false) String searchTitle) {
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
+		
+		Users u = (Users) model.getAttribute("loginUser");
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -467,6 +480,7 @@ public class UsersController {
 		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
 		
 		ArrayList<Review> reviewList = null;
+		int rCount = 0;
 		for(Orders order :orderList) {
 			//productName 媛��졇�삤湲�
 			int productNo = order.getProductNo();
@@ -483,12 +497,12 @@ public class UsersController {
 			if (menus != null) {
 				order.setProductName(menus.getMenuName());
 			}
+			 rCount = mkService.selectReview(order.getOrderNo(), users.getNickName());
+			 order.setReviewCount(rCount);
 			 
-//			reviewList = mkService.selectReview(productNo, users.getNickName());
 		}
 		
-		System.out.println("orderList : " + orderList);
-//		System.out.println(reviewList);
+		
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("orderList", orderList);
@@ -630,6 +644,7 @@ public class UsersController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
 		ArrayList<HashMap<String, Object>> list = uService.selectPoint(usersNo, pi);
+		System.out.println(list);
 		
 		// �꽭�뀡�뿉�꽌 �룷�씤�듃 �냼硫� �솗�씤 �뿬遺�瑜� 媛��졇�샂
 //	    boolean pointExpiryChecked = (boolean) model.getAttribute("pointExpiryChecked");
@@ -893,21 +908,19 @@ public class UsersController {
 		if(currentPage == null) {
 			currentPage = 1;
 		}
-		System.out.println("word : " + word);
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
+		Users users = (Users) model.getAttribute("loginUser");
 		String userNo = String.valueOf(usersNo);
 		
 		Properties prop = new Properties();
 		prop.setProperty("word", word);
 		prop.setProperty("usersNo", userNo);
-		
 		//�떦�뿰�엳 �럹�씠吏뺤쓣.... 
 		int listCount = 0; PageInfo pi = null; ArrayList<Map<String, Object>> orderSearchList = null;
 		if(start == null) { //�쟾泥� 議고쉶 
 			listCount = mkService.orderSearchCount(prop); //�떒�뼱 �엳�뒗 寃� 以�, �쟾泥� 議고쉶 
 			pi = Pagination.getPageInfo(currentPage, listCount, 10);
 			orderSearchList = mkService.orderSearch(prop, pi); //�떒�뼱 �엳�뒗 寃� 以� �럹�씠吏뺤쿂由ы븯�뿬 �쟾泥� 議고쉶
-			System.out.println("orderSearchList" + orderSearchList);
 		} else { //湲곌컙�씠 �뱾�뼱�삤硫�,
 			prop.setProperty("start", start);
 			prop.setProperty("end", end);
@@ -919,7 +932,7 @@ public class UsersController {
 			model.addAttribute("end", end);
 		}
 		
-		ArrayList<Orders> orderList = new ArrayList<>();
+		ArrayList<Orders> orderList = new ArrayList<>(); int rCount = 0;
 		for(Map<String, Object>  order : orderSearchList) {
 			//�븘�슂 �뜲�씠�꽣 : 二쇰Ц踰덊샇, 二쇰Ц���엯, �긽�뭹紐�, 二쇰Ц�궇吏�, 珥� 二쇰Ц湲덉븸 
 			Orders orders = new Orders();
@@ -938,14 +951,14 @@ public class UsersController {
 			Date orderDate = new Date(orderTimestamp.getTime());
 			orders.setOrderDate(orderDate);
 			orders.setTotalPrice(Integer.parseInt(order.get("ORDER_TOTAL_PRICE").toString()));
-			
+			orders.setProductNo(Integer.parseInt(order.get("PRODUCT_NO").toString()));
+			rCount = mkService.selectReview(orders.getOrderNo(), users.getNickName());
+			orders.setReviewCount(rCount);
 			orderList.add(orders);
 		}
 		
-		
 		model.addAttribute("pi", pi);
 		model.addAttribute("orderList", orderList);
-		System.out.println("ol : " + orderList);
 		return "myPage_MyOrder";
 	}
 	

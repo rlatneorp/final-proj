@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 포인트 관리</title>
 <style>
+	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 	#point{
 		width: 940px; height: 200px;
 		text-align: center;
@@ -38,7 +40,7 @@
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -72,17 +74,36 @@
 						</tr>
 					</thead>
 					<tbody id="tbody">
+						<c:if test="${ empty list }">
+							<tr>
+								<td colspan="4" height="215">
+									<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+									<b>포인트 내역이 없습니다.</b>
+								</td>
+							</tr>
+						</c:if>
 						<c:forEach items="${ list }" var="p">
 							<c:if test="${ p.USERS_NO != null }">
 								<tr>
-									<c:if test="${ p.POINT_TYPE == 2 }">
+									<c:if test="${ p.POINT_TYPE == 1 }">
 										<script>
 					                        var modifyDate = new Date("${p.MODIFY_DATE}");
-					                        modifyDate.setMonth(modifyDate.getMonth() + 6);
+					                        modifyDate.setMonth(modifyDate.getMonth() + 2);
 					                        var formattedDate = modifyDate.toISOString().split('T')[0];
 					                    </script>
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
-										<td>회원가입 축하 적립금</td>
+										<td>출석체크 적립</td>
+										<td class="extinction"><script>document.write(formattedDate);</script></td>
+										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
+									</c:if>
+									<c:if test="${ p.POINT_TYPE == 2 }">
+										<script>
+					                        var modifyDate = new Date("${p.MODIFY_DATE}");
+					                        modifyDate.setMonth(modifyDate.getMonth() + 1);
+					                        var formattedDate = modifyDate.toISOString().split('T')[0];
+					                    </script>
+										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
+										<td>관리자 지급 (이벤트 참여)</td>
 										<td class="extinction"><script>document.write(formattedDate);</script></td>
 										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
@@ -97,6 +118,17 @@
 										<td class="extinction"><script>document.write(formattedDate);</script></td>
 										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
+									<c:if test="${ p.POINT_TYPE == 4 }">
+										 <script>
+					                        var modifyDate = new Date("${p.MODIFY_DATE}");
+					                        modifyDate.setMonth(modifyDate.getMonth() + 12);
+					                        var formattedDate = modifyDate.toISOString().split('T')[0];
+					                    </script>
+										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
+										<td>회원가입 축하 포인트 지급</td>
+										<td class="extinction"><script>document.write(formattedDate);</script></td>
+										<td>+<fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
+									</c:if>
 									<c:if test="${ p.POINT_TYPE == 11 }">
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
 										<td>구매 포인트 차감</td>
@@ -104,6 +136,12 @@
 										<td><fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
 									</c:if>
 									<c:if test="${ p.POINT_TYPE == 12 }">
+										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
+										<td>이벤트 참여</td>
+										<td>-</td>
+										<td><fmt:formatNumber pattern="###,###,###">${ p.POINT_CHANGE - p.POINT_BEFORE }</fmt:formatNumber></td>
+									</c:if>
+									<c:if test="${ p.POINT_TYPE == 13 }">
 										<td>${ fn:split(p.MODIFY_DATE, ' ')[0] }</td>
 										<c:if test="${ p.POINT_CHANGE - p.POINT_BEFORE > -10 }">
 											<td>구매 포인트 소멸</td>
@@ -116,26 +154,13 @@
 									</c:if>
 								</tr>
 							</c:if>
-							<c:if test="${ p.USERS_NO == null }">
-								<tr>
-									<script>
-					                    var checkedDate = new Date("${p.CHECKED}");
-					                    checkedDate.setMonth(checkedDate.getMonth() + 2);
-					                    var formattedDate = checkedDate.toISOString().split('T')[0];
-					                </script>
-									<td>${ p.CHECKED }</td>
-									<td>출석체크 적립</td>
-									<td class="extinction"><script>document.write(formattedDate);</script></td>
-									<td>+10</td>
-								</tr>
-							</c:if>
 						</c:forEach>
 					</tbody>
 				</table>
 				<br><br>
-				<div>
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+				<div style="margin:0 auto">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 									<a class="page-link disabled" aria-label="Previous">
@@ -182,7 +207,6 @@
 		</div>
 	</div>
 	
-	<br><br><br><br><br><br><br><br>
 	<br><br><br><br><br><br><br>
 	
 	<%@ include file="../common/footer.jsp" %>

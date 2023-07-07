@@ -82,6 +82,9 @@
 	#sub{width: 130px; height: 50px; border-radius: 10px; border: 1px solid #B0DAFF; background-color: #B0DAFF; box-shadow: 0px 5px 0px 0px black; margin-left: 5px;}
 
 	textarea{white-space: pre-wrap;}
+	
+	#recipeMenu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+	
 </style>
 
 </head>
@@ -172,11 +175,11 @@
 				<div style="padding: 5px; display: none;" id="ingCopy" class="ingCopyC">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
 					<select class="recipeIngredient" onchange="change(this)">
-						<option selected disabled>재료 선택</option>
+						<option value="noneno" selected disabled>재료 선택</option>
 						<c:forEach items="${iList}" var="i">
 							<option value="${i.ingredientName}-${i.ingredientNo}">${i.ingredientName}</option>
 						</c:forEach>
-						<option value="임의" class="ingreWrite">재료 임의로 적기</option>
+						<option value="none" class="ingreWrite">재료 임의로 적기</option>
 					</select>
 					<input type="text" class="ingredientNum" maxlength="10">
 					<div style="padding: 0 1px 0 5px; display:inline-block">|</div>
@@ -185,8 +188,8 @@
 				<c:forEach items="${reList}" var="re">
 					<div style="padding: 5px; display: inline-block;" class="ingCopyC riBox">
 						<input type="text" class="hiddenText" style="display:none;" maxlength="10">
-						<select name="elementIngredient" class="recipeIngredient el" onchange="change(this)" >
-							<option value="none" disabled>재료 선택</option>
+						<select name="elementIngredient" class="recipeIngredient el" onchange="change(this)">
+							<option value="noneno" disabled>재료 선택</option>
 							<c:forEach items="${iList}" var="i">
 								<option value="${i.ingredientName}-${i.ingredientNo}" <c:if test="${re.elementNo eq i.ingredientNo }">selected</c:if>>${i.ingredientName}</option>
 							</c:forEach>
@@ -230,6 +233,7 @@
 									</span>
 									<input type="file" accept="image/*" class="form-control form-control-lg" name="orderFile" onchange="orderImage(this)" disabled>
 									<img class="orderImgPreview" src="${contextPath}/resources/uploadFiles/${oList.recipeRenameName}">
+									<input type="hidden" class="checkNum" value="1">
 									<input type="hidden" name="recipeOriginalName" value="${oList.recipeOriginalName}">
 									<input type="hidden" name="recipeRenameName" value="${oList.recipeRenameName}">
 								</div>
@@ -265,6 +269,7 @@
 								<img class="completeImgPreview" src="${contextPath}/resources/uploadFiles/${cList[0].imageRenameName}">
 								<i id="delete-${cList[0].imageRenameName}/${cList[0].imageLevel}" class="bi bi-trash3 comDelBtn"></i>
 								<input type="hidden" value="none" name="delComImg" class="delCom">
+								<input type="hidden" class="comCheck" value="1">
 							</div>
 						</div>
 					</c:if>
@@ -283,6 +288,7 @@
 									<img class="completeImgPreview" src="${contextPath}/resources/uploadFiles/${cList[1].imageRenameName}">
 									<i id="delete-${cList[1].imageRenameName}/${cList[1].imageLevel}" class="bi bi-trash3 comDelBtn"></i>
 									<input type="hidden" value="none" name="delComImg" class="delCom">
+									<input type="hidden" class="comCheck" value="1">
 								</div>
 							</div>
 						</c:if>
@@ -302,6 +308,7 @@
 									<img class="completeImgPreview" src="${contextPath}/resources/uploadFiles/${cList[2].imageRenameName}">
 									<i id="delete-${cList[2].imageRenameName}/${cList[2].imageLevel}" class="bi bi-trash3 comDelBtn"></i>
 									<input type="hidden" value="none" name="delComImg" class="delCom">
+									<input type="hidden" class="comCheck" value="1">
 								</div>
 							</div>
 						</c:if>
@@ -322,7 +329,7 @@
 	</div>
 </form>
 
-<br>
+<br><br><br><br>
 <%@ include file="../common/footer.jsp" %>
 
 <script>
@@ -369,8 +376,9 @@ delBtn.addEventListener('click', function(){
 // 재료 임의로 변경시 input으로 변경
 function change(element){
 	console.log(element.value);
-	if(element.value=="임의"){
+	if(element.value=="none"){
 		element.style.display = "none";
+		element.previousElementSibling.classList.add('el');
 		element.previousElementSibling.style.display = "inline-block";
 		element.previousElementSibling.setAttribute("name", "elementIngredient");
 		element.remove();
@@ -408,6 +416,8 @@ function ingredientRemove(){
 // 레시피 순서
 function orderImage(obj){
 	var imgid = obj.nextElementSibling;
+	obj.nextElementSibling.nextElementSibling.value ="1";
+	console.log(obj.nextElementSibling.nextElementSibling);
 	imgid.src = URL.createObjectURL(event.target.files[0]);
 	imgid.onload = function(){
 		URL.revokeObjectURL(imgid.src)
@@ -420,14 +430,16 @@ function orderImage(obj){
 const orderDelBtns = document.querySelectorAll('.orderDelBtn');
 for(const orderDelBtn of orderDelBtns){
 	orderDelBtn.addEventListener('click', function(){
+		
 		this.classList.replace('bi-trash3', 'bi-trash3-fill');
-		this.nextElementSibling.childNodes[1].childNodes[5].removeAttribute('src'); // 레시피 순서 사진 프리뷰
+		this.nextElementSibling.childNodes[1].childNodes[7].value= "0";
+		this.nextElementSibling.childNodes[1].childNodes[5].style.display="inline-block"; // 레시피 순서 사진 프리뷰
 		this.nextElementSibling.childNodes[1].childNodes[5].style.display = "none";
 		this.nextElementSibling.childNodes[1].childNodes[1].style.visibility = "visible" // [필수]
 		this.previousElementSibling.value= this.id.split('-')[1];// input type= hidden
 		this.nextElementSibling.childNodes[1].childNodes[3].disabled = false // input type=file
-		
-		console.log(this.nextElementSibling.childNodes[1].childNodes[3]);
+		console.log(this.nextElementSibling.childNodes[1].childNodes[7]);
+// 		console.log(this.nextElementSibling.childNodes[1].childNodes[3]);
 	})
 }
 
@@ -446,6 +458,8 @@ function orderPlus(){
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[9].childNodes[1].childNodes[1].style.visibility="visible"
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].remove();
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[5].remove();
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[7].value ="0";
+		console.log(document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[7]);
 		count++;
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[1].innerText=count;
 	}
@@ -463,6 +477,7 @@ function orderRemove(){
 // 완성된 이미지
 function comImageIns(obj){
 	var imgid = obj.nextElementSibling;
+	obj.parentElement.querySelectorAll('.comCheck')[0].value="1";
 	imgid.src = URL.createObjectURL(event.target.files[0]);
 	imgid.onload = function(){
 		URL.revokeObjectURL(imgid.src)
@@ -481,6 +496,7 @@ for(const comDelBtn of comDelBtns){
 		this.previousElementSibling.previousElementSibling.previousElementSibling.style.visibility = "visible";
 		this.previousElementSibling.previousElementSibling.disabled = false;
 		this.nextElementSibling.value = this.id.split('-')[1];
+		this.nextElementSibling.nextElementSibling.value="0";
 	})
 }
 
@@ -502,6 +518,8 @@ function comPlus(){
 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[7].remove();
 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[8].remove();
 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].style.height = "250px";
+			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value="0";
+			console.log(document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9]);
 			comCount++;
 		} else if(comCount == 2){
 			comAddPlace2.appendChild(comCopy.cloneNode(true));
@@ -512,6 +530,8 @@ function comPlus(){
 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[7].remove();
 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[8].remove();
 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].style.height = "250px";
+			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value="0";
+			console.log(document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value);
 			comCount++;
 		}
 	}
@@ -564,31 +584,40 @@ sub.addEventListener('click', function(){
 	const inn = document.getElementsByClassName('inn');
 	let ri = false;
 	for(let i in riBox){
-		if(el[i].value=="none" || inn[i].value==""){
+		if(el[i].value=="noneno" || el[i].value=="" || inn[i].value==""){
 			ri = true;
 		}
 	}
 	
+	const rBox = document.getElementsByClassName('recipeBox');
 	const roCons = document.getElementsByClassName('recipeOrderContent');
 	const orderImgPreview = document.getElementsByClassName('orderImgPreview');
+	const checkNum = document.getElementsByClassName('checkNum');
 	let roc = false;
-	for(let i in roCons){
-		if(roCons[i].value=="" || orderImgPreview.src == undefined){
-			roc = true;
+	
+	for(let j in rBox){
+		console.log(orderImgPreview[j].src);
+		if(roCons[j].value=="" || checkNum[j].value=="0"){
+			roc=true;
 		}
-// 		console.log(orderImgPreview[i].src);
+	}
+	
+	const completeImgPreview = document.getElementsByClassName('completeImgPreview');
+	const comCheck = document.getElementsByClassName("comCheck");
+	let ci = false;
+	
+	
+	for(let i in completeImgPreview){
+		console.log(comCheck[i]);
+		if(comCheck[i].value=="0"){
+			ci = true;
+		}
 	}
 	
 	
-	const completeImgPreview = document.getElementsByClassName('completeImgPreview');
-// 	for(let i in completeImgPreview){
-// 		console.log(completeImgPreview[i].src);
-// 	}
-	
-	
-	if(document.querySelector('#title').value.trim()==""){
+	if(document.getElementById('title').value.trim()===""){
 		alert('레시피 이름을 작성해주세요.');
-	} else if(document.querySelector('#recipeInfo').value.trim()==""){
+	} else if(document.querySelector('#recipeInfo').value.trim()===""){
 		alert('레시피에 대해 적어주세요.');
 	} else if(ri){
 		alert('재료를 채워주세요.');

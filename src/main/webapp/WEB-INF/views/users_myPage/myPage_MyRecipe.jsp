@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 내 레시피</title>
 <style>
+#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
 .search {
 	position: relative;
@@ -81,7 +82,7 @@ th:first-child, td:first-child {
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -114,11 +115,27 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<c:if test="${ empty list }">
+							<c:if test="${ empty list and empty searchTitle and empty searchType }">
 								<tr>
-									<td colspan="6" height="305">
+									<td colspan="6" height="370">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										작성한 레시피가 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchTitle }">
+								<tr>
+									<td colspan="6" height="370">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchType }">
+								<tr>
+									<td colspan="6" height="370">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
 									</td>
 								</tr>
 							</c:if>
@@ -126,7 +143,7 @@ th:first-child, td:first-child {
 								<tr onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'">
 									<td>${ l.FOOD_NO }</td>
 									<td>${ l.RECIPE_NAME }</td>
-									<td>${ l.RECIPE_MODIFY_DATE }</td>
+									<td>${ fn:split(l.RECIPE_MODIFY_DATE, ' ')[0] }</td>
 									<td>${ l.RECIPE_COUNT }</td>
 									<td>${ l.RECIPEBOOKCOUNT }</td>
 									<td>${ l.RECIPELIKECOUNT }</td>
@@ -136,9 +153,9 @@ th:first-child, td:first-child {
 					</table>
 				</div>
 				<br><br>
-				<div>
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+				<div style="margin:0 auto">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 									<a class="page-link disabled" aria-label="Previous">
@@ -195,6 +212,10 @@ th:first-child, td:first-child {
 			</div>
 		</div>
 	</div>
+	
+	<br><br><br><br><br><br><br>
+	
+	<%@ include file="../common/footer.jsp" %>
 	
 	<script>
 	   //테이블에 마우스 올렸을 때 css
@@ -253,9 +274,5 @@ th:first-child, td:first-child {
 	</script>
 	
 	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
-	
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

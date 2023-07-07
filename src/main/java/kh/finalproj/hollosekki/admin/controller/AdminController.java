@@ -2,7 +2,6 @@ package kh.finalproj.hollosekki.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -756,7 +755,7 @@ public class AdminController {
 			}
 		}
 		if(igdList != null) {
-			model = adminBasic(model, request, null);
+			model = adminBasic(model, request, pi);
 			model.addAttribute("igdList", igdList);
 			return "adminIngredientManage";
 		}else {
@@ -808,13 +807,17 @@ public class AdminController {
 		resultIgd = aService.updateIngredient(igd);
 			
 		if(resultPd != 0 && resultIgd != 0 && imageChange.equals("Y")) {
+//			기존 이미지 존재여부 확인후 있다면 삭제
+			ArrayList<Image> imgList = selectAllImageList(igd.getIngredientNo(), 5, -1);
+			if(!imgList.isEmpty()) {
+				Image img = imgList.get(0);
+//				데이터 서버 이미지 삭제
+				deleteFile(img.getImageRenameName(), request);
+				
+//				DB서버 이미지 삭제
+				resultImgDel = aService.deleteImage(img);
+			}
 			
-//			데이터 서버 이미지 삭제
-			Image img = selectAllImageList(igd.getIngredientNo(), 5, 0).get(0);
-			deleteFile(img.getImageRenameName(), request);
-			
-//			DB서버 이미지 삭제
-			resultImgDel = aService.deleteImage(img);
 			
 //			이미지 저장
 			Image image = new Image();
@@ -959,12 +962,104 @@ public class AdminController {
 	@PostMapping("adminFoodUpdate.ad")
 	public String adminFoodUpdate(HttpServletRequest request,
 								  Model model,
-								  @ModelAttribute Food f) {
+								  @ModelAttribute Food f,
+								  @RequestParam("imageNo") ArrayList<Integer> imageNos,
+								  @RequestParam("imageFile") ArrayList<MultipartFile> oldImageFiles) {
 		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
+//		foodTable값 일부 수정
+		String foodTable = "";
+		for(String str:f.getFoodTable().split(",")) {
+			foodTable += str;
+		}
+		f.setFoodTable(foodTable);
 		
-		int resultF = aService.updateFood(f);
-		int resultPd = aService.updateProduct(f);
+		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
+
+		int resultImg = 0;
+		int resultDelImg = 0;
+		int resultF = 0;
+		int resultPd = 0;
+		
+		ArrayList<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
+		ArrayList<Image> oldImageList = selectAllImageList(f.getProductNo(), 3, -1);
+		ArrayList<Image> newImageList = new ArrayList<Image>();
+		
+		int countNos = 0;
+		int countImages = 0;
+		for(int i:imageNos) {
+			if(i == 0) {
+				countNos++;
+			}
+		}
+		for(MultipartFile imageFile: oldImageFiles) {
+			if(imageFile != null && !imageFile.isEmpty()) {
+				countImages++;
+				imageFiles.add(imageFile);
+			}
+		}
+		
+		int imageTurn = 0;
+//		(추가된 이미지 갯수 확인 후) 저장할 imageList에 옮겨담기
+		if(countNos == countImages) {
+			int i = 0;
+			for(int no:imageNos) {
+				if(no != 0) {
+					for(Image img:oldImageList) {
+						if(no == img.getImageNo()) {
+							newImageList.add(img);
+							break;
+						}
+					}
+				}else {
+//					이미지 저장
+					Image image = new Image();
+					MultipartFile imageFile = imageFiles.get(imageTurn);
+					imageTurn++;
+					if(imageFile != null && !imageFile.isEmpty()) {
+						
+						System.out.println(imageFile);
+						
+						String[] returnArr = saveFile(imageFile, request);
+						if(returnArr[1] != null) {
+							image = setImage(f.getProductNo(), 3, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 1);
+							if(i==0) {
+								image.setImageLevel(0);
+							}
+						}
+					}
+					newImageList.add(image);
+				}
+				i++;
+			}
+		};
+		
+//		기존 이미지 모두 삭제(imageNos에 없는 번호는, 파일도 삭제)
+		if(countImages == imageTurn) {
+			for(Image image : oldImageList) {
+//				db이미지정보 삭제
+				resultDelImg = aService.deleteImage(image);
+				
+//				로컬이미지파일 삭제 선택
+				String deleteable = "Y";
+				for(int no : imageNos) {
+					if(no == image.getImageNo()) {
+						deleteable = "N";
+					}
+				}
+				if(deleteable.equals("Y")) {
+					deleteFile(image.getImageRenameName(), request);
+				}
+			}
+		}
+		
+//		db에 새 이미지리스트 저장
+		for(Image image:newImageList) {
+			resultImg += aService.insertImage(image);
+		}
+		
+		
+		resultF = aService.updateFood(f);
+		resultPd = aService.updateProduct(f);
 		
 		if(resultF+resultPd == 2) {
 			model = adminBasic(model, request, null);
@@ -1003,6 +1098,13 @@ public class AdminController {
 		
 		Users user = (Users)session.getAttribute("loginUser");
 		f.setUsersNo(user.getUsersNo());
+		
+//		foodTable값 일부 수정
+		String foodTable = "";
+		for(String str:f.getFoodTable().split(",")) {
+			foodTable += str;
+		}
+		f.setFoodTable(foodTable);
 		
 //		foodContent값 합치기
 		f.setFoodContent(f.getFoodContent()+"@"+f.getFoodTarget()+"@"+f.getFoodTable()+"@"+f.getNutrient());
@@ -1135,14 +1237,12 @@ public class AdminController {
 		int resultImgDel = 0;
 		int resultImgIn = 0;
 		int upImageCount = 0;
-		System.out.println(t);
 		resultPd = aService.updateProduct(t);
 		
 		resultT = aService.updateTool(t);
 		
 		if(t.getProductOption().equals("Y") && t.getOptionTotal() != null) {
-			String[] delList = {t.getProductNo()+""};
-			resultOpDel = aService.deletesOptions(delList);
+			resultOpDel = aService.deleteOptions(t.getProductNo());
 			
 			ArrayList<Options> oList = new ArrayList<Options>();
 			for(String op:t.getOptionTotal()) {
@@ -1244,7 +1344,7 @@ public class AdminController {
 				if(imageFile != null && !imageFile.isEmpty()) {
 					String[] returnArr = saveFile(imageFile, request);
 					if(returnArr[1] != null) {
-						Image image = setImage(nowToolNo, 6, returnArr[0], imageFile.getOriginalFilename(), returnArr[1], 1);
+						Image image = setImage(nowToolNo, 6, imageFile.getOriginalFilename(), returnArr[1], returnArr[0], 1);
 						if(i==0) {
 							image.setImageLevel(0);
 						}
@@ -1528,6 +1628,7 @@ public class AdminController {
 									  HttpServletRequest request) {
 		int resultImg = 0; 
 		int result = aService.insertHealther(h);
+		System.out.println(h);
 		
 		if(result > 0) {
 //			이미지 저장
@@ -1551,17 +1652,23 @@ public class AdminController {
 	public String adminHealtherUpdate(@ModelAttribute Healther h,
 									  @RequestParam("imageFile") MultipartFile imageFile,
 									  HttpServletRequest request) {
+		System.out.println(h);
 		int result = aService.updateHealther(h);
 		int resultImgDel = 1;
 		int resultImg = 1;
 //		이미지 변경저장
 		if(h.getImageChange().equals("Y")) {
-//			데이터 서버 이미지 삭제
-			Image img = selectAllImageList(h.getUsersNo(), 8, 0).get(0);
-			deleteFile(img.getImageRenameName(), request);
-			
-//			DB서버 이미지 삭제
-			resultImgDel = aService.deleteImage(img);
+			ArrayList<Image> imgList = selectAllImageList(h.getUsersNo(), 8, 0);
+//			기존 이미지가 있다면
+			if(!imgList.isEmpty()) {
+				Image img = imgList.get(0);
+				
+//				데이터 서버 이미지 삭제
+				deleteFile(img.getImageRenameName(), request);
+				
+//				DB서버 이미지 삭제
+				resultImgDel = aService.deleteImage(img);
+			}
 			
 			if(resultImgDel > 0) {
 //				이미지 저장

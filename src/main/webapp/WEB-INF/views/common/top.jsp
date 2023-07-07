@@ -116,6 +116,14 @@
 	.cart:hover{background: #1f8acb; color: white;  transition: all 0.3s ease 0s;}
 	.menu-list{display: none; width: 90px; background: rgba(176, 218, 255, 0.4); margin: 5px;}
 	.menu-div:hover .menu-list{display: block;} 
+	
+	.cart-count{
+		width: 20px; height: 20px; border-radius: 50px;
+		font-size: 13px; font-weight: bold;
+		color: white;  background: red;
+		text-align: center;
+		margin-top: 8px; margin-left: -8px;}
+	
 </style>
 </head>
 <body>
@@ -126,7 +134,7 @@
 	</c:if>
 	<div class=top-top>
 		<div class="empty"></div>
-		<c:if test="${ loginUser == null }"><div class="top-text"></div></c:if>
+		<c:if test="${ loginUser == null }"><div class="top-text"> 회원가입 시 적립금 1000포인트를 드려요!</div></c:if>
 		<c:if test="${ loginUser != null }"><div class="top-text"><i class="fa-solid fa-utensils"></i>&nbsp; ${ loginUser.usersName } 님, 반갑습니다 &nbsp;<i class="fa-solid fa-utensils"></i></div></c:if>
 		<div class="empty">
 			<c:if test="${ loginUser == null }">
@@ -145,7 +153,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='${contextPath}/noticeBoard.cs'">공 지</div>
+							<div class="menu3" id="admin" onclick="location.href='${contextPath}/noticeBoard.cs'">공 지</div>
 							<div class="menu4"></div>
 						</div>
 						
@@ -153,7 +161,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='${contextPath}/recipeList.rc'">레시피</div>
+							<div class="menu3" id="recipeMenu" onclick="location.href='${contextPath}/recipeList.rc'">레시피</div>
 							<div class="menu4"></div>
 						</div>
 						
@@ -161,7 +169,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='${contextPath}/menuList.mn'">식 단</div>
+							<div class="menu3" id="menu" onclick="location.href='${contextPath}/menuList.mn'">식 단</div>
 							<div class="menu4"></div>
 						</div>
 					</div>
@@ -175,7 +183,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div id="menu-div">
-							<div class="menu3" id="menu3" onclick="location.href='${contextPath}/kitchenToolMain.ma'">쇼 핑</div>
+							<div class="menu3" id="shop" onclick="location.href='${contextPath}/kitchenToolMain.ma'">쇼 핑</div>
 							<div class="menu4"></div>
 								<div class="menu-list">
 									<div>list1</div>
@@ -187,7 +195,7 @@
 					<div class="menu" >
 						<div class="menu2"><i class="bi bi-record-fill"></i></div>
 						<div>
-							<div class="menu3" onclick="location.href='${contextPath}/freeBoard.bo'">게시판</div>
+							<div class="menu3" id="board" onclick="location.href='${contextPath}/freeBoard.bo'">게시판</div>
 							<div class="menu4"></div>
 						</div>
 						
@@ -233,7 +241,15 @@
 					</div>
 					<div style="width:80px"></div>
 					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
-					<c:if test="${ loginUser != null }"><div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div></c:if>
+					<c:if test="${ loginUser != null }">
+						<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+						<c:if test="${ cart != 0 }">
+							<div id="cartCount" class="cart-count">${ cart }</div>
+						</c:if>
+						<c:if test="${ cart == 0 }">
+							<div id="cartCount"></div>
+						</c:if>
+					</c:if>
 				</div>
 			</div>
 		</header>

@@ -8,6 +8,8 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 
+#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
+
 .search {
 	position: relative;
 	width: 300px;
@@ -99,7 +101,7 @@ th:first-child, td:first-child {
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -132,18 +134,41 @@ th:first-child, td:first-child {
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<c:if test="${ empty list }">
+							<c:if test="${ empty list and empty searchTitle and empty searchType }">
 								<tr>
-									<td colspan="5" height="260">
+									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										스크랩 내역이 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchTitle }">
+								<tr>
+									<td colspan="6" height="320">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchType }">
+								<tr>
+									<td colspan="6" height="320">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
 									</td>
 								</tr>
 							</c:if>
 							<c:forEach items="${ list }" var="l">
 								<c:if test="${ l.NUMBER_TYPE == 1 and !empty l.RECIPE_NAME }">
 									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
-										<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+										<td>
+											<c:if test="${ empty l.IMAGE_RENAMENAME }">
+												<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+											</c:if>
+											<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+												<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+											</c:if>
+										</td>
 										<td>레시피</td>
 										<td>${ l.RECIPE_NAME }</td>
 										<td>${ l.NICKNAME }</td>
@@ -152,7 +177,14 @@ th:first-child, td:first-child {
 								</c:if>
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
 									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/menuDetail.mn?mNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-bookMark-no="${l.BOOKMARK_NO}">
-										<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+										<td>
+											<c:if test="${ empty l.IMAGE_RENAMENAME }">
+												<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+											</c:if>
+											<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+												<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+											</c:if>
+										</td>
 										<td>식단</td>
 										<td>${ l.MENU_NAME }</td>
 										<td>${ l.NAME }</td>
@@ -164,9 +196,9 @@ th:first-child, td:first-child {
 					</table>
 				</div>
 				<br><br>
-				<div>
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+				<div style="margin:0 auto">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 									<a class="page-link disabled" aria-label="Previous">
@@ -229,6 +261,10 @@ th:first-child, td:first-child {
 			</div>
 		</div>
 	</div>
+	
+	<br><br><br><br><br><br><br>
+	
+	<%@ include file="../common/footer.jsp" %>
 	
 	<script>
 	   //테이블에 마우스 올렸을 때 css
@@ -346,10 +382,5 @@ th:first-child, td:first-child {
 	        }
 	    });
 	</script>
-	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
-	
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

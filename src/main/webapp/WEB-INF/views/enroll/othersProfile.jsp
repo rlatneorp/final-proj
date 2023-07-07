@@ -285,11 +285,11 @@
 					<c:forEach items="${lList}" var="l">
 						<c:if test="${l.FOLLOWING_USER_NO eq user.usersNo}">
 							<c:set var="followStatus" value="true" />
-							<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							<div class="unfollowDiv" data-user-no="${ user.usersNo }" onclick="reload()"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
 						</c:if>
 					</c:forEach>
 					<c:if test="${not followStatus}">
-					 	<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					 	<div class="unfollowDiv" data-user-no="${ user.usersNo }" onclick="reload()"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
 					</c:if>
 				</c:if>
 				
@@ -538,7 +538,7 @@
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
-									<div class="recipe-content div-box2" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ users.usersNo }' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
+									<div class="recipe-content div-box2" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ a.foodNo }' + '&page=' + '${ page }'">
 										<c:forEach items="${ recipeImageList}" var="ri">
 											<c:if test="${ ri.imageDivideNo == a.foodNo }">
 												<div class="recipe-img-div"><img class="recipe-img" src="${ contextPath }/resources/uploadFiles/${ri.imageRenameName}"></div>
@@ -613,7 +613,7 @@
 	<%@ include file="../common/footer.jsp"%>
 	
 	<!-- 팔로우, 팔로잉 모달 -->
-	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="following" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -680,12 +680,12 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="follower" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="followingLabel">팔로잉  ${ following }명</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
 				</div>
 				<div class="modal-body">
 				
@@ -729,7 +729,7 @@
 							                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
 							                </c:if>
 							                <c:if test="${ wo.NICKNAME ne loginUser.nickName }">
-							                	 <div class="unfollowDiv" data-user-no="${wo.USERS_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							                	 <div class="unfollowDiv" data-user-no="${wo.FOLLOWING_USER_NO}"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
 							                </c:if>
 							            </c:when>
 							        </c:choose>
@@ -739,7 +739,7 @@
 					                	<div class="unfollowDiv"><button class="modalUsers"></button></div>
 					                </c:if>
 					                <c:if test="${ wo.NICKNAME ne loginUser.nickName }">
-					                	 <div class="unfollowDiv" data-user-no="${wo.USERS_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					                	 <div class="unfollowDiv" data-user-no="${wo.FOLLOWING_USER_NO}"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
 					                </c:if>
 							    </c:if>
 							</div><br>
@@ -822,15 +822,15 @@
 		// 팔로잉 모달
 		// 언팔
 		function unfollowUser(button) {
-			const usersNo = '${loginUser.usersNo}';
 			var userNo = button.parentNode.dataset.userNo;
-		
+			console.log("언팔할사람 : "+userNo);
+			
 			$.ajax({
 			    type: 'POST',
 			    url: '${contextPath}/myPage_unFollow.me',
 			    data: { usersNo: usersNo, followingNo: userNo },
 			    success: function (data) {
-		     		 console.log('언팔로우 성공');
+		     		 console.log('언팔로우 성공?');
 					if (data == 'yes') {
 						var unfollowDiv = button.parentNode;
 						unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
@@ -840,12 +840,13 @@
 					console.log('언팔로우 실패');
 				}
 			});
+// 			location.reload();
 		}
 		
 		// 팔
 		function followUser(button) {
 			var userNo = button.parentNode.dataset.userNo;
-				console.log(userNo);
+// 				console.log(userNo);
 			  
 			$.ajax({
 				type: 'POST',
@@ -855,11 +856,13 @@
 					console.log('팔로우 성공');
 					var unfollowDiv = button.parentNode;
 			  		unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
+			  		
 				},
 			    error: function (data) {
 			 		console.log('실패');
 			    }
 			});
+// 			location.reload();
 		}
 		
 		// 1. 작성 레시피 더보기
@@ -975,6 +978,31 @@
 		        }
 		    });
 		});
+		
+		// 모달 닫을 때 새로고침
+		const reload = () => {
+			location.reload();
+		}
+		
+		// 모달 X버튼
+		const close = document.querySelectorAll('.btn-close');
+		close[0].addEventListener('click', () => {
+			reload();
+		});
+		close[1].addEventListener('click', () => {
+			reload();
+		});
+		close[2].addEventListener('click', () => {
+			reload();
+		});
+		
+		// ESC 누르면
+		window.addEventListener('keydown', (e) => {
+			if(e.keyCode == 27){
+				reload();
+			}
+		});
+		
 </script>
 </body>
 </html>

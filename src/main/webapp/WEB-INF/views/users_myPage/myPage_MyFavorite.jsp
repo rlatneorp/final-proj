@@ -7,6 +7,7 @@
 <title>마이페이지 - 좋아요</title>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
+#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
 .search {
 	position: relative;
@@ -99,7 +100,7 @@ th:first-child, td:first-child {
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -128,17 +129,32 @@ th:first-child, td:first-child {
 								<th width=150>사진</th>
 								<th>종류</th>
 								<th>제목</th>
-								<th>작성자</th>
 								<th>가격</th>
 								<th><input type="checkbox" id="selectAllCheckBox"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
-							<c:if test="${ empty list }">
+							<c:if test="${ empty list and empty searchTitle and empty searchType }">
 								<tr>
-									<td colspan="6" height="260">
+									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
 										찜 내역이 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchTitle }">
+								<tr>
+									<td colspan="6" height="320">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${ empty list and !empty searchType }">
+								<tr>
+									<td colspan="6" height="320">
+										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
+										검색 결과가 없습니다.
 									</td>
 								</tr>
 							</c:if>
@@ -146,50 +162,80 @@ th:first-child, td:first-child {
 								<c:if test="${ l.NUMBER_TYPE == 2 }">
 									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 2 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/market_detail.ma?productNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.IMAGE_RENAMENAME }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>식품 - 밀키트</td>
 											<td>${ l.FOOD_NAME }</td>
-											<td>-</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 1 and l.FOOD_TYPE == 1 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/market_detail.ma?productNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.IMAGE_RENAMENAME }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>식품 - 식재료</td>
 											<td>${ l.FOOD_NAME }</td>
-											<td>-</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 2 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/menuDetail.mn?mNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.IMAGE_RENAMENAME }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>식단</td>
 											<td>${ l.MENU_NAME }</td>
-											<td>${ l.NAME }</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 3 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/market_detail.ma?productNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.INGREIMAGE }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.INGREIMAGE }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.INGREIMAGE}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>식재료</td>
 											<td>${ l.INGREDIENT_NAME }</td>
-											<td>-</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
 									<c:if test="${ l.PRODUCT_TYPE == 4 }">
 										<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/market_detail.ma?productNo=' + '${ l.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'" data-like-no="${ l.LIKE_NO }">
-											<td><img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/></td>
+											<td>
+												<c:if test="${ empty l.IMAGE_RENAMENAME }">
+													<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>
+												</c:if>
+												<c:if test="${ !empty l.IMAGE_RENAMENAME }">
+													<img src="${ contextPath }/resources/uploadFiles/${l.IMAGE_RENAMENAME}" style="width: 100%; height: 100%"/>
+												</c:if>
+											</td>
 											<td>상품</td>
 											<td>${ l.TOOL_NAME }</td>
-											<td>-</td>
 											<td>${ l.PRODUCT_PRICE }원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
@@ -200,9 +246,9 @@ th:first-child, td:first-child {
 					</table>
 				</div>
 				<br><br>
-				<div>
-					<nav aria-label="Standard pagination example" style="float: center; margin-left: 420px;">
-						<ul class="pagination">
+				<div style="margin:0 auto">
+					<nav aria-label="Standard pagination example" style="float:center">
+						<ul class="pagination" style="justify-content:center">
 							<li class="page-item">
 								<c:if test="${ pi.currentPage <= 1 }">
 									<a class="page-link disabled" aria-label="Previous">
@@ -259,6 +305,10 @@ th:first-child, td:first-child {
 			</div>
 		</div>
 	</div>
+	
+	<br><br><br><br><br><br><br>
+	
+	<%@ include file="../common/footer.jsp" %>
 	
 	<script>
 	   //테이블에 마우스 올렸을 때 css
@@ -378,10 +428,5 @@ th:first-child, td:first-child {
 	    });
 	</script>
 	
-	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
-	
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

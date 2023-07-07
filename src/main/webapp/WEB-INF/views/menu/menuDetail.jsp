@@ -191,7 +191,7 @@ p b {
 /* 추천대상 */
 	#target{
 		width: 500px;
-		height: 200px;
+		height: 150px;
 		margin: auto;
 		background-color: lightgray;
 		border-radius: 10px;
@@ -206,7 +206,7 @@ p b {
 	}
 	
 	#target ul{
-		padding: 0 100px;
+		padding: 0 50px;
 	}
 	
 	#detailInfo{
@@ -574,23 +574,22 @@ p b {
 
 	<div id="target">
 		<i id="pushPin" class="bi bi-pin-fill"></i>
-		<h2 style="padding: 30px 0 10px 100px;">추천대상</h2>
+		<h2 style="padding: 30px 0 10px 50px;">식단 설명</h2>
 		<ul>
-			<li>식단 관리가 필요하신 분</li>
-			<li>식단 관리가 필요하신 분</li>
-			<li>식단 관리가 필요하신 분</li>
+			<li>${menu.menuContent }</li>
 		</ul>
 	</div>
 	
 	<br>
 	
-	<p class="mid">상세 설명</p>
+	<p class="mid">식단</p>
 	
-	<br>
+	<c:set var="value" value="${mlList }"/>
+	
 	<div id="detailInfo">
 		<div class="detailInfoElem">
 			<i class="bi bi-calendar-check detailIcon"></i><br>
-			<p>1주일 치 식단을 기간별로 선택 가능</p>
+			<p>1주일 치 식단을 한번에</p>
 		</div>
 		
 		<div class="detailInfoElem">
@@ -608,10 +607,6 @@ p b {
 			<p>전문 영양사가 직접 구성한 식단</p>
 		</div>
 	</div>
-	
-	<p class="mid">식단</p>
-	
-	<c:set var="value" value="${mlList }"/>
 	
 	<div class="menuABCD">
 		<h2>1일차</h2>

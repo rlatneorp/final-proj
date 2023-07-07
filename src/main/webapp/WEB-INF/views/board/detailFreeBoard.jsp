@@ -276,6 +276,8 @@
 	<script src="resources/summernotes/summernote-lite.js"></script>
 	<script src="resources/summernotes/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
+
+	
 	
 	
 	<div class="row text-center" style="width:1850px;">
@@ -594,7 +596,11 @@
 									reBtnsArr[i].innerText = '수정';
 									reBtnsArr[i].style.background = '#B0DAFF';
 								}else{
-									alert("댓글 수정 중 오류가 발생했습니다.");
+									swal({
+										 text: "댓글 수정 중 오류가 발생했습니다.",
+										 icon: "error",
+										 button: "확인",
+										});
 									location.reload();
 								}
 							}

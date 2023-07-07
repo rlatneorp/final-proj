@@ -97,7 +97,7 @@
 	
 	<insert id="freeBoardWriting">
 		insert into board
-		values (seq_freeboard_no.nextval, #{usersNo}, #{introTitle}, #{introContent}, sysdate, 'Y', default, default)
+		values (seq_freeboard_no.nextval, #{usersNo}, #{boardTitle}, #{boardContent}, sysdate, 'Y', default, default)
 	</insert>
 	
 	<select id="firstSelecteBoard" resultMap="BoardResultSet">

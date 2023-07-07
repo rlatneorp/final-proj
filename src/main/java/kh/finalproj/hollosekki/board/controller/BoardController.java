@@ -72,7 +72,6 @@ public class BoardController {
 		Board blist = bService.selectBoard(bId, yn);
 		
 		ArrayList<Users> AllUsersList = eService.AllUsersList();
-		
 		if(blist != null) {
 			model.addAttribute("blist", blist);
 			model.addAttribute("list", list);
@@ -134,7 +133,9 @@ public class BoardController {
 
 	
 	@RequestMapping("freeBoardWriting.bo")
-	public void freeBoardWrite(Model model,HttpSession session,@RequestParam(value="introContent",required=false) String introContent, @RequestParam(value="introTitle",required=false) String introTitle) {
+	@ResponseBody
+	public String freeBoardWrite(Model model,HttpSession session,@RequestParam(value="boardContent",required=false) String boardContent, 
+			@RequestParam(value="boardTitle",required=false) String boardTitle) {
 		Users u = (Users)session.getAttribute("loginUser");
 		int usersNo = 0;
 		
@@ -144,11 +145,12 @@ public class BoardController {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("usersNo", usersNo);
-		map.put("introContent", introContent);
-		map.put("introTitle", introTitle);
+		map.put("boardContent", boardContent);
+		map.put("boardTitle", boardTitle);
 		
-		bService.freeBoardWriting(map);
-		
+		int b = bService.freeBoardWriting(map);
+		System.out.println(b);
+		return b == 1 ? "success" : "fail"; 
 	}
 	
 	@RequestMapping("goToMyBoard.bo")
@@ -158,13 +160,13 @@ public class BoardController {
 		if(u != null) {
 			login = u.getNickName();
 		}
-		Board blist = bService.firstSelectBoard(login);
-		
+		Board bblist = bService.firstSelectBoard(login);
+		System.out.println(bblist);
 		response.setContentType("application/json; charset=UTF-8");
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yy-MM-dd HH:mm");
 		Gson gson = gb.create();
 		try {
-			gson.toJson(blist, response.getWriter());
+			gson.toJson(bblist, response.getWriter());
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
@@ -234,9 +236,7 @@ public class BoardController {
 		map.put("nickName", nickName);
 		
 		Board bInfo = bService.reWrieteBoardInfo(map);
-		
 		System.out.println(bInfo);
-		
 		response.setContentType("application/json; charset=UTF-8");
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yy-MM-dd HH:mm");
 		Gson gson = gb.create();

@@ -289,8 +289,6 @@ public class MarketController {
 		
 		int qnaCount = mkService.selectQnaCount(productNo);
 		PageInfo pi = Pagination.getPageInfo(currentPage, qnaCount, 5);
-		pi.setCurrentPage(1);
-		pi.setBoardLimit(1000);
 		
   
       Product p = mkService.selectProductSet(productNo);

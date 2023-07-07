@@ -66,7 +66,7 @@ public class MenuController {
 		}
 		
 		int listCount = mService.getListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
 		ArrayList<Menu> mList = new ArrayList<>();
 		ArrayList<Menu> searchList = new ArrayList<>();
 		ArrayList<Image> iList = new ArrayList<>();

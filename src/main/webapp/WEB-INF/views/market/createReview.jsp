@@ -214,7 +214,7 @@ dl dd div label{
 
 					<label for="content" style="font-weight: 800;">내용</label>
 					
-					<textarea class="reviewContent" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  maxlength="200" required="required"></textarea>
+					<textarea class="form-control" rows="5" name="reviewContent" id="content" placeholder="200자 이내로 리뷰를 작성해주세요."  maxlength="200" required="required"></textarea>
 
 				</div>
 				
@@ -248,6 +248,7 @@ dl dd div label{
 	<script>
 	window.onload = () =>{
 		const fileArea = document.querySelector('#fileArea');
+		const formControl = document.querySelector("#content");
 		const deleteAttm = document.querySelector('.deleteAttm');
 		const submit = document.querySelector(".submit");
 		document.querySelector(".addImage").addEventListener('click', (e)=>{
@@ -272,11 +273,15 @@ dl dd div label{
 		})
 		
 		submit.addEventListener("click", function(){
-			
-				if(document.querySelector(".reviewContent").innerText.trim()==""){
+				if(formControl.value.trim() == ""){
+					formControl.value = ""
+					formControl.focus();
 					alert("후기를 작성해주세요!");
-				}else if(document.querySelector(".reviewContent").innerText.trim()!=""){
-					location.href="market_detail.ma?productNo=${p.productNo}";
+					return false
+				}else if(formControl.value.trim() != "") {
+					submit.type = 'submt';
+					window.location.href="${ contextPath }/insertReview.ma";
+// 					location.href = '${contextPath}/selectBoard.bo?bId='+boardId+'&writer='+writer+'&page='+${pi.currentPage};
 				}
 			
 		})

@@ -579,6 +579,10 @@ public class MarketDAO {
 		sqlSession.insert("marketMapper.monthChecked", monthAt);
 	}
 
+	public int selectViewToolCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("marketMapper.selectViewToolCount");
+	}
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

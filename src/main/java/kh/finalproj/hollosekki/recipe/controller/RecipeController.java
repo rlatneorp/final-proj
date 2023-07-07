@@ -64,13 +64,12 @@ public class RecipeController {
 //	레시피 리스트 조회
 	@RequestMapping("recipeList.rc")
 	public String recipeList(@ModelAttribute Recipe r, Model model,
-			@RequestParam(value = "page", required = false) Integer page) {
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
+			@RequestParam(value = "page", required = false) Integer currentPage) {
+		if (currentPage == null) {
+			currentPage = 1;
 		}
 		int listCount = rService.getListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 12);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
 
 		ArrayList<Recipe> rList = new ArrayList<>();
 		ArrayList<Image> iList = new ArrayList<>();

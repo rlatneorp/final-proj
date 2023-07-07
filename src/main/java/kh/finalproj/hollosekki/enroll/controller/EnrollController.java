@@ -371,6 +371,7 @@ public class EnrollController {
 			ArrayList<Follow> followingLsit =  eService.followingLsit(usersNo);
 			model.addAttribute("followList", followList);
 			model.addAttribute("followingLsit", followingLsit);
+			System.out.println(followList);
 			
 			HttpSession session = request.getSession();
 			Users loginUser = (Users)session.getAttribute("loginUser");

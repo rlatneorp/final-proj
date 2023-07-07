@@ -41,6 +41,7 @@
 	<select id="getListCount" resultType="_int">
 		select count(*)
 		from recipe
+		where recipe_status = 'Y'
 	</select>
 	
 	<select id="selectRecipeList" resultMap="recipeResultSet">
@@ -55,7 +56,6 @@
 		select *
 		from image
 		where image_type = 2 and image_level = 0
-		order by image_no desc
 	</select>
 	
 	<select id="recipeDetail" resultMap="recipeResultSet">

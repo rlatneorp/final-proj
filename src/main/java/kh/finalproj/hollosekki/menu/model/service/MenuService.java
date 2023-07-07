@@ -73,5 +73,7 @@ public interface MenuService {
 
 	int insertQna(QA qna);
 
+	Image selectProfile(int usersNo);
+
 
 }

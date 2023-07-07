@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import kh.finalproj.hollosekki.common.Pagination;
@@ -34,6 +35,7 @@ import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.menu.model.vo.MenuList;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 
+@SessionAttributes("cart")
 @Controller
 public class MenuController {
 	@Autowired
@@ -58,8 +60,13 @@ public class MenuController {
 		
 		Users u = (Users)session.getAttribute("loginUser");
 		
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		int listCount = mService.getListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
 		ArrayList<Menu> mList = new ArrayList<>();
 		ArrayList<Menu> searchList = new ArrayList<>();
 		ArrayList<Image> iList = new ArrayList<>();
@@ -152,6 +159,8 @@ public class MenuController {
 		      }
 		}
 		
+		Image menuProfile = mService.selectProfile(usersNo);
+		
 		Menu menu = mService.menuDetail(mNo);
 		Image thum = mService.menuDetailThum(mNo);
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
@@ -197,6 +206,7 @@ public class MenuController {
 			mv.addObject("notReviewCount", notReview.size());
 			mv.addObject("qnaCount", qnaCount);
 			mv.addObject("qList", qList);
+			mv.addObject("menuProfile", menuProfile);
 			mv.setViewName("menuDetail");
 			
 			return mv;

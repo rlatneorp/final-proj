@@ -123,9 +123,9 @@ ul, li {
     display: none;   
 }
 
-.right {
-   width: 40%;
-}
+/* .right { */
+/*    width: 40%; */
+/* } */
 
 .left {
    width: 50%;
@@ -779,7 +779,7 @@ p b {
 	        </c:if>
 	        
          </div>
-         <div class="right">
+         <div class="right" style="width: 40%">
             <!-- like 유무 가리는 용도 -->
             <input type="hidden" id="likeYn" value="${like }">
             <!-- 상품 정보 -->
@@ -1310,6 +1310,16 @@ p b {
    </div>
 
    <br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <br><br><br><br><br>
+   <%@ include file="../common/footer.jsp" %>
    <script>
    
    window.onload = function(){
@@ -1885,8 +1895,18 @@ p b {
                           "productOption2":productOption2Values[i],
                           "usersNo":usersNoValues[i],
                        },
-                        success: preNo =>{
-                            count++;
+                        success: data =>{
+                        	const jsonString = JSON.stringify(data); // JSON 배열을 문자열로 변환
+
+                        	const values = jsonString.substring(1, jsonString.length - 1).split(","); // 문자열을 자르고 배열로 분할
+
+                        	const cart = values[1].trim().replace(/]/g, ''); // 두 번째 값 출력 (2)
+                        	
+                        	if(cart != null){
+                        		document.getElementById("cartCount").innerText = cart;
+                        	}
+                        	
+                        	preNo = count++;
                         },
                         error: allData => {
                            console.log("error");

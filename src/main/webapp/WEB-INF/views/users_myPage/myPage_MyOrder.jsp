@@ -116,7 +116,7 @@ th:first-child, td:first-child {
 <body>
 	<%@ include file="../common/top.jsp" %>
 	
-	<br><br><br><br><br><br><br>
+	<br><br>
 	
 	<div id="Div">
 		<div class="myPageDiv">
@@ -150,11 +150,7 @@ th:first-child, td:first-child {
 						<input type="button" value="조회" id="selectDate" style="width:70px;">
 					</div>
 				</div>
-				<br>
-<!-- 				<p class="info">- 주문이 <b>[상품준비중]</b>일 경우 취소 및 변경이 가능합니다.</p> -->
-<!-- 				<p class="info">- <b>[배송준비중]</b>은 배송이 준비 중인 상태이므로 배송 전 취소를 원하실 경우 고객센터로 문의 부탁드립니다.</p> -->
-<!-- 				<p class="info">- 제품 수령 후 교환/반품 신청은 배송 완료일 기준 7일 이내 부탁드립니다.</p> -->
-				<br>
+				<br><br>
 				<div id="tableDiv">
 					<table>
 						<thead>
@@ -268,6 +264,10 @@ th:first-child, td:first-child {
 			</div>
 		</div>
 	</div>
+	
+	<br><br><br><br><br><br><br>
+	
+	<%@ include file="../common/footer.jsp" %>
 	
 	<script>
 		
@@ -403,7 +403,7 @@ th:first-child, td:first-child {
 	   //페이징 (start, end 처리)
 	   function goToPage(page) {
 		   if(document.getElementById('requestStart') == null) { //기간이 없으면 
-			   if(document.getElementById('requestWord') == null) {
+			   if(document.getElementById('requestWord').value == '') {
 				   const url = '${contextPath}/myPage_MyOrder.me?page=' + page;
 				   window.location.href = url;
 			   } else {
@@ -459,9 +459,5 @@ th:first-child, td:first-child {
 	</script>
 	
 	
-	<br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br>
-	
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

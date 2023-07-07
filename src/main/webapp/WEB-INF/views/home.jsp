@@ -238,7 +238,7 @@ font-family: 'Noto Sans KR', sans-serif;
 				
 				<div class="carousel-item">
 					<div class="mainFood2" style="display: flex; justify-content: center;">
-						<c:forEach items="${ likeOrderByOne }" var="li" begin="4" end="8">
+						<c:forEach items="${ likeOrderByOne }" var="li" begin="4" end="7">
 									<div style="cursor:pointer; margin: 7px; width: 230px; height: 380px;" onclick="window.location.href='${contextPath}/market_detail.ma?productNo=${li.PRODUCT_NO }'">
 										<div class="img-div"> 
 											<img src="${ contextPath }/resources/uploadFiles/${ li.IMAGE_RENAMENAME }" class="rounded recipe-img">
@@ -269,12 +269,12 @@ font-family: 'Noto Sans KR', sans-serif;
 					</div>
 				</div>
 				<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
-					<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 10px; margin-bottom: 40px; z-index: 9999;">
+					<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 100px; margin-bottom: 40px; z-index: 9999;">
 		 				<img src="resources/images/leftBtn.png">
 					</div>	    
 				</button>
 				<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next"  style="width: 0%">
-					<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 10px; margin-bottom: 40px; z-index: 9999;">
+					<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 100px; margin-bottom: 40px; z-index: 9999;">
 		 				<img src="resources/images/rightBtn.png">
 					</div>
 				</button>	
@@ -326,7 +326,7 @@ font-family: 'Noto Sans KR', sans-serif;
 				
 				<div class="carousel-item">
 					<div class="mainFood2" style="display: flex; justify-content: center;">
-						<c:forEach items="${ mealKit }" var="mk" begin="4" end="8">
+						<c:forEach items="${ mealKit }" var="mk" begin="4" end="7">
 									<div style="cursor:pointer; margin: 7px; width: 230px; height: 380px;" onclick="goMilkit(this)">
 										<input type="hidden" value="${mk.FOOD_NAME }">
 										<input type="hidden" value="${mk.MENU_NAME }">
@@ -358,12 +358,12 @@ font-family: 'Noto Sans KR', sans-serif;
 				</div>
 			</div>
 		<button class="carousel-control-prev" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
-			<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 76px; margin-bottom: 40px; z-index: 9999;">
+			<div class="position-absolute bottom-50 start-0" style="padding-top: 8px; margin-left: 100px; margin-bottom: 40px; z-index: 9999;">
  				<img src="resources/images/leftBtn.png">
 			</div>	    
 		</button>
 		<button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next" style="width: 0% ">
-			<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 80px; margin-bottom: 40px; z-index: 9999;">
+			<div class="position-absolute bottom-50 end-0" style="padding-top: 8px; margin-right: 100px; margin-bottom: 40px; z-index: 9999;">
  				<img src="resources/images/rightBtn.png">
 			</div>
 		</button>	
@@ -428,21 +428,23 @@ font-family: 'Noto Sans KR', sans-serif;
 		<br><br>
 		<div class="oneCooker" style="display: flex; justify-content: center;"> 
 			<c:forEach items="${ hList }" var="h" varStatus="status">
-				<div style="margin: 10px; width: 180px;">
-					<div class="healther-img-div">
+				<div style="margin: 10px; width: 300px;">
+					<div class="healther-img-div" >
 						<img class="healther-img" src="${ contextPath }/resources/uploadFiles/${ h.IMAGE_RENAMENAME }"/>
 					</div>
-					<div class="healther-name">${ h.NAME }</div>
-					<div class="healther-title">${ h.TITLE }</div>
-					<div class="healther-career-div">
+					<div class="healther-name" style=" padding-bottom:-7px">${ h.NAME }</div>
+					<button class="personBtn d-inline" data-bs-toggle="modal" style="margin-bottom:25px" data-bs-target="#exampleModal${status.index}">식단보기</button>
+					<br>
+					<div class="healther-title"><b>${ h.TITLE }</b></div>
+					<div class="healther-career-div" style="height:70px;">
 						<c:forEach items="${fn:split(h.CAREER, ',')}" var="career">
 							<div class="healther-career">
 								• ${career}
 							</div>
 						</c:forEach>
 					</div>
-					
-					<button class="personBtn d-inline" data-bs-toggle="modal" data-bs-target="#exampleModal${status.index}">식단보기</button>
+					<br><br><br><br><br>
+<%-- 					<button class="personBtn d-inline" data-bs-toggle="modal" data-bs-target="#exampleModal${status.index}">식단보기</button> --%>
 				    
 				    <div class="modal fade" id="exampleModal${status.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				      <div class="modal-dialog modal-dialog-centered">

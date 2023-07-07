@@ -23,9 +23,9 @@ public class BoardService {
 	@Autowired
 	private BoardDAO bDAO;
 	
-	public ArrayList<Board> freeBoardView(Board b, PageInfo pi) {
-		return bDAO.freeBoardView(sqlSession, b, pi);
-	}
+//	public ArrayList<LongBoard> freeBoardView(LongBoard b, PageInfo pi) {
+//		return bDAO.freeBoardView(sqlSession, b, pi);
+//	}
 
 	public int getFreeBoardListCount(int i) {
 		return bDAO.getFreeBoardListCount(sqlSession, i);
@@ -94,6 +94,14 @@ public class BoardService {
 
 	public int deleteReply(HashMap<String, Object> map) {
 		return bDAO.deleteReply(sqlSession, map);
+	}
+
+	public Board preDetailBoard(int boardNo) {
+		return bDAO.preDetailBoard(sqlSession, boardNo);
+	}
+
+	public Board nextDetailBoard(int boardNo) {
+		return bDAO.nextDetailBoard(sqlSession, boardNo);
 	}
 
 

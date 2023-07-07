@@ -155,5 +155,9 @@ public class MenuDAO {
 		return sqlSession.insert("menuMapper.insertQna", qna);
 	}
 
+	public Image selectProfile(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("menuMapper.selectProfile", usersNo);
+	}
+
 
 }

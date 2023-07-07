@@ -476,8 +476,13 @@ p b {
 			<br>
 			<br>
 			<div id="userInfo">
-				<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
-				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">닉네임</p>
+				<c:if test="${menuProfile eq null }">
+					<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				</c:if>
+				<c:if test="${menuProfile ne null }">
+					<img src="${contextPath}/resources/uploadFiles/${menuProfile.imageRenameName}" style="width: 100px; height: 100px; border-radius: 50%" role="button" data-bs-toggle="modal" data-bs-target="#profileModal"><br>
+				</c:if>
+				<p role="button" data-bs-toggle="modal" data-bs-target="#profileModal" id="nickBtn" class="d-inline-block">${menu.name}</p>
 			</div>
 		</div>
 		<div class="right">
@@ -1200,7 +1205,12 @@ p b {
 			</div>
 			<div class="modal-body">
 				<div id="modalNick">
-					<img src="resources/images/mudo.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					<c:if test="${menuProfile eq null }">
+						<img src="https://botsitivity.org/static/media/noprofile.c3f94521.png" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					</c:if>
+					<c:if test="${menuProfile ne null }">
+						<img src="${contextPath}/resources/uploadFiles/${menuProfile.imageRenameName}" style="width: 100px; height: 100px; border-radius: 50%"><br>
+					</c:if>
 					<p style="font-weight: bold;">${menu.name}</p>
 				</div>
 				<div id="modalInfo">

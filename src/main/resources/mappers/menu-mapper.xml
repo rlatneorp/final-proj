@@ -182,6 +182,12 @@
 		insert into qna values(seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, null, null, null, default, #{qnaType}, null, #{productNo})
 	</insert>
 	
+	<select id="selectProfile" resultMap="imageResultSet">
+		select *
+		from image
+		where image_type = 1 and image_level = 0 and image_divide_no = #{usersNo}
+	</select>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>

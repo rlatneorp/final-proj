@@ -55,6 +55,28 @@
 /* } */
 
 /* 3D Button */
+#pageDown {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 500,
+  'GRAD' 0,
+  'opsz' 48;
+  font-size: 40px;
+  color:#6DA2D9;
+  margin-top: -10px;
+}
+#pageUp {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 500,
+  'GRAD' 0,
+  'opsz' 48;
+  font-size: 40px;
+  color:#6DA2D9;
+  margin-top: -10px;
+}
+
+
 .btn-3d {
 	text-decoration: none;
 	width: 100px;
@@ -120,6 +142,7 @@
 	display: inline-block;
  	margin-top: -50px; 
 	vertical-align: top;
+	cursor: pointer;
 	 
 }
 #loginPlz{
@@ -145,6 +168,16 @@
 	font-size: 14px;
 	font-weight: 500;
 	background-color: #B0DAFF;
+	padding: 2px; 
+}
+#xBtn:active{
+	width: 47px; height: 28px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: 0px 5px black;
+	font-size: 14px;
+	font-weight: 500;
+	background-color: white;
 	padding: 2px; 
 }
 /* #xBtn:active{ */
@@ -214,6 +247,18 @@
 	padding: 2px; 
 }
 
+#nextBoard{
+	font-size: 15px;
+	font-weight: 600;
+	color: #6DA2D9;
+	
+}
+#previousBoard{
+	font-size: 15px;
+	font-weight: 600;
+	color: #6DA2D9;
+}
+
 </style>
 
 </head>
@@ -268,10 +313,14 @@
 		   <div class="form-control" id="floatingText">${blist.boardContent}</div>
 		   <label>내용</label>
 		</div>
-	</div><br>
+	</div>
+	<br>
+		<div class="row text-center">
+			<div class="col d-inline" id="pree"><span class="material-symbols-outlined" id="pageDown">keyboard_arrow_left</span><a id="previousBoard">이전 글</a></div>
+			<div class="col d-inline" id="nextt"><a id="nextBoard">다음 글</a><span class="material-symbols-outlined" id="pageUp">keyboard_arrow_right</span></div>
+		</div><br>
 		<div class="comment text-start">
 			<div class="intro">
-				<label>댓글 내용</label>
 				<table class="table text-center">
 					<thead>
 						<tr>
@@ -294,20 +343,16 @@
 							</c:forEach>
 							<td><fmt:formatDate value="${r.reviewDate }" pattern="yy-MM-dd HH:mm"/></td>
 							<td>
-								<c:if test="${loginUser.nickName eq r.reviewWriter }">
-									<button type="button" class="reBtn" id="reBtn">수정</button>
-								</c:if>
-								<c:if test="${loginUser.nickName ne r.reviewWriter }">
-									<button type="button" class="reBtn" id="reBtn" disabled>수정</button>
-								</c:if>
+<%-- 								<c:if test="${loginUser.nickName eq r.reviewWriter }"> --%>
+<!-- 									<button type="button" class="reBtn" id="reBtn">수정</button> -->
+<%-- 								</c:if> --%>
+								<button type="button" class="reBtn" id="reBtn" style="<c:if test="${loginUser.nickName ne r.reviewWriter }">display: none;</c:if>">수정</button>
 							</td>
 							<td>
-								<c:if test="${loginUser.nickName eq r.reviewWriter }">
-									<button type="button" class="xBtn" id="xBtn">삭제</button>
-								</c:if>
-								<c:if test="${loginUser.nickName ne r.reviewWriter }">
-									<button type="button" class="xBtn" id="xBtn" disabled>삭제</button>
-								</c:if>
+<%-- 								<c:if test="${loginUser.nickName eq r.reviewWriter }"> --%>
+<!-- 									<button type="button" class="xBtn" id="xBtn">삭제</button> -->
+<%-- 								</c:if> --%>
+								<button type="button" class="xBtn" id="xBtn" style="<c:if test="${loginUser.nickName ne r.reviewWriter }">display: none;</c:if>">삭제</button>
 							</td>
 							<td>
 								<input type="hidden" class="hdnReplyNo" value="${r.reviewNo}">
@@ -348,7 +393,7 @@
 	        <p>삭제하시겠습니까?</p>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
+	        <button type="button" class="btn btn-secondary deleteNo" data-bs-dismiss="modal">아니요</button>
 	        <button type="button" class="btn btn-primary deleteYes">예(엔터)</button>
 	      </div>
 	    </div>
@@ -362,31 +407,69 @@
 	const deleteModal = document.getElementById('deleteModal');
 	const xBtn = document.querySelectorAll('.xBtn');
 	const deleteYes = document.getElementsByClassName('deleteYes');
+	const deleteNo = document.getElementsByClassName('deleteNo');
 	const replySubmit = document.getElementById('replySubmit');
-	const reBtns = document.querySelectorAll('.reBtn');
 	const reviewCont = document.querySelector('#commentWrite');
 	const hdnBoardNo = document.querySelector('#hdnBoardNo');
 	const hdnUsersNo = document.querySelector('#hdnUsersNo');
 	const hiddenNickName = document.getElementById('hiddenNickName');
 	const rBoardBtn = document.getElementById('rBoardBtn');
+	const nextt = document.getElementById('nextt');
+	const pree = document.getElementById('pree');
+	const loginPlz = document.getElementById('loginPlz');
 	let beforeData = null;
 	let beforeText = null;
 	let ind = null;
 	
-	
-	window.onload=()=>{
-		
-		replySubSuccess();
-		xDel();
-		reReply();
-		
-		
-		rBoardBtn.addEventListener('click', ()=>{
-			const boardWriter = hiddenNickName.value;
-			const boardNo = hdnBoardNo.value;
-			location.href="${contextPath}/freeBoardWrite.bo?bId=" + boardNo + "&writer=" + boardWriter;
+			
+		pree.addEventListener('click', ()=>{
+			$.ajax({
+				url: 'preDetailBoard.bo',
+				data: {
+					boardNo: hdnBoardNo.value
+				},
+				success: data=>{
+					if(data.boardNo != undefined && data.nickName != undefined){
+						location.href="${contextPath}/detailFreeBoard.bo?bId=" + data.boardNo + "&writer=" + data.nickName;
+					}else{
+						swal({
+							 text: "이전 글이 더이상 없습니다.",
+							 icon: "error",
+							 button: "확인",
+						});
+					}
+				}
+			})
 		})
 		
+		nextt.addEventListener('click', ()=>{
+			$.ajax({
+				url: 'nextDetailBoard.bo',
+				data: {
+					boardNo: hdnBoardNo.value
+				},
+				success: data=>{
+					if(data.boardNo != undefined && data.nickName != undefined){
+						location.href="${contextPath}/detailFreeBoard.bo?bId=" + data.boardNo + "&writer=" + data.nickName;
+					} else{
+						swal({
+							 text: "다음 글이 더이상 없습니다.",
+							 icon: "error",
+							 button: "확인",
+						});
+					}
+				}
+			})
+		})
+		
+	if(rBoardBtn != null){
+			
+			rBoardBtn.addEventListener('click', ()=>{
+				const boardWriter = hiddenNickName.value;
+				const boardNo = hdnBoardNo.value;
+				location.href="${contextPath}/freeBoardWrite.bo?bId=" + boardNo + "&writer=" + boardWriter;
+			})
+	
 		$('#dBoardBtn').click(function(ev){
 			ev.preventDefault();
 			$('#deleteModal').modal("show");
@@ -425,9 +508,10 @@
 				})
 			}
 		})	
-	}	
+		
+	}
 	
-	function xDel(){
+		
 		$('.xBtn').each(function(index, item){
 			$(this).click(function(e){
 				e.preventDefault();
@@ -454,7 +538,6 @@
 									const tbody = document.querySelector('tbody');
 		 							const trs = tbody.querySelectorAll('tr');
 		 							trs[index].innerHTML = '';
-		 							this.style.background = 'white';
 		 							$('#deleteModal').modal("hide");
 		 							
 								}else{
@@ -469,22 +552,21 @@
 						});
 					})
 				}	
+				
 	 		})
 			
 		})
-	}
 	
-	function reReply(){
 		
 		const tbody = document.querySelector('tbody');
 		const reBtns = document.querySelectorAll('.reBtn');
 		const trs = tbody.querySelectorAll('tr');
 		const trArr = Array.from(trs);
 		const reBtnsArr = Array.from(reBtns);
+		
+	if(reBtns.length > 0){
 		for(let i = 0; i < reBtnsArr.length; i++){
 // 			const tds = trs.querySelectorAll('td');
-
-
 			reBtnsArr[i].addEventListener('click', (ee)=>{
 				const td = Array.from(trArr[i].querySelectorAll('td'));
 				if(reBtnsArr[i].innerText == "수정"){
@@ -529,10 +611,9 @@
 				
 			})
 		}
-	}	
-	
-	function replySubSuccess (){
-		
+	}		
+	if(loginPlz == null){
+			
 		replySubmit.addEventListener('click', ()=>{
 			const hdnBoardNo = document.querySelector('#hdnBoardNo');
 			const tbody = document.querySelector('tbody');
@@ -573,14 +654,14 @@
 						if(r.reviewWriter == '${login}'){
 							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn">수정</button>';
 						} else{
-							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn" disabled>수정</button>'
+							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn" style="display: none;">수정</button>'
 						}
 											 
 						const deleteBtn = document.createElement('td');
 						if(r.reviewWriter == '${login}'){
 							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>';
 						}else{
-							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn" disabled>삭제</button>';
+							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn" style="display: none;">삭제</button>';
 						}
 						
 						const reviewNoTd = document.createElement('td');
@@ -629,10 +710,7 @@
 					location.reload();
 				}
 			});
-		})		
-	}
-	
-	
-
+		})	
+	}	
 </script>
 </html>

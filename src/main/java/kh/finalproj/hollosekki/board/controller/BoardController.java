@@ -1,13 +1,9 @@
 package kh.finalproj.hollosekki.board.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -198,30 +193,31 @@ public class BoardController {
 		return "freeBoard";
 	}
 	
-	@RequestMapping("fileUpload.bo")
-	public void fileUpload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		response.setContentType("text/html;charset=utf-8");
-		PrintWriter out = response.getWriter();
-		String realFolder = request.getSession().getServletContext().getRealPath("fileUpload");
-		UUID uuid = UUID.randomUUID();
-
-		String org_filename = file.getOriginalFilename();
-		String str_filename = uuid.toString() + org_filename;
-
-
-		String filepath = realFolder + "\\" + str_filename;
-
-		File f = new File(filepath);
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-		file.transferTo(f);
-		out.println("fileUpload/" + str_filename);
-		out.close();
-	}
+//	@RequestMapping("fileUpload.bo")
+//	public void fileUpload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		response.setContentType("text/html;charset=utf-8");
+//		PrintWriter out = response.getWriter();
+//		String realFolder = request.getSession().getServletContext().getRealPath("fileUpload");
+//		UUID uuid = UUID.randomUUID();
+//		
+//		String org_filename = file.getOriginalFilename();
+//		String str_filename = uuid.toString() + org_filename;
+//		
+//
+//		String filepath = realFolder + "\\" + str_filename;
+//		
+//		File f = new File(filepath);
+//		if (!f.exists()) {
+//			f.mkdirs();
+//		}
+//		file.transferTo(f);
+//		
+//		out.println("fileUpload/" + str_filename);
+//		out.close();
+//	}
 	
 	@RequestMapping("reWriteBoardInfo.bo")
-	public void reWrieteBoardInfo(HttpServletResponse response,@RequestParam(value="boardNo", required=false) int boardNo,
+	public void reWrieteBoardInfo(HttpServletResponse response,@RequestParam(value="boardNo", required=false) Integer boardNo,
 			@RequestParam(value="nickName", required=false) String nickName,Model model) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -289,6 +285,22 @@ public class BoardController {
 		bService.deleteReply(map);
 		
 		return result1 == 1 ? "success" : "fail";
+	}
+	
+	@RequestMapping("preDetailBoard.bo")
+	@ResponseBody
+	public Board preDetailBoard(@RequestParam(value="boardNo",required=false) Integer boardNo) {
+		Board result = bService.preDetailBoard(boardNo);
+		
+		return result;
+	}
+	
+	@RequestMapping("nextDetailBoard.bo")
+	@ResponseBody
+	public Board nextDetailBoard(@RequestParam(value="boardNo",required=false) Integer boardNo) {
+		Board result = bService.nextDetailBoard(boardNo);
+		
+		return result;
 	}
 	
 	

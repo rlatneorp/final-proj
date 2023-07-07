@@ -1371,10 +1371,6 @@ p b {
    
       
       
-      
-    
-      
-      
 	      $(document).on("click",".btnbox",function(e){
 	    	 
 	         const increBtn = this.childNodes[2]; //증가버튼
@@ -1586,7 +1582,7 @@ p b {
 		                  }
 		               }
 		            
-		            if(YN == "Y" && select.val()!=0){
+		            if(YN == "Y" && select.val() != 0){
 		               productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		                        +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 		                                           +'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
@@ -1619,62 +1615,62 @@ p b {
 		       
          }
        if(productOption2Set != null){
-    	   let YN = "Y";
+    	  
+    	   
 	           productOption2Set.addEventListener("change", function(){
-	               const select =  $('.productOptionSet option:selected');
-	               const select2 = $('.productOption2Set option:selected');
-	                   let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
-	//                    let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
-	                   const opSearch = document.getElementsByClassName('opSearch');
-	   					console.log(select2.val());
-	                   for(let k=0; k<opSearch.length; k++){
-	                      if(opSearch[k].innerText == optionName){
-	                         alert("이미 선택한 옵션입니다.");
-	                         YN = "N";
-	                      }
-	       				
-	                if(YN == "Y" && select2.val() != 0){
-	                	
-	                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
-	                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-	                                            +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
-	                                            +'<input type="hidden" name="productNo" value="${tool.productNo}">'
-	                                            +'<input type="hidden" name="productName" value="${tool.toolName}">'
-	                                            +'<input type="hidden" name="productPrice" value="${total}">'
-	                                            +'<input type="hidden" name="productOption" value='+select.val()+'>'
-	                                            +'<input type="hidden" name="productOption2" value='+select2.val()+'>'
-	                                            +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
-	                                         +'</h4>'
-	                                         +'<div>'
-	                                            +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-	                                               +'<button class="decrease" type="button">-</button>'
-	                                               +'<input type="number" class="cartCount"'
-	                                               +'   value="1" name="cartCount" min="1" readonly>'
-	                                               +'<button class="increase" type="button">+</button>'
-	                                               +'<button class="removeProudct" type="button" style="float: right;">'
-	                                                  +'<img src="resources/images/close.png" style="width: 10px;">'
-	                                            +'<span>'
-	                                            +'</button>'
-	                                            +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
-	                                            +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-	                                         +'</div>'
-	                                          +'<br>'
-	                                      +'</div>');
-	                }
-	                cal()
-	        	}
+	              const select =  $('.productOptionSet option:selected');
+	              const select2 = $('.productOption2Set option:selected');
+	        	   if(select.val() != 0 ){
+			                   let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
+			//                    let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
+			                   const opSearch = document.getElementsByClassName('opSearch');
+			                   console.log(opSearch);
+			                   let YN = "Y";
+			   					
+			                   for(let k=0; k<opSearch.length; k++){
+			                      if(opSearch[k].innerText == optionName){
+			                         alert("이미 선택한 옵션입니다.");
+			                         YN = "N";
+			                      }
+			                    
+			                   }
+			       				
+			                if(YN == "Y" && select2.val() != 0){
+			                	
+			                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+			                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+			                                            +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
+			                                            +'<input type="hidden" name="productNo" value="${tool.productNo}">'
+			                                            +'<input type="hidden" name="productName" value="${tool.toolName}">'
+			                                            +'<input type="hidden" name="productPrice" value="${total}">'
+			                                            +'<input type="hidden" name="productOption" value='+select.val()+'>'
+			                                            +'<input type="hidden" name="productOption2" value='+select2.val()+'>'
+			                                            +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+			                                         +'</h4>'
+			                                         +'<div>'
+			                                            +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+			                                               +'<button class="decrease" type="button">-</button>'
+			                                               +'<input type="number" class="cartCount"'
+			                                               +'   value="1" name="cartCount" min="1" readonly>'
+			                                               +'<button class="increase" type="button">+</button>'
+			                                               +'<button class="removeProudct" type="button" style="float: right;">'
+			                                                  +'<img src="resources/images/close.png" style="width: 10px;">'
+			                                            +'<span>'
+			                                            +'</button>'
+			                                            +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
+			                                            +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+			                                         +'</div>'
+			                                          +'<br>'
+			                                      +'</div>');
+			                }
+			                cal()
+	        	   }
 
-         })
+	        	})
+
+         }
          
          
-         
-         
-         
-         
-         
-         
-         
-       }
             
       
       $(document).ready(function() {

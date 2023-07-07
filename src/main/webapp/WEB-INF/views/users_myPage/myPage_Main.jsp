@@ -87,6 +87,7 @@
 		transform: scale(1.2);
 		margin-left: 200px;
 		margin-top: 10px;
+		white-space: nowrap;
 	}
 	.modalFollower{
 		border: none; border-radius: 5px;
@@ -96,6 +97,7 @@
 		transform: scale(1.2);
 		margin-left: 200px;
 		margin-top: 10px;
+		white-space: nowrap;
 	}
     .modalFollow:hover {
 	    border: 1px #C6C6C6 solid;

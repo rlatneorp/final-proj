@@ -812,12 +812,19 @@ function ingreBuy(){
 
 const bookmark = document.querySelector('#bookmark');
 const usersNo = '${ loginUser.usersNo}';
+const loginId = '${loginUser.usersId}'
+const writeUser = '${recipe.usersId}'
 const divisionNo = '${ recipe.foodNo }';
 console.log(usersNo);
 console.log(divisionNo);
 console.log(bookmark.value);
 bookmark.addEventListener('click', function(){
-	if(bookmark.value == 'noBookmark'){
+	if(loginId == writeUser){
+		swal("내가 쓴 글은 스크랩할 수 없습니다.", {
+			  buttons: false,
+			  timer: 1000,
+		});
+	} else if(bookmark.value == 'noBookmark' && loginId != writeUser){
 		$.ajax({
 			url: "insertBookmark.rc",
 			data:{
@@ -828,7 +835,7 @@ bookmark.addEventListener('click', function(){
         		if(data == 'success') {
         			bookmark.innerHTML = '<i class="bi bi-bookmark-fill" style="font-size: 25px;"></i>';
         			bookmark.value = 'bookmark';
-        			swal("레세피가 스크랩 되었습니다.", {
+        			swal("레시피가 스크랩 되었습니다.", {
 	          			  buttons: false,
 	          			  timer: 1000,
 	          			});

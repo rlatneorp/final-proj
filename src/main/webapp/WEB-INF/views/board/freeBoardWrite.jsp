@@ -156,28 +156,32 @@ const bInfo = document.getElementById('bInfo');
 
 const boardSubmit = document.querySelector('#boardSubmit');
 const reBoardSubmit = document.querySelector('#reBoardSubmit');
+const goToLogin = document.querySelector('#goToLogin');
 let pTag = '';
 
 // 글 쓰고 바로 내가 글 쓴 페이지로 가지기
+
 	boardSubmit.addEventListener('click', ()=>{
 		$.ajax({
+			type: 'POST',
 			url: 'goToMyBoard.bo',
 			success: data=>{
-				const bId = data.boardNo + 1;
+				const bId = data.boardNo;
+				console.log(bId);
 				const writer = data.nickName;
-				location.href='${contextPath}/detailFreeBoard.bo?bId=' + bId + '&writer=' + writer + '&page=1';
+				location.href='${contextPath}/detailFreeBoard.bo?bId=' + bId + '&writer=' + writer;
 					
 			}
 			
 		})		
 	})
-// 수정 버튼	
 	reBoardSubmit.addEventListener('click', ()=>{
 		console.log(pTag.innerText);
 		console.log(title.value);
 		console.log(bInfo.value);
 		console.log(boardNo);
 		$.ajax({
+			type: 'POST',
 			url: 'reBoard.bo',
 			data: {
 				boardContent: pTag.innerHTML,
@@ -195,7 +199,6 @@ let pTag = '';
 			}
 		})
 	})
-
 	$('.summernote').summernote({
 		width : 940,
 		height : 350,
@@ -217,75 +220,60 @@ let pTag = '';
 				'돋움체', '바탕체' ],
 		fontSizes : [ '8', '9', '10', '11', '12', '14', '16',
 				'18', '20', '22', '24', '28', '30', '36', '50',
-				'72' ],
-		callbacks: {
-			onImageUpload: function(files, editor, welEditable, image) {
-	            for (var i = files.length - 1; i >= 0; i--) {
-	            	sendFile(files[i], this);
-	            }
-		        var file = image[0];
-		        var reader = new FileReader();
-		        reader.onloadend = function() {
-		           var image = $('<img>').attr('src',  reader.result);
-		              image.attr('width','100%');
-		           $('.summernote').summernote("insertNode", image[0]);
-		        }
-		        reader.readAsDataURL(file);
-	        }
-        
-   
-		}
+				'72' ]
 		
 	});
+	
+// 수정 버튼	
 
 //파일명 줄이기
 
-	function sendFile(file, el) {
-		var form_data = new FormData();
-			form_data.append('file', file);
-			$.ajax({
-			data: form_data,
-			type: "POST",
-			url: 'fileUpload.bo',
-			cache: false,
-			contentType: false,
-			enctype: 'multipart/form-data',
-			processData: false,
-			success: function(img_name) {
-		  		$(el).summernote('editor.insertImage', img_name);
-			}
-		});
-	}
+// 	function sendFile(file, el) {
+// 		var form_data = new FormData();
+// 			form_data.append('file', file);
+// 			$.ajax({
+// 			data: form_data,
+// 			type: "POST",
+// 			url: 'fileUpload.bo',
+// 			cache: false,
+// 			contentType: false,
+// 			enctype: 'multipart/form-data',
+// 			processData: false,
+// 			success: function(img_name) {
+// 		  		$(el).summernote('editor.insertImage', img_name);
+// 			}
+// 		});
+// 	}
 
 
-		window.onload=()=>{
-
-			if(boardNo != null && boardWriter != null){
-				reBoardSubmit.style.display = 'inline-block';
-			}else{
-				boardSubmit.style.display = 'inline-block';
-			}
-			const contentEdit = document.getElementsByClassName('note-editable');
-			
-			for(let i = 0; i < contentEdit.length; i++){
-				pTag = contentEdit[i].querySelector('p');
-				$.ajax({
-					url: 'reWriteBoardInfo.bo',
-					data:{
-						boardNo: boardNo,
-						nickName: boardWriter			
-					},
-					success: data=>{
-						title.value = data.boardTitle;
-						pTag.innerHTML = data.boardContent;
-						bInfo.value = data.usersNo;
-					}
-					
-				})
-				
-			}
+ 	window.onload = ()=>{
+ 		
+		if(boardNo != null && boardWriter != null){
+			reBoardSubmit.style.display = 'inline-block';
+		}else{
+			boardSubmit.style.display = 'inline-block';
 		}
-	
+		const contentEdit = document.getElementsByClassName('note-editable');
+		
+		for(let i = 0; i < contentEdit.length; i++){
+			pTag = contentEdit[i].querySelector('p');
+			$.ajax({
+				type: 'POST',
+				url: 'reWriteBoardInfo.bo',
+				data:{
+					boardNo: boardNo,
+					nickName: boardWriter			
+				},
+				success: data=>{
+					title.value = data.boardTitle;
+					pTag.innerHTML = data.boardContent;
+					bInfo.value = data.usersNo;
+				}
+				
+			})
+			
+		}
+ 	}
 	
 	
 

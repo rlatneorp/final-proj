@@ -185,7 +185,7 @@
 	<select id="selectProfile" resultMap="imageResultSet">
 		select *
 		from image
-		where image_type = 1 and image_level = 0 and image_divide_no = #{usersNo}
+		where image_type = 8 and image_level = 0 and image_divide_no = #{usersNo}
 	</select>
 	
 	<select id="getCateListCount" resultType="_int">

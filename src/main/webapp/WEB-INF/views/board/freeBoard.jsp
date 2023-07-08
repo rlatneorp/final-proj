@@ -147,7 +147,7 @@
 			<h1> 게시판 </h1>
 			<p>자유로운 소통을 하는 공간입니다</p>
 		</div>
-		<div class="search" style="margin:0 auto; left:290px;">
+		<div class="search" style="margin:0 auto; left:400px;">
 			<select id="categoryBtn" style="width: 100px; height: 40px; padding-top: 8px;">
 				<option value="bId" <c:if test="${ category == 'bId'}">selected</c:if>>글번호</option>
 				<option <c:if test="${ category == 'writer'}">selected</c:if> value="writer">작성자</option>
@@ -276,7 +276,7 @@
 	
 	<!-- 작성 버튼 -->
 	<c:if test="${!empty loginUser}">
-		<div style="width: 900px; margin: 0 auto; text-align: right; margin-top: -70px;">
+		<div style="width: 1100px; margin: 0 auto; text-align: right; margin-top: -70px;">
 			<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
 		</div><br><br><br>
 	</c:if>

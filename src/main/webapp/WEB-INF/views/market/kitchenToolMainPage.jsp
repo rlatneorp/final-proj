@@ -319,7 +319,12 @@ ul li {
 		border-radius: 100%;
 	}
 	
-
+	.salePer{
+		background-color:#B0DAFF;
+		font-weight:bold;
+		font-size:20px;
+		
+	}
 .page-link.disabled{color: lightgray;}
 .page-link.disabled:hover{background: white; color: lightgray;}
 
@@ -416,8 +421,9 @@ ul li {
 					    </c:otherwise>
 					</c:choose>
 					<c:if test="${h.productSale ne 0 }">
-						<span class="originPrice">
-							${h.productPrice }원
+						<span >
+							<span class="originPrice">${h.productPrice }원</span>
+							<span class="salePer"> ${h.productSale }% 할인</span>
 						</span>
 					</c:if>
 					<c:if test="${h.productSale eq 0 }">
@@ -456,8 +462,10 @@ ul li {
 							<div class="productName">${li.INGREDIENT_NAME }</div>
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE ne 0 }">
-							<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
-							
+							<div >
+								<span class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }원</span>
+								<span class="salePer"> ${li.PRODUCT_SALE }% 할인</span>
+							</div>
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE eq 0 }">
 							<div style="text-decoration: none;">
@@ -508,8 +516,14 @@ ul li {
 					<div class="productName">${li.productName }</div>
 					<c:if test="${li.productSale ne 0 }">
 						<!-- 세일 금액이 있을 때  -->
-						<span class="originPrice">
-						<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
+<!-- 						<span class="originPrice"> -->
+<%-- 						<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원 --%>
+<!-- 						</span> -->
+						<span >
+							<span class="originPrice">
+								<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
+							</span>
+							<span class="salePer">${li.productSale }% 할인</span>
 						</span>
 					</c:if>
 					<c:if test="${li.productSale eq 0 }">
@@ -518,7 +532,7 @@ ul li {
 							<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
 						</span>
 					</c:if>
-					<span class="discount" id="discount-${li.productNo }"></span>
+					<br><span class="discount" id="discount-${li.productNo }"></span>
 					<input type="hidden" value="${li.productSale }">
 				</li>
 			</c:forEach>
@@ -579,11 +593,12 @@ ul li {
 		//판매중인 상품 
 		const normal = document.getElementsByClassName('normal');
 		for(np of normal) {
+			console.log(np);
 			const productNo = np.children[0].value;
 			//할인 계산 
-			if(np.children[5].value != '0') {
+			if(np.children[6].value != '0') {
 				const originPrice = parseInt(np.children[3].innerText.replace(/,/g, ''));
-				const sale = parseInt(np.children[5].value);
+				const sale = parseInt(np.children[6].value);
 				const discount = (originPrice * (1- sale/100)).toLocaleString();
 				document.getElementById('discount-'+productNo).innerText = discount + '원'
 			} 

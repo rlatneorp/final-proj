@@ -188,7 +188,7 @@ let firstWriter = '';
 	boardSubmit.addEventListener('click', ()=>{
 		const contentEdit = document.getElementsByClassName('note-editable');
 		for(let i = 0; i < contentEdit.length; i++){
-			const contents = contentEdit[i].querySelector('p').innerHTML;
+			const contents = contentEdit[i].innerHTML;
 			$.ajax({
 				type: 'POST',
 				url: 'freeBoardWriting.bo',

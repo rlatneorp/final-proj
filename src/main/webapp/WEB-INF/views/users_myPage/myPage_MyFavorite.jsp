@@ -426,6 +426,16 @@ th:first-child, td:first-child {
 	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=5";
 	        }
 	    });
+	    
+	    window.onload = () => {
+			const list = document.getElementById('tbody');
+			const messageCell = document.querySelector('#tbody td[colspan="6"]');
+			const page = '${pi.currentPage}';
+			
+			if(messageCell && messageCell.innerText.trim() == '스크랩 내역이 없습니다.' && page != 0 && page != 1) {
+				history.back();
+			}
+		};
 	</script>
 	
 </body>

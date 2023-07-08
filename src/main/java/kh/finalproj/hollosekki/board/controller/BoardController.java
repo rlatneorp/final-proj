@@ -57,7 +57,7 @@ public class BoardController {
 	
 	@RequestMapping("detailFreeBoard.bo")
 	public String selectFreeBoard(Model model,HttpSession session, 
-			@RequestParam("bId") int bId, @RequestParam("writer") String writer, 
+			@RequestParam("bId") Integer bId, @RequestParam("writer") String writer, 
 			@RequestParam(value="page",required=false) Integer page) {
 		Users u = (Users)session.getAttribute("loginUser");
 		String login = null;
@@ -115,7 +115,7 @@ public class BoardController {
 	@RequestMapping("reReply.bo")
 	@ResponseBody
 	public String reReply(@RequestParam(value="reviewContent",required=false) String reviewContent, @RequestParam(value="reviewWriter",required=false) String reviewWriter,
-			@RequestParam(value="productNo",required=false) int productNo, @RequestParam(value="usersNo",required=false) int usersNo,@RequestParam(value="reviewNo",required=false) int reviewNo) {
+			@RequestParam(value="productNo",required=false) Integer productNo, @RequestParam(value="usersNo",required=false) Integer usersNo,@RequestParam(value="reviewNo",required=false) Integer reviewNo) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
@@ -257,8 +257,8 @@ public class BoardController {
 	
 	@RequestMapping("reBoard.bo")
 	@ResponseBody
-	public String reWriteBoard(@RequestParam(value="boardNo", required=false) int boardNo,
-			@RequestParam(value="usersNo", required=false) int usersNo,
+	public String reWriteBoard(@RequestParam(value="boardNo", required=false) Integer boardNo,
+			@RequestParam(value="usersNo", required=false) Integer usersNo,
 			@RequestParam(value="boardTitle", required=false) String boardTitle,
 			@RequestParam(value="boardContent", required=false) String boardContent,
 			Model model) {
@@ -276,8 +276,8 @@ public class BoardController {
 	
 	@RequestMapping("deleteBoard.bo")
 	@ResponseBody
-	public String deleteBoardAndReply(HttpSession session, @RequestParam(value="boardNo", required=false) int boardNo,
-			@RequestParam(value="usersNo", required=false) int usersNo,
+	public String deleteBoardAndReply(HttpSession session, @RequestParam(value="boardNo", required=false) Integer boardNo,
+			@RequestParam(value="usersNo", required=false) Integer usersNo,
 		@RequestParam(value="reviewWriter", required=false) String reviewWriter) {
 		
 		int checkUsersNo = 0;

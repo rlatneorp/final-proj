@@ -163,7 +163,7 @@
 			board_title = #{boardTitle},
 			board_date = sysdate,
 			board_type = 1
-		where users_no = #{usersNo} and board_no = ${boardNo} and board_status = 'Y'	
+		where users_no = #{usersNo} and board_no = #{boardNo} and board_status = 'Y'	
 	</update>
 	
 	<update id="deleteBoard">

@@ -138,7 +138,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										스크랩 내역이 없습니다.
+										<b>스크랩 내역이 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>
@@ -146,7 +146,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										검색 결과가 없습니다.
+										<b>검색 결과가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>
@@ -154,7 +154,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										검색 결과가 없습니다.
+										<b>검색 결과가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>

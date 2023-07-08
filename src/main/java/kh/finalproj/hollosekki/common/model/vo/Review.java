@@ -12,6 +12,7 @@ public class Review {
 	private String reviewStatus;
 	private Date reviewDate;
 	private String reviewWriter;
+	private int usersNo;
 	
 	private int foodNo;
 	private String recipeName;
@@ -28,7 +29,7 @@ public class Review {
 
 	public Review(int productNo, int orderNo, int reviewNo, String reviewTitle, String reviewContent, int reviewScore,
 			String reviewStatus, Date reviewDate, String reviewWriter, int foodNo, String recipeName, int boardNo,
-			String boardTitle, int productType, String productName) {
+			String boardTitle, int productType, String productName, int usersNo) {
 		super();
 		this.productNo = productNo;
 		this.orderNo = orderNo;
@@ -45,6 +46,7 @@ public class Review {
 		this.boardTitle = boardTitle;
 		this.productType = productType;
 		this.productName = productName;
+		this.usersNo = usersNo;
 	}
 
 	public int getProductNo() {
@@ -167,13 +169,21 @@ public class Review {
 		this.productName = productName;
 	}
 
+	public int getUsersNo() {
+		return usersNo;
+	}
+
+	public void setUsersNo(int usersNo) {
+		this.usersNo = usersNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Review [productNo=" + productNo + ", orderNo=" + orderNo + ", reviewNo=" + reviewNo + ", reviewTitle="
 				+ reviewTitle + ", reviewContent=" + reviewContent + ", reviewScore=" + reviewScore + ", reviewStatus="
-				+ reviewStatus + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + ", foodNo=" + foodNo
-				+ ", recipeName=" + recipeName + ", boardNo=" + boardNo + ", boardTitle=" + boardTitle
-				+ ", productType=" + productType + ", productName=" + productName + "]";
+				+ reviewStatus + ", reviewDate=" + reviewDate + ", reviewWriter=" + reviewWriter + ", usersNo="
+				+ usersNo + ", foodNo=" + foodNo + ", recipeName=" + recipeName + ", boardNo=" + boardNo
+				+ ", boardTitle=" + boardTitle + ", productType=" + productType + ", productName=" + productName + "]";
 	}
 
 }

@@ -90,7 +90,13 @@ public class MenuController {
 			
 			return "menuList";
 		}  else {
-			throw new MenuException("식단 조회를 실패하였습니다.");
+			String str = "등록된 식단이 없습니다.";
+			
+			model.addAttribute("mList", mList);
+			model.addAttribute("str", str);
+			model.addAttribute("pi", pi);
+			
+			return "menuList";
 		}
 	}
 	
@@ -339,9 +345,13 @@ public class MenuController {
 	}
 	
 	@RequestMapping("writeReview.mn")
-	public String writeReview(@ModelAttribute Review r) {
-		System.out.println(r.getOrderNo());
-		int result = mService.insertReview(r);
+	public String writeReview(@ModelAttribute Review r, Model model) {
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("r", r);
+		map.put("usersNo", usersNo);
+		
+		int result = mService.insertReview(map);
 		
 		if(result > 0) {
 			return "redirect:menuDetail.mn?mNo=" + r.getProductNo();

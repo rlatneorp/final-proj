@@ -398,7 +398,7 @@
 		        	},
 		        	error:data=>{
 		        	}
-		        })
+		        });
 			} else {
 				$.ajax({
 		    		url:"deleteLike.ma",
@@ -422,6 +422,7 @@
 		    		}
 		    	})
 			}
+			setTimeout("location.reload()", 800);
 			
 		})
 	}

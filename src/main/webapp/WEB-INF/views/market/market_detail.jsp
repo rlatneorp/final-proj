@@ -1325,7 +1325,6 @@ p b {
    <script>
    
    window.onload = function(){
-      
 //       장바구니로 이동 버튼 이벤트
       document.getElementById('moveCart').addEventListener('click', function() {
          const usersNo = '${loginUser.usersNo}'
@@ -1380,10 +1379,8 @@ p b {
 	         
 	         function cartNumber(a){
 	        	 a.value*totalPrice1
-	    		console.log(cartNum*totalPrice1);
 	    	};
 	          
-	         
 	         e.stopPropagation();    //이벤트 버블링 막기
 	         
 	         if(e.target === increBtn){
@@ -1618,9 +1615,9 @@ p b {
     	  
     	   
 	           productOption2Set.addEventListener("change", function(){
-	              const select =  $('.productOptionSet option:selected');
-	              const select2 = $('.productOption2Set option:selected');
-	        	   if(select.val() != 0 ){
+	              const select =  $('.productOptionSet option:selected'); //옵션 1 
+	              const select2 = $('.productOption2Set option:selected'); //옵션 2
+	        	   if(select.val() != 0 ){ 
 			                   let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
 			//                    let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
 			                   const opSearch = document.getElementsByClassName('opSearch');
@@ -1676,9 +1673,9 @@ p b {
       $(document).ready(function() {
          var productNo = null;
          
-        if(productOption2Set == null){
-        	document.getElementsByClassName("totalPrice")[0].style.display = "none";
-        }
+//         if(productOption2Set == null){
+//         	document.getElementsByClassName("totalPrice")[0].style.display = "none";
+//         }
          
          $(function(){
         	 if($(".reviews").length >= 6){

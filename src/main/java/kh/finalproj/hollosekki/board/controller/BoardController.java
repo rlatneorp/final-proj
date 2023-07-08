@@ -70,8 +70,9 @@ public class BoardController {
 		}
 		ArrayList<Board> list = bService.selectReply(bId);
 		Board blist = bService.selectBoard(bId, yn);
-		
+		System.out.println(list);
 		ArrayList<Users> AllUsersList = eService.AllUsersList();
+		System.out.println(AllUsersList);
 		if(blist != null) {
 			model.addAttribute("blist", blist);
 			model.addAttribute("list", list);

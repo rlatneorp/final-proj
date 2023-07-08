@@ -19,8 +19,7 @@
 <style>
 
 * {
-	outline: none;
-	margin: 0px;
+
 	font-family: 'Noto Sans KR', sans-serif;
 }
 

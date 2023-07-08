@@ -89,8 +89,8 @@ font-family: 'Noto Sans KR', sans-serif;
 		<hr>
 		<br>
 		<c:if test="${loginUser eq null }">
-			<h1>로그인 후 문의 하실 수 있습니다.</h1>
-			<button  id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
+			<h1 style="margin-top: 80px; margin-bottom: 30px;">로그인 후 문의 하실 수 있습니다.</h1>
+			<button id="goToLogin"  style="margin-bottom: 30px; font-size: 20px;" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
 		</c:if>
 		<c:if test="${loginUser ne null}">
 		<form action="${contextPath }/personalQuestion.cs" method="POST"> 

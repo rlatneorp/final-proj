@@ -142,7 +142,7 @@
 	.modal-header{background: #B0DAFF;}
 	.followName{
 		font-size: 17px; font-weight: bold;
-		margin-right: 10px; margin-top: 10px; margin-left: 10px;
+		margin-right: 10px; margin-top: 10px; margin-left: 10px; padding-left: 10px;
 		width: 300px;
 		cursor: pointer;
 	}

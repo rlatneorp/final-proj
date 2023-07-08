@@ -4,12 +4,12 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 예쁜 alert창 : https://sweetalert.js.org/ -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"> -->
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script> -->
 <style>
 
 .carrier {
@@ -191,7 +191,7 @@ input[type="text"] {
 	</div>
 	<div id="allChec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="checkbox" id="selectAllCheckBox" style="width: 20px; height: 20px; margin-right: 10px;"> 
-		<div>전체 선택</div>&nbsp;&nbsp; 
+		<div><label for="selectAllCheckBox" style="cursor:pointer">전체 선택</label></div>&nbsp;&nbsp; 
 		| &nbsp;&nbsp;<i class="bi bi-trash" id="trash" style="margin-right: 7px;"></i>
 		<div style="cursor:pointer;" onclick="checkDelete()">선택 삭제</div>
 	</div><br><br>
@@ -617,25 +617,24 @@ input[type="text"] {
 	
 	//선택 삭제 버튼 클릭 시 선택 된 리스트 삭제 
 	checkDelete = () => {
+		
 		const basketNos = document.getElementsByClassName('basketNos');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
+		if(checkProducts.length == 0) {
+			swal("상품을 한 개 이상 선택해주세요.", {
+   			  buttons: false,
+   			  timer: 1000,
+   			});
+			return;
+		}
 		//체크 된 부분만 삭제 처리 
-		Swal.fire({
-		   title: '정말 삭제하시겠습니까?',
-		   icon: 'warning',
-		   
-		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-		   confirmButtonText: '삭제', // confirm 버튼 텍스트 지정
-		   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
-		   
-		   reverseButtons: true, // 버튼 순서 거꾸로
-		   
-		}).then(result => { //결과를 받았을 때 로직 
-		   if (result.isConfirmed) { // 삭제 버튼 클릭 시 
-		   
-		 		for(basketNo of basketNos) {
+		swal({
+		    text: '정말 삭제하시겠습니까?',
+		    icon: 'warning',
+		    buttons: ["취소", "삭제하기"]
+		}).then((YES) => {
+		    if (YES) {
+		    	for(basketNo of basketNos) {
 		 			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
 		 			if(basketNo.nextSibling.nextSibling.checked) {
 		 				const delBasket = basketNo.value;
@@ -646,30 +645,20 @@ input[type="text"] {
 		 					},
 		 					success: (data) => {
 		 						//해당 상품 삭제
-		 						const Toast = Swal.mixin({
-					 			  toast: true,
-					 			  position: 'center',
-					 			  showConfirmButton: false,
-					 			  timer: 1000,
-					 			  timerProgressBar: true,
-					 			  didOpen: (toast) => {
-					 			    toast.addEventListener('mouseenter', Swal.stopTimer)
-					 			    toast.addEventListener('mouseleave', Swal.resumeTimer)
-					 			  }
-					 			});
-		 						Toast.fire({
-		 							  icon: 'success',
-		 							  title: 'Signed in successfully'
-		 							});
-	 							setTimeout(() => {
-	 							  for (const checkProduct of checkProducts) {
-	 							    let list = checkProduct.parentNode.parentNode;
-	 							    list.remove();
-	 							  }
-	 							 if(document.getElementsByClassName('productInfos').length == 0) {
+		 						for (const checkProduct of checkProducts) {
+		 							let list = checkProduct.parentNode.parentNode;
+		 							list.remove();
+		 							
+		 							document.getElementById('cartCount').innerText = document.getElementsByClassName('productInfos').length;
+		 						}
+		 						swal("선택하신 상품이 삭제 되었습니다.", {
+		 			    			  buttons: false,
+		 			    			  timer: 1000,
+		 			    		});
+		 						if(document.getElementsByClassName('productInfos').length == 0) {
 										location.reload();
-									}
-	 							}, 1000); // 1초 후에 삭제 작업 실행
+								}
+		 						
 		 						//초기화
 		 						document.getElementById('orderSize').innerText = '0'; 
 		 						document.getElementById('trTotalSum').innerText = '0';
@@ -678,10 +667,11 @@ input[type="text"] {
 		 						},
 		 					error: (data) => {
 		 					}
-		 				})
-		 			}
-		 		}
-		   }
+		 				}) //ajax 
+		    		} //if문 
+		 		} //for문 
+		 	  } //yes 선택 시 
+// 		   } 
 		});
 	}
 	

@@ -220,7 +220,7 @@ public class EnrollController {
 		}
 		
 		@RequestMapping("kakaoLogin.en")
-		public void kakaoLogin(HttpServletRequest request, Model model){
+		public String kakaoLogin(HttpServletRequest request, Model model){
 			String id = request.getParameter("id");					// 2827339121
 			String name = request.getParameter("name");				// 정흠
 			String email = request.getParameter("email");			// sk6522@hanmail.net
@@ -257,7 +257,9 @@ public class EnrollController {
 		        	model.addAttribute("socialUser", sl2);
 	        		model.addAttribute("loginUser", u2);
 	        		
+	        		return "redirect:home.do";
 	        	} else { // 회원정보 저장 실패
+	        		throw new EnrollException("네이버 간편로그인 사용자 등록에 실패했습니다.");
 	        	}
 	        } else { // 기존 회원일 경우 -> 불러오기 (프사랑 닉넴 업뎃해서 가져와야함)
 	        	String nickName = name;
@@ -270,6 +272,8 @@ public class EnrollController {
 	        	
 	        	model.addAttribute("socialUser", sl2);
 	        	model.addAttribute("loginUser", u2);
+	        	
+	        	return "redirect:home.do";
 	        }
 		}
 		

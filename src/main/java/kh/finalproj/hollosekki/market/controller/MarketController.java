@@ -147,6 +147,10 @@ public class MarketController {
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
       ArrayList<Product> productInfo = new ArrayList<>(); ArrayList<Cart> checkedCart = new ArrayList<>(); ArrayList<Cart> checkedCartList = new ArrayList<>();
+      if(users != null) {
+    	  int cart = eService.cartCount(users.getUsersNo());
+    	  	session.setAttribute("cart", cart);
+      }
       
       //옵션 
       ArrayList<Cart> optionNos = new ArrayList<>(); ArrayList<Options> optValues = new ArrayList<>();
@@ -505,6 +509,10 @@ public class MarketController {
       
       System.out.println("plus : " + plus);
       System.out.println("use : " + use);
+      if(users != null) {
+    	  int cart = eService.cartCount(users.getUsersNo());
+    	  session.setAttribute("cart", cart);
+      }
       
       //포인트 테이블에 minus, plus 포인트 반영 
       Point p = new Point();

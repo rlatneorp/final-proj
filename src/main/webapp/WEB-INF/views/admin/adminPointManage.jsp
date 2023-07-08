@@ -40,8 +40,9 @@
 					<td>
 						<c:if test="${p.pointType eq 1}">출석체크 지급</c:if>
 						<c:if test="${p.pointType eq 2}">관리자 지급</c:if>
-						<c:if test="${p.pointType eq 3}">상품 구매 지급</c:if>
-						<c:if test="${p.pointType eq 11}">상품 구매 사용</c:if>
+						<c:if test="${p.pointType eq 3}">상품구매 지급</c:if>
+						<c:if test="${p.pointType eq 4}">회원가입 지급</c:if>
+						<c:if test="${p.pointType eq 11}">상품구매 사용</c:if>
 						<c:if test="${p.pointType eq 12}">이벤트 참여</c:if>
 					</td>
 					<td><fmt:formatNumber pattern="###,###,###" value="${p.pointBefore}"/></td>

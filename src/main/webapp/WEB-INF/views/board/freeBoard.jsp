@@ -261,6 +261,7 @@ window.onload=()=>{
 		tr.addEventListener('click', function() {
 			const trTd = this.children;
 			const boardId = trTd[0].innerText;
+			
 			const boardWriter = trTd[1].innerText;
 			location.href = '${contextPath}/detailFreeBoard.bo?bId=' + boardId + '&writer=' + boardWriter + '&page=' + ${pi.currentPage};
 		})

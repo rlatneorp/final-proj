@@ -58,7 +58,7 @@
 		select *
 		from board
 			join users using(users_no)
-		where board_status = 'Y' and board_no = #{bId}	
+		where board_status = 'Y' and board_no = #{bId}
 	</select>
 	
 	
@@ -71,8 +71,8 @@
 	<select id="selectReply" resultMap="BoardResultSet">
 		select *
 		from review
-			left join users on(review_writer = users_id)
-		where product_no = #{bId} and review_status = 'Y'
+			left join users on(review_writer = nickname)
+		where product_no = #{bId} and review_status = 'Y' and order_no = -1 and status = 'Y'
 		order by review_date
 	</select>
 	
@@ -175,25 +175,31 @@
 	<update id="deleteReply">
 		update review
 		set review_status = 'N'
-		where product_no = #{boardNo} and review_writer = #{reviewWriter}
+		where product_no = #{boardNo} and review_writer = #{reviewWriter} and order_no = -1
 	</update>
 	
 	<select id="preDetailBoard" resultMap="BoardResultSet">
 	<![CDATA[
 		select *
-		from board
-			join users using(users_no)
-		where board_status = 'Y' and board_no < #{boardNo} and rownum=1
-		order by board_no desc
+	    from (select *
+	        from board
+	        order by board_no desc)
+	        join users using(users_no)
+	    where board_status = 'Y' 
+	        and board_no < #{boardNo}
+	        and rownum = 1
 	]]>
 	</select>
 	<select id="nextDetailBoard" resultMap="BoardResultSet">
 	<![CDATA[
 		select *
-		from board
-			join users using(users_no)
-		where board_status = 'Y' and board_no > #{boardNo} and rownum=1
-		order by board_no desc
+	    from (select *
+	        from board
+	        order by board_no)
+	        join users using(users_no)
+	    where board_status = 'Y' 
+	        and board_no > #{boardNo}
+	        and rownum = 1
 	]]>
 	</select>
 	

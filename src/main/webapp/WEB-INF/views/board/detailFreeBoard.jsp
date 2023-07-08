@@ -150,6 +150,8 @@
 #loginPlz{
 	display: inline-block;
 	vertical-align: baseline;
+	cursor: pointer;
+	text-decoration: none;
 }
 
 #reBtn{
@@ -215,6 +217,7 @@
 	font-weight: 500;
 	background-color: #B0DAFF;
 	padding: 2px; 
+	
 
 }
 
@@ -253,12 +256,13 @@
 	font-size: 15px;
 	font-weight: 600;
 	color: #6DA2D9;
-	
+	cursor: pointer;
 }
 #previousBoard{
 	font-size: 15px;
 	font-weight: 600;
 	color: #6DA2D9;
+	cursor: pointer;
 }
 
 </style>
@@ -289,7 +293,7 @@
 	<br>
 	<div id="parentDiv">
 		<div class="intro form-floating mb-3">
-		   <div type="text" class="form-control" id="floatingInput">
+		   <div class="form-control" id="floatingInput">
 		   ${ blist.boardTitle }
 		   <c:set var="pic" value="${blist.boardContent}"/>
 		   <c:if test="${fn:contains(pic, 'img')}">
@@ -320,8 +324,8 @@
 	</div>
 	<br>
 		<div class="row text-center">
-			<div class="col d-inline" id="pree"><span class="material-symbols-outlined" id="pageDown">keyboard_arrow_left</span><a id="previousBoard">이전 글</a></div>
-			<div class="col d-inline" id="nextt"><a id="nextBoard">다음 글</a><span class="material-symbols-outlined" id="pageUp">keyboard_arrow_right</span></div>
+			<div class="col d-inline" id="pree"><span class="material-symbols-outlined" id="pageDown">keyboard_arrow_left</span><a id="previousBoard" style="cursor: pointer;">이전 글</a></div>
+			<div class="col d-inline" id="nextt"><a id="nextBoard" style="cursor: pointer;">다음 글</a><span class="material-symbols-outlined" id="pageUp">keyboard_arrow_right</span></div>
 		</div><br>
 		<div class="comment text-start">
 			<div class="intro">

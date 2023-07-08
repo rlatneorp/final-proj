@@ -863,7 +863,10 @@ public class AdminController {
 		
 	}
 	@GetMapping("adminIngredientWrite.ad")
-	public String adminIngredientWrite() {
+	public String adminIngredientWrite(Model model,
+									   HttpSession session) {
+		Users users = (Users)session.getAttribute("loginUser");
+		model.addAttribute(users);
 		return "adminIngredientWrite";
 	}
 	@PostMapping("adminIngredientInsert.ad")
@@ -872,8 +875,6 @@ public class AdminController {
 										HttpServletRequest request,
 										HttpSession session,
 										Model model) {
-		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-		
 		Users user = (Users)session.getAttribute("loginUser");
 		igd.setUsersNo(user.getUsersNo());
 		

@@ -20,14 +20,14 @@
 	.mainBox input{font-size:14px;}
 	.mainBox .btns{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 35px; height: 25px; font-size: 12px;}
 	.sidebar .folderBtn:hover{cursor: pointer;}
-	.sidebar_hr{width:220px;}
+	.sidebar_hr{width:220px; margin: 6px 0px;}
 </style>
 </head>
 
 <body>
 	<div class="d-flex position-fixed sidebar">
 		<div class="d-flex flex-column p-3 bg-white">
-			<hr class="sidebar_hr">
+<!-- 			<hr class="sidebar_hr"> -->
 			<p class="fs-5 fw-bold mb-0 text-center folderBtn">sidebar 접기</p>
 			<hr class="sidebar_hr">
 			<div class="folder">
@@ -38,9 +38,10 @@
 					</div>
 				</div>
 				<hr class="sidebar_hr">
-				<a href="${contextPath}/adminMain.ad" class="d-flex text-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+				<a href="${contextPath}/adminMain.ad" class="d-flex text-center link-dark text-decoration-none">
 					<span class="fs-5 fw-semibold w-100">관리자페이지</span>
 				</a>
+				<hr class="sidebar_hr">
 				<ul class="list-unstyled ps-0">
 					<li class="mb-1">
 						<button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true">

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ㄴ뉴/ㄴ<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
@@ -413,8 +413,62 @@ p b {
 				</div>
 			</div>
 			<div class="right">
+				<table>
+					<tr>
+						<td colspan="6">
+							<div class="row pe-4">
+								<div class="col-12" style="text-align: right;">
+									<select name="foodNo" style="width: 100%;">
+									</select>
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<div class="row pe-4 text-end">
+								<span style="font-size: 12px;">*기존 등록한 음식의 '등록하지 않은 식재료/밀키트'를 등록할 수 있습니다.</span>
+								<span style="font-size: 12px;">*아래의 버튼을 통해, 등록 가능한 리스트를 조회할 수 있습니다.</span>
+								<span style="font-size: 12px;">ex) 제육볶음-밀키트 등록완료 -> 제육볶음-식재료 등록가능</span>
+							</div>
+						</td>
+					</tr>
+					<tr style="height:20px;"></tr>
+					<tr>
+						<td colspan="3">
+							<div class="row pe-4">
+								<div class="col-2"></div>
+								<div class="col-5 p-0">
+									<input type="hidden" name="foodKind" value="0">
+									<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
+									<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button>
+								</div>
+								<div class="col-5 p-0">
+									<input type="hidden" name="foodType" value="0">
+									<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button>
+									<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button>
+								</div>
+								<span class="col-12 text-end" style="font-size: 12px;">메인메뉴/서브메뉴, 식재료/밀키트 버튼을 선택해야 내용 입력이 가능합니다.</span>
+							</div>
+						</td>
+					</tr>
+					
+					<tr style="height:30px;"></tr>
+<!-- 					<tr> -->
+<!-- 						<td colspan="3"> -->
+<!-- 							<div class="row pe-4"> -->
+<!-- 								<div class="col-6"> -->
+<!-- 								</div> -->
+<!-- 								<div class="col-6"> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
+				</table>
+			
+			
 				<!-- 상품 정보 -->
-				<div class="top">
+				<div class="top" style="display:none;">
 					<div class="productNameBox" style="text-align: center; margin-bottom: 50px;">
 						<input type="text" name="foodName" class="adminInput" placeholder="식품 이름" style="width:100%; margin-bottom:50px; font-weight: 400; font-size: 36px; text-align: center;">
 						<textarea rows="8" name="foodContent" placeholder="식품 소개" style="width:100%"></textarea>
@@ -454,54 +508,45 @@ p b {
 								<td>개</td>
 							</tr>
 							<tr style="height:20px;"></tr>
-							<tr>
-								<td colspan="6">
-									<div class="row pe-4">
-										<div class="col-12" style="text-align: right;">
-											<select name="foodNo" style="width: 100%;">
-											</select>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6">
-									<div class="row pe-4 text-end">
-										<span style="font-size: 12px;">*기존 등록한 음식의 '등록하지 않은 식재료/밀키트'를 등록할 수 있습니다.</span>
-										<span style="font-size: 12px;">*아래의 버튼을 통해, 등록 가능한 리스트를 조회할 수 있습니다.</span>
-										<span style="font-size: 12px;">ex) 제육볶음-밀키트 등록완료 -> 제육볶음-식재료 등록가능</span>
-									</div>
-								</td>
-							</tr>
-							<tr style="height:10px;"></tr>
-							<tr>
-								<td colspan="6">
-									<div class="row pe-4">
-										<div class="col-6">
-											<input type="hidden" name="foodKind" value="1">
-										</div>
-										<div class="col-6">
-											<button type="button" class="foodKindBtn d-inline-block" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button>
-											<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button>
-										</div>
-									</div>
-								</td>
-							</tr>
-<!-- 						밀키트/식재료 여부 -->
-							<tr style="height:10px;"></tr>
-							<tr>
-								<td colspan="6">
-									<div class="row pe-4">
-										<div class="col-6">
-											<input type="hidden" name="foodType" value="1">
-										</div>
-										<div class="col-6">
-											<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button>
-											<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button>
-										</div>
-									</div>
-								</td>
-							</tr>
+							
+<!-- 							<tr> -->
+<!-- 								<td colspan="6"> -->
+<!-- 									<div class="row pe-4 text-end"> -->
+<!-- 										<span style="font-size: 12px;">*기존 등록한 음식의 '등록하지 않은 식재료/밀키트'를 등록할 수 있습니다.</span> -->
+<!-- 										<span style="font-size: 12px;">*아래의 버튼을 통해, 등록 가능한 리스트를 조회할 수 있습니다.</span> -->
+<!-- 										<span style="font-size: 12px;">ex) 제육볶음-밀키트 등록완료 -> 제육볶음-식재료 등록가능</span> -->
+<!-- 									</div> -->
+<!-- 								</td> -->
+<!-- 							</tr> -->
+<!-- 							<tr style="height:10px;"></tr> -->
+<!-- 							<tr> -->
+<!-- 								<td colspan="6"> -->
+<!-- 									<div class="row pe-4"> -->
+<!-- 										<div class="col-6"> -->
+<!-- 											<input type="hidden" name="foodKind" value="1"> -->
+<!-- 										</div> -->
+<!-- 										<div class="col-6"> -->
+<!-- 											<button type="button" class="foodKindBtn d-inline-block" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">메인메뉴</button> -->
+<!-- 											<button type="button" class="foodKindBtn d-inline-block" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">서브메뉴</button> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</td> -->
+<!-- 							</tr> -->
+<!-- <!-- 						밀키트/식재료 여부 -->
+<!-- 							<tr style="height:10px;"></tr> -->
+<!-- 							<tr> -->
+<!-- 								<td colspan="6"> -->
+<!-- 									<div class="row pe-4"> -->
+<!-- 										<div class="col-6"> -->
+<!-- 											<input type="hidden" name="foodType" value="1"> -->
+<!-- 										</div> -->
+<!-- 										<div class="col-6"> -->
+<!-- 											<button type="button" class="foodTypeBtn" style="background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">식재료</button> -->
+<!-- 											<button type="button" class="foodTypeBtn" style="background-color: gray; color: white; border-radius: 10px; box-shadow: 2px 2px 3px 0px gray; width: 90px; height: 40px; font-size: 14px; font-weight: bold;">밀키트</button> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</td> -->
+<!-- 							</tr> -->
 						</table>
 					</div>
 				</div>
@@ -743,6 +788,9 @@ p b {
 // 			메뉴 종류 버튼 이벤트
 			const foodKind = document.getElementsByName('foodKind')[0];
 			const foodKindBtns = document.getElementsByClassName('foodKindBtn');
+			const foodType = document.getElementsByName('foodType')[0];
+			const foodTypeBtns = document.getElementsByClassName('foodTypeBtn');
+			const topBox = document.getElementsByClassName('top')[0];
 			
 			// 메인메뉴 버튼
 			foodKindBtns[0].addEventListener('click', ()=>{
@@ -751,6 +799,9 @@ p b {
 				foodKindBtns[1].style.backgroundColor="gray";
 				getFoodList();
 				reset();
+				if(foodKind.value != 0 && foodType.value != 0){
+					topBox.style.display="block";
+				}
 			});
 			// 서브메뉴 버튼
 			foodKindBtns[1].addEventListener('click', ()=>{
@@ -759,11 +810,12 @@ p b {
 				foodKindBtns[0].style.backgroundColor="gray";
 				getFoodList();
 				reset();
+				if(foodKind.value != 0 && foodType.value != 0){
+					topBox.style.display="block";
+				}
 			});
 			
 // 			식재료 / 밀키트 버튼 이벤트
-			const foodType = document.getElementsByName('foodType')[0];
-			const foodTypeBtns = document.getElementsByClassName('foodTypeBtn');
 			
 			// 식재료 메뉴 버튼
 			foodTypeBtns[0].addEventListener('click', ()=>{
@@ -772,6 +824,9 @@ p b {
 				foodTypeBtns[1].style.backgroundColor="gray";
 				getFoodList();
 				reset();
+				if(foodKind.value != 0 && foodType.value != 0){
+					topBox.style.display="block";
+				}
 			});
 			// 밀키트 메뉴 버튼
 			foodTypeBtns[1].addEventListener('click', ()=>{
@@ -780,6 +835,9 @@ p b {
 				foodTypeBtns[0].style.backgroundColor="gray";
 				getFoodList();
 				reset();
+				if(foodKind.value != 0 && foodType.value != 0){
+					topBox.style.display="block";
+				}
 			});
 			
 			const menuTable1 = document.getElementsByClassName('menuTable1')[0].innerHTML;
@@ -801,6 +859,7 @@ p b {
 				numbering();
 			})
 		}
+		
 		
 // 		가격 계산 함수
 		function cal(){

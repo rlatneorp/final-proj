@@ -23,7 +23,7 @@
 					<h5 class="mt-3 mb-5">- 식재료등록 -</h5>
 					<input type="hidden" name="usersNo" value="1">
 					<span class="col-3">등록자</span>
-					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="adminNickName" readonly>
+					<input type="text" class="col-9 pb-1 mb-2 rounded border" value="${users.nickName}" readonly>
 					<span class="col-3">재료이름</span>
 					<input type="text" name="ingredientName" class="col-9 pb-1 mb-2 rounded" placeholder="재료 이름을 입력해주세요.">
 					<span class="col-3">분류</span>

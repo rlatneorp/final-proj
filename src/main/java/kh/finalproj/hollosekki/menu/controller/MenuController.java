@@ -90,7 +90,13 @@ public class MenuController {
 			
 			return "menuList";
 		}  else {
-			throw new MenuException("식단 조회를 실패하였습니다.");
+			String str = "등록된 식단이 없습니다.";
+			
+			model.addAttribute("mList", mList);
+			model.addAttribute("str", str);
+			model.addAttribute("pi", pi);
+			
+			return "menuList";
 		}
 	}
 	

@@ -220,7 +220,7 @@ public class EnrollController {
 		}
 		
 		@RequestMapping("kakaoLogin.en")
-		public void kakaoLogin(HttpServletRequest request, HttpServletResponse response, Model model){
+		public void kakaoLogin(HttpServletRequest request, Model model){
 			String id = request.getParameter("id");					// 2827339121
 			String name = request.getParameter("name");				// 정흠
 			String email = request.getParameter("email");			// sk6522@hanmail.net

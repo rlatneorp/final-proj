@@ -75,7 +75,7 @@
 	.modal-header{background: #B0DAFF;}
 	.followName{
 		font-size: 17px; font-weight: bold;
-		width:100px; margin-top: 10px; margin-left: 10px;
+		width:300px; margin-top: 10px; margin-left: 10px;
 		cursor: pointer;
 	}
 	.modalFollow{
@@ -85,7 +85,6 @@
 		color: white;
 		background: rgba(231, 76, 60, 0.8);
 		transform: scale(1.2);
-		margin-left: 200px;
 		margin-top: 10px;
 		white-space: nowrap;
 	}
@@ -95,7 +94,6 @@
 		width: 60px; height: 30px;
 		background: #B0DAFF;
 		transform: scale(1.2);
-		margin-left: 200px;
 		margin-top: 10px;
 		white-space: nowrap;
 	}

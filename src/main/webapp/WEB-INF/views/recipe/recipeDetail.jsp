@@ -846,9 +846,6 @@ bookmark.addEventListener('click', function(){
 	          			  buttons: false,
 	          			  timer: 1000,
 	          			});
-	        		setTimeout(function() {
-	        			swal.close(); 
-	        		}, 3000);
         		} else { //실패 시 
         			swal({
 						 text: "해당 상품의 스크랩에 실패했습니다.",

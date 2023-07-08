@@ -20,8 +20,9 @@
 	.group-button1, .group-button2, .group-button3{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
 	
 	#side{width: 200px; height: 100px; margin-top: 25px; margin-left: 1300px;}
-	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; margin-left: 100px; cursor: pointer;}
-	.group-button{padding: 10px 10px 10px 30px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
+	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; width: 120px;  cursor: pointer; margin-left: 40px;}
+	.group-button{padding: 0 15px 0 15px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
+	.group-button:hover{font-weight: bold; background: linear-gradient(to top, rgba(176, 218, 255, 0.3) 50%, transparent 20%);}
 	
 	.name-cut{white-space: nowrap; overflow:hidden; text-overflow: ellipsis; font-weight: bold; text-align: center;}
 	.card-text{text-align: center; margin-bottom: 5px;}
@@ -124,7 +125,7 @@
 	</c:if>
 	<br><br>
 	
-	<div id="align">
+	<div id="align" style="text-align: center;">
 		<button class="group-button" id="recent" data-value="최신" onclick="recentAl()">최신순</button>
 		<button class="group-button" id="most" data-value="조회" onclick="mostAl()">조회순</button>
 	</div>
@@ -132,6 +133,7 @@
 
 <c:if test="${empty rList }">
 	<div style="text-align: center;">
+		<i class="fa-regular fa-face-grin-beam-sweat" style="color: #b0daff; font-size: 80px; margin-top: 50px; margin-bottom: 50px;"></i>
 		<h2>${str}</h2>	
 	</div>
 </c:if>

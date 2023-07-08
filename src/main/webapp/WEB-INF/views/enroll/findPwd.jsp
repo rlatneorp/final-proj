@@ -149,21 +149,20 @@
 									<div><button type="button" id="button2">인증번호 받기</button></div>
 								</div>
 							</form>
-								<div class="line2"></div>
-								<label class="label">인증번호</label><span id="time">03:00</span><br>
-								<div class="confirm">
-									<div><input type="text" name="num" id="num" class="input" placeholder="메일로 받은 인증번호를 입력하세요" required><br></div>
-									<div><button type="button" id="button3">인증</button></div>
-								</div>
-								<div class="mid44" id="mid44">
-									&nbsp;
-								</div>
-								<div><button class="button" id="next-btn" onclick="location.href='updatePwd.en?id=' + encodeURIComponent(document.getElementById('id').value)" disabled>다음</button></div>
-								<div class="line"></div>
-								<div class="find">
-									<div class="find2" onclick="location.href='findId.en'">아이디를 잊어버리셨나요?</div>
-								</div>
-<!-- 							</form> -->
+							<div class="line2"></div>
+							<label class="label">인증번호</label><span id="time">03:00</span><br>
+							<div class="confirm">
+								<div><input type="text" name="num" id="num" class="input" placeholder="메일로 받은 인증번호를 입력하세요" required><br></div>
+								<div><button type="button" id="button3">인증</button></div>
+							</div>
+							<div class="mid44" id="mid44">
+								&nbsp;
+							</div>
+							<div><button class="button" id="next-btn" onclick="location.href='updatePwd.en?id=' + encodeURIComponent(document.getElementById('id').value)" disabled>다음</button></div>
+							<div class="line"></div>
+							<div class="find">
+								<div class="find2" onclick="location.href='findId.en'">아이디를 잊어버리셨나요?</div>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -171,7 +171,7 @@
     });
 
 	// 네이버 로그인
-  	var naverLogin = new naver_id_login("TNwmPDnti1AIGrKuJLCM", "http://localhost:8085/hollosekki/login.en");
+  	var naverLogin = new naver_id_login("TNwmPDnti1AIGrKuJLCM", "http://192.168.0.30:8085/hollosekki/login.en");
   	var state = naverLogin.getUniqState();
   	naverLogin.setButton("green", 3, 48);
   	naverLogin.setDomain("http://hollosekki/");

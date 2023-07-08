@@ -1095,14 +1095,13 @@ public class MarketController {
 	   }
 	   int listCount = mkService.selectViewIngreCount();
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
-	   System.out.println("listCount : " + listCount);
 	   ArrayList<Ingredient> list = mkService.selectViewIngredient(pi);
-	   System.out.println("list : " + list);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pIngre = new Product();
 	   //식재료 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Ingredient lists : list) {
 			   int productNo = lists.getProductNo(); String img = null;
+			   System.out.println("productNo : " + productNo);
 			   pIngre = mkService.selectPIngre(productNo); //food productNo에 대한 Product 테이블 조회 
 			   img = mkService.selectImg(lists.getIngredientNo(), 5);
 			   if(pIngre != null) {

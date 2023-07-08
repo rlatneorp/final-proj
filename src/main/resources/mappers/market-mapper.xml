@@ -661,7 +661,10 @@
 <!-- 	</select> -->
 	
 	<select id="selectViewIngredient" resultMap="ingredientInfo" >
-		select * from ingredient where is_accept = 'Y'
+		<![CDATA[
+			select * from ingredient where is_accept = 'Y' and product_no <> 0
+		]]>
+		
 	</select>
 	
 	<select id="selectViewTool" resultMap="toolInfo" >

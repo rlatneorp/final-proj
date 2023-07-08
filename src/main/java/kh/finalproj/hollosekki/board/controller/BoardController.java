@@ -61,8 +61,10 @@ public class BoardController {
 			@RequestParam(value="page",required=false) Integer page) {
 		Users u = (Users)session.getAttribute("loginUser");
 		String login = null;
+		int usersNo = 0;
 		if(u != null) {
 			login = u.getNickName();
+			usersNo = u.getUsersNo();
 		}
 		boolean yn = false;
 		if(!writer.equals(login)) {
@@ -70,14 +72,13 @@ public class BoardController {
 		}
 		ArrayList<Board> list = bService.selectReply(bId);
 		Board blist = bService.selectBoard(bId, yn);
-		System.out.println(list);
 		ArrayList<Users> AllUsersList = eService.AllUsersList();
-		System.out.println(AllUsersList);
 		if(blist != null) {
 			model.addAttribute("blist", blist);
 			model.addAttribute("list", list);
 			model.addAttribute("page", page);
 			model.addAttribute("login", login);
+			model.addAttribute("usersNo", usersNo);
 			model.addAttribute("aList", AllUsersList);
 			
 			return "detailFreeBoard";
@@ -114,7 +115,7 @@ public class BoardController {
 	@RequestMapping("reReply.bo")
 	@ResponseBody
 	public String reReply(@RequestParam(value="reviewContent",required=false) String reviewContent, @RequestParam(value="reviewWriter",required=false) String reviewWriter,
-			@RequestParam(value="productNo",required=false) int productNo, @RequestParam(value="reviewNo",required=false) int reviewNo) {
+			@RequestParam(value="productNo",required=false) int productNo, @RequestParam(value="usersNo",required=false) int usersNo,@RequestParam(value="reviewNo",required=false) int reviewNo) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
@@ -122,6 +123,7 @@ public class BoardController {
 		map.put("reviewWriter", reviewWriter);
 		map.put("productNo", productNo);
 		map.put("reviewNo", reviewNo);
+		map.put("usersNo", usersNo);
 		
 		int result = bService.reReply(map);
 		return result == 1 ? "success" : "fail";
@@ -195,12 +197,16 @@ public class BoardController {
 		
 		int	listCount = bService.getCategoryFreeCount(map);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
-
 		ArrayList<Board> list = bService.freeBList(pi, map);
+		
+		ArrayList<Board> replySum = bService.getReplyCount(list);
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 		model.addAttribute("category", category);
 		model.addAttribute("search", search);
+		if(replySum != null) {
+			model.addAttribute("replySum", replySum);
+		}
 		
 		return "freeBoard";
 	}

@@ -94,5 +94,9 @@ public class BoardDAO {
 		return sqlSession.selectOne("boardMapper.nextDetailBoard", boardNo);
 	}
 
+	public ArrayList<Board> getReplyCount(SqlSessionTemplate sqlSession, ArrayList<Board> list) {
+		return (ArrayList)sqlSession.selectList("boardMapper.getReplyCount", list);
+	}
+
 	
 }

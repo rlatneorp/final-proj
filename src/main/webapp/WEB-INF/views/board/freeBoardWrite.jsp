@@ -192,6 +192,7 @@ let firstWriter = '';
 			$.ajax({
 				type: 'POST',
 				url: 'freeBoardWriting.bo',
+				async:false,
 				data: {
 					boardTitle: title.value,
 					boardContent: contents

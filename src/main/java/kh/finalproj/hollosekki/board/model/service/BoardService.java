@@ -104,5 +104,9 @@ public class BoardService {
 		return bDAO.nextDetailBoard(sqlSession, boardNo);
 	}
 
+	public ArrayList<Board> getReplyCount(ArrayList<Board> list) {
+		return bDAO.getReplyCount(sqlSession,list);
+	}
+
 
 }

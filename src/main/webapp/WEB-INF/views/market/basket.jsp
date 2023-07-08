@@ -176,7 +176,7 @@ input[type="text"] {
 
 
 
-<%@include file="../common/top.jsp" %>
+<%@include file="../common/storeTop.jsp" %>
 <br><br><br><br><br><br>
 
 	<div>
@@ -621,7 +621,7 @@ input[type="text"] {
 		const basketNos = document.getElementsByClassName('basketNos');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
 		if(checkProducts.length == 0) {
-			swal("상품을 한 개 이상 선택해주세요.", {
+			swal("삭제할 상품을 한 개 이상 선택해주세요.", {
    			  buttons: false,
    			  timer: 1000,
    			});
@@ -634,6 +634,8 @@ input[type="text"] {
 		    buttons: ["취소", "삭제하기"]
 		}).then((YES) => {
 		    if (YES) {
+		    	let trCreated = false;
+		    	
 		    	for(basketNo of basketNos) {
 		 			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
 		 			if(basketNo.nextSibling.nextSibling.checked) {
@@ -655,8 +657,34 @@ input[type="text"] {
 		 			    			  buttons: false,
 		 			    			  timer: 1000,
 		 			    		});
-		 						if(document.getElementsByClassName('productInfos').length == 0) {
-										location.reload();
+		 						
+		 						//담긴 상품이 0개일 때 담긴 상품이 없다는 메시지가 뜨도록 
+		 						if(!trCreated && document.getElementsByClassName('productInfos').length == 0) {
+		 							
+		 							var trElement = document.createElement('tr');
+		 						    var tdElement = document.createElement('td');
+		 						    tdElement.setAttribute('colspan', '6');
+		 						    tdElement.setAttribute('height', '330');
+
+		 						    var iElement = document.createElement('i');
+		 						    iElement.classList.add('fa-regular', 'fa-face-grin-beam-sweat');
+		 						    iElement.style.color = 'skyblue';
+		 						    iElement.style.fontSize = '80px';
+
+		 						    var bElement = document.createElement('b');
+		 						    bElement.innerText = '장바구니에 담긴 상품이 없습니다.';
+
+		 						    tdElement.appendChild(iElement);
+		 						    tdElement.appendChild(document.createElement('br'));
+		 						    tdElement.appendChild(document.createElement('br'));
+		 						    tdElement.appendChild(bElement);
+
+		 						    trElement.appendChild(tdElement);
+
+		 						    var tableElement = document.querySelector('table'); // Assuming the table exists
+		 						    tableElement.appendChild(trElement);
+									
+		 						    trCreated = true; 
 								}
 		 						
 		 						//초기화
@@ -680,15 +708,10 @@ input[type="text"] {
 		const products = document.getElementById('products');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
 		if(checkProducts.length == 0){
-			Swal.fire({
-				  position: 'center',
-				  title: '상품을 한 개 이상 선택해주세요.',
-				  showConfirmButton: false,
-				  timer: 1000,
-				  customClass: {
-					    title: 'custom-font-size' // CSS 클래스 이름 지정
-				  }
-				})
+			swal("구매할 상품을 한 개 이상 선택해주세요.", {
+	   			  buttons: false,
+	   			  timer: 1000,
+	   		});
 		} else {
 			let preorderNos = [];
 			for(cp of checkProducts) { //체크 된 input type checkbox 

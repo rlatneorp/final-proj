@@ -59,7 +59,7 @@ public interface MenuService {
 
 	ArrayList<Orders> selectMyOrders(HashMap<String, Object> map);
 
-	int insertReview(Review r);
+	int insertReview(HashMap<String, Object> map);
 
 	int updateReview(Review r);
 

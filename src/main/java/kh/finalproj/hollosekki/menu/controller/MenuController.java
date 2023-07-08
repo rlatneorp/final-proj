@@ -345,9 +345,13 @@ public class MenuController {
 	}
 	
 	@RequestMapping("writeReview.mn")
-	public String writeReview(@ModelAttribute Review r) {
-		System.out.println(r.getOrderNo());
-		int result = mService.insertReview(r);
+	public String writeReview(@ModelAttribute Review r, Model model) {
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("r", r);
+		map.put("usersNo", usersNo);
+		
+		int result = mService.insertReview(map);
 		
 		if(result > 0) {
 			return "redirect:menuDetail.mn?mNo=" + r.getProductNo();

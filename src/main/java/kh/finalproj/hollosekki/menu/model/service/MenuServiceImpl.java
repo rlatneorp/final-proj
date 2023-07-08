@@ -134,8 +134,8 @@ public class MenuServiceImpl implements MenuService{
 	}
 	
 	@Override
-	public int insertReview(Review r) {
-		return mDAO.insertReview(sqlSession, r);
+	public int insertReview(HashMap<String, Object> map) {
+		return mDAO.insertReview(sqlSession, map);
 	}
 	
 	@Override

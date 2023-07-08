@@ -142,7 +142,7 @@
 	
 	<insert id="insertReview">
 		insert into review
-		values(#{productNo}, #{orderNo}, seq_review_no.nextval, default, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
+		values(#{r.productNo}, #{r.orderNo}, seq_review_no.nextval, default, #{r.reviewContent}, #{r.reviewScore}, default, sysdate, #{r.reviewWriter}, #{usersNo})
 	</insert>
 	
 	<update id="updateReview">
@@ -267,6 +267,7 @@
 		<result column="REVIEW_STATUS" property="reviewStatus"/>
 		<result column="REVIEW_DATE" property="reviewDate"/>
 		<result column="REVIEW_WRITER" property="reviewWriter"/>
+		<result column="USERS_NO" property="usersNo"/>
 	</resultMap>
 	
 	<resultMap type="Orders" id="ordersResultSet">

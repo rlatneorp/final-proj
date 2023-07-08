@@ -171,8 +171,8 @@
 				<c:forEach items="${list }" var="b" > 
 					<tr>
 						<td>${b.boardNo }</td>
-						<c:set var="nick" value="${b.nickName }" />
 						<td>
+							<c:set var="nick" value="${b.nickName }" />
 							<c:choose>
 							   <c:when test="${fn:length(nick) > 8 }">
 							      <c:out value="${fn:substring(nick,0,8) }..." />        

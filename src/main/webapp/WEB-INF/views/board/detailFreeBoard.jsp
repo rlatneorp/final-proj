@@ -346,7 +346,17 @@
 							<td>${r.reviewContent}</td>
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ r.reviewWriter eq a.nickName }">
-									<td style="cursor: pointer;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page=' ">${r.reviewWriter }</td>
+									<td style="cursor: pointer;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page=' ">
+									<c:set value="${r.reviewWriter }" var="nick"/>
+									<c:choose>
+									   <c:when test="${fn:length(nick) > 6 }">
+									      <c:out value="${fn:substring(nick,0,6) }..." />        
+									   </c:when>
+									   <c:otherwise>
+									      <c:out value="${nick}" /> 
+									   </c:otherwise>
+									</c:choose>
+									</td>
 								</c:if>
 							</c:forEach>
 							<td><fmt:formatDate value="${r.reviewDate }" pattern="yy-MM-dd HH:mm"/></td>

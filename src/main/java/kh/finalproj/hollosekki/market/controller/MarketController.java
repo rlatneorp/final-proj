@@ -270,6 +270,7 @@ public class MarketController {
                         @ModelAttribute QA q,
                         @ModelAttribute Image img,
                         HttpSession session,  Model model) {
+	   
       Users users = (Users)session.getAttribute("loginUser");
       Tool tool = mkService.selectTool(productNo);
       Food food = mkService.selectFood(productNo);
@@ -341,7 +342,11 @@ public class MarketController {
     	  model.addAttribute("ingredient", ingredient);
     	  model.addAttribute("ingredientMainImage", ingredientMainImage);
     	  model.addAttribute("ingredientsubImage", ingredientsubImage);
+    	  System.out.println(ingredient);
+    	  System.out.println(ingredientMainImage);
+    	  System.out.println(ingredientsubImage);
       }
+      
       
       
       if(list != null) {

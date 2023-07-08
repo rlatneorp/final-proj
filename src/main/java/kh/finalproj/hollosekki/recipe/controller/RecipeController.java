@@ -209,6 +209,7 @@ public class RecipeController {
 		
 		
 		System.out.println(recipe);
+		System.out.println("cList : " + cList);
 
 		if (recipe != null) {
 			mv.addObject("recipe", recipe);

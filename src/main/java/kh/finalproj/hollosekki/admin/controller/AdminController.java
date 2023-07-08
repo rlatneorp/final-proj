@@ -361,7 +361,11 @@ public class AdminController {
 		int listCount = aService.getOrdersCount(ab);
 		PageInfo pi = Pagination.getPageInfo(ab.getPage(), listCount, ab.getPageCount());
 		ArrayList<Orders> odList = aService.selectOrdersList(pi, ab);
-		Sales sales = aService.selectSalesList(null, ab).get(0);
+		ArrayList<Sales> sList = aService.selectSalesList(null, ab); 
+		Sales sales = null;
+		if(!sList.isEmpty()) {
+			sales = sList.get(0);
+		}
 		if(odList != null) {
 			model = adminBasic(model, request, pi);
 			model.addAttribute("odList", odList);

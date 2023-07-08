@@ -42,7 +42,7 @@
 							<input type="hidden" name="boardNo" value="${b.boardNo}"></td>
 						<td>${b.nickName}</td>
 						<td>
-							<a href="${contextPath}/detailFreeBoard.bo?bId=149&writer=나눔의%20행복&page=1">${fn:substring(b.boardTitle, 0, 20)}</a>
+							<a href="${contextPath}/detailFreeBoard.bo?bId=${b.boardNo}&writer=${b.nickName}&page=1">${fn:substring(b.boardTitle, 0, 20)}</a>
 						</td>
 <%-- 						<td>${fn:substring(b.boardContent, 0, 30)}</td> --%>
 						<td>

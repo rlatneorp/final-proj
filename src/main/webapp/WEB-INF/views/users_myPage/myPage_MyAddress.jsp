@@ -173,7 +173,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="390">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										등록한 배송지가 없습니다.
+										<b>등록한 배송지가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>
@@ -284,10 +284,10 @@ th:first-child, td:first-child {
 		addBtn.addEventListener("click", function() {
 			if(document.getElementById('tbody').children.length >= 5) {
 				  swal({
-						 text: "배송지는 최대 5개만 등록 가능합니다.",
-						 icon: "error",
-						 button: "확인",
-						});
+					 text: "배송지는 최대 5개만 등록 가능합니다.",
+					 icon: "error",
+					 button: "확인",
+					});
 				  return;
 			  } else {
 				  location.href = '${ contextPath }/myPage_InsertAddress.me';

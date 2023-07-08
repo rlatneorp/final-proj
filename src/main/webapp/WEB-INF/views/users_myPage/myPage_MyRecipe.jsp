@@ -119,7 +119,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="370">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										작성한 레시피가 없습니다.
+										<b>작성한 레시피가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>
@@ -127,7 +127,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="370">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										검색 결과가 없습니다.
+										<b>검색 결과가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>
@@ -135,7 +135,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="370">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										검색 결과가 없습니다.
+										<b>검색 결과가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>

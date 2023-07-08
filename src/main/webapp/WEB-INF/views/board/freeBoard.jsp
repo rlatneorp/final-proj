@@ -141,6 +141,10 @@
 
 	<br><br><br><br>
 	<div id="searchTable">	
+		<div class="container" style="width: 1200px;">
+			<h1> 게시판 </h1>
+			<p>자유로운 소통을 하는 공간입니다</p>
+		</div>
 		<div class="search" style="margin:0 auto; left:290px;">
 			<select id="categoryBtn" style="width: 100px; height: 40px; padding-top: 8px;">
 				<option value="bId" <c:if test="${ category == 'bId'}">selected</c:if>>글번호</option>
@@ -156,7 +160,7 @@
 			</div>
 		</div>
 		
-		<br><br><br><br>
+		<br><br>
 	
 	<!-- 자유게시글 -->
 		<table>
@@ -188,8 +192,8 @@
 						    </c:if>
 							<c:set var="title" value="${b.boardTitle }" />
 							<c:choose>
-							   <c:when test="${fn:length(title) > 15 }">
-							      <c:out value="${fn:substring(title,0,15) }..." />        
+							   <c:when test="${fn:length(title) > 25 }">
+							      <c:out value="${fn:substring(title,0,25) }..." />        
 							   </c:when>
 							   <c:otherwise>
 							      <c:out value="${title}" /> 

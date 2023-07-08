@@ -214,7 +214,7 @@ input[type="text"] {
 					<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 						<td class="imgTab">
 							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
-							<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
+							<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-right:15px; margin-left: -8px;">
 							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
 							<input type="hidden" value="${cl.preorderNo }">
 						</td>
@@ -222,7 +222,16 @@ input[type="text"] {
 							<b>${cl.productName}</b><br><br>
 							<c:forEach items="${cl.optionName }" var="opt">
 								<input type="hidden" value="${opt.optionNo }">
-								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
+								<c:if test="${fn:length(opt.optionValue) > 10}">
+									<span id="optNo-${opt.optionNo }">
+										${opt.optionName } : <br> ${ opt.optionValue }<br><br>
+									</span>
+								</c:if>
+								<c:if test="${fn:length(opt.optionValue) < 10}">
+									<span id="optNo-${opt.optionNo }">
+										${opt.optionName } : ${ opt.optionValue }<br><br>
+									</span>
+								</c:if>
 							</c:forEach>
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:130px">

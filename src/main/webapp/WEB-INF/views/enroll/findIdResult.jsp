@@ -130,25 +130,6 @@
 							</div>
 						</div>
 					</c:if>
-<!-- 					<div class="mid33"> -->
-<!-- 						입력하신 정보와 일치하는 결과 입니다. -->
-<!-- 					</div> -->
-<!-- 					<br> -->
-<!-- 					<div class="mid33"> -->
-<%-- 						<div class="result">이 름 : ${ usersInfo.usersName }</div> --%>
-<%-- 						<div class="result">아이디 : ${ usersInfo.usersId }</div> --%>
-<%-- 						<div class="result">가입일 : ${ usersInfo.enrollDate }</div> --%>
-<!-- 					</div> -->
-<!-- 					<div class="mid"> -->
-<!-- 						<div class="mid22"> -->
-<!-- 							<div><button class="button">로그인</button></div> -->
-								
-<!-- 							<div class="line"></div> -->
-<!-- 							<div class="find"> -->
-<!-- 								<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
 				</div>
 			</div>
 		</div>

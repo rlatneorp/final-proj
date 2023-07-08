@@ -345,8 +345,8 @@ public class MenuController {
 	}
 	
 	@RequestMapping("writeReview.mn")
-	public String writeReview(@ModelAttribute Review r, Model model) {
-		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
+	public String writeReview(@ModelAttribute Review r, HttpSession session) {
+		int usersNo = ((Users)session.getAttribute("loginUser")).getUsersNo();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("r", r);
 		map.put("usersNo", usersNo);

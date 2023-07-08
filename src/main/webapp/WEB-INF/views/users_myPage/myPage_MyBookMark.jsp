@@ -209,9 +209,7 @@ th:first-child, td:first-child {
 									<c:url var="goBack" value="${ loc }">
 										<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
 										<c:param name="searchType" value="${searchType}"></c:param>
-										<c:if test="${ !empty searchTitle }">
-											<c:param name="searchTitle" value="${searchTitle}"></c:param>
-										</c:if>
+										<c:param name="searchTitle" value="${searchTitle}"></c:param>
 									</c:url>
 									<a class="page-link" href="${ goBack }" aria-label="Previous">
 										<span aria-hidden="true">&laquo;</span>
@@ -225,9 +223,7 @@ th:first-child, td:first-child {
 								<c:url var="goNum" value="${ loc }">
 									<c:param name="page" value="${ p }"></c:param>
 									<c:param name="searchType" value="${searchType}"></c:param>
-									<c:if test="${ !empty searchTitle }">
-										<c:param name="searchTitle" value="${searchTitle}"></c:param>
-									</c:if>
+									<c:param name="searchTitle" value="${searchTitle}"></c:param>
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ goNum }">${ p }</a></li>
 							</c:forEach>
@@ -241,9 +237,7 @@ th:first-child, td:first-child {
 									<c:url var="goNext" value="${ loc }">
 										<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
 										<c:param name="searchType" value="${searchType}"></c:param>
-										<c:if test="${ !empty searchTitle }">
-											<c:param name="searchTitle" value="${searchTitle}"></c:param>
-										</c:if>
+										<c:param name="searchTitle" value="${searchTitle}"></c:param>
 									</c:url>
 									<a class="page-link" href="${ goNext }" aria-label="Next">
 										<span aria-hidden="true">&raquo;</span>
@@ -381,6 +375,15 @@ th:first-child, td:first-child {
 	            location.href = "${contextPath}/myPage_MyBookMark.me?searchType=3";
 	        }
 	    });
+		window.onload = () => {
+			const list = document.getElementById('tbody');
+			const messageCell = document.querySelector('#tbody td[colspan="6"]');
+			const page = '${pi.currentPage}';
+			
+			if(messageCell && messageCell.innerText.trim() == '스크랩 내역이 없습니다.' && page != 0 && page != 1) {
+				history.back();
+			}
+		};
 	</script>
 </body>
 </html>

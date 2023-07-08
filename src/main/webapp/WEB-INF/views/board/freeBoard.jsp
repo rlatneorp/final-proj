@@ -128,6 +128,7 @@
 	font-weight: 500;
 	background-color: white;
 	padding: 2px; 
+	vertical-align: text-top;
 }
 	
 
@@ -170,16 +171,39 @@
 				<c:forEach items="${list }" var="b" > 
 					<tr>
 						<td>${b.boardNo }</td>
-						<td>${b.nickName }</td>
+						<c:set var="nick" value="${b.nickName }" />
 						<td>
-							${b.boardTitle }
+							<c:choose>
+							   <c:when test="${fn:length(nick) > 8 }">
+							      <c:out value="${fn:substring(nick,0,8) }..." />        
+							   </c:when>
+							   <c:otherwise>
+							      <c:out value="${nick}" /> 
+							   </c:otherwise>
+							</c:choose>
+						</td>
+						<td>
+						    <c:if test="${ b.boardType eq 1}">
+						  		<button type="button" class="reThread">수정됨</button>
+						    </c:if>
+							<c:set var="title" value="${b.boardTitle }" />
+							<c:choose>
+							   <c:when test="${fn:length(title) > 15 }">
+							      <c:out value="${fn:substring(title,0,15) }..." />        
+							   </c:when>
+							   <c:otherwise>
+							      <c:out value="${title}" /> 
+							   </c:otherwise>
+							</c:choose>
 							<c:set var="pic" value="${b.boardContent}"/>
 							<c:if test="${fn:contains(pic, 'img')}">
 								<span class="material-symbols-outlined">hallway</span>
 							</c:if>
-						    <c:if test="${ b.boardType eq 1}">
-						  		<button type="button" class="reThread">수정됨</button>
+						    <c:forEach items="${replySum }" var="re">
+						    <c:if test="${b.boardNo eq re.productNo }">
+						    	[${re.replyN }]
 						    </c:if>
+						    </c:forEach>
 						</td>
 						<td>
 							<c:set var="today" value="<%=new java.util.Date()%>"/>
@@ -261,7 +285,6 @@ window.onload=()=>{
 		tr.addEventListener('click', function() {
 			const trTd = this.children;
 			const boardId = trTd[0].innerText;
-			
 			const boardWriter = trTd[1].innerText;
 			location.href = '${contextPath}/detailFreeBoard.bo?bId=' + boardId + '&writer=' + boardWriter + '&page=' + ${pi.currentPage};
 		})

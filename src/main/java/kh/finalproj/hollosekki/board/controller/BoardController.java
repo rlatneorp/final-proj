@@ -195,12 +195,16 @@ public class BoardController {
 		
 		int	listCount = bService.getCategoryFreeCount(map);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
-
 		ArrayList<Board> list = bService.freeBList(pi, map);
+		
+		ArrayList<Board> replySum = bService.getReplyCount(list);
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 		model.addAttribute("category", category);
 		model.addAttribute("search", search);
+		if(replySum != null) {
+			model.addAttribute("replySum", replySum);
+		}
 		
 		return "freeBoard";
 	}

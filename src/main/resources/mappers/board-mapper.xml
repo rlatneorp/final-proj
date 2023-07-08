@@ -203,4 +203,11 @@
 	]]>
 	</select>
 	
+	<select id="getReplyCount" resultMap="BoardResultSet">
+	 	select count(product_no) replyN, product_no
+		 from review
+		 where review_status = 'Y' and order_no = -1
+         group by product_no
+	</select>
+	
 </mapper>

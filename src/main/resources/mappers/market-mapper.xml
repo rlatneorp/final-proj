@@ -653,7 +653,7 @@
 	</select>
 	
 	<select id="selectViewFood" resultMap="foodInfo" >
-		select * from food
+		select * from food order by product_no desc 
 	</select>
 	
 <!-- 	<select id="selectViewMenu" resultMap="menuInfo" > -->
@@ -668,7 +668,7 @@
 	</select>
 	
 	<select id="selectViewTool" resultMap="toolInfo" >
-		select * from tool
+		select * from tool order by product_no desc
 	</select>
 	
 	<select id="selectViewWholeCount" resultType="_int">

@@ -439,7 +439,7 @@ ul li {
 	</div><br><br><br><br><br><br>
 	
 	<div class="parent-container">
-		<h1 class="sider-title">추천 상품</h1>
+		<h1 class="sider-title">홀로들의 추천 상품</h1>
 		<div class="product-slider2">
 			<div class="product-wrapper">
 				<c:forEach items="${like }" var="li">

@@ -1165,7 +1165,7 @@ public class MarketController {
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
 	   ArrayList<Tool> list = mkService.selectViewTool(pi);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pTool = new Product();
-	   //식재료 전체 상품 조회
+	   //도구 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Tool lists : list) {
 			   int productNo = lists.getProductNo(); String img = null;

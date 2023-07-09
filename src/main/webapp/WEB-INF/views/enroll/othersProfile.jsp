@@ -287,11 +287,11 @@
 					<c:forEach items="${lList}" var="l">
 						<c:if test="${l.FOLLOWING_USER_NO eq user.usersNo}">
 							<c:set var="followStatus" value="true" />
-							<div class="unfollowDiv" data-user-no="${ user.usersNo }" onclick="reload()"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
 						</c:if>
 					</c:forEach>
 					<c:if test="${not followStatus}">
-					 	<div class="unfollowDiv" data-user-no="${ user.usersNo }" onclick="reload()"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					 	<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
 					</c:if>
 				</c:if>
 				
@@ -751,7 +751,8 @@
 			</div>
 		</div>
 	</div>
-	
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>	
 <script>
 	$(()=>{
 		$('#recipe').addClass('select');
@@ -836,13 +837,17 @@
 					if (data == 'yes') {
 						var unfollowDiv = button.parentNode;
 						unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
-					}
+					};
+					swal("언팔로우 되었습니다.", {
+	          			  buttons: false,
+	          			  timer: 2000,
+	          			});
 		    	},
 		    	error: function (data) {
 					console.log('언팔로우 실패');
 				}
 			});
-// 			location.reload();
+			location.reload();
 		}
 		
 		// 팔
@@ -858,13 +863,16 @@
 					console.log('팔로우 성공');
 					var unfollowDiv = button.parentNode;
 			  		unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
-			  		
+			  		swal("팔로우 되었습니다.", {
+	          			  buttons: false,
+	          			  timer: 2000,
+	          			});
 				},
 			    error: function (data) {
 			 		console.log('실패');
 			    }
 			});
-// 			location.reload();
+			location.reload();
 		}
 		
 		// 1. 작성 레시피 더보기
@@ -994,9 +1002,7 @@
 		close[1].addEventListener('click', () => {
 			reload();
 		});
-		close[2].addEventListener('click', () => {
-			reload();
-		});
+		
 		
 		// ESC 누르면
 		window.addEventListener('keydown', (e) => {

@@ -1178,14 +1178,17 @@ public class MarketController {
 	   Tool hotTool = null;
 	   ArrayList<Product> hotDeal = mkService.selectToolHotDeal();
 	   ArrayList<Object> hotDeals = new ArrayList<>();
+	   System.out.println("hotDeal : " + hotDeal);
 	   if(!hotDeal.isEmpty()) {
 		   for(Product lists : hotDeal) {
 			   int productNo = lists.getProductNo(); 
+			   System.out.println("productNo : " + productNo);
 			   String img = null; 
 			   hotTool = mkService.selectTool(productNo);
 			   if(hotTool != null) {
 				   lists.setProductName(hotTool.getToolName());
 			   }
+			   System.out.println("htPN : "+ hotTool.getProductNo());
 			   img = mkService.selectImg(hotTool.getProductNo(), 6);
 			   if(img != null) {
 				   lists.setProductImg(img);

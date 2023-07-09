@@ -1236,7 +1236,8 @@ input[type="text"] {
 				pg: 'html5_inicis',
 				pay_method: 'card',
 				name:name,
-				amount:shipSum
+// 				amount:shipSum
+				amount:100
 				}, function (rsp) {
 					if (rsp.success) {
 // 			            orderInfo.length = 0; //배열 비우기 

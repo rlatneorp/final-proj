@@ -498,13 +498,9 @@ public class UsersController {
 			if (menus != null) {
 				order.setProductName(menus.getMenuName());
 			}
-			 rCount = mkService.selectReview(order.getOrderNo(), users.getNickName());
+			 rCount = mkService.selectReview(order.getProductNo(), users.getNickName());
 			 order.setReviewCount(rCount);
-			 
 		}
-		
-		
-		
 		model.addAttribute("pi", pi);
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("reviewList", reviewList);
@@ -534,7 +530,7 @@ public class UsersController {
 		}
 		if (igs != null) {//�씠誘몄� ���엯 :5 (�떇�옱猷�) 
 			orders.setProductName(igs.getIngredientName());
-			String imgName = mkService.selectImg(productNo, 5);
+			String imgName = mkService.selectImg(igs.getIngredientNo(), 5);
 			orders.setImgName(imgName);
 		}
 		if (menus != null) {//�씠誘몄� ���엯 : 4 (�떇�떒)

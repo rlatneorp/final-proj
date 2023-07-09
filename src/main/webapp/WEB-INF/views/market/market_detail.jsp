@@ -881,7 +881,7 @@ p b {
                  </c:if>
                  		
                  	  		<c:if test="${food ne null }">
-		                 	  	 <div class="productResultSet" style="display:none">
+		                 	  	 <div class="productResultSet" style="display:block">
 				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
 				                        <span class="opSearch">${food.foodName}</span>
 				                        <input type="hidden" name="productNo" value="${food.productNo}">

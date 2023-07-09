@@ -393,7 +393,7 @@ ul li {
 	 	<div class="slick">
 	        <div class="list"><a href="market_detail.ma?productNo=297"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/03/ed71046a5ce94f80b21963749ed71bdd.jpg"></a></div>
 	        <div class="list"><a href="market_detail.ma?productNo=300"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></a></div>
-	        <div class="list"><a href="market_detail.ma?productNo=298"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/06/d2cda17794c0902796dabd4e391245cd.jpg"></a></div>
+	        <div class="list"><a href="market_detail.ma?productNo=308"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/06/d2cda17794c0902796dabd4e391245cd.jpg"></a></div>
 	        <div class="list"><a href="market_detail.ma?productNo=299"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/05/940d2e1006151abee17d2529ce2fb18b.jpg"></a></div>
 	 	</div><br>
 	</div><br><br>

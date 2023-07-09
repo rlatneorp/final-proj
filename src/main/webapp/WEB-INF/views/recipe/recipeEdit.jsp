@@ -132,6 +132,8 @@
 						<option value="해물" <c:if test="${categoryIngredient eq '해물' }">selected</c:if>>해물</option>
 						<option value="과일" <c:if test="${categoryIngredient eq '과일' }">selected</c:if>>과일</option>
 						<option value="채소" <c:if test="${categoryIngredient eq '채소' }">selected</c:if>>채소</option>
+						<option value="제과" <c:if test="${categoryIngredient eq '제과' }">selected</c:if>>제과</option>
+						<option value="기타" <c:if test="${categoryIngredient eq '기타' }">selected</c:if>>기타</option>
 					</select>
 					<select class="categoryItem" name="categorySituation">
 						<option disabled value="">상황 별</option>
@@ -140,6 +142,7 @@
 						<option value="도시락" <c:if test="${categorySituation eq '도시락' }">selected</c:if>>도시락</option>
 						<option value="아침식사" <c:if test="${categorySituation eq '아침식사' }">selected</c:if>>아침식사</option>
 						<option value="비건" <c:if test="${categorySituation eq '비건' }">selected</c:if>>비건</option>
+						<option value="기타" <c:if test="${categorySituation eq '기타' }">selected</c:if>>기타</option>
 					</select>
 					<select class="categoryItem" name="categoryType">
 						<option disabled value="">종류 별</option>
@@ -148,6 +151,7 @@
 						<option value="간식" <c:if test="${categoryType eq '간식' }">selected</c:if>>간식</option>
 						<option value="면" <c:if test="${categoryType eq '면' }">selected</c:if>>면</option>
 						<option value="국" <c:if test="${categoryType eq '국' }">selected</c:if>>국</option>
+						<option value="기타" <c:if test="${categoryType eq '기타' }">selected</c:if>>기타</option>
 					</select>
 				</div>
 				<div class="term"></div>
@@ -589,6 +593,18 @@ sub.addEventListener('click', function(){
 		}
 	}
 	
+	let riCheck = false
+	for(let i = 0; i < el.length; i++){
+		const elCheck = el[i].value.split('-')[0];
+		console.log(elCheck);
+		for(let j = i + 1; j < el.length; j++){
+			if(elCheck === el[j].value.split('-')[0]){
+				riCheck = true;
+				break;
+			}
+		}
+	}
+	
 	const rBox = document.getElementsByClassName('recipeBox');
 	const roCons = document.getElementsByClassName('recipeOrderContent');
 	const orderImgPreview = document.getElementsByClassName('orderImgPreview');
@@ -622,6 +638,9 @@ sub.addEventListener('click', function(){
 	} else if(ri){
 		alert('재료를 채워주세요.');
 		ri = false;
+	} else if(riCheck){
+		alert('재료를 서로 다른 종류로 채워주세요.');
+		riCheck = false;
 	} else if(roc){
 		alert('조리순서에 대해 작성해주세요.');
 		roc = false;

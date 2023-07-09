@@ -98,8 +98,8 @@
 	</select>
 	
 	<delete id="deleteRecipe">
-		delete from recipe
-		where food_no=#{foodNo}
+		update recipe set RECIPE_STATUS = 'N'
+		where food_no=#{foodNo} and recipe_status ='Y'
 	</delete>
 	
 	<delete id="deleteOrder">
@@ -218,6 +218,7 @@
 	
 	<select id="selectIngredient" resultMap="ingredientResultSet">
 		select * from ingredient
+		order by ingredient_name asc
 	</select>
 	
 	<insert id="insertIngredient">

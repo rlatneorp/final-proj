@@ -879,8 +879,9 @@ p b {
 	                         </c:if>
                      </c:forEach>
                  </c:if>
+                 		
                  	  		<c:if test="${food ne null }">
-		                 	  	 <div class="productResultSet" style="display:block">
+		                 	  	 <div class="productResultSet" style="display:none">
 				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
 				                        <span class="opSearch">${food.foodName}</span>
 				                        <input type="hidden" name="productNo" value="${food.productNo}">
@@ -924,6 +925,81 @@ p b {
 		                           <br>
 		                   </div>
 	                   </c:if>
+	                   
+<%-- 	                   <c:if test="${tool ne null}"> --%>
+<!-- 		                 	  <div class="productResultSet" style="display:block"> -->
+<!-- 				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
+<%-- 				                        <span class="opSearch">${tool.toolName}</span> --%>
+<%-- 				                        <input type="hidden" name="productNo" value="${tool.productNo}"> --%>
+<%-- 				                        <input type="hidden" name="productName" value="${tool.toolName}"> --%>
+<%-- 				                        <input type="hidden" name="productPrice" value="${total}"> --%>
+<!-- 				                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}> -->
+<!-- 				                     </h4> -->
+<!-- 		                         <div> -->
+<!-- 		                            <div  class="btnbox" style="margin: 0 0 0 -1px; float:right;"> -->
+<!-- 			                            <button class="decrease" type="button">-</button> -->
+<!-- 			                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly> -->
+<!-- 			                            <button class="increase" type="button">+</button> -->
+
+<!-- 		                          </div> -->
+<!-- 		                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
+<!-- 		                            <input type="hidden" name="productPrice" value=${p.productPrice}> -->
+<!-- 		                         </div> -->
+<!-- 		                           <br> -->
+<!-- 		                   </div> -->
+<%-- 	                   </c:if> --%>
+	                   
+	                   
+	                   	<c:if test="${tool ne null }" >
+	                   		<c:if test="${p.productOption eq 'N' }">
+		                 	  <div class="productResultSet" style="display:block">
+				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
+				                        <span class="opSearch">${tool.toolName}</span>
+				                        <input type="hidden" name="productNo" value="${tool.productNo}">
+				                        <input type="hidden" name="productName" value="${tool.toolName}">
+				                        <input type="hidden" name="productPrice" value="${total}">
+				                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}>
+				                     </h4>
+		                         <div>
+		                            <div  class="btnbox" style="margin: 0 0 0 -1px; float:right;">
+			                            <button class="decrease" type="button">-</button>
+			                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly>
+			                            <button class="increase" type="button">+</button>
+
+		                          </div>
+		                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>
+		                            <input type="hidden" name="productPrice" value=${p.productPrice}>
+		                         </div>
+		                           <br>
+		                   </div>
+		                 	</c:if>
+		                 </c:if>
+		                 
+		                 
+<%-- 		                 <c:if test="${tool ne null }" > --%>
+<%-- 	                     	<c:if test="${p.productOption eq 'Y' }"> --%>
+<!-- 		                 	  <div class="productResultSet" style="display:none"> -->
+<!-- 				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
+<%-- 				                        <span class="opSearch">${tool.toolName}</span> --%>
+<%-- 				                        <input type="hidden" name="productNo" value="${tool.productNo}"> --%>
+<%-- 				                        <input type="hidden" name="productName" value="${tool.toolName}"> --%>
+<%-- 				                        <input type="hidden" name="productPrice" value="${total}"> --%>
+<!-- 				                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}> -->
+<!-- 				                     </h4> -->
+<!-- 		                         <div> -->
+<!-- 		                            <div  class="btnbox" style="margin: 0 0 0 -1px; float:right;"> -->
+<!-- 			                            <button class="decrease" type="button">-</button> -->
+<!-- 			                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly> -->
+<!-- 			                            <button class="increase" type="button">+</button> -->
+
+<!-- 		                          </div> -->
+<!-- 		                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
+<!-- 		                            <input type="hidden" name="productPrice" value=${p.productPrice}> -->
+<!-- 		                         </div> -->
+<!-- 		                           <br> -->
+<!-- 		                   </div> -->
+<%-- 		                 	</c:if> --%>
+<%-- 		                 </c:if> --%>
                   
                   </div>
                </div>
@@ -937,7 +1013,9 @@ p b {
             
 			
             <c:if test="${ tool ne null }">
-            	<input type="text" class="totalPrice" readonly value="0">
+            	<c:if test="${ option eq null }">
+            		<input type="text" class="totalPrice" readonly value="0">
+            	</c:if>
             </c:if>
             
             </div>
@@ -1330,7 +1408,6 @@ p b {
          const usersNo = '${loginUser.usersNo}'
          location.href='${contextPath}/basket.ma?usersNo=' + usersNo;
       })
-      
       const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
       const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 //       const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
@@ -1347,8 +1424,6 @@ p b {
       const cartCount = document.querySelector(".cartCount");
       let totalPrice1 = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       let totalPrice = document.querySelector(".totalPrice");
-      
-      
       
       function loginArlet(){
 		  swal("로그인 후 이용해주세요.", {
@@ -1416,6 +1491,9 @@ p b {
 	      
 	      if(productOptionSet == null){
   	  		let productPrice = document.querySelector(".productPrice");
+  	  		
+  	  		console.log(productPrice);
+  	  		console.log(${total});
   	  		productPrice.innerText=totalPrice1;
 		          $(document).on("click",".btnbox",function(e){
 		              const increBtn = this.childNodes[5]; //증가버튼
@@ -1673,9 +1751,9 @@ p b {
       $(document).ready(function() {
          var productNo = null;
          
-//         if(productOption2Set == null){
-//         	document.getElementsByClassName("totalPrice")[0].style.display = "none";
-//         }
+        if(productOption2Set == null){
+        	document.getElementsByClassName("totalPrice")[0].style.display = "none";
+        }
          
          $(function(){
         	 if($(".reviews").length >= 6){

@@ -14,7 +14,7 @@
 	#inputText{border-radius: 8px; border: 1px solid black; box-shadow: 0px 5px 0px 0px black; width: 300px; height: 40px; margin-left: 450px; margin-right: 450px; margin-top: 40px;}
 	#searchIcon{position: absolute; right: 455px; top: 46px;}
 	#searchBtn{border-radius: 50%; width: 30px; height: 30px; border: none; background-color: #B0DAFF}
-	#category{width: 450px; margin-left: 375px; margin-right: 375px; margin-top: 30px;}
+	#category{width: 550px; margin-left: 375px; margin-right: 375px; margin-top: 30px;}
 	
 	.title{font-weight: bold;}
 	.group-button1, .group-button2, .group-button3{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
@@ -99,6 +99,8 @@
 			<button class="group-button1" data-value="해물">해물</button>
 			<button class="group-button1" data-value="과일">과일</button>
 			<button class="group-button1" data-value="채소">채소</button>
+			<button class="group-button1" data-value="제과">제과</button>
+			<button class="group-button1" data-value="기타">기타</button>
 		</div>
 		<div>
 			<span class="title">상황별 | </span>
@@ -107,6 +109,7 @@
 			<button class="group-button2" data-value="도시락">도시락</button>
 			<button class="group-button2" data-value="아침식사">아침식사</button>
 			<button class="group-button2" data-value="비건">비건</button>
+			<button class="group-button2" data-value="기타">기타</button>
 		</div>
 		<div>
 			<span class="title">종류별 | </span>
@@ -115,6 +118,7 @@
 			<button class="group-button3" data-value="간식">간식</button>
 			<button class="group-button3" data-value="면">면</button>
 			<button class="group-button3" data-value="반찬">반찬</button>
+			<button class="group-button3" data-value="기타">기타</button>
 		</div>
 	</div>
 </div>

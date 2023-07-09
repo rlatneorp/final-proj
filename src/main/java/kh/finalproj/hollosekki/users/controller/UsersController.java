@@ -404,13 +404,14 @@ public class UsersController {
 		}
 		
 		String selectTitle = null;
-		if (searchTitle != null) {
+		if (searchTitle != null && searchTitle != "") {
 			selectTitle = searchTitle;
 			listMap.put("selectTitle", selectTitle);
 		}
 		
 		// 좋아요 리스트 개수...
 		int listCount = uService.getLikeListCount(listMap);
+		System.out.println(listCount);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();

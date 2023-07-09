@@ -1238,15 +1238,33 @@ input[type="text"] {
 				name:name,
 				amount:shipSum
 // 				amount:100
+// 				buyer_name:
+				//가격
+				//	        buyer_email: 'iamport@siot.do',
+				//	        buyer_name: '구매자이름',
+				//	        buyer_tel: '010-1234-5678',
+				//	        buyer_addr: '서울특별시 강남구 삼성동',
+				//	        buyer_postcode: '123-456',
+				//         @*m_redirect_url: 'https://www.yourdomain.com/payments/complete'*@
+				//         m_redirect_url: 'humanentec.iptime.org'
+				        /*
+				        모바일 결제시,
+				        결제가 끝나고 랜딩되는 URL을 지정
+				        (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
+				        */
 				}, function (rsp) {
 					if (rsp.success) {
+// 						var msg = '결제가 완료되었습니다.';
+			            //usePoint, plusPoint 반영 
+			            //결제 성공 시 orders테이블에 insert 
 // 			            orderInfo.length = 0; //배열 비우기 
 // 			 			//상품 list 구매내역 테이블에 담기 
 // 			 			//insert 시 필요 데이터 : 
 // 			 			//productNo, users_no, orderCount, totalPrice(개별 합계), orderAddress, orderStock(R), orderComment, 배송비
 						const forProductNos = document.getElementsByClassName('forProductNo');
 						const usersNo = ${loginUser.usersNo};
-						//포인트 차감 (동일)
+						 //포인트 차감 (동일)
+						 
 			            for(forProductNo of forProductNos){ //insert 
 			            	const productNo = forProductNo.value
 			            	const preorderNo = forProductNo.nextElementSibling.value;
@@ -1301,8 +1319,10 @@ input[type="text"] {
 									options:options
 								},
 								success: data => {
+									
 								},
 								error: data => {
+											
 								}
 					    	}); //ajax 끝 
 			            } //for문 끝 
@@ -1325,10 +1345,18 @@ input[type="text"] {
 						}
 						location.href='${contextPath}/paySuccess.ma?use=' + usePoint.replace(/,/g,'') + '&plus=' + pp + '&preNo=' + preOrder;
 						usePoint = 0;
+					
+					 	            
+					//             msg += '고유ID : ' + rsp.imp_uid;
+					//             msg += '상점 거래ID : ' + rsp.merchant_uid;
+					//             msg += '결제 금액 : ' + rsp.paid_amount;
+					//             msg += '카드 승인번호 : ' + rsp.apply_num;
 					} else {
 						var msg = '결제에 실패하였습니다.';
+						//msg += '에러내용 : ' + rsp.error_msg;
 					}
 				  })
+				
 			}; //for문 끝
 		} //requestPay 문끝 
 // 	} //requestPay 끝

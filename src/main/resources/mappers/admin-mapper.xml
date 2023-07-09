@@ -764,6 +764,9 @@
 				where recipe_name like '%${searchText}%'
 			</if>
 		</if>
+		<if test="searchText == null and number != null">
+			where food_no = #{number}
+		</if>
 	</select>
 
 

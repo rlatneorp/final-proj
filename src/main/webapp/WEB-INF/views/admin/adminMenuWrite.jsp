@@ -134,8 +134,10 @@
 						아이콘 식단 카테고리 선택
 						<select name="menuKind">
 							<option value="1">다이어트</option>
-							<option value="2">육류</option>
-							<option value="3">해산물</option>
+							<option value="2">몸보신</option>
+							<option value="3">든든밥상</option>
+							<option value="4">고단백</option>
+							<option value="5">채식</option>
 						</select>
 					</div>
 					<div>

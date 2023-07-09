@@ -207,7 +207,6 @@ input[type="text"] {
 		</tr>
 		<tbody id="products">
 			<c:if test="${!empty cartList }">
-			${cartList }
 			<c:set var="previousPreorderNo" value="" />
 			<c:forEach items="${ cartList}" var="cl" varStatus="status" >
 				<c:if test="${cl.preorderNo != previousPreorderNo}">
@@ -483,7 +482,7 @@ input[type="text"] {
 				},
 				success: data => {
 					//포인트
-					pointRate = data*0.005;
+					pointRate = Math.floor(data*0.005);
 					document.getElementById('point-' + preOrder).innerText = pointRate;
 						
 					//플러스 버튼 누를 때마다 개당 합계 금액 금액화 

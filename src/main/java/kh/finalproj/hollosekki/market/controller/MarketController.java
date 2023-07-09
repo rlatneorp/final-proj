@@ -374,6 +374,7 @@ public class MarketController {
       model.addAttribute("ordList", ordList);
       System.out.println(options);
       System.out.println(p);
+      System.out.println(food);
       return "market_detail";
    }
    

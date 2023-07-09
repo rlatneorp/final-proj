@@ -63,7 +63,7 @@ public class MarketController {
    private EnrollService eService;
 
    @RequestMapping("basket.ma")
-   public String pay(HttpSession session, Model model) {
+   public String basket(HttpSession session, Model model) {
       
       Users users = (Users)session.getAttribute("loginUser");
       int userNo = users.getUsersNo();
@@ -71,25 +71,21 @@ public class MarketController {
       if(users != null) {
 			int cart = eService.cartCount(users.getUsersNo());
 			model.addAttribute("cart", cart);
-		}
-
-      
+      }
       ArrayList<Cart> cartList = mkService.selectCartList(userNo);
-      
       ArrayList<Product> selectProductInfo = new ArrayList<>(); 
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       
-      ArrayList<Cart> optionNos = new ArrayList<>();
+//      ArrayList<Cart> optionNos = new ArrayList<>();
       
       for(Cart cart : cartList) {
-    	  ArrayList<Options> optValues = new ArrayList<>();
+//    	  ArrayList<Options> optValues = new ArrayList<>();
          int productNo = cart.getProductNo();
-         System.out.println("productNo : " + productNo);
          
          //주문 번호에 대한 optionNo 조회 
          ArrayList<Options> o = mkService.selectOptionInfo(cart.getPreorderNo());
          cart.setOptionName(o);
-         ArrayList<Options> options = mkService.selectOptions(productNo);
+//         ArrayList<Options> options = mkService.selectOptions(productNo);
          
          //카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
          foods = mkService.selectFood(productNo);
@@ -99,7 +95,6 @@ public class MarketController {
          
          //productNo에 대한 모든 정보를 하나하나 가져옴 
          selectProductInfo = mkService.selectProductInfo(productNo);
-         
          //위에서 조회 된 정보 중 price로 cart 속성값 변경 ( cartList 하나로 보내기 위해 )
          //합계 계산 
          int price = 0; int sum = 0; int sale = 0;

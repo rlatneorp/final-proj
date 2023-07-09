@@ -398,6 +398,7 @@
 					}else{
 						$.ajax({
 							url: '${contextPath}/adminFoodSelector.ad',
+							async:false,
 							data: {no:this.value,
 								   type:1},
 							success: data =>{

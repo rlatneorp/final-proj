@@ -457,7 +457,7 @@ input[type="text"] {
 		
 		//적립금(POINT)
 		const sum = parseFloat(document.getElementById('sum-' + preOrder).innerText.replace(/,/g, ''));
-		let pointRate = Math.round(sum*0.005);
+		let pointRate = Math.floor(sum*0.005);
 		
 		document.getElementById('point-' + preOrder).innerText = pointRate; 
 		
@@ -531,7 +531,7 @@ input[type="text"] {
 				},
 				success: data => {
 					//포인트
-					pointRate = data*0.005;
+					pointRate = Math.floor(data*0.005);
 					document.getElementById('point-' + preOrder).innerText = pointRate;
 						
 					//마이너스 버튼 누를 때마다 개당 합계 금액 금액화 

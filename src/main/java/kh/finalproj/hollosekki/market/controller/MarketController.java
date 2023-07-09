@@ -504,10 +504,6 @@ public class MarketController {
       
       System.out.println("plus : " + plus);
       System.out.println("use : " + use);
-      if(users != null) {
-    	  int cart = eService.cartCount(users.getUsersNo());
-    	  session.setAttribute("cart", cart);
-      }
       
       //포인트 테이블에 minus, plus 포인트 반영 
       Point p = new Point();
@@ -547,6 +543,10 @@ public class MarketController {
       for (int i = 0; i < preorderNoArr.length; i++) {
           preorderNoIntArr[i] = Integer.parseInt(preorderNoArr[i]);
           mkService.deleteFromCart(preorderNoIntArr[i]);
+      }
+      if(users != null) {
+    	  int cart = eService.cartCount(users.getUsersNo());
+    	  session.setAttribute("cart", cart);
       }
       model.addAttribute("users", users);
       return "paySuccess";

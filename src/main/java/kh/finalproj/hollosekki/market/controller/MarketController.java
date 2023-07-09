@@ -279,6 +279,7 @@ public class MarketController {
       Tool tool = mkService.selectTool(productNo);
       Food food = mkService.selectFood(productNo);
       Ingredient ingredient = mkService.selectIngrdient(productNo);
+      System.out.println(tool);
       
      
 		if(users != null) {
@@ -380,6 +381,8 @@ public class MarketController {
       model.addAttribute("p", p);
       model.addAttribute("options", options);
       model.addAttribute("ordList", ordList);
+      System.out.println(options);
+      System.out.println(p);
       return "market_detail";
    }
    

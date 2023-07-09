@@ -217,7 +217,8 @@
 	
 	<select id="myBookMarkList" resultType="map">
 		select DIVISION_NO, NUMBER_TYPE, i.image_renamename, i.image_level, u.nickname, r.recipe_modify_date, 
-		       r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, food_no, bookmark_no, p.product_no
+		       r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, food_no, bookmark_no, p.product_no,
+		       u.users_id
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
 		     left join product p on (b.division_no = p.product_no)

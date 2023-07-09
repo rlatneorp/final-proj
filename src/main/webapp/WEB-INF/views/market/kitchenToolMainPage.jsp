@@ -391,10 +391,10 @@ ul li {
 		<div class="bannerTitle" style="margin-left:90px;"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
 		<br><br>
 	 	<div class="slick">
-	        <div class="list"><img src="resources/images/listProduct.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/06/02/c2136bce9904c2d3bf3b3795b69b8c7c.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/75bcd3ca5e31e19105d9a4a8b16ba1a3.jpg"></div>
+	        <div class="list"><a href="market_detail.ma?productNo=297"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/03/ed71046a5ce94f80b21963749ed71bdd.jpg"></a></div>
+	        <div class="list"><a href="market_detail.ma?productNo=300"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></a></div>
+	        <div class="list"><a href="market_detail.ma?productNo=298"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/06/d2cda17794c0902796dabd4e391245cd.jpg"></a></div>
+	        <div class="list"><a href="market_detail.ma?productNo=299"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/05/940d2e1006151abee17d2529ce2fb18b.jpg"></a></div>
 	 	</div><br>
 	</div><br><br>
  	<h1 class="sider-title" >New 핫딜존</h1>

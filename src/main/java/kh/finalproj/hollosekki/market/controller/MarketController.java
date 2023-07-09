@@ -76,16 +76,12 @@ public class MarketController {
       ArrayList<Product> selectProductInfo = new ArrayList<>(); 
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       
-//      ArrayList<Cart> optionNos = new ArrayList<>();
-      
       for(Cart cart : cartList) {
-//    	  ArrayList<Options> optValues = new ArrayList<>();
          int productNo = cart.getProductNo();
          
          //주문 번호에 대한 optionNo 조회 
          ArrayList<Options> o = mkService.selectOptionInfo(cart.getPreorderNo());
          cart.setOptionName(o);
-//         ArrayList<Options> options = mkService.selectOptions(productNo);
          
          //카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
          foods = mkService.selectFood(productNo);

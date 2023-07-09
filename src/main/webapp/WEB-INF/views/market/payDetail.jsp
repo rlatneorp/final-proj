@@ -1236,8 +1236,8 @@ input[type="text"] {
 				pg: 'html5_inicis',
 				pay_method: 'card',
 				name:name,
-// 				amount:shipSum
-				amount:100
+				amount:shipSum
+// 				amount:100
 // 				buyer_name:
 				//가격
 				//	        buyer_email: 'iamport@siot.do',

@@ -931,9 +931,9 @@ p b {
             <div class="totalPriceBox">
 <!--             	<span class="totalPrice"></span> -->
 
-<%-- 			<c:if test="${ tool eq null }"> --%>
-<!--             	<input type="text" class="totalPrice" readonly value="0" style="display:none"> -->
-<%--             </c:if> --%>
+			<c:if test="${ tool eq null }">
+            	<input type="text" class="totalPrice" readonly value="0" style="display:none">
+            </c:if>
             
 			
             <c:if test="${ tool ne null }">

@@ -49,8 +49,10 @@
 						</td>
 						<td>
 							<c:if test="${m.menuKind eq 1}">다이어트</c:if>
-							<c:if test="${m.menuKind eq 2}">육류</c:if>
-							<c:if test="${m.menuKind eq 3}">해산물</c:if>
+							<c:if test="${m.menuKind eq 2}">몸보신</c:if>
+							<c:if test="${m.menuKind eq 3}">든든밥상</c:if>
+							<c:if test="${m.menuKind eq 4}">고단백</c:if>
+							<c:if test="${m.menuKind eq 5}">채식</c:if>
 						</td>
 						<td>
 							<c:if test="${m.menuType eq 1}">식재료</c:if>

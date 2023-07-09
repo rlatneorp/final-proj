@@ -154,6 +154,7 @@
 		background: rgba(231, 76, 60, 0.8);
 		transform: scale(1.2);
 		margin-top: 10px;
+		white-space: nowrap;
 	}
 	.modalFollow:hover {
 	    border: 1px #C6C6C6 solid;
@@ -172,6 +173,7 @@
 		background: #B0DAFF;
 		transform: scale(1.2);
 		margin-top: 10px;
+		white-space: nowrap;
 	}
 	.modalFollower:hover {
 	    border: 1px #C6C6C6 solid;

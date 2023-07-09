@@ -147,6 +147,10 @@ public class MarketController {
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
       ArrayList<Product> productInfo = new ArrayList<>(); ArrayList<Cart> checkedCart = new ArrayList<>(); ArrayList<Cart> checkedCartList = new ArrayList<>();
+      if(users != null) {
+    	  int cart = eService.cartCount(users.getUsersNo());
+    	  	session.setAttribute("cart", cart);
+      }
       
       //옵션 
       ArrayList<Cart> optionNos = new ArrayList<>(); ArrayList<Options> optValues = new ArrayList<>();
@@ -505,6 +509,10 @@ public class MarketController {
       
       System.out.println("plus : " + plus);
       System.out.println("use : " + use);
+      if(users != null) {
+    	  int cart = eService.cartCount(users.getUsersNo());
+    	  session.setAttribute("cart", cart);
+      }
       
       //포인트 테이블에 minus, plus 포인트 반영 
       Point p = new Point();
@@ -970,7 +978,7 @@ public class MarketController {
 	   Users u = (Users)session.getAttribute("loginUser");
 		if(u != null) {
 			int cart = eService.cartCount(u.getUsersNo());
-			model.addAttribute("cart", cart);
+			session.setAttribute("cart", cart);
 		}
 	   
 	   if(currentPage == null) {
@@ -1095,14 +1103,13 @@ public class MarketController {
 	   }
 	   int listCount = mkService.selectViewIngreCount();
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
-	   System.out.println("listCount : " + listCount);
 	   ArrayList<Ingredient> list = mkService.selectViewIngredient(pi);
-	   System.out.println("list : " + list);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pIngre = new Product();
 	   //식재료 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Ingredient lists : list) {
 			   int productNo = lists.getProductNo(); String img = null;
+			   System.out.println("productNo : " + productNo);
 			   pIngre = mkService.selectPIngre(productNo); //food productNo에 대한 Product 테이블 조회 
 			   img = mkService.selectImg(lists.getIngredientNo(), 5);
 			   if(pIngre != null) {
@@ -1158,7 +1165,7 @@ public class MarketController {
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
 	   ArrayList<Tool> list = mkService.selectViewTool(pi);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pTool = new Product();
-	   //식재료 전체 상품 조회
+	   //도구 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Tool lists : list) {
 			   int productNo = lists.getProductNo(); String img = null;

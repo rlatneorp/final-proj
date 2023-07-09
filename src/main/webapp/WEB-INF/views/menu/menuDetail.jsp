@@ -1498,6 +1498,12 @@ p b {
 		        },
 	            success: data =>{
 	        		console.log("success");
+	        		const jsonString = JSON.stringify(data);
+	           		const values = jsonString.substring(1, jsonString.length - 1).split(",");
+	           		const cart = values[1].trim().replace(/]/g, '');
+	           		console.log(cart);
+	           		document.getElementById("cartCount").innerText = cart;
+	           		document.getElementById("cartCount").classList.add('cart-count');
 	            },
 	            error: data => {
 	            	console.log("error");

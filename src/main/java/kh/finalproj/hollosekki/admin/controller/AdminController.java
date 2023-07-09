@@ -508,7 +508,7 @@ public class AdminController {
 			m = (Menu)selectProduct(m);
 		}
 		if(mList != null) {
-			model = adminBasic(model, request, null);
+			model = adminBasic(model, request, pi);
 			model.addAttribute("h", h);
 			model.addAttribute("mList", mList);
 			return "adminMenuManage";
@@ -863,7 +863,10 @@ public class AdminController {
 		
 	}
 	@GetMapping("adminIngredientWrite.ad")
-	public String adminIngredientWrite() {
+	public String adminIngredientWrite(Model model,
+									   HttpSession session) {
+		Users users = (Users)session.getAttribute("loginUser");
+		model.addAttribute(users);
 		return "adminIngredientWrite";
 	}
 	@PostMapping("adminIngredientInsert.ad")
@@ -872,8 +875,6 @@ public class AdminController {
 										HttpServletRequest request,
 										HttpSession session,
 										Model model) {
-		AdminBasic ab = (AdminBasic)request.getAttribute("ab");
-		
 		Users user = (Users)session.getAttribute("loginUser");
 		igd.setUsersNo(user.getUsersNo());
 		
@@ -1387,11 +1388,12 @@ public class AdminController {
 	@GetMapping("adminRecipeDetail.ad")
 	public String adminRecipeDetail(Model model,
 									HttpSession session,
-									@ModelAttribute Recipe r) {
-		Users user = (Users)session.getAttribute("loginUser");
-		
-		model.addAttribute("rId", user.getUsersId());
-		model.addAttribute("rNo", r.getFoodNo());
+									@RequestParam("foodNo") Integer foodNo) {
+		AdminBasic ab = new AdminBasic();
+		ab.setNumber(foodNo);
+		ArrayList<Recipe> rList = aService.selectRecipeList(null, ab);
+		model.addAttribute("rId", rList.get(0).getUsersId());
+		model.addAttribute("rNo", foodNo);
 		return "redirect:recipeDetail.rc";
 	}
 	@GetMapping("adminRecipeWrite.ad")

@@ -209,6 +209,7 @@ public class RecipeController {
 		
 		
 		System.out.println(recipe);
+		System.out.println("cList : " + cList);
 
 		if (recipe != null) {
 			mv.addObject("recipe", recipe);
@@ -906,14 +907,18 @@ public class RecipeController {
 	// 후기 입력
 	@RequestMapping("reviewWrite.rc")
 	public void reviewWrite(@RequestParam("content") String content, @RequestParam("id") String id,
-			@RequestParam("foodNo") String foodNo, @RequestParam("score") int score, HttpServletResponse response) {
+			@RequestParam("foodNo") String foodNo, @RequestParam("score") int score, HttpServletResponse response,
+			Model model) {
 		Review re = new Review();
+		
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 
 		re.setProductNo(Integer.parseInt(foodNo));
 		re.setOrderNo(0);
 		re.setReviewContent(content);
 		re.setReviewWriter(id);
 		re.setReviewScore(score);
+		re.setUsersNo(usersNo);
 
 		rService.reviewWrite(re);
 		ArrayList<Review> reList = rService.selectReview(Integer.parseInt(foodNo));

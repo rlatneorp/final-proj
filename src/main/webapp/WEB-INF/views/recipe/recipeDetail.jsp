@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script> -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 /* 	레시피 소개 */
@@ -55,7 +55,7 @@
 /* 	완성된 사진 */
 	#comText{text-align: center; font-weight: bold; font-size: 30px;}
 	#completePic{width: 1100px; margin: auto;}
-	.complPic{margin-left: 250px; margin-right: 250px;}
+ 	.complPic{margin-left: 250px; margin-right: 250px;}
 	
 /* 	버튼 */
 	#buttonBox{width: 270px; margin: auto;}
@@ -373,9 +373,9 @@
 <div id="completePic">
 	<div id="myCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
 		<div class="carousel-inner">
-			<c:forEach items="${cList }" var="c">
+			<c:forEach items="${cList}" var="c">
 				<div class="carousel-item active">
-					<img src="${contextPath }/resources/uploadFiles/${c.imageRenameName}" width= 600px height= 500px class="complPic">
+					<img src="${contextPath}/resources/uploadFiles/${c.imageRenameName}" width="600px" height="500px" class="d-block complPic">
 				</div>
 			</c:forEach>
 		</div>

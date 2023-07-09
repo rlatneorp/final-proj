@@ -142,7 +142,7 @@
 	
 	<insert id="insertReview">
 		insert into review
-		values(#{productNo}, #{orderNo}, seq_review_no.nextval, default, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
+		values(#{r.productNo}, #{r.orderNo}, seq_review_no.nextval, default, #{r.reviewContent}, #{r.reviewScore}, default, sysdate, #{r.reviewWriter}, #{usersNo})
 	</insert>
 	
 	<update id="updateReview">
@@ -155,7 +155,7 @@
 		select *
 		from orders o
 		     left join review using(order_no)
-		where users_no = #{usersNo} and o.product_no = #{productNo} and review_content is null
+		where o.users_no = #{usersNo} and o.product_no = #{productNo} and review_content is null
 	</select>
 	
 	<select id="selectMyReviewList" resultMap="reviewResultSet">
@@ -185,7 +185,7 @@
 	<select id="selectProfile" resultMap="imageResultSet">
 		select *
 		from image
-		where image_type = 1 and image_level = 0 and image_divide_no = #{usersNo}
+		where image_type = 8 and image_level = 0 and image_divide_no = #{usersNo}
 	</select>
 	
 	<select id="getCateListCount" resultType="_int">
@@ -267,6 +267,7 @@
 		<result column="REVIEW_STATUS" property="reviewStatus"/>
 		<result column="REVIEW_DATE" property="reviewDate"/>
 		<result column="REVIEW_WRITER" property="reviewWriter"/>
+		<result column="USERS_NO" property="usersNo"/>
 	</resultMap>
 	
 	<resultMap type="Orders" id="ordersResultSet">

@@ -649,11 +649,11 @@
 	
 	<!-- 상품 메인 창에서 카테고리 별 조회  -->
 	<select id="selectViewWhole" resultMap="productList" >
-		select * from product where product_type in (1,3,4)
+		select * from product where product_type in (1,3,4) order by product_no desc
 	</select>
 	
 	<select id="selectViewFood" resultMap="foodInfo" >
-		select * from food
+		select * from food order by product_no desc 
 	</select>
 	
 <!-- 	<select id="selectViewMenu" resultMap="menuInfo" > -->
@@ -661,11 +661,14 @@
 <!-- 	</select> -->
 	
 	<select id="selectViewIngredient" resultMap="ingredientInfo" >
-		select * from ingredient where is_accept = 'Y'
+		<![CDATA[
+			select * from ingredient where is_accept = 'Y' and product_no <> 0 order by ingredient_no desc
+		]]>
+		
 	</select>
 	
 	<select id="selectViewTool" resultMap="toolInfo" >
-		select * from tool
+		select * from tool order by product_no desc
 	</select>
 	
 	<select id="selectViewWholeCount" resultType="_int">
@@ -730,7 +733,7 @@
 			        FROM likes
 			        GROUP BY division_no
 			    ) l ON l.division_no = p.product_no
-			    LEFT JOIN image img ON p.product_no = img.image_divide_no
+			    LEFT JOIN image img ON (p.product_no = img.image_divide_no or i.ingredient_no = img.image_divide_no)
 			    WHERE p.product_type IN (1, 3, 4)
 			    AND img.image_type in (3,4,5,6)
 			    AND l.division_count IS NOT NULL 
@@ -804,7 +807,7 @@
 			        FROM likes l
 			        GROUP BY division_no
 			    ) l ON l.division_no = p.product_no
-			    LEFT JOIN image img ON p.product_no = img.image_divide_no
+			    LEFT JOIN image img ON (p.product_no = img.image_divide_no or i.ingredient_no = img.image_divide_no)
 			    WHERE p.product_type = 3
 			    AND l.division_count IS NOT NULL
 			    AND l.division_count <> 0
@@ -850,7 +853,9 @@
 	</select>
 	
 	<select id="selectViewIngreCount" resultType="_int">
-		select count(*) from ingredient where is_accept = 'Y'
+		<![CDATA[
+		select count(*) from ingredient where is_accept = 'Y' and product_no <> 0
+		]]>
 	</select>
 	
 <!-- 	<select id="selectPfood" resultMap="productList"> -->

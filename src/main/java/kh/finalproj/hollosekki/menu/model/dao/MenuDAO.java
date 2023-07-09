@@ -127,8 +127,8 @@ public class MenuDAO {
 		return (ArrayList)sqlSession.selectList("menuMapper.selectMyOrders", map);
 	}
 
-	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
-		return sqlSession.insert("menuMapper.insertReview", r);
+	public int insertReview(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.insert("menuMapper.insertReview", map);
 	}
 
 	public int updateReview(SqlSessionTemplate sqlSession, Review r) {

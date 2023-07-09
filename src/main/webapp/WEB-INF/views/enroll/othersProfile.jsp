@@ -989,25 +989,20 @@
 		    });
 		});
 		
-		// 모달 닫을 때 새로고침
-		const reload = () => {
-			location.reload();
-		}
-		
 		// 모달 X버튼
 		const close = document.querySelectorAll('.btn-close');
 		close[0].addEventListener('click', () => {
-			reload();
+			location.reload();
 		});
 		close[1].addEventListener('click', () => {
-			reload();
+			location.reload();
 		});
 		
 		
 		// ESC 누르면
 		window.addEventListener('keydown', (e) => {
 			if(e.keyCode == 27){
-				reload();
+				location.reload();
 			}
 		});
 		

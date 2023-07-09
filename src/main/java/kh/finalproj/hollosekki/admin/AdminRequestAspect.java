@@ -72,7 +72,6 @@ public class AdminRequestAspect {
 			ab.setPageCount(10);
 //		session 값 o / request 값 x
 		}else if(session.getAttribute("pageCount") != null && request.getParameter("pageCount") == null){
-//			ab.setPageCount(Integer.parseInt(session.getAttribute("pageCount").toString()));
 			ab.setPageCount((int)session.getAttribute("pageCount"));
 //		session 값 o / request 값 o
 		}else {

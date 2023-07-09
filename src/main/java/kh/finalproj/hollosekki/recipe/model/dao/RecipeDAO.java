@@ -72,7 +72,7 @@ public class RecipeDAO {
 	}
 
 	public int deleteRecipe(SqlSessionTemplate sqlSession, int foodNo) {
-		return sqlSession.delete("recipeMapper.deleteRecipe", foodNo);
+		return sqlSession.update("recipeMapper.deleteRecipe", foodNo);
 	}
 
 	public int deleteOrder(SqlSessionTemplate sqlSession, int foodNo) {

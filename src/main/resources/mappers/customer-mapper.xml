@@ -54,6 +54,7 @@
 		<result column="FAQ_DATE" property="faqDate"/>
 		<result column="FAQ_STATUS" property="faqStatus"/>
 		<result column="FAQ_TYPE" property="faqType"/>
+		<result column="FAQ_ANSWER" property="faqAnswer"/>
 	</resultMap>
 	
 	<resultMap type="Qna" id="QnaResultSet">
@@ -71,94 +72,123 @@
 		<result column="QNA_TYPE" property="qnaType"/>
 	</resultMap>
 	
-	<select id="getCategoryFListCount" resultType="_int">
+<select id="getCategoryFListCount" resultType="_int">
 		select count(*)
 		from faq
-		where faq_status = 'Y' and faq_type in (0,1,2,3,4)  
+		where faq_status = 'Y'
 		<if test="category == 'user'">
-			  and (faq_title like '%회원%')
+			  and (faq_type = 3)
 		</if>
 		<if test="category == 'delivery'">
-			  and (faq_title like '%배송%')
-			  
+			  and (faq_type = 1)
 		</if>
 		<if test="category == 'pay'">
-			  and (faq_title like '%결제%') 
+			  and (faq_type = 2) 
+		</if>
+		<if test="category == 'product'">
+			  and (faq_type = 0)
 		</if>
 		<if test="category == 'etc'">
-			  and (faq_title like '%기타%')
+			  and (faq_type = 4)
 		</if>
 		<if test="category == 'all'">
-			  and (faq_title like '%')
+			  and (faq_type in (0, 1, 2, 3, 4))
 		</if>
 		<if test="category == 'user' and search != ''">
-			  and (faq_title like '%회원%'
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 3
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'delivery' and search != ''">
-			  and (faq_title like '%배송%'
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 1
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'pay' and search != ''">
-			  and (faq_title like '%결제%' 
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 2 
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'product' and search != ''">
-			  and (faq_title like '%상품%' 
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 0
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'etc' and search != ''">
-			  and (faq_title like '%기타%'
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 4
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'all' and search != ''">
-			  and (faq_title like '%'
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type in (0, 1, 2, 3, 4)
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 	</select>
 	
 	<select id="fBoardList" resultMap="CustomerResultSet">
 		select *
 		from faq
-		where faq_status = 'Y' and faq_type  in (0,1,2,3,4) 
+		where faq_status = 'Y'
 		<if test="category == 'user'">
-			  and (faq_title like '%회원%')
+			  and (faq_type = 3)
 		</if>
 		<if test="category == 'delivery'">
-			  and (faq_title like '%배송%')
+			  and (faq_type = 1)
 		</if>
 		<if test="category == 'pay'">
-			  and (faq_title like '%결제%') 
+			  and (faq_type = 2) 
+		</if>
+		<if test="category == 'product'">
+			  and (faq_type = 0)
 		</if>
 		<if test="category == 'etc'">
-			  and (faq_title like '%기타%')
+			  and (faq_type = 4)
 		</if>
 		<if test="category == 'all'">
-			  and (faq_title like '%')
+			  and (faq_type in (0, 1, 2, 3, 4))
 		</if>
 		<if test="category == 'user' and search != ''">
-			  and (faq_title like '%회원%'
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 3
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'delivery' and search != ''">
-			  and (faq_title like '%배송%'
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 1
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'pay' and search != ''">
-			  and (faq_title like '%결제%' 
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 2 
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'product' and search != ''">
-			  and (faq_title like '%상품%' 
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 0
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'etc' and search != ''">
-			  and (faq_title like '%기타%'
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type = 4
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		<if test="category == 'all' and search != ''">
-			  and (faq_title like '%'
-			  and faq_title like '%' || #{search} || '%')
+			  and (faq_type in (0, 1, 2, 3, 4)
+			  or faq_title like '%' || #{search} || '%'
+			  or faq_answer like '%' || #{search} || '%'
+			  or faq_content like '%' || #{search} || '%')
 		</if>
 		order by faq_no
 	</select>

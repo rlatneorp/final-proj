@@ -457,10 +457,10 @@ public class RecipeController {
 	public String deleteRecipe(@RequestParam("foodNo") int foodNo) {
 
 		int result1 = rService.deleteRecipe(foodNo);
-		int result2 = rService.deleteOrder(foodNo);
-		int result3 = rService.deleteImage(foodNo);
+//		int result2 = rService.deleteOrder(foodNo);
+//		int result3 = rService.deleteImage(foodNo);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0) {
 			return "redirect:recipeList.rc";
 		} else {
 			throw new RecipeException("레시피 삭제를 실패하였습니다.");
@@ -598,22 +598,14 @@ public class RecipeController {
 
 		ArrayList<String> delOrderList = new ArrayList<>();
 
-//		System.out.println("orderFiles : " + orderFiles);
-//		System.out.println("rc : " + rc);
-
 		int updateOrderResult = 0;
 		int updateRecipeOrderResult = 0;
 		int delOrderImgResult = 0;
 		int j = 0;
 		
-		
 		for (int i = 0; i < orderArr.length; i++) {
-//			System.out.println("delOrderImg : " + delOrderImg[i]);
 			if (!delOrderImg[i].equals("none")) {
-				
 				deleteFile(delOrderImg[i], request);
-				
-				
 				for(; j < orderFiles.size();) {
 					String recipeOriginal = orderFiles.get(j).getOriginalFilename();
 					if (orderFiles.get(j) != null && !recipeOriginal.equals("")) {
@@ -738,7 +730,6 @@ public class RecipeController {
 			model.addAttribute("page", page);
 
 			return "redirect:recipeDetail.rc";
-//			throw new RecipeException("레시피 수정에 실패하였습니다.");
 		}
 	}
 

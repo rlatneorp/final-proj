@@ -160,7 +160,7 @@ th:first-child, td:first-child {
 							</c:if>
 							<c:forEach items="${ list }" var="l">
 								<c:if test="${ l.NUMBER_TYPE == 1 and !empty l.RECIPE_NAME }">
-									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ loginUser.usersId }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
+									<tr onclick="if(event.target.tagName != 'INPUT')location.href='${contextPath}/recipeDetail.rc?rId=' + '${ l.USERS_ID }' + '&rNo=' + '${ l.FOOD_NO }' + '&page=' + '${ pi.currentPage }'" data-bookMark-no="${l.BOOKMARK_NO}">
 										<td>
 											<c:if test="${ empty l.IMAGE_RENAMENAME }">
 												<img src="${contextPath }/resources/images/noImg.png" style="width: 100%; height: 100%"/>

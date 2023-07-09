@@ -978,7 +978,7 @@ public class MarketController {
 	   Users u = (Users)session.getAttribute("loginUser");
 		if(u != null) {
 			int cart = eService.cartCount(u.getUsersNo());
-			model.addAttribute("cart", cart);
+			session.setAttribute("cart", cart);
 		}
 	   
 	   if(currentPage == null) {

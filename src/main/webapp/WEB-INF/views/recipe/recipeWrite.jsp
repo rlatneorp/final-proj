@@ -117,6 +117,8 @@
 						<option value="해물">해물</option>
 						<option value="과일">과일</option>
 						<option value="채소">채소</option>
+						<option value="제과">제과</option>
+						<option value="기타">기타</option>
 					</select>
 					<select class="categoryItem" id="situation" name="categorySituation">
 						<option selected disabled value="">상황 별</option>
@@ -125,6 +127,7 @@
 						<option value="도시락">도시락</option>
 						<option value="아침식사">아침식사</option>
 						<option value="비건">비건</option>
+						<option value="기타">기타</option>
 					</select>
 					<select class="categoryItem" id="type" name="categoryType">
 						<option selected disabled value="">종류 별</option>
@@ -133,6 +136,7 @@
 						<option value="간식">간식</option>
 						<option value="면">면</option>
 						<option value="국">국</option>
+						<option value="기타">기타</option>
 					</select>
 				</div>
 				<div class="term"></div>
@@ -451,6 +455,17 @@ sub.addEventListener('click', function(){
 		}
 	}
 	
+	let riCheck = false
+	for(let i = 0; i < el.length; i++){
+		const elCheck = el[i].value.split('-')[0];
+		console.log(elCheck);
+		for(let j = i + 1; j < el.length; j++){
+			if(elCheck === el[j].value.split('-')[0]){
+				riCheck = true;
+				break;
+			}
+		}
+	}
 	
 	const roCons = document.getElementsByClassName('recipeOrderContent');
 	const oi = document.getElementsByClassName('oi');
@@ -479,6 +494,9 @@ sub.addEventListener('click', function(){
 	} else if(ri){
 		alert('재료를 채워주세요');
 		ri = false;
+	} else if(riCheck){
+		alert('재료를 서로 다른 종류로 채워주세요');
+		riCheck = false;
 	} else if(roc){
 		alert('조리순서에 대해 작성해주세요.');
 		roc = false;

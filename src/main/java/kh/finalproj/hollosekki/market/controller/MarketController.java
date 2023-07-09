@@ -279,6 +279,7 @@ public class MarketController {
       Tool tool = mkService.selectTool(productNo);
       Food food = mkService.selectFood(productNo);
       Ingredient ingredient = mkService.selectIngrdient(productNo);
+      System.out.println(tool);
       
      
 		if(users != null) {
@@ -380,6 +381,8 @@ public class MarketController {
       model.addAttribute("p", p);
       model.addAttribute("options", options);
       model.addAttribute("ordList", ordList);
+      System.out.println(options);
+      System.out.println(p);
       return "market_detail";
    }
    
@@ -978,7 +981,7 @@ public class MarketController {
 	   Users u = (Users)session.getAttribute("loginUser");
 		if(u != null) {
 			int cart = eService.cartCount(u.getUsersNo());
-			model.addAttribute("cart", cart);
+			session.setAttribute("cart", cart);
 		}
 	   
 	   if(currentPage == null) {
@@ -1165,7 +1168,7 @@ public class MarketController {
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
 	   ArrayList<Tool> list = mkService.selectViewTool(pi);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pTool = new Product();
-	   //식재료 전체 상품 조회
+	   //도구 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Tool lists : list) {
 			   int productNo = lists.getProductNo(); String img = null;

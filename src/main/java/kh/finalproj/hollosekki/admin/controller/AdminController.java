@@ -1238,7 +1238,7 @@ public class AdminController {
 		int resultPd = 0;
 		int resultT = 0;
 		int resultOpDel = 0;
-		int resultOpIn = 0;
+		int resultOpIn = 1;
 		int resultImgDel = 0;
 		int resultImgIn = 0;
 		int upImageCount = 0;

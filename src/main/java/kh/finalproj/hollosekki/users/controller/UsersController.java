@@ -66,7 +66,7 @@ public class UsersController {
 
 	@RequestMapping("myPage_Main.me")
 	public String myPage_Main(Model model) {
-		// �씠誘몄� 議고쉶 - 濡쒓렇�씤 議고쉶�븷�븣 �씠誘몄� 由щ꽕�엫, �냼�뀥�씠誘몄� 議곗씤�빐�꽌 媛��졇�샂
+		// 이미지 조회 - 로그인 조회할때 이미지 리네임, 소셜이미지 조인해서 가져옴
 		Users u = (Users) model.getAttribute("loginUser");
 		Users loginUser = null;
 		
@@ -88,7 +88,7 @@ public class UsersController {
 		model.addAttribute("following", following);
 		model.addAttribute("follower", follower);
 
-		// �뙏濡쒖엵 �뙏濡쒖썙 由ъ뒪�듃 議고쉶
+		// 팔로잉 팔로워 리스트 조회
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(loginUser.getUsersNo());
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(loginUser.getUsersNo());
 
@@ -98,7 +98,7 @@ public class UsersController {
 		return "myPage_Main";
 	}
 
-	// �뼵�뙏
+	// 언팔
 	@RequestMapping("myPage_unFollow.me")
 	@ResponseBody
 	public String myPage_unFollow(Model model, @RequestParam("usersNo") int usersNo,
@@ -116,7 +116,7 @@ public class UsersController {
 		}
 	}
 
-	// �뙏濡�
+	// 팔로
 	@RequestMapping("myPage_follow.me")
 	@ResponseBody
 	public String myPage_follow(Model model, @RequestParam("usersNo") int usersNo,
@@ -134,9 +134,9 @@ public class UsersController {
 		}
 	}
 
-	// �뙆�씪 ���옣
+	// 파일 저장
 	public String[] saveFile(MultipartFile file, HttpServletRequest request) {
-		// �뙆�씪 ���옣�냼 吏��젙
+		// 파일 저장소 지정
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
 		File folder = new File(savePath);
@@ -145,7 +145,7 @@ public class UsersController {
 			folder.mkdirs();
 		}
 
-		// �뙆�씪 �씠由� 蹂�寃� �삎�떇 吏��젙
+		// 파일 이름 변경 형식 지정
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		int ranNum = (int) (Math.random() * 100000);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + ranNum
@@ -165,7 +165,7 @@ public class UsersController {
 		return returnArr;
 	}
 
-	// �뙆�씪 �궘�젣
+	// 파일 삭제
 	public void deleteFile(String fileName, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
@@ -201,7 +201,7 @@ public class UsersController {
 					user.setImageRenameName(image.getImageRenameName());
 					model.addAttribute("image", image);
 				} else {
-					throw new UsersException("�궗吏� �떎�뙣");
+					throw new UsersException("사진 실패");
 				}
 			}
 		}
@@ -210,7 +210,7 @@ public class UsersController {
 			model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
-			throw new UsersException("�봽濡쒗븘 �닔�젙 �떎�뙣");
+			throw new UsersException("프로필 수정 실패");
 		}
 	}
 
@@ -233,13 +233,13 @@ public class UsersController {
 				image.setImageDivideNo(u.getUsersNo());
 
 				Image existingImage = uService.selectImage(u.getUsersNo());
-				if (existingImage == null) { // 湲곗〈 �뙆�씪�씠 �뾾�쓣 �븣
+				if (existingImage == null) { // 기존 파일이 없을 때
 					int insertImage = uService.insertImage(image);
 
 					if (insertImage > 0) {
 						model.addAttribute("image", image);
 					} else {
-						throw new UsersException("�궗吏� �닔�젙 �떎�뙣");
+						throw new UsersException("사진 수정 실패");
 					}
 				} else {
 					int deleteImage = uService.deleteImage(existingImage);
@@ -254,10 +254,10 @@ public class UsersController {
 							user.setImageRenameName(image.getImageRenameName());
 							model.addAttribute("image", image);
 						} else {
-							throw new UsersException("�궗吏� �닔�젙 �떎�뙣");
+							throw new UsersException("사진 수정 실패");
 						}
 					} else {
-						throw new UsersException("�궗吏� �궘�젣 �떎�뙣");
+						throw new UsersException("사진 삭제 실패");
 					}
 				}
 			}
@@ -284,11 +284,11 @@ public class UsersController {
 			model.addAttribute("loginUser", user);
 			return "redirect:myPage_Main.me";
 		} else {
-			throw new UsersException("�봽濡쒗븘 �닔�젙 �떎�뙣");
+			throw new UsersException("프로필 수정 실패");
 		}
 	}
 
-	// �궡 �젅�떆�뵾 議고쉶
+	// 내 레시피 조회
 	@RequestMapping("myPage_MyRecipe.me")
 	public String myPage_MyRecipe(Model model, @RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "searchType", required = false) Integer searchType,
@@ -302,7 +302,7 @@ public class UsersController {
 		HashMap<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("usersNo", usersNo);
 		
-		int selectType = 0; // 理쒖떊/�삤�옒�맂/議고쉶/�뒪�겕�옪/醫뗭븘�슂
+		int selectType = 0; // 최신/오래된/조회/스크랩/좋아요
 		if (searchType != null) {
 			selectType = searchType;
 			listMap.put("selectType", selectType);
@@ -332,7 +332,7 @@ public class UsersController {
 		return "myPage_MyRecipe";
 	}
 	
-	// �뒪�겕�옪 議고쉶
+	// 스크랩 조회
 	@RequestMapping("myPage_MyBookMark.me")
 	public String myPage_MyBookMark(Model model, @RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "searchType", required = false) Integer searchType,
@@ -353,7 +353,7 @@ public class UsersController {
 		HashMap<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("usersNo", usersNo);
 		
-		int selectType = 0; // 理쒖떊/�삤�옒�맂/�젅�떆�뵾/�떇�떒
+		int selectType = 0; // 최신/오래된/레시피/식단
 		if (searchType != null) {
 			selectType = searchType;
 			listMap.put("selectType", selectType);
@@ -383,6 +383,7 @@ public class UsersController {
 		return "myPage_MyBookMark";
 	}
 	
+	// 좋아요 조회
 	@RequestMapping("myPage_MyFavorite.me")
 	public String myPage_MyFavorite(Model model, @RequestParam(value = "page", required = false) Integer page,
 									@RequestParam(value = "searchType", required = false) Integer searchType,
@@ -396,7 +397,7 @@ public class UsersController {
 		HashMap<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("usersNo", usersNo);
 		
-		int selectType = 0; // �쟾泥�/�젅�떆�뵾/�떇�떒/�떇�뭹/�떇�옱猷�/�긽�뭹
+		int selectType = 0; // 전체/레시피/식단/식품/식재료/상품
 		if (searchType != null) {
 			selectType = searchType;
 			listMap.put("selectType", selectType);
@@ -408,7 +409,7 @@ public class UsersController {
 			listMap.put("selectTitle", selectTitle);
 		}
 		
-		// 醫뗭븘�슂 由ъ뒪�듃 媛쒖닔...
+		// 좋아요 리스트 개수...
 		int listCount = uService.getLikeListCount(listMap);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
@@ -428,7 +429,7 @@ public class UsersController {
 		return "myPage_MyFavorite";
 	}
 
-	// �뒪�겕�옪 �궘�젣
+	// 스크랩 삭제
 	@RequestMapping("myPage_deleteBookMark.me")
 	@ResponseBody
 	public String myPage_deleteBookMark(@RequestParam("bookmarkNo") String bookmarkNumber) {
@@ -446,7 +447,7 @@ public class UsersController {
 		return result > 0 ? "yes" : "no";
 	}
 
-	// 醫뗭븘�슂 �궘�젣
+	// 찜 삭제
 	@RequestMapping("myPage_deleteLike.me")
 	@ResponseBody
 	public String myPage_deleteLike(@RequestParam("likeNo") String likeNumber) {

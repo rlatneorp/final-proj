@@ -578,14 +578,14 @@
 <!-- 	  AND TRUNC(o.order_date) <= TO_DATE('2023-06-29', 'YYYY-MM-DD') -->
 <!--   </select> -->
 
-		<!-- 주문 번호에 대한 optionNo 조회 -->
-		<select id="selectOptionInfo" resultMap="optionsList">
-			SELECT *
-			FROM cart c
-			INNER JOIN options o ON c.PRODUCT_OPTION = o.option_No
-			WHERE c.pre_order_No = #{preorderNo}
-		</select>
-		
+	<!-- 주문 번호에 대한 optionNo 조회 -->
+	<select id="selectOptionInfo" resultMap="optionsList">
+		SELECT *
+		FROM cart c
+		INNER JOIN options o ON c.PRODUCT_OPTION = o.option_No
+		WHERE c.pre_order_No = #{preorderNo}
+	</select>
+	
 	<insert id="updatePointTable">
 		insert into point (POINT_NO,USERS_NO,POINT_TYPE,POINT_BEFORE,POINT_CHANGE,MODIFY_DATE )
 		values(seq_point_no.nextval, #{usersNo}, #{pointType}, #{pointBefore}, #{pointChange}, sysdate )

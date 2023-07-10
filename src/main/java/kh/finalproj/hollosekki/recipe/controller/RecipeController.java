@@ -500,7 +500,8 @@ public class RecipeController {
 			@RequestParam(value = "comPic", required = false) ArrayList<MultipartFile> comFiles,
 			@RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
 			@RequestParam("delComImg") String[] delComImg, @RequestParam("page") int page,
-			@RequestParam("elementQuantity") String elementQuantity, @RequestParam("elementIngredient") ArrayList<String> elementIngredient) {
+			@RequestParam("elementQuantity") String elementQuantity, @RequestParam("elementIngredient") ArrayList<String> elementIngredient,
+			@RequestParam(value="delPro", required=false) ArrayList<String> delPro) {
 
 		int updateRecipeResult = 0;
 		updateRecipeResult = rService.updateRecipe(r);
@@ -602,6 +603,13 @@ public class RecipeController {
 		int updateRecipeOrderResult = 0;
 		int delOrderImgResult = 0;
 		int j = 0;
+		
+		if(!delPro.isEmpty()) {
+			for(int i = 0; i < delPro.size(); i++) {
+				rService.deleteOrderImg(delPro.get(i));
+			}
+		}
+		
 		
 		for (int i = 0; i < orderArr.length; i++) {
 			if (!delOrderImg[i].equals("none")) {
@@ -713,24 +721,29 @@ public class RecipeController {
 			updateComResult = rService.insertAttm(comImgList);
 		}
 
-		if (updateRecipeResult + thumResult + updateOrderResult + updateComResult == thumImgList.size() + orc.size()
-				+ comImgList.size() + 1) {
-			if (delThumRename.length() + comDelRename.size() == delThum.length() + delComImg.length
-					&& updateComResult + updateOrderResult + thumResult == 0) {
-				return "redirect:recipeDetail.rc";
-			} else {
-				model.addAttribute("rId", r.getUsersId());
-				model.addAttribute("rNo", r.getFoodNo());
-				model.addAttribute("page", page);
-				return "redirect:recipeDetail.rc";
-			}
-		} else {
-			model.addAttribute("rId", r.getUsersId());
-			model.addAttribute("rNo", r.getFoodNo());
-			model.addAttribute("page", page);
-
-			return "redirect:recipeDetail.rc";
-		}
+		model.addAttribute("rId", r.getUsersId());
+		model.addAttribute("rNo", r.getFoodNo());
+		model.addAttribute("page", page);
+		return "redirect:recipeDetail.rc";
+		
+//		if (updateRecipeResult + thumResult + updateOrderResult + updateComResult == thumImgList.size() + orc.size()
+//				+ comImgList.size() + 1) {
+//			if (delThumRename.length() + comDelRename.size() == delThum.length() + delComImg.length
+//					&& updateComResult + updateOrderResult + thumResult == 0) {
+//				return "redirect:recipeDetail.rc";
+//			} else {
+//				model.addAttribute("rId", r.getUsersId());
+//				model.addAttribute("rNo", r.getFoodNo());
+//				model.addAttribute("page", page);
+//				return "redirect:recipeDetail.rc";
+//			}
+//		} else {
+//			model.addAttribute("rId", r.getUsersId());
+//			model.addAttribute("rNo", r.getFoodNo());
+//			model.addAttribute("page", page);
+//
+//			return "redirect:recipeDetail.rc";
+//		}
 	}
 
 	// 조회순 정렬

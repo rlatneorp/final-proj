@@ -252,7 +252,8 @@
 			<button type="button" id="plusBtn" onclick="orderPlus()">+ 조리 순서 추가하기</button>
 			<span> / </span>
 			<button type="button" id="minusBtn" onclick="orderRemove()">- 조리 순서 삭제하기</button>
-			
+			<input type="hidden" value="none" id="delProcedure" class="checkdel">
+			<div id="delAddplace"></div>	
 			<br><br><br>
 			
 			
@@ -442,7 +443,7 @@ for(const orderDelBtn of orderDelBtns){
 		this.nextElementSibling.childNodes[1].childNodes[1].style.visibility = "visible" // [필수]
 		this.previousElementSibling.value= this.id.split('-')[1];// input type= hidden
 		this.nextElementSibling.childNodes[1].childNodes[3].disabled = false // input type=file
-		console.log(this.nextElementSibling.childNodes[1].childNodes[7]);
+// 		console.log(this.nextElementSibling.childNodes[1].childNodes[7]);
 // 		console.log(this.nextElementSibling.childNodes[1].childNodes[3]);
 	})
 }
@@ -463,7 +464,7 @@ function orderPlus(){
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].remove();
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[5].remove();
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[7].value ="0";
-		console.log(document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[7]);
+// 		console.log(document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[7]);
 		count++;
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[1].innerText=count;
 	}
@@ -471,8 +472,16 @@ function orderPlus(){
 
 // 순서 삭제 버튼 클릭 시
 const copys = document.querySelectorAll('.copyC');
+const delAddplace = document.querySelector('#delAddplace');
+const delProcedure = document.querySelector('#delProcedure');
+const checkdel = document.querySelectorAll('.checkdel');
 function orderRemove(){
 	if(count > 1){
+		delAddplace.appendChild(delProcedure.cloneNode(true));
+		document.querySelectorAll('.checkdel')[document.querySelectorAll('.checkdel').length-1].classList.add('ck');
+		document.querySelectorAll('.checkdel')[document.querySelectorAll('.checkdel').length-1].setAttribute('name', 'delPro');
+		document.querySelectorAll('.checkdel')[document.querySelectorAll('.checkdel').length-1].value=document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].id.split('-')[1];
+// 		console.log(document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].id.split('-')[1]);
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].remove();
 		count--;
 	}

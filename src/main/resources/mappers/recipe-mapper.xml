@@ -49,7 +49,7 @@
 		from recipe
 			 join users using(users_no)
 		where recipe_status = 'Y'
-		order by food_no desc
+		order by recipe_modify_date desc
 	</select>
 	
 	<select id="selectRecipeImageList" resultMap="imageResultSet">

@@ -189,10 +189,11 @@
 		where users_No = #{ usersNo } and board_status = 'Y'
 	</select>
 	
-	<select id="reviewList" resultMap="reviewResultSet">
-		select *
+	<select id="reviewList" resultType="map">
+		select PRODUCT_NO, REVIEW_SCORE, REVIEW_CONTENT, users.users_id
 		from review
 			 join recipe on(review.product_no = recipe.food_no)
+			 join users on(recipe.users_No = users.users_no)
 		where review.users_no = #{ userNo } and review_status = 'Y' and recipe_status = 'Y'
 	</select>
 	

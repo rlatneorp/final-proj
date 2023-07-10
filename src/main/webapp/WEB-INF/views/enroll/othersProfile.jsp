@@ -433,33 +433,33 @@
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
 					</c:if>
 					<c:forEach items="${ rvList }" var="rv">
-						<div class="recipe-review-content div-box4" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ rv.productNo }' + '&page=' + '${ page }'">
+						<div class="recipe-review-content div-box4" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ rv.USERS_ID }' + '&rNo=' + '${ rv.PRODUCT_NO }' + '&page=' + '${ page }'">
 							<c:forEach items="${ aList }" var="a">
-								<c:if test="${ rv.productNo == a.foodNo }">
+								<c:if test="${ rv.PRODUCT_NO == a.foodNo }">
 									<c:forEach items="${ recipeImageList }" var="rImg">
-										<c:if test="${ rImg.imageDivideNo == rv.productNo }">
+										<c:if test="${ rImg.imageDivideNo == rv.PRODUCT_NO }">
 											<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ rImg.imageRenameName }"></div>
 										</c:if>
 									</c:forEach>
 									<div class="recipe-review-content-div">
 									<div class="flex">
 										<div class="recipe-review-name">${ a.recipeName }</div>
-										<c:if test="${ rv.reviewScore == 5 }">
+										<c:if test="${ rv.REVIEW_SCORE == 5 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 4 }">
+										<c:if test="${ rv.REVIEW_SCORE == 4 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 3 }">
+										<c:if test="${ rv.REVIEW_SCORE == 3 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 2 }">
+										<c:if test="${ rv.REVIEW_SCORE == 2 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 1 }">
+										<c:if test="${ rv.REVIEW_SCORE == 1 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 0 }">
+										<c:if test="${ rv.REVIEW_SCORE == 0 }">
 											<div class="review-star"><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
 									</div>
@@ -469,7 +469,7 @@
 											</c:if>
 										</c:forEach>
 										<div class="review-content">
-											${ rv.reviewContent }
+											${ rv.REVIEW_CONTENT }
 										</div>
 									</div>
 								</c:if>

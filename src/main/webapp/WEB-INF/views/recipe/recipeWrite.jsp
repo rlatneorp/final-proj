@@ -217,7 +217,6 @@
 				
 				<div id="ingredientAdd"></div>
 				
-				
 			</div>
 			
 			<button type="button" id="plusBtn" onclick="ingredientPlus()">+ 재료 추가하기</button>
@@ -314,8 +313,6 @@ function imgCheck(){
 		}
 	}
 }
-
-
 
 // 레시피 썸네일
 const imgDiv = document.getElementById('thumImg');

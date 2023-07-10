@@ -113,7 +113,7 @@
 					레시피 대표 이미지 첨부<br>[필수 사항]
 				</span>
 				<img id="preview" src="${contextPath}/resources/uploadFiles/${thum.imageRenameName}">		
-				<input type="file" accept="image/*" class="form-control form-control-lg" name="thum" id="insertBtn" onchange="setThumbnail(event);" disabled>
+				<input type="file" accept="image/*" class="form-control form-control-lg isFile" name="thum" id="insertBtn" onchange="setThumbnail(event);" disabled>
 			</div>
 			<i id="delete-${thum.imageRenameName}/${thum.imageLevel}" class="bi bi-trash3 delBtn thumicon"></i>
 			<input type="hidden" name="delThum" id="delThum" value="none">
@@ -176,6 +176,10 @@
 <!-- 				<div class="d-inline-block" style="width: 500px;">최소 3개 작성</div> -->
 				<div></div>
 				
+				<c:forEach items="${iList}" var="il">
+					<input type="hidden" class="ilCheck" value="${il.ingredientName}">
+				</c:forEach>
+				
 				<div style="padding: 5px; display: none;" id="ingCopy" class="ingCopyC">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
 					<select class="recipeIngredient" onchange="change(this)">
@@ -235,7 +239,7 @@
 										</svg><br><br>
 										레시피 이미지 첨부<br>[필수 사항]
 									</span>
-									<input type="file" accept="image/*" class="form-control form-control-lg" name="orderFile" onchange="orderImage(this)" disabled>
+									<input type="file" accept="image/*" class="form-control form-control-lg isFile" name="orderFile" onchange="orderImage(this)" disabled>
 									<img class="orderImgPreview" src="${contextPath}/resources/uploadFiles/${oList.recipeRenameName}">
 									<input type="hidden" class="checkNum" value="1">
 									<input type="hidden" name="recipeOriginalName" value="${oList.recipeOriginalName}">
@@ -270,7 +274,7 @@
 									</svg><br><br>
 									레시피 완성 이미지 첨부<br>[필수 사항]
 								</span>
-								<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic" onchange="comImageIns(this)" disabled>
+								<input type="file" accept="image/*" class="form-control form-control-lg completeImg isFile" name="comPic" onchange="comImageIns(this)" disabled>
 								<img class="completeImgPreview" src="${contextPath}/resources/uploadFiles/${cList[0].imageRenameName}">
 								<i id="delete-${cList[0].imageRenameName}/${cList[0].imageLevel}" class="bi bi-trash3 comDelBtn"></i>
 								<input type="hidden" value="none" name="delComImg" class="delCom">
@@ -289,7 +293,7 @@
 										</svg><br><br>
 										레시피 완성 이미지 첨부<br>[필수 사항]
 									</span>
-									<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic" onchange="comImageIns(this)" disabled>
+									<input type="file" accept="image/*" class="form-control form-control-lg completeImg isFile" name="comPic" onchange="comImageIns(this)" disabled>
 									<img class="completeImgPreview" src="${contextPath}/resources/uploadFiles/${cList[1].imageRenameName}">
 									<i id="delete-${cList[1].imageRenameName}/${cList[1].imageLevel}" class="bi bi-trash3 comDelBtn"></i>
 									<input type="hidden" value="none" name="delComImg" class="delCom">
@@ -309,7 +313,7 @@
 										</svg><br><br>
 										레시피 완성 이미지 첨부<br>[필수 사항]
 									</span>
-									<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic" onchange="comImageIns(this)" disabled>
+									<input type="file" accept="image/*" class="form-control form-control-lg completeImg isFile" name="comPic" onchange="comImageIns(this)" disabled>
 									<img class="completeImgPreview" src="${contextPath}/resources/uploadFiles/${cList[2].imageRenameName}">
 									<i id="delete-${cList[2].imageRenameName}/${cList[2].imageLevel}" class="bi bi-trash3 comDelBtn"></i>
 									<input type="hidden" value="none" name="delComImg" class="delCom">
@@ -339,6 +343,20 @@
 
 <script>
 // 레시피 썸네일
+var imgFile = document.getElementsByClassName('isFile');
+var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/i;
+
+function imgCheck(){
+	for(let i = 0; i < imgFile.length; i++){
+		if(imgFile[i].value!=""){
+			if(!imgFile[i].value.match(fileForm)){
+				alert("이미지 파일만 등록가능합니다.");
+				imgFile[i].value="";
+			}
+		}
+	}
+}
+
 const imgDiv = document.getElementById('thumImg');
 imgDiv.addEventListener('click', ()=>{
 	document.getElementById('insertBtn').click();
@@ -356,11 +374,12 @@ function setThumbnail(event){
 			
 		}
 		reader.readAsDataURL(image);
+		imgCheck();
 	}
 	console.log(document.getElementById('insertBtn').value);
 }
 
-// 썰네일 삭제
+// 썸네일 삭제
 const pre = document.querySelector('#preview');
 const insertRecipePic = document.querySelector('#insertRecipePic');
 const delThum = document.querySelector('#delThum');
@@ -384,6 +403,7 @@ function change(element){
 	if(element.value=="none"){
 		element.style.display = "none";
 		element.previousElementSibling.classList.add('el');
+		element.previousElementSibling.classList.add("writeIngre");
 		element.previousElementSibling.style.display = "inline-block";
 		element.previousElementSibling.setAttribute("name", "elementIngredient");
 		element.remove();
@@ -429,6 +449,7 @@ function orderImage(obj){
 		obj.nextElementSibling.style.display="inline";
 		obj.previousElementSibling.style.zIndex = 0;
 	}
+	imgCheck();
 }
 
 // 레시피 사진 삭제
@@ -497,6 +518,7 @@ function comImageIns(obj){
 		obj.nextElementSibling.style.display="inline";
 		obj.previousElementSibling.style.zIndex = 0;
 	}
+	imgCheck();
 }
 
 // 이미지 제거
@@ -614,6 +636,22 @@ sub.addEventListener('click', function(){
 		}
 	}
 	
+	const ilc = document.getElementsByClassName("ilCheck");
+	const writeIngre = document.getElementsByClassName("writeIngre");
+	let wiCheck = false;
+	for(let x = 0; x < writeIngre.length; x++){
+		if(writeIngre[x].value != null){
+			const writeIngreCheck = writeIngre[x].value;
+			
+			for(let i = 0; i < ilc.length; i++){
+				if(writeIngreCheck === ilc[i].value){
+					wiCheck = true;
+					break;
+				}
+			}
+		}
+	}
+	
 	const rBox = document.getElementsByClassName('recipeBox');
 	const roCons = document.getElementsByClassName('recipeOrderContent');
 	const orderImgPreview = document.getElementsByClassName('orderImgPreview');
@@ -650,6 +688,9 @@ sub.addEventListener('click', function(){
 	} else if(riCheck){
 		alert('재료를 서로 다른 종류로 채워주세요.');
 		riCheck = false;
+	} else if(wiCheck){
+		alert('이미 존재하는 재료입니다.');
+		wiCheck = false;
 	} else if(roc){
 		alert('조리순서에 대해 작성해주세요.');
 		roc = false;

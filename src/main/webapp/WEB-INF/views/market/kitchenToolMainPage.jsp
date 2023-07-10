@@ -459,7 +459,7 @@ ul li {
 							<div class="productName">${li.TOOL_NAME }</div>
 						</c:if>
 						<c:if test="${ li.INGREDIENT_NAME ne null }">
-							<div class="productName">${li.INGREDIENT_NAME }</div>
+							<div class="productName">ㅁ${li.INGREDIENT_NAME }</div>
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE ne 0 }">
 							<div >

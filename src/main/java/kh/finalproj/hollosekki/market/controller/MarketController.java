@@ -1009,6 +1009,7 @@ public class MarketController {
 	   if(!hotDeal.isEmpty()) {
 		   for(Product lists : hotDeal) {
 			   int productNo = lists.getProductNo(); String img = null; food = mkService.selectFood(productNo); tool = mkService.selectTool(productNo); ingre = mkService.selectIngrdient(productNo);
+			   System.out.println("productNo : " + productNo);
 			   if(food != null) {
 				   lists.setProductName(food.getFoodName());img = mkService.selectImg(productNo, 3);
 			   } else if (tool != null) {

@@ -536,7 +536,7 @@
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 레시피가 없습니다.</div>
 					</c:if>
 					
-					<div style="display: flex;">
+					<div style="display: flex; flex-wrap: wrap; padding-top: 50px; padding-bottom: 50px; padding-left: 17px;">
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
@@ -571,7 +571,7 @@
 					<c:if test="${ mCount == 0 }">
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 식단이 없습니다.</div>
 					</c:if>
-					<div style="display: flex;">
+					<div style="display: flex; flex-wrap: wrap; padding-top: 50px; padding-bottom: 50px; padding-left: 17px;">
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.foodProductNo }">

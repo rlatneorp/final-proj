@@ -387,7 +387,7 @@
 		});
 		
 		btn.addEventListener('click', () => {
-			if((check[0].style.color == 'green' || check[1].style.color == 'green') && check[0].style.color != 'red' && check[1].style.color != 'red'){
+			if((check[0].innerText == '' || check[1].innerText == '') || (check[0].style.color == 'green' || check[1].style.color == 'green') && (check[0].style.color != 'red' && check[1].style.color != 'red')){
 				$.ajax({
 					type : 'POST',
 					url : '${ contextPath }/myPage_UpdateInfo.me',
@@ -422,7 +422,7 @@
 				});
 			} else {
 				swal({
-					 text: "변경된 사항이 없습니다.",
+					 text: "정보를 다시 확인해주세요.",
 					 icon: "error",
 					 button: "확인"
 				});

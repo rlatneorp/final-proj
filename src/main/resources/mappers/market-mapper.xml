@@ -731,27 +731,15 @@
    
 	<select id="selectLikeOrderBy" resultType="map">
 		<![CDATA[
-			SELECT *
-			FROM (
-			    SELECT p.product_price, p.product_sale, p.product_no, img.image_renamename, l.division_count, f.food_name, i.ingredient_name, t.tool_name
-			    FROM product p
-			    LEFT JOIN ingredient i ON i.product_no = p.product_no
-			    LEFT JOIN food f ON f.product_no = p.product_no
-			    LEFT JOIN tool t ON t.product_no = p.product_no
-			    LEFT JOIN (
-			        SELECT division_no, COUNT(*) AS division_count
-			        FROM likes
-			        GROUP BY division_no
-			    ) l ON l.division_no = p.product_no
-			    LEFT JOIN image img ON (p.product_no = img.image_divide_no or i.ingredient_no = img.image_divide_no)
-			    WHERE p.product_type IN (1, 3, 4)
-			    AND img.image_type in (3,4,5,6)
-			    AND l.division_count IS NOT NULL 
-			    AND l.division_count <> 0
-			    AND img.image_level = 0
-			    ORDER BY l.division_count DESC
-			) subquery
-			WHERE ROWNUM <= 8
+			SELECT PRODUCT_NO, PRODUCT_PRICE, PRODUCT_SALE
+	        FROM
+	          (SELECT p.*, l.division_count
+	           FROM product p
+	           JOIN
+	             (SELECT division_no, COUNT(*) AS division_count
+	              FROM likes
+	              GROUP BY division_no) l ON l.division_no = p.product_no)   
+	        WHERE ROWNUM <= 8 and PRODUCT_STATUS = 'Y' and PRODUCT_TYPE <> 2
 		]]>
 	</select>
 	
@@ -761,70 +749,58 @@
 	
 	<select id="selectLikeOrderByFood" resultType="map">
 		<![CDATA[
-			SELECT *
-			FROM (
-			    SELECT p.product_price, p.product_sale, p.product_no, img.image_renamename, l.division_count, f.food_name, f.food_kind, f.food_type
-			    FROM product p
-			    LEFT JOIN food f ON f.product_no = p.product_no
-			    LEFT JOIN (
-			        SELECT division_no, COUNT(*) AS division_count
-			        FROM likes l
-			        GROUP BY division_no
-			    ) l ON l.division_no = p.product_no
-			    LEFT JOIN image img ON p.product_no = img.image_divide_no
-			    WHERE p.product_type = 1
-			    AND l.division_count IS NOT NULL
-			    AND l.division_count <> 0
-			    AND img.image_level = 0
-			    ORDER BY l.division_count DESC
-			) subquery
-			WHERE ROWNUM <= 8
+			SELECT p.PRODUCT_NO, p.PRODUCT_PRICE, p.PRODUCT_SALE, food_name
+			FROM
+			  (SELECT f.*, l.division_count
+			   FROM food f
+			   JOIN
+			     (SELECT division_no, COUNT(*) AS division_count
+			      FROM likes
+			      GROUP BY division_no) l ON l.division_no = f.PRODUCT_NO
+			    JOIN product p on (p.product_no = f.product_no)
+			   WHERE p.PRODUCT_STATUS = 'Y'
+			     AND p.PRODUCT_TYPE <> 2
+			   ORDER BY l.division_count DESC
+			   FETCH FIRST 8 ROWS ONLY) x
+			JOIN product p ON x.PRODUCT_NO = p.PRODUCT_NO
 		]]>
 	</select>
 	
 	<select id="selectLikeOrderByTool" resultType="map">
 		<![CDATA[
-			SELECT *
-			FROM (
-			    SELECT p.product_price, p.product_sale, p.product_no, img.image_renamename, l.division_count, t.tool_name
-			    FROM product p
-			    LEFT JOIN tool t ON t.product_no = p.product_no
-			    LEFT JOIN (
-			        SELECT division_no, COUNT(*) AS division_count
-			        FROM likes l
-			        GROUP BY division_no
-			    ) l ON l.division_no = p.product_no
-			    LEFT JOIN image img ON p.product_no = img.image_divide_no
-			    WHERE p.product_type = 4
-			    AND l.division_count IS NOT NULL
-			    AND l.division_count <> 0
-			    AND img.image_level = 0
-			    ORDER BY l.division_count DESC
-			) subquery
-			WHERE ROWNUM <= 8
+			SELECT p.PRODUCT_NO, p.PRODUCT_PRICE, p.PRODUCT_SALE, tool_name
+			FROM
+			  (SELECT t.*, l.division_count
+			   FROM tool t
+			   JOIN
+			     (SELECT division_no, COUNT(*) AS division_count
+			      FROM likes
+			      GROUP BY division_no) l ON l.division_no = t.PRODUCT_NO
+			    JOIN product p on (p.product_no = t.product_no)
+			   WHERE p.PRODUCT_STATUS = 'Y'
+			     AND p.PRODUCT_TYPE <> 2
+			   ORDER BY l.division_count DESC
+			   FETCH FIRST 8 ROWS ONLY) x
+			JOIN product p ON x.PRODUCT_NO = p.PRODUCT_NO
 		]]>
 	</select>
 	
 	<select id="selectLikeOrderByIngre" resultType="map">
 		<![CDATA[
-			SELECT *
-			FROM (
-			    SELECT p.product_price, p.product_sale, p.product_no, img.image_renamename, l.division_count, i.INGREDIENT_NAME
-			    FROM product p
-			    LEFT JOIN ingredient i ON i.product_no = p.product_no
-			    LEFT JOIN (
-			        SELECT division_no, COUNT(*) AS division_count
-			        FROM likes l
-			        GROUP BY division_no
-			    ) l ON l.division_no = p.product_no
-			    LEFT JOIN image img ON (p.product_no = img.image_divide_no or i.ingredient_no = img.image_divide_no)
-			    WHERE p.product_type = 3
-			    AND l.division_count IS NOT NULL
-			    AND l.division_count <> 0
-			    AND img.image_level = 0
-			    ORDER BY l.division_count DESC
-			) subquery
-			WHERE ROWNUM <= 8
+			SELECT p.PRODUCT_NO, p.PRODUCT_PRICE, p.PRODUCT_SALE, ingredient_name
+			FROM
+			  (SELECT i.*, l.division_count
+			   FROM ingredient i
+			   JOIN
+			     (SELECT division_no, COUNT(*) AS division_count
+			      FROM likes
+			      GROUP BY division_no) l ON l.division_no = i.PRODUCT_NO
+			    JOIN product p on (p.product_no = i.product_no)
+			   WHERE p.PRODUCT_STATUS = 'Y'
+			     AND p.PRODUCT_TYPE <> 2
+			   ORDER BY l.division_count DESC
+			   FETCH FIRST 8 ROWS ONLY) x
+			JOIN product p ON x.PRODUCT_NO = p.PRODUCT_NO
 		]]>
 	</select>
 	

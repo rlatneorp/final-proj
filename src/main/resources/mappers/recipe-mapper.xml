@@ -337,6 +337,11 @@
 		where recipe_status = 'Y' and category_type=#{type}		
 	</select>
 	
+	<delete id="deleteOrderImg">
+		delete from recipe_order
+		where recipe_renamename=#{string}
+	</delete>
+	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

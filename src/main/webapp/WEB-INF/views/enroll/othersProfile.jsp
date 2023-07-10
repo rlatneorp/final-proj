@@ -465,10 +465,9 @@
 									</div>
 										<c:forEach items="${ hList }" var="h">
 											<c:if test="${ h.usersNo == a.usersNo }">
-												<div class="recipe-review-cate">${ h.nickName } ∣ ${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
+												<div class="recipe-review-cate">${ h.nickName } ∣ ${ a.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
 											</c:if>
 										</c:forEach>
-										
 										<div class="review-content">
 											${ rv.reviewContent }
 										</div>
@@ -536,7 +535,7 @@
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 레시피가 없습니다.</div>
 					</c:if>
 					
-					<div style="display: flex;">
+					<div style="display: flex; flex-wrap: wrap; padding-top: 50px; padding-bottom: 50px; padding-left: 17px;">
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
@@ -571,7 +570,7 @@
 					<c:if test="${ mCount == 0 }">
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 식단이 없습니다.</div>
 					</c:if>
-					<div style="display: flex;">
+					<div style="display: flex; flex-wrap: wrap; padding-top: 50px; padding-bottom: 50px; padding-left: 17px;">
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.foodProductNo }">
@@ -927,14 +926,14 @@
 		
 		// 4-1. 레시피 후기 더보기
 		$(function(){
-		    $(".div-box4").slice(0, 5).show(); // 초기갯수
+		    $(".div-box4").slice(0, 4).show(); // 초기갯수
 // 		    console.log('div-box4: ' + $(".div-box4:hidden").length);
-		    if($(".div-box4:hidden").length <= 5){ // 컨텐츠 남아있는지 확인
+		    if($(".div-box4:hidden").length <= 4){ // 컨텐츠 남아있는지 확인
 	        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
 	        }
 		    $(".more4").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box4:hidden").slice(0, 5).show();
+		        $(".div-box4:hidden").slice(0, 4).show();
 		        if($(".div-box4:hidden").length == 0){ // 컨텐츠 남아있는지 확인
 		        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
 		        }

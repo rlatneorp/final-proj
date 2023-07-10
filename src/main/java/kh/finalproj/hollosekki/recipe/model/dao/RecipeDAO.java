@@ -278,4 +278,8 @@ public class RecipeDAO {
 		return (ArrayList)sqlSession.selectList("recipeMapper.mostClickRecipeList", null, rowBounds);
 	}
 
+	public void deleteOrderImg(SqlSessionTemplate sqlSession, String string) {
+		sqlSession.delete("recipeMapper.deleteOrderImg", string);
+	}
+
 }

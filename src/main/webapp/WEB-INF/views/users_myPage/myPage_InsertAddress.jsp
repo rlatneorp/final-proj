@@ -132,15 +132,28 @@
 			const postcode = document.getElementById('sample6_postcode').value;
 			const addressInfo = document.getElementById('sample6_address').value;
 			const detailAddress = document.getElementById('sample6_detailAddress').value;
-			const phone = document.getElementById('phone').value;
-			
+			const phone = document.getElementById('phone');
+			const phoneNumber = phone.value;
+	    	const regex = /[0-9]/;
+	    	
+	    	if (!regex.test(phoneNumber) && phoneNumber.trim() != '') {
+	    		swal({
+					 text: "숫자만 입력해주세요.",
+					 icon: "error",
+					 button: "확인"
+				}).then(function() {
+					phone.focus();
+			    });
+	    		e.preventDefault();
+	    		return;
+			} 
 			if (
 				shippingName.trim() === '' ||
 				recipient.trim() === '' ||
 				postcode.trim() === '' ||
 				addressInfo.trim() === '' ||
 				detailAddress.trim() === '' ||
-				phone.trim() === ''
+				phoneNumber.trim() === ''
 			) {
 				swal({
 					text: '모든 입력값은 필수사항입니다.',

@@ -84,14 +84,22 @@
 <%@ include file="../common/top.jsp" %>
 
 <br><br>
-
+<!-- role="search"  -->
 <div id="search">
-	<form role="search" id="searchBar">
-		<div id="searchBar">
-			<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요." onsubmit="return false;">
-			<div id="searchIcon"><button type="button" id="searchBtn"><i class="bi bi-search"></i></button></div>
-		</div>
+	<form id="searchBar" name="searchText">
+		<input type="text" id="inputText" name="input" placeholder=" 내용을 입력해 주세요.">
+		<div id="searchIcon"><button type="button" id="searchBtn"><i class="bi bi-search"></i></button></div>
 	</form>
+	<script>
+		const searchWord = document.getElementById('inputText')
+		document.addEventListener('keydown', function(e){
+			if(searchWord.value.trim()!="" && e.key =='Enter'){
+				searchBar.action="searchRecipe.rc";
+				searchBar.submit();
+				location.href="${contextPath}/searchRecipe.rc?input="+searchWord.value;
+			}
+		})
+	</script>
 	<div id="category">
 		<div>
 			<span class="title">재료별 | </span>
@@ -212,7 +220,7 @@
 	
 	const search = document.getElementById('searchBtn');
 	const searchBar = document.getElementById('searchBar');
-// 	action="recipeList.rc" 
+	const it = document.getElementById('inputText');
 	
 	search.addEventListener('click', function(){
 		if(document.getElementById('inputText').value.trim() == ""){
@@ -221,10 +229,9 @@
 			const text = document.getElementById('inputText').value;
 			searchBar.action="searchRecipe.rc";
 			searchBar.submit();
-			location.href="${contextPath}/searchRecipe.rc?word="+text;
+			location.href="${contextPath}/searchRecipe.rc?input="+text;
 		}
 	})
-	
 
 	window.onload = () =>{
 		const recipes = document.getElementsByClassName('card');

@@ -100,7 +100,7 @@
 					레시피 대표 이미지 첨부<br>[필수 사항]
 				</span>
 				<img id="preview">		
-				<input type="file" accept="image/*" class="form-control form-control-lg" name="thum" id="insertBtn" onchange="setThumbnail(event);">
+				<input type="file" accept="image/*" class="form-control form-control-lg isFile" name="thum" id="insertBtn" onchange="setThumbnail(event);">
 			</div>
 			
 			<div id="place"></div>
@@ -160,6 +160,10 @@
 				<div class="beforeInput d-inline-block">재&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;료</div>
 <!-- 				<div class="d-inline-block" style="width: 500px;">최소 3개 작성</div> -->
 				<div></div>
+				
+				<c:forEach items="${iList}" var="il">
+					<input type="hidden" class="ilCheck" value="${il.ingredientName}">
+				</c:forEach>
 				
 				<div style="padding: 5px; display: none;" id="ingCopy" class="ingCopyC">
 					<input type="text" class="hiddenText" style="display:none;" maxlength="10">
@@ -242,7 +246,7 @@
 									</svg><br><br>
 									레시피 이미지 첨부<br>[필수 사항]
 								</span>
-								<input type="file" accept="image/*" class="form-control form-control-lg oi" name="orderFile" onchange="orderImage(this)">
+								<input type="file" accept="image/*" class="form-control form-control-lg oi isFile" name="orderFile" onchange="orderImage(this)">
 								<img class="orderImgPreview" style="display: none;">
 							</div>
 						</div>
@@ -271,7 +275,7 @@
 								</svg><br><br>
 								레시피 완성 이미지 첨부<br>[필수 사항]
 							</span>
-							<input type="file" accept="image/*" class="form-control form-control-lg completeImg" name="comPic" onchange="comImageIns(this)">
+							<input type="file" accept="image/*" class="form-control form-control-lg completeImg isFile" name="comPic" onchange="comImageIns(this)">
 							<img class="completeImgPreview">
 						</div>
 					</div>
@@ -297,6 +301,22 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
+var imgFile = document.getElementsByClassName('isFile');
+var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/i;
+
+function imgCheck(){
+	for(let i = 0; i < imgFile.length; i++){
+		if(imgFile[i].value!=""){
+			if(!imgFile[i].value.match(fileForm)){
+				alert("이미지 파일만 등록가능합니다.");
+				imgFile[i].value="";
+			}
+		}
+	}
+}
+
+
+
 // 레시피 썸네일
 const imgDiv = document.getElementById('thumImg');
 imgDiv.addEventListener('click', ()=>{
@@ -315,16 +335,18 @@ function setThumbnail(event){
 			
 		}
 		reader.readAsDataURL(image);
+		imgCheck();
 	}
-	console.log(document.getElementById('insertBtn').value);
+// 	console.log(document.getElementById('insertBtn').value);
 }
 
 // 재료 임의로 변경시 input으로 변경
 function change(element){
-	console.log(element.previousElementSibling);
+// 	console.log(element.previousElementSibling);
 	if(element.value=="none"){
 		element.style.display = "none";
 		element.previousElementSibling.classList.add("el");
+		element.previousElementSibling.classList.add("writeIngre");
 		element.previousElementSibling.style.display = "inline-block";
 		element.previousElementSibling.setAttribute("name", "elementIngredient");
 		element.remove();
@@ -368,6 +390,7 @@ function orderImage(obj){
 		obj.nextElementSibling.style.display="inline";
 		obj.previousElementSibling.style.zIndex = 0;
 	}
+	imgCheck();
 }
 
 // 순서추가 버튼 클릭 시
@@ -405,6 +428,7 @@ function comImageIns(obj){
 		obj.nextElementSibling.style.display="inline";
 		obj.previousElementSibling.style.zIndex = 0;
 	}
+	imgCheck();
 }
 
 // 완성 사진 추가
@@ -427,7 +451,7 @@ function comPlus(){
 			comCount++;
 		}
 	}
-	console.log(comCount);
+// 	console.log(comCount);
 }
 
 // 완성 사진 삭제
@@ -449,7 +473,7 @@ sub.addEventListener('click', function(){
 	let ri = false;
 	
 	for(let i in riBox){
-		console.log(el[i].value);
+// 		console.log(el[i].value);
 		if(el[i].value=="noneno" || el[i].value=="" || inn[i].value==""){
 			ri = true;
 		}
@@ -458,11 +482,27 @@ sub.addEventListener('click', function(){
 	let riCheck = false
 	for(let i = 0; i < el.length; i++){
 		const elCheck = el[i].value.split('-')[0];
-		console.log(elCheck);
+// 		console.log(elCheck);
 		for(let j = i + 1; j < el.length; j++){
 			if(elCheck === el[j].value.split('-')[0]){
 				riCheck = true;
 				break;
+			}
+		}
+	}
+
+	const ilc = document.getElementsByClassName("ilCheck");
+	const writeIngre = document.getElementsByClassName("writeIngre");
+	let wiCheck = false;
+	for(let x = 0; x < writeIngre.length; x++){
+		if(writeIngre[x].value != null){
+			const writeIngreCheck = writeIngre[x].value;
+			
+			for(let i = 0; i < ilc.length; i++){
+				if(writeIngreCheck === ilc[i].value){
+					wiCheck = true;
+					break;
+				}
 			}
 		}
 	}
@@ -497,16 +537,20 @@ sub.addEventListener('click', function(){
 	} else if(riCheck){
 		alert('재료를 서로 다른 종류로 채워주세요');
 		riCheck = false;
+	} else if(wiCheck){
+		alert('이미 존재하는 재료입니다.');
+		wiCheck = false;
 	} else if(roc){
 		alert('조리순서에 대해 작성해주세요.');
 		roc = false;
 	} else if(ci){
 		alert('완성된 사진을 추가해주세요')
 		ci = false;
-	} else{
-		writeRecipe.action = "writeRecipe.rc";
-		writeRecipe.submit();
-	}
+	} 
+// 	else{
+// 		writeRecipe.action = "writeRecipe.rc";
+// 		writeRecipe.submit();
+// 	}
 })
 
 

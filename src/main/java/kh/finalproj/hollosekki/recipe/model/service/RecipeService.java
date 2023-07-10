@@ -115,6 +115,8 @@ public interface RecipeService {
 
 	ArrayList<Recipe> mostClickRecipeList(PageInfo pi);
 
+	void deleteOrderImg(String string);
+
 
 
 }

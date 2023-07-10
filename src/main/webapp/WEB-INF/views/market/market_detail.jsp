@@ -487,7 +487,6 @@ p b {
     box-sizing: border-box;
     padding: 0;
     margin: 40px auto 0;
-    padding-bottom: 60px;
 }
 
 .productBoxInfo{
@@ -1337,6 +1336,8 @@ p b {
 	                  </ul>
                </div>
             </div>
+            <br><br><br><br><br><br>
+            <%@ include file="../common/footer.jsp" %>
          </div>
       </div>
    </div>

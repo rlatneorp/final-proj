@@ -288,4 +288,9 @@ public class RecipeServiceImpl implements RecipeService{
 	public ArrayList<Recipe> mostClickRecipeList(PageInfo pi) {
 		return rDAO.mostClickRecipeList(sqlSession, pi);
 	}
+	
+	@Override
+	public void deleteOrderImg(String string) {
+		rDAO.deleteOrderImg(sqlSession, string);
+	}
 }

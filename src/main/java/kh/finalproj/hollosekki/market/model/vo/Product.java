@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class Product {
 	private int productNo;
-	private String ProductName;
+	private String productName;
 	private int productType;
 	private int productPrice;
 	private String productOption;
@@ -19,28 +19,30 @@ public class Product {
 	private String productStatus;
 	private String productImg;
 	
+	private int divisionCount;
+	
 	public Product() {
 		super();
 	}
 
 	public Product(int productNo, String productName, int productType, int productPrice, String productOption,
 			int productStock, Date productCreateDate, Date productModifyDate, int productSale, int productCount,
-			String productStatus, String productImg) {
+			String productStatus, String productImg, int divisionCount) {
 		super();
 		this.productNo = productNo;
-		ProductName = productName;
+		this.productName = productName;
 		this.productType = productType;
 		this.productPrice = productPrice;
 		this.productOption = productOption;
 		this.productStock = productStock;
 		this.productCreateDate = productCreateDate;
-		ProductModifyDate = productModifyDate;
+		this.ProductModifyDate = productModifyDate;
 		this.productSale = productSale;
 		this.productCount = productCount;
 		this.productStatus = productStatus;
 		this.productImg = productImg;
+		this.divisionCount = divisionCount;
 	}
-	
 
 	public int getProductNo() {
 		return productNo;
@@ -51,11 +53,11 @@ public class Product {
 	}
 
 	public String getProductName() {
-		return ProductName;
+		return productName;
 	}
 
 	public void setProductName(String productName) {
-		ProductName = productName;
+		this.productName = productName;
 	}
 
 	public int getProductType() {
@@ -138,15 +140,21 @@ public class Product {
 		this.productImg = productImg;
 	}
 
+	public int getDivisionCount() {
+		return divisionCount;
+	}
+
+	public void setDivisionCount(int divisionCount) {
+		this.divisionCount = divisionCount;
+	}
+
 	@Override
 	public String toString() {
-        
-		return "Product [productNo=" + productNo + ", ProductName=" + ProductName + ", productType=" + productType
+		return "Product [productNo=" + productNo + ", productName=" + productName + ", productType=" + productType
 				+ ", productPrice=" + productPrice + ", productOption=" + productOption + ", productStock="
 				+ productStock + ", productCreateDate=" + productCreateDate + ", ProductModifyDate=" + ProductModifyDate
 				+ ", productSale=" + productSale + ", productCount=" + productCount + ", productStatus=" + productStatus
-				+ ", productImg=" + productImg + "]";
+				+ ", productImg=" + productImg + ", divisionCount=" + divisionCount + "]";
 	}
-
 	
 }

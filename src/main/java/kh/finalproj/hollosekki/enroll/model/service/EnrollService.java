@@ -75,9 +75,9 @@ public interface EnrollService {
 
 	ArrayList<Board> boardList(int usersNo);
 	
-	ArrayList<Review> reviewList(String usersId);
+	ArrayList<Review> reviewList(int userNo);
 
-	ArrayList<Review> menuReviewList(String usersId);
+	ArrayList<Review> menuReviewList(int userNo);
 
 	ArrayList<Review> replyList();
 

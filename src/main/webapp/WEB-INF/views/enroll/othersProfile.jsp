@@ -433,44 +433,43 @@
 						<div style="margin: 50px; text-align: center; color: gray;">작성한 레시피 후기가 없습니다.</div>
 					</c:if>
 					<c:forEach items="${ rvList }" var="rv">
-						<div class="recipe-review-content div-box4" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ user.usersId }' + '&rNo=' + '${ rv.productNo }' + '&page=' + '${ page }'">
+						<div class="recipe-review-content div-box4" style="display: none;" onclick="location.href='${ contextPath }/recipeDetail.rc?rId=' + '${ rv.USERS_ID }' + '&rNo=' + '${ rv.PRODUCT_NO }' + '&page=' + '${ page }'">
 							<c:forEach items="${ aList }" var="a">
-								<c:if test="${ rv.productNo == a.foodNo }">
+								<c:if test="${ rv.PRODUCT_NO == a.foodNo }">
 									<c:forEach items="${ recipeImageList }" var="rImg">
-										<c:if test="${ rImg.imageDivideNo == rv.productNo }">
+										<c:if test="${ rImg.imageDivideNo == rv.PRODUCT_NO }">
 											<div class="recipe-review-img-div"><img class="recipe-review-img" src="${ contextPath }/resources/uploadFiles/${ rImg.imageRenameName }"></div>
 										</c:if>
 									</c:forEach>
 									<div class="recipe-review-content-div">
 									<div class="flex">
 										<div class="recipe-review-name">${ a.recipeName }</div>
-										<c:if test="${ rv.reviewScore == 5 }">
+										<c:if test="${ rv.REVIEW_SCORE == 5 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 4 }">
+										<c:if test="${ rv.REVIEW_SCORE == 4 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 3 }">
+										<c:if test="${ rv.REVIEW_SCORE == 3 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 2 }">
+										<c:if test="${ rv.REVIEW_SCORE == 2 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 1 }">
+										<c:if test="${ rv.REVIEW_SCORE == 1 }">
 											<div class="review-star"><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
-										<c:if test="${ rv.reviewScore == 0 }">
+										<c:if test="${ rv.REVIEW_SCORE == 0 }">
 											<div class="review-star"><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
 										</c:if>
 									</div>
 										<c:forEach items="${ hList }" var="h">
 											<c:if test="${ h.usersNo == a.usersNo }">
-												<div class="recipe-review-cate">${ h.nickName } ∣ ${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
+												<div class="recipe-review-cate">${ h.nickName } ∣ ${ a.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
 											</c:if>
 										</c:forEach>
-										
 										<div class="review-content">
-											${ rv.reviewContent }
+											${ rv.REVIEW_CONTENT }
 										</div>
 									</div>
 								</c:if>
@@ -536,7 +535,7 @@
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 레시피가 없습니다.</div>
 					</c:if>
 					
-					<div style="display: flex;">
+					<div style="display: flex; flex-wrap: wrap; padding-top: 50px; padding-bottom: 50px; padding-left: 17px;">
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ aList }" var="a">
 								<c:if test="${ b.divisionNo == a.foodNo }">
@@ -571,7 +570,7 @@
 					<c:if test="${ mCount == 0 }">
 						<div style="margin: 50px; text-align: center; color: gray;">스크랩한 식단이 없습니다.</div>
 					</c:if>
-					<div style="display: flex;">
+					<div style="display: flex; flex-wrap: wrap; padding-top: 50px; padding-bottom: 50px; padding-left: 17px;">
 						<c:forEach items="${ bList }" var="b">
 							<c:forEach items="${ mList }" var="m">
 								<c:if test="${ b.divisionNo == m.foodProductNo }">
@@ -927,14 +926,14 @@
 		
 		// 4-1. 레시피 후기 더보기
 		$(function(){
-		    $(".div-box4").slice(0, 5).show(); // 초기갯수
+		    $(".div-box4").slice(0, 4).show(); // 초기갯수
 // 		    console.log('div-box4: ' + $(".div-box4:hidden").length);
-		    if($(".div-box4:hidden").length <= 5){ // 컨텐츠 남아있는지 확인
+		    if($(".div-box4:hidden").length <= 4){ // 컨텐츠 남아있는지 확인
 	        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
 	        }
 		    $(".more4").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box4:hidden").slice(0, 5).show();
+		        $(".div-box4:hidden").slice(0, 4).show();
 		        if($(".div-box4:hidden").length == 0){ // 컨텐츠 남아있는지 확인
 		        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
 		        }

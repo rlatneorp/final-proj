@@ -444,38 +444,32 @@ ul li {
 			<div class="product-wrapper">
 				<c:forEach items="${like }" var="li">
 					<div class="productList">
-						<a href="market_detail.ma?productNo=${li.PRODUCT_NO }">
-							<c:if test="${li.IMAGE_RENAMENAME ne null }">
-								<img style="width:270px" src="${contextPath }/resources/uploadFiles/${li.IMAGE_RENAMENAME}">
+						<a href="market_detail.ma?productNo=${li.productNo }">
+							<c:if test="${li.productImg ne null }">
+								<img style="width:270px" src="${contextPath }/resources/uploadFiles/${li.productImg}">
 							</c:if>
-							<c:if test="${li.IMAGE_RENAMENAME eq null }">
+							<c:if test="${li.productImg eq null }">
 								<img style="width:270px; opacity: 0.5;" src="${contextPath }/resources/images/noImg.png">
 							</c:if>
 						</a>
-						<c:if test="${ li.FOOD_NAME ne null }">
-							<div class="productName">${li.FOOD_NAME }</div>
+						<c:if test="${ li.productName ne null }">
+							<div class="productName">${li.productName }</div>
 						</c:if>
-						<c:if test="${ li.TOOL_NAME ne null }">
-							<div class="productName">${li.TOOL_NAME }</div>
-						</c:if>
-						<c:if test="${ li.INGREDIENT_NAME ne null }">
-							<div class="productName">${li.INGREDIENT_NAME }</div>
-						</c:if>
-						<c:if test="${li.PRODUCT_SALE ne 0 }">
+						<c:if test="${li.productSale ne 0 }">
 							<div >
-								<span class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }원</span>
-								<span class="salePer"> ${li.PRODUCT_SALE }% 할인</span>
+								<span class="originPrice" style="padding-top:1px;">${li.productPrice }원</span>
+								<span class="salePer"> ${li.productSale }% 할인</span>
 							</div>
 						</c:if>
-						<c:if test="${li.PRODUCT_SALE eq 0 }">
+						<c:if test="${li.productSale eq 0 }">
 							<div style="text-decoration: none;">
 								<span style="font-size:25px;">
-									<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="#,###"/>원
+									<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
 								</span>
 							</div>
 						</c:if>
 						<div class="discount" ></div>
-						<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
+						<input type="hidden" class="likeOrders" value="${li.productSale }">
 					</div>
 				</c:forEach>
 			</div>

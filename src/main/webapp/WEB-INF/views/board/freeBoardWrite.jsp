@@ -94,6 +94,8 @@ th:first-child, td:first-child {
 	padding: 5px; 
 }
 .note-modal-content{height:350px}
+
+
 </style>
 
 </head>
@@ -132,7 +134,7 @@ th:first-child, td:first-child {
 	</c:if>
 	<c:if test="${empty loginUser }">
 		<div class="text-center">
-			<h2>로그인 하셔야 글을 쓰실 수 있습니다.</h2>	
+			<h2>로그인 하셔야 글을 쓰실 수 있습니다.</h2>
 			<button  id="goToLogin" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
 		</div>
 	</c:if>
@@ -214,6 +216,13 @@ let firstWriter = '';
 							 button: "확인",
 						});
 					}	
+				},
+				error: data=>{
+					swal({
+						 text: "글 작성에 실패하였습니다. 내용을 입력해주세요",
+						 icon: "error",
+						 button: "확인",
+					});
 				}
 				
 			})
@@ -247,6 +256,7 @@ let firstWriter = '';
 			}
 		})
 	})
+	
 	$('.summernote').summernote({
 		width : 940,
 		height : 350,
@@ -328,10 +338,6 @@ let firstWriter = '';
 			}
 		}
  	}
-	
-	
-
-	
 	
 </script>
 </html>

@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <title>마이페이지</title>
 <style>
 	#dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
@@ -159,6 +160,11 @@
     	border: 2px solid gray;
     }
     #editB{
+    	width: 80px; height: 40px;
+    	border: 1px solid gray; background: white;
+    	border-radius: 5px;
+    }
+    #editC{
     	width: 80px; height: 40px;
     	border: 1px solid gray; background: white;
     	border-radius: 5px;
@@ -376,7 +382,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<c:if test="${ empty loginUser.imageRenameName }">
-					<form action="myPage_InsertProfile.me" method="post" enctype="multipart/form-data">
+					<form method="post" enctype="multipart/form-data" id="insert">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
 							<img src="${ loginUser.socialProfileImg }" id="modalP">
@@ -390,6 +396,10 @@
 						<br><br><hr><br>
 						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
+						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">
+							자기소개&nbsp;&nbsp;&nbsp;&nbsp;
+							글자 수: <span id="characterCount">0</span>/100
+						</p>
 						<input type="hidden" name="usersNo" value="${ loginUser.usersNo }">
 					</div>
 					<div class="modal-footer">
@@ -398,7 +408,7 @@
 					</form>
 				</c:if>
 				<c:if test="${ !empty loginUser.imageRenameName }">
-					<form action="myPage_UpdateProfile.me" method="post" enctype="multipart/form-data">
+					<form method="post" enctype="multipart/form-data" id="update">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
 							<img src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }" id="modalP">
@@ -411,12 +421,15 @@
 						<button type="button" class="base" id="delete-${ loginUser.imageRenameName }">기본 이미지</button>
 						<input type="hidden" name="deletePicture" value="none">
 						<br><br><hr><br>
-						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
+						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">
+							자기소개&nbsp;&nbsp;&nbsp;&nbsp;
+							글자 수: <span id="characterCount">0</span>/100
+						</p>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<input type="hidden" name="usersNo" value="${ loginUser.usersNo }">
 					</div>
 					<div class="modal-footer">
-						<div data-bs-dismiss="modal"><button id="editB">수정하기</button></div>
+						<div data-bs-dismiss="modal"><button id="editC">수정하기</button></div>
 					</div>
 					</form>
 				</c:if>
@@ -449,6 +462,22 @@
 			disableResize: true,
 		    disableResizeEditor: true,
 		    resize: false
+		});
+		
+		$('.summernote').on('summernote.keyup', function() {
+			var content = $(this).summernote('code');
+// 		    var contentLength = $(this).summernote('code').replace(/(<([^>]+)>)/gi, '').length;
+		    var maxLength = 100;
+		    
+		    if (contentLength > maxLength) {
+		    	var truncatedContent = content.substring(0, maxLength); // 처음부터 maxLength까지의 텍스트 추출
+		        $(this).summernote('code', truncatedContent);
+// 		        $('#characterCount').css('color', 'red');
+// 		    } else {
+// 		        $('#characterCount').css('color', 'black'); // 숫자 색상을 원래대로 변경
+		    }
+		    
+// 		    $('#characterCount').text(contentLength);
 		});
 		
 		const profile = document.getElementById('modalP');
@@ -511,6 +540,55 @@
 				}
 			});
 		}
+		
+		const insert = document.getElementById('insert');
+		const update = document.getElementById('update');
+		const inBtn = document.getElementById('editB');
+		const upBtn = document.getElementById('editC');
+		
+		if(inBtn != null){
+			inBtn.addEventListener('click', (e) => {
+				$('.summernote').on('summernote.keyup', function() {
+				    var content = $(this).summernote('code');
+				    var contentLength = $(this).summernote('code').replace(/(<([^>]+)>)/gi, '').length;
+				    var maxLength = 100; // 원하는 최대 글자 수
+				    if (contentLength > maxLength) {
+				    	swal({
+				            text: "최대 글자수는 100자입니다.",
+				            icon: "error",
+				            button: "확인",
+				        });
+				    	e.preventDefault();
+				    } else {
+				    	insert.action = '${contextPath}/myPage_InsertProfile.me';
+				    	insert.submit();
+				    }
+				});
+			});
+		}
+		
+		if(upBtn != null){
+			upBtn.addEventListener('click', (e) => {
+				$('.summernote').on('summernote.keyup', function() {
+				    var content = $(this).summernote('code');
+				    var contentLength = $(this).summernote('code').replace(/(<([^>]+)>)/gi, '').length;
+				    var maxLength = 100; // 원하는 최대 글자 수
+				    if (contentLength > maxLength) {
+				    	swal({
+				            text: "최대 글자수는 100자입니다.",
+				            icon: "error",
+				            button: "확인",
+				        });
+				    	e.preventDefault();
+				    } else {
+				    	update.action = '${contextPath}/myPage_UpdateProfile.me';
+				    	update.submit();
+				    }
+				});
+			})
+		}
+		
+		
 		
 // 		var loginUser = '${loginUser}';
 // 		if(loginUser != ''){

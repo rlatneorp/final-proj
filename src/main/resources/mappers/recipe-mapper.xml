@@ -49,7 +49,7 @@
 		from recipe
 			 join users using(users_no)
 		where recipe_status = 'Y'
-		order by food_no desc
+		order by recipe_modify_date desc
 	</select>
 	
 	<select id="selectRecipeImageList" resultMap="imageResultSet">
@@ -335,6 +335,25 @@
 		select count(*)
 		from recipe
 		where recipe_status = 'Y' and category_type=#{type}		
+	</select>
+	
+	<delete id="deleteOrderImg">
+		delete from recipe_order
+		where recipe_renamename=#{string}
+	</delete>
+	
+	<select id="getCateListCount" resultType="_int">
+		select count(*)
+		from recipe
+		where ${cateName} = #{cate} and recipe_status='Y'
+	</select>
+	
+	<select id="cateSearch" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where ${cateName}=#{cate} and image_level=0	and image_type=2 and recipe_status = 'Y'
 	</select>
 	
 	<resultMap type="Recipe" id="recipeResultSet">

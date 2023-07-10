@@ -37,7 +37,6 @@ import kh.finalproj.hollosekki.common.model.vo.Review;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.SocialLogin;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
-import kh.finalproj.hollosekki.menu.model.service.MenuService;
 import kh.finalproj.hollosekki.recipe.model.exception.RecipeException;
 import kh.finalproj.hollosekki.recipe.model.service.RecipeService;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
@@ -98,7 +97,7 @@ public class RecipeController {
 	@GetMapping("searchRecipe.rc")
 	public String searchRecipe(@ModelAttribute Recipe r, Model model,
 								@RequestParam(value = "page", required = false) Integer currentPage,
-								@RequestParam("word") String word) {
+								@RequestParam("input") String word) {
 		
 		Users u = (Users) model.getAttribute("loginUser");
 		if(u != null) {
@@ -275,9 +274,6 @@ public class RecipeController {
 //		레시피 재료
 		ArrayList<RecipeElement> reelList = new ArrayList<>();
 		String[] quantity = elementQuantity.split(",");
-		
-		System.out.println(elementQuantity);
-		System.out.println(elementIngredient);
 
 		for(int i = 0; i < quantity.length; i++) {
 			if (!quantity[i].equals("") && !elementIngredient.get(i).isEmpty()) {
@@ -500,7 +496,8 @@ public class RecipeController {
 			@RequestParam(value = "comPic", required = false) ArrayList<MultipartFile> comFiles,
 			@RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
 			@RequestParam("delComImg") String[] delComImg, @RequestParam("page") int page,
-			@RequestParam("elementQuantity") String elementQuantity, @RequestParam("elementIngredient") ArrayList<String> elementIngredient) {
+			@RequestParam("elementQuantity") String elementQuantity, @RequestParam("elementIngredient") ArrayList<String> elementIngredient,
+			@RequestParam(value="delPro", required=false) ArrayList<String> delPro) {
 
 		int updateRecipeResult = 0;
 		updateRecipeResult = rService.updateRecipe(r);
@@ -602,6 +599,12 @@ public class RecipeController {
 		int updateRecipeOrderResult = 0;
 		int delOrderImgResult = 0;
 		int j = 0;
+		
+		if(!delPro.isEmpty()) {
+			for(int i = 0; i < delPro.size(); i++) {
+				rService.deleteOrderImg(delPro.get(i));
+			}
+		}
 		
 		for (int i = 0; i < orderArr.length; i++) {
 			if (!delOrderImg[i].equals("none")) {
@@ -713,24 +716,29 @@ public class RecipeController {
 			updateComResult = rService.insertAttm(comImgList);
 		}
 
-		if (updateRecipeResult + thumResult + updateOrderResult + updateComResult == thumImgList.size() + orc.size()
-				+ comImgList.size() + 1) {
-			if (delThumRename.length() + comDelRename.size() == delThum.length() + delComImg.length
-					&& updateComResult + updateOrderResult + thumResult == 0) {
-				return "redirect:recipeDetail.rc";
-			} else {
-				model.addAttribute("rId", r.getUsersId());
-				model.addAttribute("rNo", r.getFoodNo());
-				model.addAttribute("page", page);
-				return "redirect:recipeDetail.rc";
-			}
-		} else {
-			model.addAttribute("rId", r.getUsersId());
-			model.addAttribute("rNo", r.getFoodNo());
-			model.addAttribute("page", page);
-
-			return "redirect:recipeDetail.rc";
-		}
+		model.addAttribute("rId", r.getUsersId());
+		model.addAttribute("rNo", r.getFoodNo());
+		model.addAttribute("page", page);
+		return "redirect:recipeDetail.rc";
+		
+//		if (updateRecipeResult + thumResult + updateOrderResult + updateComResult == thumImgList.size() + orc.size()
+//				+ comImgList.size() + 1) {
+//			if (delThumRename.length() + comDelRename.size() == delThum.length() + delComImg.length
+//					&& updateComResult + updateOrderResult + thumResult == 0) {
+//				return "redirect:recipeDetail.rc";
+//			} else {
+//				model.addAttribute("rId", r.getUsersId());
+//				model.addAttribute("rNo", r.getFoodNo());
+//				model.addAttribute("page", page);
+//				return "redirect:recipeDetail.rc";
+//			}
+//		} else {
+//			model.addAttribute("rId", r.getUsersId());
+//			model.addAttribute("rNo", r.getFoodNo());
+//			model.addAttribute("page", page);
+//
+//			return "redirect:recipeDetail.rc";
+//		}
 	}
 
 	// 조회순 정렬
@@ -767,11 +775,138 @@ public class RecipeController {
 		}
 	}
 
-	// 재료 카테고리 검색
-	@RequestMapping("recipeIngredient.rc")
-	public String recipeIngredient(HttpServletRequest request, Model model,
-											@RequestParam(value = "page", required = false) Integer currentPage,
-											@RequestParam("ingredient") String ingredient) {
+//	// 재료 카테고리 검색
+//	@RequestMapping("recipeIngredient.rc")
+//	public String recipeIngredient(HttpServletRequest request, Model model,
+//											@RequestParam(value = "page", required = false) Integer currentPage,
+//											@RequestParam("ingredient") String ingredient) {
+//		Users u = (Users) model.getAttribute("loginUser");
+//		if(u != null) {
+//			int cart = eService.cartCount(u.getUsersNo());
+//			model.addAttribute("cart", cart);
+//		}
+//		
+//		if(currentPage == null) {
+//			currentPage = 1;
+//		}
+//		int listCount = rService.getIngredientListCount(ingredient);
+//		
+//		System.out.println(listCount);
+//		
+//		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
+//		
+//		ArrayList<Image> searchImage = new ArrayList<>();
+//		
+//		ArrayList<Recipe> rList = rService.ingredientSearch(pi, ingredient);
+//		searchImage = rService.searchImage();
+//		
+//		String cate = "ingredient";
+//		String value= ingredient;
+//		
+//		System.out.println(rList);
+//		
+//		if(rList.isEmpty()) {
+//			String str = "해당 카테고리 레시피가 없습니다.";
+//			model.addAttribute("str", str);
+//			model.addAttribute("pi", pi);
+//
+//			return "recipeList";
+//		} else {
+//			model.addAttribute("rList", rList);
+//			model.addAttribute("iList", searchImage);
+//			model.addAttribute("cate", cate);
+//			model.addAttribute("value", value);
+//			model.addAttribute("pi", pi);
+//			
+//			return "recipeList";
+//		}
+//	}
+//
+//	// 상황 카테고리 검색
+//	@RequestMapping("recipeSituation.rc")
+//	public String recipeSituation(HttpServletRequest request, Model model,
+//								@RequestParam(value = "page", required = false) Integer currentPage,
+//								@RequestParam("situation") String situation) {
+//
+//		Users u = (Users) model.getAttribute("loginUser");
+//		if(u != null) {
+//			int cart = eService.cartCount(u.getUsersNo());
+//			model.addAttribute("cart", cart);
+//		}
+//		
+//		if(currentPage == null) {
+//			currentPage = 1;
+//		}
+//		int listCount = rService.getSituationListCount(situation);
+//		
+//		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
+//		
+//		ArrayList<Recipe> rList = rService.situationSearch(pi, situation);
+//		ArrayList<Image> searchImage = rService.searchImage();
+//		
+//		String cate = "situation";
+//		String value= situation;
+//		
+//		if(rList.isEmpty()) {
+//			String str = "해당 카테고리 레시피가 없습니다.";
+//			model.addAttribute("str", str);
+//			model.addAttribute("pi", pi);
+//
+//			return "recipeList";
+//		} else {
+//			model.addAttribute("rList", rList);
+//			model.addAttribute("iList", searchImage);
+//			model.addAttribute("cate", cate);
+//			model.addAttribute("value", value);
+//			model.addAttribute("pi", pi);
+//			return "recipeList";
+//		}
+//	}
+//
+//	// 타입 카테고리 검색
+//	@RequestMapping("recipeType.rc")
+//	public String recipeType(HttpServletRequest request, Model model,
+//							@RequestParam(value = "page", required = false) Integer currentPage,
+//							@RequestParam("type") String type) {
+//		Users u = (Users) model.getAttribute("loginUser");
+//		if(u != null) {
+//			int cart = eService.cartCount(u.getUsersNo());
+//			model.addAttribute("cart", cart);
+//		}
+//		
+//		if(currentPage == null) {
+//			currentPage = 1;
+//		}
+//		int listCount = rService.getTypeListCount(type);
+//		
+//		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
+//		
+//		ArrayList<Recipe> rList = rService.typeSearch(pi, type);
+//		ArrayList<Image> searchImage = rService.searchImage();
+//		
+//		String cate = "type";
+//		String value= type;
+//
+//		if(rList.isEmpty()) {
+//			String str = "해당 카테고리 레시피가 없습니다.";
+//			model.addAttribute("str", str);
+//			model.addAttribute("pi", pi);
+//
+//			return "recipeList";
+//		} else {
+//			model.addAttribute("rList", rList);
+//			model.addAttribute("iList", searchImage);
+//			model.addAttribute("cate", cate);
+//			model.addAttribute("value", value);
+//			model.addAttribute("pi", pi);
+//			return "recipeList";
+//		}
+//	}
+//	
+	@RequestMapping("recipeCate.rc")
+	public String recipeCate(HttpServletRequest request, Model model, @RequestParam(value = "page", required = false) Integer currentPage,
+							 @RequestParam("parCate") String par, @RequestParam("cate") String cate) {
+		
 		Users u = (Users) model.getAttribute("loginUser");
 		if(u != null) {
 			int cart = eService.cartCount(u.getUsersNo());
@@ -781,63 +916,28 @@ public class RecipeController {
 		if(currentPage == null) {
 			currentPage = 1;
 		}
-		int listCount = rService.getIngredientListCount(ingredient);
 		
-		System.out.println(listCount);
-		
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
-		
-		ArrayList<Image> searchImage = new ArrayList<>();
-		
-		ArrayList<Recipe> rList = rService.ingredientSearch(pi, ingredient);
-		searchImage = rService.searchImage();
-		
-		String cate = "ingredient";
-		String value= ingredient;
-		
-		System.out.println(rList);
-		
-		if(rList.isEmpty()) {
-			String str = "해당 카테고리 레시피가 없습니다.";
-			model.addAttribute("str", str);
-			model.addAttribute("pi", pi);
-
-			return "recipeList";
+		String cateName = new String();
+		if(par.equals("재료")) {
+			cateName = "CATEGORY_INGREDIENT";
+		} else if(par.equals("상황")) {
+			cateName = "CATEGORY_SITUATION";
 		} else {
-			model.addAttribute("rList", rList);
-			model.addAttribute("iList", searchImage);
-			model.addAttribute("cate", cate);
-			model.addAttribute("value", value);
-			model.addAttribute("pi", pi);
-			
-			return "recipeList";
-		}
-	}
-
-	// 상황 카테고리 검색
-	@RequestMapping("recipeSituation.rc")
-	public String recipeSituation(HttpServletRequest request, Model model,
-								@RequestParam(value = "page", required = false) Integer currentPage,
-								@RequestParam("situation") String situation) {
-
-		Users u = (Users) model.getAttribute("loginUser");
-		if(u != null) {
-			int cart = eService.cartCount(u.getUsersNo());
-			model.addAttribute("cart", cart);
+			cateName = "CATEGORY_TYPE";
 		}
 		
-		if(currentPage == null) {
-			currentPage = 1;
-		}
-		int listCount = rService.getSituationListCount(situation);
+		HashMap<String, String> category = new HashMap<>();
+		category.put("cateName", cateName);
+		category.put("cate", cate);
 		
+		int listCount = rService.getCateListCount(category);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
 		
-		ArrayList<Recipe> rList = rService.situationSearch(pi, situation);
+		ArrayList<Recipe> rList = rService.cateSearch(pi, category);
 		ArrayList<Image> searchImage = rService.searchImage();
 		
-		String cate = "situation";
-		String value= situation;
+		String parCate = par;
+		String catego = cate;
 		
 		if(rList.isEmpty()) {
 			String str = "해당 카테고리 레시피가 없습니다.";
@@ -848,48 +948,8 @@ public class RecipeController {
 		} else {
 			model.addAttribute("rList", rList);
 			model.addAttribute("iList", searchImage);
-			model.addAttribute("cate", cate);
-			model.addAttribute("value", value);
-			model.addAttribute("pi", pi);
-			return "recipeList";
-		}
-	}
-
-	// 타입 카테고리 검색
-	@RequestMapping("recipeType.rc")
-	public String recipeType(HttpServletRequest request, Model model,
-							@RequestParam(value = "page", required = false) Integer currentPage,
-							@RequestParam("type") String type) {
-		Users u = (Users) model.getAttribute("loginUser");
-		if(u != null) {
-			int cart = eService.cartCount(u.getUsersNo());
-			model.addAttribute("cart", cart);
-		}
-		
-		if(currentPage == null) {
-			currentPage = 1;
-		}
-		int listCount = rService.getTypeListCount(type);
-		
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
-		
-		ArrayList<Recipe> rList = rService.typeSearch(pi, type);
-		ArrayList<Image> searchImage = rService.searchImage();
-		
-		String cate = "type";
-		String value= type;
-
-		if(rList.isEmpty()) {
-			String str = "해당 카테고리 레시피가 없습니다.";
-			model.addAttribute("str", str);
-			model.addAttribute("pi", pi);
-
-			return "recipeList";
-		} else {
-			model.addAttribute("rList", rList);
-			model.addAttribute("iList", searchImage);
-			model.addAttribute("cate", cate);
-			model.addAttribute("value", value);
+			model.addAttribute("parCate", parCate);
+			model.addAttribute("catego", catego);
 			model.addAttribute("pi", pi);
 			return "recipeList";
 		}

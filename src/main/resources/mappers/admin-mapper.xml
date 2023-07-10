@@ -930,7 +930,7 @@
 	<select id="getFAQCount" resultType="_int">
 		select count(*)
 		from faq
-		where not faq_type = -1
+		where faq_no > 0
 		<if test="searchText != null">
 			<if test='searchType == "title"'>
 				and faq_title like '%${searchText}%'
@@ -948,7 +948,7 @@
 	<select id="selectFAQList" resultMap="faqResultSet">
 		select *
 		from faq
-		where not faq_type = -1
+		where faq_no > 0
 		<if test="searchText != null">
 			<if test='searchType == "title"'>
 				and faq_title like '%${searchText}%'

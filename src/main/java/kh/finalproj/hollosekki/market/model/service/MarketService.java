@@ -386,7 +386,7 @@ public class MarketService {
 		return mkDAO.selectIngreImg(sqlSession, ingredientNo, i);
 	}
 
-	public ArrayList<Product> selectLikeOrderBy() {
+	public ArrayList<HashMap<String, Object>> selectLikeOrderBy() {
 		return mkDAO.selectLikeOrderBy(sqlSession);
 	}
 
@@ -505,6 +505,10 @@ public class MarketService {
 
 	public int selectViewToolCount() {
 		return mkDAO.selectViewToolCount(sqlSession);
+	}
+
+	public int updateCartCount(int preorderNo, int size) {
+		return mkDAO.updateCartCount(sqlSession,preorderNo,size );
 	}
 
 

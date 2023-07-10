@@ -293,4 +293,14 @@ public class RecipeServiceImpl implements RecipeService{
 	public void deleteOrderImg(String string) {
 		rDAO.deleteOrderImg(sqlSession, string);
 	}
+	
+	@Override
+	public int getCateListCount(HashMap<String, String> category) {
+		return rDAO.getCateListCount(sqlSession, category);
+	}
+	
+	@Override
+	public ArrayList<Recipe> cateSearch(PageInfo pi, HashMap<String, String> category) {
+		return rDAO.cateSearch(sqlSession, pi, category);
+	}
 }

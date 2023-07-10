@@ -117,6 +117,10 @@ public interface RecipeService {
 
 	void deleteOrderImg(String string);
 
+	int getCateListCount(HashMap<String, String> category);
+
+	ArrayList<Recipe> cateSearch(PageInfo pi, HashMap<String, String> category);
+
 
 
 }

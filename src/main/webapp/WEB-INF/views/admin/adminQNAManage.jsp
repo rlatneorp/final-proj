@@ -54,8 +54,8 @@
 						<td>${fn:substring(q.qnaContent, 0, 30)}</td>
 						<td><fmt:formatDate value="${q.qnaDate}" pattern="yyyy-MM-dd"/></td>
 						<td>
-							<c:if test="${q.answerContent ne null}">답변완료</c:if>
-							<c:if test="${q.answerContent eq null}">답변대기</c:if>
+							<c:if test="${q.answerContent ne null}"><span style="color: gray;">답변완료</span></c:if>
+							<c:if test="${q.answerContent eq null}"><span style="color: #19A7CE; font-weight: bold;">대기중</span></c:if>
 						</td>
 						<td>
 							<c:if test="${q.qnaStatus eq 'Y'}">

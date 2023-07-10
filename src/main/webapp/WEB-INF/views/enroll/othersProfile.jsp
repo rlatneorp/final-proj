@@ -465,10 +465,9 @@
 									</div>
 										<c:forEach items="${ hList }" var="h">
 											<c:if test="${ h.usersNo == a.usersNo }">
-												<div class="recipe-review-cate">${ h.nickName } ∣ ${ r.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
+												<div class="recipe-review-cate">${ h.nickName } ∣ ${ a.categoryIngredient }<i class="bi bi-dot lightgray"></i>${ a.categorySituation }<i class="bi bi-dot lightgray"></i>${ a.categoryType }</div>
 											</c:if>
 										</c:forEach>
-										
 										<div class="review-content">
 											${ rv.reviewContent }
 										</div>

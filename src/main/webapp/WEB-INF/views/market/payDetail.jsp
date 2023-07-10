@@ -1345,18 +1345,15 @@ input[type="text"] {
 						}
 						location.href='${contextPath}/paySuccess.ma?use=' + usePoint.replace(/,/g,'') + '&plus=' + pp + '&preNo=' + preOrder;
 						usePoint = 0;
-					
-					 	            
-					//             msg += '고유ID : ' + rsp.imp_uid;
-					//             msg += '상점 거래ID : ' + rsp.merchant_uid;
-					//             msg += '결제 금액 : ' + rsp.paid_amount;
-					//             msg += '카드 승인번호 : ' + rsp.apply_num;
 					} else {
-						var msg = '결제에 실패하였습니다.';
+						swal({
+							 text: "결제에 실패하였습니다.",
+							 icon: "error",
+							 button: "확인",
+						});
 						//msg += '에러내용 : ' + rsp.error_msg;
 					}
 				  })
-				
 			}; //for문 끝
 		} //requestPay 문끝 
 // 	} //requestPay 끝

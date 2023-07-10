@@ -69,7 +69,7 @@
 /* 	완료 */
 	#buttonBox{width: 300px; margin: auto; padding: 30px 0; }
 	#can{width: 130px; height: 50px; border-radius: 10px; border: 1px solid lightgray; background-color: lightgray; box-shadow: 0px 5px 0px 0px black; margin-right: 5px;}
-	#sub{width: 130px; height: 50px; border-radius: 10px; border: 1px solid #B0DAFF; background-color: #B0DAFF; box-shadow: 0px 5px 0px 0px black; margin-left: 5px;}
+	#sub{width: 130px; height: 50px; border-radius: 10px; border: 1px solid #B0DAFF; background-color: #B0DAFF; box-shadow: 0px 5px 0px 0px black; margin-left: 5px; position: relative; z-index: 2;}
 
 	textarea{white-space: pre-wrap;}
 	
@@ -543,11 +543,10 @@ sub.addEventListener('click', function(){
 	} else if(ci){
 		alert('완성된 사진을 추가해주세요')
 		ci = false;
-	} 
-// 	else{
-// 		writeRecipe.action = "writeRecipe.rc";
-// 		writeRecipe.submit();
-// 	}
+	} else{
+		writeRecipe.action = "writeRecipe.rc";
+		writeRecipe.submit();
+	}
 })
 
 

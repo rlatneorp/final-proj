@@ -196,12 +196,9 @@ public class MarketController {
           
       } //주문번호 for문 끝 
       
-      System.out.println("point들어오냠!");
       int point = mkService.selectPoint(users.getUsersNo());
-      System.out.println("point : " + point);
       model.addAttribute("point", point);
       model.addAttribute("checkedCartList", checkedCartList );
-      System.out.println("cc : " + checkedCartList);
       model.addAttribute("optValues", optValues);
       return "payDetail";
    }
@@ -1509,6 +1506,18 @@ public class MarketController {
        }
 	   
    	 }
-		   
+		
+   
+   
+   	@RequestMapping("inputCartCount.ma")
+   	@ResponseBody
+   	public String inputCartCount(int preorderNo, int size) {
+   		int result = mkService.updateCartCount(preorderNo, size);
+   		
+   		return result >= 0? "yes" : "no";
+   	}
+   
+   
+   
    }
    

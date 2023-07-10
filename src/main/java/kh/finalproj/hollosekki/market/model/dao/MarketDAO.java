@@ -583,6 +583,14 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectViewToolCount");
 	}
 
+	public int updateCartCount(SqlSessionTemplate sqlSession, int preorderNo, int size) {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("preorderNo", preorderNo);
+		map.put("size", size);
+		
+		return sqlSession.update("marketMapper.updateCartCount", map);
+	}
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

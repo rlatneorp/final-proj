@@ -1023,13 +1023,49 @@ public class MarketController {
 	   }
 	   
 	   //전체 상품 중 좋아요가 많은 상위 8개 조회 
-	   ArrayList<Product> likeOrderBy = mkService.selectLikeOrderBy();
+	   ArrayList<HashMap<String, Object>> likeOrderBy = mkService.selectLikeOrderBy();
+	   ArrayList<Product> lists = new ArrayList<>();
+	   if(!likeOrderBy.isEmpty()) {
+		   for(HashMap<String, Object> map : likeOrderBy) {
+			   int productNo = Integer.parseInt(map.get("PRODUCT_NO").toString()); 
+			   String img = null; 
+			   
+			   food = mkService.selectFood(productNo); 
+			   tool = mkService.selectTool(productNo); 
+			   ingre = mkService.selectIngrdient(productNo);
+			   
+			   Product product = new Product();
+			   product.setProductNo(productNo);
+			   
+			   if(food != null) {
+				   product.setProductName(food.getFoodName());
+				   product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+				   product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+				   img = mkService.selectImg(productNo, 3);
+			   } else if (tool != null) {
+				   product.setProductName(tool.getToolName());
+				   product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+				   product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+				   img = mkService.selectImg(productNo, 6);
+			   } else if (ingre != null) {
+				   product.setProductName(ingre.getIngredientName()); 
+				   product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+				   product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+				   img = mkService.selectImg(ingre.getIngredientNo(), 5);
+			   }
+			   if(img != null) {
+				   product.setProductImg(img);
+			   }
+			   lists.add(product);
+		   }
+		   
+	   }
 	   
 	   model.addAttribute("whole", "whole");
 	   model.addAttribute("pi", pi);
 	   model.addAttribute("list", list);
 	   model.addAttribute("hotDeal", hotDeal);
-	   model.addAttribute("like", likeOrderBy);
+	   model.addAttribute("like", lists);
 	   
 	   return "kitchenToolMainPage";
    }
@@ -1076,14 +1112,36 @@ public class MarketController {
 			   }
 		   }
 	   }
-	   //전체 상품 중 좋아요가 많은 상위 8개 조회 
+	   //식품 상품 중 좋아요가 많은 상위 8개 조회 
 	   ArrayList<HashMap<String,Object>> likeOrderBy = mkService.selectLikeOrderByFood();
+	   ArrayList<Product> lists = new ArrayList<>();
+	   if(!likeOrderBy.isEmpty()) {
+		   for(HashMap<String, Object> map : likeOrderBy) {
+			   int productNo = Integer.parseInt(map.get("PRODUCT_NO").toString()); 
+			   String img = null; 
+			   food = mkService.selectFood(productNo); 
+			   
+			   Product product = new Product();
+			   product.setProductNo(productNo);
+			   
+			   if(food != null) {
+				   product.setProductName(food.getFoodName());
+				   product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+				   product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+				   img = mkService.selectImg(productNo, 3);
+			   if(img != null) {
+				   product.setProductImg(img);
+			   }
+			   lists.add(product);
+			   }
+		   }
+	   }
 	   
 	   model.addAttribute("foodView", "foodView");
 	   model.addAttribute("pi", pi);
 	   model.addAttribute("list", productInfo);
 	   model.addAttribute("hotDeal", hotDeal);
-	   model.addAttribute("like", likeOrderBy);
+	   model.addAttribute("like", lists);
 	   
 	   return "kitchenToolMainPage";
    }
@@ -1136,14 +1194,37 @@ public class MarketController {
 		   }
 	   }
 	   
-	   //전체 상품 중 좋아요가 많은 상위 8개 조회 
+	   //식재료 상품 중 좋아요가 많은 상위 8개 조회 
 	   ArrayList<HashMap<String,Object>> likeOrderBy = mkService.selectLikeOrderByIngre();
+	   ArrayList<Product> lists = new ArrayList<>();
+	   if(!likeOrderBy.isEmpty()) {
+		   for(HashMap<String, Object> map : likeOrderBy) {
+			   int productNo = Integer.parseInt(map.get("PRODUCT_NO").toString()); 
+			   String img = null; 
+			   Ingredient ingre = mkService.selectIngrdient(productNo);
+			   
+			   Product product = new Product();
+			   product.setProductNo(productNo);
+			   
+			  if (ingre != null) {
+				   product.setProductName(ingre.getIngredientName()); 
+				   product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+				   product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+				   img = mkService.selectImg(ingre.getIngredientNo(), 5);
+			   }
+			   if(img != null) {
+				   product.setProductImg(img);
+			   }
+			   lists.add(product);
+		   }
+		   
+	   }
 	   
 	   model.addAttribute("IngreView", "IngreView");
 	   model.addAttribute("pi", pi);
 	   model.addAttribute("list", productInfo);
 	   model.addAttribute("hotDeal", hotDeals);
-	   model.addAttribute("like", likeOrderBy);
+	   model.addAttribute("like", lists);
 	   
 	   return "kitchenToolMainPage";
    }
@@ -1198,14 +1279,41 @@ public class MarketController {
 		   }
 	   }
 	   
-	   //전체 상품 중 좋아요가 많은 상위 8개 조회 
+	   
+	   //도구 상품 중 좋아요가 많은 상위 8개 조회 
 	   ArrayList<HashMap<String,Object>> likeOrderBy = mkService.selectLikeOrderByTool();
+	   ArrayList<Product> lists = new ArrayList<>();
+	   if(!likeOrderBy.isEmpty()) {
+		   for(HashMap<String, Object> map : likeOrderBy) {
+			   int productNo = Integer.parseInt(map.get("PRODUCT_NO").toString()); 
+			   String img = null; 
+			   
+			   Tool tool = mkService.selectTool(productNo); 
+			   
+			   Product product = new Product();
+			   product.setProductNo(productNo);
+			   
+			   if (tool != null) {
+				   product.setProductName(tool.getToolName());
+				   product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+				   product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+				   img = mkService.selectImg(productNo, 6);
+			   if(img != null) {
+				   product.setProductImg(img);
+			   }
+			   lists.add(product);
+		   }
+		   
+		   }
+	   
+	   }
+	   
 	   
 	   model.addAttribute("ToolView", "ToolView");
 	   model.addAttribute("pi", pi);
 	   model.addAttribute("list", productInfo);
 	   model.addAttribute("hotDeal", hotDeals);
-	   model.addAttribute("like", likeOrderBy);
+	   model.addAttribute("like", lists);
 	   
 	   return "kitchenToolMainPage";
    }

@@ -386,7 +386,7 @@ public class MarketService {
 		return mkDAO.selectIngreImg(sqlSession, ingredientNo, i);
 	}
 
-	public ArrayList<Product> selectLikeOrderBy() {
+	public ArrayList<HashMap<String, Object>> selectLikeOrderBy() {
 		return mkDAO.selectLikeOrderBy(sqlSession);
 	}
 

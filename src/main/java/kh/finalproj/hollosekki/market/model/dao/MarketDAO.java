@@ -434,7 +434,7 @@ public class MarketDAO {
 		return sqlSession.selectOne("marketMapper.selectIngreImg", map);
 	}
 
-	public ArrayList<Product> selectLikeOrderBy(SqlSessionTemplate sqlSession) {
+	public ArrayList<HashMap<String, Object>> selectLikeOrderBy(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectLikeOrderBy");
 	}
 

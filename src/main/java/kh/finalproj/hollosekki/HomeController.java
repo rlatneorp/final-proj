@@ -3,6 +3,7 @@ package kh.finalproj.hollosekki;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import kh.finalproj.hollosekki.common.model.vo.Healther;
 import kh.finalproj.hollosekki.common.model.vo.Image;
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
+import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Product;
+import kh.finalproj.hollosekki.market.model.vo.Tool;
 import kh.finalproj.hollosekki.recipe.model.vo.Recipe;
 import kh.finalproj.hollosekki.users.model.service.UsersService;
 
@@ -74,6 +78,49 @@ public class HomeController {
 //		ArrayList<Product> likeOrderByOne = mkService.selectLikeOrderBy();
 //		model.addAttribute("likeOrderByOne", likeOrderByOne);
 //		System.out.println("likeOrderByOne"+ likeOrderByOne);
+		
+		//전체 상품 중 좋아요가 많은 상위 8개 조회 
+		ArrayList<HashMap<String, Object>> likeOrderBy = mkService.selectLikeOrderBy();
+		ArrayList<Product> lists = new ArrayList<>();
+			if(!likeOrderBy.isEmpty()) {
+				for(HashMap<String, Object> map : likeOrderBy) {
+					int productNo = Integer.parseInt(map.get("PRODUCT_NO").toString()); 
+				    String img = null; 
+				   
+				    Food food = mkService.selectFood(productNo); 
+				    Tool tool = mkService.selectTool(productNo); 
+				    Ingredient ingre = mkService.selectIngrdient(productNo);
+				   
+				    Product product = new Product();
+				    product.setProductNo(productNo);
+				   
+				    if(food != null) {
+				    	product.setProductName(food.getFoodName());
+					    product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+					    product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+					    img = mkService.selectImg(productNo, 3);
+				    } else if (tool != null) {
+					    product.setProductName(tool.getToolName());
+					    product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+					    product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+					    img = mkService.selectImg(productNo, 6);
+				    } else if (ingre != null) {
+					    product.setProductName(ingre.getIngredientName()); 
+					    product.setProductPrice(Integer.parseInt(map.get("PRODUCT_PRICE").toString()));
+					    product.setProductSale(Integer.parseInt(map.get("PRODUCT_SALE").toString()));
+					    img = mkService.selectImg(ingre.getIngredientNo(), 5);
+				    }
+				    if(img != null) {
+					    product.setProductImg(img);
+				    }
+				    lists.add(product);
+			    }
+			   
+		    }
+			model.addAttribute("likeOrderByOne", lists);
+		
+		
+		
 		//밀키트 조회 
 		ArrayList<Product> mealKit = mkService.selectMealKit();
 		model.addAttribute("mealKit", mealKit);

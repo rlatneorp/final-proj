@@ -387,7 +387,19 @@
 		});
 		
 		btn.addEventListener('click', () => {
-			if((check[0].innerText == '' || check[1].innerText == '') || (check[0].style.color == 'green' || check[1].style.color == 'green') && (check[0].style.color != 'red' && check[1].style.color != 'red')){
+			const phoneInput = document.getElementById("phone");
+			const phoneNumber = phoneInput.value;
+	    	const regex = /[0-9]/;
+	    	
+	    	if (!regex.test(phoneNumber)) {
+	    		swal({
+					 text: "숫자만 입력해주세요.",
+					 icon: "error",
+					 button: "확인"
+				}).then(function() {
+					phoneInput.focus();
+			    });
+			} else if((check[0].innerText == '' || check[1].innerText == '') || (check[0].style.color == 'green' || check[1].style.color == 'green') && (check[0].style.color != 'red' && check[1].style.color != 'red')){
 				$.ajax({
 					type : 'POST',
 					url : '${ contextPath }/myPage_UpdateInfo.me',
@@ -467,7 +479,6 @@
 				}
 			});
 		});
-		
 		
 	</script>
 </body>

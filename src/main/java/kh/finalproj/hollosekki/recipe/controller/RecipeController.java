@@ -610,7 +610,6 @@ public class RecipeController {
 			}
 		}
 		
-		
 		for (int i = 0; i < orderArr.length; i++) {
 			if (!delOrderImg[i].equals("none")) {
 				deleteFile(delOrderImg[i], request);

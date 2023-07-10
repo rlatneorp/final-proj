@@ -372,6 +372,8 @@ public class MarketController {
       System.out.println(options);
       System.out.println(p);
       System.out.println(food);
+      System.out.println(ingredient);
+      System.out.println(tool);
       return "market_detail";
    }
    

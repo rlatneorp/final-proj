@@ -98,7 +98,7 @@ public class RecipeController {
 	@GetMapping("searchRecipe.rc")
 	public String searchRecipe(@ModelAttribute Recipe r, Model model,
 								@RequestParam(value = "page", required = false) Integer currentPage,
-								@RequestParam("word") String word) {
+								@RequestParam("input") String word) {
 		
 		Users u = (Users) model.getAttribute("loginUser");
 		if(u != null) {

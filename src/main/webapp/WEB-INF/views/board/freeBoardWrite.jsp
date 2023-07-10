@@ -209,7 +209,7 @@ let firstWriter = '';
 						})		
 					}else{
 						swal({
-							 text: "글 작성에 실패하였습니다.",
+							 text: "글 작성에 실패하였습니다. 첨부파일을 최대 3개로 작성해주세요",
 							 icon: "error",
 							 button: "확인",
 						});

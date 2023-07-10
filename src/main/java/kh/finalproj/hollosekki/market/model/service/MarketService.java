@@ -507,6 +507,10 @@ public class MarketService {
 		return mkDAO.selectViewToolCount(sqlSession);
 	}
 
+	public int updateCartCount(int preorderNo, int size) {
+		return mkDAO.updateCartCount(sqlSession,preorderNo,size );
+	}
+
 
 
 

@@ -179,13 +179,13 @@ public class EnrollServiceImpl implements EnrollService{
 	}
 
 	@Override
-	public ArrayList<Review> reviewList(String usersId) {
-		return eDAO.reviewList(sqlSession, usersId);
+	public ArrayList<Review> reviewList(int userNo) {
+		return eDAO.reviewList(sqlSession, userNo);
 	}
 
 	@Override
-	public ArrayList<Review> menuReviewList(String usersId) {
-		return eDAO.menuReviewList(sqlSession, usersId);
+	public ArrayList<Review> menuReviewList(int userNo) {
+		return eDAO.menuReviewList(sqlSession, userNo);
 	}
 
 	@Override

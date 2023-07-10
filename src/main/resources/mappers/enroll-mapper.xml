@@ -193,14 +193,14 @@
 		select *
 		from review
 			 join recipe on(review.product_no = recipe.food_no)
-		where review_writer = #{usersId} and review_status = 'Y'
+		where review.users_no = #{ userNo } and review_status = 'Y' and recipe_status = 'Y'
 	</select>
 	
 	<select id="menuReviewList" resultType="map">
 		select *
 		from review
 			 join menu on(review.product_no = menu.product_no)
-		where review_writer = #{usersId} and review_status = 'Y'
+		where review.users_no = #{ userNo } and review_status = 'Y'
 	</select>
 	
 	<select id="replyList" resultMap="reviewResultSet">

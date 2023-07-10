@@ -393,11 +393,13 @@ public class EnrollController {
 			
 			// 레시피 리뷰 목록
 			String usersId = user.getUsersId();
-			ArrayList<Review> recipeReviewList = eService.reviewList(usersId); // 작성 레시피 리뷰
+			int userNo = user.getUsersNo();
+			ArrayList<Review> recipeReviewList = eService.reviewList(userNo); // 작성 레시피 리뷰
 			model.addAttribute("rvList", recipeReviewList);
 			
 			// 식단 리뷰 목록
-			ArrayList<Review> menuReviewList = eService.menuReviewList(usersId); // 작성 식단리뷰
+			ArrayList<Review> menuReviewList = eService.menuReviewList(userNo); // 작성 식단리뷰
+			System.out.println(menuReviewList);
 			model.addAttribute("mrList", menuReviewList);
 			
 			// 모든 식단 이미지

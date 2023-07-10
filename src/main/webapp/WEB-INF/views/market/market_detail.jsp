@@ -43,6 +43,7 @@
    .moCon{height: 75px; border-radius: 10px;}
 
 
+
 h4{
    margin-bottom: 0px;
 }
@@ -788,19 +789,20 @@ p b {
             <div class="top">
             	<c:if test="${ tool ne null }">
 	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-	                   <span style="font-weight: 400; font-size: 38px;">${ tool.toolName } </span>
+	                   <span style="font-weight: 400; font-size: 38px;">${ tool.toolName } </span><br>
+	                   <span style="font-weight: 400; font-size: 18px; color:#9da4ab">${ tool.toolContent } </span>
 	               </div>
 	            </c:if>
 	            
             	<c:if test="${ food ne null }" >
 	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-	                   <span style="font-weight: 400; font-size: 38px;">${ food.foodName } </span>
+	                   <span style="font-weight: 400; font-size: 38px;">${ food.foodName } </span><br>
 	               </div>
 	            </c:if>
 	            
             	<c:if test="${ ingredient ne null }">
 	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-	                   <span style="font-weight: 400; font-size: 42px;">${ ingredient.ingredientName } </span>
+	                   <span style="font-weight: 400; font-size: 42px;">${ ingredient.ingredientName } </span><br>
 	               </div>
 	            </c:if>
                <div style="margin: auto; text-align: center;">
@@ -1388,6 +1390,22 @@ p b {
              </div>
       </div>
    </div>
+   
+   <div class="modal fade" id="loginFailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+             <div class="modal-content">
+                <div class="modal-header">
+                   <h1 class="modal-title fs-5" id="exampleModalFail">장바구니 담기 오류</h1>
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   <i class="bi bi-x-circle-fill"></i><br><br>
+                   <h3>로그인을 해주세요.</h3>
+                </div>
+<!--                 <div class="footer" style="text-align:center; height: 50px; position: relative;"></div> -->
+             </div>
+      </div>
+   </div>
 
    <br><br><br>
    <br><br><br><br><br>
@@ -1927,7 +1945,8 @@ p b {
       
       
  
-         
+      
+      if(usersNo != null){
           $("#cartbtn").click(function() {
               productNo = $("input[name='productNo']").val();
               var cartCount = $(".cartCount").val();
@@ -1999,7 +2018,11 @@ p b {
                     $("#cartFailModal").modal("show");
                  }
                  
-          })
+          })    	  
+      }else {
+    	  alert("로그인을 해주세요");
+      }
+
        
            $(".review_stardesc").click(function(){
               let star='';

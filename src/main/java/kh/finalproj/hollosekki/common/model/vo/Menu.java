@@ -3,7 +3,6 @@ package kh.finalproj.hollosekki.common.model.vo;
 public class Menu extends Product{
 	private String menuName;
 	private int menuNo;
-// 1: 다이어트 2: 육류 3: 해산물
 	private int menuKind;
 	private int menuType;
 	private String menuContent;

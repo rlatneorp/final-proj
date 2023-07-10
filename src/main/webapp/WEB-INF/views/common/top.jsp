@@ -42,8 +42,6 @@
 		cursor: pointer;
 		margin-left: 10px; margin-right: 10px;  margin-bottom: 10px;
 		}
-	.menu:hover{
-		font-weight: bold;}
 	.menu2{
 		font-size: 8px; font-weight : bold;
 		width: 90px; 

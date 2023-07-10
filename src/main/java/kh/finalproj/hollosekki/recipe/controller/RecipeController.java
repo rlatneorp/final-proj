@@ -99,11 +99,17 @@ public class RecipeController {
 	public String searchRecipe(@ModelAttribute Recipe r, Model model,
 								@RequestParam(value = "page", required = false) Integer currentPage,
 								@RequestParam("word") String word) {
+		
+		Users u = (Users) model.getAttribute("loginUser");
+		if(u != null) {
+			int cart = eService.cartCount(u.getUsersNo());
+			model.addAttribute("cart", cart);
+		}
+		
 		if (currentPage == null) {
 			currentPage = 1;
 		}
 		int listCount = rService.getSearchListCount(word);
-		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 8);
 		
 		ArrayList<Recipe> searchList = new ArrayList<>();
@@ -203,6 +209,7 @@ public class RecipeController {
 		
 		
 		System.out.println(recipe);
+		System.out.println("cList : " + cList);
 
 		if (recipe != null) {
 			mv.addObject("recipe", recipe);
@@ -450,10 +457,10 @@ public class RecipeController {
 	public String deleteRecipe(@RequestParam("foodNo") int foodNo) {
 
 		int result1 = rService.deleteRecipe(foodNo);
-		int result2 = rService.deleteOrder(foodNo);
-		int result3 = rService.deleteImage(foodNo);
+//		int result2 = rService.deleteOrder(foodNo);
+//		int result3 = rService.deleteImage(foodNo);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0) {
 			return "redirect:recipeList.rc";
 		} else {
 			throw new RecipeException("레시피 삭제를 실패하였습니다.");
@@ -591,22 +598,14 @@ public class RecipeController {
 
 		ArrayList<String> delOrderList = new ArrayList<>();
 
-//		System.out.println("orderFiles : " + orderFiles);
-//		System.out.println("rc : " + rc);
-
 		int updateOrderResult = 0;
 		int updateRecipeOrderResult = 0;
 		int delOrderImgResult = 0;
 		int j = 0;
 		
-		
 		for (int i = 0; i < orderArr.length; i++) {
-//			System.out.println("delOrderImg : " + delOrderImg[i]);
 			if (!delOrderImg[i].equals("none")) {
-				
 				deleteFile(delOrderImg[i], request);
-				
-				
 				for(; j < orderFiles.size();) {
 					String recipeOriginal = orderFiles.get(j).getOriginalFilename();
 					if (orderFiles.get(j) != null && !recipeOriginal.equals("")) {
@@ -731,7 +730,6 @@ public class RecipeController {
 			model.addAttribute("page", page);
 
 			return "redirect:recipeDetail.rc";
-//			throw new RecipeException("레시피 수정에 실패하였습니다.");
 		}
 	}
 
@@ -900,14 +898,18 @@ public class RecipeController {
 	// 후기 입력
 	@RequestMapping("reviewWrite.rc")
 	public void reviewWrite(@RequestParam("content") String content, @RequestParam("id") String id,
-			@RequestParam("foodNo") String foodNo, @RequestParam("score") int score, HttpServletResponse response) {
+			@RequestParam("foodNo") String foodNo, @RequestParam("score") int score, HttpServletResponse response,
+			Model model) {
 		Review re = new Review();
+		
+		int usersNo = ((Users)model.getAttribute("loginUser")).getUsersNo();
 
 		re.setProductNo(Integer.parseInt(foodNo));
 		re.setOrderNo(0);
 		re.setReviewContent(content);
 		re.setReviewWriter(id);
 		re.setReviewScore(score);
+		re.setUsersNo(usersNo);
 
 		rService.reviewWrite(re);
 		ArrayList<Review> reList = rService.selectReview(Integer.parseInt(foodNo));

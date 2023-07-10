@@ -19,8 +19,7 @@
 <style>
 
 * {
-	outline: none;
-	margin: 0px;
+
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -320,7 +319,12 @@ ul li {
 		border-radius: 100%;
 	}
 	
-
+	.salePer{
+		background-color:#B0DAFF;
+		font-weight:bold;
+		font-size:20px;
+		
+	}
 .page-link.disabled{color: lightgray;}
 .page-link.disabled:hover{background: white; color: lightgray;}
 
@@ -387,10 +391,10 @@ ul li {
 		<div class="bannerTitle" style="margin-left:90px;"><span style="font-size: 24px;">이주의</span> <span style="color: red; font-weight: bold; font-size: 24px;">HOT ITEM</span></div>
 		<br><br>
 	 	<div class="slick">
-	        <div class="list"><img src="resources/images/listProduct.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/06/02/c2136bce9904c2d3bf3b3795b69b8c7c.jpg"></div>
-	        <div class="list"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/75bcd3ca5e31e19105d9a4a8b16ba1a3.jpg"></div>
+	        <div class="list"><a href="market_detail.ma?productNo=297"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/03/ed71046a5ce94f80b21963749ed71bdd.jpg"></a></div>
+	        <div class="list"><a href="market_detail.ma?productNo=300"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/05/31/d0d636ce22f5c934e5f16c90bbade797.jpg"></a></div>
+	        <div class="list"><a href="market_detail.ma?productNo=308"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/06/d2cda17794c0902796dabd4e391245cd.jpg"></a></div>
+	        <div class="list"><a href="market_detail.ma?productNo=299"><img src="https://recipe1.ezmember.co.kr/cache/shop/2023/07/05/940d2e1006151abee17d2529ce2fb18b.jpg"></a></div>
 	 	</div><br>
 	</div><br><br>
  	<h1 class="sider-title" >New 핫딜존</h1>
@@ -417,8 +421,9 @@ ul li {
 					    </c:otherwise>
 					</c:choose>
 					<c:if test="${h.productSale ne 0 }">
-						<span class="originPrice">
-							${h.productPrice }원
+						<span >
+							<span class="originPrice">${h.productPrice }원</span>
+							<span class="salePer"> ${h.productSale }% 할인</span>
 						</span>
 					</c:if>
 					<c:if test="${h.productSale eq 0 }">
@@ -434,7 +439,7 @@ ul li {
 	</div><br><br><br><br><br><br>
 	
 	<div class="parent-container">
-		<h1 class="sider-title">추천 상품</h1>
+		<h1 class="sider-title">홀로들의 추천 상품</h1>
 		<div class="product-slider2">
 			<div class="product-wrapper">
 				<c:forEach items="${like }" var="li">
@@ -457,8 +462,10 @@ ul li {
 							<div class="productName">${li.INGREDIENT_NAME }</div>
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE ne 0 }">
-							<div class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }</div>
-							
+							<div >
+								<span class="originPrice" style="padding-top:1px;">${li.PRODUCT_PRICE }원</span>
+								<span class="salePer"> ${li.PRODUCT_SALE }% 할인</span>
+							</div>
 						</c:if>
 						<c:if test="${li.PRODUCT_SALE eq 0 }">
 							<div style="text-decoration: none;">
@@ -509,8 +516,14 @@ ul li {
 					<div class="productName">${li.productName }</div>
 					<c:if test="${li.productSale ne 0 }">
 						<!-- 세일 금액이 있을 때  -->
-						<span class="originPrice">
-						<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
+<!-- 						<span class="originPrice"> -->
+<%-- 						<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원 --%>
+<!-- 						</span> -->
+						<span >
+							<span class="originPrice">
+								<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
+							</span>
+							<span class="salePer">${li.productSale }% 할인</span>
 						</span>
 					</c:if>
 					<c:if test="${li.productSale eq 0 }">
@@ -519,7 +532,7 @@ ul li {
 							<fmt:formatNumber value="${li.productPrice }" pattern="#,###"/>원
 						</span>
 					</c:if>
-					<span class="discount" id="discount-${li.productNo }"></span>
+					<br><span class="discount" id="discount-${li.productNo }"></span>
 					<input type="hidden" value="${li.productSale }">
 				</li>
 			</c:forEach>
@@ -580,11 +593,12 @@ ul li {
 		//판매중인 상품 
 		const normal = document.getElementsByClassName('normal');
 		for(np of normal) {
+			console.log(np);
 			const productNo = np.children[0].value;
 			//할인 계산 
-			if(np.children[5].value != '0') {
+			if(np.children[6].value != '0') {
 				const originPrice = parseInt(np.children[3].innerText.replace(/,/g, ''));
-				const sale = parseInt(np.children[5].value);
+				const sale = parseInt(np.children[6].value);
 				const discount = (originPrice * (1- sale/100)).toLocaleString();
 				document.getElementById('discount-'+productNo).innerText = discount + '원'
 			} 

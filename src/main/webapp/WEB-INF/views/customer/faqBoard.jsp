@@ -38,6 +38,7 @@
 								<option value="user" <c:if test="${ category == 'user'}">selected</c:if>>회원</option>
 								<option <c:if test="${ category == 'delivery'}">selected</c:if> value="delivery">배송</option>
 								<option <c:if test="${ category == 'pay'}">selected</c:if> value="pay">결제</option>
+								<option <c:if test="${ category == 'product'}">selected</c:if> value="product">상품</option>
 								<option <c:if test="${ category == 'etc'}">selected</c:if> value="etc">기타</option>
 							</select>
 						</div>

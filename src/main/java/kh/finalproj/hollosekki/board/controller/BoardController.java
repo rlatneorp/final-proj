@@ -57,12 +57,14 @@ public class BoardController {
 	
 	@RequestMapping("detailFreeBoard.bo")
 	public String selectFreeBoard(Model model,HttpSession session, 
-			@RequestParam("bId") int bId, @RequestParam("writer") String writer, 
+			@RequestParam("bId") Integer bId, @RequestParam("writer") String writer, 
 			@RequestParam(value="page",required=false) Integer page) {
 		Users u = (Users)session.getAttribute("loginUser");
 		String login = null;
+		int usersNo = 0;
 		if(u != null) {
 			login = u.getNickName();
+			usersNo = u.getUsersNo();
 		}
 		boolean yn = false;
 		if(!writer.equals(login)) {
@@ -70,14 +72,13 @@ public class BoardController {
 		}
 		ArrayList<Board> list = bService.selectReply(bId);
 		Board blist = bService.selectBoard(bId, yn);
-		
 		ArrayList<Users> AllUsersList = eService.AllUsersList();
-		
 		if(blist != null) {
 			model.addAttribute("blist", blist);
 			model.addAttribute("list", list);
 			model.addAttribute("page", page);
 			model.addAttribute("login", login);
+			model.addAttribute("usersNo", usersNo);
 			model.addAttribute("aList", AllUsersList);
 			
 			return "detailFreeBoard";
@@ -114,7 +115,7 @@ public class BoardController {
 	@RequestMapping("reReply.bo")
 	@ResponseBody
 	public String reReply(@RequestParam(value="reviewContent",required=false) String reviewContent, @RequestParam(value="reviewWriter",required=false) String reviewWriter,
-			@RequestParam(value="productNo",required=false) int productNo, @RequestParam(value="reviewNo",required=false) int reviewNo) {
+			@RequestParam(value="productNo",required=false) Integer productNo, @RequestParam(value="usersNo",required=false) Integer usersNo,@RequestParam(value="reviewNo",required=false) Integer reviewNo) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
@@ -122,6 +123,7 @@ public class BoardController {
 		map.put("reviewWriter", reviewWriter);
 		map.put("productNo", productNo);
 		map.put("reviewNo", reviewNo);
+		map.put("usersNo", usersNo);
 		
 		int result = bService.reReply(map);
 		return result == 1 ? "success" : "fail";
@@ -134,7 +136,9 @@ public class BoardController {
 
 	
 	@RequestMapping("freeBoardWriting.bo")
-	public void freeBoardWrite(Model model,HttpSession session,@RequestParam(value="introContent",required=false) String introContent, @RequestParam(value="introTitle",required=false) String introTitle) {
+	@ResponseBody
+	public String freeBoardWrite(Model model,HttpSession session,@RequestParam(value="boardContent",required=false) String boardContent, 
+			@RequestParam(value="boardTitle",required=false) String boardTitle) {
 		Users u = (Users)session.getAttribute("loginUser");
 		int usersNo = 0;
 		
@@ -144,11 +148,12 @@ public class BoardController {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("usersNo", usersNo);
-		map.put("introContent", introContent);
-		map.put("introTitle", introTitle);
+		map.put("boardContent", boardContent);
+		map.put("boardTitle", boardTitle);
 		
-		bService.freeBoardWriting(map);
-		
+		int b = bService.freeBoardWriting(map);
+		System.out.println(b);
+		return b == 1 ? "success" : "fail"; 
 	}
 	
 	@RequestMapping("goToMyBoard.bo")
@@ -158,13 +163,13 @@ public class BoardController {
 		if(u != null) {
 			login = u.getNickName();
 		}
-		Board blist = bService.firstSelectBoard(login);
-		
+		Board bblist = bService.firstSelectBoard(login);
+		System.out.println(bblist);
 		response.setContentType("application/json; charset=UTF-8");
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yy-MM-dd HH:mm");
 		Gson gson = gb.create();
 		try {
-			gson.toJson(blist, response.getWriter());
+			gson.toJson(bblist, response.getWriter());
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
@@ -192,12 +197,16 @@ public class BoardController {
 		
 		int	listCount = bService.getCategoryFreeCount(map);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
-
 		ArrayList<Board> list = bService.freeBList(pi, map);
+		
+		ArrayList<Board> replySum = bService.getReplyCount(list);
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 		model.addAttribute("category", category);
 		model.addAttribute("search", search);
+		if(replySum != null) {
+			model.addAttribute("replySum", replySum);
+		}
 		
 		return "freeBoard";
 	}
@@ -234,9 +243,7 @@ public class BoardController {
 		map.put("nickName", nickName);
 		
 		Board bInfo = bService.reWrieteBoardInfo(map);
-		
 		System.out.println(bInfo);
-		
 		response.setContentType("application/json; charset=UTF-8");
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yy-MM-dd HH:mm");
 		Gson gson = gb.create();
@@ -250,8 +257,8 @@ public class BoardController {
 	
 	@RequestMapping("reBoard.bo")
 	@ResponseBody
-	public String reWriteBoard(@RequestParam(value="boardNo", required=false) int boardNo,
-			@RequestParam(value="usersNo", required=false) int usersNo,
+	public String reWriteBoard(@RequestParam(value="boardNo", required=false) Integer boardNo,
+			@RequestParam(value="usersNo", required=false) Integer usersNo,
 			@RequestParam(value="boardTitle", required=false) String boardTitle,
 			@RequestParam(value="boardContent", required=false) String boardContent,
 			Model model) {
@@ -269,8 +276,8 @@ public class BoardController {
 	
 	@RequestMapping("deleteBoard.bo")
 	@ResponseBody
-	public String deleteBoardAndReply(HttpSession session, @RequestParam(value="boardNo", required=false) int boardNo,
-			@RequestParam(value="usersNo", required=false) int usersNo,
+	public String deleteBoardAndReply(HttpSession session, @RequestParam(value="boardNo", required=false) Integer boardNo,
+			@RequestParam(value="usersNo", required=false) Integer usersNo,
 		@RequestParam(value="reviewWriter", required=false) String reviewWriter) {
 		
 		int checkUsersNo = 0;

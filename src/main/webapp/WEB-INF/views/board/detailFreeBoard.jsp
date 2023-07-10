@@ -150,6 +150,8 @@
 #loginPlz{
 	display: inline-block;
 	vertical-align: baseline;
+	cursor: pointer;
+	text-decoration: none;
 }
 
 #reBtn{
@@ -215,6 +217,7 @@
 	font-weight: 500;
 	background-color: #B0DAFF;
 	padding: 2px; 
+	
 
 }
 
@@ -253,12 +256,13 @@
 	font-size: 15px;
 	font-weight: 600;
 	color: #6DA2D9;
-	
+	cursor: pointer;
 }
 #previousBoard{
 	font-size: 15px;
 	font-weight: 600;
 	color: #6DA2D9;
+	cursor: pointer;
 }
 
 </style>
@@ -267,7 +271,7 @@
 <body id="detailFreeBoardBody">
 	
 	<%@include file="../common/top.jsp"%>
-	<br><br><br><br><br><br><br><br><br><br><br>
+	<br><br><br><br><br>
 	<script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script
@@ -276,18 +280,20 @@
 	<script src="resources/summernotes/summernote-lite.js"></script>
 	<script src="resources/summernotes/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
+
+	
 	
 	
 	<div class="row text-center" style="width:1850px;">
 		<div class="col-6"><button id="boardList" onclick="location.href='${contextPath}/freeBoard.bo'">목록</button></div>
-		<c:if test="${loginUser.nickName eq blist.nickName }">
+		<c:if test="${loginUser.usersNo eq blist.usersNo }">
 		<div class="col-6"><button id="rBoardBtn">수정</button>&nbsp;&nbsp;&nbsp;<button id="dBoardBtn">삭제</button></div>
 		</c:if>
 	</div>
 	<br>
 	<div id="parentDiv">
 		<div class="intro form-floating mb-3">
-		   <div type="text" class="form-control" id="floatingInput">
+		   <div class="form-control" id="floatingInput">
 		   ${ blist.boardTitle }
 		   <c:set var="pic" value="${blist.boardContent}"/>
 		   <c:if test="${fn:contains(pic, 'img')}">
@@ -318,8 +324,8 @@
 	</div>
 	<br>
 		<div class="row text-center">
-			<div class="col d-inline" id="pree"><span class="material-symbols-outlined" id="pageDown">keyboard_arrow_left</span><a id="previousBoard">이전 글</a></div>
-			<div class="col d-inline" id="nextt"><a id="nextBoard">다음 글</a><span class="material-symbols-outlined" id="pageUp">keyboard_arrow_right</span></div>
+			<div class="col d-inline" id="pree"><span class="material-symbols-outlined" id="pageDown">keyboard_arrow_left</span><a id="previousBoard" style="cursor: pointer;">이전 글</a></div>
+			<div class="col d-inline" id="nextt"><a id="nextBoard" style="cursor: pointer;">다음 글</a><span class="material-symbols-outlined" id="pageUp">keyboard_arrow_right</span></div>
 		</div><br>
 		<div class="comment text-start">
 			<div class="intro">
@@ -339,8 +345,18 @@
 						<tr>
 							<td>${r.reviewContent}</td>
 							<c:forEach items="${ aList }" var="a">
-								<c:if test="${ r.reviewWriter eq a.nickName }">
-									<td style="cursor: pointer;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page=' ">${r.reviewWriter }</td>
+								<c:if test="${ r.usersNo eq a.usersNo }">
+									<td style="cursor: pointer;" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ a.usersId }' + '&uNo=' + '${ a.usersNo }' + '&page=' ">
+									<c:set value="${r.reviewWriter }" var="nick"/>
+									<c:choose>
+									   <c:when test="${fn:length(nick) > 6 }">
+									      <c:out value="${fn:substring(nick,0,6) }..." />        
+									   </c:when>
+									   <c:otherwise>
+									      <c:out value="${nick}" /> 
+									   </c:otherwise>
+									</c:choose>
+									</td>
 								</c:if>
 							</c:forEach>
 							<td><fmt:formatDate value="${r.reviewDate }" pattern="yy-MM-dd HH:mm"/></td>
@@ -348,16 +364,17 @@
 <%-- 								<c:if test="${loginUser.nickName eq r.reviewWriter }"> --%>
 <!-- 									<button type="button" class="reBtn" id="reBtn">수정</button> -->
 <%-- 								</c:if> --%>
-								<button type="button" class="reBtn" id="reBtn" style="<c:if test="${loginUser.nickName ne r.reviewWriter }">display: none;</c:if>">수정</button>
+								<button type="button" class="reBtn" id="reBtn" style="<c:if test="${loginUser.usersNo ne r.usersNo }">display: none;</c:if>">수정</button>
 							</td>
 							<td>
 <%-- 								<c:if test="${loginUser.nickName eq r.reviewWriter }"> --%>
 <!-- 									<button type="button" class="xBtn" id="xBtn">삭제</button> -->
 <%-- 								</c:if> --%>
-								<button type="button" class="xBtn" id="xBtn" style="<c:if test="${loginUser.nickName ne r.reviewWriter }">display: none;</c:if>">삭제</button>
+								<button type="button" class="xBtn" id="xBtn" style="<c:if test="${loginUser.usersNo ne r.usersNo }">display: none;</c:if>">삭제</button>
 							</td>
 							<td>
 								<input type="hidden" class="hdnReplyNo" value="${r.reviewNo}">
+								<input type="hidden" class="hdnReplyUsersNo" value="${ r.usersNo }">
 							</td>
 						</tr>
 					</c:forEach>	
@@ -519,6 +536,7 @@
 				e.preventDefault();
 				$('#deleteModal').modal("show");
 	 			const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
+	 			const hdnReplyUsersNo = document.querySelectorAll('.hdnReplyUsersNo');
 	 			for(const yes of deleteYes){
 	 				yes.focus();
 	 				yes.addEventListener('keydown', function(event){
@@ -532,7 +550,9 @@
 							data:{
 								reviewNo: hdnReplyNo[index].value,
 								reviewWriter: '${login}',
-								productNo: hdnBoardNo.value
+								productNo: hdnBoardNo.value,
+								usersNo: hdnReplyUsersNo[index].value
+								
 							},
 							success: data=>{
 								console.log(data);
@@ -578,6 +598,7 @@
 				}else if(reBtnsArr[i].innerText == "확인"){
 					const reInput = Array.from(trArr[i].querySelectorAll('.reBox'));
 					const hdnReplyNo = document.querySelectorAll('.hdnReplyNo');
+					const hdnReplyUsersNo = document.querySelectorAll('.hdnReplyUsersNo');
 					const hdnBoardNo = document.querySelector('#hdnBoardNo');
 					if(reInput[0].value != ''){
 						$.ajax({
@@ -586,7 +607,8 @@
 								reviewContent: reInput[0].value,
 								reviewWriter: '${login}',
 								productNo: hdnBoardNo.value,
-								reviewNo: hdnReplyNo[i].value
+								reviewNo: hdnReplyNo[i].value,
+								usersNo: hdnReplyUsersNo[i].value
 							},
 							success: data=>{
 								if(data == 'success'){
@@ -594,7 +616,11 @@
 									reBtnsArr[i].innerText = '수정';
 									reBtnsArr[i].style.background = '#B0DAFF';
 								}else{
-									alert("댓글 수정 중 오류가 발생했습니다.");
+									swal({
+										 text: "댓글 수정 중 오류가 발생했습니다.",
+										 icon: "error",
+										 button: "확인",
+										});
 									location.reload();
 								}
 							}
@@ -628,7 +654,8 @@
 				data: {
 						productNo: hdnBoardNo.value,
 						reviewContent: reviewCont.value,
-						reviewWriter: '${login}'
+						reviewWriter: '${login}',
+						usersNo: '${usersNo}'
 				},
 				success: data =>{
 					console.log(data);
@@ -653,14 +680,14 @@
 						dateTd.innerText = r.reviewDate;
 						
 						const modifyBtn = document.createElement('td');
-						if(r.reviewWriter == '${login}'){
+						if(r.usersNo == '${usersNo}'){
 							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn">수정</button>';
 						} else{
 							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn" style="display: none;">수정</button>'
 						}
 											 
 						const deleteBtn = document.createElement('td');
-						if(r.reviewWriter == '${login}'){
+						if(r.usersNo == '${usersNo}'){
 							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>';
 						}else{
 							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn" style="display: none;">삭제</button>';

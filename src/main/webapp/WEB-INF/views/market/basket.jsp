@@ -4,12 +4,12 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 예쁜 alert창 : https://sweetalert.js.org/ -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"> -->
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- 예쁜 alert창 : https://sweetalert.js.org/ -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script> -->
 <style>
 
 .carrier {
@@ -176,7 +176,7 @@ input[type="text"] {
 
 
 
-<%@include file="../common/top.jsp" %>
+<%@include file="../common/storeTop.jsp" %>
 <br><br><br><br><br><br>
 
 	<div>
@@ -191,7 +191,7 @@ input[type="text"] {
 	</div>
 	<div id="allChec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="checkbox" id="selectAllCheckBox" style="width: 20px; height: 20px; margin-right: 10px;"> 
-		<div>전체 선택</div>&nbsp;&nbsp; 
+		<div><label for="selectAllCheckBox" style="cursor:pointer">전체 선택</label></div>&nbsp;&nbsp; 
 		| &nbsp;&nbsp;<i class="bi bi-trash" id="trash" style="margin-right: 7px;"></i>
 		<div style="cursor:pointer;" onclick="checkDelete()">선택 삭제</div>
 	</div><br><br>
@@ -214,7 +214,7 @@ input[type="text"] {
 					<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
 						<td class="imgTab">
 							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
-							<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-left:-15px; margin-right: 20px;">
+							<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-right:15px; margin-left: -8px;">
 							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
 							<input type="hidden" value="${cl.preorderNo }">
 						</td>
@@ -222,7 +222,16 @@ input[type="text"] {
 							<b>${cl.productName}</b><br><br>
 							<c:forEach items="${cl.optionName }" var="opt">
 								<input type="hidden" value="${opt.optionNo }">
-								<span id="optNo-${opt.optionNo }">${opt.optionName } : ${ opt.optionValue }<br><br></span>
+								<c:if test="${fn:length(opt.optionValue) > 10}">
+									<span id="optNo-${opt.optionNo }">
+										${opt.optionName } : <br> ${ opt.optionValue }<br><br>
+									</span>
+								</c:if>
+								<c:if test="${fn:length(opt.optionValue) < 10}">
+									<span id="optNo-${opt.optionNo }">
+										${opt.optionName } : ${ opt.optionValue }<br><br>
+									</span>
+								</c:if>
 							</c:forEach>
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:130px">
@@ -448,7 +457,7 @@ input[type="text"] {
 		
 		//적립금(POINT)
 		const sum = parseFloat(document.getElementById('sum-' + preOrder).innerText.replace(/,/g, ''));
-		let pointRate = Math.round(sum*0.005);
+		let pointRate = Math.floor(sum*0.005);
 		
 		document.getElementById('point-' + preOrder).innerText = pointRate; 
 		
@@ -473,7 +482,7 @@ input[type="text"] {
 				},
 				success: data => {
 					//포인트
-					pointRate = data*0.005;
+					pointRate = Math.floor(data*0.005);
 					document.getElementById('point-' + preOrder).innerText = pointRate;
 						
 					//플러스 버튼 누를 때마다 개당 합계 금액 금액화 
@@ -522,7 +531,7 @@ input[type="text"] {
 				},
 				success: data => {
 					//포인트
-					pointRate = data*0.005;
+					pointRate = Math.floor(data*0.005);
 					document.getElementById('point-' + preOrder).innerText = pointRate;
 						
 					//마이너스 버튼 누를 때마다 개당 합계 금액 금액화 
@@ -617,25 +626,26 @@ input[type="text"] {
 	
 	//선택 삭제 버튼 클릭 시 선택 된 리스트 삭제 
 	checkDelete = () => {
+		
 		const basketNos = document.getElementsByClassName('basketNos');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
+		if(checkProducts.length == 0) {
+			swal("삭제할 상품을 한 개 이상 선택해주세요.", {
+   			  buttons: false,
+   			  timer: 1000,
+   			});
+			return;
+		}
 		//체크 된 부분만 삭제 처리 
-		Swal.fire({
-		   title: '정말 삭제하시겠습니까?',
-		   icon: 'warning',
-		   
-		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-		   confirmButtonText: '삭제', // confirm 버튼 텍스트 지정
-		   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
-		   
-		   reverseButtons: true, // 버튼 순서 거꾸로
-		   
-		}).then(result => { //결과를 받았을 때 로직 
-		   if (result.isConfirmed) { // 삭제 버튼 클릭 시 
-		   
-		 		for(basketNo of basketNos) {
+		swal({
+		    text: '정말 삭제하시겠습니까?',
+		    icon: 'warning',
+		    buttons: ["취소", "삭제하기"]
+		}).then((YES) => {
+		    if (YES) {
+		    	let trCreated = false;
+		    	
+		    	for(basketNo of basketNos) {
 		 			let delPreOrder = basketNo.nextElementSibling.nextElementSibling.nextElementSibling.value;
 		 			if(basketNo.nextSibling.nextSibling.checked) {
 		 				const delBasket = basketNo.value;
@@ -646,30 +656,46 @@ input[type="text"] {
 		 					},
 		 					success: (data) => {
 		 						//해당 상품 삭제
-		 						const Toast = Swal.mixin({
-					 			  toast: true,
-					 			  position: 'center',
-					 			  showConfirmButton: false,
-					 			  timer: 1000,
-					 			  timerProgressBar: true,
-					 			  didOpen: (toast) => {
-					 			    toast.addEventListener('mouseenter', Swal.stopTimer)
-					 			    toast.addEventListener('mouseleave', Swal.resumeTimer)
-					 			  }
-					 			});
-		 						Toast.fire({
-		 							  icon: 'success',
-		 							  title: 'Signed in successfully'
-		 							});
-	 							setTimeout(() => {
-	 							  for (const checkProduct of checkProducts) {
-	 							    let list = checkProduct.parentNode.parentNode;
-	 							    list.remove();
-	 							  }
-	 							 if(document.getElementsByClassName('productInfos').length == 0) {
-										location.reload();
-									}
-	 							}, 1000); // 1초 후에 삭제 작업 실행
+		 						for (const checkProduct of checkProducts) {
+		 							let list = checkProduct.parentNode.parentNode;
+		 							list.remove();
+		 							
+		 							document.getElementById('cartCount').innerText = document.getElementsByClassName('productInfos').length;
+		 						}
+		 						swal("선택하신 상품이 삭제 되었습니다.", {
+		 			    			  buttons: false,
+		 			    			  timer: 1000,
+		 			    		});
+		 						
+		 						//담긴 상품이 0개일 때 담긴 상품이 없다는 메시지가 뜨도록 
+		 						if(!trCreated && document.getElementsByClassName('productInfos').length == 0) {
+		 							
+		 							var trElement = document.createElement('tr');
+		 						    var tdElement = document.createElement('td');
+		 						    tdElement.setAttribute('colspan', '6');
+		 						    tdElement.setAttribute('height', '330');
+
+		 						    var iElement = document.createElement('i');
+		 						    iElement.classList.add('fa-regular', 'fa-face-grin-beam-sweat');
+		 						    iElement.style.color = 'skyblue';
+		 						    iElement.style.fontSize = '80px';
+
+		 						    var bElement = document.createElement('b');
+		 						    bElement.innerText = '장바구니에 담긴 상품이 없습니다.';
+
+		 						    tdElement.appendChild(iElement);
+		 						    tdElement.appendChild(document.createElement('br'));
+		 						    tdElement.appendChild(document.createElement('br'));
+		 						    tdElement.appendChild(bElement);
+
+		 						    trElement.appendChild(tdElement);
+
+		 						    var tableElement = document.querySelector('table'); // Assuming the table exists
+		 						    tableElement.appendChild(trElement);
+									
+		 						    trCreated = true; 
+								}
+		 						
 		 						//초기화
 		 						document.getElementById('orderSize').innerText = '0'; 
 		 						document.getElementById('trTotalSum').innerText = '0';
@@ -678,10 +704,11 @@ input[type="text"] {
 		 						},
 		 					error: (data) => {
 		 					}
-		 				})
-		 			}
-		 		}
-		   }
+		 				}) //ajax 
+		    		} //if문 
+		 		} //for문 
+		 	  } //yes 선택 시 
+// 		   } 
 		});
 	}
 	
@@ -690,15 +717,10 @@ input[type="text"] {
 		const products = document.getElementById('products');
 		const checkProducts = products.querySelectorAll('input[type="checkbox"]:checked');
 		if(checkProducts.length == 0){
-			Swal.fire({
-				  position: 'center',
-				  title: '상품을 한 개 이상 선택해주세요.',
-				  showConfirmButton: false,
-				  timer: 1000,
-				  customClass: {
-					    title: 'custom-font-size' // CSS 클래스 이름 지정
-				  }
-				})
+			swal("구매할 상품을 한 개 이상 선택해주세요.", {
+	   			  buttons: false,
+	   			  timer: 1000,
+	   		});
 		} else {
 			let preorderNos = [];
 			for(cp of checkProducts) { //체크 된 input type checkbox 

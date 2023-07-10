@@ -879,6 +879,7 @@ p b {
 	                         </c:if>
                      </c:forEach>
                  </c:if>
+                 		
                  	  		<c:if test="${food ne null }">
 		                 	  	 <div class="productResultSet" style="display:block">
 				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
@@ -924,6 +925,81 @@ p b {
 		                           <br>
 		                   </div>
 	                   </c:if>
+	                   
+<%-- 	                   <c:if test="${tool ne null}"> --%>
+<!-- 		                 	  <div class="productResultSet" style="display:block"> -->
+<!-- 				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
+<%-- 				                        <span class="opSearch">${tool.toolName}</span> --%>
+<%-- 				                        <input type="hidden" name="productNo" value="${tool.productNo}"> --%>
+<%-- 				                        <input type="hidden" name="productName" value="${tool.toolName}"> --%>
+<%-- 				                        <input type="hidden" name="productPrice" value="${total}"> --%>
+<!-- 				                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}> -->
+<!-- 				                     </h4> -->
+<!-- 		                         <div> -->
+<!-- 		                            <div  class="btnbox" style="margin: 0 0 0 -1px; float:right;"> -->
+<!-- 			                            <button class="decrease" type="button">-</button> -->
+<!-- 			                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly> -->
+<!-- 			                            <button class="increase" type="button">+</button> -->
+
+<!-- 		                          </div> -->
+<!-- 		                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
+<!-- 		                            <input type="hidden" name="productPrice" value=${p.productPrice}> -->
+<!-- 		                         </div> -->
+<!-- 		                           <br> -->
+<!-- 		                   </div> -->
+<%-- 	                   </c:if> --%>
+	                   
+	                   
+	                   	<c:if test="${tool ne null }" >
+	                   		<c:if test="${p.productOption eq 'N' }">
+		                 	  <div class="productResultSet" style="display:block">
+				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">
+				                        <span class="opSearch">${tool.toolName}</span>
+				                        <input type="hidden" name="productNo" value="${tool.productNo}">
+				                        <input type="hidden" name="productName" value="${tool.toolName}">
+				                        <input type="hidden" name="productPrice" value="${total}">
+				                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}>
+				                     </h4>
+		                         <div>
+		                            <div  class="btnbox" style="margin: 0 0 0 -1px; float:right;">
+			                            <button class="decrease" type="button">-</button>
+			                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly>
+			                            <button class="increase" type="button">+</button>
+
+		                          </div>
+		                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong>
+		                            <input type="hidden" name="productPrice" value=${p.productPrice}>
+		                         </div>
+		                           <br>
+		                   </div>
+		                 	</c:if>
+		                 </c:if>
+		                 
+		                 
+<%-- 		                 <c:if test="${tool ne null }" > --%>
+<%-- 	                     	<c:if test="${p.productOption eq 'Y' }"> --%>
+<!-- 		                 	  <div class="productResultSet" style="display:none"> -->
+<!-- 				                     <h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;"> -->
+<%-- 				                        <span class="opSearch">${tool.toolName}</span> --%>
+<%-- 				                        <input type="hidden" name="productNo" value="${tool.productNo}"> --%>
+<%-- 				                        <input type="hidden" name="productName" value="${tool.toolName}"> --%>
+<%-- 				                        <input type="hidden" name="productPrice" value="${total}"> --%>
+<!-- 				                        <input type="hidden" name="usersNo" value=${loginUser.usersNo}> -->
+<!-- 				                     </h4> -->
+<!-- 		                         <div> -->
+<!-- 		                            <div  class="btnbox" style="margin: 0 0 0 -1px; float:right;"> -->
+<!-- 			                            <button class="decrease" type="button">-</button> -->
+<!-- 			                            <input type="number" class="cartCount" value="1" name="cartCount" min="1" readonly> -->
+<!-- 			                            <button class="increase" type="button">+</button> -->
+
+<!-- 		                          </div> -->
+<!-- 		                            <strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;"></strong> -->
+<!-- 		                            <input type="hidden" name="productPrice" value=${p.productPrice}> -->
+<!-- 		                         </div> -->
+<!-- 		                           <br> -->
+<!-- 		                   </div> -->
+<%-- 		                 	</c:if> --%>
+<%-- 		                 </c:if> --%>
                   
                   </div>
                </div>
@@ -931,13 +1007,15 @@ p b {
             <div class="totalPriceBox">
 <!--             	<span class="totalPrice"></span> -->
 
-<%-- 			<c:if test="${ tool eq null }"> --%>
-<!--             	<input type="text" class="totalPrice" readonly value="0" style="display:none"> -->
-<%--             </c:if> --%>
+			<c:if test="${ tool eq null }">
+            	<input type="text" class="totalPrice" readonly value="0" style="display:none">
+            </c:if>
             
 			
             <c:if test="${ tool ne null }">
-            	<input type="text" class="totalPrice" readonly value="0">
+            	<c:if test="${ option eq null }">
+            		<input type="text" class="totalPrice" readonly value="0">
+            	</c:if>
             </c:if>
             
             </div>
@@ -1325,13 +1403,11 @@ p b {
    <script>
    
    window.onload = function(){
-      
 //       장바구니로 이동 버튼 이벤트
       document.getElementById('moveCart').addEventListener('click', function() {
          const usersNo = '${loginUser.usersNo}'
          location.href='${contextPath}/basket.ma?usersNo=' + usersNo;
       })
-      
       const productName = document.getElementsByClassName("productName")[0]; // 드롭박스에 적힐 상품명
       const productOptionSet = document.querySelector(".productOptionSet"); //사이즈 선택 창
 //       const productOption2 = document.querySelector(".productOption2"); //사이즈 선택 창
@@ -1348,8 +1424,6 @@ p b {
       const cartCount = document.querySelector(".cartCount");
       let totalPrice1 = ${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       let totalPrice = document.querySelector(".totalPrice");
-      
-      
       
       function loginArlet(){
 		  swal("로그인 후 이용해주세요.", {
@@ -1371,10 +1445,6 @@ p b {
    
       
       
-      
-    
-      
-      
 	      $(document).on("click",".btnbox",function(e){
 	    	 
 	         const increBtn = this.childNodes[2]; //증가버튼
@@ -1384,10 +1454,8 @@ p b {
 	         
 	         function cartNumber(a){
 	        	 a.value*totalPrice1
-	    		console.log(cartNum*totalPrice1);
 	    	};
 	          
-	         
 	         e.stopPropagation();    //이벤트 버블링 막기
 	         
 	         if(e.target === increBtn){
@@ -1423,6 +1491,9 @@ p b {
 	      
 	      if(productOptionSet == null){
   	  		let productPrice = document.querySelector(".productPrice");
+  	  		
+  	  		console.log(productPrice);
+  	  		console.log(${total});
   	  		productPrice.innerText=totalPrice1;
 		          $(document).on("click",".btnbox",function(e){
 		              const increBtn = this.childNodes[5]; //증가버튼
@@ -1586,7 +1657,7 @@ p b {
 		                  }
 		               }
 		            
-		            if(YN == "Y" && select.val()!=0){
+		            if(YN == "Y" && select.val() != 0){
 		               productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
 		                        +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
 		                                           +'<span class="opSearch">${tool.toolName}'+select.text()+'</span>'
@@ -1619,62 +1690,62 @@ p b {
 		       
          }
        if(productOption2Set != null){
-    	   let YN = "Y";
+    	  
+    	   
 	           productOption2Set.addEventListener("change", function(){
-	               const select =  $('.productOptionSet option:selected');
-	               const select2 = $('.productOption2Set option:selected');
-	                   let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
-	//                    let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
-	                   const opSearch = document.getElementsByClassName('opSearch');
-	   					console.log(select2.val());
-	                   for(let k=0; k<opSearch.length; k++){
-	                      if(opSearch[k].innerText == optionName){
-	                         alert("이미 선택한 옵션입니다.");
-	                         YN = "N";
-	                      }
-	       				
-	                if(YN == "Y" && select2.val() != 0){
-	                	
-	                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
-	                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
-	                                            +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
-	                                            +'<input type="hidden" name="productNo" value="${tool.productNo}">'
-	                                            +'<input type="hidden" name="productName" value="${tool.toolName}">'
-	                                            +'<input type="hidden" name="productPrice" value="${total}">'
-	                                            +'<input type="hidden" name="productOption" value='+select.val()+'>'
-	                                            +'<input type="hidden" name="productOption2" value='+select2.val()+'>'
-	                                            +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
-	                                         +'</h4>'
-	                                         +'<div>'
-	                                            +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
-	                                               +'<button class="decrease" type="button">-</button>'
-	                                               +'<input type="number" class="cartCount"'
-	                                               +'   value="1" name="cartCount" min="1" readonly>'
-	                                               +'<button class="increase" type="button">+</button>'
-	                                               +'<button class="removeProudct" type="button" style="float: right;">'
-	                                                  +'<img src="resources/images/close.png" style="width: 10px;">'
-	                                            +'<span>'
-	                                            +'</button>'
-	                                            +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
-	                                            +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
-	                                         +'</div>'
-	                                          +'<br>'
-	                                      +'</div>');
-	                }
-	                cal()
-	        	}
+	              const select =  $('.productOptionSet option:selected'); //옵션 1 
+	              const select2 = $('.productOption2Set option:selected'); //옵션 2
+	        	   if(select.val() != 0 ){ 
+			                   let optionName = "${tool.toolName}"+select.text()+" "+select2.text(); 
+			//                    let optionName = "캠핑용 후라이팬"+select.text()+" "+select2.text(); 
+			                   const opSearch = document.getElementsByClassName('opSearch');
+			                   console.log(opSearch);
+			                   let YN = "Y";
+			   					
+			                   for(let k=0; k<opSearch.length; k++){
+			                      if(opSearch[k].innerText == optionName){
+			                         alert("이미 선택한 옵션입니다.");
+			                         YN = "N";
+			                      }
+			                    
+			                   }
+			       				
+			                if(YN == "Y" && select2.val() != 0){
+			                	
+			                productSet.insertAdjacentHTML('afterend','<div  class="productResultSet" style="display:block">'
+			                         +'<h4 class="productName" style="font-size: 15px; font-weight: 200; color:light gray; margin-bottom: 0px;">'
+			                                            +'<span class="opSearch">${tool.toolName}'+select.text()+" "+select2.text()+'</span>'
+			                                            +'<input type="hidden" name="productNo" value="${tool.productNo}">'
+			                                            +'<input type="hidden" name="productName" value="${tool.toolName}">'
+			                                            +'<input type="hidden" name="productPrice" value="${total}">'
+			                                            +'<input type="hidden" name="productOption" value='+select.val()+'>'
+			                                            +'<input type="hidden" name="productOption2" value='+select2.val()+'>'
+			                                            +'<input type="hidden" name="usersNo" value="${loginUser.usersNo}">'
+			                                         +'</h4>'
+			                                         +'<div>'
+			                                            +'<span class="btnbox" style="margin: 0 0 0 -1px;">'
+			                                               +'<button class="decrease" type="button">-</button>'
+			                                               +'<input type="number" class="cartCount"'
+			                                               +'   value="1" name="cartCount" min="1" readonly>'
+			                                               +'<button class="increase" type="button">+</button>'
+			                                               +'<button class="removeProudct" type="button" style="float: right;">'
+			                                                  +'<img src="resources/images/close.png" style="width: 10px;">'
+			                                            +'<span>'
+			                                            +'</button>'
+			                                            +'<strong class="productPrice" style="display: inline-block; position: right; font-weight: 200;">'+${total}.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</strong>'
+			                                            +'<input type="hidden" name="productPrice" value="${p.productPrice}">'
+			                                         +'</div>'
+			                                          +'<br>'
+			                                      +'</div>');
+			                }
+			                cal()
+	        	   }
 
-         })
+	        	})
+
+         }
          
          
-         
-         
-         
-         
-         
-         
-         
-       }
             
       
       $(document).ready(function() {

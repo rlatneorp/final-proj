@@ -872,19 +872,11 @@ input[type="text"] {
 						data:{shippingNo:shippingNo},
 						success: data => {
 							popup.style.display = 'none';
-							if(data == 'success') {
 								swal({
 								 text: "삭제 되었습니다.",
 								 icon: "success",
 								 button: "확인",
 								});
-							} else {
-								swal({
-								 text: "삭제 실패하였습니다.",
-								 icon: "success",
-								 button: "확인",
-								});
-							}
 						},
 						error: data => {
 						}
@@ -1244,8 +1236,8 @@ input[type="text"] {
 				pg: 'html5_inicis',
 				pay_method: 'card',
 				name:name,
-// 				amount:shipSum
-				amount:100
+				amount:shipSum
+// 				amount:100
 // 				buyer_name:
 				//가격
 				//	        buyer_email: 'iamport@siot.do',

@@ -123,7 +123,6 @@
 									<div class="pwd-ck2" id="num"><i class="bi bi-circle"></i> 숫자</div>
 									<div class="pwd-ck2" id="special"><i class="bi bi-circle"></i> 특수문자</div>
 									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 8자 이상</div>
-<!-- 									<div class="pwd-ck2" id="more8"><i class="bi bi-circle"></i> 4자 이상</div> -->
 								</div>
 								<label class="label">비밀번호 확인</label><br>
 								<input type="password" name="checkPwd" id="checkPwd" class="input input2" placeholder="비밀번호를 다시 입력하세요" required><br>
@@ -567,34 +566,30 @@
 
 	// 비번 유효성검사 (영어, 숫자 포함 8자리 이상) - 지금은 번거로우니까 임시로 영+숫자 4자리이상..
 	pwd.onkeyup = () => {
-	  const checkEng = /[a-zA-Z]/;
-	  const checkNum = /[0-9]/;
-	  const checkSpecial = /[@$!%*#?^=+`~&]/;
+		const checkEng = /[a-zA-Z]/;
+		const checkNum = /[0-9]/;
+		const checkSpecial = /[@$!%*#?^=+`~&]/;
 	  
-	  const eng = document.getElementById('eng');
-	  const num = document.getElementById('num');
-	  const more8 = document.getElementById('more8');
-	  const special = document.getElementById('special');
+		const eng = document.getElementById('eng');
+		const num = document.getElementById('num');
+		const more8 = document.getElementById('more8');
+		const special = document.getElementById('special');
 	  
-	  eng.style.color = checkEng.test(pwd.value) ? '#8bb572' : '';
-	  eng.innerHTML =  checkEng.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 영어' : '<i class="bi bi-circle"></i> 영어';
+		eng.style.color = checkEng.test(pwd.value) ? '#8bb572' : '';
+		eng.innerHTML =  checkEng.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 영어' : '<i class="bi bi-circle"></i> 영어';
 
-	  num.style.color = checkNum.test(pwd.value) ? '#8bb572' : '';
-	  num.innerHTML = checkNum.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 숫자' : '<i class="bi bi-circle"></i> 숫자';
+		num.style.color = checkNum.test(pwd.value) ? '#8bb572' : '';
+		num.innerHTML = checkNum.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 숫자' : '<i class="bi bi-circle"></i> 숫자';
 	  
-	  more8.style.color = pwd.value.length >= 8 ? '#8bb572' : '';
-	  more8.innerHTML = pwd.value.length >= 8 ? '<i class="bi bi-check-circle"></i> 8자 이상' : '<i class="bi bi-circle"></i> 8자 이상';
+		more8.style.color = pwd.value.length >= 8 ? '#8bb572' : '';
+		more8.innerHTML = pwd.value.length >= 8 ? '<i class="bi bi-check-circle"></i> 8자 이상' : '<i class="bi bi-circle"></i> 8자 이상';
 	  
-// 	  more8.style.color = pwd.value.length >= 4 ? '#8bb572' : '';
-// 	  more8.innerHTML = pwd.value.length >= 4 ? '<i class="bi bi-check-circle"></i> 4자 이상' : '<i class="bi bi-circle"></i> 4자 이상';
-	  
-	  special.style.color = checkSpecial.test(pwd.value) ? '#8bb572' : '';
-	  special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
+		special.style.color = checkSpecial.test(pwd.value) ? '#8bb572' : '';
+		special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
 	};
 
 	pwd.addEventListener('focusout', ()=>{
 		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?^=+`~&])[A-Za-z\d@$!%*#?^=+`~&]{8,}$/;
-// 		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/;
 		
 		if(pwd.value.length > 0){
 			if(!regPwd.test(pwd.value)){

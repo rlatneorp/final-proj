@@ -173,7 +173,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="380">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										후기가 없습니다.
+										<b>후기가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>

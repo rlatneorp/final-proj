@@ -64,13 +64,13 @@ public class MenuServiceImpl implements MenuService{
 	}
 	
 	@Override
-	public ArrayList<Menu> searchMenu(String word) {
-		return mDAO.searchMenu(sqlSession, word);
+	public ArrayList<Menu> searchMenu(PageInfo pi, String word) {
+		return mDAO.searchMenu(sqlSession, pi, word);
 	}
 	
 	@Override
-	public ArrayList<Menu> menuCategory(int cate) {
-		return mDAO.menuCategory(sqlSession, cate);
+	public ArrayList<Menu> menuCategory(PageInfo pi, int cate) {
+		return mDAO.menuCategory(sqlSession, pi, cate);
 	}
 	
 	@Override
@@ -134,8 +134,8 @@ public class MenuServiceImpl implements MenuService{
 	}
 	
 	@Override
-	public int insertReview(Review r) {
-		return mDAO.insertReview(sqlSession, r);
+	public int insertReview(HashMap<String, Object> map) {
+		return mDAO.insertReview(sqlSession, map);
 	}
 	
 	@Override
@@ -171,5 +171,15 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public Image selectProfile(int usersNo) {
 		return mDAO.selectProfile(sqlSession, usersNo);
+	}
+	
+	@Override
+	public int getCateListCount(int cate) {
+		return mDAO.getCateListCount(sqlSession, cate);
+	}
+	
+	@Override
+	public int getSearchListCount(String word) {
+		return mDAO.getSearchListCount(sqlSession, word);
 	}
 }

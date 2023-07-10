@@ -24,12 +24,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import kh.finalproj.hollosekki.board.model.vo.Board;
-import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
-import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.common.model.vo.Product;
 import kh.finalproj.hollosekki.enroll.model.exception.EnrollException;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
@@ -62,20 +60,6 @@ public class EnrollController {
 			return "join";
 		}
 		
-//		@RequestMapping("insertUser.en")
-//		public String insertUser(@ModelAttribute Users u) {
-//			
-//			String userPwd = bcrypt.encode(u.getUsersPw());
-//			u.setUsersPw(userPwd);
-//			
-//			int result = eService.insertUser(u);
-//			if(result > 0) {
-//				return "redirect:login.en";
-//			} else {
-//				return "회원가입실패...페이지 만드나? 아님 exception?";
-//			}
-//		}
-		
 		@RequestMapping("insertUser.en")
 		@ResponseBody
 		public void insertUser(@ModelAttribute Users u, PrintWriter out) {
@@ -98,7 +82,6 @@ public class EnrollController {
 		public String loginCheck(@ModelAttribute Users u, Model model) {
 			
 			Users loginUser = eService.login2(u);
-			System.out.println(loginUser);
 			if(loginUser == null) {
 				int num = 1;
 				model.addAttribute("login", num);
@@ -237,7 +220,7 @@ public class EnrollController {
 		}
 		
 		@RequestMapping("kakaoLogin.en")
-		public void kakaoLogin(HttpServletRequest request, HttpServletResponse response, Model model){
+		public String kakaoLogin(HttpServletRequest request, Model model){
 			String id = request.getParameter("id");					// 2827339121
 			String name = request.getParameter("name");				// 정흠
 			String email = request.getParameter("email");			// sk6522@hanmail.net
@@ -274,7 +257,9 @@ public class EnrollController {
 		        	model.addAttribute("socialUser", sl2);
 	        		model.addAttribute("loginUser", u2);
 	        		
+	        		return "redirect:home.do";
 	        	} else { // 회원정보 저장 실패
+	        		throw new EnrollException("네이버 간편로그인 사용자 등록에 실패했습니다.");
 	        	}
 	        } else { // 기존 회원일 경우 -> 불러오기 (프사랑 닉넴 업뎃해서 가져와야함)
 	        	String nickName = name;
@@ -287,6 +272,8 @@ public class EnrollController {
 	        	
 	        	model.addAttribute("socialUser", sl2);
 	        	model.addAttribute("loginUser", u2);
+	        	
+	        	return "redirect:home.do";
 	        }
 		}
 		
@@ -334,11 +321,11 @@ public class EnrollController {
 					throw new EnrollException("네이버 간편로그인 사용자 등록에 실패했습니다.");
 				}
 			} else { // 기존 회원일경우 -> 불러오기
-				eService.socialInfoUpdate(id, profileImg); // 프사이미지 업데이트
+				eService.socialInfoUpdate(id, profileImg);		// 프사이미지 업데이트
 				eService.socialInfoUpdate2(id, name, nickName); // 이름, 닉넴 업데이트
 				
-				SocialLogin sl2 = eService.SocialLogin(id); // 업데이트된거 새로 불러옴
-	        	Users u2 = eService.socialLoginUpdate(id); // 업테이트된거 새로 불러옴
+				SocialLogin sl2 = eService.SocialLogin(id);		// 업데이트된거 새로 불러옴
+	        	Users u2 = eService.socialLoginUpdate(id);		// 업테이트된거 새로 불러옴
 	        	
 	        	model.addAttribute("socialUser", sl2);
 	        	model.addAttribute("loginUser", u2);
@@ -371,7 +358,6 @@ public class EnrollController {
 			ArrayList<Follow> followingLsit =  eService.followingLsit(usersNo);
 			model.addAttribute("followList", followList);
 			model.addAttribute("followingLsit", followingLsit);
-			System.out.println(followList);
 			
 			HttpSession session = request.getSession();
 			Users loginUser = (Users)session.getAttribute("loginUser");
@@ -442,9 +428,6 @@ public class EnrollController {
 			model.addAttribute("pList", productList);
 			ArrayList<Users> AllUsersList = eService.AllUsersList(); // 모든유저 List
 			model.addAttribute("hList", AllUsersList);
-			
-			
-			
 			
 			return "othersProfile";
 		}

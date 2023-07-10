@@ -128,7 +128,10 @@
 	font-weight: 500;
 	background-color: white;
 	padding: 2px; 
+	vertical-align: text-top;
 }
+.page-link.disabled{color: lightgray;}
+.page-link.disabled:hover{background: white; color: lightgray;}
 	
 
 </style>
@@ -140,7 +143,11 @@
 
 	<br><br><br><br>
 	<div id="searchTable">	
-		<div class="search" style="margin:0 auto; left:290px;">
+		<div class="container" style="width: 1200px;">
+			<h1> 게시판 </h1>
+			<p>자유로운 소통을 하는 공간입니다</p>
+		</div>
+		<div class="search" style="margin:0 auto; left:400px;">
 			<select id="categoryBtn" style="width: 100px; height: 40px; padding-top: 8px;">
 				<option value="bId" <c:if test="${ category == 'bId'}">selected</c:if>>글번호</option>
 				<option <c:if test="${ category == 'writer'}">selected</c:if> value="writer">작성자</option>
@@ -155,7 +162,7 @@
 			</div>
 		</div>
 		
-		<br><br><br><br>
+		<br><br>
 	
 	<!-- 자유게시글 -->
 		<table>
@@ -170,16 +177,39 @@
 				<c:forEach items="${list }" var="b" > 
 					<tr>
 						<td>${b.boardNo }</td>
-						<td>${b.nickName }</td>
 						<td>
-							${b.boardTitle }
+							<c:set var="nick" value="${b.nickName }" />
+							<c:choose>
+							   <c:when test="${fn:length(nick) > 8 }">
+							      <c:out value="${fn:substring(nick,0,8) }..." />        
+							   </c:when>
+							   <c:otherwise>
+							      <c:out value="${nick}" /> 
+							   </c:otherwise>
+							</c:choose>
+						</td>
+						<td>
+						    <c:if test="${ b.boardType eq 1}">
+						  		<button type="button" class="reThread">수정됨</button>
+						    </c:if>
+							<c:set var="title" value="${b.boardTitle }" />
+							<c:choose>
+							   <c:when test="${fn:length(title) > 25 }">
+							      <c:out value="${fn:substring(title,0,25) }..." />        
+							   </c:when>
+							   <c:otherwise>
+							      <c:out value="${title}" /> 
+							   </c:otherwise>
+							</c:choose>
 							<c:set var="pic" value="${b.boardContent}"/>
 							<c:if test="${fn:contains(pic, 'img')}">
 								<span class="material-symbols-outlined">hallway</span>
 							</c:if>
-						    <c:if test="${ b.boardType eq 1}">
-						  		<button type="button" class="reThread">수정됨</button>
+						    <c:forEach items="${replySum }" var="re">
+						    <c:if test="${b.boardNo eq re.productNo }">
+						    	[${re.replyN }]
 						    </c:if>
+						    </c:forEach>
 						</td>
 						<td>
 							<c:set var="today" value="<%=new java.util.Date()%>"/>
@@ -204,39 +234,49 @@
 	<div class="pageFreeBoard" > 
 		<nav aria-label="Page navigation example">
 			<ul class="pageFreeBoard pagination justify-content-center">
-			    <c:if test="${ pi.currentPage > 1 }">
 			    <li class="page-item">
-			    	<c:url var="goBack" value="${ loc }">
-						<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
-					</c:url>
-					<a class="page-link" href="${ goBack }" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>	
+			    	<c:if test="${ pi.currentPage <= 1 }">
+						<a class="page-link disabled" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</c:if>
+				    <c:if test="${ pi.currentPage > 1 }">
+				    	<c:url var="goBack" value="${ loc }">
+							<c:param name="page" value="${ pi.currentPage-1 }"></c:param>
+						</c:url>
+						<a class="page-link" href="${ goBack }" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+						</a>	
+					</c:if>
 				</li>
-				</c:if>
 				<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 				   	<c:url var="goNum" value="${ loc }">
 						<c:param name="page" value="${ p }"></c:param>
 					</c:url>
 				  	<li class="page-item pageFreeBoard"><a class="page-link" href="${ goNum }">${ p }</a></li>
 				</c:forEach>
-				<c:if test="${ pi.currentPage < pi.maxPage }">
 				<li class="page-item">
-					<c:url var="goNext" value="${ loc }">
-						<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
-					</c:url>
-					<a class="page-link" href="${ goNext }" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
+					<c:if test="${ pi.currentPage >= pi.maxPage }">
+						<a class="page-link disabled" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+						</a>
+					</c:if>
+					<c:if test="${ pi.currentPage < pi.maxPage }">
+						<c:url var="goNext" value="${ loc }">
+							<c:param name="page" value="${ pi.currentPage+1 }"></c:param>
+						</c:url>
+						<a class="page-link" href="${ goNext }" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+						</a>
+					</c:if>
 				</li>
-				</c:if>
 			</ul>
 		</nav>	
 	</div>
 	
 	<!-- 작성 버튼 -->
 	<c:if test="${!empty loginUser}">
-		<div style="width: 900px; margin: 0 auto; text-align: right; margin-top: -70px;">
+		<div style="width: 1100px; margin: 0 auto; text-align: right; margin-top: -70px;">
 			<a href="${contextPath }/freeBoardWrite.bo" class="btn-3d blue">작성하기</a>
 		</div><br><br><br>
 	</c:if>

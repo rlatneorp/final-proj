@@ -142,8 +142,8 @@
 	.modal-header{background: #B0DAFF;}
 	.followName{
 		font-size: 17px; font-weight: bold;
-		margin-right: 200px; margin-top: 10px; margin-left: 10px;
-		width: 100px;
+		margin-right: 10px; margin-top: 10px; margin-left: 10px; padding-left: 10px;
+		width: 300px;
 		cursor: pointer;
 	}
 	.modalFollow{
@@ -154,6 +154,7 @@
 		background: rgba(231, 76, 60, 0.8);
 		transform: scale(1.2);
 		margin-top: 10px;
+		white-space: nowrap;
 	}
 	.modalFollow:hover {
 	    border: 1px #C6C6C6 solid;
@@ -172,6 +173,7 @@
 		background: #B0DAFF;
 		transform: scale(1.2);
 		margin-top: 10px;
+		white-space: nowrap;
 	}
 	.modalFollower:hover {
 	    border: 1px #C6C6C6 solid;
@@ -285,11 +287,11 @@
 					<c:forEach items="${lList}" var="l">
 						<c:if test="${l.FOLLOWING_USER_NO eq user.usersNo}">
 							<c:set var="followStatus" value="true" />
-							<div class="unfollowDiv" data-user-no="${ user.usersNo }" onclick="reload()"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
+							<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button></div>
 						</c:if>
 					</c:forEach>
 					<c:if test="${not followStatus}">
-					 	<div class="unfollowDiv" data-user-no="${ user.usersNo }" onclick="reload()"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
+					 	<div class="unfollowDiv" data-user-no="${ user.usersNo }"><button class="modalFollower" onclick="followUser(this)">팔로우</button></div>
 					</c:if>
 				</c:if>
 				
@@ -648,7 +650,7 @@
 									</c:if>
 								</c:if>
 								
-								<div><label class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'">${ ing.NICKNAME }</label></div>
+								<div class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${ing.USERS_ID}' + '&uNo=' + '${ ing.USERS_NO }' + '&page=' + '${page}'">${ ing.NICKNAME }</div>
 								
 								<c:set var="follow" value="false"/>
 							    <c:forEach items="${lList}" var="fl">
@@ -717,7 +719,7 @@
 									</c:if>
 								</c:if>
 								
-								<div><label class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'">${ wo.NICKNAME }</label></div>
+								<div class="followName" onclick="location.href='${contextPath}/otherUsersProfile.en?uId=' + '${wo.USERS_ID}' + '&uNo=' + '${ wo.FOLLOWING_USER_NO }' + '&page=' + '${page}'">${ wo.NICKNAME }</div>
 								
 								<c:set var="following" value="false"/>
 							    <c:forEach items="${lList}" var="fl">
@@ -749,7 +751,8 @@
 			</div>
 		</div>
 	</div>
-	
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>	
 <script>
 	$(()=>{
 		$('#recipe').addClass('select');
@@ -834,13 +837,17 @@
 					if (data == 'yes') {
 						var unfollowDiv = button.parentNode;
 						unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
-					}
+					};
+					swal("언팔로우 되었습니다.", {
+	          			  buttons: false,
+	          			  timer: 2000,
+	          			});
 		    	},
 		    	error: function (data) {
 					console.log('언팔로우 실패');
 				}
 			});
-// 			location.reload();
+			location.reload();
 		}
 		
 		// 팔
@@ -856,13 +863,16 @@
 					console.log('팔로우 성공');
 					var unfollowDiv = button.parentNode;
 			  		unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
-			  		
+			  		swal("팔로우 되었습니다.", {
+	          			  buttons: false,
+	          			  timer: 2000,
+	          			});
 				},
 			    error: function (data) {
 			 		console.log('실패');
 			    }
 			});
-// 			location.reload();
+			location.reload();
 		}
 		
 		// 1. 작성 레시피 더보기
@@ -979,27 +989,20 @@
 		    });
 		});
 		
-		// 모달 닫을 때 새로고침
-		const reload = () => {
-			location.reload();
-		}
-		
 		// 모달 X버튼
 		const close = document.querySelectorAll('.btn-close');
 		close[0].addEventListener('click', () => {
-			reload();
+			location.reload();
 		});
 		close[1].addEventListener('click', () => {
-			reload();
+			location.reload();
 		});
-		close[2].addEventListener('click', () => {
-			reload();
-		});
+		
 		
 		// ESC 누르면
 		window.addEventListener('keydown', (e) => {
 			if(e.keyCode == 27){
-				reload();
+				location.reload();
 			}
 		});
 		

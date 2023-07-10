@@ -93,7 +93,7 @@
 		select follow_no, following_user_no, f.users_no, nickname, image_renamename, social_id, social_profile_img, users_pw, users_id
 		from follow f
 		     join users u on(u.users_no = following_user_no)
-		     left join image on(u.users_no = image_divide_no)
+		     left join image on(u.users_no = image_divide_no) and image_type != 8
 		     left join social_login on (u.users_id = social_id)
 		where f.users_no = #{usersNo} AND (image_type = 1 OR image_type IS NULL)
 		order by follow_create_date desc
@@ -103,7 +103,7 @@
 		select follow_no, following_user_no, f.users_no, nickname, image_renamename, social_id, social_profile_img, users_pw, users_id
 		from follow f
 		     join users u on(u.users_no = f.users_no)
-		     left join image on(u.users_no = image_divide_no)
+		     left join image on(u.users_no = image_divide_no) and image_type != 8
 		     left join social_login on (u.users_id = social_id)
 		where f.following_user_no = #{usersNo} AND (image_type = 1 OR image_type IS NULL)
 		order by follow_create_date desc
@@ -217,7 +217,8 @@
 	
 	<select id="myBookMarkList" resultType="map">
 		select DIVISION_NO, NUMBER_TYPE, i.image_renamename, i.image_level, u.nickname, r.recipe_modify_date, 
-		       r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, food_no, bookmark_no, p.product_no
+		       r.recipe_name, m.menu_name, h.name, p.PRODUCT_MODIFY_DATE, food_no, bookmark_no, p.product_no,
+		       u.users_id
 		from bookmark b
 		     left join menu m on (b.division_no = m.product_no)
 		     left join product p on (b.division_no = p.product_no)
@@ -250,14 +251,15 @@
 	<select id="getLikeListCount" resultType="_int">
 		select count(*)
 		from likes l
-		     left join image i on (l.division_no = i.image_divide_no)
-	         left join menu m on (l.division_no = m.product_no)
-	         left join product p on (l.division_no = p.product_no) and product_status = 'Y'
-	         left join healther h on (p.users_no = h.users_no)
-	         left join food f on (l.division_no = f.product_no)
-	         left join tool t on (p.product_no = t.product_no)
-	         left join ingredient g on (l.division_no = g.product_no)
-		where l.users_no = #{usersNo} and i.image_level = 0 and i.image_type in (3,4,5,6)
+		     left join image i on (l.division_no = i.image_divide_no) and i.image_level = 0 and i.image_type in (3,4,6)
+             left join menu m on (l.division_no = m.product_no)
+             left join product p on (l.division_no = p.product_no) and product_status = 'Y'
+             left join healther h on (p.users_no = h.users_no)
+             left join food f on (l.division_no = f.product_no) and product_type = 1
+             left join tool t on (p.product_no = t.product_no)
+             left join ingredient g on (l.division_no = g.product_no)
+             left join image gi on (g.ingredient_no = gi.image_divide_no) and gi.image_level = 0 and gi.image_type = 5
+		where l.users_no = #{usersNo}
 		<if test="selectType == 1">
 			and number_type = 1
 		</if>

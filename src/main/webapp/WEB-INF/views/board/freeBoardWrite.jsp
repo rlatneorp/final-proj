@@ -106,25 +106,26 @@ th:first-child, td:first-child {
 	<script src="resources/summernotes/summernote-lite.js"></script>
 	<script src="resources/summernotes/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="resources/summernotes/summernote-lite.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	
 	<br><br><br><br><br><br>
 	<c:if test="${!empty loginUser }">
-		<form action="${contextPath }/freeBoardWriting.bo" method="post">
 			<div id="parentDiv">
 				<div>
 					<label class="intro">제목</label><br>
-					<input id="title" required="required" type="text" name="introTitle" style="width: 940px; height:45px">
+					<input id="title" required="required" type="text"  style="width: 940px; height:45px">
 				</div><br><br>
 				<div>
 					<label class="intro">내용</label><br>
-					<textarea id="content" required="required" class="summernote" name="introContent" style="resize: none;"></textarea>
+					<textarea id="content" required="required" class="summernote"  style="resize: none;"></textarea>
 				</div>
 			</div><br><br>
 		<!-- 작성 버튼 -->
+		
 		<div style="margin: 0 auto; text-align: center;">
 			<button class="btn-3d blue" id="boardSubmit" style="display: none;">작성하기</button>
 		</div>
-		</form>
 		<div style="margin: 0 auto; text-align: center;">
 			<button class="btn-3d blue" id="reBoardSubmit" style="display: none;">수정하기</button>
 		</div>
@@ -154,26 +155,69 @@ const title = document.getElementById('title');
 const content = document.getElementById('content');
 const bInfo = document.getElementById('bInfo');
 
+const firstBoardSubm = document.querySelector('#firstBoardSubm');
 const boardSubmit = document.querySelector('#boardSubmit');
 const reBoardSubmit = document.querySelector('#reBoardSubmit');
 const goToLogin = document.querySelector('#goToLogin');
 let pTag = '';
+let firstWriter = '';
 
 // 글 쓰고 바로 내가 글 쓴 페이지로 가지기
 
-	boardSubmit.addEventListener('click', ()=>{
-		$.ajax({
-			type: 'POST',
-			url: 'goToMyBoard.bo',
-			success: data=>{
-				const bId = data.boardNo;
-				console.log(bId);
-				const writer = data.nickName;
-				location.href='${contextPath}/detailFreeBoard.bo?bId=' + bId + '&writer=' + writer;
-					
-			}
+// 	boardSubmit.addEventListener('click', ()=>{
+// 		$.ajax({
+// 			type: 'POST',
+// 			url: 'goToMyBoard.bo',
+// 			success: data=>{
+// 					const bId = data.boardNo +1;
+// 					const writer = data.nickName;
+// 						location.href='${contextPath}/detailFreeBoard.bo?bId=' + bId + '&writer=' + writer;
+// 						location.reload();
+// 			},
+// 			error: data=>{
+// 				swal({
+// 					 text: "글 작성에 실패하였습니다.",
+// 					 icon: "error",
+// 					 button: "확인",
+// 				});
+// 			}
+		
 			
-		})		
+// 		})		
+// 	})
+	boardSubmit.addEventListener('click', ()=>{
+		const contentEdit = document.getElementsByClassName('note-editable');
+		for(let i = 0; i < contentEdit.length; i++){
+			const contents = contentEdit[i].innerHTML;
+			$.ajax({
+				type: 'POST',
+				url: 'freeBoardWriting.bo',
+				async:false,
+				data: {
+					boardTitle: title.value,
+					boardContent: contents
+				},
+				success: data=>{
+					if(data == 'success'){
+						$.ajax({
+							url: 'goToMyBoard.bo',
+							success: data=>{
+								const bId = data.boardNo;
+								const writer = data.nickName;
+								location.href='${contextPath}/detailFreeBoard.bo?bId='+ bId + '&writer=' + writer;
+							}
+						})		
+					}else{
+						swal({
+							 text: "글 작성에 실패하였습니다.",
+							 icon: "error",
+							 button: "확인",
+						});
+					}	
+				}
+				
+			})
+		}
 	})
 	reBoardSubmit.addEventListener('click', ()=>{
 		console.log(pTag.innerText);
@@ -193,7 +237,11 @@ let pTag = '';
 				if(data == 'success'){
 					location.href='${contextPath}/detailFreeBoard.bo?bId=' + boardNo + '&writer=' + boardWriter + '&page=1';
 				}else{
-					alert('글 수정에 실패하였습니다.');
+					swal({
+						 text: "글 수정에 실패하였습니다.",
+						 icon: "error",
+						 button: "확인",
+						});
 					location.reload();
 				}
 			}
@@ -253,25 +301,31 @@ let pTag = '';
 		}else{
 			boardSubmit.style.display = 'inline-block';
 		}
-		const contentEdit = document.getElementsByClassName('note-editable');
 		
-		for(let i = 0; i < contentEdit.length; i++){
-			pTag = contentEdit[i].querySelector('p');
-			$.ajax({
-				type: 'POST',
-				url: 'reWriteBoardInfo.bo',
-				data:{
-					boardNo: boardNo,
-					nickName: boardWriter			
-				},
-				success: data=>{
-					title.value = data.boardTitle;
-					pTag.innerHTML = data.boardContent;
-					bInfo.value = data.usersNo;
-				}
-				
-			})
+// 			firstBoardSubm.style.display = 'inline-block';
 			
+		const contentEdit = document.getElementsByClassName('note-editable');
+		if(boardNo != null && boardWriter !=null){
+			
+			for(let i = 0; i < contentEdit.length; i++){
+				pTag = contentEdit[i].querySelector('p');
+				$.ajax({
+					type: 'POST',
+					url: 'reWriteBoardInfo.bo',
+					data:{
+						boardNo: boardNo,
+						nickName: boardWriter		
+					},
+					success: data=>{
+						title.value = data.boardTitle;
+						pTag.innerHTML = data.boardContent;
+						bInfo.value = data.usersNo;
+						firstWriter.value = data.nickName;
+					}
+					
+				})
+				
+			}
 		}
  	}
 	

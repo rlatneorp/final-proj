@@ -8,14 +8,14 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script> -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 /* 	레시피 소개 */
 	#top{width: 1200px; height: 600px; margin: auto; position: relative;}
 	#thumImg{width: 500px; height: 500px; display: inline-block; position: absolute; border-radius: 5px;}
 	#imformation{width: 650px; height: 500px; display: inline-block; position: absolute; left: 550px;}
-	#title{border-bottom: 1px solid black; width: 630px;}
+	#title{border-bottom: 1.5px solid darkgray; width: 630px;}
 	#grade{width: 570px; height: 50px; margin-left: 50px; margin-right: 50px; margin-top: 50px;}
 	#userInfo{text-align: center;}
 	#updateBox{width: 180px; margin: auto;}
@@ -24,10 +24,10 @@
 	
 /* 	재료 */
 	#ingredient{width: 1100px; background: lightgray; border-radius: 10px; margin: auto; box-shadow: 5px 5px 7px 0px black;}
-	#ingrTitle{font-size: 23px; text-align: center; width: 100px; margin-left: 500px; margin-right: 500px; padding-top: 20px; height: 50px; position: relative;}
-	#ingrList{width: 900px; margin-left: 100px; margin-right: 100px;}
+	#ingrTitle{font-size: 23px; text-align: center; width: 100px; margin-left: 500px; margin-right: 500px; margin-bottom: 25px; padding-top: 30px; height: 60px; position: relative; font-weight: bold;}
+	#ingrList{width: 900px; margin-left: 100px; margin-right: 100px; margin-bottom: 30px; padding-left: 30px;}
 	.ingrElem{padding-top: 10px; padding-bottom: 10px;}
-	.recipeElement{height: 30px; display: inline-block; padding: 10px 5px 5px 5px; margin: 10px 0 30px 0;}
+	.recipeElement{height: 30px; min-width: 200px; display: inline-block; margin: 0 0 20px 0;}
 	
 /* 	중간선 */
 	.mid{display: flex; flex-basis: 100%; align-item: center; color: rgba(0,0,0,1); font-size: 30px; margin: 5px 0px; font-weight: bold;}
@@ -49,13 +49,13 @@
 		}
 	.no{width: 100px;}
 	.nono{width: 30px; height: 30px; background-color: #B0DAFF; border-radius: 50%; margin: auto}
-	.content{width: 640px;}
+	.content{width: 640px; padding-right: 40px;}
 	.image{width: 200px; height:200px}
 	
 /* 	완성된 사진 */
 	#comText{text-align: center; font-weight: bold; font-size: 30px;}
 	#completePic{width: 1100px; margin: auto;}
-	.complPic{margin-left: 250px; margin-right: 250px;}
+ 	.complPic{margin-left: 250px; margin-right: 250px;}
 	
 /* 	버튼 */
 	#buttonBox{width: 270px; margin: auto;}
@@ -247,7 +247,7 @@
 		<div style="width: 50px; height: 500px; display: inline-block; position: absolute; left: 500px;"></div>
 		<div id="imformation">
 			<div id="title">
-				<h2 style="display: inline-block; width: 580px;">${recipe.recipeName }</h2>
+				<h2 style="display: inline-block; width: 580px; padding-left: 10px;">${recipe.recipeName }</h2>
 				<c:if test="${ loginUser != null }">
 				
 					<c:if test="${ bookmark == 0 }">
@@ -258,10 +258,17 @@
 					</c:if>
 				</c:if>
 			</div>
-			<div style="margin: 15px 15px;">${recipe.categoryIngredient} ∣ ${recipe.categorySituation} ∣ ${recipe.categoryType}</div>
+			<div style="margin: 15px 15px; text-align: center;">${recipe.categoryIngredient} ∣ ${recipe.categorySituation} ∣ ${recipe.categoryType}</div>
 			<div id="grade">
 				<div class="d-inline-block" style="width: 50px; font-weight: bold">난이도</div>
-				<div class="d-inline-block" style="width: 210px; text-align: center; font-weight: bolder; font-size: 20px;">${recipe.recipeDifficulty }</div>
+				<div class="d-inline-block" style="width: 210px; text-align: center; font-weight: bolder; font-size: 17px; color: gold;">
+<%-- 				${recipe.recipeDifficulty } --%>
+					<c:if test="${recipe.recipeDifficulty  == 1}">●○○○○</c:if>
+					<c:if test="${recipe.recipeDifficulty  == 2}">●●○○○</c:if>
+					<c:if test="${recipe.recipeDifficulty  == 3}">●●●○○</c:if>
+					<c:if test="${recipe.recipeDifficulty  == 4}">●●●●○</c:if>
+					<c:if test="${recipe.recipeDifficulty  == 5}">●●●●●</c:if>
+				</div>
 				<div class="d-inline-block" style="width: 30px; font-weight: bold">|</div>
 				<div class="d-inline-block" style="width: 70px; font-weight: bold">조리시간</div>
 				<div class="d-inline-block" style="width: 180px; text-align: center; font-weight: bolder; font-size: 20px;">${recipe.recipeTime } 분</div>
@@ -321,7 +328,7 @@
 		</div>
 		<div id="ingrList">
 			<c:forEach items="${eleList}" var="ele">
-				<div class="recipeElement">${ele.elementName} : ${ele.elementQuantity} |</div>
+				<div class="recipeElement">• ${ele.elementName} : ${ele.elementQuantity}</div>
 			</c:forEach>
 		</div>
 	</div>
@@ -366,9 +373,9 @@
 <div id="completePic">
 	<div id="myCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
 		<div class="carousel-inner">
-			<c:forEach items="${cList }" var="c">
+			<c:forEach items="${cList}" var="c">
 				<div class="carousel-item active">
-					<img src="${contextPath }/resources/uploadFiles/${c.imageRenameName}" width= 600px height= 500px class="complPic">
+					<img src="${contextPath}/resources/uploadFiles/${c.imageRenameName}" width="600px" height="500px" class="d-block complPic">
 				</div>
 			</c:forEach>
 		</div>
@@ -469,7 +476,7 @@
 </c:if>
 <br><br><br>
 <p class="mid">후기</p>
-<br><p style="margin-left: 42%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
+<br><p style="margin-left: 43%;">* 후기 삭제 시 재등록이 불가합니다.</p><br>
 <div id="qna">
 	<table class="board">
 		<tr class="boardTop">
@@ -839,9 +846,6 @@ bookmark.addEventListener('click', function(){
 	          			  buttons: false,
 	          			  timer: 1000,
 	          			});
-	        		setTimeout(function() {
-	        			swal.close(); 
-	        		}, 3000);
         		} else { //실패 시 
         			swal({
 						 text: "해당 상품의 스크랩에 실패했습니다.",

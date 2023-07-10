@@ -63,7 +63,7 @@ public class MarketController {
    private EnrollService eService;
 
    @RequestMapping("basket.ma")
-   public String pay(HttpSession session, Model model) {
+   public String basket(HttpSession session, Model model) {
       
       Users users = (Users)session.getAttribute("loginUser");
       int userNo = users.getUsersNo();
@@ -71,25 +71,17 @@ public class MarketController {
       if(users != null) {
 			int cart = eService.cartCount(users.getUsersNo());
 			model.addAttribute("cart", cart);
-		}
-
-      
+      }
       ArrayList<Cart> cartList = mkService.selectCartList(userNo);
-      
       ArrayList<Product> selectProductInfo = new ArrayList<>(); 
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       
-      ArrayList<Cart> optionNos = new ArrayList<>();
-      
       for(Cart cart : cartList) {
-    	  ArrayList<Options> optValues = new ArrayList<>();
          int productNo = cart.getProductNo();
-         System.out.println("productNo : " + productNo);
          
          //주문 번호에 대한 optionNo 조회 
          ArrayList<Options> o = mkService.selectOptionInfo(cart.getPreorderNo());
          cart.setOptionName(o);
-         ArrayList<Options> options = mkService.selectOptions(productNo);
          
          //카트List에 담긴 productNo마다 어떤 종류가 올 지 모르기 때문에 하나하나 셀렉 해옴 
          foods = mkService.selectFood(productNo);
@@ -99,7 +91,6 @@ public class MarketController {
          
          //productNo에 대한 모든 정보를 하나하나 가져옴 
          selectProductInfo = mkService.selectProductInfo(productNo);
-         
          //위에서 조회 된 정보 중 price로 cart 속성값 변경 ( cartList 하나로 보내기 위해 )
          //합계 계산 
          int price = 0; int sum = 0; int sale = 0;
@@ -147,6 +138,10 @@ public class MarketController {
       Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
       ArrayList<ShippingAddress> shipAddress = mkService.selectShipping(users.getUsersNo());
       ArrayList<Product> productInfo = new ArrayList<>(); ArrayList<Cart> checkedCart = new ArrayList<>(); ArrayList<Cart> checkedCartList = new ArrayList<>();
+      if(users != null) {
+    	  int cart = eService.cartCount(users.getUsersNo());
+    	  	session.setAttribute("cart", cart);
+      }
       
       //옵션 
       ArrayList<Cart> optionNos = new ArrayList<>(); ArrayList<Options> optValues = new ArrayList<>();
@@ -270,10 +265,12 @@ public class MarketController {
                         @ModelAttribute QA q,
                         @ModelAttribute Image img,
                         HttpSession session,  Model model) {
+	   
       Users users = (Users)session.getAttribute("loginUser");
       Tool tool = mkService.selectTool(productNo);
       Food food = mkService.selectFood(productNo);
       Ingredient ingredient = mkService.selectIngrdient(productNo);
+      System.out.println(tool);
       
      
 		if(users != null) {
@@ -341,7 +338,11 @@ public class MarketController {
     	  model.addAttribute("ingredient", ingredient);
     	  model.addAttribute("ingredientMainImage", ingredientMainImage);
     	  model.addAttribute("ingredientsubImage", ingredientsubImage);
+    	  System.out.println(ingredient);
+    	  System.out.println(ingredientMainImage);
+    	  System.out.println(ingredientsubImage);
       }
+      
       
       
       if(list != null) {
@@ -371,6 +372,9 @@ public class MarketController {
       model.addAttribute("p", p);
       model.addAttribute("options", options);
       model.addAttribute("ordList", ordList);
+      System.out.println(options);
+      System.out.println(p);
+      System.out.println(food);
       return "market_detail";
    }
    
@@ -539,6 +543,10 @@ public class MarketController {
       for (int i = 0; i < preorderNoArr.length; i++) {
           preorderNoIntArr[i] = Integer.parseInt(preorderNoArr[i]);
           mkService.deleteFromCart(preorderNoIntArr[i]);
+      }
+      if(users != null) {
+    	  int cart = eService.cartCount(users.getUsersNo());
+    	  session.setAttribute("cart", cart);
       }
       model.addAttribute("users", users);
       return "paySuccess";
@@ -965,7 +973,7 @@ public class MarketController {
 	   Users u = (Users)session.getAttribute("loginUser");
 		if(u != null) {
 			int cart = eService.cartCount(u.getUsersNo());
-			model.addAttribute("cart", cart);
+			session.setAttribute("cart", cart);
 		}
 	   
 	   if(currentPage == null) {
@@ -1090,14 +1098,13 @@ public class MarketController {
 	   }
 	   int listCount = mkService.selectViewIngreCount();
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
-	   System.out.println("listCount : " + listCount);
 	   ArrayList<Ingredient> list = mkService.selectViewIngredient(pi);
-	   System.out.println("list : " + list);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pIngre = new Product();
 	   //식재료 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Ingredient lists : list) {
 			   int productNo = lists.getProductNo(); String img = null;
+			   System.out.println("productNo : " + productNo);
 			   pIngre = mkService.selectPIngre(productNo); //food productNo에 대한 Product 테이블 조회 
 			   img = mkService.selectImg(lists.getIngredientNo(), 5);
 			   if(pIngre != null) {
@@ -1153,7 +1160,7 @@ public class MarketController {
 	   PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 15);
 	   ArrayList<Tool> list = mkService.selectViewTool(pi);
 	   ArrayList<Object> productInfo = new ArrayList<>(); Product pTool = new Product();
-	   //식재료 전체 상품 조회
+	   //도구 전체 상품 조회
 	   if(!list.isEmpty()) {
 		   for(Tool lists : list) {
 			   int productNo = lists.getProductNo(); String img = null;
@@ -1172,14 +1179,17 @@ public class MarketController {
 	   Tool hotTool = null;
 	   ArrayList<Product> hotDeal = mkService.selectToolHotDeal();
 	   ArrayList<Object> hotDeals = new ArrayList<>();
+	   System.out.println("hotDeal : " + hotDeal);
 	   if(!hotDeal.isEmpty()) {
 		   for(Product lists : hotDeal) {
 			   int productNo = lists.getProductNo(); 
+			   System.out.println("productNo : " + productNo);
 			   String img = null; 
 			   hotTool = mkService.selectTool(productNo);
 			   if(hotTool != null) {
 				   lists.setProductName(hotTool.getToolName());
 			   }
+			   System.out.println("htPN : "+ hotTool.getProductNo());
 			   img = mkService.selectImg(hotTool.getProductNo(), 6);
 			   if(img != null) {
 				   lists.setProductImg(img);

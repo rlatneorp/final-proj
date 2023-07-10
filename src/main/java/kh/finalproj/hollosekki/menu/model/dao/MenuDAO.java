@@ -53,12 +53,18 @@ public class MenuDAO {
 		return (ArrayList)sqlSession.selectList("menuMapper.menuDetailImage");
 	}
 
-	public ArrayList<Menu> searchMenu(SqlSessionTemplate sqlSession, String word) {
-		return (ArrayList)sqlSession.selectList("menuMapper.searchMenu", word);
+	public ArrayList<Menu> searchMenu(SqlSessionTemplate sqlSession, PageInfo pi, String word) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.searchMenu", word, rowBounds);
 	}
 
-	public ArrayList<Menu> menuCategory(SqlSessionTemplate sqlSession, int cate) {
-		return (ArrayList)sqlSession.selectList("menuMapper.menuCategory", cate);
+	public ArrayList<Menu> menuCategory(SqlSessionTemplate sqlSession, PageInfo pi, int cate) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("menuMapper.menuCategory", cate, rowBounds);
 	}
 
 	public int selectUsersNo(SqlSessionTemplate sqlSession, int mNo) {
@@ -121,8 +127,8 @@ public class MenuDAO {
 		return (ArrayList)sqlSession.selectList("menuMapper.selectMyOrders", map);
 	}
 
-	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
-		return sqlSession.insert("menuMapper.insertReview", r);
+	public int insertReview(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.insert("menuMapper.insertReview", map);
 	}
 
 	public int updateReview(SqlSessionTemplate sqlSession, Review r) {
@@ -157,6 +163,14 @@ public class MenuDAO {
 
 	public Image selectProfile(SqlSessionTemplate sqlSession, int usersNo) {
 		return sqlSession.selectOne("menuMapper.selectProfile", usersNo);
+	}
+
+	public int getCateListCount(SqlSessionTemplate sqlSession, int cate) {
+		return sqlSession.selectOne("menuMapper.getCateListCount", cate);
+	}
+
+	public int getSearchListCount(SqlSessionTemplate sqlSession, String word) {
+		return sqlSession.selectOne("menuMapper.getSearchListCount", word);
 	}
 
 

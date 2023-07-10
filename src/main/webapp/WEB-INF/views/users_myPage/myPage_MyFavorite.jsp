@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -138,7 +139,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										찜 내역이 없습니다.
+										<b>찜 내역이 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>
@@ -146,7 +147,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										검색 결과가 없습니다.
+										<b>검색 결과가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>
@@ -154,7 +155,7 @@ th:first-child, td:first-child {
 								<tr>
 									<td colspan="6" height="320">
 										<i class="fa-regular fa-face-grin-beam-sweat" style="color: skyblue; font-size: 80px;"></i><br><br>
-										검색 결과가 없습니다.
+										<b>검색 결과가 없습니다.</b>
 									</td>
 								</tr>
 							</c:if>
@@ -172,7 +173,7 @@ th:first-child, td:first-child {
 											</td>
 											<td>식품 - 밀키트</td>
 											<td>${ l.FOOD_NAME }</td>
-											<td>${ l.PRODUCT_PRICE }원</td>
+											<td><fmt:formatNumber pattern="###,###,###">${ l.PRODUCT_PRICE }</fmt:formatNumber>원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -188,7 +189,7 @@ th:first-child, td:first-child {
 											</td>
 											<td>식품 - 식재료</td>
 											<td>${ l.FOOD_NAME }</td>
-											<td>${ l.PRODUCT_PRICE }원</td>
+											<td><fmt:formatNumber pattern="###,###,###">${ l.PRODUCT_PRICE }</fmt:formatNumber>원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -204,7 +205,7 @@ th:first-child, td:first-child {
 											</td>
 											<td>식단</td>
 											<td>${ l.MENU_NAME }</td>
-											<td>${ l.PRODUCT_PRICE }원</td>
+											<td><fmt:formatNumber pattern="###,###,###">${ l.PRODUCT_PRICE }</fmt:formatNumber>원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -220,7 +221,7 @@ th:first-child, td:first-child {
 											</td>
 											<td>식재료</td>
 											<td>${ l.INGREDIENT_NAME }</td>
-											<td>${ l.PRODUCT_PRICE }원</td>
+											<td><fmt:formatNumber pattern="###,###,###">${ l.PRODUCT_PRICE }</fmt:formatNumber>원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -236,7 +237,7 @@ th:first-child, td:first-child {
 											</td>
 											<td>상품</td>
 											<td>${ l.TOOL_NAME }</td>
-											<td>${ l.PRODUCT_PRICE }원</td>
+											<td><fmt:formatNumber pattern="###,###,###">${ l.PRODUCT_PRICE }</fmt:formatNumber>원</td>
 											<td><input type="checkbox" class="delete"></td>
 										</tr>
 									</c:if>
@@ -426,6 +427,18 @@ th:first-child, td:first-child {
 	            location.href = "${contextPath}/myPage_MyFavorite.me?searchType=5";
 	        }
 	    });
+	    
+	    window.onload = () => {
+			const list = document.getElementById('tbody');
+			const messageCell = document.querySelector('#tbody td[colspan="6"]');
+			const page = '${pi.currentPage}';
+			
+			if(messageCell && messageCell.innerText.trim() == '찜 내역이 없습니다.' && page != 0 && page != 1) {
+				const currentPage = parseInt(page);
+				const newPage = currentPage - 1;
+				location.href = '${contextPath}/myPage_MyFavorite.me?page=' + newPage;
+			}
+		};
 	</script>
 	
 </body>

@@ -27,7 +27,7 @@ font-family: 'Noto Sans KR', sans-serif;
 	opacity: 1.0;
 }
 
-.mainAd{
+.mainAA{
 	border: 2px solid black;
 	box-shadow: 0px 15px black;
 }
@@ -37,7 +37,7 @@ font-family: 'Noto Sans KR', sans-serif;
 	text-decoration: none;
 	color:black;
 }
-.mainAd .position-absolute{
+.mainAA .position-absolute{
 	border: none;
 	width: 50px;
 	border-radius: 20px;
@@ -120,6 +120,13 @@ font-family: 'Noto Sans KR', sans-serif;
 	font-weight: 700;
 	margin-left: 20px;
 }
+.originPrice{
+	padding-top:10px;
+	font-size: 25px;
+	color:black;
+	text-decoration: line-through;
+	letter-spacing: 2px; 
+}
 
 .semiReci{
 	width: 1100px; height: 550px;
@@ -157,7 +164,11 @@ font-family: 'Noto Sans KR', sans-serif;
 	background-color: #B0DAFF;
 	margin: 15px;
 }
-
+.salePer{
+	background-color:#B0DAFF;
+	font-weight:bold;
+	font-size:20px;
+}
 .oneCooker{
 	text-align: center;
 	align-content: center;
@@ -170,19 +181,35 @@ font-family: 'Noto Sans KR', sans-serif;
 <%@ include file="common/top.jsp" %>
 <br><br>
 <div class="container-xxl" align="center">
-	<div id="carouselExampleInterval" class="carousel slide position-relative mainAd" data-bs-ride="carousel">
+	<div id="carouselExampleInterval" class="carousel slide position-relative mainAA" data-bs-ride="carousel">
 	  <div class="carousel-inner">
 	    <div class="carousel-item active" data-bs-interval="10000">
-	      <img src="resources/images/ad1.jpg" style="width:1200px; height:290px;" class="d-block w-100" alt="...">
-	    	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">1 / 3</div>
+	      <img src="resources/images/1.jpg" style="width:1200px; height:290px;" class="d-block w-100" alt="...">
+	    	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">1 / 7</div>
 	    </div>
-	    <div class="carousel-item" data-bs-interval="2000">
-	      <img src="resources/images/ad2.png"  style="width:1200px; height:290px;" class="d-block w-100" alt="...">
-	    	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">2 / 3</div>
+	    <div class="carousel-item" data-bs-interval="10000">
+	      <img src="resources/images/2.png"  style="width:1200px; height:290px;" class="d-block w-100" alt="...">
+	    	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">2 / 7</div>
 	    </div>
-	    <div class="carousel-item">
-	      <img src="resources/images/ad3.png"  style="width:1200px; height:290px;" class="d-block w-100" alt="...">
-	     	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">3 / 3</div>
+	    <div class="carousel-item"  data-bs-interval="10000">
+	      <img src="resources/images/3.png"  style="width:1200px; height:290px;" class="d-block w-100" alt="...">
+	     	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">3 / 7</div>
+	    </div>
+	    <div class="carousel-item"  data-bs-interval="10000">
+	      <img src="resources/images/4.jpg"  style="width:1200px; height:290px;" class="d-block w-100" alt="...">
+	     	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">4 / 7</div>
+	    </div>
+	    <div class="carousel-item"  data-bs-interval="10000">
+	      <img src="resources/images/5.jpg"  style="width:1200px; height:290px;" class="d-block w-100" alt="...">
+	     	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">5 / 7</div>
+	    </div>
+	    <div class="carousel-item"  data-bs-interval="10000">
+	      <img src="resources/images/6.jpg"  style="width:1200px; height:290px;" class="d-block w-100" alt="...">
+	     	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">6 / 7</div>
+	    </div>
+	    <div class="carousel-item"   data-bs-interval="10000">
+	      <img src="resources/images/7.jpg"  style="width:1200px; height:290px;" class="d-block w-100" alt="...">
+	     	<div class="position-absolute bottom-0 end-0" style="margin-bottom: 50px; margin-right: 200px; z-index: 9999;">7 / 7</div>
 	    </div>
 	  </div>
 	  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
@@ -206,32 +233,37 @@ font-family: 'Noto Sans KR', sans-serif;
 				<div class="carousel-item active">
 					<div class="mainFood2"  style="display: flex; justify-content: center;">
 						<c:forEach items="${ likeOrderByOne }" var="li" end="3">
-									<div style="cursor:pointer; margin: 7px; width: 230px; height: 380px;" onclick="window.location.href='${contextPath}/market_detail.ma?productNo=${li.PRODUCT_NO }'" >
-										<div class="img-div"> 
-											<img src="${ contextPath }/resources/uploadFiles/${ li.IMAGE_RENAMENAME }" class="rounded recipe-img">
-										</div>
-										<c:if test="${li.FOOD_NAME ne null }">
-											<div class="recipe-name">${ li.FOOD_NAME }</div>
-										</c:if>
-										<c:if test="${li.TOOL_NAME ne null }">
-											<div class="recipe-name">${ li.TOOL_NAME }</div>
-										</c:if>
-										<c:if test="${li.INGREDIENT_NAME ne null }">
-											<div class="recipe-name">${ li.INGREDIENT_NAME }</div>
-										</c:if>
-										<c:if test="${li.PRODUCT_SALE ne 0 }">
-											<div class="foodPrice" style="text-decoration: line-through;">
-												<fmt:formatNumber value="${ li.PRODUCT_PRICE }" pattern="###,###,###"/>원
-											</div>
-										</c:if>
-										<c:if test="${li.PRODUCT_SALE eq 0 }">
-											<div style="font-size:25px; ">
-												<fmt:formatNumber value="${ li.PRODUCT_PRICE }" pattern="###,###,###"/>원
-											</div>
-										</c:if>
-										<div class="discount"></div>
-										<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
+							<div style="cursor:pointer; margin: 7px; width: 230px; height: 380px;" onclick="window.location.href='${contextPath}/market_detail.ma?productNo=${li.PRODUCT_NO }'" >
+								<div class="img-div"> 
+									<img src="${ contextPath }/resources/uploadFiles/${ li.IMAGE_RENAMENAME }" class="rounded recipe-img">
+								</div>
+								<c:if test="${li.FOOD_NAME ne null }">
+									<div class="recipe-name">${ li.FOOD_NAME }</div>
+								</c:if>
+								<c:if test="${li.TOOL_NAME ne null }">
+									<div class="recipe-name">${ li.TOOL_NAME }</div>
+								</c:if>
+								<c:if test="${li.INGREDIENT_NAME ne null }">
+									<div class="recipe-name">${ li.INGREDIENT_NAME }</div>
+								</c:if>
+								<c:if test="${li.PRODUCT_SALE ne 0 }">
+									<div >
+										<span class="originPrice" style="padding-top:1px;">
+											<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="#,###"/>원
+										</span>
+										<span class="salePer"> ${li.PRODUCT_SALE }% 할인</span>
 									</div>
+								</c:if>
+								<c:if test="${li.PRODUCT_SALE eq 0 }">
+									<div style="text-decoration: none;">
+										<span style="font-size:25px;">
+											<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="#,###"/>원
+										</span>
+									</div>
+								</c:if>
+								<div class="discount"></div>
+								<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
+							</div>
 						</c:forEach>
 					</div>
 				</div>
@@ -239,32 +271,37 @@ font-family: 'Noto Sans KR', sans-serif;
 				<div class="carousel-item">
 					<div class="mainFood2" style="display: flex; justify-content: center;">
 						<c:forEach items="${ likeOrderByOne }" var="li" begin="4" end="7">
-									<div style="cursor:pointer; margin: 7px; width: 230px; height: 380px;" onclick="window.location.href='${contextPath}/market_detail.ma?productNo=${li.PRODUCT_NO }'">
-										<div class="img-div"> 
-											<img src="${ contextPath }/resources/uploadFiles/${ li.IMAGE_RENAMENAME }" class="rounded recipe-img">
-										</div>
-										<c:if test="${li.FOOD_NAME ne null }">
-											<div class="recipe-name">${ li.FOOD_NAME }</div>
-										</c:if>
-										<c:if test="${li.TOOL_NAME ne null }">
-											<div class="recipe-name">${ li.TOOL_NAME }</div>
-										</c:if>
-										<c:if test="${li.INGREDIENT_NAME ne null }">
-											<div class="recipe-name">${ li.INGREDIENT_NAME }</div>
-										</c:if>
-										<c:if test="${li.PRODUCT_SALE ne 0 }">
-											<div class="foodPrice" style="text-decoration: line-through;">
-												<fmt:formatNumber value="${ li.PRODUCT_PRICE }" pattern="###,###,###"/>원
-											</div>
-										</c:if>
-										<c:if test="${li.PRODUCT_SALE eq 0 }">
-											<div style="font-size:25px; ">
-												<fmt:formatNumber value="${ li.PRODUCT_PRICE }" pattern="###,###,###"/>원
-											</div>
-										</c:if>
-										<div class="discount"></div>
-										<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
+							<div style="cursor:pointer; margin: 7px; width: 230px; height: 380px;" onclick="window.location.href='${contextPath}/market_detail.ma?productNo=${li.PRODUCT_NO }'">
+								<div class="img-div"> 
+									<img src="${ contextPath }/resources/uploadFiles/${ li.IMAGE_RENAMENAME }" class="rounded recipe-img">
+								</div>
+								<c:if test="${li.FOOD_NAME ne null }">
+									<div class="recipe-name">${ li.FOOD_NAME }</div>
+								</c:if>
+								<c:if test="${li.TOOL_NAME ne null }">
+									<div class="recipe-name">${ li.TOOL_NAME }</div>
+								</c:if>
+								<c:if test="${li.INGREDIENT_NAME ne null }">
+									<div class="recipe-name">${ li.INGREDIENT_NAME }</div>
+								</c:if>
+								<c:if test="${li.PRODUCT_SALE ne 0 }">
+									<div >
+										<span class="originPrice" style="padding-top:1px;">
+											<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="#,###"/>원
+										</span>
+										<span class="salePer"> ${li.PRODUCT_SALE }% 할인</span>
 									</div>
+								</c:if>
+								<c:if test="${li.PRODUCT_SALE eq 0 }">
+									<div style="text-decoration: none;">
+										<span style="font-size:25px;">
+											<fmt:formatNumber value="${li.PRODUCT_PRICE }" pattern="#,###"/>원
+										</span>
+									</div>
+								</c:if>
+								<div class="discount"></div>
+								<input type="hidden" class="likeOrders" value="${li.PRODUCT_SALE }">
+							</div>
 						</c:forEach>
 					</div>
 				</div>
@@ -308,13 +345,18 @@ font-family: 'Noto Sans KR', sans-serif;
 										<div class="recipe-name">${ mk.MENU_NAME }</div>
 									</c:if>
 									<c:if test="${mk.PRODUCT_SALE ne 0 }">
-										<div class="foodPrice" style="text-decoration: line-through;">
-											<fmt:formatNumber value="${ mk.PRODUCT_PRICE }" pattern="###,###,###"/>원
+										<div>
+											<span class="originPrice" style="padding-top:1px;">
+												<fmt:formatNumber value="${mk.PRODUCT_PRICE }" pattern="#,###"/>원
+											</span>
+											<span class="salePer"> ${mk.PRODUCT_SALE }% 할인</span>
 										</div>
 									</c:if>
 									<c:if test="${mk.PRODUCT_SALE eq 0 }">
-										<div style="font-size:25px; ">
-											<fmt:formatNumber value="${ mk.PRODUCT_PRICE }" pattern="###,###,###"/>원
+										<div style="text-decoration: none;">
+											<span style="font-size:25px;">
+												<fmt:formatNumber value="${mk.PRODUCT_PRICE }" pattern="#,###"/>원
+											</span>
 										</div>
 									</c:if>
 									<div class="discount"></div>
@@ -341,13 +383,18 @@ font-family: 'Noto Sans KR', sans-serif;
 											<div class="recipe-name">${ mk.MENU_NAME }</div>
 										</c:if>
 										<c:if test="${mk.PRODUCT_SALE ne 0 }">
-											<div class="foodPrice" style="text-decoration: line-through;">
-												<fmt:formatNumber value="${ mk.PRODUCT_PRICE }" pattern="###,###,###"/>원
+											<div>
+												<span class="originPrice" style="padding-top:1px;">
+													<fmt:formatNumber value="${mk.PRODUCT_PRICE }" pattern="#,###"/>원
+												</span>
+												<span class="salePer"> ${mk.PRODUCT_SALE }% 할인</span>
 											</div>
 										</c:if>
 										<c:if test="${mk.PRODUCT_SALE eq 0 }">
-											<div style="font-size:25px; ">
-												<fmt:formatNumber value="${ mk.PRODUCT_PRICE }" pattern="###,###,###"/>원
+											<div style="text-decoration: none;">
+												<span style="font-size:25px;">
+													<fmt:formatNumber value="${mk.PRODUCT_PRICE }" pattern="#,###"/>원
+												</span>
 											</div>
 										</c:if>
 										<div class="discount"></div>

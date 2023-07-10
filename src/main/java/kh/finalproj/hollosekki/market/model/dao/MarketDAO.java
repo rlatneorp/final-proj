@@ -555,9 +555,9 @@ public class MarketDAO {
 		return (ArrayList)sqlSession.selectList("marketMapper.selectMealKit", sqlSession);
 	}
 
-	public int selectReview(SqlSessionTemplate sqlSession, int orderNo, String nickName) {
+	public int selectReview(SqlSessionTemplate sqlSession, int productNo, String nickName) {
 		Map<Object, Object> map = new HashMap<>();
-		map.put("orderNo", orderNo);
+		map.put("productNo", productNo);
 		map.put("nickName", nickName);
 		
 		return sqlSession.selectOne("marketMapper.selReviewCount", map);

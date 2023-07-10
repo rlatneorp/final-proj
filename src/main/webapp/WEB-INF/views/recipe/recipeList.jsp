@@ -14,14 +14,15 @@
 	#inputText{border-radius: 8px; border: 1px solid black; box-shadow: 0px 5px 0px 0px black; width: 300px; height: 40px; margin-left: 450px; margin-right: 450px; margin-top: 40px;}
 	#searchIcon{position: absolute; right: 455px; top: 46px;}
 	#searchBtn{border-radius: 50%; width: 30px; height: 30px; border: none; background-color: #B0DAFF}
-	#category{width: 450px; margin-left: 375px; margin-right: 375px; margin-top: 30px;}
+	#category{width: 550px; margin-left: 375px; margin-right: 375px; margin-top: 30px;}
 	
 	.title{font-weight: bold;}
 	.group-button1, .group-button2, .group-button3{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
 	
 	#side{width: 200px; height: 100px; margin-top: 25px; margin-left: 1300px;}
-	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; margin-left: 100px; cursor: pointer;}
-	.group-button{padding: 10px 10px 10px 30px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
+	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; width: 120px;  cursor: pointer; margin-left: 40px;}
+	.group-button{padding: 0 15px 0 15px; background-color: white; border: none; cursor: pointer; font-weight: bold;}
+	.group-button:hover{font-weight: bold; background: linear-gradient(to top, rgba(176, 218, 255, 0.3) 50%, transparent 20%);}
 	
 	.name-cut{white-space: nowrap; overflow:hidden; text-overflow: ellipsis; font-weight: bold; text-align: center;}
 	.card-text{text-align: center; margin-bottom: 5px;}
@@ -98,6 +99,8 @@
 			<button class="group-button1" data-value="해물">해물</button>
 			<button class="group-button1" data-value="과일">과일</button>
 			<button class="group-button1" data-value="채소">채소</button>
+			<button class="group-button1" data-value="제과">제과</button>
+			<button class="group-button1" data-value="기타">기타</button>
 		</div>
 		<div>
 			<span class="title">상황별 | </span>
@@ -106,6 +109,7 @@
 			<button class="group-button2" data-value="도시락">도시락</button>
 			<button class="group-button2" data-value="아침식사">아침식사</button>
 			<button class="group-button2" data-value="비건">비건</button>
+			<button class="group-button2" data-value="기타">기타</button>
 		</div>
 		<div>
 			<span class="title">종류별 | </span>
@@ -114,6 +118,7 @@
 			<button class="group-button3" data-value="간식">간식</button>
 			<button class="group-button3" data-value="면">면</button>
 			<button class="group-button3" data-value="반찬">반찬</button>
+			<button class="group-button3" data-value="기타">기타</button>
 		</div>
 	</div>
 </div>
@@ -124,7 +129,7 @@
 	</c:if>
 	<br><br>
 	
-	<div id="align">
+	<div id="align" style="text-align: center;">
 		<button class="group-button" id="recent" data-value="최신" onclick="recentAl()">최신순</button>
 		<button class="group-button" id="most" data-value="조회" onclick="mostAl()">조회순</button>
 	</div>
@@ -132,6 +137,7 @@
 
 <c:if test="${empty rList }">
 	<div style="text-align: center;">
+		<i class="fa-regular fa-face-grin-beam-sweat" style="color: #b0daff; font-size: 80px; margin-top: 50px; margin-bottom: 50px;"></i>
 		<h2>${str}</h2>	
 	</div>
 </c:if>

@@ -992,5 +992,9 @@
         </if>   
    </insert>
 	
-	
+	<update id="updateCartCount">
+		update cart
+		set cart_count = #{size} 
+		where pre_order_no = #{preorderNo}
+	</update>
 </mapper>

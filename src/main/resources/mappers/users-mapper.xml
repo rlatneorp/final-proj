@@ -434,7 +434,7 @@
 	
 	<select id="selectReview" resultType="map">
 		select r.product_no, order_no, review_no, review_content, review_score, review_status, review_date, review_writer,
-		       recipe_name, menu_name, tool_name, food_name, ingredient_name, product_type, food_type, u.users_id
+		       recipe_name, menu_name, tool_name, food_name, ingredient_name, product_type, food_type, u.users_id, product_status
 		from review r
 		     left join recipe c on (product_no = food_no)
              left join users u on (c.users_no = u.users_no)

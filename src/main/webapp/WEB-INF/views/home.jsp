@@ -503,8 +503,10 @@ font-family: 'Noto Sans KR', sans-serif;
 				          <div class="modal-body">
 				          	<div class="modal-div">
 					          	<c:set var="MatchingMenu" value="false" />
-								<c:forEach items="${ mList }" var="m" end="3">
-								  <c:if test="${ h.USERS_NO eq m.USERS_NO }">
+<%-- 								<c:forEach items="${ mList }" var="m" end="3"> --%>
+								<c:forEach items="${ mList }" var="m">
+								  <c:if test="${ h.USERS_NO eq m.USERS_NO }" >
+<%-- 								  ${ m.PRODUCT_NO } --%>
 								    <div style="cursor: pointer;"  onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ m.PRODUCT_NO }' + '&page='">
 								      <div class="healther-modal">
 								        <img class="healther-modal-img" src="${ contextPath }/resources/uploadFiles/${ m.IMAGE_RENAMENAME }"/>

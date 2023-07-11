@@ -347,88 +347,50 @@ input[type="text"] {
 		for(size of cartCount) {
 			const preorderNo = size.nextElementSibling.value;
 			let prevValue = document.getElementById('size-' + preorderNo).innerText // 이전 값 저장
+			
 			size.addEventListener('click', function() {
 				const input = this.nextElementSibling.nextElementSibling;
 				this.style.display = 'none';
 				input.style.display = 'inline-block';
+				
+				let isInputBlurEventRegistered = false;
+				 
  				input.addEventListener('blur', function() {
-					if(isNaN(this.value)) {
-						alert('숫자만 입력 가능합니다.');
-						this.style.display = 'none';
-						this.previousElementSibling.previousElementSibling.style.display = 'inline-block';
-					} else {
-						$.ajax({
-							url:'inputCartCount.ma',
-							data:{
-								preorderNo:preorderNo,
-								size:this.value
-							},
-							success: data =>{
-								if(data == 'yes') {
-									this.style.display = 'none';
-									this.previousElementSibling.previousElementSibling.style.display = 'inline-block';
-									this.previousElementSibling.previousElementSibling.innerText = this.value;
-									// 페이지 리로드 함수
-									window.location.reload();
-								}
-							},
-							error: data => {
-								
-							}
-						})
-					}
+ 					
+ 					if(!isInputBlurEventRegistered) {
+ 						isInputBlurEventRegistered = true;
+ 						if(isNaN(this.value)) {
+ 							alert('숫자만 입력 가능합니다.');
+ 							this.value = '';
+ 							this.style.display = 'none';
+ 							this.previousElementSibling.previousElementSibling.style.display = 'inline-block';
+ 						} else {
+ 							$.ajax({
+ 								url:'inputCartCount.ma',
+ 								data:{
+ 									preorderNo:preorderNo,
+ 									size:this.value
+ 								},
+ 								success: data =>{
+ 									if(data == 'yes') {
+ 										this.style.display = 'none';
+ 										this.previousElementSibling.previousElementSibling.style.display = 'inline-block';
+ 										this.previousElementSibling.previousElementSibling.innerText = this.value;
+ 										// 페이지 리로드 함수
+ 										window.location.reload();
+ 									}
+ 								},
+ 								error: data => {
+ 									
+ 								}
+ 							})
+ 						}
+ 					}
+					
 				})
 				
 			});
 		}
-// 				const preorderNo = insertSize.previousElementSibling.value;
-// 				console.log(document.getElementById('size-' + preorderNo));
-// 				
-// 				sizeLabel.addEventListener('click', function() {
-// 					  if (insertSize.style.display === 'none') {
-// 						  console.log('asdf')
-// 						sizeLabel.innerText = '';
-// 					    insertSize.style.display = 'inline-block';
-// 			 			insertSize.addEventListener('change', function() {
-// 			 				if(isNaN(this.value)) {
-// 			 					alert('숫자만 입력해주세요');
-// 			 					insertSize.style.display = 'none';
-// 			 					sizeLabel.style.display = 'inline-block'
-// 			 					sizeLabel.innerText = prevValue;
-// 			 					return;
-// 			 				} else {
-			 					
-// 			 				}
-// 			 			});
-// 					    insertSize.focus();
-// 					  } else {
-// 					    insertSize.style.display = 'none';
-// 					    sizeLabel.style.display = 'inline-block';
-// 					    sizeLabel.textContent = insertSize.value;
-// 					  }
-// 				});
-				
-// 				insertSize.addEventListener('blur', function() {
-// 					insertSize.value = '';
-// 				    insertSize.style.display = 'none';
-// 				    sizeLabel.style.display = 'inline-block';
-// 				    sizeLabel.innerText = prevValue;
-// 				 });
-				
-// 			}
-// 		}
-		
-// 		for(is of insertSize) {
-// 			let prevValue = is.value; // 이전 값 저장
-// 			is.addEventListener('change', function() {
-// 				if(isNaN(this.value)) {
-// 					alert('숫자만 입력해주세요');
-// 					this.value = prevValue;
-// 					return;
-// 				}
-// 			})
-			
-// 		}
 		
 		document.getElementById('trTotalSum').innerText = '0';	
 		document.getElementById('orderSize').innerText = '0';

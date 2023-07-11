@@ -1050,8 +1050,8 @@ public class RecipeController {
 	// 후기 수정
 	@RequestMapping("updateReview.rc")
 	public String updateReview(@ModelAttribute Review r, Model model,
-			@RequestParam(value = "reviewScore", defaultValue = "0", required = false) int reviewScore) {
-		String usersId = ((Users) model.getAttribute("loginUser")).getUsersId();
+			@RequestParam(value = "reviewScore", defaultValue = "0", required = false) int reviewScore,
+			@RequestParam("rId") String usersId) {
 		int foodNo = r.getProductNo();
 
 		HashMap<String, Object> map = new HashMap<String, Object>();

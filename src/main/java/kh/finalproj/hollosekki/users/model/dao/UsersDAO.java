@@ -227,15 +227,15 @@ public class UsersDAO {
 //		return sqlSession.insert("usersMapper.updatePoint", map);
 //	}
 	
-	public int getReviewCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
-		return sqlSession.selectOne("usersMapper.getReviewCount", map);
+	public int getReviewCount(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("usersMapper.getReviewCount", usersNo);
 	}
 
-	public ArrayList<HashMap<String, Object>> selectReview(SqlSessionTemplate sqlSession, HashMap<String, Object> map, PageInfo pi) {
+	public ArrayList<HashMap<String, Object>> selectReview(SqlSessionTemplate sqlSession, int usersNo, PageInfo pi) {
 		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("usersMapper.selectReview", map, rowBounds);
+		return (ArrayList)sqlSession.selectList("usersMapper.selectReview", usersNo, rowBounds);
 	}
 
 

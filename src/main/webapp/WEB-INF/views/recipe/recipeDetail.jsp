@@ -381,14 +381,14 @@
 				</div>
 			</c:forEach>
 		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		  <span class="visually-hidden">Previous</span>
-		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		  <span class="visually-hidden">Next</span>
-		</button>
+<!-- 		<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev"> -->
+<!-- 		  <span class="carousel-control-prev-icon" aria-hidden="true"></span> -->
+<!-- 		  <span class="visually-hidden">Previous</span> -->
+<!-- 		</button> -->
+<!-- 		<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next"> -->
+<!-- 		  <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+<!-- 		  <span class="visually-hidden">Next</span> -->
+<!-- 		</button> -->
 	</div>
 </div>
 <br>
@@ -634,6 +634,7 @@
 				<div class="modal-body" id="updateReviewBody">
 					<input type="hidden" name="reviewNo" id="reviewNo">
 					<input type="hidden" name="productNo" value="${recipe.foodNo}">
+					<input type="hidden" name="rId" value="${recipe.usersId}">
 					<fieldset>
 						<input type="radio" name="reviewScore" value="5" id="reviewUpdateScore5">
 							<label for="reviewUpdateScore5">★</label>
@@ -803,7 +804,7 @@ reviewDelete.addEventListener('click', () => {
 	    buttons: ["취소", "삭제하기"]
 	}).then((yes) => {
 		if(yes){
-			location.href = '${contextPath}/deleteReview.rc?reviewNo=' + reviewNo.value + '&rId=' + '${loginUser.usersId}' + '&rNo=' + '${recipe.foodNo}';
+			location.href = '${contextPath}/deleteReview.rc?reviewNo=' + reviewNo.value + '&rId=' + '${recipe.usersId}' + '&rNo=' + '${recipe.foodNo}';
 		}
 	});
 });

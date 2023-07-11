@@ -285,9 +285,9 @@
 				</div>
 			</div>
 			
-			<button type="button" id="plusComBtn" onclick="comPlus()">+ 이미지 추가하기</button>
-			<span> / </span>
-			<button type="button" id="minusComBtn" onclick="comRemove()">- 이미지 삭제하기</button>
+<!-- 			<button type="button" id="plusComBtn" onclick="comPlus()">+ 이미지 추가하기</button> -->
+<!-- 			<span> / </span> -->
+<!-- 			<button type="button" id="minusComBtn" onclick="comRemove()">- 이미지 삭제하기</button> -->
 		</div>
 	
 	</div>
@@ -431,36 +431,36 @@ function comImageIns(obj){
 }
 
 // 완성 사진 추가
-const comCopy = document.querySelector("#comCopy");
-const comAddPlace1 = document.querySelector("#comAddPlace1");
-const comAddPlace2 = document.querySelector("#comAddPlace2");
-const cPicBox = document.querySelector('#cPicBox');
-var comCount = 1;
-function comPlus(){
-	if(comCount < 3){
-		if(comCount == 1){
-			comAddPlace1.appendChild(comCopy.cloneNode(true));
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
-			comCount++;
-		} else if(comCount == 2){
-			comAddPlace2.appendChild(comCopy.cloneNode(true));
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
-			comCount++;
-		}
-	}
-// 	console.log(comCount);
-}
+// const comCopy = document.querySelector("#comCopy");
+// const comAddPlace1 = document.querySelector("#comAddPlace1");
+// const comAddPlace2 = document.querySelector("#comAddPlace2");
+// const cPicBox = document.querySelector('#cPicBox');
+// var comCount = 1;
+// function comPlus(){
+// 	if(comCount < 3){
+// 		if(comCount == 1){
+// 			comAddPlace1.appendChild(comCopy.cloneNode(true));
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
+// 			comCount++;
+// 		} else if(comCount == 2){
+// 			comAddPlace2.appendChild(comCopy.cloneNode(true));
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
+// 			comCount++;
+// 		}
+// 	}
+// // 	console.log(comCount);
+// }
 
-// 완성 사진 삭제
-const comCopyC = document.querySelectorAll(".comCopyC");
-function comRemove(){
-	if(comCount > 1){
-		document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].remove();
-		comCount--;
-	}
-}
+// // 완성 사진 삭제
+// const comCopyC = document.querySelectorAll(".comCopyC");
+// function comRemove(){
+// 	if(comCount > 1){
+// 		document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].remove();
+// 		comCount--;
+// 	}
+// }
 
 const sub = document.getElementById('sub');
 const writeRecipe = document.getElementById('writeRecipe');

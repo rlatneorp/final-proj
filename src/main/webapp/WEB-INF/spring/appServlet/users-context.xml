@@ -23,6 +23,14 @@
 	
 	<context:component-scan base-package="kh.finalproj.hollosekki" />
 	
+	<!-- interceptor 등록 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<beans:bean id="checkLogin" class="kh.finalproj.hollosekki.users.CheckLoginInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	
 	
 </beans:beans>

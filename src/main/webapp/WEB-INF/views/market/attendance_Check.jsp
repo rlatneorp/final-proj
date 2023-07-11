@@ -22,9 +22,9 @@
 </head>
 <style>
 
-*{
-font-family: 'Noto Sans KR', sans-serif;
-}
+/* *{ */
+/* font-family: 'Noto Sans KR', sans-serif; */
+/* } */
 
 /* .fc-h-event .fc-event-title-container{ */
 /*    background-image: url("resources/images/checked.png") !important; */
@@ -201,7 +201,6 @@ font-family: 'Noto Sans KR', sans-serif;
  
 </style>
 <body>
-<br><br>
 <%@ include file="../common/top.jsp" %>
 <br><br>
 	<div class="container-xxl" align="center">

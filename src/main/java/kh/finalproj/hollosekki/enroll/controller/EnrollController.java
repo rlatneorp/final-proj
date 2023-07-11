@@ -388,6 +388,7 @@ public class EnrollController {
 			ArrayList<Review> replyList = eService.replyList(); // 전체댓글
 			model.addAttribute("replyList", replyList);
 			String nickName = user.getNickName();
+			System.out.println(nickName);
 			ArrayList<Review> userReplyList = eService.userReplyList(nickName);
 			model.addAttribute("userRList", userReplyList);
 			

@@ -19,7 +19,7 @@
 
 	body{background: #B0DAFF;}	
 	#loading{position: absolute; margin-left: 43%; margin-top: 15%; }
- 	#mask{width: 100%; height: 100%; position: absolute; z-index:9000; background: rgba(0, 0, 0, 0.5); top: 0;}
+ 	#mask{width: 100%; height: 130%; position: absolute; z-index:9000; background: rgba(0, 0, 0, 0.5); top: 0;}
 	.form-line{
 		width: 600px; height: 1050px;
 		border: 5px solid white;
@@ -54,7 +54,7 @@
 		text-align: center;
 		}
 	.num{font-size: 30px; color: #1f8acb;}
-	.mid-line{width:50px; height: 22px; border-bottom: 2.5px solid #1f8acb;}
+	.mid-line{width:50px; height: 17px; border-bottom: 2.5px solid #1f8acb;}
 	.join{
 		font-size: 25px; font-weight: bold;
 		margin: 10px; margin-top: 100px; 
@@ -185,19 +185,13 @@
 		$("#loading").hide();
 		$("#mask").hide();
 	})
-
-
-	const checkBtn = document.getElementById("button2");
-	
-	checkBtn.addEventListener('click', function(){
-		if(document.getElementById('id').value == ''){
+	if(document.getElementById('id').value == ''){
 			swal({
 				 text: "아이디를 입력해주세요",
 				 icon: "error",
 				 button: "확인",
 				});
 			document.getElementById('id').focus();
-			return false;
 		}
 			
 		if(document.getElementById('email').value == ''){
@@ -207,58 +201,12 @@
 				 button: "확인",
 				});
 			document.getElementById('email').focus();
-			return false;
 		} 
-		
-		// 인증메일 보내고 카운트다운 3분
-		const time = document.getElementById('time');
-		const num = document.getElementById('num');
-		const alert = document.getElementById("mid44");
-		let count = 179;
-		
-		time.style.color = 'red';
-		num.placeholder = '메일로 받은 인증번호를 입력하세요';
-		num.disabled = false;
-		alert.innerHTML = '&nbsp;';
-		
-		const interval = window.setInterval(() =>{
-			
-			let min = Math.floor(count/60);
-			let sec = count%60;
-			
-			time.innerText = ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2);
-			count--;
-			
-			if(count > 0){
-				document.getElementById('button3').addEventListener('click', function(){
-					const inputCode = document.getElementById('num').value;
-					
-					if(inputCode == code){
-						alert.innerText = '인증이 완료되었습니다.';
-						clearInterval(interval);
-						time.innerText = '';
-						alert.style.color = '#8bb572';
-						document.getElementById("next-btn").removeAttribute("disabled");
-						return true;
-					}else{
-						alert.innerText = '인증번호가 일치하지 않습니다.';
-						alert.style.color = 'red';
-						return false;
-					}
-				})
-			} else if(count < 0){
-				clearInterval(interval);
-				time.innerText = '';
-				document.getElementById("button3").disabled = true;
-				num.disabled = true;
-				num.placeholder = '시간이 만료되었습니다.';
-				alert.innerText = '인증을 다시 진행해주세요.';
-				alert.style.color = 'red';
-			}
-		}, 1000);
-		
-		$("#loading").show();
-		$("#mask").show();
+
+	const checkBtn = document.getElementById("button2");
+	const button3 = document.getElementById("button3");
+	
+	checkBtn.addEventListener('click', function(){ // 전송버튼 누르면
 		
 		$.ajax({
 			type:"POST",
@@ -266,7 +214,7 @@
 			data: {id: document.getElementById('id').value,
 					email: document.getElementById('email').value},
 			success: data=>{
-				console.log(data);
+// 				console.log(data);
 				if( data == 0 ){
 					$("#loading").hide();
 					$("#mask").hide();
@@ -289,6 +237,62 @@
 						 button: "확인",
 						});
 					code = data;
+					
+					const time = document.getElementById('time');
+					const num = document.getElementById('num');
+					const alert = document.getElementById("mid44");
+					
+					// 인증번호 보내고 3분 카운트
+					let count = 179;
+					
+					time.style.color = 'red';
+					num.vlaue = '메일로 받은 인증번호를 입력하세요';
+					num.disabled = false;
+					alert.innerHTML = '&nbsp;';
+					
+					checkBtn.disabled = true;
+					checkBtn.style.cursor= "default";
+					button3.disabled = false;
+					
+					const interval = window.setInterval(() =>{
+						
+						let min = Math.floor(count/60);
+						let sec = count%60;
+						
+						time.innerText = ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2);
+						count--;
+						
+						if(count > 0){
+							button3.addEventListener('click', function(){
+								const inputCode = document.getElementById('num').value;
+								
+								if(inputCode == code){
+									alert.innerText = '인증이 완료되었습니다.';
+									clearInterval(interval);
+									time.innerText = '';
+									alert.style.color = '#8bb572';
+									document.getElementById("next-btn").removeAttribute("disabled");
+									return true;
+								}else{
+									alert.innerText = '인증번호가 일치하지 않습니다.';
+									alert.style.color = 'red';
+									return false;
+								}
+							});
+							return false;
+						} else if(count < 0){
+							clearInterval(interval);
+							time.innerText = '';
+							button3.disabled = true;
+							num.disabled = true;
+							num.placeholder = '시간이 만료되었습니다.';
+							alert.innerText = '인증을 다시 진행해주세요.';
+							alert.style.color = 'red';
+							
+							checkBtn.disabled = false;
+							checkBtn.style.cursor= "pointer";
+						}
+					}, 1000);
 				}
 			},
 			error: data =>{
@@ -303,6 +307,10 @@
 					});
 			}
 		})
+	
+		$("#loading").show();
+		$("#mask").show();
+
 	});
 		
 </script>

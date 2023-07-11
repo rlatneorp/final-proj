@@ -6,7 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
@@ -20,7 +22,7 @@
 	#searchIcon{position: absolute; right: 455px; top: 46px;}
 	#searchBtn{border-radius: 50%; width: 30px; height: 30px; border: none; background-color: #B0DAFF}
 	
-	#category{width: 550px; margin-left: 350px; margin-top: 30px;}
+	#category{width: 625px; margin-left: 287px; margin-top: 30px;}
 	.categoryIcon{width: 100px; height: 150px; text-align: center;}
 	.circle{width: 50px; height: 50px; border-radius: 50%; background-color: white; margin-left: 25px;}
 	.size{font-size: 32px; color: black; margin-top: 3px;}
@@ -127,12 +129,19 @@
 	<br>
 	<div id="category">
 		<div class="categoryIcon d-inline-block">
+			<div class="circle" onclick="location.href='${contextPath}/menuList.mn'">
+				<a class="categoryBtn">
+					<input type="hidden" value="1">
+					<span class="material-symbols-outlined size">🍽️</span>
+				</a>
+			</div>
+			<b>전체</b>
+		</div>
+		<div class="categoryIcon d-inline-block">
 			<div class="circle">
 				<a id="diet" class="categoryBtn">
 					<input type="hidden" value="1">
-					<span class="material-symbols-outlined size">
-<!-- 					fitness_center -->🥗
-					</span>
+					<span class="material-symbols-outlined size">🥗</span>
 				</a>
 			</div>
 			<b>다이어트</b>
@@ -141,9 +150,7 @@
 			<div class="circle">
 				<a id="sick" class="categoryBtn">
 					<input type="hidden" value="2">
-					<span class="material-symbols-outlined size">
-<!-- 					sick -->🤒
-					</span>
+					<span class="material-symbols-outlined size">🤒</span>
 				</a>
 			</div>
 			<b>몸보신</b>
@@ -152,9 +159,7 @@
 			<div class="circle">
 				<a id="meal" class="categoryBtn">
 					<input type="hidden" value="3">
-					<span class="material-symbols-outlined size">
-<!-- 					restaurant_menu -->💪
-					</span>
+					<span class="material-symbols-outlined size">💪</span>
 				</a>
 			</div>
 			<b>든든밥상</b>
@@ -163,9 +168,7 @@
 			<div class="circle">
 				<a id="egg" class="categoryBtn">
 					<input type="hidden" value="4">
-					<span class="material-symbols-outlined size">
-<!-- 					egg_alt -->🥩
-					</span>
+					<span class="material-symbols-outlined size">🥩</span>
 				</a>
 			</div>
 			<b>고단백</b>
@@ -174,9 +177,7 @@
 			<div class="circle">
 				<a id="vage" class="categoryBtn">
 					<input type="hidden" value="5">
-					<span class="material-symbols-outlined size">
-<!-- 					spa -->🥬
-					</span>
+					<span class="material-symbols-outlined size">🥬</span>
 				</a>
 			</div>
 			<b>채식</b>

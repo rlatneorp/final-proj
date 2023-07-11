@@ -8,6 +8,9 @@
 <head>
 <meta charset="UTF-8">
 <title>admin</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
+
 <script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 

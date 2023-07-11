@@ -4,8 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <style>
+	@font-face {
+	    font-family: 'YESGothic-Regular';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/YESGothic-Regular.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	* { font-family: 'YESGothic-Regular';}
+
 	body{background: #B0DAFF;}
 	#loading{position: absolute; margin-left: 43%; margin-top: 15%;}
  	#mask{width: 100%; height: 100%; position: absolute; z-index:9000; background: rgba(0, 0, 0, 0.5); top: 0;}

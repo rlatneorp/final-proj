@@ -7,7 +7,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>adminMemberDetail</title>
+<title>admin</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
+
 <style>
 	span{height:25px;}
 </style>

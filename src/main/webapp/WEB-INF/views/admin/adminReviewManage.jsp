@@ -8,6 +8,9 @@
 <head>
 <meta charset="UTF-8">
 <title>admin</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
+
 <style>
 	.reviewContent:hover{cursor: pointer; background: rgba(0,0,0,0.2);}
 	.modal .btns{color: white; border-radius: 5px; box-shadow: 2px 2px 3px 0px gray; width: 50px; height: 35px; font-size: 14px;}

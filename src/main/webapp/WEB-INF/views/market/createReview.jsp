@@ -5,7 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"
 	rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" 
@@ -266,10 +268,10 @@ dl dd div label{
 		});
 		
 		deleteAttm.addEventListener('click', function(){
-			for(let att of document.querySelectorAll(".mb-3")){
-					att.remove();
+			const atts = document.querySelectorAll(".mb-3");
+			for(let i=0; i<atts.length; i++){
+				atts[atts.length - 1].remove();
 			}
-			
 		})
 		
 		submit.addEventListener("click", function(){
@@ -281,7 +283,6 @@ dl dd div label{
 				}else if(formControl.value.trim() != "") {
 					submit.type = 'submt';
 					window.location.href="${ contextPath }/insertReview.ma";
-// 					location.href = '${contextPath}/selectBoard.bo?bId='+boardId+'&writer='+writer+'&page='+${pi.currentPage};
 				}
 			
 		})

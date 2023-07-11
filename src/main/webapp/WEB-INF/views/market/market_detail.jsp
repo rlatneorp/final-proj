@@ -7,7 +7,9 @@
 <html>
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
-<title>Hollo Store</title>
+<title>홀로세끼 STORE</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"rel="stylesheet">
@@ -29,9 +31,9 @@
    .bi-check-circle-fill{font-size: 60px; color: #B0DAFF;}
    .bi-x-circle-fill{font-size: 60px; color: #d55b67;}
    .btn-n{background: #4485d7; color: white; border: 1px solid #4485d7; border-radius: 5px; height:40px;}
-   .btn-n:hover{background: white; color: #4485d7;}
+   .btn-n:hover{background: #4485d7; font-weight: bold;}
    .btn-y{background: white; color: #4485d7; border: 1px solid #4485d7; border-radius: 5px; height:40px;}
-   .btn-y:hover{background: #4485d7; color: white;}
+   .btn-y:hover{background: white; font-weight: bold;}
 
    #modalNick{display: inline-block;}
    #modalInfo{height: 100px;}
@@ -803,12 +805,14 @@ p b {
             	<c:if test="${ food ne null }" >
 	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
 	                   <span style="font-weight: 400; font-size: 38px;">${ food.foodName } </span><br>
+	                   <span style="font-weight: 400; font-size: 18px; color:#9da4ab"> 신선한 재료로 건강하게 즐겨보세요! </span>
 	               </div>
 	            </c:if>
 	            
             	<c:if test="${ ingredient ne null }">
 	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-	                   <span style="font-weight: 400; font-size: 42px;">${ ingredient.ingredientName } </span><br>
+	                   <span style="font-weight: 400; font-size: 44px;">${ ingredient.ingredientName } </span><br>
+	                   <span style="font-weight: 400; font-size: 18px; color:#9da4ab"> 신선한 재료로 건강하게 즐겨보세요! </span>
 	               </div>
 	            </c:if>
                <div style="margin: auto; text-align: center;">
@@ -1036,8 +1040,8 @@ p b {
 <%--             <c:if test="${ loginUser ne null }"> --%>
             	<button type="button" id="buybtn"  class="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 <%--             </c:if> --%>
-<!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
-            <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+            <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button>
+<!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button> -->
    
          </div>
       </main>
@@ -1115,14 +1119,14 @@ p b {
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
             <c:forEach	items="${ordList}" var="orders">
-               <c:if test="${ orders >=  1 }">
-               		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}">
+<%--                <c:if test="${ orders >=  1 }"> --%>
+<%--                		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}"> --%>
 		               <div class="review_btn">
 		                  <a href="createReview.ma?productNo=${p.productNo}">
 		                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 		               </div>
-		            </c:if>
-            </c:if> 
+<%-- 		            </c:if> --%>
+<%--             </c:if>  --%>
             </c:forEach>   
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
@@ -1381,7 +1385,7 @@ p b {
                    상품이 장바구니에 담겼습니다.
 
                 </div>
-<!--                 <div class="footer" style="text-align:center; height: 50px;"> -->
+                <div class="footer" style="text-align:center; height: 50px;">
                   <button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
                   <button type="button" class="button btn-y" id="moveCart" onclick="location.href='basket.ma'">장바구니로</button>
 <!--                     <button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
@@ -1809,13 +1813,14 @@ p b {
          
          
       if(usersNo != "" && productOption2Set != null){
+    	  
          $("#buybtn").click(function() {
         	 if(document.getElementsByClassName("totalPrice")[0].value == 0 ){
            		  swal("상품을 선택해주세요.", {
            			  buttons: false,
            			  timer: 1000,
            			});
-       		  }else{
+       		  }else {
                   $("input[name='productNo']").each(function(){
                       productNoValues.push($(this).val());
                    })
@@ -2018,15 +2023,20 @@ p b {
    //               $("#cartFailModal").modal("show");
                  }else if(count != productNoValues.length){
                     $("#cartFailModal").modal("show");
-                 }else if((count == 0)  || productNoValues.length == 0 ){
+                 }else if((count == 0)  || productNoValues.length == 0){
                     $("#cartFailModal").modal("show");
                  }
                  
           })    	  
-      }else {
-    	  alert("로그인을 해주세요");
-      }
-
+      }else if(usersNo == ""){
+    	  $("#cartbtn").click(function() {
+    		  swal("로그인 후 이용해주세요.", {
+    			  buttons: false,
+    			  timer: 1000,
+    			});
+		  })
+	  
+	  }
        
            $(".review_stardesc").click(function(){
               let star='';

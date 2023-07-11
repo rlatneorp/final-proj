@@ -146,7 +146,7 @@ public class EnrollController {
 				
 				return "findIdResult";
 			} else {
-				throw new EnrollException("아이디찾기에 실패했습니다.");
+				return "findIdResultFalse";
 			}
 		}
 		

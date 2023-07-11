@@ -115,7 +115,7 @@ public interface RecipeService {
 
 	ArrayList<Recipe> mostClickRecipeList(PageInfo pi);
 
-	void deleteOrderImg(String string);
+	int deleteOrderImg(String string);
 
 	int getCateListCount(HashMap<String, String> category);
 

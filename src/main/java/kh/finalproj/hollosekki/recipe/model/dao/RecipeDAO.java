@@ -200,11 +200,11 @@ public class RecipeDAO {
 			result += sqlSession.update("recipeMapper.updateOrder", orc.get(i));
 		}
 		
-		if(result < orc.size()) {
-			for(int i = result; i < orc.size(); i++) {
-				result += sqlSession.insert("recipeMapper.insertOrderPlus", orc.get(i));
-			}
-		}
+//		if(result < orc.size()) {
+//			for(int i = result; i < orc.size(); i++) {
+//				result += sqlSession.insert("recipeMapper.insertOrderPlus", orc.get(i));
+//			}
+//		}
 		
 		return result;
 	}
@@ -278,8 +278,8 @@ public class RecipeDAO {
 		return (ArrayList)sqlSession.selectList("recipeMapper.mostClickRecipeList", null, rowBounds);
 	}
 
-	public void deleteOrderImg(SqlSessionTemplate sqlSession, String string) {
-		sqlSession.delete("recipeMapper.deleteOrderImg", string);
+	public int deleteOrderImg(SqlSessionTemplate sqlSession, String string) {
+		return sqlSession.delete("recipeMapper.deleteOrderImg", string);
 	}
 
 	public int getCateListCount(SqlSessionTemplate sqlSession, HashMap<String, String> category) {

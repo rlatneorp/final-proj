@@ -14,7 +14,9 @@
 	rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-	<title>ToolMainPage</title>
+	<title>홀로세끼</title>
+	<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 </head>
 <style>
 

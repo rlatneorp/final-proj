@@ -290,8 +290,8 @@ public class RecipeServiceImpl implements RecipeService{
 	}
 	
 	@Override
-	public void deleteOrderImg(String string) {
-		rDAO.deleteOrderImg(sqlSession, string);
+	public int deleteOrderImg(String string) {
+		return rDAO.deleteOrderImg(sqlSession, string);
 	}
 	
 	@Override

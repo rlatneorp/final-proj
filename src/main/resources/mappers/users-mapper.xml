@@ -95,7 +95,7 @@
 		     join users u on(u.users_no = following_user_no)
 		     left join image on(u.users_no = image_divide_no) and image_type != 8
 		     left join social_login on (u.users_id = social_id)
-		where f.users_no = #{usersNo} AND (image_type = 1 OR image_type IS NULL)
+		where f.users_no = #{usersNo} AND (image_type = 1 OR image_type IS NULL) and u.status = 'Y'
 		order by follow_create_date desc
 	</select>
 	
@@ -105,7 +105,7 @@
 		     join users u on(u.users_no = f.users_no)
 		     left join image on(u.users_no = image_divide_no) and image_type != 8
 		     left join social_login on (u.users_id = social_id)
-		where f.following_user_no = #{usersNo} AND (image_type = 1 OR image_type IS NULL)
+		where f.following_user_no = #{usersNo} AND (image_type = 1 OR image_type IS NULL) and u.status = 'Y'
 		order by follow_create_date desc
 	</select>
 	
@@ -120,16 +120,18 @@
 	</insert>
 	
 	<select id="follow" resultType="_int">
-		select count(*)
-		from follow
-		where following_user_no = #{usersNo}
-	</select>
-	
-	<select id="following" resultType="_int">
-		select count(*)
-		from follow
-		where users_no = #{usersNo}
-	</select>
+      select count(*) 
+      from follow
+          join users on(users.users_no = follow.users_no)
+      where following_user_no = #{usersNo} and users.status = 'Y'
+   </select>
+   
+   <select id="following" resultType="_int">
+      select count(*) 
+      from follow
+          join users on(users.users_no = following_user_no)
+      where follow.users_no = #{usersNo} and users.status = 'Y'
+   </select>
 	
 	<select id="getMyRecipeListCount" resultType="_int">
 		select count(*)

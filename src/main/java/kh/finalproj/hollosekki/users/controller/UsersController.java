@@ -83,17 +83,23 @@ public class UsersController {
 			model.addAttribute("loginUser", loginUser);
 		}
 
-		int following = eService.following(loginUser.getUsersNo());
-		int follower = eService.follow(loginUser.getUsersNo());
-		model.addAttribute("following", following);
-		model.addAttribute("follower", follower);
+//		int following = eService.following(loginUser.getUsersNo());
+//		int follower = eService.follow(loginUser.getUsersNo());
+//		System.out.println(following);
+//		System.out.println(follower);
+//		model.addAttribute("following", following);
+//		model.addAttribute("follower", follower);
 
 		// 팔로잉 팔로워 리스트 조회
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(loginUser.getUsersNo());
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(loginUser.getUsersNo());
+		System.out.println(followingList);
+		System.out.println(followerList);
 
 		model.addAttribute("followingList", followingList);
 		model.addAttribute("followerList", followerList);
+		model.addAttribute("following", followingList.size());
+		model.addAttribute("follower", followerList.size());
 
 		return "myPage_Main";
 	}

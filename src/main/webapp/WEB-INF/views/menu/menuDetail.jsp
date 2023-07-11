@@ -275,7 +275,7 @@ p b {
 	.inputTextBox{width:730px; height: 50px; margin: auto; position: relative;}
 	.profilePic{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
 	.profileImg{width:35px; height: 35px; border-radius: 50%;}
-	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; position: absolute; right: 0;}
+	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 100px; height: 40px; position: absolute; right: 0;}
 	
 /* 	후기 */
 	.star{width: 110px;}
@@ -1236,7 +1236,9 @@ p b {
 								<div class="col">
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray; padding: 10px;">
-											<div class="cut" style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / </a></div>
+											<div class="cut" style="font-weight: bold;">
+												<a style="text-decoration: none; color: black;">${p.menuName} / </a>
+											</div>
 											<div class="cut-2">${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</div>
 											<div style="width:170px; height:90px; overflow: hidden;"><img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" style="border-radius: 5px; width:100%; height:100%; object-fit: cover; object-position: center;"></div>
 											<input type="hidden" value="${p.productNo}">
@@ -1593,8 +1595,9 @@ p b {
 	const moCons = document.getElementsByClassName('moCon');
 	for(const moCon of moCons){
 		moCon.addEventListener("click", function(){
-			const mNo = this.childNodes[5].value;
-			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo; 
+			const mNo = this.childNodes[7].value;
+			console.log(mNo);
+			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${page}; 
 		})
 	}
 

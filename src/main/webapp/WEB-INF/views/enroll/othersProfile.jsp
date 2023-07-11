@@ -862,7 +862,6 @@
 		// 팔
 		function followUser(button) {
 			var userNo = button.parentNode.dataset.userNo;
-// 				console.log(userNo);
 			  
 			$.ajax({
 				type: 'POST',
@@ -998,22 +997,22 @@
 		    });
 		});
 		
-		// 모달 X버튼
-		const close = document.querySelectorAll('.btn-close');
-		close[0].addEventListener('click', () => {
-			location.reload();
-		});
-		close[1].addEventListener('click', () => {
-			location.reload();
-		});
+// 		// 모달 X버튼
+// 		const close = document.querySelectorAll('.btn-close');
+// 		close[0].addEventListener('click', () => {
+// 			location.reload();
+// 		});
+// 		close[1].addEventListener('click', () => {
+// 			location.reload();
+// 		});
 		
 		
-		// ESC 누르면
-		window.addEventListener('keydown', (e) => {
-			if(e.keyCode == 27){
-				location.reload();
-			}
-		});
+// 		// ESC 누르면
+// 		window.addEventListener('keydown', (e) => {
+// 			if(e.keyCode == 27){
+// 				location.reload();
+// 			}
+// 		});
 		
 </script>
 </body>

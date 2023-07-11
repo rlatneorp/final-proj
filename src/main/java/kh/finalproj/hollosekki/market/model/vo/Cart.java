@@ -24,19 +24,18 @@ public class Cart {
 	private ArrayList<Cart> cartValue;
 	private String selectedOpt;
 	private String imgName;
-	
+	private int productType;
 	
 	
 	public Cart() {
 		super();
 	}
-	
-	
+
 
 	public Cart(int cartNo, int usersNo, int productNo, int productOption, int productOption2, int cartCount,
 			int preorderNo, int sum, String shippingPrice, int productPrice, int sale, String productName,
-			String optionValue, Map<String, List<String>> optionName, ArrayList<Cart> cartValue, String selectedOpt,
-			String imgName) {
+			String optionValue, ArrayList<Options> optionName, ArrayList<Cart> cartValue, String selectedOpt,
+			String imgName, int productType) {
 		super();
 		this.cartNo = cartNo;
 		this.usersNo = usersNo;
@@ -51,12 +50,12 @@ public class Cart {
 		this.sale = sale;
 		this.productName = productName;
 		this.optionValue = optionValue;
-		this.optionName = (ArrayList<Options>) optionName;
+		this.optionName = optionName;
 		this.cartValue = cartValue;
 		this.selectedOpt = selectedOpt;
 		this.imgName = imgName;
+		this.productType = productType;
 	}
-
 
 
 	public int getCartNo() {
@@ -64,11 +63,9 @@ public class Cart {
 	}
 
 
-
 	public void setCartNo(int cartNo) {
 		this.cartNo = cartNo;
 	}
-
 
 
 	public int getUsersNo() {
@@ -76,11 +73,9 @@ public class Cart {
 	}
 
 
-
 	public void setUsersNo(int usersNo) {
 		this.usersNo = usersNo;
 	}
-
 
 
 	public int getProductNo() {
@@ -88,11 +83,9 @@ public class Cart {
 	}
 
 
-
 	public void setProductNo(int productNo) {
 		this.productNo = productNo;
 	}
-
 
 
 	public int getProductOption() {
@@ -100,11 +93,9 @@ public class Cart {
 	}
 
 
-
 	public void setProductOption(int productOption) {
 		this.productOption = productOption;
 	}
-
 
 
 	public int getProductOption2() {
@@ -112,11 +103,9 @@ public class Cart {
 	}
 
 
-
 	public void setProductOption2(int productOption2) {
 		this.productOption2 = productOption2;
 	}
-
 
 
 	public int getCartCount() {
@@ -124,11 +113,9 @@ public class Cart {
 	}
 
 
-
 	public void setCartCount(int cartCount) {
 		this.cartCount = cartCount;
 	}
-
 
 
 	public int getPreorderNo() {
@@ -136,11 +123,9 @@ public class Cart {
 	}
 
 
-
 	public void setPreorderNo(int preorderNo) {
 		this.preorderNo = preorderNo;
 	}
-
 
 
 	public int getSum() {
@@ -148,11 +133,9 @@ public class Cart {
 	}
 
 
-
 	public void setSum(int sum) {
 		this.sum = sum;
 	}
-
 
 
 	public String getShippingPrice() {
@@ -160,11 +143,9 @@ public class Cart {
 	}
 
 
-
 	public void setShippingPrice(String shippingPrice) {
 		this.shippingPrice = shippingPrice;
 	}
-
 
 
 	public int getProductPrice() {
@@ -172,11 +153,9 @@ public class Cart {
 	}
 
 
-
 	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
 	}
-
 
 
 	public int getSale() {
@@ -184,11 +163,9 @@ public class Cart {
 	}
 
 
-
 	public void setSale(int sale) {
 		this.sale = sale;
 	}
-
 
 
 	public String getProductName() {
@@ -196,11 +173,9 @@ public class Cart {
 	}
 
 
-
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-
 
 
 	public String getOptionValue() {
@@ -208,11 +183,9 @@ public class Cart {
 	}
 
 
-
 	public void setOptionValue(String optionValue) {
 		this.optionValue = optionValue;
 	}
-
 
 
 	public ArrayList<Options> getOptionName() {
@@ -220,11 +193,9 @@ public class Cart {
 	}
 
 
-
-	public void setOptionName(ArrayList<Options> o) {
-		this.optionName = o;
+	public void setOptionName(ArrayList<Options> optionName) {
+		this.optionName = optionName;
 	}
-
 
 
 	public ArrayList<Cart> getCartValue() {
@@ -232,11 +203,9 @@ public class Cart {
 	}
 
 
-
 	public void setCartValue(ArrayList<Cart> cartValue) {
 		this.cartValue = cartValue;
 	}
-
 
 
 	public String getSelectedOpt() {
@@ -244,11 +213,9 @@ public class Cart {
 	}
 
 
-
 	public void setSelectedOpt(String selectedOpt) {
 		this.selectedOpt = selectedOpt;
 	}
-
 
 
 	public String getImgName() {
@@ -256,11 +223,19 @@ public class Cart {
 	}
 
 
-
 	public void setImgName(String imgName) {
 		this.imgName = imgName;
 	}
 
+
+	public int getProductType() {
+		return productType;
+	}
+
+
+	public void setProductType(int productType) {
+		this.productType = productType;
+	}
 
 
 	@Override
@@ -270,9 +245,8 @@ public class Cart {
 				+ preorderNo + ", sum=" + sum + ", shippingPrice=" + shippingPrice + ", productPrice=" + productPrice
 				+ ", sale=" + sale + ", productName=" + productName + ", optionValue=" + optionValue + ", optionName="
 				+ optionName + ", cartValue=" + cartValue + ", selectedOpt=" + selectedOpt + ", imgName=" + imgName
-				+ "]";
+				+ ", productType=" + productType + "]";
 	}
-
 	
 	
 

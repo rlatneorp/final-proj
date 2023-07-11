@@ -217,16 +217,27 @@ input[type="text"] {
 		<tbody id="products">
 			<c:if test="${!empty cartList }">
 			<c:set var="previousPreorderNo" value="" />
+			${cartList }
 			<c:forEach items="${ cartList}" var="cl" varStatus="status" >
 				<c:if test="${cl.preorderNo != previousPreorderNo}">
 					<c:set var="previousPreorderNo" value="${cl.preorderNo}" />
 					<tr class="productInfos" style="border-top: 2px solid #dee2e6;">
-						<td class="imgTab">
-							<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
-							<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-right:15px; margin-left: -8px;">
-							<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
-							<input type="hidden" value="${cl.preorderNo }">
-						</td>
+						<c:if test="${cl.productType == 2 }">
+							<td class="imgTab" onclick="location.href='${contextPath}/menuDetail.mn?mNo=${cl.productNo}'">
+								<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
+								<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-right:15px; margin-left: -8px;">
+								<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
+								<input type="hidden" value="${cl.preorderNo }">
+							</td>
+						</c:if>	
+							<c:if test="${cl.productType != 2 }">
+							<td class="imgTab" onclick="location.href='${contextPath}/market_detail.ma?productNo=${cl.productNo}'">
+								<input type="hidden" id="basketNo-${cl.preorderNo }" class="basketNos" value="${ cl.preorderNo }">
+								<input type="checkbox" onchange="changeCheckBox(this)" value="${cl.productNo }" id="chec-${cl.preorderNo }" name="checkProduct" style="width: 20px; height: 20px; margin-right:15px; margin-left: -8px;">
+								<img src="${contextPath }/resources/uploadFiles/${cl.imgName}" style="border: 1px solid black; width: 200px; height: 200px;">
+								<input type="hidden" value="${cl.preorderNo }">
+							</td>
+						</c:if>	
 						<td style="border-right: 2px solid #dee2e6; text-align: left">
 							<b>${cl.productName}</b><br><br>
 							<c:forEach items="${cl.optionName }" var="opt">

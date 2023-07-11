@@ -23,6 +23,12 @@
 	
 	<context:component-scan base-package="kh.finalproj.hollosekki" />
 	
+	<interceptors>
+		<interceptor>
+			<mapping path="/basket.ma"/>
+			<beans:bean class="kh.finalproj.hollosekki.market.controller.CheckBasketInterceptor"/>
+		</interceptor>
+	</interceptors>
 	
 	
 </beans:beans>

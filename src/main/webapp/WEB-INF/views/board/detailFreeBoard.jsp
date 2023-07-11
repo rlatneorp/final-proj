@@ -285,7 +285,7 @@
 	
 	
 	<div class="row text-center" style="width:1850px;">
-		<div class="col-6"><button id="boardList" onclick="location.href='${contextPath}/freeBoard.bo'">목록</button></div>
+		<div class="col-6"><button id="boardList" onclick="location.href='${contextPath}/freeBoard.bo'">최신목록</button></div>
 		<c:if test="${loginUser.usersNo eq blist.usersNo }">
 		<div class="col-6"><button id="rBoardBtn">수정</button>&nbsp;&nbsp;&nbsp;<button id="dBoardBtn">삭제</button></div>
 		</c:if>

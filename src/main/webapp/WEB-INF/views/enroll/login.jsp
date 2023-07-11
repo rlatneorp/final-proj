@@ -7,6 +7,7 @@
 <title>홀로세끼</title>
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 	@font-face {
 	    font-family: 'YESGothic-Regular';
@@ -232,6 +233,19 @@
 
  	// 네이버 사용자 프로필 조회 ???
 	naverLogin.get_naver_userprofile("naverSignInCallback()");
+ 	
+	const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    
+    // 메시지가 있는 경우 스윗알럿 표시
+    if (message) {
+        swal({
+            title: '알림',
+            text: decodeURIComponent(message),
+            icon: 'info',
+            confirmButtonText: '확인'
+        });
+    }
 	
 	
 </script>

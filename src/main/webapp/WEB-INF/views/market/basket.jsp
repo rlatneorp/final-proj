@@ -217,7 +217,6 @@ input[type="text"] {
 		<tbody id="products">
 			<c:if test="${!empty cartList }">
 			<c:set var="previousPreorderNo" value="" />
-			${cartList }
 			<c:forEach items="${ cartList}" var="cl" varStatus="status" >
 				<c:if test="${cl.preorderNo != previousPreorderNo}">
 					<c:set var="previousPreorderNo" value="${cl.preorderNo}" />

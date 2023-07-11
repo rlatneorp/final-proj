@@ -105,23 +105,27 @@ public class MarketController {
          cart.setSum(sum);
          
          //productNo에 대해 포문이 돌 때마다 null이 아니라면 cartList중 해당 되는 객체 값을 변경한다.
-         if (foods != null) { //이미지 타입 : 3 ( 식품 ) 
+         if (foods != null) { //이미지 타입 : 3 ( 식품 ) - 1
             cart.setProductName(foods.getFoodName());
+            cart.setProductType(1);
             String imgName = mkService.selectImg(productNo, 3);
             cart.setImgName(imgName);
           }
-          if (tools != null) { //이미지 타입 : 6 ( 주방도구)
+          if (tools != null) { //이미지 타입 : 6 ( 주방도구) - 4
              cart.setProductName(tools.getToolName());
+             cart.setProductType(4);
              String imgName = mkService.selectImg(productNo, 6);
              cart.setImgName(imgName);
           }
-          if (igs != null) { //이미지 타입 :5 (식재료) 
+          if (igs != null) { //이미지 타입 :5 (식재료) - 3
              cart.setProductName(igs.getIngredientName());
+             cart.setProductType(3);
              String imgName = mkService.selectImg(igs.getIngredientNo(), 5);
              cart.setImgName(imgName);
           }
-          if (menus != null) { //이미지 타입 : 4 (식단)
+          if (menus != null) { //이미지 타입 : 4 (식단) - 2
              cart.setProductName(menus.getMenuName());
+             cart.setProductType(2);
              String imgName = mkService.selectImg(productNo, 4);
              cart.setImgName(imgName);
           }

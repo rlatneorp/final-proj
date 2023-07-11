@@ -5,9 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>홀로세끼</title>
-<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
-<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
+<title>Insert title here</title>
 <style>
 	@font-face {
 	    font-family: 'YESGothic-Regular';
@@ -91,25 +89,16 @@
 					</div>
 					<br><br>
 					<div class="mid" style="display: block; line-height: 30px;">
-						<c:choose>
-							<c:when test="${ login == 1 }">
-								<div>입력한 아이디에 해당하는 사용자가 없습니다.</div>
-								<div>다시 확인해주세요.</div>
-							</c:when>
-							<c:otherwise>
-								<div>로그인에 실패했습니다.</div>
-								<div>다시 로그인 해주세요.</div>
-							</c:otherwise>
-						</c:choose>
+						<div>입력한 정보에 해당하는 아이디가 없습니다.</div>
+						<div>다시 확인해주세요.</div>
 					</div>
 					<div class="mid">
-						<div><button class="button" onclick="location.href='login.en'">로그인</button></div>
+						<div><button class="button" onclick="location.href='findId.en'">이전으로</button></div>
 						<div><button class="button" onclick="location.href='home.do'">메인</button></div>
 					</div>
 					<div class="mid33">
 						<div class="line"></div>
 						<div class="find">
-							<div class="find2" onclick="location.href='findId.en'">아이디를 잊어버리셨나요?</div>
 							<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div>
 						</div>
 					</div>

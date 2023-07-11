@@ -10,6 +10,14 @@
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <style>
+	@font-face {
+	    font-family: 'YESGothic-Regular';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/YESGothic-Regular.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	* { font-family: 'YESGothic-Regular';}
+
 	body{background: #B0DAFF;}
 	.form-line{
 		width: 600px; height: 1310px;
@@ -62,8 +70,8 @@
 	.checkbox{width: 18px; height: 18px; margin-right: 10px;}
 	.required{color: red; margin-left: 10px;}
 	.text{ font-size: 12px; color: lightgray;}
-	.more{margin-left: 100px; cursor: pointer;}
-	.more2{margin-left: 14px; cursor: pointer;}
+	.more{margin-left: 120px; cursor: pointer;}
+	.more2{margin-left: 42px; cursor: pointer;}
 	
 	.button{
 		width: 150px; height: 50px;
@@ -134,7 +142,7 @@
 								<label class="label">닉네임 <span class="text">| 20자 이하</span></label><br>
 								<input type="text" name="nickName" id="nickName" class="input input2" placeholder="닉네임을 입력하세요" required><br>
 								<p class="check" id="nickNameCheckMsg">&nbsp;</p>
-								<label class="label">핸드폰 번호</label><br>
+								<label class="label">핸드폰 번호 <span class="text">| 숫자만 입력하세요</span></label><br>
 								<input type="tel" name="phone" id="phone" class="input" placeholder="핸드폰 번호를 입력하세요" required><br>
 								<label class="label">이메일</label><br>
 								<input type="email" name="email" id="email" class="input" placeholder="메일주소를 입력하세요" required><br>
@@ -593,6 +601,8 @@
 	pwd.addEventListener('focusout', ()=>{
 		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?^=+`~&])[A-Za-z\d@$!%*#?^=+`~&]{8,}$/;
 		
+		checkPwd.value = '';
+		
 		if(pwd.value.length > 0){
 			if(!regPwd.test(pwd.value)){
 				swal({
@@ -631,6 +641,26 @@
 		}
 	})
 	
+	// 폰번호 숫자랑 - 만 입력 할 수 있도록 -> - 제거
+	phone.addEventListener('input', function(event) {
+		const inputValue = event.target.value;
+		const numericValue = inputValue.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+	
+		event.target.value = numericValue;
+	});
+	
+	// 이메일 정규표현식
+	emeil.addEventListener('focusout', ()=>{
+		const regEmeail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+		
+		if(!regEmeail.test(email.value)){
+			swal({
+				 text: "유효한 이메일 형식이 아닙니다.",
+				 icon: "error",
+				 button: "확인",
+				});
+		}
+	})
 	
 	// 닉네임 유효성검사 (20자 이하) + 닉네임 중복확인
 	nickName.addEventListener('keyup', ()=>{

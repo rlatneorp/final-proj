@@ -64,7 +64,7 @@
  	.image{width: 100%; height: 100%; object-fit: cover; object-position: center;}
  	.image:hover{cursor: pointer; transform: scale(1.05);  object-fit: cover; object-position: center; transition: all 0.2s ease 0s;}
 	
-	.h5-text-align{text-align: center; font-weight: bold;}
+	.h5-text-align{white-space: nowrap; overflow:hidden; text-overflow: ellipsis; text-align: center; font-weight: bold;}
 	.menuKind{font-size: 17px; margin-left:50px; margin-right: 30px; text-decoration: none; color: black;}
 	
 	/* 	페이지 */
@@ -422,7 +422,6 @@
 		    		}
 		    	})
 			}
-			setTimeout("location.reload()", 800);
 			
 		})
 	}

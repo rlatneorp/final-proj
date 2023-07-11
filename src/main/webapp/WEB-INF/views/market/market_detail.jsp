@@ -7,7 +7,9 @@
 <html>
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
-<title>Hollo Store</title>
+<title>홀로세끼 STORE</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"rel="stylesheet">
@@ -23,14 +25,15 @@
    font-family: 'Noto Sans KR', sans-serif;
 }
 
+
 /*    모달 */
    .modal-body{text-align: center;}
    .bi-check-circle-fill{font-size: 60px; color: #B0DAFF;}
    .bi-x-circle-fill{font-size: 60px; color: #d55b67;}
    .btn-n{background: #4485d7; color: white; border: 1px solid #4485d7; border-radius: 5px; height:40px;}
-   .btn-n:hover{background: white; color: #4485d7;}
+   .btn-n:hover{background: #4485d7; font-weight: bold;}
    .btn-y{background: white; color: #4485d7; border: 1px solid #4485d7; border-radius: 5px; height:40px;}
-   .btn-y:hover{background: #4485d7; color: white;}
+   .btn-y:hover{background: white; font-weight: bold;}
 
    #modalNick{display: inline-block;}
    #modalInfo{height: 100px;}
@@ -41,6 +44,12 @@
    
    .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
    .moCon{height: 75px; border-radius: 10px;}
+
+
+a:-webkit-any-link{
+	text-decoration: none;
+	color:black;
+}
 
 
 
@@ -796,12 +805,14 @@ p b {
             	<c:if test="${ food ne null }" >
 	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
 	                   <span style="font-weight: 400; font-size: 38px;">${ food.foodName } </span><br>
+	                   <span style="font-weight: 400; font-size: 18px; color:#9da4ab"> 신선한 재료로 건강하게 즐겨보세요! </span>
 	               </div>
 	            </c:if>
 	            
             	<c:if test="${ ingredient ne null }">
 	               <div class="productNameBox" style="text-align: center; margin-bottom:0px;">
-	                   <span style="font-weight: 400; font-size: 42px;">${ ingredient.ingredientName } </span><br>
+	                   <span style="font-weight: 400; font-size: 44px;">${ ingredient.ingredientName } </span><br>
+	                   <span style="font-weight: 400; font-size: 18px; color:#9da4ab"> 신선한 재료로 건강하게 즐겨보세요! </span>
 	               </div>
 	            </c:if>
                <div style="margin: auto; text-align: center;">
@@ -1029,8 +1040,8 @@ p b {
 <%--             <c:if test="${ loginUser ne null }"> --%>
             	<button type="button" id="buybtn"  class="buybtn" style="display: inline-block; width: 60%;">구매하기</button>
 <%--             </c:if> --%>
-<!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button> -->
-            <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button>
+            <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;"> 장바구니</button>
+<!--             <button type="button" id="cartbtn"  class="cartbtn" style="display: inline-block; width: 39%;">장바구니</button> -->
    
          </div>
       </main>
@@ -1041,10 +1052,10 @@ p b {
 <div class ="productInfoMain">
    <div class="reviewbox">
       <ul>
-         <li>상세정보</li>
-         <li>후기 (${reviewCount})</li>
-         <li>배송 및 환불</li>
-         <li>문의(${qnaCount})</li>
+         <li><a href="#detailInfo">상세정보</a></li>
+         <li><a href="#reviewInfo">후기 (${reviewCount})</a></li>
+         <li><a href="#shippingRefund">배송 및 환불</a></li>
+         <li><a href="#qna">문의(${qnaCount})</a></li>
       </ul>
    </div>
    <br>
@@ -1103,19 +1114,19 @@ p b {
       <br>
       
       <div class="reviewWrap" style=" width:1200px;">
-   
+   		<a name="reviewInfo"></a>
          <div class="reviewWrap1" style="padding: 10px; border-bottom: 1px solid lightgray;">
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
             <c:forEach	items="${ordList}" var="orders">
-               <c:if test="${ orders >=  1 }">
-               		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}">
+<%--                <c:if test="${ orders >=  1 }"> --%>
+<%--                		<c:if test="${productNo eq p.productNo && r.reviewWriter eq loginUser.usersName}"> --%>
 		               <div class="review_btn">
 		                  <a href="createReview.ma?productNo=${p.productNo}">
 		                  <img src="//recipe1.ezmember.co.kr/img/mobile/icon_write2.png">후기작성</a>
 		               </div>
-		            </c:if>
-            </c:if> 
+<%-- 		            </c:if> --%>
+<%--             </c:if>  --%>
             </c:forEach>   
 
          <span class="review_desc" style="font-size: 500;" href="/?page=${param.page}&sort=id,DESC&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">최신순</span> |
@@ -1176,7 +1187,7 @@ p b {
             <div class="productBox">
                <ul   class="productBoxInfo">
                   <li class="productPageInfo">
-                     <a class="accordion_i_tit" data-bdid="info">상품정보</a>         
+                     <a class="accordion_i_tit" data-bdid="info" name="detailInfo">상품정보</a>         
                      <div class="accordion_i_cont" style="display: none;">
                         <div class="accodion_content">
                                  <dl>
@@ -1207,7 +1218,7 @@ p b {
                          </div>
                   </li>
                   <li class="productPageInfo">
-                     <a class="accordion_i_tit2" data-bdid="info">배송/환불/교환</a>
+                     <a class="accordion_i_tit2" data-bdid="info" name="shippingRefund">배송/환불/교환</a>
                      <div class="accordion_i_cont2" style="display: none;">
                         <dl>
                                   <dt><h3 style="margin-left: 30px; margin-top: 20px;">배송안내</h3></dt>
@@ -1256,8 +1267,16 @@ p b {
                   </li>
                </ul>
                <li id="page-qna" class="accordion_i_li">
-                      <a class="accordion_i_tit3">문의<span>( ${ qnaCount } )</span></a>
+                      <a class="accordion_i_tit3" name="qna">문의<span>( ${ qnaCount } )</span></a>
+
                       <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
+	                      <c:if test="${ qnaCount eq 0 }">
+				            <div style="text-align:center; margin: 10px;">
+				                 <img style="width:100px; height:100px;" src="resources/images/icon_none.png">
+				              </div>
+				            <p style="margin:auto; text-align:center; font-weight: 400; color: #999999; font-size: 15px">등록된 문의가 없습니다.</p>                      	
+	                      </c:if>
+                      
                           <div id="ajax-goods-goodsqa-list">
                           
                        <ul class="goods_accordion_qna">
@@ -1387,7 +1406,6 @@ p b {
                    <i class="bi bi-x-circle-fill"></i><br><br>
                    <h3>장바구니에 담지 못했습니다. </h3>
                 </div>
-                <div class="footer" style="text-align:center; height: 50px;"></div>
              </div>
       </div>
    </div>
@@ -1408,17 +1426,6 @@ p b {
       </div>
    </div>
 
-   <br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <%@ include file="../common/footer.jsp" %>
    <script>
    
    window.onload = function(){
@@ -1806,13 +1813,14 @@ p b {
          
          
       if(usersNo != "" && productOption2Set != null){
+    	  
          $("#buybtn").click(function() {
         	 if(document.getElementsByClassName("totalPrice")[0].value == 0 ){
            		  swal("상품을 선택해주세요.", {
            			  buttons: false,
            			  timer: 1000,
            			});
-       		  }else{
+       		  }else {
                   $("input[name='productNo']").each(function(){
                       productNoValues.push($(this).val());
                    })
@@ -2015,15 +2023,20 @@ p b {
    //               $("#cartFailModal").modal("show");
                  }else if(count != productNoValues.length){
                     $("#cartFailModal").modal("show");
-                 }else if((count == 0)  || productNoValues.length == 0 ){
+                 }else if((count == 0)  || productNoValues.length == 0){
                     $("#cartFailModal").modal("show");
                  }
                  
           })    	  
-      }else {
-    	  alert("로그인을 해주세요");
-      }
-
+      }else if(usersNo == ""){
+    	  $("#cartbtn").click(function() {
+    		  swal("로그인 후 이용해주세요.", {
+    			  buttons: false,
+    			  timer: 1000,
+    			});
+		  })
+	  
+	  }
        
            $(".review_stardesc").click(function(){
               let star='';

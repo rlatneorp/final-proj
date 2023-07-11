@@ -4,7 +4,9 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>홀로세끼</title>
+	<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
 <!-- 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>

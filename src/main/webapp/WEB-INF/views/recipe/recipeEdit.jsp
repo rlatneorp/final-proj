@@ -4,7 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> <!-- 폰트 아이콘 사용할수있게 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <style>
@@ -485,6 +487,10 @@ function orderPlus(){
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].remove();
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[5].remove();
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[7].value ="0";
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[3].childNodes[1].setAttribute('name', 'newRecipeOrder');
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[3].childNodes[3].setAttribute('name', 'newRecipeOrder');
+		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[3].setAttribute('name', 'newOrderFile');
+// 		console.log(document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[3]);
 // 		console.log(document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[7].childNodes[1].childNodes[7]);
 		count++;
 		document.querySelectorAll('.copyC')[document.querySelectorAll('.copyC').length -1].childNodes[1].childNodes[1].innerText=count;

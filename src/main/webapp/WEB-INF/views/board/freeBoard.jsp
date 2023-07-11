@@ -10,7 +10,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
-<title>Insert title here</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
+
 <style>
 	
 	#board{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}

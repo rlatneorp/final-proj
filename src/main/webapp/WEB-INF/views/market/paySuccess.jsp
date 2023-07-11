@@ -5,7 +5,9 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <style>
 
 #shop{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}

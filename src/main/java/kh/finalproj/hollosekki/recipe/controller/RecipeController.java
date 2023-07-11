@@ -497,7 +497,8 @@ public class RecipeController {
 			@RequestParam("delThum") String delThum, @RequestParam("delOrderImg") String[] delOrderImg,
 			@RequestParam("delComImg") String[] delComImg, @RequestParam("page") int page,
 			@RequestParam("elementQuantity") String elementQuantity, @RequestParam("elementIngredient") ArrayList<String> elementIngredient,
-			@RequestParam(value="delPro", required=false) ArrayList<String> delPro) {
+			@RequestParam(value="delPro", required=false) ArrayList<String> delPro, @RequestParam(value="newRecipeOrder", required=false) String newRecipeOrder,
+			@RequestParam(value="newOrderFile", required=false) ArrayList<MultipartFile> newOrderFile) {
 
 		int updateRecipeResult = 0;
 		updateRecipeResult = rService.updateRecipe(r);
@@ -553,8 +554,8 @@ public class RecipeController {
 		ArrayList<RecipeElement> reelList = new ArrayList<>();
 		String[] quantity = elementQuantity.split(",");
 		
-		System.out.println(elementQuantity);
-		System.out.println(elementIngredient);
+//		System.out.println(elementQuantity);
+//		System.out.println(elementIngredient);
 
 		for(int i = 0; i < quantity.length; i++) {
 			if (!quantity[i].equals("") && !elementIngredient.get(i).isEmpty()) {
@@ -598,14 +599,23 @@ public class RecipeController {
 		int updateOrderResult = 0;
 		int updateRecipeOrderResult = 0;
 		int delOrderImgResult = 0;
-		int j = 0;
+
+		int delLine = 0;
 		
-		if(!delPro.isEmpty()) {
-			for(int i = 0; i < delPro.size(); i++) {
-				rService.deleteOrderImg(delPro.get(i));
+		if(delPro != null) {
+			if(!delPro.isEmpty()) {
+				for(int i = 0; i < delPro.size(); i++) {
+					delLine += rService.deleteOrderImg(delPro.get(i));
+				}
 			}
 		}
+		for(int i = 0; i < orderFiles.size(); i++) {
+			System.out.println(orderFiles.get(i));
+		}
+		System.out.println(orderFiles.size());
 		
+		int orderProcedure = orderArr.length - delLine;
+		int j = 0;
 		for (int i = 0; i < orderArr.length; i++) {
 			if (!delOrderImg[i].equals("none")) {
 				deleteFile(delOrderImg[i], request);
@@ -628,7 +638,7 @@ public class RecipeController {
 						if (i < orderArr.length) {
 							if (!orderArr[i].equals("")) {
 								rcc.setRecipeOrder(orderArr[i]);
-								System.out.println("orderArr : " + orderArr[i]);
+//								System.out.println("orderArr : " + orderArr[i]);
 							}
 						}
 						rcc.setRecipeOriginalName(recipeOriginal);
@@ -637,9 +647,10 @@ public class RecipeController {
 						rcc.setRecipeImagePath(renamePath);
 						rcc.setFoodNo(rc.getFoodNo());
 
-						System.out.println("rcc : " + rcc);
+//						System.out.println("rcc : " + rcc);
 
 						orc.add(rcc);
+						System.out.println("orc1 : " + orc);
 					}
 					j++;
 					break;
@@ -657,14 +668,61 @@ public class RecipeController {
 				ro.add(rcc);
 			}
 		}
-		
-		for(int l = 0; l < orc.size(); l++) {
-			System.out.println("orc : " + orc.get(l));
-		}
+		System.out.println("orc2 : " + orc);
 		
 		updateRecipeOrderResult = rService.updateRecipeOrder(ro);
 		updateOrderResult = rService.updateOrder(orc);
-
+		
+		ArrayList<RecipeOrder> norc = new ArrayList<>();
+		if(newRecipeOrder != null) {
+			String[] newOrderArr = newRecipeOrder.split(",abc123abc,");
+			newOrderArr[newOrderArr.length -1] = newOrderArr[newOrderArr.length - 1].replace(",abc123abc", "");
+			for(int x = 0; x < newOrderArr.length; x++) {
+				String newOriginal = newOrderFile.get(x).getOriginalFilename();
+				String newRename = "";
+				String newRenamePath = "";
+				if(!newOriginal.equals("")) {
+					root = request.getSession().getServletContext().getRealPath("resources");
+					String savePath = root + "\\uploadFiles";
+					File file = new File(savePath);
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+					int ranNum = (int) (Math.random() * 100000);
+					newRename = sdf.format(new Date(System.currentTimeMillis())) + ranNum
+							+ newOriginal.substring(newOriginal.lastIndexOf("."));
+					
+					if(!file.exists()) {
+						file.mkdirs();
+					}
+					
+					newRenamePath = file + "\\" + newRename;
+					
+					try {
+						newOrderFile.get(x).transferTo(new File(newRenamePath));
+					} catch (IllegalStateException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				if(x < newOrderArr.length) {
+					if(!newOrderArr[x].equals("")) {
+						RecipeOrder newOrd = new RecipeOrder();
+						newOrd.setRecipeOrder(newOrderArr[x]);
+						newOrd.setRecipeProcedure(orderArr.length + x + 1);
+						newOrd.setRecipeOriginalName(newOriginal);
+						newOrd.setRecipeRenameName(newRename);
+						newOrd.setRecipeImagePath(newRenamePath);
+						newOrd.setFoodNo(r.getFoodNo());
+						
+						norc.add(newOrd);
+					}
+				}
+			}
+			
+			int newResult = rService.insertOrder(norc);
+		}
+		
 //		완성 사진 수정
 		ArrayList<Image> comImgList = new ArrayList<>();
 		ArrayList<String> comDelRename = new ArrayList<>();

@@ -5,8 +5,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <style>
+	@font-face {
+	    font-family: 'YESGothic-Regular';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/YESGothic-Regular.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	* { font-family: 'YESGothic-Regular';}
+
 	body{background: #B0DAFF;}	
 	.form-line{
 		width: 600px; height: 750px;

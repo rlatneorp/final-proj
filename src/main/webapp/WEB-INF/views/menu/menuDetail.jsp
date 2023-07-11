@@ -246,7 +246,7 @@ p b {
 	
 	.menuMiniPic{
 		border: 1px solid black;
-		border-radius: 10px;
+		border-radius: spx;
 		height: 150px;
 		margin: 20px 5px;
 	}
@@ -354,7 +354,8 @@ p b {
 .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
 .moCon{height: 150px; border-radius: 10px;}
 .moCon:hover{cursor: pointer;}
-.cut{white-space: nowrap; overflow: hidden; text-overflow:ellipsis;}
+.cut{white-space: nowrap; overflow: hidden; text-overflow:ellipsis; font-size: 15px;}
+.cut-2{font-size: 13px;}
 
 /* 	페이지 */
 	.page_wrap {
@@ -1234,9 +1235,10 @@ p b {
 							<c:forEach items="${pList}" var="p">
 								<div class="col">
 									<div class="shadow-sm">
-										<div class="card-body moCon" style="background-color: lightgray">
-											<h6 style="font-weight: bold;"><a class="cut" style="text-decoration: none; color: black;">${p.menuName} / ${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</a></h6>
-											<img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" width="150px" height="100px" style="border-radius: 10px;">
+										<div class="card-body moCon" style="background-color: lightgray; padding: 10px;">
+											<div class="cut" style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / </a></div>
+											<div class="cut-2">${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</div>
+											<div style="width:170px; height:90px; overflow: hidden;"><img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" style="border-radius: 5px; width:100%; height:100%; object-fit: cover; object-position: center;"></div>
 											<input type="hidden" value="${p.productNo}">
 										</div>
 									</div>

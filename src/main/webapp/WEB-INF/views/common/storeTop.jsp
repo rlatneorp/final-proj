@@ -12,6 +12,14 @@
 <title>Insert title here</title>
 <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 <style>
+	@font-face {
+	    font-family: 'YESGothic-Regular';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/YESGothic-Regular.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	* { font-family: 'YESGothic-Regular';}
+
 	.top-top{
 		width: 100%; height: 40px; 
 		background: black; color: white; 
@@ -58,7 +66,7 @@
         }
 	
 	.logo{
-		width: 175x; height: 175px; 
+		width: 174.5x; height: 174.5px; 
 		border-radius: 50%;
 		margin-left: 15px; margin-right: 15px;
 		cursor: pointer;
@@ -241,7 +249,7 @@
 					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
 					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
 					<c:if test="${ loginUser != null }">
-						<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+						<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><div class="cart-icon"><i class="fa-solid fa-cart-shopping"></i></div></div>
 						<c:if test="${ cart != 0 }">
 							<div id="cartCount" class="cart-count">${ cart }</div>
 						</c:if>

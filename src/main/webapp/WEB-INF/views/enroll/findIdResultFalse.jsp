@@ -7,6 +7,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	@font-face {
+	    font-family: 'YESGothic-Regular';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/YESGothic-Regular.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	* { font-family: 'YESGothic-Regular';}
+
 	body{background: #B0DAFF;}	
 	.form-line{
 		width: 600px; height: 750px;

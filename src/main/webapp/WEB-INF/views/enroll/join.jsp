@@ -10,6 +10,14 @@
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <style>
+	@font-face {
+	    font-family: 'YESGothic-Regular';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/YESGothic-Regular.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	* { font-family: 'YESGothic-Regular';}
+
 	body{background: #B0DAFF;}
 	.form-line{
 		width: 600px; height: 1310px;
@@ -62,8 +70,8 @@
 	.checkbox{width: 18px; height: 18px; margin-right: 10px;}
 	.required{color: red; margin-left: 10px;}
 	.text{ font-size: 12px; color: lightgray;}
-	.more{margin-left: 100px; cursor: pointer;}
-	.more2{margin-left: 14px; cursor: pointer;}
+	.more{margin-left: 120px; cursor: pointer;}
+	.more2{margin-left: 42px; cursor: pointer;}
 	
 	.button{
 		width: 150px; height: 50px;

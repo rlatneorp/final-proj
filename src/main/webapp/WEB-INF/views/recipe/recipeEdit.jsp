@@ -327,9 +327,9 @@
 				</div>
 			</div>
 			
-			<button type="button" id="plusComBtn" onclick="comPlus()" style="position: relative; z-index: 10;">+ 이미지 추가하기</button>
-			<span> / </span>
-			<button type="button" id="minusComBtn" onclick="comRemove()" style="position: relative; z-index: 10;">- 이미지 삭제하기</button>
+<!-- 			<button type="button" id="plusComBtn" onclick="comPlus()" style="position: relative; z-index: 10;">+ 이미지 추가하기</button> -->
+<!-- 			<span> / </span> -->
+<!-- 			<button type="button" id="minusComBtn" onclick="comRemove()" style="position: relative; z-index: 10;">- 이미지 삭제하기</button> -->
 		</div>
 	
 	</div>
@@ -542,79 +542,79 @@ for(const comDelBtn of comDelBtns){
 }
 
 
-// 완성 사진 추가
-const comCopy = document.querySelector("#comCopy");
-const comAddPlace1 = document.querySelector("#comAddPlace1");
-const comAddPlace2 = document.querySelector("#comAddPlace2");
-const cPicBox = document.querySelector('#cPicBox');
-var comCount = document.querySelectorAll('.comCopyC').length;
-function comPlus(){
-	if(comCount < 3){
-		if(comCount == 1){
-			comAddPlace1.appendChild(comCopy.cloneNode(true));
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].disabled=false;
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[1].style.visibility="visible";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[7].remove();
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[8].remove();
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].style.height = "250px";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value="0";
-			console.log(document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9]);
-			comCount++;
-		} else if(comCount == 2){
-			comAddPlace2.appendChild(comCopy.cloneNode(true));
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].disabled=false;
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[1].style.visibility="visible";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[7].remove();
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[8].remove();
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].style.height = "250px";
-			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value="0";
-			console.log(document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value);
-			comCount++;
-		}
-	}
-}
+// // 완성 사진 추가
+// const comCopy = document.querySelector("#comCopy");
+// const comAddPlace1 = document.querySelector("#comAddPlace1");
+// const comAddPlace2 = document.querySelector("#comAddPlace2");
+// const cPicBox = document.querySelector('#cPicBox');
+// var comCount = document.querySelectorAll('.comCopyC').length;
+// function comPlus(){
+// 	if(comCount < 3){
+// 		if(comCount == 1){
+// 			comAddPlace1.appendChild(comCopy.cloneNode(true));
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].disabled=false;
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[1].style.visibility="visible";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[7].remove();
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[8].remove();
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].style.height = "250px";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value="0";
+// 			console.log(document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9]);
+// 			comCount++;
+// 		} else if(comCount == 2){
+// 			comAddPlace2.appendChild(comCopy.cloneNode(true));
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[5].style.display="none";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].value="";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[3].disabled=false;
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[1].style.visibility="visible";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[7].remove();
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[8].remove();
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].style.height = "250px";
+// 			document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value="0";
+// 			console.log(document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].childNodes[1].childNodes[9].value);
+// 			comCount++;
+// 		}
+// 	}
+// }
 
-// 완성 사진 삭제
-const comCopyC = document.querySelectorAll(".comCopyC");
-function comRemove(){
-	if(comCount > 1){
-		document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].remove();
-		comCount--;
-		if(comCount == 2){
-			const input = document.createElement('input');
-			input.setAttribute("type", "hidden");
-			input.value= "${cList[2].imageRenameName}/${cList[2].imageLevel}";
-			input.classList.add("delCom");
-			input.setAttribute('name', "delComImg");
+// // 완성 사진 삭제
+// const comCopyC = document.querySelectorAll(".comCopyC");
+// function comRemove(){
+// 	if(comCount > 1){
+// 		document.querySelectorAll('.comCopyC')[document.querySelectorAll('.comCopyC').length -1].remove();
+// 		comCount--;
+// 		if(comCount == 2){
+// 			const input = document.createElement('input');
+// 			input.setAttribute("type", "hidden");
+// 			input.value= "${cList[2].imageRenameName}/${cList[2].imageLevel}";
+// 			input.classList.add("delCom");
+// 			input.setAttribute('name', "delComImg");
 			
-			if(input.value === "/"){
-				input.value = "none";
-			} else{
-				input.value= "${cList[2].imageRenameName}/${cList[2].imageLevel}";
-			}
+// 			if(input.value === "/"){
+// 				input.value = "none";
+// 			} else{
+// 				input.value= "${cList[2].imageRenameName}/${cList[2].imageLevel}";
+// 			}
 			
-			cPicBox.appendChild(input);
-		}else if(comCount ==1){
-			const input = document.createElement('input');
-			input.setAttribute("type", "hidden");
-			input.value= "${cList[1].imageRenameName}/${cList[1].imageLevel}";
-			input.classList.add("delCom");
-			input.setAttribute('name', "delComImg");
+// 			cPicBox.appendChild(input);
+// 		}else if(comCount ==1){
+// 			const input = document.createElement('input');
+// 			input.setAttribute("type", "hidden");
+// 			input.value= "${cList[1].imageRenameName}/${cList[1].imageLevel}";
+// 			input.classList.add("delCom");
+// 			input.setAttribute('name', "delComImg");
 			
-			if(input.value === "/"){
-				input.value = "none";
-			} else{
-				input.value= "${cList[1].imageRenameName}/${cList[1].imageLevel}";
-			}
+// 			if(input.value === "/"){
+// 				input.value = "none";
+// 			} else{
+// 				input.value= "${cList[1].imageRenameName}/${cList[1].imageLevel}";
+// 			}
 			
-			cPicBox.appendChild(input);
-		}
-	}
-}
+// 			cPicBox.appendChild(input);
+// 		}
+// 	}
+// }
 
 const updateRecipe = document.getElementById('updateRecipe');
 const sub = document.getElementById("sub");

@@ -1236,7 +1236,9 @@ p b {
 								<div class="col">
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray; padding: 10px;">
-											<div class="cut" style="font-weight: bold;"><a style="text-decoration: none; color: black;">${p.menuName} / </a></div>
+											<div class="cut" style="font-weight: bold;">
+												<a style="text-decoration: none; color: black;">${p.menuName} / </a>
+											</div>
 											<div class="cut-2">${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</div>
 											<div style="width:170px; height:90px; overflow: hidden;"><img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" style="border-radius: 5px; width:100%; height:100%; object-fit: cover; object-position: center;"></div>
 											<input type="hidden" value="${p.productNo}">
@@ -1593,8 +1595,9 @@ p b {
 	const moCons = document.getElementsByClassName('moCon');
 	for(const moCon of moCons){
 		moCon.addEventListener("click", function(){
-			const mNo = this.childNodes[5].value;
-			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo; 
+			const mNo = this.childNodes[7].value;
+			console.log(mNo);
+			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${page}; 
 		})
 	}
 

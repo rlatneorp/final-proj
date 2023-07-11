@@ -375,9 +375,9 @@
    
    
    <select id="selectReviewCount" resultType="int">
-      select count(*)
+  select count(*)
       from review
-      where product_no = #{productNo} and review_status = 'Y'
+      where product_no = #{productNo} and order_no > 0  and review_status = 'Y'
    </select>
    
    <select id="selectImagList" resultMap="imageResultSet">

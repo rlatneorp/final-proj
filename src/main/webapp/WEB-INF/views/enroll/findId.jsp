@@ -4,8 +4,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>아이디찾기</title>
+<title>홀로세끼 아이디찾기</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <style>
+	@font-face {
+	    font-family: 'YESGothic-Regular';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/YESGothic-Regular.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	* { font-family: 'YESGothic-Regular';}
+
+
 	body{background: #B0DAFF;}	
 	.form-line{
 		width: 600px; height: 750px;
@@ -96,9 +107,9 @@
 								<label class="label">메일주소</label><br>
 								<input type="email" name="email" id="email" class="input" placeholder="메일주소를 입력하세요" required><br>
 								<div><button class="button">찾기</button></div>
-								
 								<div class="line"></div>
 								<div class="find">
+									<div class="find2" onclick="location.href='home.do'">메인으로</div>
 									<div class="find2" onclick="location.href='findPwd.en'">비밀번호를 잊어버리셨나요?</div>
 								</div>
 							</form>

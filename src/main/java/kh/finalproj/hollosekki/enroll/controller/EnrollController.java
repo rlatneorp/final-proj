@@ -146,7 +146,7 @@ public class EnrollController {
 				
 				return "findIdResult";
 			} else {
-				throw new EnrollException("아이디찾기에 실패했습니다.");
+				return "findIdResultFalse";
 			}
 		}
 		
@@ -388,6 +388,7 @@ public class EnrollController {
 			ArrayList<Review> replyList = eService.replyList(); // 전체댓글
 			model.addAttribute("replyList", replyList);
 			String nickName = user.getNickName();
+			System.out.println(nickName);
 			ArrayList<Review> userReplyList = eService.userReplyList(nickName);
 			model.addAttribute("userRList", userReplyList);
 			

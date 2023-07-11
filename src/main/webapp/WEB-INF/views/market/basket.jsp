@@ -6,11 +6,16 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 예쁜 alert창 : https://sweetalert.js.org/ -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"> -->
-
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script> -->
 <style>
+	.menu3{margin-top: 5px;}
+	.cart-icon{margin-top: 5px;}
+
 
 .carrier {
 	/* 		border:2px solid #dee2e6; */
@@ -113,6 +118,10 @@ input[type="text"] {
 	text-align: left;
 	padding: 20px;
 }
+.cTitle{
+  text-align:center;
+  margin:0 auto;
+}
 
 #allChec{
 	height: 50px; margin: 0 auto; width: 1200px; background-color: #B0DAFF; 
@@ -201,7 +210,7 @@ input[type="text"] {
 		<tr style="border: 2px solid #dee2e6; background-color: #B0DAFF;">
 			<th class="tableBorder1" colspan="2" style="height: 40px"><b>상품/옵션정보</b></th>
 			<th class="tableBorder1"><b>수량</b></th>
-			<th class="tableBorder1"><b>상품가격</b></th>
+			<th class="tableBorder1" style="width:150px"><b>상품가격</b></th>
 			<th class="tableBorder1"><b>적립</b></th>
 			<th class="tableBorder1"><b>합계금액</b></th>
 		</tr>
@@ -236,12 +245,11 @@ input[type="text"] {
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:150px">
 							<i class="bi bi-dash-square-fill" id="minus-${cl.preorderNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
-							<span class="cartCount" id="size-${cl.preorderNo}">
+							<span title="클릭하여 수량 변경" class="cartCount cTitle" style="cursor:pointer; "id="size-${cl.preorderNo}">
 								${cl.cartCount}
 							</span>
 							<input type="hidden" class="insertSizeId" value="${cl.preorderNo }">
 							<input type="text" class="insertSize" id="insertSize-${cl.preorderNo }" style="width: 30px; display: none;">개
-							&nbsp;
 							<i class="bi bi-plus-square-fill" id="plus-${cl.preorderNo }" style="color: #00AAFF; font-size: 15px"></i>
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:150px " >
@@ -339,89 +347,50 @@ input[type="text"] {
 		for(size of cartCount) {
 			const preorderNo = size.nextElementSibling.value;
 			let prevValue = document.getElementById('size-' + preorderNo).innerText // 이전 값 저장
+			
 			size.addEventListener('click', function() {
 				const input = this.nextElementSibling.nextElementSibling;
-				console.log(this.nextElementSibling.nextElementSibling);
 				this.style.display = 'none';
 				input.style.display = 'inline-block';
+				
+				let isInputBlurEventRegistered = false;
+				 
  				input.addEventListener('blur', function() {
-					if(isNaN(this.value)) {
-						alert('숫자만 입력 가능합니다.');
-						this.style.display = 'none';
-						this.previousElementSibling.previousElementSibling.style.display = 'inline-block';
-					} else {
-						$.ajax({
-							url:'inputCartCount.ma',
-							data:{
-								preorderNo:preorderNo,
-								size:this.value
-							},
-							success: data =>{
-								if(data == 'yes') {
-									this.style.display = 'none';
-									this.previousElementSibling.previousElementSibling.style.display = 'inline-block';
-									this.previousElementSibling.previousElementSibling.innerText = this.value;
-									// 페이지 리로드 함수
-									window.location.reload();
-								}
-							},
-							error: data => {
-								
-							}
-						})
-					}
+ 					
+ 					if(!isInputBlurEventRegistered) {
+ 						isInputBlurEventRegistered = true;
+ 						if(isNaN(this.value)) {
+ 							alert('숫자만 입력 가능합니다.');
+ 							this.value = '';
+ 							this.style.display = 'none';
+ 							this.previousElementSibling.previousElementSibling.style.display = 'inline-block';
+ 						} else {
+ 							$.ajax({
+ 								url:'inputCartCount.ma',
+ 								data:{
+ 									preorderNo:preorderNo,
+ 									size:this.value
+ 								},
+ 								success: data =>{
+ 									if(data == 'yes') {
+ 										this.style.display = 'none';
+ 										this.previousElementSibling.previousElementSibling.style.display = 'inline-block';
+ 										this.previousElementSibling.previousElementSibling.innerText = this.value;
+ 										// 페이지 리로드 함수
+ 										window.location.reload();
+ 									}
+ 								},
+ 								error: data => {
+ 									
+ 								}
+ 							})
+ 						}
+ 					}
+					
 				})
 				
 			});
 		}
-// 				const preorderNo = insertSize.previousElementSibling.value;
-// 				console.log(document.getElementById('size-' + preorderNo));
-// 				
-// 				sizeLabel.addEventListener('click', function() {
-// 					  if (insertSize.style.display === 'none') {
-// 						  console.log('asdf')
-// 						sizeLabel.innerText = '';
-// 					    insertSize.style.display = 'inline-block';
-// 			 			insertSize.addEventListener('change', function() {
-// 			 				if(isNaN(this.value)) {
-// 			 					alert('숫자만 입력해주세요');
-// 			 					insertSize.style.display = 'none';
-// 			 					sizeLabel.style.display = 'inline-block'
-// 			 					sizeLabel.innerText = prevValue;
-// 			 					return;
-// 			 				} else {
-			 					
-// 			 				}
-// 			 			});
-// 					    insertSize.focus();
-// 					  } else {
-// 					    insertSize.style.display = 'none';
-// 					    sizeLabel.style.display = 'inline-block';
-// 					    sizeLabel.textContent = insertSize.value;
-// 					  }
-// 				});
-				
-// 				insertSize.addEventListener('blur', function() {
-// 					insertSize.value = '';
-// 				    insertSize.style.display = 'none';
-// 				    sizeLabel.style.display = 'inline-block';
-// 				    sizeLabel.innerText = prevValue;
-// 				 });
-				
-// 			}
-// 		}
-		
-// 		for(is of insertSize) {
-// 			let prevValue = is.value; // 이전 값 저장
-// 			is.addEventListener('change', function() {
-// 				if(isNaN(this.value)) {
-// 					alert('숫자만 입력해주세요');
-// 					this.value = prevValue;
-// 					return;
-// 				}
-// 			})
-			
-// 		}
 		
 		document.getElementById('trTotalSum').innerText = '0';	
 		document.getElementById('orderSize').innerText = '0';

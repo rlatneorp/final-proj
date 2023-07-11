@@ -14,7 +14,9 @@
 	rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-	<title>ToolMainPage</title>
+	<title>홀로세끼</title>
+	<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 </head>
 <style>
 
@@ -31,37 +33,37 @@ ul li {
 	list-style: none;
 }
 
-  .list{
+.list{
   	height: 500px;
   	background: yellow
-  }
+}
          
-  .slick-arrow{
+.slick-arrow{
 	  position: absolute;top: 50%;
 	  transform: translateY(-50%);
 	  z-index: 5
 	  
-	  }
-   .slick-prev:before, .slick-next:before {
+}
+
+.slick-prev:before, .slick-next:before {
         font-size: 45px;
       	color:#4485d7;
-      }
+}
 	 
 	 
-  .slick-prev{
-	  left: -150px;
-  }
-   .slick-next{
+.slick-prev{
+	left: -150px;
+}
+
+.slick-next{
    right: -150px;
   
-   }
+}
    
-   .slick{
+.slick{
    margin:auto;
    	width: 1200px;
-   }
-
-   
+}
 
 .categoryTitle{
 	font-weight: bold;
@@ -84,11 +86,11 @@ ul li {
 }
 
 
-
 .commProduct li a img{
 	width:250px;
 	height:300px;
 }
+
 .originPrice{
 	padding-top:10px;
 	font-size: 25px;
@@ -335,7 +337,6 @@ ul li {
 
 <body>
 <%@include file="../common/storeTop.jsp"%>
-	<br><br>
 	<table class="cateBtn" style="margin:auto;">
 		<tr>
 			<!-- 전체 보기 시 색상 변경 -->

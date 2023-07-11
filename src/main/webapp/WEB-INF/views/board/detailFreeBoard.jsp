@@ -14,7 +14,10 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<title>Insert title here</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
+
 <style>
 
 #board{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
@@ -285,7 +288,7 @@
 	
 	
 	<div class="row text-center" style="width:1850px;">
-		<div class="col-6"><button id="boardList" onclick="location.href='${contextPath}/freeBoard.bo'">목록</button></div>
+		<div class="col-6"><button id="boardList" onclick="location.href='${contextPath}/freeBoard.bo'">최신목록</button></div>
 		<c:if test="${loginUser.usersNo eq blist.usersNo }">
 		<div class="col-6"><button id="rBoardBtn">수정</button>&nbsp;&nbsp;&nbsp;<button id="dBoardBtn">삭제</button></div>
 		</c:if>

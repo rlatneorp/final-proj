@@ -9,9 +9,19 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
-<title>Insert title here</title>
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
+	@font-face {
+	    font-family: 'YESGothic-Regular';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/YESGothic-Regular.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	* { font-family: 'YESGothic-Regular';}
+
 	.top-top{
 		width: 100%; height: 40px; 
 		background: black; color: white; 
@@ -240,7 +250,7 @@
 					<div style="width:80px"></div>
 					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
 					<c:if test="${ loginUser != null }">
-						<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><i class="fa-solid fa-cart-shopping"></i></div>
+						<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><div class="cart-icon"><i class="fa-solid fa-cart-shopping"></i></div></div>
 						<c:if test="${ cart != 0 }">
 							<div id="cartCount" class="cart-count">${ cart }</div>
 						</c:if>

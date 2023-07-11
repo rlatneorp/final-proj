@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지 - 스크랩</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 

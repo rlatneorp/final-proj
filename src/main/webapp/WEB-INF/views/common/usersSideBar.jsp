@@ -4,6 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
 	#Div{
@@ -95,43 +98,43 @@
 		</div>
 		<br><br>
 		<div id="menu">
-			<a class="menuBar" href="${ contextPath }/myPage_MyRecipe.me">나의 레시피 &nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyRecipe.me">나의 레시피 &nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar" href="${ contextPath }/myPage_MyBookMark.me">스크랩 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyBookMark.me">스크랩 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar" href="${ contextPath }/myPage_MyFavorite.me">찜 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a class="menuBar" href="${ contextPath }/myPage_MyFavorite.me">찜 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="material-symbols-outlined arrow">
 			chevron_right
 			</span></a>
 			<br><br>
 			<a class="menuBar" href="${ contextPath }/myPage_MyOrder.me">상품 구매내역
-			<span class="material-symbols-outlined arrow" style="margin-left: 10px;">
+			<span class="material-symbols-outlined arrow" style="margin-left: 13px;">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar" href="${ contextPath }/myPage_MyAddress.me">배송지 관리 &nbsp;&nbsp;&nbsp;
-			<span class="material-symbols-outlined arrow">
+			<a class="menuBar" href="${ contextPath }/myPage_MyAddress.me">배송지 관리 &nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="material-symbols-outlined arrow" style="margin-left: 4px;">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar" href="${ contextPath }/myPage_Review.me">후기 관리 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<span class="material-symbols-outlined arrow">
+			<a class="menuBar" href="${ contextPath }/myPage_Review.me">후기 관리 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="material-symbols-outlined arrow" style="margin-left: 4px;">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar" href="${ contextPath }/myPage_Point.me">포인트 관리 &nbsp;&nbsp;&nbsp;
-			<span class="material-symbols-outlined arrow">
+			<a class="menuBar" href="${ contextPath }/myPage_Point.me">포인트 관리 &nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="material-symbols-outlined arrow" style="margin-left: 3px;">
 			chevron_right
 			</span></a>
 			<br><br>
-			<a class="menuBar" href="${ contextPath }/myPage_edit.me">회원 정보 수정
-			<span class="material-symbols-outlined arrow">
+			<a class="menuBar" href="${ contextPath }/myPage_edit.me">회원 정보 수정&nbsp;
+			<span class="material-symbols-outlined arrow" style="margin-left: 2px;">
 			chevron_right
 			</span></a>
 		</div>

@@ -609,10 +609,6 @@ public class RecipeController {
 				}
 			}
 		}
-		for(int i = 0; i < orderFiles.size(); i++) {
-			System.out.println(orderFiles.get(i));
-		}
-		System.out.println(orderFiles.size());
 		
 		int orderProcedure = orderArr.length - delLine;
 		int j = 0;

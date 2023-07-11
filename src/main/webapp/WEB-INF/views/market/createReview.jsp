@@ -266,10 +266,10 @@ dl dd div label{
 		});
 		
 		deleteAttm.addEventListener('click', function(){
-			for(let att of document.querySelectorAll(".mb-3")){
-					att.remove();
+			const atts = document.querySelectorAll(".mb-3");
+			for(let i=0; i<atts.length; i++){
+				atts[atts.length - 1].remove();
 			}
-			
 		})
 		
 		submit.addEventListener("click", function(){
@@ -281,7 +281,6 @@ dl dd div label{
 				}else if(formControl.value.trim() != "") {
 					submit.type = 'submt';
 					window.location.href="${ contextPath }/insertReview.ma";
-// 					location.href = '${contextPath}/selectBoard.bo?bId='+boardId+'&writer='+writer+'&page='+${pi.currentPage};
 				}
 			
 		})

@@ -23,6 +23,7 @@
    font-family: 'Noto Sans KR', sans-serif;
 }
 
+
 /*    모달 */
    .modal-body{text-align: center;}
    .bi-check-circle-fill{font-size: 60px; color: #B0DAFF;}
@@ -41,6 +42,12 @@
    
    .modalMenu{font-weight: bold; background-color: lightgray; width: 180px; height: 50px;}
    .moCon{height: 75px; border-radius: 10px;}
+
+
+a:-webkit-any-link{
+	text-decoration: none;
+	color:black;
+}
 
 
 
@@ -1041,10 +1048,10 @@ p b {
 <div class ="productInfoMain">
    <div class="reviewbox">
       <ul>
-         <li>상세정보</li>
-         <li>후기 (${reviewCount})</li>
-         <li>배송 및 환불</li>
-         <li>문의(${qnaCount})</li>
+         <li><a href="#detailInfo">상세정보</a></li>
+         <li><a href="#reviewInfo">후기 (${reviewCount})</a></li>
+         <li><a href="#shippingRefund">배송 및 환불</a></li>
+         <li><a href="#qna">문의(${qnaCount})</a></li>
       </ul>
    </div>
    <br>
@@ -1103,7 +1110,7 @@ p b {
       <br>
       
       <div class="reviewWrap" style=" width:1200px;">
-   
+   		<a name="reviewInfo"></a>
          <div class="reviewWrap1" style="padding: 10px; border-bottom: 1px solid lightgray;">
             <h3 style="font-weight: 500; color:#4485d7; font-size: 28px; display: inline-block;">후기</h3>&nbsp;&nbsp;<span style="font-size: 24px;"></span>
             
@@ -1176,7 +1183,7 @@ p b {
             <div class="productBox">
                <ul   class="productBoxInfo">
                   <li class="productPageInfo">
-                     <a class="accordion_i_tit" data-bdid="info">상품정보</a>         
+                     <a class="accordion_i_tit" data-bdid="info" name="detailInfo">상품정보</a>         
                      <div class="accordion_i_cont" style="display: none;">
                         <div class="accodion_content">
                                  <dl>
@@ -1207,7 +1214,7 @@ p b {
                          </div>
                   </li>
                   <li class="productPageInfo">
-                     <a class="accordion_i_tit2" data-bdid="info">배송/환불/교환</a>
+                     <a class="accordion_i_tit2" data-bdid="info" name="shippingRefund">배송/환불/교환</a>
                      <div class="accordion_i_cont2" style="display: none;">
                         <dl>
                                   <dt><h3 style="margin-left: 30px; margin-top: 20px;">배송안내</h3></dt>
@@ -1256,8 +1263,16 @@ p b {
                   </li>
                </ul>
                <li id="page-qna" class="accordion_i_li">
-                      <a class="accordion_i_tit3">문의<span>( ${ qnaCount } )</span></a>
+                      <a class="accordion_i_tit3" name="qna">문의<span>( ${ qnaCount } )</span></a>
+
                       <div class="accordion_i_cont3" style="padding-top: 5px; display: block;">
+	                      <c:if test="${ qnaCount eq 0 }">
+				            <div style="text-align:center; margin: 10px;">
+				                 <img style="width:100px; height:100px;" src="resources/images/icon_none.png">
+				              </div>
+				            <p style="margin:auto; text-align:center; font-weight: 400; color: #999999; font-size: 15px">등록된 문의가 없습니다.</p>                      	
+	                      </c:if>
+                      
                           <div id="ajax-goods-goodsqa-list">
                           
                        <ul class="goods_accordion_qna">
@@ -1366,7 +1381,7 @@ p b {
                    상품이 장바구니에 담겼습니다.
 
                 </div>
-                <div class="footer" style="text-align:center; height: 50px;">
+<!--                 <div class="footer" style="text-align:center; height: 50px;"> -->
                   <button type="button" class="button-n btn-n" data-bs-dismiss="modal">계속 쇼핑하기</button>
                   <button type="button" class="button btn-y" id="moveCart" onclick="location.href='basket.ma'">장바구니로</button>
 <!--                     <button type="button" class="button btn-y" id="moveCart">장바구니로</button> -->
@@ -1387,7 +1402,6 @@ p b {
                    <i class="bi bi-x-circle-fill"></i><br><br>
                    <h3>장바구니에 담지 못했습니다. </h3>
                 </div>
-                <div class="footer" style="text-align:center; height: 50px;"></div>
              </div>
       </div>
    </div>
@@ -1408,17 +1422,6 @@ p b {
       </div>
    </div>
 
-   <br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <br><br><br><br><br>
-   <%@ include file="../common/footer.jsp" %>
    <script>
    
    window.onload = function(){

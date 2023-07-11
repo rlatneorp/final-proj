@@ -342,6 +342,20 @@
 		where recipe_renamename=#{string}
 	</delete>
 	
+	<select id="getCateListCount" resultType="_int">
+		select count(*)
+		from recipe
+		where ${cateName} = #{cate} and recipe_status='Y'
+	</select>
+	
+	<select id="cateSearch" resultMap="recipeResultSet">
+		select *
+		from recipe
+			 left join users using(users_no)
+			 left join image on(food_no = image_divide_no)
+		where ${cateName}=#{cate} and image_level=0	and image_type=2 and recipe_status = 'Y'
+	</select>
+	
 	<resultMap type="Recipe" id="recipeResultSet">
 		<id column="food_no" property="foodNo"/>
 		<result column="USERS_NO" property="usersNo"/>

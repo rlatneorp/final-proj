@@ -16,7 +16,7 @@
 	#category{width: 550px; margin-left: 375px; margin-right: 375px; margin-top: 30px;}
 	
 	.title{font-weight: bold;}
-	.group-button1, .group-button2, .group-button3{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
+	.group-button1, .group-button1, .group-button1{padding: 10px; background-color: #B0DAFF; border: none; cursor: pointer;}
 	
 	#side{width: 200px; height: 100px; margin-top: 25px; margin-left: 1300px;}
 	#recipeWrite{box-shadow: 0px 5px 0px 0px black; border-radius: 8px; border: 1px solid black; background-color: #B0DAFF; color: white; height: 35px; width: 120px;  cursor: pointer; margin-left: 40px;}
@@ -112,21 +112,21 @@
 		</div>
 		<div>
 			<span class="title">상황별 | </span>
-			<button class="group-button2" data-value="다이어트">다이어트</button>
-			<button class="group-button2" data-value="술안주">술안주</button>
-			<button class="group-button2" data-value="도시락">도시락</button>
-			<button class="group-button2" data-value="아침식사">아침식사</button>
-			<button class="group-button2" data-value="비건">비건</button>
-			<button class="group-button2" data-value="기타">기타</button>
+			<button class="group-button1" data-value="다이어트">다이어트</button>
+			<button class="group-button1" data-value="술안주">술안주</button>
+			<button class="group-button1" data-value="도시락">도시락</button>
+			<button class="group-button1" data-value="아침식사">아침식사</button>
+			<button class="group-button1" data-value="비건">비건</button>
+			<button class="group-button1" data-value="기타">기타</button>
 		</div>
 		<div>
 			<span class="title">종류별 | </span>
-			<button class="group-button3" data-value="메인반찬">메인반찬</button>
-			<button class="group-button3" data-value="국">국</button>
-			<button class="group-button3" data-value="간식">간식</button>
-			<button class="group-button3" data-value="면">면</button>
-			<button class="group-button3" data-value="반찬">반찬</button>
-			<button class="group-button3" data-value="기타">기타</button>
+			<button class="group-button1" data-value="메인반찬">메인반찬</button>
+			<button class="group-button1" data-value="국">국</button>
+			<button class="group-button1" data-value="간식">간식</button>
+			<button class="group-button1" data-value="면">면</button>
+			<button class="group-button1" data-value="반찬">반찬</button>
+			<button class="group-button1" data-value="기타">기타</button>
 		</div>
 	</div>
 </div>
@@ -183,7 +183,8 @@
 <!-- 		이전 페이지로	 -->
 		<c:url var="goBack" value="${loc}">
 			<c:param name="page" value="${pi.currentPage - 1 }"></c:param>
-			<c:param name="${cate}" value="${value}"></c:param>
+			<c:param name="parCate" value="${parCate}"></c:param>
+			<c:param name="cate" value="${catego}"></c:param>
 		</c:url>
 		<c:if test="${pi.currentPage > 1 }">
 			<a class="arrow prev" href="${goBack }"><i class="bi bi-chevron-left"></i></a>
@@ -193,7 +194,8 @@
 		<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 			<c:url var="goNum" value="${loc }">
 				<c:param name="page" value="${p }"></c:param>
-				<c:param name="${cate}" value="${value}"></c:param>
+				<c:param name="parCate" value="${parCate}"></c:param>
+				<c:param name="cate" value="${catego}"></c:param>
 			</c:url>
 			<c:if test="${ pi.currentPage eq p }">
 				<a class="active">${p }</a>
@@ -205,7 +207,8 @@
 		
 		<c:url var="goNext" value="${loc }">
 			<c:param name="page" value="${pi.currentPage + 1 }"></c:param>
-			<c:param name="${cate}" value="${value}"></c:param>
+			<c:param name="parCate" value="${parCate}"></c:param>
+			<c:param name="cate" value="${catego}"></c:param>
 		</c:url>
 		<c:if test="${pi.currentPage < pi.endPage }">
 			<a class="arrow next" href="${goNext }"><i class="bi bi-chevron-right"></i></a>
@@ -247,32 +250,43 @@
 		}
 	}
 	
-	const groupBtn1s = document.getElementsByClassName("group-button1");
-	for(groupBtn1 of groupBtn1s){
-		const ingredient = groupBtn1.innerText;
-		groupBtn1.addEventListener('click', function(){
-			console.log(ingredient);
-			location.href='${contextPath}/recipeIngredient.rc?ingredient=' + ingredient;
+// 	const groupBtn1s = document.getElementsByClassName("group-button1");
+// 	for(groupBtn1 of groupBtn1s){
+// 		const ingredient = groupBtn1.innerText;
+// 		groupBtn1.addEventListener('click', function(){
+// 			console.log(ingredient);
+// 			location.href='${contextPath}/recipeIngredient.rc?ingredient=' + ingredient;
+// 		})
+// 	}
+	
+// 	const groupBtn2s = document.getElementsByClassName("group-button1");
+// 	for(groupBtn2 of groupBtn2s){
+// 		const situation = groupBtn2.innerText;
+// 		groupBtn2.addEventListener('click', function(){
+			
+// 			location.href='${contextPath}/recipeSituation.rc?situation=' + situation;
+			
+// 		})
+// 	}
+// 	const groupBtn3s = document.getElementsByClassName("group-button1");
+// 	for(groupBtn3 of groupBtn3s){
+// 		const type = groupBtn3.innerText;
+// 		groupBtn3.addEventListener('click', function(){
+			
+// 			location.href='${contextPath}/recipeType.rc?type=' + type;
+// 		})
+// 	}
+	
+	const groupBtns = document.getElementsByClassName("group-button1");
+	for(const groupBtn of groupBtns){
+		groupBtn.addEventListener('click', function(){
+			const parentCate = this.parentElement.childNodes[1].innerText.split('별')[0];
+			const cate = this.innerText;
+			
+			location.href = '${contextPath}/recipeCate.rc?parCate=' + parentCate + '&cate=' + cate;
 		})
 	}
 	
-	const groupBtn2s = document.getElementsByClassName("group-button2");
-	for(groupBtn2 of groupBtn2s){
-		const situation = groupBtn2.innerText;
-		groupBtn2.addEventListener('click', function(){
-			
-			location.href='${contextPath}/recipeSituation.rc?situation=' + situation;
-			
-		})
-	}
-	const groupBtn3s = document.getElementsByClassName("group-button3");
-	for(groupBtn3 of groupBtn3s){
-		const type = groupBtn3.innerText;
-		groupBtn3.addEventListener('click', function(){
-			
-			location.href='${contextPath}/recipeType.rc?type=' + type;
-		})
-	}
 	
 	function recentAl(){
 		location.href='${contextPath}/recipeList.rc';

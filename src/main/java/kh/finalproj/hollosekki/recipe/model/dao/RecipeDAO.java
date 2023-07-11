@@ -282,4 +282,15 @@ public class RecipeDAO {
 		sqlSession.delete("recipeMapper.deleteOrderImg", string);
 	}
 
+	public int getCateListCount(SqlSessionTemplate sqlSession, HashMap<String, String> category) {
+		return sqlSession.selectOne("recipeMapper.getCateListCount", category);
+	}
+
+	public ArrayList<Recipe> cateSearch(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> category) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("recipeMapper.cateSearch", category, rowBounds);
+	}
+
 }

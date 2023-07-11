@@ -599,10 +599,11 @@ public class RecipeController {
 		int updateRecipeOrderResult = 0;
 		int delOrderImgResult = 0;
 		int j = 0;
-		
-		if(!delPro.isEmpty()) {
-			for(int i = 0; i < delPro.size(); i++) {
-				rService.deleteOrderImg(delPro.get(i));
+		if(delPro != null) {
+			if(!delPro.isEmpty()) {
+				for(int i = 0; i < delPro.size(); i++) {
+					rService.deleteOrderImg(delPro.get(i));
+				}
 			}
 		}
 		

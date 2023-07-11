@@ -7,7 +7,9 @@
 <html>
 <head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
-<title>Hollo Store</title>
+<title>홀로세끼 STORE</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css"rel="stylesheet">

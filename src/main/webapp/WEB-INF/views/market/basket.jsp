@@ -8,7 +8,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"> -->
-
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script> -->
 <style>
 	.menu3{margin-top: 5px;}
@@ -116,6 +118,10 @@ input[type="text"] {
 	text-align: left;
 	padding: 20px;
 }
+.cTitle{
+  text-align:center;
+  margin:0 auto;
+}
 
 #allChec{
 	height: 50px; margin: 0 auto; width: 1200px; background-color: #B0DAFF; 
@@ -204,7 +210,7 @@ input[type="text"] {
 		<tr style="border: 2px solid #dee2e6; background-color: #B0DAFF;">
 			<th class="tableBorder1" colspan="2" style="height: 40px"><b>상품/옵션정보</b></th>
 			<th class="tableBorder1"><b>수량</b></th>
-			<th class="tableBorder1"><b>상품가격</b></th>
+			<th class="tableBorder1" style="width:150px"><b>상품가격</b></th>
 			<th class="tableBorder1"><b>적립</b></th>
 			<th class="tableBorder1"><b>합계금액</b></th>
 		</tr>
@@ -239,12 +245,11 @@ input[type="text"] {
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:150px">
 							<i class="bi bi-dash-square-fill" id="minus-${cl.preorderNo}" style="color: #00AAFF; font-size: 15px;"></i>&nbsp;
-							<span class="cartCount" id="size-${cl.preorderNo}">
+							<span title="클릭하여 수량 변경" class="cartCount cTitle" style="cursor:pointer; "id="size-${cl.preorderNo}">
 								${cl.cartCount}
 							</span>
 							<input type="hidden" class="insertSizeId" value="${cl.preorderNo }">
 							<input type="text" class="insertSize" id="insertSize-${cl.preorderNo }" style="width: 30px; display: none;">개
-							&nbsp;
 							<i class="bi bi-plus-square-fill" id="plus-${cl.preorderNo }" style="color: #00AAFF; font-size: 15px"></i>
 						</td>
 						<td style="border-right: 2px solid #dee2e6; width:150px " >
@@ -344,7 +349,6 @@ input[type="text"] {
 			let prevValue = document.getElementById('size-' + preorderNo).innerText // 이전 값 저장
 			size.addEventListener('click', function() {
 				const input = this.nextElementSibling.nextElementSibling;
-				console.log(this.nextElementSibling.nextElementSibling);
 				this.style.display = 'none';
 				input.style.display = 'inline-block';
  				input.addEventListener('blur', function() {

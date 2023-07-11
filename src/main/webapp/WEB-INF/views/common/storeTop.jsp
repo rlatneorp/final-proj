@@ -6,10 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>홀로세끼</title>
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
-<title>Insert title here</title>
 <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 <style>
 	@font-face {
@@ -236,9 +238,9 @@
 						  			<div class="userName">
 						  				${ loginUser.usersName } 님
 						  			</div>
-						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="storeP"></p> P</div>
+						  			<div class="point"><i class="bi bi-coin drop-ic"></i><p class="d-inline" id="topP">P</p></div>
 						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_Main.me'"><i class="bi bi-person-circle drop-ic"></i>마이페이지</div>
-						  			<div class="dropdown-item" onclick="location.href='${contextPath}/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
+						  			<div class="dropdown-item" onclick="location.href='${ contextPath }/myPage_MyBookMark.me'"><i class="bi bi-bookmark drop-ic"></i>스크랩</div>
 						  			<div class="logout-btn" onclick="location.href='logout.en'">로그아웃</div>
 						  		</div>
 							</c:if>
@@ -246,7 +248,6 @@
 						</div>
 					</div>
 					<div style="width:80px"></div>
-					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
 					<c:if test="${ loginUser == null }"><div style="width:37px;"></div></c:if>
 					<c:if test="${ loginUser != null }">
 						<div class="cart" onclick="location.href='${contextPath}/basket.ma'"><div class="cart-icon"><i class="fa-solid fa-cart-shopping"></i></div></div>
@@ -264,34 +265,18 @@
 	<br>
 	
 <script>
-// 	document.getElementById('menu3').addEventListener('mouseover', function(){
-// 		 document.getElementById('menu-list').style.display = 'block';
-// 	})
-	
-// 	document.getElementById('menu3').addEventListener('mouseout', function(){
-// 		 document.getElementById('menu-list').style.display = 'none';
-// 	})
-
-// 	$(()=>{
-// 		$('#menu3').hover(function(){
-// 			$(this).toggleClass('menu-hover');
-// 		}, function(){
-// 			$(this).toggleClass('menu-hover');
-// 		});
-// 	})
-
-		var loginUser = '${loginUser}';
-		if(loginUser != ''){
-			$.ajax({
-				type: 'post',
-				url: 'point.ma',
-				success: function(info){
-					let storeP = document.querySelector('#storeP');
-					storeP.innerHTML = info.point;
-				}
-				
-			});
+var loginUser = '${loginUser}';
+if(loginUser != ''){
+	$.ajax({
+		type: 'post',
+		url: 'point.ma',
+		success: function(info){
+			let topP = document.querySelector('#topP');
+			topP.innerHTML = info.point + ' P';
 		}
+		
+	});
+}
 </script>
 
 

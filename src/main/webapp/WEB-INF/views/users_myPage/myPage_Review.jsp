@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 후기 관리</title>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 #dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 
@@ -179,7 +180,7 @@ th:first-child, td:first-child {
 							</c:if>
 							<c:forEach items="${ list }" var="r">
 								<c:if test="${ r.ORDER_NO == 0 }">
-									<tr onclick="location.href='${contextPath}/recipeDetail.rc?rId=' + '${ r.USERS_ID }' + '&rNo=' + '${ r.PRODUCT_NO }' + '&page=' + '${ pi.currentPage }'">
+									<tr onclick="recipeClick('${r.RECIPE_STATUS}', '${r.USERS_ID}', '${r.PRODUCT_NO}', '${pi.currentPage}')">
 										<td>${ r.REVIEW_NO }</td>
 										<td>레시피</td>
 										<td>${ r.RECIPE_NAME }</td>
@@ -199,10 +200,10 @@ th:first-child, td:first-child {
 										<c:if test="${ r.REVIEW_SCORE == 1 }">
 											<td><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></td>
 										</c:if>
-									</tr>
+									
 								</c:if>
 								<c:if test="${ r.ORDER_NO != 0 and r.PRODUCT_TYPE == 2 }">
-									<tr onclick="location.href='${contextPath}/menuDetail.mn?mNo=' + '${ r.PRODUCT_NO }' + '&page=' + '${pi.currentPage}'">
+									<tr onclick="menuClick('${ r.PRODUCT_STATUS }', '${ r.PRODUCT_NO }', '${pi.currentPage}')">
 										<td>${ r.REVIEW_NO }</td>
 										<td>식단</td>
 										<td>${ r.MENU_NAME }</td>
@@ -225,15 +226,15 @@ th:first-child, td:first-child {
 									</tr>
 								</c:if>
 								<c:if test="${ r.ORDER_NO != 0 and r.PRODUCT_TYPE != 2 }">
-									<tr onclick="location.href='${contextPath}/editReview.ma?reviewNo=' + '${ r.REVIEW_NO }'">
+									<tr onclick="productClick('${ r.PRODUCT_STATUS }', '${ r.REVIEW_NO }')">
 										<td>${ r.REVIEW_NO }</td>
 										<c:if test="${ r.PRODUCT_TYPE == 1 and r.FOOD_TYPE == 1 }">
 											<td>식품 - 식재료</td>
 											<td>${ r.FOOD_NAME }</td>
 										</c:if>
 										<c:if test="${ r.PRODUCT_TYPE == 1 and r.FOOD_TYPE == 2 }">
+											<td>식품 - 밀키트</td>
 											<td>${ r.FOOD_NAME }</td>
-											<td>가지볶음</td>
 										</c:if>
 										<c:if test="${ r.PRODUCT_TYPE == 3 }">
 											<td>식재료</td>
@@ -334,6 +335,42 @@ th:first-child, td:first-child {
 	          this.style.backgroundColor = ''; // 마우스를 뗐을 때의 스타일 (기존 스타일로 복구)
 	        }); 
 	   }
+	   
+	   function recipeClick(status, usersId, productNo, currentPage) {
+	        if (status == 'Y') {
+                location.href = '${contextPath}/recipeDetail.rc?rId=' + usersId + '&rNo=' + productNo + '&page=' + currentPage;
+	        } else {
+	        	swal({
+		            text: "해당 글을 삭제됐거나 없는 글입니다.",
+		            icon: "error",
+		            button: "확인",
+		        });
+	        }
+	    }
+	   
+	   function menuClick(status, productNo, currentPage) {
+	        if (status == 'Y') {
+	        	location.href='${contextPath}/menuDetail.mn?mNo=' + productNo + '&page=' + currentPage;
+	        } else {
+	        	swal({
+		            text: "해당 글을 삭제됐거나 없는 글입니다.",
+		            icon: "error",
+		            button: "확인",
+		        });
+	        }
+	    }
+	   
+	   function productClick(status, reviewNo) {
+	        if (status == 'Y') {
+	        	location.href='${contextPath}/editReview.ma?reviewNo=' + reviewNo;
+	        } else {
+	        	swal({
+		            text: "해당 글을 삭제됐거나 없는 글입니다.",
+		            icon: "error",
+		            button: "확인",
+		        });
+	        }
+	    }
 	</script>	
 	
 </body>

@@ -446,6 +446,7 @@
 		$('.summernote').summernote({
 			width: 750,
 			height: 100,
+			maxHeight: 100,
 			lang: "ko-KR",
 			toolbar: [
 			    // [groupName, [list of button]]
@@ -459,25 +460,33 @@
 			  ],
 			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
 			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
-			disableResize: true,
 		    disableResizeEditor: true,
-		    resize: false
+		    resize: false,
+		    placeholder: '최대 100자 작성 가능합니다.'
 		});
 		
 		$('.summernote').on('summernote.keyup', function() {
-			var content = $(this).summernote('code');
-// 		    var contentLength = $(this).summernote('code').replace(/(<([^>]+)>)/gi, '').length;
-		    var maxLength = 100;
+			const content = $(this).val().replace(/(<([^>]+)>)/gi, '');
+			console.log(content);
+		    const length = content.replace(/(<([^>]+)>)/gi, '').length;
+		    console.log(length);
+		    $('#characterCount').html(length);
 		    
-		    if (contentLength > maxLength) {
-		    	var truncatedContent = content.substring(0, maxLength); // 처음부터 maxLength까지의 텍스트 추출
-		        $(this).summernote('code', truncatedContent);
-// 		        $('#characterCount').css('color', 'red');
-// 		    } else {
-// 		        $('#characterCount').css('color', 'black'); // 숫자 색상을 원래대로 변경
+		    if (length > 100) {
+		        $('#characterCount').css('color', 'red');
+		        
+		        const piece = content.substr(0, 100);
+		        $(this).summernote('code', piece);
+		        swal({
+		        	title : "최대 글자수는 100자입니다.",
+		            text: "다시 입력해주세요.",
+		            icon: "error",
+		            button: "확인",
+		        });
+		    } else {
+		        $('#characterCount').css('color', 'black'); // 숫자 색상을 원래대로 변경
 		    }
 		    
-// 		    $('#characterCount').text(contentLength);
 		});
 		
 		const profile = document.getElementById('modalP');
@@ -545,46 +554,29 @@
 		const update = document.getElementById('update');
 		const inBtn = document.getElementById('editB');
 		const upBtn = document.getElementById('editC');
+		const count = document.getElementById('characterCount');
 		
 		if(inBtn != null){
 			inBtn.addEventListener('click', (e) => {
-				$('.summernote').on('summernote.keyup', function() {
-				    var content = $(this).summernote('code');
-				    var contentLength = $(this).summernote('code').replace(/(<([^>]+)>)/gi, '').length;
-				    var maxLength = 100; // 원하는 최대 글자 수
-				    if (contentLength > maxLength) {
-				    	swal({
-				            text: "최대 글자수는 100자입니다.",
-				            icon: "error",
-				            button: "확인",
-				        });
-				    	e.preventDefault();
-				    } else {
-				    	insert.action = '${contextPath}/myPage_InsertProfile.me';
-				    	insert.submit();
-				    }
-				});
+				
 			});
 		}
 		
 		if(upBtn != null){
 			upBtn.addEventListener('click', (e) => {
-				$('.summernote').on('summernote.keyup', function() {
-				    var content = $(this).summernote('code');
-				    var contentLength = $(this).summernote('code').replace(/(<([^>]+)>)/gi, '').length;
-				    var maxLength = 100; // 원하는 최대 글자 수
-				    if (contentLength > maxLength) {
-				    	swal({
-				            text: "최대 글자수는 100자입니다.",
-				            icon: "error",
-				            button: "확인",
-				        });
-				    	e.preventDefault();
-				    } else {
-				    	update.action = '${contextPath}/myPage_UpdateProfile.me';
-				    	update.submit();
-				    }
-				});
+				if(count.style.color == 'red'){
+					e.preventDefault();
+					e.stopPropagation();
+					swal({
+						title : "최대 글자수는 100자입니다.",
+			            text: "다시 입력해주세요.",
+			            icon: "error",
+			            button: "확인",
+			        });
+				} else {
+					update.action = '${contextPath}/myPage_UpdateProfile.me';
+			    	update.submit();
+				}
 			})
 		}
 		

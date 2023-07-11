@@ -275,7 +275,7 @@ p b {
 	.inputTextBox{width:730px; height: 50px; margin: auto; position: relative;}
 	.profilePic{width: 35px; height: 35px; border: none; border-radius: 50%; position: absolute; top: 5px;}
 	.profileImg{width:35px; height: 35px; border-radius: 50%;}
-	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 80px; height: 40px; position: absolute; right: 0;}
+	.enter{background-color: #19A7CE; color: white; border-radius: 10px; box-shadow: 5px 5px 7px 0px black; width: 100px; height: 40px; position: absolute; right: 0;}
 	
 /* 	후기 */
 	.star{width: 110px;}

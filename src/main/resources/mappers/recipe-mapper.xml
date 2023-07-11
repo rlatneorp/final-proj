@@ -352,8 +352,7 @@
 		select *
 		from recipe
 			 left join users using(users_no)
-			 left join image on(food_no = image_divide_no)
-		where ${cateName}=#{cate} and image_level=0	and image_type=2 and recipe_status = 'Y'
+		where ${cateName}=#{cate} and recipe_status = 'Y' 
 	</select>
 	
 	<resultMap type="Recipe" id="recipeResultSet">

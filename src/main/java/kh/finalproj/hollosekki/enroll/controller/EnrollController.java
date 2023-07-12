@@ -388,7 +388,6 @@ public class EnrollController {
 			ArrayList<Review> replyList = eService.replyList(); // 전체댓글
 			model.addAttribute("replyList", replyList);
 			String nickName = user.getNickName();
-			System.out.println(nickName);
 			ArrayList<Review> userReplyList = eService.userReplyList(nickName);
 			model.addAttribute("userRList", userReplyList);
 			
@@ -400,7 +399,6 @@ public class EnrollController {
 			
 			// 식단 리뷰 목록
 			ArrayList<Review> menuReviewList = eService.menuReviewList(userNo); // 작성 식단리뷰
-			System.out.println(menuReviewList);
 			model.addAttribute("mrList", menuReviewList);
 			
 			// 모든 식단 이미지

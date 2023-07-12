@@ -335,7 +335,18 @@
 		
 		// 닉네임 중복확인
 		nickCheck.addEventListener('click', () => {
-			if(nickName.value == ''){
+			if(nickName.value.length > 8){
+				swal({
+					 text: "닉네임은 8자 이하로 정해주세요",
+					 icon: "error",
+					 button: "확인",
+					});
+				nickName.value = '';
+				nickName.focus();
+				return false;
+			}
+			
+			if(nickName.value.trim() == ''){
 				swal({
 					 text: "닉네임을 입력해주세요.",
 					 icon: "error",
@@ -363,9 +374,19 @@
 		
 		// 이메일 중복확인
 		emailCheck.addEventListener('click', () => {
-			if(email.value == ''){
+			const regEmeail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+			
+			if(!regEmeail.test(email.value)){
 				swal({
-					 text: "이메일을 입력해주세요.",
+					 text: "유효한 이메일 형식이 아닙니다.",
+					 icon: "error",
+					 button: "확인",
+					});
+			}
+			
+			if(email.value.trim() == '' || !regEmeail.test(email.value)){
+				swal({
+					 text: "이메일을 다시 입력해주세요.",
 					 icon: "error",
 					 button: "확인"
 				});

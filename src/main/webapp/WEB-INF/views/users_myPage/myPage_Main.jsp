@@ -396,12 +396,11 @@
 						<br>
 						<button type="button" id="base">기본 이미지</button>
 						<br><br><hr><br>
-						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
-						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">
 							자기소개&nbsp;&nbsp;&nbsp;&nbsp;
 							글자 수: <span id="characterCount">0</span>/100
 						</p>
+						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<input type="hidden" name="usersNo" value="${ loginUser.usersNo }">
 					</div>
 					<div class="modal-footer">
@@ -469,9 +468,7 @@
 		
 		$('.summernote').on('summernote.keyup', function() {
 			const content = $(this).val().replace(/(<([^>]+)>)/gi, '');
-			console.log(content);
 		    const length = content.replace(/(<([^>]+)>)/gi, '').length;
-		    console.log(length);
 		    $('#characterCount').html(length);
 		    
 		    if (length > 100) {
@@ -560,7 +557,19 @@
 		
 		if(inBtn != null){
 			inBtn.addEventListener('click', (e) => {
-				
+				if(count.style.color == 'red'){
+					e.preventDefault();
+					e.stopPropagation();
+					swal({
+						title : "최대 글자수는 100자입니다.",
+			            text: "다시 입력해주세요.",
+			            icon: "error",
+			            button: "확인",
+			        });
+				} else {
+					insert.action = '${contextPath}/myPage_InsertProfile.me';
+			    	insert.submit();
+				}
 			});
 		}
 		

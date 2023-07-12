@@ -118,7 +118,7 @@
 						<td class="detail">휴대전화</td>
 						<td>
 							<div style="display: flex; align-items: center;">
-								<input type="text" style="width: 300px; margin-left: 15px; margin-right: 10px; height: 35px;" name="phone" placeholder="번호를 입력해주세요" value="${ loginUser.phone }" id="phone">
+								<input type="tel" style="width: 300px; margin-left: 15px; margin-right: 10px; height: 35px;" name="phone" placeholder="번호를 입력해주세요" value="${ loginUser.phone }" id="phone">
 							</div>
 						</td>
 					</tr>
@@ -410,10 +410,29 @@
 			}
 		});
 		
-		btn.addEventListener('click', () => {
-			const phoneInput = document.getElementById("phone");
+		// 번호 8자리까지
+		const phoneInput = document.getElementById("phone");
+		
+		phoneInput.addEventListener('change', () => {
 			const phoneNumber = phoneInput.value;
-	    	const regex = /[0-9]/;
+			console.log(phoneNumber);
+			console.log(phoneNumber.length);
+			console.log(phoneNumber.trim().length);
+			if (phoneNumber.trim().length > 11) {
+				swal({
+					text: "휴대전화 번호는 11자리까지 입력할 수 있습니다.",
+					icon: "error",
+					button: "확인"
+				}).then(function() {
+					phoneInput.value = '';
+					phoneInput.focus();
+				});
+			}
+		});
+		
+		btn.addEventListener('click', () => {
+			const phoneNumber = phoneInput.value;
+	    	const regex = /^[0-9]+$/;
 	    	
 	    	if (!regex.test(phoneNumber)) {
 	    		swal({
@@ -423,6 +442,12 @@
 				}).then(function() {
 					phoneInput.focus();
 			    });
+			} else if(nickName.value.trim() == '' || email.value.trim() == ''){
+				swal({
+					 text: "한 글자 이상 입력해주세요.",
+					 icon: "error",
+					 button: "확인"
+				})
 			} else if((check[0].innerText == '' || check[1].innerText == '') || (check[0].style.color == 'green' || check[1].style.color == 'green') && (check[0].style.color != 'red' && check[1].style.color != 'red')){
 				$.ajax({
 					type : 'POST',

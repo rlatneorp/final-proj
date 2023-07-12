@@ -119,27 +119,27 @@
 			</span></a>
 			<br><br>
 			<a class="menuBar" href="${ contextPath }/myPage_MyAddress.me">배송지 관리 &nbsp;&nbsp;&nbsp;&nbsp;
-			<span class="material-symbols-outlined arrow" style="margin-left: 4px;">
+			<span class="material-symbols-outlined arrow" style="margin-left: 5px;">
 			chevron_right
 			</span></a>
 			<br><br>
 			<a class="menuBar" href="${ contextPath }/myPage_Review.me">후기 관리 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<span class="material-symbols-outlined arrow" style="margin-left: 4px;">
+			<span class="material-symbols-outlined arrow" style="margin-left: 5px;">
 			chevron_right
 			</span></a>
 			<br><br>
 			<a class="menuBar" href="${ contextPath }/myPage_Point.me">포인트 관리 &nbsp;&nbsp;&nbsp;&nbsp;
-			<span class="material-symbols-outlined arrow" style="margin-left: 3px;">
+			<span class="material-symbols-outlined arrow" style="margin-left: 4px;">
 			chevron_right
 			</span></a>
 			<br><br>
 			<a class="menuBar" href="${ contextPath }/myPage_Board.me">게시글 관리 &nbsp;&nbsp;&nbsp;&nbsp;
-			<span class="material-symbols-outlined arrow" style="margin-left: 3px;">
+			<span class="material-symbols-outlined arrow" style="margin-left: 4px;">
 			chevron_right
 			</span></a>
 			<br><br>
 			<a class="menuBar" href="${ contextPath }/myPage_edit.me">회원 정보 수정&nbsp;
-			<span class="material-symbols-outlined arrow" style="margin-left: 2px;">
+			<span class="material-symbols-outlined arrow" style="margin-left: 3px;">
 			chevron_right
 			</span></a>
 		</div>

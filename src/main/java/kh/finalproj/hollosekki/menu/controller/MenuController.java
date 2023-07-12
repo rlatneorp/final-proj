@@ -160,7 +160,8 @@ public class MenuController {
 	public ModelAndView menuDetail(@RequestParam("mNo") int mNo, @RequestParam(value="page", required=false) Integer page,
 								   HttpSession session, ModelAndView mv, Model model,
 								   @RequestParam(value = "repage", required = false) Integer repage,
-								   @RequestParam(value = "myrepage", required = false) Integer myrepage) {
+								   @RequestParam(value = "myrepage", required = false) Integer myrepage,
+								   @RequestParam(value = "qnapage", required = false) Integer qnapage) {
 		
 		Users loginUser = (Users)session.getAttribute("loginUser");
 		String loginId = null;
@@ -179,19 +180,18 @@ public class MenuController {
 			myReview = mService.myReview(my);
 		}
 		
-		
 		String menuName = mService.selectMenuId(mNo);
-		System.out.println("mNo : " + mNo);
-		System.out.println("menuName : " + menuName);
-		System.out.println("nickName : " + nickName);
-		
 		
 		boolean yn = false;
 		if(!menuName.equals(nickName)) {
 			yn = true;
 		}
-		
+		int qnaCount = mService.getQnaCount(mNo);
 		int reviewCount = mService.getReviewCount(mNo);
+		if(qnapage == null) {
+			qnapage = 1;
+		}
+		
 		if(repage == null) {
 			repage = 1;
 		}
@@ -199,11 +199,10 @@ public class MenuController {
 			myrepage = 1;
 		}
 		
+		PageInfo qpi = ReviewPagination.getPageInfo(qnapage, qnaCount, 5);
 		PageInfo rpi = ReviewPagination.getPageInfo(repage, reviewCount, 5);
 		PageInfo mpi = ReviewPagination.getPageInfo(myrepage, myReview, 5); // 내 리뷰
 		
-		int qnaCount = mService.getQnaCount(mNo);
-		PageInfo qpi = ReviewPagination.getPageInfo(1, qnaCount, 5);
 		
 		int usersNo = mService.selectUsersNo(mNo);
 		int productNo = mNo;
@@ -222,6 +221,22 @@ public class MenuController {
 		Menu menu = mService.menuDetail(yn, mNo);
 		Image thum = mService.menuDetailThum(mNo);
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
+		
+		ArrayList<String> nutrient = new ArrayList<>();
+		ArrayList<Integer> totalNu = new ArrayList<>();
+		
+		int kcal = 0;
+		for(int i = 0; i < mlList.size(); i++) {
+//			System.out.println(mlList.get(i).getFoodContent().split("@", 0)[3]);
+			nutrient.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
+			for(int j = 0; j < 9; j++) {
+				System.out.println(nutrient.get(i).split(",", 0)[j]);
+				kcal += Integer.parseInt(nutrient.get(i).split(",", 0)[0]);
+			}
+		}
+		totalNu.add(kcal);
+		
+		
 		ArrayList<Image> miList = mService.menuDetailImage();
 		ArrayList<Product> pList = mService.healtherInfo(usersNo);
 		ArrayList<Review> rList = mService.selectReviewList(rpi, mNo);
@@ -231,8 +246,6 @@ public class MenuController {
 		myMap.put("productNo", mNo);
 		
 		ArrayList<Review> mrList = mService.selectMyReviewList(mpi, myMap);
-		System.out.println(menu);
-		System.out.println(mrList);
 		
 		ArrayList<QA> qList = mService.selectQnaList(qpi, mNo);
 		
@@ -264,6 +277,7 @@ public class MenuController {
 			mv.addObject("notReviewCount", notReview.size());
 			mv.addObject("qnaCount", qnaCount);
 			mv.addObject("qList", qList);
+			mv.addObject("qpi", qpi);
 			mv.addObject("menuProfile", menuProfile);
 			mv.setViewName("menuDetail");
 			

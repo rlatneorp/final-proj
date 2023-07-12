@@ -881,7 +881,7 @@
 		     		 console.log('언팔로우 성공');
 					if (data == 'yes') {
 						var unfollowDiv = button.parentNode;
-// 						unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
+						unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
 					};
 					swal({
 						title: "🥲",
@@ -890,12 +890,12 @@
 	          			closeOnClickOutside: false,
 	          			closeOnEsc: false,
 	          			});
+					location.reload();
 		    	},
 		    	error: function (data) {
 					console.log('언팔로우 실패');
 				}
 			});
-			location.reload();
 		}
 		
 		// 팔
@@ -909,7 +909,7 @@
 			    success: function (data) {
 					console.log('팔로우 성공');
 					var unfollowDiv = button.parentNode;
-// 			  		unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
+			  		unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
 			  		swal({
 			  			title: "🎉",
 						text: "팔로우 되었습니다.",
@@ -917,12 +917,12 @@
 	          			closeOnClickOutside: false,
 	          			closeOnEsc: false,
 	          			});
+			  		location.reload();
 				},
 			    error: function (data) {
 			 		console.log('실패');
 			    }
 			});
-			location.reload();
 		}
 		
 		// 1. 작성 레시피 더보기

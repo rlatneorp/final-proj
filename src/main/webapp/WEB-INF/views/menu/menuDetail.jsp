@@ -233,7 +233,7 @@ p b {
 /* 	식단 설명 */
 	.menuABCD{
 		width: 65%;
-		height: 780px;
+		height: 850px;
 		background-color: lightgray;
 		margin: 25px auto;
 		border-radius: 10px;
@@ -462,6 +462,12 @@ p b {
 	
 	#menu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 	.like{cursor: pointer;}
+	
+	.infoTable{width: 1150px; margin: auto; border: 1px solid black; border-radius: 10px;}
+	.infoTop{border-bottom: 1px solid black; background-color: lightgray; border-radius: 10px 10px 0 0;}
+	.infoTop th{width: 157px; text-align: center; border-right: 1px solid black}
+	.infoContent td{padding: 3px; width: 70px; margin: 0px 3px; text-align: right; border-right: 1px solid black}
+	.infoContentDay td {width: 70px; margin: 0px 3px; text-align: right;}
 </style>
 <body>
 <span>
@@ -633,6 +639,7 @@ p b {
 					<br>
 					<p>${fn:split(value[0].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[0].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -645,6 +652,7 @@ p b {
 					<br>
 					<p>${fn:split(value[1].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[1].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -657,6 +665,7 @@ p b {
 					<br>
 					<p>${fn:split(value[2].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[2].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -669,7 +678,33 @@ p b {
 					<br>
 					<p>${fn:split(value[3].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[3].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>kcal</td>
+					<td>g</td>
+					<td>g</td>
+					<td>g</td>
+					<td>g</td>
+					<td>g</td>
+					<td>mg</td>
+					<td>g</td>
+					<td>mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -686,6 +721,7 @@ p b {
 					<br>
 					<p>${fn:split(value[4].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[4].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -698,6 +734,7 @@ p b {
 					<br>
 					<p>${fn:split(value[5].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[5].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -710,6 +747,7 @@ p b {
 					<br>
 					<p>${fn:split(value[6].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[6].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -722,6 +760,7 @@ p b {
 					<br>
 					<p>${fn:split(value[7].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[7].foodContent, '@')[3]}">
 			</div>
 		</div>
 	</div>
@@ -739,6 +778,7 @@ p b {
 					<br>
 					<p>${fn:split(value[8].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[8].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -751,6 +791,7 @@ p b {
 					<br>
 					<p>${fn:split(value[9].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[9].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -763,6 +804,7 @@ p b {
 					<br>
 					<p>${fn:split(value[10].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[10].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -775,6 +817,7 @@ p b {
 					<br>
 					<p>${fn:split(value[11].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[11].foodContent, '@')[3]}">
 			</div>
 		</div>
 	</div>
@@ -792,6 +835,7 @@ p b {
 					<br>
 					<p>${fn:split(value[12].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[12].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -804,6 +848,7 @@ p b {
 					<br>
 					<p>${fn:split(value[13].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[13].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -816,6 +861,7 @@ p b {
 					<br>
 					<p>${fn:split(value[14].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[14].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -828,6 +874,7 @@ p b {
 					<br>
 					<p>${fn:split(value[15].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[15].foodContent, '@')[3]}">
 			</div>
 		</div>
 	</div>
@@ -845,6 +892,7 @@ p b {
 					<br>
 					<p>${fn:split(value[16].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[16].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -857,6 +905,7 @@ p b {
 					<br>
 					<p>${fn:split(value[17].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[17].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -869,6 +918,7 @@ p b {
 					<br>
 					<p>${fn:split(value[18].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[18].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -881,6 +931,7 @@ p b {
 					<br>
 					<p>${fn:split(value[19].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[19].foodContent, '@')[3]}">
 			</div>
 		</div>
 	</div>
@@ -898,6 +949,7 @@ p b {
 					<br>
 					<p>${fn:split(value[20].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[20].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -910,6 +962,7 @@ p b {
 					<br>
 					<p>${fn:split(value[21].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[21].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -922,6 +975,7 @@ p b {
 					<br>
 					<p>${fn:split(value[22].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[22].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -934,6 +988,7 @@ p b {
 					<br>
 					<p>${fn:split(value[23].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[23].foodContent, '@')[3]}">
 			</div>
 		</div>
 	</div>
@@ -951,6 +1006,7 @@ p b {
 					<br>
 					<p>${fn:split(value[24].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[24].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -963,6 +1019,7 @@ p b {
 					<br>
 					<p>${fn:split(value[25].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[25].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -975,6 +1032,7 @@ p b {
 					<br>
 					<p>${fn:split(value[26].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[26].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -987,6 +1045,7 @@ p b {
 					<br>
 					<p>${fn:split(value[27].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[27].foodContent, '@')[3]}">
 			</div>
 		</div>
 	</div>

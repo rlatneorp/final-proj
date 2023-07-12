@@ -997,4 +997,17 @@
 		set cart_count = #{size} 
 		where pre_order_no = #{preorderNo}
 	</update>
+	
+	<select id="isAdmin" resultType="string">
+		select is_admin
+		from users
+		where users_no = #{uNo}
+	</select>
+	
+	<update id="updateCount">
+		update product
+		set product_count = product_count + 1
+        where product_no = #{pNo}
+	</update>
+	
 </mapper>

@@ -23,7 +23,7 @@ public interface MenuService {
 
 	ArrayList<Image> selectMenuImage();
 
-	Menu menuDetail(int mNo);
+	Menu menuDetail(boolean yn, int mNo);
 
 	Image menuDetailThum(int mNo);
 
@@ -78,6 +78,8 @@ public interface MenuService {
 	int getCateListCount(int cate);
 
 	int getSearchListCount(String word);
+
+	String selectMenuId(int mNo);
 
 
 }

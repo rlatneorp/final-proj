@@ -173,5 +173,13 @@ public class MenuDAO {
 		return sqlSession.selectOne("menuMapper.getSearchListCount", word);
 	}
 
+	public String selectMenuId(SqlSessionTemplate sqlSession, int mNo) {
+		return sqlSession.selectOne("menuMapper.selectMenuId", mNo);
+	}
+
+	public int addCount(SqlSessionTemplate sqlSession, int mNo) {
+		return sqlSession.update("menuMapper.addCount", mNo);
+	}
+
 
 }

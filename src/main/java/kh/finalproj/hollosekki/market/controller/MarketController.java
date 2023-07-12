@@ -290,6 +290,12 @@ public class MarketController {
 		
   
       Product p = mkService.selectProductSet(productNo);
+      
+      int resultCount = 1;
+      if(users != null) {
+    	  resultCount = mkService.addCount(productNo, users.getUsersNo());
+      }
+      
       r.setProductNo(productNo);
       
       

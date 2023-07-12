@@ -124,14 +124,11 @@
 	#searchBtn{border-radius: 50%; width: 30px; height: 30px; border: none; background-color: #B0DAFF; cursor:pointer;}
 
 .reThread{
-	width: 40px; height: 25px;
-	border: 1px solid black;
-	border-radius: 20px;
-	font-size: 10px;
-	font-weight: 500;
-	background-color: white;
-	padding: 2px; 
-	vertical-align: text-top;
+	color: lightblue;
+	font-size: 3px;
+	border: none;
+	background: none;
+	vertical-align: top;
 }
 .page-link.disabled{color: lightgray;}
 .page-link.disabled:hover{background: white; color: lightgray;}
@@ -193,7 +190,7 @@
 						</td>
 						<td>
 						    <c:if test="${ b.boardType eq 1}">
-						  		<button type="button" class="reThread">수정됨</button>
+						  		<button type="button" class="reThread">●</button>
 						    </c:if>
 							<c:set var="title" value="${b.boardTitle }" />
 							<c:choose>

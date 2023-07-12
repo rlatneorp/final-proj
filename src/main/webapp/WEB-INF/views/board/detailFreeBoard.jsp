@@ -246,7 +246,7 @@
 	padding: 2px; 
 }
 .reThread{
-	width: 40px; height: 25px;
+	width: 50px; height: 25px;
 	border: 1px solid black;
 	border-radius: 20px;
 	font-size: 10px;
@@ -303,7 +303,7 @@
 		   <span class="material-symbols-outlined">hallway</span>
 		   </c:if>
 		   <c:if test="${ blist.boardType eq 1}">
-		  	 <button type="button" class="reThread">수정됨</button>
+		  	 <button type="button" class="reThread">수정된 글</button>
 		   </c:if>
 		   </div>
 		   <label>제목</label>

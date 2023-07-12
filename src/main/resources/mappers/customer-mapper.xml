@@ -40,10 +40,13 @@
 	
 	<select id="qBoardList" resultMap="QnaResultSet">
 		select *
-		from qna 
-		where qna_status = 'Y' and users_no = #{usersNo}
-		order by qna_no
-		
+	    from qna q
+		     left join ingredient i on(i.product_no = q.product_no)
+		     left join food f on(f.product_no = q.product_no)
+		     left join tool t on(t.product_no = q.product_no)
+		     left join menu m on(m.product_no = q.product_no)
+	    where q.qna_status = 'Y' and q.users_no = #{usersNo}
+	    order by q.qna_no
 	</select>
 	
 	<resultMap type="Customer" id="CustomerResultSet">
@@ -70,9 +73,13 @@
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="ORDER_NO" property="orderNo"/>
 		<result column="QNA_TYPE" property="qnaType"/>
+		<result column="TOOL_NAME" property="toolName"/>
+		<result column="MENU_NAME" property="menuName"/>
+		<result column="INGREDIENT_NAME" property="ingredientName"/>
+		<result column="FOOD_NAME" property="foodName"/>
 	</resultMap>
 	
-<select id="getCategoryFListCount" resultType="_int">
+	<select id="getCategoryFListCount" resultType="_int">
 		select count(*)
 		from faq
 		where faq_status = 'Y' and faq_type != -1
@@ -194,13 +201,13 @@
 	</select>
 
 	<insert id="qnaInsert">
-		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type, order_no)
+		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type, product_no)
 	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, #{qnaType}, default)
 	</insert>
 	
 	<insert id="qnaProduct">
-		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type, order_no)
-	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, 1, #{orderNo})
+		insert into qna (qna_no, users_no, qna_date, qna_title, qna_content, answer_date, answer_content, qna_status, qna_type, product_no)
+	    values (seq_qna_no.nextval, #{usersNo}, sysdate, #{qnaTitle}, #{qnaContent}, default, default, default, 1, #{productNo})
 	</insert>
 	
 	
@@ -230,11 +237,38 @@
 		<result column="QNA_TYPE" property="qnaType"/>
    </resultMap>
 	
+   <resultMap type="Food" id="foodInfo">
+       <result column="PRODUCT_NO" property="productNo"/>
+       <result column="FOOD_NAME" property="foodName"/>
+       <result column="FOOD_KIND" property="foodKind"/>
+       <result column="FOOD_TYPE" property="foodType"/>
+       <result column="FOOD_CONTENT" property="foodContent"/>
+       <result column="QNA_NO" property="qnaNo"/>
+    </resultMap>
+    
 	<select id="qnaType" resultMap="QnaResultSet">
 		select *
 		from qna 
 		where users_no = #{usersNo}
 			and qna_no = #{qnaNo}
 	</select>	
+	
+	<select id="qnaModify" resultMap="QnaResultSet">
+		select *
+	    from qna q
+		     left join ingredient i on(i.product_no = q.product_no)
+		     left join food f on(f.product_no = q.product_no)
+		     left join tool t on(t.product_no = q.product_no)
+		     left join menu m on(m.product_no = q.product_no)
+	    where q.qna_status = 'Y' and q.users_no = #{usersNo}
+	     and q.qna_no = #{qnaNo}
+	    order by q.qna_no
+	</select>
+	
+	<update id="modi11">
+		update qna
+		set qna_status = 'N'
+		where users_no = #{usersNo} and qna_no = #{qnaNo} and qna_status = 'Y'	
+	</update>
 
 </mapper>

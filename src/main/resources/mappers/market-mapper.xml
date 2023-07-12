@@ -261,11 +261,11 @@
    </select>
    
    <select id="selectOptionsSet" resultMap="optionsList">
-         select *
+       select *
       from (select *
-           from options
+           from options join  product using(product_no) 
            order by option_no)
-      where product_no = #{productNo}
+      where product_no = 293 and product_option = 'Y'
    </select>
    
    <select id="updateOptionNo" resultType="_int">
@@ -364,6 +364,7 @@
       <result column="REVIEW_STATUS" property="reviewStatus"/>
       <result column="REVIEW_DATE" property="reviewDate"/>
       <result column="REVIEW_WRITER" property="reviewWriter"/>
+      <result column="USERS_NO" property="usersNo"/>
       
       <result column="image_divide_no" property="imageDivideNo"/>
       <result column="image_type" property="imageType"/>
@@ -398,8 +399,8 @@
 	</delete>
 	
    <insert  id="insertReview">
-      insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date, review_writer)
-      values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter})
+      insert into review(product_no, order_no, review_no, review_title, review_content, review_score, review_status, review_date, review_writer, users_no)
+      values(#{productNo}, seq_order_no.nextval, seq_review_no.nextval, null, #{reviewContent}, #{reviewScore}, default, sysdate, #{reviewWriter}, #{usersNo})
       <selectKey keyProperty="reviewNo" resultType="int" order="AFTER" >
          select seq_review_no.currval from dual
       </selectKey>

@@ -9,10 +9,12 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.customer.model.vo.Qna;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Review;
@@ -236,6 +238,39 @@ public class UsersDAO {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("usersMapper.selectReview", usersNo, rowBounds);
+	}
+
+	public int getBoardCount(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("usersMapper.getBoardCount", usersNo);
+	}
+
+	public int getReplyCount(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("usersMapper.getReplyCount", usersNo);
+	}
+
+	public int getQnaCount(SqlSessionTemplate sqlSession, int usersNo) {
+		return sqlSession.selectOne("usersMapper.getQnaCount", usersNo);
+	}
+
+	public ArrayList<HashMap<String, Object>> selectBoardList(SqlSessionTemplate sqlSession, int usersNo, PageInfo bpi) {
+		int offset = (bpi.getCurrentPage() -1) * bpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, bpi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.selectBoardList", usersNo, rowBounds);
+	}
+
+	public ArrayList<HashMap<String, Object>> selectReplyList(SqlSessionTemplate sqlSession, int usersNo, PageInfo rpi) {
+		int offset = (rpi.getCurrentPage() -1) * rpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, rpi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.selectReplyList", usersNo, rowBounds);
+	}
+
+	public ArrayList<Qna> selectQnaList(SqlSessionTemplate sqlSession, int usersNo, PageInfo qpi) {
+		int offset = (qpi.getCurrentPage() -1) * qpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, qpi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("usersMapper.selectQnaList", usersNo, rowBounds);
 	}
 
 

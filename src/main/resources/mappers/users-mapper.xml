@@ -226,11 +226,11 @@
 		     left join menu m on (b.division_no = m.product_no)
 		     left join product p on (b.division_no = p.product_no)
 		     left join healther h on (p.users_no = h.users_no)
-		     left join recipe r on (b.division_no = r.food_no)
+		     left join recipe r on (b.division_no = r.food_no) and recipe_status = 'Y'
 		     left join image i on (b.division_no = i.IMAGE_DIVIDE_NO)
 		     left join users u on (u.users_no = r.users_no)
 		where b.users_no = #{usersNo} and i.image_level = 0 AND (p.product_status = 'Y' OR p.product_status IS NULL)
-			  AND (r.recipe_name IS NOT NULL OR m.menu_name IS NOT NULL) and recipe_status = 'Y'
+			  AND (r.recipe_name IS NOT NULL OR m.menu_name IS NOT NULL)
 		<if test="selectTitle != null">
 			and (recipe_name like '%${selectTitle}%' or menu_name like '%${selectTitle}%')
 		</if>
@@ -450,5 +450,69 @@
 		where r.users_no = #{usersNo} and order_no != -1 and review_status = 'Y'
 		order by review_date desc
 	</select>
+	
+	<select id="getBoardCount" resultType="_int">
+		select count(*)
+        from board
+        where users_no = #{usersNo} and board_status = 'Y'
+        order by board_no desc
+	</select>
+	
+	<select id="getReplyCount" resultType="_int">
+		select count(*)
+        from review r
+             left join board b on(r.product_no = b.board_no)
+        where r.users_no = #{usersNo} and review_status = 'Y' and order_no = -1
+        order by review_no desc
+	</select>
+	
+	<select id="selectBoardList" resultType="map">
+		SELECT b.*, (
+		    SELECT COUNT(*)
+		    FROM review r
+		    WHERE r.product_no = b.board_no and order_no = -1
+		) AS comment_count
+		FROM board b
+		WHERE b.users_no = #{usersNo} AND b.board_status = 'Y'
+		ORDER BY b.board_no DESC
+	</select>
+	
+	<select id="selectReplyList" resultType="map">
+		select r.*, b.board_title
+        from review r
+             left join board b on(r.product_no = b.board_no)
+        where r.users_no = #{usersNo} and review_status = 'Y' and order_no = -1
+        order by review_no desc
+	</select>
+	
+	<resultMap id="BoardResultSet" type="Board">
+		<id column="BOARD_NO" property="boardNo"/>
+		<result column="USERS_NO" property="usersNo"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_DATE" property="boardDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		<result column="BOARD_TYPE" property="boardType"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="REVIEW_NO" property="reviewNo"/>
+		<result column="REVIEW_TITLE" property="reviewTitle"/>
+		<result column="REVIEW_CONTENT" property="reviewContent"/>
+		<result column="REVIEW_SCORE" property="reviewScore"/>
+		<result column="REVIEW_STATUS" property="reviewStatus"/>
+		<result column="REVIEW_DATE" property="reviewDate"/>
+		<result column="REVIEW_WRITER" property="reviewWriter"/>
+	</resultMap>
+	<resultMap type="Review" id="reviewResultSet">
+		<id column="review_No" property="reviewNo"/>
+		<result column="orderNo" property="orderNo" />
+		<result column="review_no" property="reviewNo" />
+		<result column="review_title" property="reviewTitle" />
+		<result column="review_content" property="reviewContent" />
+		<result column="review_score" property="reviewScore" />
+		<result column="review_status" property="reviewStatus" />
+	</resultMap>
 	
 </mapper>

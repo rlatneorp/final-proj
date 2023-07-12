@@ -519,7 +519,7 @@ p b {
 						<fmt:formatNumber value="${price}"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<c:if test="${ loginUser != null }">
+					<c:if test="${ loginUser != null && loginUser.usersNo ne menu.usersNo }">
 						<c:if test="${like ne null}">
 							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
 						</c:if>
@@ -2217,7 +2217,7 @@ p b {
 			writeQna.action = '${contextPath}/insertQna.mn';
 			writeQna.submit();
 		}else {
-			alert('내용을 전부 입력해주세요.');
+			alert('빈칸을 채워주세요.');
 		}
 	})
 	

@@ -234,19 +234,17 @@ public class MenuController {
 		Double sugar = (double)0;
 		Double cole = (double)0;
 		for(int i = 0; i < mlList.size(); i++) {
-//			System.out.println(mlList.get(i).getFoodContent().split("@", 0)[3]);
 			nutrient.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
 //			for(int j = 0; j < 9; j++) {
-//				System.out.println(nutrient.get(i).split(",", 0)[j]);
-				kcal += Double.parseDouble(nutrient.get(i).split(",", 0)[0]);
-				carbo += Double.parseDouble(nutrient.get(i).split(",", 0)[1]);
-				protein += Double.parseDouble(nutrient.get(i).split(",", 0)[2]);
-				fat += Double.parseDouble(nutrient.get(i).split(",", 0)[3]);
-				transfat += Double.parseDouble(nutrient.get(i).split(",", 0)[4]);
-				saturfat += Double.parseDouble(nutrient.get(i).split(",", 0)[5]);
-				na += Double.parseDouble(nutrient.get(i).split(",", 0)[6]);
-				sugar += Double.parseDouble(nutrient.get(i).split(",", 0)[7]);
-				cole += Double.parseDouble(nutrient.get(i).split(",", 0)[8]);
+				kcal += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[0]));
+				carbo += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[1]));
+				protein += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[2]));
+				fat += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[3]));
+				transfat += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[4]));
+				saturfat += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[5]));
+				na += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[6]));
+				sugar += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[7]));
+				cole += Math.round(Double.parseDouble(nutrient.get(i).split(",", 0)[8]));
 //			}
 		}
 		totalNu.add(kcal);
@@ -274,15 +272,15 @@ public class MenuController {
 			nutrient1.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
 		}
 		for(int j = 0; j < 4; j++) {
-			kcal1 += Double.parseDouble(nutrient1.get(j).split(",", 0)[0]);
-			carbo1 += Double.parseDouble(nutrient1.get(j).split(",", 0)[1]);
-			protein1 += Double.parseDouble(nutrient1.get(j).split(",", 0)[2]);
-			fat1 += Double.parseDouble(nutrient1.get(j).split(",", 0)[3]);
-			transfat1 += Double.parseDouble(nutrient1.get(j).split(",", 0)[4]);
-			saturfat1+= Double.parseDouble(nutrient1.get(j).split(",", 0)[5]);
-			na1 += Double.parseDouble(nutrient1.get(j).split(",", 0)[6]);
-			sugar1 += Double.parseDouble(nutrient1.get(j).split(",", 0)[7]);
-			cole1 += Double.parseDouble(nutrient1.get(j).split(",", 0)[8]);
+			kcal1 += Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[0]));
+			carbo1 += Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[1]));
+			protein1 +=Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[2]));
+			fat1 += Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[3]));
+			transfat1 += Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[4]));
+			saturfat1+= Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[5]));
+			na1 += Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[6]));
+			sugar1 += Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[7]));
+			cole1 += Math.round(Double.parseDouble(nutrient1.get(j).split(",", 0)[8]));
 		}
 		totalNu1.add(kcal1);
 		totalNu1.add(carbo1);
@@ -309,15 +307,15 @@ public class MenuController {
 			nutrient2.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
 		}
 		for(int j = 0; j < 4; j++) {
-			kcal2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[0]);
-			carbo2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[1]);
-			protein2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[2]);
-			fat2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[3]);
-			transfat2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[4]);
-			saturfat2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[5]);
-			na2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[6]);
-			sugar2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[7]);
-			cole2 += Double.parseDouble(nutrient2.get(j).split(",", 0)[8]);
+			kcal2 += Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[0]));
+			carbo2 += Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[1]));
+			protein2 += Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[2]));
+			fat2 += Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[3]));
+			transfat2 += Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[4]));
+			saturfat2 += Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[5]));
+			na2 += Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[6]));
+			sugar2 += Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[7]));
+			cole2 +=Math.round(Double.parseDouble(nutrient2.get(j).split(",", 0)[8]));
 		}
 		totalNu2.add(kcal2);
 		totalNu2.add(carbo2);
@@ -344,15 +342,15 @@ public class MenuController {
 			nutrient3.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
 		}
 		for(int j = 0; j < 4; j++) {
-			kcal3 += Double.parseDouble(nutrient3.get(j).split(",", 0)[0]);
-			carbo3 += Double.parseDouble(nutrient3.get(j).split(",", 0)[1]);
-			protein3 += Double.parseDouble(nutrient3.get(j).split(",", 0)[2]);
-			fat3 += Double.parseDouble(nutrient3.get(j).split(",", 0)[3]);
-			transfat3 += Double.parseDouble(nutrient3.get(j).split(",", 0)[4]);
-			saturfat3+= Double.parseDouble(nutrient3.get(j).split(",", 0)[5]);
-			na3 += Double.parseDouble(nutrient3.get(j).split(",", 0)[6]);
-			sugar3 += Double.parseDouble(nutrient3.get(j).split(",", 0)[7]);
-			cole3 += Double.parseDouble(nutrient3.get(j).split(",", 0)[8]);
+			kcal3 += Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[0]));
+			carbo3 += Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[1]));
+			protein3 += Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[2]));
+			fat3 += Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[3]));
+			transfat3 += Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[4]));
+			saturfat3+= Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[5]));
+			na3 += Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[6]));
+			sugar3 += Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[7]));
+			cole3 += Math.round(Double.parseDouble(nutrient3.get(j).split(",", 0)[8]));
 		}
 		totalNu3.add(kcal3);
 		totalNu3.add(carbo3);
@@ -379,15 +377,15 @@ public class MenuController {
 			nutrient4.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
 		}
 		for(int j = 0; j < 4; j++) {
-			kcal4 += Double.parseDouble(nutrient4.get(j).split(",", 0)[0]);
-			carbo4 += Double.parseDouble(nutrient4.get(j).split(",", 0)[1]);
-			protein4 += Double.parseDouble(nutrient4.get(j).split(",", 0)[2]);
-			fat4 += Double.parseDouble(nutrient4.get(j).split(",", 0)[3]);
-			transfat4 += Double.parseDouble(nutrient4.get(j).split(",", 0)[4]);
-			saturfat4+= Double.parseDouble(nutrient4.get(j).split(",", 0)[5]);
-			na4 += Double.parseDouble(nutrient4.get(j).split(",", 0)[6]);
-			sugar4 += Double.parseDouble(nutrient4.get(j).split(",", 0)[7]);
-			cole4 += Double.parseDouble(nutrient4.get(j).split(",", 0)[8]);
+			kcal4 += Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[0]));
+			carbo4 += Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[1]));
+			protein4 += Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[2]));
+			fat4 += Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[3]));
+			transfat4 += Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[4]));
+			saturfat4+= Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[5]));
+			na4 += Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[6]));
+			sugar4 += Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[7]));
+			cole4 += Math.round(Double.parseDouble(nutrient4.get(j).split(",", 0)[8]));
 		}
 		totalNu4.add(kcal4);
 		totalNu4.add(carbo4);
@@ -414,15 +412,15 @@ public class MenuController {
 			nutrient5.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
 		}
 		for(int j = 0; j < 4; j++) {
-			kcal5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[0]);
-			carbo5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[1]);
-			protein5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[2]);
-			fat5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[3]);
-			transfat5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[4]);
-			saturfat5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[5]);
-			na5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[6]);
-			sugar5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[7]);
-			cole5 += Double.parseDouble(nutrient5.get(j).split(",", 0)[8]);
+			kcal5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[0]));
+			carbo5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[1]));
+			protein5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[2]));
+			fat5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[3]));
+			transfat5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[4]));
+			saturfat5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[5]));
+			na5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[6]));
+			sugar5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[7]));
+			cole5 += Math.round(Double.parseDouble(nutrient5.get(j).split(",", 0)[8]));
 		}
 		totalNu5.add(kcal5);
 		totalNu5.add(carbo5);
@@ -449,15 +447,15 @@ public class MenuController {
 			nutrient6.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
 		}
 		for(int j = 0; j < 4; j++) {
-			kcal6 += Double.parseDouble(nutrient6.get(j).split(",", 0)[0]);
-			carbo6 += Double.parseDouble(nutrient6.get(j).split(",", 0)[1]);
-			protein6 += Double.parseDouble(nutrient6.get(j).split(",", 0)[2]);
-			fat6 += Double.parseDouble(nutrient6.get(j).split(",", 0)[3]);
-			transfat6 += Double.parseDouble(nutrient6.get(j).split(",", 0)[4]);
-			saturfat6+= Double.parseDouble(nutrient6.get(j).split(",", 0)[5]);
-			na6 += Double.parseDouble(nutrient6.get(j).split(",", 0)[6]);
-			sugar6 += Double.parseDouble(nutrient6.get(j).split(",", 0)[7]);
-			cole6 += Double.parseDouble(nutrient6.get(j).split(",", 0)[8]);
+			kcal6 += Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[0]));
+			carbo6 += Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[1]));
+			protein6 += Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[2]));
+			fat6 += Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[3]));
+			transfat6 += Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[4]));
+			saturfat6+= Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[5]));
+			na6 += Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[6]));
+			sugar6 += Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[7]));
+			cole6 += Math.round(Double.parseDouble(nutrient6.get(j).split(",", 0)[8]));
 		}
 		totalNu6.add(kcal6);
 		totalNu6.add(carbo6);
@@ -484,15 +482,15 @@ public class MenuController {
 			nutrient7.add(mlList.get(i).getFoodContent().split("@", 0)[3]);
 		}
 		for(int j = 0; j < 4; j++) {
-			kcal7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[0]);
-			carbo7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[1]);
-			protein7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[2]);
-			fat7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[3]);
-			transfat7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[4]);
-			saturfat7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[5]);
-			na7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[6]);
-			sugar7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[7]);
-			cole7 += Double.parseDouble(nutrient7.get(j).split(",", 0)[8]);
+			kcal7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[0]));
+			carbo7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[1]));
+			protein7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[2]));
+			fat7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[3]));
+			transfat7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[4]));
+			saturfat7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[5]));
+			na7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[6]));
+			sugar7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[7]));
+			cole7 += Math.round(Double.parseDouble(nutrient7.get(j).split(",", 0)[8]));
 		}
 		totalNu7.add(kcal7);
 		totalNu7.add(carbo7);
@@ -619,10 +617,7 @@ public class MenuController {
 	@RequestMapping("insertBookmark.mn")
 	@ResponseBody
 	public String insertBookmark(int usersNo, int divisionNo) {
-		System.out.println(usersNo);
-		System.out.println(divisionNo);
 		int result = mService.insertBookmark(usersNo, divisionNo);
-		System.out.println(result);
 		if(result > 0) {
 			   return "success";
 		   } else {
@@ -633,8 +628,6 @@ public class MenuController {
 	@RequestMapping("deleteBookmark.mn")
 	@ResponseBody
 	public String deleteBookmark(int usersNo, int divisionNo) {
-		System.out.println("usersNo : "+usersNo);
-		System.out.println("division : "+divisionNo);
 		int result = mService.deleteBookmark(usersNo, divisionNo);
 		
 		if(result > 0) {

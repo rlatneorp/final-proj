@@ -797,9 +797,11 @@ public class UsersController {
 	public String myPage_UpdateInfo(@ModelAttribute Users u, Model model) {
 		int result = uService.updateInfo(u);
 		int result1 = uService.updateNickName(u);
+		
+		Users user = uService.selectInfo(u);
 
 		if (result > 0 || result1 > 0) {
-			model.addAttribute("loginUser", eService.login(u));
+			model.addAttribute("loginUser", user);
 			return "yes";
 		} else {
 			throw new UsersException("정보 수정에 실패하였습니다.");

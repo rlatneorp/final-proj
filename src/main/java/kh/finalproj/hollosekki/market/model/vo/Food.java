@@ -6,15 +6,18 @@ public class Food {
 	private int foodKind;
 	private int foodType;
 	private String foodContent;
+	private int qnaNo; 
 	
 	public Food() {}
 
-	public Food(int productNo, String foodName, int foodKind, int foodType, String foodContent) {
+	public Food(int productNo, String foodName, int foodKind, int foodType, String foodContent, int qnaNo) {
+		super();
 		this.productNo = productNo;
 		this.foodName = foodName;
 		this.foodKind = foodKind;
 		this.foodType = foodType;
 		this.foodContent = foodContent;
+		this.qnaNo = qnaNo;
 	}
 
 	public int getProductNo() {
@@ -57,10 +60,19 @@ public class Food {
 		this.foodContent = foodContent;
 	}
 
+	public int getQnaNo() {
+		return qnaNo;
+	}
+
+	public void setQnaNo(int qnaNo) {
+		this.qnaNo = qnaNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Food [productNo=" + productNo + ", foodName=" + foodName + ", foodKind=" + foodKind + ", foodType="
-				+ foodType + ", foodContent=" + foodContent + "]";
+				+ foodType + ", foodContent=" + foodContent + ", qnaNo=" + qnaNo + "]";
 	}
-	
+
+
 }

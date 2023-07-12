@@ -206,10 +206,6 @@ public class RecipeController {
 			model.addAttribute("bookmark", result);
 		}
 		
-		
-		System.out.println(recipe);
-		System.out.println("cList : " + cList);
-
 		if (recipe != null) {
 			mv.addObject("recipe", recipe);
 			mv.addObject("orderList", orderList);
@@ -229,7 +225,6 @@ public class RecipeController {
 
 			return mv;
 		} else {
-
 			throw new RecipeException("레시피 상세조회를 실패하였습니다.");
 		}
 	}
@@ -548,14 +543,10 @@ public class RecipeController {
 		}
 		
 //		레시피 재료 변경 삭제
-		
 		rService.deleteRecipeIngredient(r.getFoodNo());
 		
 		ArrayList<RecipeElement> reelList = new ArrayList<>();
 		String[] quantity = elementQuantity.split(",");
-		
-//		System.out.println(elementQuantity);
-//		System.out.println(elementIngredient);
 
 		for(int i = 0; i < quantity.length; i++) {
 			if (!quantity[i].equals("") && !elementIngredient.get(i).isEmpty()) {
@@ -580,10 +571,8 @@ public class RecipeController {
 				}
 			} 
 		}
-
 		rService.updateIngredient(reelList);
 		
-
 //		레시피 순서 변경/삭제
 		ArrayList<RecipeOrder> orc = new ArrayList<>();
 		ArrayList<RecipeOrder> ro = new ArrayList<>();
@@ -609,10 +598,6 @@ public class RecipeController {
 				}
 			}
 		}
-//		for(int i = 0; i < orderFiles.size(); i++) {
-//			System.out.println(orderFiles.get(i));
-//		}
-//		System.out.println(orderFiles.size());
 		
 		int orderProcedure = orderArr.length - delLine;
 		int j = 0;
@@ -638,7 +623,6 @@ public class RecipeController {
 						if (i < orderArr.length) {
 							if (!orderArr[i].equals("")) {
 								rcc.setRecipeOrder(orderArr[i]);
-//								System.out.println("orderArr : " + orderArr[i]);
 							}
 						}
 						rcc.setRecipeOriginalName(recipeOriginal);
@@ -647,10 +631,7 @@ public class RecipeController {
 						rcc.setRecipeImagePath(renamePath);
 						rcc.setFoodNo(rc.getFoodNo());
 
-//						System.out.println("rcc : " + rcc);
-
 						orc.add(rcc);
-						System.out.println("orc1 : " + orc);
 					}
 					j++;
 					break;
@@ -668,8 +649,6 @@ public class RecipeController {
 				ro.add(rcc);
 			}
 		}
-		System.out.println("orc2 : " + orc);
-		
 		updateRecipeOrderResult = rService.updateRecipeOrder(ro);
 		updateOrderResult = rService.updateOrder(orc);
 		

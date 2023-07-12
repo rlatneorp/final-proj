@@ -953,6 +953,7 @@
 		        $(".more").show();
 		        $(".more-2").hide(); 
 		        $(".div-box").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
@@ -984,6 +985,7 @@
 		        $(".tbody").slice(0, initialCount).show();
 		        $(".more22-2").hide();
 		        $(".more22").show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
@@ -1015,6 +1017,7 @@
 		        $(".tbody2").slice(0, initialCount).show();
 		        $(".more33-2").hide();
 		        $(".more33").show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
@@ -1062,6 +1065,7 @@
 		        $(".more4").show();
 		        $(".more4-2").hide(); 
 		        $(".div-box4").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
@@ -1093,6 +1097,7 @@
 		        $(".more5").show();
 		        $(".more5-2").hide(); 
 		        $(".div-box5").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
@@ -1138,6 +1143,7 @@
 		        $(".more2").show();
 		        $(".more2-2").hide(); 
 		        $(".div-box2").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
@@ -1169,6 +1175,7 @@
 		        $(".more3").show();
 		        $(".more3-2").hide(); 
 		        $(".div-box3").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		

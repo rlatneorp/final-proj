@@ -118,6 +118,8 @@ public interface UsersService {
 
 	ArrayList<Qna> selectQnaList(int usersNo, PageInfo qpi);
 
+	int updateNickName(Users u);
+
 
 
 }

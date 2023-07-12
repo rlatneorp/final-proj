@@ -273,6 +273,10 @@ public class UsersDAO {
 		return (ArrayList)sqlSession.selectList("usersMapper.selectQnaList", usersNo, rowBounds);
 	}
 
+	public int updateNickName(SqlSessionTemplate sqlSession, Users u) {
+		return sqlSession.update("usersMapper.updateNickName", u);
+	}
+
 
 	
 

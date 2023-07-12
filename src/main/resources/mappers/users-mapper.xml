@@ -515,4 +515,10 @@
 		<result column="review_status" property="reviewStatus" />
 	</resultMap>
 	
+	<update id="updateNickName">
+		update review
+		set review_writer = #{nickName}
+		where users_no = #{usersNo}
+	</update>
+	
 </mapper>

@@ -796,12 +796,13 @@ public class UsersController {
 	@ResponseBody
 	public String myPage_UpdateInfo(@ModelAttribute Users u, Model model) {
 		int result = uService.updateInfo(u);
+		int result1 = uService.updateNickName(u);
 
-		if (result > 0) {
+		if (result > 0 || result1 > 0) {
 			model.addAttribute("loginUser", eService.login(u));
 			return "yes";
 		} else {
-			throw new UsersException("�젙蹂� �닔�젙 �떎�뙣�뀑");
+			throw new UsersException("정보 수정에 실패하였습니다.");
 		}
 	}
 

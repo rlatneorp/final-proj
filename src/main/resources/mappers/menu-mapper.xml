@@ -200,6 +200,19 @@
 		where menu_name like '%${word}%'
 	</select>
 	
+	<select id="selectMenuId" resultType="string">
+		select users_name
+		from menu
+		   	 left join product using(product_no)
+		   	 left join users using(users_no)
+		where product_no = #{mNo}
+	</select>
+	
+	<update id="addCount">
+		update menu set menu_count = menu_count + 1
+		where product_no =#{mNo}
+	</update>
+	
 	<resultMap type="Menu" id="menuResultSet">
 		<id column="product_no" property="foodProductNo"/>
 		<result column="MENU_NAME" property="menuName"/>
@@ -213,6 +226,7 @@
 		<result column="name" property="name"/>
 		<result column="title" property="title"/>
 		<result column="career" property="career"/>
+		<result column="menu_count" property="menuCount"/>
 	</resultMap>
 	
 	<resultMap type="Image" id="imageResultSet">

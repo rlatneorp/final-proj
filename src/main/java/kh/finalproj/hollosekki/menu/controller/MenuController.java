@@ -178,7 +178,18 @@ public class MenuController {
 			
 			myReview = mService.myReview(my);
 		}
+		
+		
+		String menuName = mService.selectMenuId(mNo);
+		System.out.println("mNo : " + mNo);
+		System.out.println("menuName : " + menuName);
+		System.out.println("nickName : " + nickName);
+		
+		
 		boolean yn = false;
+		if(!menuName.equals(nickName)) {
+			yn = true;
+		}
 		
 		int reviewCount = mService.getReviewCount(mNo);
 		if(repage == null) {
@@ -208,7 +219,7 @@ public class MenuController {
 		
 		Image menuProfile = mService.selectProfile(usersNo);
 		
-		Menu menu = mService.menuDetail(mNo);
+		Menu menu = mService.menuDetail(yn, mNo);
 		Image thum = mService.menuDetailThum(mNo);
 		ArrayList<MenuList> mlList = mService.menuDetailMenu(mNo);
 		ArrayList<Image> miList = mService.menuDetailImage();

@@ -194,15 +194,20 @@ let firstWriter = '';
 		
 		const contentEdit = document.getElementsByClassName('note-editable');
 		for(let i = 0; i < contentEdit.length; i++){
-			const contents = contentEdit[i].innerHTML;
-			if(title.value != '' && contents != ''){
+			const contents = contentEdit[i].value;
+ 			let content = $('.summernote').val().replace(/(<([^>]+)>)/gi, '');
+ 			content = content.replace(/&nbsp;/gi,"");
+			content = content.replace(/<br>/gi, "");
+			content = content.replace(/ /gi,"");
+				
+			if(title.value != '' || content != "" || content != "<p><\/p>" || content != "" || content != '&nbsp;'){
 				$.ajax({
 					type: 'POST',
 					url: 'freeBoardWriting.bo',
 					async:false,
 					data: {
 						boardTitle: title.value,
-						boardContent: contents
+						boardContent: content
 					},
 					success: data=>{
 						if(data == 'success'){
@@ -232,7 +237,8 @@ let firstWriter = '';
 					
 				})
 				
-			}else{
+			}else if(title.value == '' || content == "" || content == "<p><\/p>" || content == "" || content == '&nbsp;'){
+				return false;
 				swal({
 					 text: "글 작성에 실패하였습니다. 공백 상태로 글을 작성할 수 없습니다",
 					 icon: "error",
@@ -242,15 +248,15 @@ let firstWriter = '';
 		}
 	})
 	reBoardSubmit.addEventListener('click', ()=>{
-		console.log(pTag.innerText);
-		console.log(title.value);
-		console.log(bInfo.value);
-		console.log(boardNo);
+		let content = $('.summernote').val().replace(/(<([^>]+)>)/gi, '');
+		content = content.replace(/&nbsp;/gi,"");
+		content = content.replace(/<br>/gi, "");
+		content = content.replace(/ /gi,"");
 		$.ajax({
 			type: 'POST',
 			url: 'reBoard.bo',
 			data: {
-				boardContent: pTag.innerHTML,
+				boardContent: content,
 				boardTitle: title.value, 
 				usersNo: bInfo.value,
 				boardNo: boardNo
@@ -266,6 +272,13 @@ let firstWriter = '';
 						});
 					location.reload();
 				}
+			},
+			error: data=>{
+				swal({
+					 text: "글 수정에 실패하였습니다. 공백 상태에서 글을 쓸 수 없습니다.",
+					 icon: "error",
+					 button: "확인",
+				});
 			}
 		})
 	})

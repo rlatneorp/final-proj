@@ -64,7 +64,7 @@
 						<td>${f.productSale}%</td>
 						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.productStock}"/></td>
 						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.orderCount}"/></td>
-						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.viewCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.productCount}"/></td>
 						<td><fmt:formatNumber pattern="###,###,###,###" value="${f.likeCount}"/></td>
 						<td>
 							<c:if test="${f.productStatus eq 'Y'}">

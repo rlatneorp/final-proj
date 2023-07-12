@@ -74,7 +74,7 @@
 			 left join healther using(users_no)
    			 left join image on(product_no = image_divide_no)
    			 left join menu using(product_no)
-		where users_no=#{usersNo} and product_type=2
+		where users_no=#{usersNo} and product_type=2 and product_status = 'Y'
 	</select>
 	
 	<select id="selectBookmark" resultType="_int"> <!-- 식단에대한 북마크 -->

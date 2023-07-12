@@ -100,9 +100,9 @@ public interface UsersService {
 //
 //	int updatePoint(HashMap<String, Object> map);
 
-	int getReviewCount(HashMap<String, Object> map);
+	int getReviewCount(int usersNo);
 	
-	ArrayList<HashMap<String, Object>> selectReview(HashMap<String, Object> map, PageInfo pi);
+	ArrayList<HashMap<String, Object>> selectReview(int usersNo, PageInfo pi);
 
 
 

@@ -968,21 +968,17 @@ public class UsersController {
 	
 	@RequestMapping("myPage_Review.me")
 	public String myPage_Review(Model model, @RequestParam(value = "page", required = false) Integer page) {
-		Users u  = (Users)model.getAttribute("loginUser");
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("usersId", u.getUsersId());
-		map.put("nickName", u.getNickName());
+		int usersNo  = ((Users)model.getAttribute("loginUser")).getUsersNo();
 		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
 		}
 		
-		int listCount = uService.getReviewCount(map);
+		int listCount = uService.getReviewCount(usersNo);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
-		ArrayList<HashMap<String, Object>> list = uService.selectReview(map, pi);
+		ArrayList<HashMap<String, Object>> list = uService.selectReview(usersNo, pi);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);

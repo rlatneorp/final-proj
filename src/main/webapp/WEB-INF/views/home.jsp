@@ -523,7 +523,7 @@ font-family: 'Noto Sans KR', sans-serif;
 				</c:forEach>
 			</div>
 		<div class="oneCooker" style="display: flex; justify-content: center;"> 
-			<c:forEach items="${ hList }" var="h" varStatus="status" begin="4" end="5">
+			<c:forEach items="${ hList }" var="h" varStatus="status" begin="4" end="6">
 				<div style="margin: 10px; width: 300px;">
 					<div class="healther-img-div" >
 						<img class="healther-img" src="${ contextPath }/resources/uploadFiles/${ h.IMAGE_RENAMENAME }"/>

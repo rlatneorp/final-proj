@@ -227,12 +227,12 @@ public class UsersServiceImpl implements UsersService {
 //	}
 	
 	@Override
-	public int getReviewCount(HashMap<String, Object> map) {
-		return uDAO.getReviewCount(sqlSession, map);
+	public int getReviewCount(int usersNo) {
+		return uDAO.getReviewCount(sqlSession, usersNo);
 	}
 	
-	public ArrayList<HashMap<String, Object>> selectReview(HashMap<String, Object> map, PageInfo pi) {
-		return uDAO.selectReview(sqlSession, map, pi);
+	public ArrayList<HashMap<String, Object>> selectReview(int usersNo, PageInfo pi) {
+		return uDAO.selectReview(sqlSession, usersNo, pi);
 	}
 	
 }

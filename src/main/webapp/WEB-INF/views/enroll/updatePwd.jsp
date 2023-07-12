@@ -180,6 +180,7 @@
 	
 	// 비번 유효성검사 (영어, 숫자 포함 8자리 이상)
 	const pwd = document.getElementById('pwd');
+	const checkPwd = document.getElementById('checkPwd');
 	
 	pwd.onkeyup = () => {
 		const checkEng = /[a-zA-Z]/;
@@ -204,9 +205,10 @@
 		special.innerHTML = checkSpecial.test(pwd.value) ? '<i class="bi bi-check-circle"></i> 특수문자' : '<i class="bi bi-circle"></i> 특수문자';
 	};
 
-	document.getElementById('pwd').addEventListener('focusout', ()=>{
+	pwd.addEventListener('focusout', ()=>{
 		const regPwd = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?^=+`~&])[A-Za-z\d@$!%*#?^=+`~&]{8,}$/;
-		const pwd = document.getElementById('pwd').value;
+		
+		checkPwd.value = '';
 		
 		if(pwd.length > 0){
 			if(!regPwd.test(pwd)){

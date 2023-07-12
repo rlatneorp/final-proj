@@ -63,21 +63,14 @@ public class HomeController {
 		// 간단 레시피
 		ArrayList<Recipe> mainRecipeList = eService.mainRecipeList();
 		model.addAttribute("mrList", mainRecipeList);
-//		System.out.println(mainRecipeList);
 		
 		// 영양사 조회
 		ArrayList<Healther> healtherList = eService.healtherList();
 		model.addAttribute("hList", healtherList);
-		System.out.println(healtherList);
 		
 		// 식단 조회
 		ArrayList<Menu> menuList = eService.menuProductList();
 		model.addAttribute("mList", menuList);
-		
-//		//잘 나가는 상품 조회 
-//		ArrayList<Product> likeOrderByOne = mkService.selectLikeOrderBy();
-//		model.addAttribute("likeOrderByOne", likeOrderByOne);
-//		System.out.println("likeOrderByOne"+ likeOrderByOne);
 		
 		//전체 상품 중 좋아요가 많은 상위 8개 조회 
 		ArrayList<HashMap<String, Object>> likeOrderBy = mkService.selectLikeOrderBy();
@@ -118,7 +111,6 @@ public class HomeController {
 			   
 		    }
 			model.addAttribute("likeOrderByOne", lists);
-		
 		
 		
 		//밀키트 조회 

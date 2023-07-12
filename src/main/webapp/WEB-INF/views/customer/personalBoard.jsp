@@ -92,9 +92,11 @@
 									<div class="accordion-body">
 										<div>
 											<button type="button" class="qnaCate d-inline"></button>
+											<c:if test="${!empty q.answerContent }">
 											<div class="d-inlne d-flex justify-content-end">
 												<button class="delete11">삭제</button>
 											</div>
+											</c:if>
 											<c:if test="${!empty q.toolName}">
 												<h6>${q.toolName }</h6><h6>상품번호: ${q.productNo }</h6>
 											</c:if>

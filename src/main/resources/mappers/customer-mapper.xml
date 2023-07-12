@@ -253,17 +253,17 @@
 			and qna_no = #{qnaNo}
 	</select>	
 	
-	<select id="qnaModify" resultMap="QnaResultSet">
-		select *
-	    from qna q
-		     left join ingredient i on(i.product_no = q.product_no)
-		     left join food f on(f.product_no = q.product_no)
-		     left join tool t on(t.product_no = q.product_no)
-		     left join menu m on(m.product_no = q.product_no)
-	    where q.qna_status = 'Y' and q.users_no = #{usersNo}
-	     and q.qna_no = #{qnaNo}
-	    order by q.qna_no
-	</select>
+<!-- 	<select id="qnaModify" resultMap="QnaResultSet"> -->
+<!-- 		select * -->
+<!-- 	    from qna q -->
+<!-- 		     left join ingredient i on(i.product_no = q.product_no) -->
+<!-- 		     left join food f on(f.product_no = q.product_no) -->
+<!-- 		     left join tool t on(t.product_no = q.product_no) -->
+<!-- 		     left join menu m on(m.product_no = q.product_no) -->
+<!-- 	    where q.qna_status = 'Y' and q.users_no = #{usersNo} -->
+<!-- 	     and q.qna_no = #{qnaNo} -->
+<!-- 	    order by q.qna_no -->
+<!-- 	</select> -->
 	
 	<update id="modi11">
 		update qna

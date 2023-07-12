@@ -367,7 +367,7 @@
 <script>
 	const search = document.getElementById('searchBtn');
 	search.addEventListener('click', function(){
-		const text = document.getElementById('inputText').value;
+		const text = document.getElementById('inputText').value.trim();
 		location.href="${contextPath}/searchMenu.mn?word="+text;
 	})
 

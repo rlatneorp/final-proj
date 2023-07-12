@@ -174,7 +174,7 @@
 			
 <!-- 			재료 -->
 			<div class="recipeInformationBox" id="recipeIngredientBox">
-				<div class="beforeInput d-inline-block">재&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;료</div>
+				<div class="beforeInput d-inline-block">재&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;료 |</div><div class="d-inline-block">재료를 추가하려면 +버튼을 눌러주세요.(재료는 최소 3개)</div>
 <!-- 				<div class="d-inline-block" style="width: 500px;">최소 3개 작성</div> -->
 				<div></div>
 				
@@ -264,7 +264,7 @@
 			
 			
 			<div class="recipeInformationBox" id="completePic">
-				<div class="d-inline-block beforeInput">완성된 요리 |</div><div class="d-inline-block">완성된 요리 이미지를 올려주세요. 이미지를 추가하려면 +버튼을 눌러주세요.(완성된 요리 이미지는 최대 3개)</div>
+				<div class="d-inline-block beforeInput">완성된 요리 |</div><div class="d-inline-block">완성된 요리 이미지를 올려주세요.</div>
 				<div class="comPicBox" id="cPicBox">
 					<c:if test="${cList[0] ne null}">
 						<div id="comCopy" class="comCopyC">

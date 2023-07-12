@@ -133,6 +133,11 @@
 			chevron_right
 			</span></a>
 			<br><br>
+			<a class="menuBar" href="${ contextPath }/myPage_Board.me">게시글 관리 &nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="material-symbols-outlined arrow" style="margin-left: 3px;">
+			chevron_right
+			</span></a>
+			<br><br>
 			<a class="menuBar" href="${ contextPath }/myPage_edit.me">회원 정보 수정&nbsp;
 			<span class="material-symbols-outlined arrow" style="margin-left: 2px;">
 			chevron_right

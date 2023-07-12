@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.customer.model.vo.Qna;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Review;
@@ -103,6 +105,18 @@ public interface UsersService {
 	int getReviewCount(int usersNo);
 	
 	ArrayList<HashMap<String, Object>> selectReview(int usersNo, PageInfo pi);
+
+	int getBoardCount(int usersNo);
+
+	int getReplyCount(int usersNo);
+
+	int getQnaCount(int usersNo);
+
+	ArrayList<HashMap<String, Object>> selectBoardList(int usersNo, PageInfo bpi);
+
+	ArrayList<HashMap<String, Object>> selectReplyList(int usersNo, PageInfo rpi);
+
+	ArrayList<Qna> selectQnaList(int usersNo, PageInfo qpi);
 
 
 

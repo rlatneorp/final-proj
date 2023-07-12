@@ -9,10 +9,12 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.model.vo.BookMark;
 import kh.finalproj.hollosekki.common.model.vo.Follow;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.customer.model.vo.Qna;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
 import kh.finalproj.hollosekki.market.model.vo.Review;
@@ -233,6 +235,36 @@ public class UsersServiceImpl implements UsersService {
 	
 	public ArrayList<HashMap<String, Object>> selectReview(int usersNo, PageInfo pi) {
 		return uDAO.selectReview(sqlSession, usersNo, pi);
+	}
+
+	@Override
+	public int getBoardCount(int usersNo) {
+		return uDAO.getBoardCount(sqlSession, usersNo);
+	}
+
+	@Override
+	public int getReplyCount(int usersNo) {
+		return uDAO.getReplyCount(sqlSession, usersNo);
+	}
+
+	@Override
+	public int getQnaCount(int usersNo) {
+		return uDAO.getQnaCount(sqlSession, usersNo);
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectBoardList(int usersNo, PageInfo bpi) {
+		return uDAO.selectBoardList(sqlSession, usersNo, bpi);
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectReplyList(int usersNo, PageInfo rpi) {
+		return uDAO.selectReplyList(sqlSession, usersNo, rpi);
+	}
+
+	@Override
+	public ArrayList<Qna> selectQnaList(int usersNo, PageInfo qpi) {
+		return uDAO.selectQnaList(sqlSession, usersNo, qpi);
 	}
 	
 }

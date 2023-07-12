@@ -7,11 +7,13 @@ public class Ingredient extends Product {
 	private String ingredientContent;
 	private String ingredientStatus;
 	private String isAccept;
+	private int productNo;
+	private int qnaNo; 
 	
 	public Ingredient() {}
 
 	public Ingredient(int ingredientNo, String ingredientName, String ingredientType, String ingredientContent,
-			String ingredientStatus, String isAccept) {
+			String ingredientStatus, String isAccept, int productNo, int qnaNo) {
 		super();
 		this.ingredientNo = ingredientNo;
 		this.ingredientName = ingredientName;
@@ -19,6 +21,8 @@ public class Ingredient extends Product {
 		this.ingredientContent = ingredientContent;
 		this.ingredientStatus = ingredientStatus;
 		this.isAccept = isAccept;
+		this.productNo = productNo;
+		this.qnaNo = qnaNo;
 	}
 
 	public int getIngredientNo() {
@@ -69,11 +73,30 @@ public class Ingredient extends Product {
 		this.isAccept = isAccept;
 	}
 
+	public int getProductNo() {
+		return productNo;
+	}
+
+	public void setProductNo(int productNo) {
+		this.productNo = productNo;
+	}
+
+	public int getQnaNo() {
+		return qnaNo;
+	}
+
+	public void setQnaNo(int qnaNo) {
+		this.qnaNo = qnaNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Ingredient [ingredientNo=" + ingredientNo + ", ingredientName=" + ingredientName + ", ingredientType="
 				+ ingredientType + ", ingredientContent=" + ingredientContent + ", ingredientStatus=" + ingredientStatus
-				+ ", isAccept=" + isAccept + "]";
+				+ ", isAccept=" + isAccept + ", productNo=" + productNo + ", qnaNo=" + qnaNo + "]";
 	}
+
+	
+	
 
 }

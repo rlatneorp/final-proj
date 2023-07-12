@@ -1931,12 +1931,7 @@ p b {
 	
 	if(like != null){
 		like.addEventListener("click", function() {
-			if(name == loginName){
-				swal("내가 쓴 글은 찜할 수 없습니다.", {
-					  buttons: false,
-					  timer: 1000,
-				});
-			} else if(like.innerText === '♡') {
+			if(like.innerText === '♡') {
 		        //찜이 안 되어 있으면 
 		        $.ajax({
 		        	url:'${contextPath}/insertLike.ma',

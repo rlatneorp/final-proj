@@ -7,11 +7,15 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.customer.model.dao.CustomerDAO;
 import kh.finalproj.hollosekki.customer.model.vo.Customer;
 import kh.finalproj.hollosekki.customer.model.vo.Qna;
+import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.Tool;
 
 @Service
 public class CustomerService {
@@ -67,6 +71,14 @@ public class CustomerService {
 
 	public ArrayList<Qna> qnaType(HashMap<String, Object> map) {
 		return csDAO.qnaType(sqlSession, map);
+	}
+
+	public Qna qnaModify(HashMap<String, Object> map) {
+		return csDAO.qnaModify(sqlSession, map);
+	}
+
+	public int modi11(HashMap<String, Object> map) {
+		return csDAO.modi11(sqlSession, map);
 	}
 
 

@@ -7,10 +7,14 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.finalproj.hollosekki.common.model.vo.Ingredient;
+import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
 import kh.finalproj.hollosekki.customer.model.vo.Customer;
 import kh.finalproj.hollosekki.customer.model.vo.Qna;
+import kh.finalproj.hollosekki.market.model.vo.Food;
 import kh.finalproj.hollosekki.market.model.vo.Orders;
+import kh.finalproj.hollosekki.market.model.vo.Tool;
 
 @Repository
 public class CustomerDAO {
@@ -69,6 +73,30 @@ public class CustomerDAO {
 
 	public ArrayList<Qna> qnaType(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return (ArrayList)sqlSession.selectList("customerMapper.qnaType", map);
+	}
+
+	public Menu qBoardMenuList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("customerMapper.qBoardMenuList", map);
+	}
+
+	public Ingredient qBoardInList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("customerMapper.qBoardInList", map);
+	}
+
+	public Food qBoardFoodList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("customerMapper.qBoardFoodList", map);
+	}
+
+	public Tool qBoardToolList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("customerMapper.qBoardToolList", map);
+	}
+
+	public Qna qnaModify(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("customerMapper.qnaModify", map);
+	}
+
+	public int modi11(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.update("customerMapper.modi11", map);
 	}
 
 

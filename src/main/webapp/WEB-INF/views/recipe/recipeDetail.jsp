@@ -696,9 +696,9 @@ for(const resc of reviewScore){
 }
 
 function reviewEnter(){
-	if(reviewSco.value == ""){
+	if(reviewSco.value.trim() == ""){
 		alert('별점을 체크해주세요.');
-	} else if(reviewWrite.value == ''){
+	} else if(reviewWrite.value.trim() == ''){
 		alert('내용을 입력해주세요.');
 	} else{
 		$.ajax({
@@ -785,7 +785,7 @@ for(const lineAll of lineAlls){
 
 const updateB = document.getElementById('update');
 updateB.addEventListener('click', () => {
-	if(reviewContentUpdate.value == ''){
+	if(reviewContentUpdate.value.trim() == ''){
 		swal({
             text: "리뷰 내용을 입력해주세요.",
             icon: "error",

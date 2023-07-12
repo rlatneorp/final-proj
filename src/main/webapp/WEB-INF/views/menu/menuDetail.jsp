@@ -2218,9 +2218,11 @@ p b {
 		const qnaTitle = qnaBody.childNodes[12].value;
 		const qnaContent = qnaBody.childNodes[18].value;
 		
-		if(qnaTitle != null && qnaContent != null){
+		if(qnaTitle.trim() !="" && qnaContent.trim() != ""){
 			writeQna.action = '${contextPath}/insertQna.mn';
 			writeQna.submit();
+		}else {
+			alert('내용을 전부 입력해주세요.');
 		}
 	})
 	

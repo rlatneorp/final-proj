@@ -44,7 +44,11 @@ public class MenuServiceImpl implements MenuService{
 	}
 	
 	@Override
-	public Menu menuDetail(int mNo) {
+	public Menu menuDetail(boolean yn, int mNo) {
+		int result = 0;
+		if(yn) {
+			result = mDAO.addCount(sqlSession, mNo);
+		}
 		return mDAO.menuDetail(sqlSession, mNo);
 	}
 	
@@ -181,5 +185,10 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public int getSearchListCount(String word) {
 		return mDAO.getSearchListCount(sqlSession, word);
+	}
+	
+	@Override
+	public String selectMenuId(int mNo) {
+		return mDAO.selectMenuId(sqlSession, mNo);
 	}
 }

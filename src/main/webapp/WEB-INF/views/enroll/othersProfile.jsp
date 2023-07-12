@@ -66,13 +66,14 @@
 	.contents{
 		border-left: 2px solid dimgray; border-right: 2px solid dimgray; border-bottom: 2px solid dimgray;}
 		
-	.recipe-contents, .bookmark-contents, .recipe-review-contents{flex-wrap: wrap; padding-top: 50px; padding-bottom: 50px; padding-left: 17px;}
+	.recipe-contents-div, .bookmark-contents, .recipe-review-contents{flex-wrap: wrap; padding-top: 50px; padding-bottom: 50px; padding-left: 17px;}
 	.recipe-content:hover, .bookmark-content:hover, .recipe-review-content:hover{
 		box-shadow: 5px 5px 10px rgba(0,0,0,0.10), 0 5px 5px rgba(0,0,0,0.22); transform: translateY(-2px); transition: all 0.2s ease 0s;
 		}
 		
-	.more, .more2, .more3, .more4, .more5, .more22, .more33{width: 100px; text-align: center; cursor: pointer; margin: 0 auto; margin-top: 20px; margin-bottom: 20px;}
+	.more, .more2, .more3, .more4, .more5, .more22, .more33, .more2-2, .more-2, .more3-2, .more4-2, .more5-2, .more22-2, .more33-2{width: 70px; text-align: center; cursor: pointer; margin: 0 auto; margin-top: 20px; margin-bottom: 20px;}
 	.more:hover, .more2:hover, .more3:hover, .more4:hover, .more5:hover, .more22:hover, .more33:hover{font-weight: bold;}
+	.more-2:hover, .more2-2:hover, .more3-2:hover, .more4-2:hover, .more5-2:hover, .more22-2:hover, .more33-2:hover{font-weight: bold;}
 		
 		
 	/* 1. 작성한 레시피 */
@@ -240,12 +241,14 @@
 		border:1px solid #B0DAFF;
 		border-radius: 100%;
 		}
+		
 </style>
 </head>
 
 <body>
 	<%@ include file="../common/top.jsp"%>
 	<br><br>
+	
 	<div class="out-div">
 		<div class="users-info">
 			<div class="users-profile-img-out">
@@ -319,7 +322,8 @@
 			<div class="contents">
 			
 				<!-- 메뉴1. 레시피목록 -->
-				<div class="recipe-contents flex">
+				<div class="recipe-contents">
+					<div class="flex recipe-contents-div">
 					<c:if test="${ empty rList }">
 						<div style="margin: 85px; width: 100%; text-align: center; color: gray;">등록한 레시피가 없습니다.</div>
 					</c:if>
@@ -340,8 +344,14 @@
 								</c:if>
 							</c:forEach>
 						</c:forEach>
-						<div class="more"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+						
+<!-- 						<div class="more"><i class="bi bi-chevron-double-down"></i> 더보기</div> -->
 					</c:if>
+					</div>
+					<div style="display: flex; justify-content: center;">
+						<div class="more"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+						<div class="more-2"><i class="bi bi-chevron-double-up"></i> 접기</div>
+					</div>
 				</div>
 				
 				<!-- 메뉴2. 작성글 목록 -->
@@ -379,7 +389,12 @@
 						<c:if test="${ empty boList }">
 							<div style="margin: 90px; text-align: center; color: gray;">작성한 글이 없습니다.</div>
 						</c:if>
-						<div class="more22"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+						<div style="display: flex; justify-content: center;">
+							<div class="more22"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+							<div class="more22-2"><i class="bi bi-chevron-double-up"></i> 접기</div>
+						</div>
+						
+<!-- 						<div class="more22"><i class="bi bi-chevron-double-down"></i> 더보기</div> -->
 					</div>
 				</div>
 				
@@ -431,7 +446,12 @@
 							<c:if test="${ empty userRList }">
 								<div style="margin: 90px; text-align: center; color: gray;">작성한 댓글이 없습니다.</div>
 							</c:if>
-							<div class="more33"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+							
+							<div style="display: flex; justify-content: center;">
+								<div class="more33"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+								<div class="more33-2"><i class="bi bi-chevron-double-up"></i> 접기</div>
+							</div>
+<!-- 							<div class="more33"><i class="bi bi-chevron-double-down"></i> 더보기</div> -->
 						</div>
 					</div>
 				</div>
@@ -486,7 +506,12 @@
 							</c:forEach>
 						</div>
 					</c:forEach>
-					<div class="more4"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+					<div style="display: flex; justify-content: center;">
+						<div class="more4"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+						<div class="more4-2"><i class="bi bi-chevron-double-up"></i> 접기</div>
+					</div>
+					
+<!-- 					<div class="more4"><i class="bi bi-chevron-double-down"></i> 더보기</div> -->
 						
 					<br>
 					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
@@ -534,7 +559,11 @@
 							</div>
 						</div>
 					</c:forEach>
-					<div class="more5"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+					<div style="display: flex; justify-content: center;">
+						<div class="more5"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+						<div class="more5-2"><i class="bi bi-chevron-double-up"></i> 접기</div>
+					</div>
+<!-- 					<div class="more5"><i class="bi bi-chevron-double-down"></i> 더보기</div> -->
 				</div>
 				
 				<!-- 메뉴5. 북마크 목록 -->
@@ -570,7 +599,10 @@
 							</c:forEach>
 						</c:forEach>
 					</div>
-					<div class="more2"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+					<div style="display: flex; justify-content: center;">
+						<div class="more2"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+						<div class="more2-2"><i class="bi bi-chevron-double-up"></i> 접기</div>
+					</div>
 					
 					<br>
 					<div style='border: 1.1px dashed lightgray; margin-right: 15px;'></div>
@@ -613,7 +645,11 @@
 							</c:forEach>
 						</c:forEach>
 					</div>
-					<div class="more3"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+					<div style="display: flex; justify-content: center;">
+						<div class="more3"><i class="bi bi-chevron-double-down"></i> 더보기</div>
+						<div class="more3-2"><i class="bi bi-chevron-double-up"></i> 접기</div>
+					</div>
+<!-- 					<div class="more3"><i class="bi bi-chevron-double-down"></i> 더보기</div> -->
 				</div>
 			</div>
 		</div>
@@ -763,6 +799,7 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>	
 <script>
+
 	$(()=>{
 		$('#recipe').addClass('select');
 		
@@ -835,28 +872,30 @@
 		// 언팔
 		function unfollowUser(button) {
 			var userNo = button.parentNode.dataset.userNo;
-			console.log("언팔할사람 : "+userNo);
 			
 			$.ajax({
 			    type: 'POST',
 			    url: '${contextPath}/myPage_unFollow.me',
 			    data: { usersNo: usersNo, followingNo: userNo },
 			    success: function (data) {
-		     		 console.log('언팔로우 성공?');
+		     		 console.log('언팔로우 성공');
 					if (data == 'yes') {
 						var unfollowDiv = button.parentNode;
 						unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
 					};
-					swal("언팔로우 되었습니다.", {
-	          			  buttons: false,
-	          			  timer: 2000,
+					swal({
+						title: "🥲",
+						text: "언팔로우 되었습니다.",
+	          			buttons: false,
+	          			closeOnClickOutside: false,
+	          			closeOnEsc: false,
 	          			});
+					location.reload();
 		    	},
 		    	error: function (data) {
 					console.log('언팔로우 실패');
 				}
 			});
-			location.reload();
 		}
 		
 		// 팔
@@ -871,147 +910,288 @@
 					console.log('팔로우 성공');
 					var unfollowDiv = button.parentNode;
 			  		unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
-			  		swal("팔로우 되었습니다.", {
-	          			  buttons: false,
-	          			  timer: 2000,
+			  		swal({
+			  			title: "🎉",
+						text: "팔로우 되었습니다.",
+	          			buttons: false,
+	          			closeOnClickOutside: false,
+	          			closeOnEsc: false,
 	          			});
+			  		location.reload();
 				},
 			    error: function (data) {
 			 		console.log('실패');
 			    }
 			});
-			location.reload();
 		}
 		
 		// 1. 작성 레시피 더보기
 		$(function(){
-		    $(".div-box").slice(0, 8).show(); // 초기갯수
-// 		    console.log('div-box: ' + $(".div-box:hidden").length);
-		    if($(".div-box:hidden").length == 0){ 
-	        	$(".more").hide(); 
-	        }
+		    var initialCount = 8; // 초기갯수
+		    var totalCount = $(".div-box").length;
+		    
+		    $(".div-box").slice(0, initialCount).show();
+		    $(".more-2").hide();
+		    
+		    if (totalCount <= initialCount) {
+		        $(".more").hide();
+		    }
+		    
 		    $(".more").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box:hidden").slice(0, 8).show();
-		        if($(".div-box:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".more").hide(); // 컨텐츠 없을시 버튼숨기기
+		        $(".div-box:hidden").slice(0, initialCount).show();
+		        $(".more-2").show(); 
+		        
+		        if ($(".div-box:hidden").length == 0) { // 컨텐츠 남아있는지 확인
+		            $(".more").hide(); // 컨텐츠 없을시 버튼 숨기기
 		        }
+		    });
+		    
+		    $(".more-2").click(function(e){
+		        e.preventDefault();
+		        $(".div-box").hide();
+		        $(".more").show();
+		        $(".more-2").hide(); 
+		        $(".div-box").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
 		// 2. 작성 글 더보기
 		$(function(){
-		    $(".tbody:gt(9)").hide();
-		    if ($(".tbody:hidden").length <= 10) {
+		    var initialCount = 8; // 초기갯수
+		    var totalCount = $(".tbody").length;
+		    
+		    $(".tbody:gt(" + (initialCount - 1) + ")").hide();
+		    $(".more22-2").hide();		    
+		    
+		    if ($(".tbody:hidden").length <= initialCount) {
 		        $(".more22").hide();
 		    }
 		    
 		    $(".more22").click(function(e) {
 		        e.preventDefault();
-		        $(".tbody:hidden").slice(0, 10).show();
+		        $(".more22-2").show();
+		        $(".tbody:hidden").slice(0, initialCount).show();
 		        
-		        if ($(".tbody:hidden").length <= 10) {
+		        if ($(".tbody:hidden").length <= initialCount) {
 		            $(".more22").hide();
 		        }
+		    });
+		    
+		    $(".more22-2").click(function(e){
+		        e.preventDefault();
+		        $(".tbody").hide();
+		        $(".tbody").slice(0, initialCount).show();
+		        $(".more22-2").hide();
+		        $(".more22").show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
 		// 3. 작성 댓글 더보기
 		$(function(){
-		    $(".tbody2:gt(9)").hide();
-		    if ($(".tbody2:hidden").length <= 10) {
+		    var initialCount = 8; // 초기갯수
+		    var totalCount = $(".tbody2").length;
+		    
+		    $(".tbody2:gt(" + (initialCount - 1) + ")").hide();
+		    $(".more33-2").hide();
+		    
+		    if ($(".tbody2:hidden").length <= initialCount) {
 		        $(".more33").hide();
 		    }
 		    
 		    $(".more33").click(function(e) {
 		        e.preventDefault();
-		        $(".tbody2:hidden").slice(0, 10).show();
+		        $(".more33-2").show();
+		        $(".tbody2:hidden").slice(0, initialCount).show();
 		        
-		        if ($(".tbody2:hidden").length <= 10) {
+		        if ($(".tbody2:hidden").length <= initialCount) {
 		            $(".more33").hide();
 		        }
 		    });
+		    
+		    $(".more33-2").click(function(e){
+		        e.preventDefault();
+		        $(".tbody2").hide();
+		        $(".tbody2").slice(0, initialCount).show();
+		        $(".more33-2").hide();
+		        $(".more33").show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
+		    });
 		});
+		
+// 		$(function(){
+// 		    $(".tbody2:gt(9)").hide();
+// 		    if ($(".tbody2:hidden").length <= 10) {
+// 		        $(".more33").hide();
+// 		    }
+		    
+// 		    $(".more33").click(function(e) {
+// 		        e.preventDefault();
+// 		        $(".tbody2:hidden").slice(0, 10).show();
+		        
+// 		        if ($(".tbody2:hidden").length <= 10) {
+// 		            $(".more33").hide();
+// 		        }
+// 		    });
+// 		});
 		
 		// 4-1. 레시피 후기 더보기
 		$(function(){
-		    $(".div-box4").slice(0, 4).show(); // 초기갯수
-// 		    console.log('div-box4: ' + $(".div-box4:hidden").length);
-		    if($(".div-box4:hidden").length <= 4){ // 컨텐츠 남아있는지 확인
-	        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
-	        }
+		    var initialCount = 4; // 초기갯수
+		    var totalCount = $(".div-box4").length;
+		    
+		    $(".div-box4").slice(0, initialCount).show();
+		    $(".more4-2").hide();
+		    
+		    if (totalCount <= initialCount) {
+		        $(".more4").hide();
+		    }
+		    
 		    $(".more4").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box4:hidden").slice(0, 4).show();
-		        if($(".div-box4:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".more4").hide(); // 컨텐츠 없을시 버튼숨기기
+		        $(".div-box4:hidden").slice(0, initialCount).show();
+		        $(".more4-2").show(); 
+		        
+		        if ($(".div-box4:hidden").length == 0) { // 컨텐츠 남아있는지 확인
+		            $(".more4").hide(); // 컨텐츠 없을시 버튼 숨기기
 		        }
+		    });
+		    
+		    $(".more4-2").click(function(e){
+		        e.preventDefault();
+		        $(".div-box4").hide();
+		        $(".more4").show();
+		        $(".more4-2").hide(); 
+		        $(".div-box4").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
 		// 4-2. 식단 후기 더보기
 		$(function(){
-		    $(".div-box5").slice(0, 5).show(); // 초기갯수
-// 		    console.log('div-box5: ' + $(".div-box5:hidden").length);
-		    if($(".div-box5:hidden").length <= 5){ // 컨텐츠 남아있는지 확인
-	        	$(".more5").hide(); // 컨텐츠 없을시 버튼숨기기
-	        }
+		    var initialCount = 4; // 초기갯수
+		    var totalCount = $(".div-box5").length;
+		    
+		    $(".div-box5").slice(0, initialCount).show();
+		    $(".more5-2").hide();
+		    
+		    if (totalCount <= initialCount) {
+		        $(".more5").hide();
+		    }
+		    
 		    $(".more5").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box5:hidden").slice(0, 5).show();
-		        if($(".div-box5:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".more5").hide(); // 컨텐츠 없을시 버튼숨기기
+		        $(".div-box5:hidden").slice(0, initialCount).show();
+		        $(".more5-2").show(); 
+		        
+		        if ($(".div-box5:hidden").length == 0) { // 컨텐츠 남아있는지 확인
+		            $(".more5").hide(); // 컨텐츠 없을시 버튼 숨기기
 		        }
 		    });
+		    
+		    $(".more5-2").click(function(e){
+		        e.preventDefault();
+		        $(".div-box5").hide();
+		        $(".more5").show();
+		        $(".more5-2").hide(); 
+		        $(".div-box5").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
+		    });
 		});
+		
+// 		$(function(){
+// 		    $(".div-box5").slice(0, 5).show(); // 초기갯수
+// 		    if($(".div-box5:hidden").length <= 5){ // 컨텐츠 남아있는지 확인
+// 	        	$(".more5").hide(); // 컨텐츠 없을시 버튼숨기기
+// 	        }
+// 		    $(".more5").click(function(e){ // 클릭시 more
+// 		        e.preventDefault();
+// 		        $(".div-box5:hidden").slice(0, 5).show();
+// 		        if($(".div-box5:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+// 		        	$(".more5").hide(); // 컨텐츠 없을시 버튼숨기기
+// 		        }
+// 		    });
+// 		});
 	
 		// 5-1 .북마크-레시피 더보기
 		$(function(){
-		    $(".div-box2").slice(0, 8).show(); // 초기갯수
-// 		    console.log('div-box2: ' + $(".div-box2:hidden").length);
-		    if($(".div-box2:hidden").length <= 8){
-	        	$(".more2").hide(); 
-	        }
+		    var initialCount = 8; // 초기갯수
+		    var totalCount = $(".div-box2").length;
+		    
+		    $(".div-box2").slice(0, initialCount).show();
+		    $(".more2-2").hide();
+		    
+		    if (totalCount <= initialCount) {
+		        $(".more2").hide();
+		    }
+		    
 		    $(".more2").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box2:hidden").slice(0, 8).show();
-		        if($(".div-box2:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".more2").hide(); // 컨텐츠 없을시 버튼숨기기
+		        $(".div-box2:hidden").slice(0, initialCount).show();
+		        $(".more2-2").show(); 
+		        
+		        if ($(".div-box2:hidden").length == 0) { // 컨텐츠 남아있는지 확인
+		            $(".more2").hide(); // 컨텐츠 없을시 버튼 숨기기
 		        }
+		    });
+		    
+		    $(".more2-2").click(function(e){
+		        e.preventDefault();
+		        $(".div-box2").hide();
+		        $(".more2").show();
+		        $(".more2-2").hide(); 
+		        $(".div-box2").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
 		// 5-2. 북마크-식단 더보기
 		$(function(){
-		    $(".div-box3").slice(0, 8).show(); // 초기갯수
-// 		    console.log('div-box3: ' + $(".div-box3:hidden").length);
-		    if($(".div-box3:hidden").length <= 8){ // 컨텐츠 남아있는지 확인
-	        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
-	        }
+		    var initialCount = 8; // 초기갯수
+		    var totalCount = $(".div-box3").length;
+		    
+		    $(".div-box3").slice(0, initialCount).show();
+		    $(".more3-2").hide();
+		    
+		    if (totalCount <= initialCount) {
+		        $(".more3").hide();
+		    }
+		    
 		    $(".more3").click(function(e){ // 클릭시 more
 		        e.preventDefault();
-		        $(".div-box3:hidden").slice(0, 8).show();
-		        if($(".div-box3:hidden").length == 0){ // 컨텐츠 남아있는지 확인
-		        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
+		        $(".div-box3:hidden").slice(0, initialCount).show();
+		        $(".more3-2").show(); 
+		        
+		        if ($(".div-box3:hidden").length == 0) { // 컨텐츠 남아있는지 확인
+		            $(".more3").hide(); // 컨텐츠 없을시 버튼 숨기기
 		        }
+		    });
+		    
+		    $(".more3-2").click(function(e){
+		        e.preventDefault();
+		        $(".div-box3").hide();
+		        $(".more3").show();
+		        $(".more3-2").hide(); 
+		        $(".div-box3").slice(0, initialCount).show();
+		        window.scrollTo({ top: 0, behavior: "smooth"});
 		    });
 		});
 		
-// 		// 모달 X버튼
-// 		const close = document.querySelectorAll('.btn-close');
-// 		close[0].addEventListener('click', () => {
-// 			location.reload();
-// 		});
-// 		close[1].addEventListener('click', () => {
-// 			location.reload();
-// 		});
 		
-		
-// 		// ESC 누르면
-// 		window.addEventListener('keydown', (e) => {
-// 			if(e.keyCode == 27){
-// 				location.reload();
-// 			}
+// 		$(function(){
+// 		    $(".div-box3").slice(0, 8).show(); // 초기갯수
+// 		    if($(".div-box3:hidden").length <= 8){ // 컨텐츠 남아있는지 확인
+// 	        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
+// 	        }
+// 		    $(".more3").click(function(e){ // 클릭시 more
+// 		        e.preventDefault();
+// 		        $(".div-box3:hidden").slice(0, 8).show();
+// 		        if($(".div-box3:hidden").length == 0){ // 컨텐츠 남아있는지 확인
+// 		        	$(".more3").hide(); // 컨텐츠 없을시 버튼숨기기
+// 		        }
+// 		    });
 // 		});
 		
 </script>

@@ -268,6 +268,7 @@ public class MarketController {
                         HttpSession session,  Model model) {
 	   
       Users users = (Users)session.getAttribute("loginUser");
+      System.out.println("유저번호  : "+ users);
       Tool tool = mkService.selectTool(productNo);
       Food food = mkService.selectFood(productNo);
       Ingredient ingredient = mkService.selectIngrdient(productNo);
@@ -290,6 +291,12 @@ public class MarketController {
 		
   
       Product p = mkService.selectProductSet(productNo);
+      
+      int resultCount = 1;
+      if(users != null) {
+    	  resultCount = mkService.addCount(productNo, users.getUsersNo());
+      }
+      
       r.setProductNo(productNo);
       
       
@@ -378,6 +385,7 @@ public class MarketController {
       System.out.println(food);
       System.out.println(ingredient);
       System.out.println(tool);
+      System.out.println(list);
       return "market_detail";
    }
    
@@ -405,6 +413,7 @@ public class MarketController {
       r.setReviewContent(r.getReviewContent());
       r.setReviewScore(r.getReviewScore());
       r.setReviewWriter(users.getNickName());
+      r.setUsersNo(r.getUsersNo());
       
       int result = mkService.insertReview(r);
       

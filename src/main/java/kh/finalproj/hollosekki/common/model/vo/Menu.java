@@ -15,7 +15,7 @@ public class Menu extends Product{
 	private String name;
 	private String title;
 	private String career;
-	private int qnaNo;
+	private int menuCount;
 	
 	
 	public Menu() {
@@ -24,8 +24,8 @@ public class Menu extends Product{
 
 
 	public Menu(String menuName, int menuNo, int menuKind, int menuType, String menuContent, String foodProductNo,
-			String menuTarget, String nutrient, int productPrice, Double productSale, String imageRenameName,
-			String name, String title, String career, int qnaNo) {
+			String menuTarget, String nutrient, int productPrice, Double productSale, String imageRenameName, String name, String title, String career,
+			int menuCount) {
 		super();
 		this.menuName = menuName;
 		this.menuNo = menuNo;
@@ -41,7 +41,7 @@ public class Menu extends Product{
 		this.name = name;
 		this.title = title;
 		this.career = career;
-		this.qnaNo = qnaNo;
+		this.menuCount = menuCount;
 	}
 
 
@@ -183,17 +183,14 @@ public class Menu extends Product{
 	public void setCareer(String career) {
 		this.career = career;
 	}
-
-
-	public int getQnaNo() {
-		return qnaNo;
+	
+	public int getMenuCount() {
+		return menuCount;
 	}
-
-
-	public void setQnaNo(int qnaNo) {
-		this.qnaNo = qnaNo;
+	
+	public void setMenuCount(int menuCount) {
+		this.menuCount = menuCount;
 	}
-
 
 	@Override
 	public String toString() {
@@ -201,9 +198,7 @@ public class Menu extends Product{
 				+ ", menuContent=" + menuContent + ", foodProductNo=" + foodProductNo + ", menuTarget=" + menuTarget
 				+ ", nutrient=" + nutrient + ", productPrice=" + productPrice + ", productSale=" + productSale
 				+ ", imageRenameName=" + imageRenameName + ", name=" + name + ", title=" + title + ", career=" + career
-				+ ", qnaNo=" + qnaNo + "]";
+				+ ", menuCount=" + menuCount + "]";
 	}
-
 	
-
 }

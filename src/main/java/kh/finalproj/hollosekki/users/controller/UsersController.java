@@ -26,11 +26,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.finalproj.hollosekki.board.model.vo.Board;
 import kh.finalproj.hollosekki.common.Pagination;
 import kh.finalproj.hollosekki.common.model.vo.Image;
 import kh.finalproj.hollosekki.common.model.vo.Ingredient;
 import kh.finalproj.hollosekki.common.model.vo.Menu;
 import kh.finalproj.hollosekki.common.model.vo.PageInfo;
+import kh.finalproj.hollosekki.customer.model.vo.Qna;
 import kh.finalproj.hollosekki.enroll.model.service.EnrollService;
 import kh.finalproj.hollosekki.enroll.model.vo.Users;
 import kh.finalproj.hollosekki.market.model.service.MarketService;
@@ -794,12 +796,15 @@ public class UsersController {
 	@ResponseBody
 	public String myPage_UpdateInfo(@ModelAttribute Users u, Model model) {
 		int result = uService.updateInfo(u);
+		int result1 = uService.updateNickName(u);
+		
+		Users user = uService.selectInfo(u);
 
-		if (result > 0) {
-			model.addAttribute("loginUser", eService.login(u));
+		if (result > 0 || result1 > 0) {
+			model.addAttribute("loginUser", user);
 			return "yes";
 		} else {
-			throw new UsersException("�젙蹂� �닔�젙 �떎�뙣�뀑");
+			throw new UsersException("정보 수정에 실패하였습니다.");
 		}
 	}
 
@@ -984,6 +989,42 @@ public class UsersController {
 		model.addAttribute("pi", pi);
 		
 		return "myPage_Review";
+	}
+	
+	@RequestMapping("myPage_Board.me")
+	public String myPage_Board(Model model, @RequestParam(value = "page", required = false) Integer page,
+							   @RequestParam(value = "bpage", required = false) Integer bpage,
+							   @RequestParam(value = "rpage", required = false) Integer rpage) {
+		int usersNo  = ((Users)model.getAttribute("loginUser")).getUsersNo();
+		
+		if(bpage == null) {
+			bpage = 1;
+		}
+		
+		if(rpage == null) {
+			rpage = 1;
+		}
+		
+		int boardListCount = uService.getBoardCount(usersNo);
+		PageInfo bpi = Pagination.getPageInfo(bpage, boardListCount, 10);
+		
+		int ReplyListCount = uService.getReplyCount(usersNo);
+		PageInfo rpi = Pagination.getPageInfo(rpage, ReplyListCount, 10);
+		
+		ArrayList<HashMap<String, Object>> bList = uService.selectBoardList(usersNo, bpi);
+		ArrayList<HashMap<String, Object>> rList = uService.selectReplyList(usersNo, rpi);
+		System.out.println(bList);
+		System.out.println(rList);
+		
+		model.addAttribute("bList", bList);
+		model.addAttribute("rList", rList);
+		model.addAttribute("page", page);
+		model.addAttribute("bpage", bpage);
+		model.addAttribute("rpage", rpage);
+		model.addAttribute("bpi", bpi);
+		model.addAttribute("rpi", rpi);
+		
+		return "myPage_Board";
 	}
 	
 	

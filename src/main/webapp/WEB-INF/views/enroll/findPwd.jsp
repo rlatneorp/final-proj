@@ -185,13 +185,21 @@
 		$("#loading").hide();
 		$("#mask").hide();
 	})
-	if(document.getElementById('id').value == ''){
+	
+
+	const checkBtn = document.getElementById("button2");
+	const button3 = document.getElementById("button3");
+	
+	checkBtn.addEventListener('click', function(){ // 인증번호 받기 버튼 누르면
+		
+		if(document.getElementById('id').value == ''){
 			swal({
 				 text: "아이디를 입력해주세요",
 				 icon: "error",
 				 button: "확인",
 				});
 			document.getElementById('id').focus();
+			return false;
 		}
 			
 		if(document.getElementById('email').value == ''){
@@ -201,12 +209,8 @@
 				 button: "확인",
 				});
 			document.getElementById('email').focus();
+			return false;
 		} 
-
-	const checkBtn = document.getElementById("button2");
-	const button3 = document.getElementById("button3");
-	
-	checkBtn.addEventListener('click', function(){ // 전송버튼 누르면
 		
 		$.ajax({
 			type:"POST",
@@ -246,7 +250,7 @@
 					let count = 179;
 					
 					time.style.color = 'red';
-					num.vlaue = '메일로 받은 인증번호를 입력하세요';
+					num.placeholder = '메일로 받은 인증번호를 입력하세요';
 					num.disabled = false;
 					alert.innerHTML = '&nbsp;';
 					

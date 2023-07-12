@@ -182,6 +182,7 @@
 		const nickName = document.getElementById('nickName');
 		const btn = document.getElementById('btn');
 		const phone = document.getElementById('phone');
+		const usersNo = '${loginUser.usersNo}';
 		
 		// 비번 = 비번 확인
 		fpwd.addEventListener('keyup', () => {
@@ -406,6 +407,7 @@
 					type : 'POST',
 					url : '${ contextPath }/myPage_UpdateInfo.me',
 					data : {
+							usersNo : usersNo,
 							usersId : id.value,
 							email : email.value, 
 							nickName : nickName.value,

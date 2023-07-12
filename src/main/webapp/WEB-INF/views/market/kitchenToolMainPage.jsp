@@ -672,7 +672,6 @@ ul li {
 				            var anchor = document.createElement('a');
 				            anchor.href = 'market_detail.ma?productNo=' + li.productNo;
 				            liElement.appendChild(anchor);
-				            console.log('li : ' + li.productImg)
 				            if (li.productImg != null) {
 				                var img = document.createElement('img');
 				                img.src = '${contextPath}/resources/uploadFiles/' + li.productImg;
@@ -683,10 +682,9 @@ ul li {
 				                img.src = '${contextPath}/resources/images/noImg.png';
 				                anchor.appendChild(img);
 				            }
-
 				            var productNameDiv = document.createElement('div');
 				            productNameDiv.classList.add('productName');
-				            productNameDiv.innerText = li.ProductName;
+				            productNameDiv.innerText = li.productName;
 				            liElement.appendChild(productNameDiv);
 				            
 				            if (li.productSale != 0) { 

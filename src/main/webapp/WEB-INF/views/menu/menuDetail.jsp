@@ -233,7 +233,7 @@ p b {
 /* 	식단 설명 */
 	.menuABCD{
 		width: 65%;
-		height: 780px;
+		height: 850px;
 		background-color: lightgray;
 		margin: 25px auto;
 		border-radius: 10px;
@@ -259,9 +259,9 @@ p b {
 /* 	문의 */
 	#qna{width: 1000px; margin: auto; text-align: center;}
 	.boardNo{width: 100px;}
-	.boardContent{width: 540px;}
+	.boardContent{width: 500px;}
 	.boardWrite{width: 150px;}
-	.boardTitle{width: 575px;}
+	.boardTitle{width: 570px;}
 	.qnaAnswer{width: 100px;}
 	.qnaDate{width: 125px;}
 	.board{border-collapse: collapse; }
@@ -279,8 +279,8 @@ p b {
 	
 /* 	후기 */
 	.star{width: 110px;}
-	.boardReviewWrite{width: 100px;}
-	.boardReviewDate{width: 150px;}
+	.boardReviewWrite{width: 150px;}
+	.boardReviewDate{width: 120px;}
 
 /* 	모달 */
 	.modal-body{text-align: center;}
@@ -462,6 +462,12 @@ p b {
 	
 	#menu{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
 	.like{cursor: pointer;}
+	
+	.infoTable{width: 1150px; margin: auto; border: 1px solid black; border-radius: 10px;}
+	.infoTop{border-bottom: 1px solid black; background-color: lightgray; border-radius: 10px 10px 0 0;}
+	.infoTop th{width: 157px; text-align: center; border-right: 1px solid black}
+	.infoContent td{padding: 3px; width: 70px; margin: 0px 3px; text-align: right; border-right: 1px solid black}
+	.infoContentDay td {width: 70px; margin: 0px 3px; text-align: right;}
 </style>
 <body>
 <span>
@@ -499,14 +505,16 @@ p b {
 				<div style="margin: auto; text-align: center;">
 				<br>
 					<c:set value="${menu.productPrice - (menu.productPrice * (menu.productSale * 0.01))}" var="price"/>
-					<div style="width: 300px; margin-left: 60px;">
-						<label style="font-size: 30px; color:gray; text-decoration: line-through lightgray 2px;">
-							<fmt:formatNumber value="${menu.productPrice}"/>원
-						</label>
-						<label style="font-size: 25px; color: red;">
-							&nbsp;&nbsp;<fmt:formatNumber value="${menu.productSale}"/>%<br>
-						</label>
-					</div>
+					<c:if test="${menu.productSale ne 0 }">
+						<div style="width: 300px; margin-left: 60px;">
+							<label style="font-size: 30px; color:gray; text-decoration: line-through lightgray 2px;">
+								<fmt:formatNumber value="${menu.productPrice}"/>원
+							</label>
+							<label style="font-size: 25px; color: red;">
+								&nbsp;&nbsp;<fmt:formatNumber value="${menu.productSale}"/>%<br>
+							</label>
+						</div>
+					</c:if>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
 						<fmt:formatNumber value="${price}"/>원
 					</h2>
@@ -633,6 +641,7 @@ p b {
 					<br>
 					<p>${fn:split(value[0].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[0].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -645,6 +654,7 @@ p b {
 					<br>
 					<p>${fn:split(value[1].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[1].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -657,6 +667,7 @@ p b {
 					<br>
 					<p>${fn:split(value[2].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[2].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -669,7 +680,33 @@ p b {
 					<br>
 					<p>${fn:split(value[3].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[3].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu1, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu1, ',')[1]}g</td>
+					<td>${fn:split(totalNu1, ',')[2]}g</td>
+					<td>${fn:split(totalNu1, ',')[3]}g</td>
+					<td>${fn:split(totalNu1, ',')[4]}g</td>
+					<td>${fn:split(totalNu1, ',')[5]}g</td>
+					<td>${fn:split(totalNu1, ',')[6]}mg</td>
+					<td>${fn:split(totalNu1, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu1, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -686,6 +723,7 @@ p b {
 					<br>
 					<p>${fn:split(value[4].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[4].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -698,6 +736,7 @@ p b {
 					<br>
 					<p>${fn:split(value[5].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[5].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -710,6 +749,7 @@ p b {
 					<br>
 					<p>${fn:split(value[6].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[6].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -722,7 +762,33 @@ p b {
 					<br>
 					<p>${fn:split(value[7].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[7].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu2, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu2, ',')[1]}g</td>
+					<td>${fn:split(totalNu2, ',')[2]}g</td>
+					<td>${fn:split(totalNu2, ',')[3]}g</td>
+					<td>${fn:split(totalNu2, ',')[4]}g</td>
+					<td>${fn:split(totalNu2, ',')[5]}g</td>
+					<td>${fn:split(totalNu2, ',')[6]}mg</td>
+					<td>${fn:split(totalNu2, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu2, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -739,6 +805,7 @@ p b {
 					<br>
 					<p>${fn:split(value[8].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[8].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -751,6 +818,7 @@ p b {
 					<br>
 					<p>${fn:split(value[9].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[9].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -763,6 +831,7 @@ p b {
 					<br>
 					<p>${fn:split(value[10].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[10].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -775,7 +844,33 @@ p b {
 					<br>
 					<p>${fn:split(value[11].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[11].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu3, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu3, ',')[1]}g</td>
+					<td>${fn:split(totalNu3, ',')[2]}g</td>
+					<td>${fn:split(totalNu3, ',')[3]}g</td>
+					<td>${fn:split(totalNu3, ',')[4]}g</td>
+					<td>${fn:split(totalNu3, ',')[5]}g</td>
+					<td>${fn:split(totalNu3, ',')[6]}mg</td>
+					<td>${fn:split(totalNu3, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu3, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -792,6 +887,7 @@ p b {
 					<br>
 					<p>${fn:split(value[12].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[12].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -804,6 +900,7 @@ p b {
 					<br>
 					<p>${fn:split(value[13].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[13].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -816,6 +913,7 @@ p b {
 					<br>
 					<p>${fn:split(value[14].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[14].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -828,7 +926,33 @@ p b {
 					<br>
 					<p>${fn:split(value[15].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[15].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu4, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu4, ',')[1]}g</td>
+					<td>${fn:split(totalNu4, ',')[2]}g</td>
+					<td>${fn:split(totalNu4, ',')[3]}g</td>
+					<td>${fn:split(totalNu4, ',')[4]}g</td>
+					<td>${fn:split(totalNu4, ',')[5]}g</td>
+					<td>${fn:split(totalNu4, ',')[6]}mg</td>
+					<td>${fn:split(totalNu4, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu4, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -845,6 +969,7 @@ p b {
 					<br>
 					<p>${fn:split(value[16].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[16].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -857,6 +982,7 @@ p b {
 					<br>
 					<p>${fn:split(value[17].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[17].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -869,6 +995,7 @@ p b {
 					<br>
 					<p>${fn:split(value[18].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[18].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -881,7 +1008,33 @@ p b {
 					<br>
 					<p>${fn:split(value[19].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[19].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu5, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu5, ',')[1]}g</td>
+					<td>${fn:split(totalNu5, ',')[2]}g</td>
+					<td>${fn:split(totalNu5, ',')[3]}g</td>
+					<td>${fn:split(totalNu5, ',')[4]}g</td>
+					<td>${fn:split(totalNu5, ',')[5]}g</td>
+					<td>${fn:split(totalNu5, ',')[6]}mg</td>
+					<td>${fn:split(totalNu5, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu5, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -898,6 +1051,7 @@ p b {
 					<br>
 					<p>${fn:split(value[20].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[20].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -910,6 +1064,7 @@ p b {
 					<br>
 					<p>${fn:split(value[21].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[21].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -922,6 +1077,7 @@ p b {
 					<br>
 					<p>${fn:split(value[22].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[22].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -934,7 +1090,33 @@ p b {
 					<br>
 					<p>${fn:split(value[23].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[23].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu6, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu6, ',')[1]}g</td>
+					<td>${fn:split(totalNu6, ',')[2]}g</td>
+					<td>${fn:split(totalNu6, ',')[3]}g</td>
+					<td>${fn:split(totalNu6, ',')[4]}g</td>
+					<td>${fn:split(totalNu6, ',')[5]}g</td>
+					<td>${fn:split(totalNu6, ',')[6]}mg</td>
+					<td>${fn:split(totalNu6, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu6, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -951,6 +1133,7 @@ p b {
 					<br>
 					<p>${fn:split(value[24].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[24].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -963,6 +1146,7 @@ p b {
 					<br>
 					<p>${fn:split(value[25].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[25].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -975,6 +1159,7 @@ p b {
 					<br>
 					<p>${fn:split(value[26].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[26].foodContent, '@')[3]}">
 			</div>
 			<div class="menuMiniPic">
 				<c:forEach items="${miList}" var="mi">
@@ -987,12 +1172,151 @@ p b {
 					<br>
 					<p>${fn:split(value[27].foodContent, "@")[0]}</p>
 				</div>
+				<input type="hidden" class="nutrient" value="${fn:split(value[27].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu7, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu7, ',')[1]}g</td>
+					<td>${fn:split(totalNu7, ',')[2]}g</td>
+					<td>${fn:split(totalNu7, ',')[3]}g</td>
+					<td>${fn:split(totalNu7, ',')[4]}g</td>
+					<td>${fn:split(totalNu7, ',')[5]}g</td>
+					<td>${fn:split(totalNu7, ',')[6]}mg</td>
+					<td>${fn:split(totalNu7, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu7, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	
 	<br><br>
 	
+	<p class="mid">영양 정보</p>
+	<br>
+	<table class="infoTable">
+		<tr class="infoTop">
+			<th>분류</th>
+			<th>칼로리</th>
+			<th>탄수화물</th>
+			<th>단백질</th>
+			<th>지방</th>
+			<th>트랜스지방</th>
+			<th>포화지방</th>
+			<th>나트륨</th>
+			<th>당류</th>
+			<th>콜레스테롤</th>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">1일 차</td>
+			<td>${fn:split(fn:split(totalNu1, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu1, ',')[1]}g</td>
+			<td>${fn:split(totalNu1, ',')[2]}g</td>
+			<td>${fn:split(totalNu1, ',')[3]}g</td>
+			<td>${fn:split(totalNu1, ',')[4]}g</td>
+			<td>${fn:split(totalNu1, ',')[5]}g</td>
+			<td>${fn:split(totalNu1, ',')[6]}mg</td>
+			<td>${fn:split(totalNu1, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu1, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">2일 차</td>
+			<td>${fn:split(fn:split(totalNu2, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu2, ',')[1]}g</td>
+			<td>${fn:split(totalNu2, ',')[2]}g</td>
+			<td>${fn:split(totalNu2, ',')[3]}g</td>
+			<td>${fn:split(totalNu2, ',')[4]}g</td>
+			<td>${fn:split(totalNu2, ',')[5]}g</td>
+			<td>${fn:split(totalNu2, ',')[6]}mg</td>
+			<td>${fn:split(totalNu2, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu2, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">3일 차</td>
+			<td>${fn:split(fn:split(totalNu3, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu3, ',')[1]}g</td>
+			<td>${fn:split(totalNu3, ',')[2]}g</td>
+			<td>${fn:split(totalNu3, ',')[3]}g</td>
+			<td>${fn:split(totalNu3, ',')[4]}g</td>
+			<td>${fn:split(totalNu3, ',')[5]}g</td>
+			<td>${fn:split(totalNu3, ',')[6]}mg</td>
+			<td>${fn:split(totalNu3, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu3, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">4일 차</td>
+			<td>${fn:split(fn:split(totalNu4, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu4, ',')[1]}g</td>
+			<td>${fn:split(totalNu4, ',')[2]}g</td>
+			<td>${fn:split(totalNu4, ',')[3]}g</td>
+			<td>${fn:split(totalNu4, ',')[4]}g</td>
+			<td>${fn:split(totalNu4, ',')[5]}g</td>
+			<td>${fn:split(totalNu4, ',')[6]}mg</td>
+			<td>${fn:split(totalNu4, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu4, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">5일 차</td>
+			<td>${fn:split(fn:split(totalNu5, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu5, ',')[1]}g</td>
+			<td>${fn:split(totalNu5, ',')[2]}g</td>
+			<td>${fn:split(totalNu5, ',')[3]}g</td>
+			<td>${fn:split(totalNu5, ',')[4]}g</td>
+			<td>${fn:split(totalNu5, ',')[5]}g</td>
+			<td>${fn:split(totalNu5, ',')[6]}mg</td>
+			<td>${fn:split(totalNu5, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu5, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height:35px;">
+			<td style="text-align: center;">6일 차</td>
+			<td>${fn:split(fn:split(totalNu6, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu6, ',')[1]}g</td>
+			<td>${fn:split(totalNu6, ',')[2]}g</td>
+			<td>${fn:split(totalNu6, ',')[3]}g</td>
+			<td>${fn:split(totalNu6, ',')[4]}g</td>
+			<td>${fn:split(totalNu6, ',')[5]}g</td>
+			<td>${fn:split(totalNu6, ',')[6]}mg</td>
+			<td>${fn:split(totalNu6, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu6, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">7일 차</td>
+			<td>${fn:split(fn:split(totalNu7, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu7, ',')[1]}g</td>
+			<td>${fn:split(totalNu7, ',')[2]}g</td>
+			<td>${fn:split(totalNu7, ',')[3]}g</td>
+			<td>${fn:split(totalNu7, ',')[4]}g</td>
+			<td>${fn:split(totalNu7, ',')[5]}g</td>
+			<td>${fn:split(totalNu7, ',')[6]}mg</td>
+			<td>${fn:split(totalNu7, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu7, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px; font-weight: bolder;">
+			<td style="text-align: center;">총&nbsp;&nbsp;&nbsp;합</td>
+			<td>${fn:split(fn:split(totalNu, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu, ',')[1]}g</td>
+			<td>${fn:split(totalNu, ',')[2]}g</td>
+			<td>${fn:split(totalNu, ',')[3]}g</td>
+			<td>${fn:split(totalNu, ',')[4]}g</td>
+			<td>${fn:split(totalNu, ',')[5]}g</td>
+			<td>${fn:split(totalNu, ',')[6]}mg</td>
+			<td>${fn:split(totalNu, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu, ',')[8], ']')[0]}mg</td>
+		</tr>
+	</table>
+	<br>
 <!-- 	문의 -->
 	<p class="mid">문의</p>
 		<br>
@@ -1043,7 +1367,7 @@ p b {
 				<tr class="boardTop">
 					<th class="line boardNo">No.</th>
 					<th class="line star">별점</th>
-					<th class="line boardContent">내용</th>
+					<th class="line boardContent" style="width:500px;">내용</th>
 					<th class="line boardReviewWrite">작성자</th>
 					<th class="line boardReviewDate">날짜</th>
 				</tr>
@@ -1237,7 +1561,7 @@ p b {
 									<div class="shadow-sm">
 										<div class="card-body moCon" style="background-color: lightgray; padding: 10px;">
 											<div class="cut" style="font-weight: bold;">
-												<a style="text-decoration: none; color: black;">${p.menuName} / </a>
+												<a style="text-decoration: none; color: black;">${p.menuName}</a>
 											</div>
 											<div class="cut-2">${p.menuKind eq 1 ? "다이어트" : (p.menuKind eq 2 ? "몸보신" : (p.menuKind eq 3 ? "든든밥상" : (p.menuKind eq 4? "고단백" : "채식")))}</div>
 											<div style="width:170px; height:90px; overflow: hidden;"><img src="${contextPath}/resources/uploadFiles/${p.imageRenameName}" style="border-radius: 5px; width:100%; height:100%; object-fit: cover; object-position: center;"></div>
@@ -1607,12 +1931,7 @@ p b {
 	
 	if(like != null){
 		like.addEventListener("click", function() {
-			if(name == loginName){
-				swal("내가 쓴 글은 찜할 수 없습니다.", {
-					  buttons: false,
-					  timer: 1000,
-				});
-			} else if(like.innerText === '♡') {
+			if(like.innerText === '♡') {
 		        //찜이 안 되어 있으면 
 		        $.ajax({
 		        	url:'${contextPath}/insertLike.ma',
@@ -1894,9 +2213,11 @@ p b {
 		const qnaTitle = qnaBody.childNodes[12].value;
 		const qnaContent = qnaBody.childNodes[18].value;
 		
-		if(qnaTitle != null && qnaContent != null){
+		if(qnaTitle.trim() !="" && qnaContent.trim() != ""){
 			writeQna.action = '${contextPath}/insertQna.mn';
 			writeQna.submit();
+		}else {
+			alert('내용을 전부 입력해주세요.');
 		}
 	})
 	

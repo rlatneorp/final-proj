@@ -1162,6 +1162,7 @@
 		<result column="MENU_KIND" property="menuKind"/>
 		<result column="MENU_CONTENT" property="menuContent"/>
 		<result column="MENU_NO" property="menuNo"/>
+		<result column="MENU_COUNT" property="menuCount"/>
 	</resultMap>
 	
 	<resultMap type="Ingredient" id="ingredientResultSet">

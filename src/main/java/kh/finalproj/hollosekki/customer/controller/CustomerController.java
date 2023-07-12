@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.google.gson.Gson;
@@ -43,7 +44,6 @@ public class CustomerController {
 			 Model model) {
 		
 		Users u = (Users)session.getAttribute("loginUser");
-		System.out.println(u);
 		if(u != null) {
 			int cart = eService.cartCount(u.getUsersNo());
 			model.addAttribute("cart", cart);
@@ -111,8 +111,6 @@ public class CustomerController {
 		
 //		ArrayList<Customer> plist = csService.pBoardList(pi, map);
 		ArrayList<Qna> qlist = csService.qBoardList(pi, map);
-		System.out.println(qlist);
-//		model.addAttribute("plist", plist);
 		model.addAttribute("qlist", qlist);
 		model.addAttribute("pi", pi);
 		
@@ -160,8 +158,7 @@ public class CustomerController {
 		}
 			
 		return "personalQuestion";
-	}
-			
+	}	
 			
 	
 	@RequestMapping("qnaProductNo.cs")
@@ -192,7 +189,6 @@ public class CustomerController {
 		response.setContentType("application/json; charset=UTF-8"); 
 		
 		ArrayList<Qna> olist = csService.qnaType(map);
-		System.out.println(olist);
 		  
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
 		Gson gson = gb.create();
@@ -200,10 +196,47 @@ public class CustomerController {
 		    gson.toJson(olist, response.getWriter());
 		} catch (JsonIOException | IOException e) {
 		    e.printStackTrace();
-		    }
+		}
 		      
-	    }
+	}
+	
+//	@RequestMapping("qBoardListInfo.cs")
+//	public void qBoardListInfo(HttpServletResponse response,@RequestParam(value="qnaNo",required=false) Integer qnaNo
+//			,@RequestParam(value="productNo",required=false) Integer productNo
+//			,@RequestParam(value="usersNo",required=false) Integer usersNo) {
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("qnaNo", qnaNo);
+//		map.put("productNo", productNo);
+//		map.put("usersNo", usersNo);
+//		
+//		Qna qnaModify = csService.qnaModify(map);
+//		
+//		response.setContentType("application/json; charset=UTF-8"); 
+//		
+//		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+//		Gson gson = gb.create();
+//		try {
+//		    gson.toJson(qnaModify, response.getWriter());
+//		} catch (JsonIOException | IOException e) {
+//		    e.printStackTrace();
+//		}
+//		      
+//	}
+
+	@RequestMapping("qnaDelete.cs")
+	@ResponseBody
+	public String qnaDelete(@RequestParam(value="qnaNo",required=false) Integer qnaNo
+			,@RequestParam(value="usersNo",required=false) Integer usersNo) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("qnaNo", qnaNo);
+		map.put("usersNo", usersNo);
+		
+		int result = csService.modi11(map);
+		System.out.println(result);
+		return result == 1 ? "success" : "fail";
+	}
+}	
 	
 	
-}
 

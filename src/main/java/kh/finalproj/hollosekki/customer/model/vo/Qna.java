@@ -15,13 +15,18 @@ public class Qna {
 	private int qnaType;
 	private int productNo;
 	private int orderNo;
+	private String toolName;
+	private String menuName;
+	private String foodName;
+	private String ingredientName; 
 	
 	public Qna() {
 		super();
 	}
 
 	public Qna(int qnaNo, int usersNo, Date qnaDate, String qnaTitle, String qnaContent, int adminNo, Date answerDate,
-			String answerContent, char qnaStatus, int qnaType, int productNo, int orderNo) {
+			String answerContent, char qnaStatus, int qnaType, int productNo, int orderNo, String toolName,
+			String menuName, String foodName, String ingredientName) {
 		super();
 		this.qnaNo = qnaNo;
 		this.usersNo = usersNo;
@@ -35,6 +40,10 @@ public class Qna {
 		this.qnaType = qnaType;
 		this.productNo = productNo;
 		this.orderNo = orderNo;
+		this.toolName = toolName;
+		this.menuName = menuName;
+		this.foodName = foodName;
+		this.ingredientName = ingredientName;
 	}
 
 	public int getQnaNo() {
@@ -133,15 +142,48 @@ public class Qna {
 		this.orderNo = orderNo;
 	}
 
+	public String getToolName() {
+		return toolName;
+	}
+
+	public void setToolName(String toolName) {
+		this.toolName = toolName;
+	}
+
+	public String getMenuName() {
+		return menuName;
+	}
+
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
+	}
+
+	public String getFoodName() {
+		return foodName;
+	}
+
+	public void setFoodName(String foodName) {
+		this.foodName = foodName;
+	}
+
+	public String getIngredientName() {
+		return ingredientName;
+	}
+
+	public void setIngredientName(String ingredientName) {
+		this.ingredientName = ingredientName;
+	}
+
 	@Override
 	public String toString() {
 		return "Qna [qnaNo=" + qnaNo + ", usersNo=" + usersNo + ", qnaDate=" + qnaDate + ", qnaTitle=" + qnaTitle
 				+ ", qnaContent=" + qnaContent + ", adminNo=" + adminNo + ", answerDate=" + answerDate
 				+ ", answerContent=" + answerContent + ", qnaStatus=" + qnaStatus + ", qnaType=" + qnaType
-				+ ", productNo=" + productNo + ", orderNo=" + orderNo + "]";
+				+ ", productNo=" + productNo + ", orderNo=" + orderNo + ", toolName=" + toolName + ", menuName="
+				+ menuName + ", foodName=" + foodName + ", ingredientName=" + ingredientName + "]";
 	}
 
-
+	
 
 	
 }

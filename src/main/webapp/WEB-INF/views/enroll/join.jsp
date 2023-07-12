@@ -139,7 +139,7 @@
 								<p class="check" id="pwdCheckMsg">&nbsp;</p>
 								<label class="label">이름</label><br>
 								<input type="text" name="usersName" id="name" class="input" placeholder="이름을 입력하세요" required><br>
-								<label class="label">닉네임 <span class="text">| 20자 이하</span></label><br>
+								<label class="label">닉네임 <span class="text">| 8자 이하</span></label><br>
 								<input type="text" name="nickName" id="nickName" class="input input2" placeholder="닉네임을 입력하세요" required><br>
 								<p class="check" id="nickNameCheckMsg">&nbsp;</p>
 								<label class="label">핸드폰 번호 <span class="text">| 숫자만 입력하세요</span></label><br>
@@ -673,12 +673,12 @@
 		}
 	})
 	
-	// 닉네임 유효성검사 (20자 이하) + 닉네임 중복확인
+	// 닉네임 유효성검사 (8자 이하) + 닉네임 중복확인
 	nickName.addEventListener('keyup', ()=>{
 		
-		if(nickName.value.length > 20){
+		if(nickName.value.length > 8){
 			swal({
-				 text: "닉네임은 20자 이하로 정해주세요",
+				 text: "닉네임은 8자 이하로 정해주세요",
 				 icon: "error",
 				 button: "확인",
 				});
@@ -687,39 +687,42 @@
 			return false;
 		}
 		
-		nickName.addEventListener('keyup', ()=>{
 			
-			if(nickName.value.trim() != ''){
-				$.ajax({
-					url: "checkNickName.en",
-					data: {nickName: nickName.value.trim()},
-					success: data =>{
-						if(data == 'no'){
-							nickCheckMsg.innerText = '이미 사용중인 닉네임 입니다.';
-							nickCheckMsg.style.color =  'red';
-							nickName.addEventListener('focusout', ()=>{
-								if(nickCheckMsg.innerText == '이미 사용중인 닉네임 입니다.'){
-									nickName.value='';
-									nickCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 닉네임을 다시 입력해주세요.';
-								}
-							});
-							return false;
-							
-						} else if(data == 'yes'){
-							nickCheckMsg.innerText = '사용 가능한 닉네임 입니다.';
-							nickCheckMsg.style.color =  '#8bb572';
-							return true;
-						}
-					},
-					error: data =>{
-						console.log(error);
+		if(nickName.value.trim() != ''){
+			$.ajax({
+				url: "checkNickName.en",
+				data: {nickName: nickName.value.trim()},
+				success: data =>{
+					if(data == 'no'){
+						nickCheckMsg.innerText = '이미 사용중인 닉네임 입니다.';
+						nickCheckMsg.style.color =  'red';
+						nickName.addEventListener('focusout', ()=>{
+						});
+						
+						return false;
+						
+					} else if(data == 'yes'){
+						nickCheckMsg.innerText = '사용 가능한 닉네임 입니다.';
+						nickCheckMsg.style.color =  '#8bb572';
+						return true;
 					}
-				});
-			}
-		});
+				},
+				error: data =>{
+					console.log(error);
+				}
+			});
+		}
 	})
 	
-
+	nickName.addEventListener('focusout', ()=>{
+		if(nickCheckMsg.innerText === '이미 사용중인 닉네임 입니다.'){
+			nickCheckMsg.style.color =  'red';
+			nickCheckMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> 닉네임을 다시 입력해주세요.';
+			nickName.value='';
+			nickName.focus();
+		}
+	})
+	
 	// 버튼 눌렀을때 
 	document.getElementById('submit').addEventListener('click', function(){
 		

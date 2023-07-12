@@ -144,8 +144,8 @@
 	
 /* 	후기 */
 	.star{width: 110px;}
-	.reviewWrite{width: 100px;}
-	.reviewDate{width: 150px;}
+	.reviewWrite{width: 150px;}
+	.reviewDate{width: 120px;}
 	
 /* 	모달 */
 	.modal-body{text-align: center;}
@@ -407,8 +407,8 @@
 			<tr class="boardTop">
 				<th class="line no">No.</th>
 				<th class="line star">별점</th>
-				<th class="line content">내용</th>
-				<th class="line reviewWrite">작성자</th>
+				<th class="line content" style="width:500px;">내용</th>
+				<th class="line reviewWrite" >작성자</th>
 				<th class="line reviewDate">날짜</th>
 			</tr>
 			<c:if test="${myReview eq 0 }">
@@ -484,7 +484,7 @@
 		<tr class="boardTop">
 			<th class="line no">No.</th>
 			<th class="line star">별점</th>
-			<th class="line content">내용</th>
+			<th class="line content" style="width:500px;">내용</th>
 			<th class="line reviewWrite">작성자</th>
 			<th class="line reviewDate">날짜</th>
 		</tr>

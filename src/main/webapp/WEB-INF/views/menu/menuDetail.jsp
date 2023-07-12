@@ -259,9 +259,9 @@ p b {
 /* 	문의 */
 	#qna{width: 1000px; margin: auto; text-align: center;}
 	.boardNo{width: 100px;}
-	.boardContent{width: 540px;}
+	.boardContent{width: 500px;}
 	.boardWrite{width: 150px;}
-	.boardTitle{width: 575px;}
+	.boardTitle{width: 570px;}
 	.qnaAnswer{width: 100px;}
 	.qnaDate{width: 125px;}
 	.board{border-collapse: collapse; }
@@ -279,8 +279,8 @@ p b {
 	
 /* 	후기 */
 	.star{width: 110px;}
-	.boardReviewWrite{width: 100px;}
-	.boardReviewDate{width: 150px;}
+	.boardReviewWrite{width: 150px;}
+	.boardReviewDate{width: 120px;}
 
 /* 	모달 */
 	.modal-body{text-align: center;}
@@ -1102,7 +1102,7 @@ p b {
 				<tr class="boardTop">
 					<th class="line boardNo">No.</th>
 					<th class="line star">별점</th>
-					<th class="line boardContent">내용</th>
+					<th class="line boardContent" style="width:500px;">내용</th>
 					<th class="line boardReviewWrite">작성자</th>
 					<th class="line boardReviewDate">날짜</th>
 				</tr>

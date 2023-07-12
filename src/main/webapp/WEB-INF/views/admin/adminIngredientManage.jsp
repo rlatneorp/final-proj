@@ -66,7 +66,7 @@
 						</td>
 						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.productStock}"/></td>
 						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.orderCount}"/></td>
-						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.viewCount}"/></td>
+						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.productCount}"/></td>
 						<td><fmt:formatNumber pattern="###,###,###,###" value="${igd.likeCount}"/></td>
 						<td>
 							<c:if test="${igd.isAccept eq 'Y'}">

@@ -512,12 +512,11 @@ public class MarketService {
 	}
 
 
+//	조회수 Count (관리자가 아니라면 ++)
+	public int addCount(int pNo, int uNo) {
+		return mkDAO.addCount(sqlSession, pNo, uNo);
+	}
 
-
-
-//	public int deleteReviewImage(int reviewNo) {
-//		return mkDAO.deleteReviewImage(sqlSession, reviewNo);
-//	}
 
 	
 

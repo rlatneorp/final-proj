@@ -591,6 +591,16 @@ public class MarketDAO {
 		return sqlSession.update("marketMapper.updateCartCount", map);
 	}
 
+//	조회수 Count
+	public int addCount(SqlSessionTemplate sqlSession, int pNo, int uNo) {
+		String yn = sqlSession.selectOne("marketMapper.isAdmin", uNo);
+		if(yn.equals("N")) {
+			return sqlSession.update("marketMapper.updateCount", pNo);
+		}else {
+			return 2;
+		}
+	}
+
 //	public int deleteReviewImage(SqlSessionTemplate sqlSession, int reviewNo) {
 //		return sqlSession.update("marketMapper.deleteReviewImage", reviewNo);
 //	}

@@ -191,44 +191,54 @@ let firstWriter = '';
 // 		})		
 // 	})
 	boardSubmit.addEventListener('click', ()=>{
+		
 		const contentEdit = document.getElementsByClassName('note-editable');
 		for(let i = 0; i < contentEdit.length; i++){
 			const contents = contentEdit[i].innerHTML;
-			$.ajax({
-				type: 'POST',
-				url: 'freeBoardWriting.bo',
-				async:false,
-				data: {
-					boardTitle: title.value,
-					boardContent: contents
-				},
-				success: data=>{
-					if(data == 'success'){
-						$.ajax({
-							url: 'goToMyBoard.bo',
-							success: data=>{
-								const bId = data.boardNo;
-								const writer = data.nickName;
-								location.href='${contextPath}/detailFreeBoard.bo?bId='+ bId + '&writer=' + writer;
-							}
-						})		
-					}else{
+			if(title.value != '' && contents != ''){
+				$.ajax({
+					type: 'POST',
+					url: 'freeBoardWriting.bo',
+					async:false,
+					data: {
+						boardTitle: title.value,
+						boardContent: contents
+					},
+					success: data=>{
+						if(data == 'success'){
+							$.ajax({
+								url: 'goToMyBoard.bo',
+								success: data=>{
+									const bId = data.boardNo;
+									const writer = data.nickName;
+									location.href='${contextPath}/detailFreeBoard.bo?bId='+ bId + '&writer=' + writer;
+								}
+							})		
+						}else{
+							swal({
+								 text: "글 작성에 실패하였습니다. 첨부파일을 최대 3개로 작성해주세요",
+								 icon: "error",
+								 button: "확인",
+							});
+						}	
+					},
+					error: data=>{
 						swal({
-							 text: "글 작성에 실패하였습니다. 첨부파일을 최대 3개로 작성해주세요",
+							 text: "글 작성에 실패하였습니다. 내용을 입력해주세요",
 							 icon: "error",
 							 button: "확인",
 						});
-					}	
-				},
-				error: data=>{
-					swal({
-						 text: "글 작성에 실패하였습니다. 내용을 입력해주세요",
-						 icon: "error",
-						 button: "확인",
-					});
-				}
+					}
+					
+				})
 				
-			})
+			}else{
+				swal({
+					 text: "글 작성에 실패하였습니다. 공백 상태로 글을 작성할 수 없습니다",
+					 icon: "error",
+					 button: "확인",
+				});
+			}
 		}
 	})
 	reBoardSubmit.addEventListener('click', ()=>{

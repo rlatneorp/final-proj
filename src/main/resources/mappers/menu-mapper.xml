@@ -227,6 +227,7 @@
 		<result column="title" property="title"/>
 		<result column="career" property="career"/>
 		<result column="menu_count" property="menuCount"/>
+		<result column="users_no" property="usersNo"/>
 	</resultMap>
 	
 	<resultMap type="Image" id="imageResultSet">

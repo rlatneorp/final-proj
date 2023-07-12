@@ -246,7 +246,7 @@
 	padding: 2px; 
 }
 .reThread{
-	width: 40px; height: 25px;
+	width: 50px; height: 25px;
 	border: 1px solid black;
 	border-radius: 20px;
 	font-size: 10px;
@@ -303,7 +303,7 @@
 		   <span class="material-symbols-outlined">hallway</span>
 		   </c:if>
 		   <c:if test="${ blist.boardType eq 1}">
-		  	 <button type="button" class="reThread">수정됨</button>
+		  	 <button type="button" class="reThread">수정된 글</button>
 		   </c:if>
 		   </div>
 		   <label>제목</label>
@@ -651,97 +651,106 @@
 			const thead = document.querySelector('thead');
 			const table = document.querySelector('table');
 			beforeData = tbody.innerHTML;
-			$.ajax({
-				url: 'insertReply.bo',
-				dataType: 'json',
-				data: {
-						productNo: hdnBoardNo.value,
-						reviewContent: reviewCont.value,
-						reviewWriter: '${login}',
-						usersNo: '${usersNo}'
-				},
-				success: data =>{
-					console.log(data);
-					const hiddenNickName = document.getElementById('hiddenNickName').value;
-					const trs = tbody.querySelectorAll('tr');
-					tbody.innerHTML = '';
-					
-					const tbodied = document.createElement('tbody');
-	
-					for(const r of data){
-						
-						const tr = document.createElement('tr');
-						
-						const contentTd = document.createElement('td');
-						contentTd.innerText = r.reviewContent;
-						beforeText = r.reviewContent;
-						
-						const writerTd = document.createElement('td');
-						writerTd.innerHTML = r.reviewWriter;
-						
-						const dateTd = document.createElement('td');
-						dateTd.innerText = r.reviewDate;
-						
-						const modifyBtn = document.createElement('td');
-						if(r.usersNo == '${usersNo}'){
-							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn">수정</button>';
-						} else{
-							modifyBtn.innerHTML = '<button type="button" class="" id="reBtn" style="display: none;">수정</button>'
-						}
-											 
-						const deleteBtn = document.createElement('td');
-						if(r.usersNo == '${usersNo}'){
-							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>';
-						}else{
-							deleteBtn.innerHTML = '<button type="button" class="" id="xBtn" style="display: none;">삭제</button>';
-						}
-						
-						const reviewNoTd = document.createElement('td');
-						reviewNoTd.innerHTML = '<input type="hidden" id="hdnReplyNo">';
-						
-						tr.append(contentTd);
-						tr.append(writerTd);
-						tr.append(dateTd);
-						tr.append(modifyBtn);
-						tr.append(deleteBtn);
-						tr.append(reviewNoTd);
+			if(reviewCont.value != ''){
 				
-						modifyBtn.querySelector('#reBtn').className = 'reBtn';
-						deleteBtn.querySelector('#xBtn').className = 'xBtn';
-						reviewNoTd.querySelector('#hdnReplyNo').value = r.reviewNo;
+				$.ajax({
+					url: 'insertReply.bo',
+					dataType: 'json',
+					data: {
+							productNo: hdnBoardNo.value,
+							reviewContent: reviewCont.value,
+							reviewWriter: '${login}',
+							usersNo: '${usersNo}'
+					},
+					success: data =>{
+						console.log(data);
+						const hiddenNickName = document.getElementById('hiddenNickName').value;
+						const trs = tbody.querySelectorAll('tr');
+						tbody.innerHTML = '';
 						
-						tbody.append(tr);
+						const tbodied = document.createElement('tbody');
+		
+						for(const r of data){
+							
+							const tr = document.createElement('tr');
+							
+							const contentTd = document.createElement('td');
+							contentTd.innerText = r.reviewContent;
+							beforeText = r.reviewContent;
+							
+							const writerTd = document.createElement('td');
+							writerTd.innerHTML = r.reviewWriter;
+							
+							const dateTd = document.createElement('td');
+							dateTd.innerText = r.reviewDate;
+							
+							const modifyBtn = document.createElement('td');
+							if(r.usersNo == '${usersNo}'){
+								modifyBtn.innerHTML = '<button type="button" class="" id="reBtn">수정</button>';
+							} else{
+								modifyBtn.innerHTML = '<button type="button" class="" id="reBtn" style="display: none;">수정</button>'
+							}
+												 
+							const deleteBtn = document.createElement('td');
+							if(r.usersNo == '${usersNo}'){
+								deleteBtn.innerHTML = '<button type="button" class="" id="xBtn">삭제</button>';
+							}else{
+								deleteBtn.innerHTML = '<button type="button" class="" id="xBtn" style="display: none;">삭제</button>';
+							}
+							
+							const reviewNoTd = document.createElement('td');
+							reviewNoTd.innerHTML = '<input type="hidden" id="hdnReplyNo">';
+							
+							tr.append(contentTd);
+							tr.append(writerTd);
+							tr.append(dateTd);
+							tr.append(modifyBtn);
+							tr.append(deleteBtn);
+							tr.append(reviewNoTd);
+					
+							modifyBtn.querySelector('#reBtn').className = 'reBtn';
+							deleteBtn.querySelector('#xBtn').className = 'xBtn';
+							reviewNoTd.querySelector('#hdnReplyNo').value = r.reviewNo;
+							
+							tbody.append(tr);
+							
+							//아직 비동기식으로 c태그를 어떻게 담을지 모르겠음
+							location.reload();
+						}
+						document.getElementById('commentWrite').value = '';
 						
-						//아직 비동기식으로 c태그를 어떻게 담을지 모르겠음
+						for(const tr of trs){
+							const tds = tr.querySelectorAll('td');
+							tds[1].addEventListener('click', function(){
+								
+								$.ajax({
+									url: 'detailFreeBoard.bo',
+									success: data=>{
+										if(data.nickName == tds[1].innerText){
+											location.href='${contextPath}/otherUsersProfile.en?uId=' + data.usersId + '&uNo=' + data.usersNo + '&page=';
+										}
+									}
+								})
+							})
+						}	
+					},
+					error: data =>{
+						console.log(data);
+						swal({
+							 text: "댓글을 빠르게 반복해서 작성하지 말아주세요.",
+							 icon: "error",
+							 button: "확인",
+							});
 						location.reload();
 					}
-					document.getElementById('commentWrite').value = '';
-					
-					for(const tr of trs){
-						const tds = tr.querySelectorAll('td');
-						tds[1].addEventListener('click', function(){
-							
-							$.ajax({
-								url: 'detailFreeBoard.bo',
-								success: data=>{
-									if(data.nickName == tds[1].innerText){
-										location.href='${contextPath}/otherUsersProfile.en?uId=' + data.usersId + '&uNo=' + data.usersNo + '&page=';
-									}
-								}
-							})
-						})
-					}	
-				},
-				error: data =>{
-					console.log(data);
-					swal({
-						 text: "댓글을 빠르게 반복해서 작성하지 말아주세요.",
-						 icon: "error",
-						 button: "확인",
-						});
-					location.reload();
-				}
-			});
+				});
+			}else{
+				swal({
+					 text: "댓글을 공백 상태로 작성할 수 없습니다.",
+					 icon: "error",
+					 button: "확인",
+				});
+			}
 		})	
 	}	
 </script>

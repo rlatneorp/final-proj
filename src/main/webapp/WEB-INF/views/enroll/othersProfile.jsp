@@ -240,12 +240,14 @@
 		border:1px solid #B0DAFF;
 		border-radius: 100%;
 		}
+		
 </style>
 </head>
 
 <body>
 	<%@ include file="../common/top.jsp"%>
 	<br><br>
+	
 	<div class="out-div">
 		<div class="users-info">
 			<div class="users-profile-img-out">
@@ -763,6 +765,7 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>	
 <script>
+
 	$(()=>{
 		$('#recipe').addClass('select');
 		
@@ -847,9 +850,12 @@
 						var unfollowDiv = button.parentNode;
 						unfollowDiv.innerHTML = '<button class="modalFollower" onclick="followUser(this)">팔로우</button>';
 					};
-					swal("언팔로우 되었습니다.", {
-	          			  buttons: false,
-	          			  timer: 2000,
+					swal({
+						title: "🥲",
+						text: "언팔로우 되었습니다.",
+	          			buttons: false,
+	          			closeOnClickOutside: false,
+	          			closeOnEsc: false,
 	          			});
 		    	},
 		    	error: function (data) {
@@ -871,9 +877,12 @@
 					console.log('팔로우 성공');
 					var unfollowDiv = button.parentNode;
 			  		unfollowDiv.innerHTML = '<button class="modalFollow" onclick="unfollowUser(this)">언팔로우</button>';
-			  		swal("팔로우 되었습니다.", {
-	          			  buttons: false,
-	          			  timer: 2000,
+			  		swal({
+			  			title: "🎉",
+						text: "팔로우 되었습니다.",
+	          			buttons: false,
+	          			closeOnClickOutside: false,
+	          			closeOnEsc: false,
 	          			});
 				},
 			    error: function (data) {

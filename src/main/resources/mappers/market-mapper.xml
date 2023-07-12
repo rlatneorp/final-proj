@@ -261,11 +261,11 @@
    </select>
    
    <select id="selectOptionsSet" resultMap="optionsList">
-         select *
+       select *
       from (select *
-           from options
+           from options join  product using(product_no) 
            order by option_no)
-      where product_no = #{productNo}
+      where product_no = 293 and product_option = 'Y'
    </select>
    
    <select id="updateOptionNo" resultType="_int">

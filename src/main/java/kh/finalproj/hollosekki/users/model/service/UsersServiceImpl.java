@@ -267,4 +267,9 @@ public class UsersServiceImpl implements UsersService {
 		return uDAO.selectQnaList(sqlSession, usersNo, qpi);
 	}
 	
+	@Override
+	public int updateNickName(Users u) {
+		return uDAO.updateNickName(sqlSession, u);
+	}
+	
 }

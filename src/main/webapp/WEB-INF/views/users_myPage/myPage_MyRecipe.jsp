@@ -100,7 +100,6 @@ th:first-child, td:first-child {
 						<option value="1">오래된순</option>
 						<option value="2">조회순</option>
 						<option value="3">스크랩순</option>
-						<option value="4">좋아요순</option>
 					</select>
 				</div>
 				<br>
@@ -113,7 +112,6 @@ th:first-child, td:first-child {
 								<th>작성 날짜</th>
 								<th>조회수</th>
 								<th>스크랩수</th>
-								<th>좋아요수</th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
@@ -148,7 +146,6 @@ th:first-child, td:first-child {
 									<td>${ fn:split(l.RECIPE_MODIFY_DATE, ' ')[0] }</td>
 									<td>${ l.RECIPE_COUNT }</td>
 									<td>${ l.RECIPEBOOKCOUNT }</td>
-									<td>${ l.RECIPELIKECOUNT }</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -269,8 +266,6 @@ th:first-child, td:first-child {
 	            location.href = "${contextPath}/myPage_MyRecipe.me?searchType=2";
 	        } else if (value == 3) { // 스크랩
 	            location.href = "${contextPath}/myPage_MyRecipe.me?searchType=3";
-	        } else if (value == 4) { // 좋아요
-	            location.href = "${contextPath}/myPage_MyRecipe.me?searchType=4";
 	        }
 	    });
 	</script>

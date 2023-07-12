@@ -694,15 +694,15 @@ p b {
 					<th>콜레스테롤</th>
 				</tr>
 				<tr class="infoContent">
-					<td>kcal</td>
-					<td>g</td>
-					<td>g</td>
-					<td>g</td>
-					<td>g</td>
-					<td>g</td>
-					<td>mg</td>
-					<td>g</td>
-					<td>mg</td>
+					<td>${fn:split(fn:split(totalNu1, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu1, ',')[1]}g</td>
+					<td>${fn:split(totalNu1, ',')[2]}g</td>
+					<td>${fn:split(totalNu1, ',')[3]}g</td>
+					<td>${fn:split(totalNu1, ',')[4]}g</td>
+					<td>${fn:split(totalNu1, ',')[5]}g</td>
+					<td>${fn:split(totalNu1, ',')[6]}mg</td>
+					<td>${fn:split(totalNu1, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu1, ',')[8], ']')[0]}mg</td>
 				</tr>
 			</table>
 		</div>
@@ -762,6 +762,31 @@ p b {
 				</div>
 				<input type="hidden" class="nutrient" value="${fn:split(value[7].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu2, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu2, ',')[1]}g</td>
+					<td>${fn:split(totalNu2, ',')[2]}g</td>
+					<td>${fn:split(totalNu2, ',')[3]}g</td>
+					<td>${fn:split(totalNu2, ',')[4]}g</td>
+					<td>${fn:split(totalNu2, ',')[5]}g</td>
+					<td>${fn:split(totalNu2, ',')[6]}mg</td>
+					<td>${fn:split(totalNu2, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu2, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -819,6 +844,31 @@ p b {
 				</div>
 				<input type="hidden" class="nutrient" value="${fn:split(value[11].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu3, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu3, ',')[1]}g</td>
+					<td>${fn:split(totalNu3, ',')[2]}g</td>
+					<td>${fn:split(totalNu3, ',')[3]}g</td>
+					<td>${fn:split(totalNu3, ',')[4]}g</td>
+					<td>${fn:split(totalNu3, ',')[5]}g</td>
+					<td>${fn:split(totalNu3, ',')[6]}mg</td>
+					<td>${fn:split(totalNu3, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu3, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -876,6 +926,31 @@ p b {
 				</div>
 				<input type="hidden" class="nutrient" value="${fn:split(value[15].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu4, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu4, ',')[1]}g</td>
+					<td>${fn:split(totalNu4, ',')[2]}g</td>
+					<td>${fn:split(totalNu4, ',')[3]}g</td>
+					<td>${fn:split(totalNu4, ',')[4]}g</td>
+					<td>${fn:split(totalNu4, ',')[5]}g</td>
+					<td>${fn:split(totalNu4, ',')[6]}mg</td>
+					<td>${fn:split(totalNu4, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu4, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -933,6 +1008,31 @@ p b {
 				</div>
 				<input type="hidden" class="nutrient" value="${fn:split(value[19].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu5, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu5, ',')[1]}g</td>
+					<td>${fn:split(totalNu5, ',')[2]}g</td>
+					<td>${fn:split(totalNu5, ',')[3]}g</td>
+					<td>${fn:split(totalNu5, ',')[4]}g</td>
+					<td>${fn:split(totalNu5, ',')[5]}g</td>
+					<td>${fn:split(totalNu5, ',')[6]}mg</td>
+					<td>${fn:split(totalNu5, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu5, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -990,6 +1090,31 @@ p b {
 				</div>
 				<input type="hidden" class="nutrient" value="${fn:split(value[23].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu6, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu6, ',')[1]}g</td>
+					<td>${fn:split(totalNu6, ',')[2]}g</td>
+					<td>${fn:split(totalNu6, ',')[3]}g</td>
+					<td>${fn:split(totalNu6, ',')[4]}g</td>
+					<td>${fn:split(totalNu6, ',')[5]}g</td>
+					<td>${fn:split(totalNu6, ',')[6]}mg</td>
+					<td>${fn:split(totalNu6, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu6, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div class="menuABCD">
@@ -1047,11 +1172,149 @@ p b {
 				</div>
 				<input type="hidden" class="nutrient" value="${fn:split(value[27].foodContent, '@')[3]}">
 			</div>
+			
+			<table class="infoTable">
+				<tr class="infoTop">
+					<th>칼로리</th>
+					<th>탄수화물</th>
+					<th>단백질</th>
+					<th>지방</th>
+					<th>트랜스지방</th>
+					<th>포화지방</th>
+					<th>나트륨</th>
+					<th>당류</th>
+					<th>콜레스테롤</th>
+				</tr>
+				<tr class="infoContent">
+					<td>${fn:split(fn:split(totalNu7, ',')[0], '[')[0]}kcal</td>
+					<td>${fn:split(totalNu7, ',')[1]}g</td>
+					<td>${fn:split(totalNu7, ',')[2]}g</td>
+					<td>${fn:split(totalNu7, ',')[3]}g</td>
+					<td>${fn:split(totalNu7, ',')[4]}g</td>
+					<td>${fn:split(totalNu7, ',')[5]}g</td>
+					<td>${fn:split(totalNu7, ',')[6]}mg</td>
+					<td>${fn:split(totalNu7, ',')[7]}g</td>
+					<td>${fn:split(fn:split(totalNu7, ',')[8], ']')[0]}mg</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	
 	<br><br>
 	
+	<p class="mid">영양 정보</p>
+	<br>
+	<table class="infoTable">
+		<tr class="infoTop">
+			<th>분류</th>
+			<th>칼로리</th>
+			<th>탄수화물</th>
+			<th>단백질</th>
+			<th>지방</th>
+			<th>트랜스지방</th>
+			<th>포화지방</th>
+			<th>나트륨</th>
+			<th>당류</th>
+			<th>콜레스테롤</th>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">1일 차</td>
+			<td>${fn:split(fn:split(totalNu1, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu1, ',')[1]}g</td>
+			<td>${fn:split(totalNu1, ',')[2]}g</td>
+			<td>${fn:split(totalNu1, ',')[3]}g</td>
+			<td>${fn:split(totalNu1, ',')[4]}g</td>
+			<td>${fn:split(totalNu1, ',')[5]}g</td>
+			<td>${fn:split(totalNu1, ',')[6]}mg</td>
+			<td>${fn:split(totalNu1, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu1, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">2일 차</td>
+			<td>${fn:split(fn:split(totalNu2, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu2, ',')[1]}g</td>
+			<td>${fn:split(totalNu2, ',')[2]}g</td>
+			<td>${fn:split(totalNu2, ',')[3]}g</td>
+			<td>${fn:split(totalNu2, ',')[4]}g</td>
+			<td>${fn:split(totalNu2, ',')[5]}g</td>
+			<td>${fn:split(totalNu2, ',')[6]}mg</td>
+			<td>${fn:split(totalNu2, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu2, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">3일 차</td>
+			<td>${fn:split(fn:split(totalNu3, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu3, ',')[1]}g</td>
+			<td>${fn:split(totalNu3, ',')[2]}g</td>
+			<td>${fn:split(totalNu3, ',')[3]}g</td>
+			<td>${fn:split(totalNu3, ',')[4]}g</td>
+			<td>${fn:split(totalNu3, ',')[5]}g</td>
+			<td>${fn:split(totalNu3, ',')[6]}mg</td>
+			<td>${fn:split(totalNu3, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu3, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">4일 차</td>
+			<td>${fn:split(fn:split(totalNu4, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu4, ',')[1]}g</td>
+			<td>${fn:split(totalNu4, ',')[2]}g</td>
+			<td>${fn:split(totalNu4, ',')[3]}g</td>
+			<td>${fn:split(totalNu4, ',')[4]}g</td>
+			<td>${fn:split(totalNu4, ',')[5]}g</td>
+			<td>${fn:split(totalNu4, ',')[6]}mg</td>
+			<td>${fn:split(totalNu4, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu4, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">5일 차</td>
+			<td>${fn:split(fn:split(totalNu5, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu5, ',')[1]}g</td>
+			<td>${fn:split(totalNu5, ',')[2]}g</td>
+			<td>${fn:split(totalNu5, ',')[3]}g</td>
+			<td>${fn:split(totalNu5, ',')[4]}g</td>
+			<td>${fn:split(totalNu5, ',')[5]}g</td>
+			<td>${fn:split(totalNu5, ',')[6]}mg</td>
+			<td>${fn:split(totalNu5, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu5, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height:35px;">
+			<td style="text-align: center;">6일 차</td>
+			<td>${fn:split(fn:split(totalNu6, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu6, ',')[1]}g</td>
+			<td>${fn:split(totalNu6, ',')[2]}g</td>
+			<td>${fn:split(totalNu6, ',')[3]}g</td>
+			<td>${fn:split(totalNu6, ',')[4]}g</td>
+			<td>${fn:split(totalNu6, ',')[5]}g</td>
+			<td>${fn:split(totalNu6, ',')[6]}mg</td>
+			<td>${fn:split(totalNu6, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu6, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px;">
+			<td style="text-align: center;">7일 차</td>
+			<td>${fn:split(fn:split(totalNu7, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu7, ',')[1]}g</td>
+			<td>${fn:split(totalNu7, ',')[2]}g</td>
+			<td>${fn:split(totalNu7, ',')[3]}g</td>
+			<td>${fn:split(totalNu7, ',')[4]}g</td>
+			<td>${fn:split(totalNu7, ',')[5]}g</td>
+			<td>${fn:split(totalNu7, ',')[6]}mg</td>
+			<td>${fn:split(totalNu7, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu7, ',')[8], ']')[0]}mg</td>
+		</tr>
+		<tr class="infoContent" style="border-bottom: 1px solid black; height: 35px; font-weight: bolder;">
+			<td style="text-align: center;">총&nbsp;&nbsp;&nbsp;합</td>
+			<td>${fn:split(fn:split(totalNu, ',')[0], '[')[0]}kcal</td>
+			<td>${fn:split(totalNu, ',')[1]}g</td>
+			<td>${fn:split(totalNu, ',')[2]}g</td>
+			<td>${fn:split(totalNu, ',')[3]}g</td>
+			<td>${fn:split(totalNu, ',')[4]}g</td>
+			<td>${fn:split(totalNu, ',')[5]}g</td>
+			<td>${fn:split(totalNu, ',')[6]}mg</td>
+			<td>${fn:split(totalNu, ',')[7]}g</td>
+			<td>${fn:split(fn:split(totalNu, ',')[8], ']')[0]}mg</td>
+		</tr>
+	</table>
+	<br>
 <!-- 	문의 -->
 	<p class="mid">문의</p>
 		<br>

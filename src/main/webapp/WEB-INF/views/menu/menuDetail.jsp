@@ -505,14 +505,16 @@ p b {
 				<div style="margin: auto; text-align: center;">
 				<br>
 					<c:set value="${menu.productPrice - (menu.productPrice * (menu.productSale * 0.01))}" var="price"/>
-					<div style="width: 300px; margin-left: 60px;">
-						<label style="font-size: 30px; color:gray; text-decoration: line-through lightgray 2px;">
-							<fmt:formatNumber value="${menu.productPrice}"/>원
-						</label>
-						<label style="font-size: 25px; color: red;">
-							&nbsp;&nbsp;<fmt:formatNumber value="${menu.productSale}"/>%<br>
-						</label>
-					</div>
+					<c:if test="${menu.productSale ne 0 }">
+						<div style="width: 300px; margin-left: 60px;">
+							<label style="font-size: 30px; color:gray; text-decoration: line-through lightgray 2px;">
+								<fmt:formatNumber value="${menu.productPrice}"/>원
+							</label>
+							<label style="font-size: 25px; color: red;">
+								&nbsp;&nbsp;<fmt:formatNumber value="${menu.productSale}"/>%<br>
+							</label>
+						</div>
+					</c:if>
 					<h2 style="font-weight: 200; display: inline-block; font-size: 50px;">
 						<fmt:formatNumber value="${price}"/>원
 					</h2>

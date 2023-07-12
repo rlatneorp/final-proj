@@ -126,19 +126,12 @@ public class CustomerController {
 			@RequestParam(value="orderNo",required=false) Integer orderNo,
 			Model model) {
 		Users u = (Users)session.getAttribute("loginUser");
-//		int adminNo = 0;
 		if(u != null) {
 			usersNo = u.getUsersNo();
-//			if(u.getIsAdmin().equals('Y')) {
-//				adminNo = u.getUsersNo();
-//			} else {
-//				adminNo = 0;
-//			}
 		}
-		
+		 
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		if(qnaContent != null) {
-			
-			HashMap<Object, Object> map = new HashMap<Object, Object>();
 			map.put("qnaContent", qnaContent);
 			map.put("qnaTitle", qnaTitle);
 			map.put("usersNo", usersNo);
@@ -149,11 +142,12 @@ public class CustomerController {
 				if(result2 > 0) {
 					return "redirect:personalBoard.cs";
 				}
+			}
 			}else if(orderNo != null){
 				int result1 = csService.qnaProduct(map);
 				if(result1 > 0) {
 					return "redirect:personalBoard.cs";
-				}
+				
 			}
 		}
 			

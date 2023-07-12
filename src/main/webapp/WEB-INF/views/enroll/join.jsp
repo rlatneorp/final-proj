@@ -750,7 +750,7 @@
 				});
 			checkPwd.focus();
 			return false;
-		}else if(name.value ==''){
+		}else if(name.value.trim() ==''){
 			swal({
 				 text: "이름을 입력해주세요",
 				 icon: "error",
@@ -758,7 +758,7 @@
 				});
 			name.focus();
 			return false;
-		} else if(nickName.value ==''){
+		} else if(nickName.value.trim() ==''){
 			swal({
 				 text: "닉네임을 입력해주세요",
 				 icon: "error",

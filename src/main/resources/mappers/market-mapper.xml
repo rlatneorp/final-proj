@@ -265,7 +265,7 @@
       from (select *
            from options join  product using(product_no) 
            order by option_no)
-      where product_no = 293 and product_option = 'Y'
+      where product_no = #{productNo} and product_option = 'Y'
    </select>
    
    <select id="updateOptionNo" resultType="_int">

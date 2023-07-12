@@ -527,6 +527,7 @@
 					});
 				id.value = '';
 				id.focus();
+				idCheckMsg.innerText = '\u00A0';
 			 } else if(id.value.length > 15 || id.value.length < 3){
 				swal({
 					 text: "아이디는 3~15자만 사용 가능합니다.",
@@ -535,6 +536,7 @@
 					});
 				id.value = '';
 				id.focus();
+				idCheckMsg.innerText = '\u00A0';
 			 }
 			 return false;
 		 }
@@ -561,10 +563,19 @@
 						});
 						return false;
 					} else if(data == 'yes'){
-						idCheckMsg.innerText = '사용 할 수 있는 아이디 입니다.';
-						idCheckMsg.style.color = '#8bb572';
-						return true;
+						const koreanRegex = /[ㄱ-ㅎㅏ-ㅣ가-힣]/;
+						if (koreanRegex.test(id.value)) {
+							idCheckMsg.innerText = '아이디는 영어 대소문자, 숫자만 사용 가능합니다.';
+							idCheckMsg.style.color = 'red';
+							return false;
+						} else{
+							idCheckMsg.innerText = '사용 할 수 있는 아이디 입니다.';
+							idCheckMsg.style.color = '#8bb572';
+							return true;
+						}
 					} 
+					id.value = '';
+					id.focus();
 				},
 				error: data =>{
 					console.log('error');

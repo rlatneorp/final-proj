@@ -117,6 +117,8 @@ th:first-child, td:first-child {
 	<br><br><br><br><br><br>
 	<c:if test="${!empty loginUser }">
 			<div id="parentDiv">
+			<a style="color: red;">[공지]공백인 상태에서 글을 작성하시면 관리자에 의해 삭제가 될 수 있습니다.</a> 
+				<br><br>
 				<div>
 					<label class="intro">제목</label><br>
 					<input id="title" required="required" type="text"  style="width: 940px; height:45px">
@@ -194,20 +196,23 @@ let firstWriter = '';
 		
 		const contentEdit = document.getElementsByClassName('note-editable');
 		for(let i = 0; i < contentEdit.length; i++){
-			const contents = contentEdit[i].value;
- 			let content = $('.summernote').val().replace(/(<([^>]+)>)/gi, '');
- 			content = content.replace(/&nbsp;/gi,"");
-			content = content.replace(/<br>/gi, "");
-			content = content.replace(/ /gi,"");
-				
-			if(title.value != '' || content != "" || content != "<p><\/p>" || content != "" || content != '&nbsp;'){
+			let contents = contentEdit[i].innerHTML;
+			let divContent = contentEdit[i].innerText;
+// 			let trimmedContent = content.replace(/\s+/g, "");
+// 			trimmedContent = content.replace(/&nbsp;/gi, "");	
+// 			if(divContent.includes("&nbsp;")){
+// 				divContent = contents.replace(/^\s*/, "");
+// 				divContent = contents.replace(/&nbsp;/gi, "");
+// 			}
+// 			divContent = divContent.trim();
+			if ($('#content').summernote('isEmpty') || $('#content').summernote('code').includes("&nbsp;")) {
 				$.ajax({
 					type: 'POST',
 					url: 'freeBoardWriting.bo',
 					async:false,
 					data: {
 						boardTitle: title.value,
-						boardContent: content
+						boardContent: contents
 					},
 					success: data=>{
 						if(data == 'success'){
@@ -236,11 +241,10 @@ let firstWriter = '';
 					}
 					
 				})
-				
-			}else if(title.value == '' || content == "" || content == "<p><\/p>" || content == "" || content == '&nbsp;'){
-				return false;
+					
+			}else{
 				swal({
-					 text: "글 작성에 실패하였습니다. 공백 상태로 글을 작성할 수 없습니다",
+					 text: "글 작성에 실패하였습니다. 공백은 작성이 안 됩니다.",
 					 icon: "error",
 					 button: "확인",
 				});
@@ -248,15 +252,15 @@ let firstWriter = '';
 		}
 	})
 	reBoardSubmit.addEventListener('click', ()=>{
-		let content = $('.summernote').val().replace(/(<([^>]+)>)/gi, '');
-		content = content.replace(/&nbsp;/gi,"");
-		content = content.replace(/<br>/gi, "");
-		content = content.replace(/ /gi,"");
+		console.log(pTag.innerText);
+		console.log(title.value);
+		console.log(bInfo.value);
+		console.log(boardNo);
 		$.ajax({
 			type: 'POST',
 			url: 'reBoard.bo',
 			data: {
-				boardContent: content,
+				boardContent: pTag.innerHTML,
 				boardTitle: title.value, 
 				usersNo: bInfo.value,
 				boardNo: boardNo
@@ -272,13 +276,6 @@ let firstWriter = '';
 						});
 					location.reload();
 				}
-			},
-			error: data=>{
-				swal({
-					 text: "글 수정에 실패하였습니다. 공백 상태에서 글을 쓸 수 없습니다.",
-					 icon: "error",
-					 button: "확인",
-				});
 			}
 		})
 	})

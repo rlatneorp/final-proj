@@ -92,7 +92,7 @@
 									<div class="accordion-body">
 										<div>
 											<button type="button" class="qnaCate d-inline"></button>
-											<c:if test="${!empty q.answerContent }">
+											<c:if test="${empty q.answerContent }">
 											<div class="d-inlne d-flex justify-content-end">
 												<button class="delete11">삭제</button>
 											</div>

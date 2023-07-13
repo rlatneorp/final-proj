@@ -400,6 +400,8 @@
 							자기소개&nbsp;&nbsp;&nbsp;&nbsp;
 							글자 수: <span id="characterCount">0</span>/100
 						</p>
+						* 내용을 한번 입력했다가 등록해주시길 바랍니다^^
+						<br>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<input type="hidden" name="usersNo" value="${ loginUser.usersNo }">
 					</div>
@@ -426,6 +428,8 @@
 							자기소개&nbsp;&nbsp;&nbsp;&nbsp;
 							글자 수: <span id="characterCount">0</span>/100
 						</p>
+						* 내용을 한번 입력했다가 등록해주시길 바랍니다^^
+						<br>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<input type="hidden" name="usersNo" value="${ loginUser.usersNo }">
 					</div>
@@ -577,7 +581,8 @@
 			            icon: "error",
 			            button: "확인",
 			        });
-				} else if(/&nbsp;{1,}/.test(content)){
+				} else if(/^(&nbsp;|\s)+$/.test(content.trim())){
+					e.preventDefault();
 					swal({
 						title : "한 글자 이상 입력해주세요.",
 						text: "다시 입력해주세요.",

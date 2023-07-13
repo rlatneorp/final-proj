@@ -321,7 +321,6 @@ public class MarketController {
       
       ArrayList<Review> list = mkService.selectReview(productNo);
       ArrayList<String> imglist = mkService.selectImgList(productNo);/*리뷰 사진만 가져오기*/
-//      System.out.println(imglist);
       int reviewCount = mkService.selectReviewCount(productNo);
       
       Integer starAvg = mkService.reviewAvg(productNo);
@@ -380,12 +379,6 @@ public class MarketController {
       model.addAttribute("p", p);
       model.addAttribute("options", options);
       model.addAttribute("ordList", ordList);
-      System.out.println(options);
-      System.out.println(p);
-      System.out.println(food);
-      System.out.println(ingredient);
-      System.out.println(tool);
-      System.out.println(list);
       return "market_detail";
    }
    

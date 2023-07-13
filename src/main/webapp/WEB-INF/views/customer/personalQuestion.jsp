@@ -8,7 +8,6 @@
 <title>홀로세끼</title>
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /> -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,7 +83,6 @@ font-family: 'Noto Sans KR', sans-serif;
 </style>
 </head>
 <body>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <%@ include file="../common/top.jsp" %>
 <br><br>
 	<div class="container-xxl" align="center">
@@ -97,7 +95,7 @@ font-family: 'Noto Sans KR', sans-serif;
 			<button id="goToLogin"  style="margin-bottom: 30px; font-size: 20px;" onclick="location.href='${contextPath}/login.en'">로그인 하러 가기</button>
 		</c:if>
 		<c:if test="${loginUser ne null}">
-		<form id="submit11" method="POST"> 
+		<form action="${contextPath }/personalQuestion.cs" method="POST"> 
 			<div>
 				<h2>문의 작성</h2>
 				<p>카테고리를 지정해주세요</p>
@@ -127,19 +125,19 @@ font-family: 'Noto Sans KR', sans-serif;
 					</div>
 					<br><br>
 					<div class="form-floating mb-3">
-					   <textarea required  class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요."></textarea>
+					   <textarea required type="text" class="form-control" id="floatingInput" placeholder="문의사항의 제목을 적어주세요."></textarea>
 					   <label for="floatingInput">제목</label>
 					</div>
 					   <input type="hidden" name="qnaTitle" id="titleSub">
 					   <input type="hidden" name="qnaType" id="typeQna">
  					<div class="form-floating">
-					   <input type="text"  onsubmit="noSpaceForm(this);"  class="form-control" id="floatingText" ></textarea>
-					   <label for="floatingText">내용</label>
+					   <textarea name="qnaContent" required type="text" class="form-control" id="floatingText" placeholder="문의사항을 적어주세요."></textarea>
+					   <label for="floatingText">내용: 공백,도배 식의 문의는 관리자에 의해 삭제될 수 있습니다.</label>
 					</div>
 					<br>
 				</div>
 				<div>
-					<input type="submit" id="add" onclick="return submitPersonam()">
+					<button id="add" disabled="disabled">작성완료</button>
 				</div>
 			</div>
 		</form>
@@ -160,6 +158,9 @@ font-family: 'Noto Sans KR', sans-serif;
 		categoryBtn.addEventListener('change', ()=>{
 			const productNoDiv = document.querySelector("#productNoDiv");
 			const noneProductNo = document.querySelector("#noneProductNo");
+			if(categoryBtn.value){
+				add.disabled = false;
+			}
 			floatingInput.focus()
 			for(let j = 1; j < options.length; j++){
 				if(options[j].value == categoryBtn.value){
@@ -210,39 +211,17 @@ font-family: 'Noto Sans KR', sans-serif;
 			}
 			
 		});
-		
-		function noSpaceForm(obj) {
-		    var str_space = /\s/; 
-		    if(str_space.exec(obj.value)) { 
-		    	swal({
-					 text: "공백으로 문의를 남길 수 없습니다",
-					 icon: "error",
-					 button: "확인",
-				});
-		        obj.focus();
-		        obj.value = obj.value.replace(/\s| /gi,''); 
-		        return false;
-		    }
-		}
-		const submitPersonam =() =>{
-			const floatingText = document.getElementById('floatingText');
-			let content = floatingText.innerHTML;
-			content = content.replace(/(<([^>]+)>)/gi, "")
-			content = content.replace(/&nbsp;/gi,"");
-			content = content.replace(/<br>/gi, "");
-			content = content.replace(/ /gi,"");	
-			if(content == "" || content == "<p><\/p>" || content == null || content == '&nbsp;'){
-				swal({
-					 text: "공백으로 문의를 남길 수 없습니다",
-					 icon: "error",
-					 button: "확인",
-				});
-				return false;
-			}else{	 
-				return true;
-			}	
+		 
+		add.addEventListener('click', ()=>{
+			titleSub.value = floatingInput.value;
+// 			const ordersNoSelect = document.querySelector('#productNo');
+// 			if(ordersNoSelect.value == null){
+// 				titleSub.value = '[' + category + '] ' + floatingInput.value;
+// 			}else{
+// 				titleSub.value = '[' + category + '] ' + "| 주문번호 : " + ordersNoSelect.value + " | " + floatingInput.value;
+// 			}
 			
-		} 
+		});
 		
 			
 </script>

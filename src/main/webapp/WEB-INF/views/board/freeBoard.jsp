@@ -175,13 +175,13 @@
 				<th style="width: 190px;">작성일</th>
 				<th>조회수</th>
 			</tr>
-			<tr class="redNotice">
-				<th>[공지]</th>
-				<th>운영자</th>
-				<th>공백 입력 후 게시글을 등록하지 말아주세요</th>
-				<th>2023-07-13</th>
-				<th>-</th>
-			</tr>
+<!-- 			<tr class="redNotice"> -->
+<!-- 				<th>[공지]</th> -->
+<!-- 				<th>운영자</th> -->
+<!-- 				<th>공백 입력 후 게시글을 등록하지 말아주세요</th> -->
+<!-- 				<th>2023-07-13</th> -->
+<!-- 				<th>-</th> -->
+<!-- 			</tr> -->
 			<tbody id="tbody">
 				<c:forEach items="${list }" var="b" > 
 					<tr>

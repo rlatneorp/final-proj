@@ -1347,6 +1347,50 @@ p b {
 				</c:if>
 			</table>
 		</div>
+		<br><br>
+	<div class="page_wrap">
+	   <div class="page_nation">
+	      <!-- 		이전 페이지로	 -->
+			<c:url var="goBack" value="${loc }">
+				<c:param name="repage" value="${rpi.currentPage - 1 }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
+				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+				<c:param name="qpi" value="${qpi.currentPage - 1}"></c:param>
+				<c:param name="page" value="${page}"></c:param>
+			</c:url>
+			<c:if test="${rpi.currentPage > 1 }">
+				<a class="arrow prev" href="${goBack }" onclick="saveScrollPosition();"><i class="bi bi-chevron-left"></i></a>
+			</c:if>
+			
+	<!-- 		페이지 -->
+			<c:forEach begin="${ rpi.startPage }" end="${ rpi.endPage }" var="p">
+				<c:url var="goNum" value="${loc }">
+					<c:param name="repage" value="${p }"></c:param>
+					<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
+					<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+					<c:param name="qpi" value="${qpi.currentPage}"></c:param>
+					<c:param name="page" value="${page}"></c:param>
+				</c:url>
+				<c:if test="${ rpi.currentPage eq p }">
+					<a class="active">${ p }</a>
+				</c:if>
+				<c:if test="${ !(rpi.currentPage eq p) }">
+					<a href="${ goNum }" onclick="saveScrollPosition();">${ p }</a>
+				</c:if>
+			</c:forEach>
+			
+			<c:url var="goNext" value="${loc }">
+				<c:param name="repage" value="${rpi.currentPage + 1 }"></c:param>
+				<c:param name="myrepage" value="${mpi.currentPage}"></c:param>
+				<c:param name="mNo" value="${menu.foodProductNo}"></c:param>
+				<c:param name="qpi" value="${qpi.currentPage + 1}"></c:param>
+				<c:param name="page" value="${page}"></c:param>
+			</c:url>
+			<c:if test="${rpi.currentPage < rpi.endPage }">
+				<a class="arrow next" href="${goNext}" onclick="saveScrollPosition();"><i class="bi bi-chevron-right"></i></a>
+			</c:if>
+	   </div>
+	</div>
 		
 	<c:if test="${loginUser != null }">
 		<div class="qnaInputBox" style="margin-top: 10px;">

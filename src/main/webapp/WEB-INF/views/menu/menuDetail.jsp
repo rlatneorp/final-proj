@@ -519,7 +519,7 @@ p b {
 						<fmt:formatNumber value="${price}"/>원
 					</h2>
 					&nbsp;&nbsp;
-					<c:if test="${ loginUser != null && loginUser.usersNo ne menu.usersNo }">
+					<c:if test="${ loginUser != null }">
 						<c:if test="${like ne null}">
 							<h4 id="like" class="like" style="display: inline-block; font-size: 40px; color: #4485d7; ">♥</h4>
 						</c:if>

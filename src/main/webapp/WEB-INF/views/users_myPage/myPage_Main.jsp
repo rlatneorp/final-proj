@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<title>마이페이지 - 스크랩</title>
+<title>마이페이지</title>
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon">
 <style>
@@ -263,7 +263,7 @@
 					</c:if>
 				</c:if>
 				<p style="font-size: 20px; font-weight: bold; margin-left: 440px;">${ loginUser.usersName }</p>
-				<c:if test="${ empty loginUser.usersSelfIntro }">
+				<c:if test="${ empty loginUser.usersSelfIntro || loginUser.usersSelfIntro eq '<p><br></p>' }">
 					<div id="texta" data-bs-toggle="modal" data-bs-target="#profileModal"><i class="bi bi-pencil-fill"></i>&nbsp;자기소개를 등록해보세요!</div>
 				</c:if>
 				<c:if test="${ !empty loginUser.usersSelfIntro }">
@@ -396,12 +396,11 @@
 						<br>
 						<button type="button" id="base">기본 이미지</button>
 						<br><br><hr><br>
-						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">자기소개</p>
-						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<p style="font-size: 18px; font-weight: bold; margin-left: 10px;">
 							자기소개&nbsp;&nbsp;&nbsp;&nbsp;
 							글자 수: <span id="characterCount">0</span>/100
 						</p>
+						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<input type="hidden" name="usersNo" value="${ loginUser.usersNo }">
 					</div>
 					<div class="modal-footer">
@@ -468,10 +467,9 @@
 		});
 		
 		$('.summernote').on('summernote.keyup', function() {
-			const content = $(this).val().replace(/(<([^>]+)>)/gi, '');
-			console.log(content);
-		    const length = content.replace(/(<([^>]+)>)/gi, '').length;
-		    console.log(length);
+		    const content = $(this).val().replace(/(<([^>]+)>)/gi, '').replace(/&nbsp;/g, ' ');
+		    let length = content.length;
+		    
 		    $('#characterCount').html(length);
 		    
 		    if (length > 100) {
@@ -480,7 +478,7 @@
 		        const piece = content.substr(0, 100);
 		        $(this).summernote('code', piece);
 		        swal({
-		        	title : "최대 글자수는 100자입니다.",
+		            title: "최대 글자수는 100자입니다.",
 		            text: "다시 입력해주세요.",
 		            icon: "error",
 		            button: "확인",
@@ -488,8 +486,14 @@
 		    } else {
 		        $('#characterCount').css('color', 'black'); // 숫자 색상을 원래대로 변경
 		    }
-		    
 		});
+		
+		$(document).keypress(function (e) {
+			  if (e.which === 13) {
+			    e.preventDefault(); // 엔터 키 동작 취소
+			    e.stopPropagation(); // 이벤트 전파 중지
+			  }
+			});
 		
 		const profile = document.getElementById('modalP');
 		const fileInput = document.getElementById('fileInput');
@@ -559,12 +563,39 @@
 		const count = document.getElementById('characterCount');
 		
 		if(inBtn != null){
+			let content = null;
+			$('.summernote').on('summernote.keyup', function() {
+			    content = $(this).val().replace(/(<([^>]+)>)/gi, '');
+			});
 			inBtn.addEventListener('click', (e) => {
-				
+				if(count.style.color == 'red'){
+					e.preventDefault();
+					e.stopPropagation();
+					swal({
+						title : "최대 글자수는 100자입니다.",
+			            text: "다시 입력해주세요.",
+			            icon: "error",
+			            button: "확인",
+			        });
+				} else if(/&nbsp;{1,}/.test(content)){
+					swal({
+						title : "한 글자 이상 입력해주세요.",
+						text: "다시 입력해주세요.",
+			            icon: "error",
+			            button: "확인",
+			        });
+				} else {
+					insert.action = '${contextPath}/myPage_InsertProfile.me';
+			    	insert.submit();
+				}
 			});
 		}
 		
 		if(upBtn != null){
+			let content = null;
+			$('.summernote').on('summernote.keyup', function() {
+			    content = $(this).val().replace(/(<([^>]+)>)/gi, '');
+			});
 			upBtn.addEventListener('click', (e) => {
 				if(count.style.color == 'red'){
 					e.preventDefault();
@@ -572,6 +603,14 @@
 					swal({
 						title : "최대 글자수는 100자입니다.",
 			            text: "다시 입력해주세요.",
+			            icon: "error",
+			            button: "확인",
+			        });
+				} else if(/^(&nbsp;|\s)+$/.test(content.trim())){
+					e.preventDefault();
+					swal({
+						title : "한 글자 이상 입력해주세요.",
+						text: "다시 입력해주세요.",
 			            icon: "error",
 			            button: "확인",
 			        });

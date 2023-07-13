@@ -265,7 +265,7 @@
       from (select *
            from options join  product using(product_no) 
            order by option_no)
-      where product_no = 293 and product_option = 'Y'
+      where product_no = #{productNo} and product_option = 'Y'
    </select>
    
    <select id="updateOptionNo" resultType="_int">
@@ -739,7 +739,8 @@
 	           JOIN
 	             (SELECT division_no, COUNT(*) AS division_count
 	              FROM likes
-	              GROUP BY division_no) l ON l.division_no = p.product_no)   
+	              GROUP BY division_no
+	              ORDER BY division_count desc) l ON l.division_no = p.product_no)   
 	        WHERE ROWNUM <= 8 and PRODUCT_STATUS = 'Y' and PRODUCT_TYPE <> 2
 		]]>
 	</select>

@@ -95,8 +95,6 @@ public class UsersController {
 		// 팔로잉 팔로워 리스트 조회
 		ArrayList<HashMap<String, Object>> followingList = uService.selectFollowing(loginUser.getUsersNo());
 		ArrayList<HashMap<String, Object>> followerList = uService.selectFollower(loginUser.getUsersNo());
-		System.out.println(followingList);
-		System.out.println(followerList);
 
 		model.addAttribute("followingList", followingList);
 		model.addAttribute("followerList", followerList);
@@ -419,7 +417,6 @@ public class UsersController {
 		
 		// 좋아요 리스트 개수...
 		int listCount = uService.getLikeListCount(listMap);
-		System.out.println(listCount);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -428,7 +425,6 @@ public class UsersController {
 		map.put("selectTitle", selectTitle);
 		
 		ArrayList<HashMap<String, Object>> list = uService.myLikeList(map, pi);
-		System.out.println(list);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
@@ -650,7 +646,6 @@ public class UsersController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		
 		ArrayList<HashMap<String, Object>> list = uService.selectPoint(usersNo, pi);
-		System.out.println(list);
 		
 		// �꽭�뀡�뿉�꽌 �룷�씤�듃 �냼硫� �솗�씤 �뿬遺�瑜� 媛��졇�샂
 //	    boolean pointExpiryChecked = (boolean) model.getAttribute("pointExpiryChecked");
@@ -819,44 +814,7 @@ public class UsersController {
 			throw new UsersException("�깉�눜 �떎�뙣 �뀑");
 		}
 	}
-
-//	@RequestMapping("selectPeriodOrders.me")
-//	public void selectPeriodOrders(String start, String end, HttpServletResponse response) {
-//		
-//		Properties prop = new Properties();
-//		prop.setProperty("start", start);
-//		prop.setProperty("end", end);
-//		
-//		ArrayList<Orders> periodSelec = uService.selectPeriodOrders(prop);
-//		//�씠由� 媛��졇�삤湲� 
-//		Food foods = null; Tool tools = null; Ingredient igs = null; Menu menus = null;
-//		
-//		for(Orders ps : periodSelec) {
-//			int productNo = ps.getProductNo();
-//			foods =  mkService.selectFood(productNo); tools = mkService.selectTool(productNo); igs = mkService.selectIngrdient(productNo); menus = mkService.selectMenu(productNo);
-//			if (foods != null) { //�씠誘몄� ���엯 : 3 ( �떇�뭹 ) 
-//				ps.setProductName(foods.getFoodName());
-//			}
-//			if (tools != null) {//�씠誘몄� ���엯 : 6 ( 二쇰갑�룄援�)
-//				ps.setProductName(tools.getToolName());
-//			}
-//			if (igs != null) {//�씠誘몄� ���엯 :5 (�떇�옱猷�) 
-//				ps.setProductName(igs.getIngredientName());
-//			}
-//			if (menus != null) {//�씠誘몄� ���엯 : 4 (�떇�떒)
-//				ps.setProductName(menus.getMenuName());
-//			}
-//		}
-//		
-//		response.setContentType("application/json; charset=UTF-8");
-//        GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd"); 
-//        Gson gson = gb.create();
-//        try {
-//            gson.toJson(periodSelec, response.getWriter()); 
-//         } catch (JsonIOException | IOException e) {
-//            e.printStackTrace();
-//         }
-//	}
+	
 	
 	@RequestMapping("selectPeriodOrders.me")
 	public String selectPeriodOrders(String start, String end, Model model, @RequestParam(value="page", required=false) Integer currentPage) {
@@ -864,9 +822,6 @@ public class UsersController {
 		if(currentPage == null) {
 			currentPage = 1;
 		}
-		
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
 		
 		Properties prop = new Properties();
 		int usersNo = ((Users) model.getAttribute("loginUser")).getUsersNo();
@@ -904,9 +859,7 @@ public class UsersController {
 		model.addAttribute("end", end);
 		
 		model.addAttribute("pi", pi);
-		System.out.println("ps : " + periodSelec);
 		model.addAttribute("orderList", periodSelec);
-		System.out.println("orderList: " + periodSelec);
 		return "myPage_MyOrder";
 		
 	}
@@ -961,7 +914,8 @@ public class UsersController {
 			orders.setOrderDate(orderDate);
 			orders.setTotalPrice(Integer.parseInt(order.get("ORDER_TOTAL_PRICE").toString()));
 			orders.setProductNo(Integer.parseInt(order.get("PRODUCT_NO").toString()));
-			rCount = mkService.selectReview(orders.getOrderNo(), users.getNickName());
+			
+			rCount = mkService.selectReview(orders.getProductNo(), users.getNickName());
 			orders.setReviewCount(rCount);
 			orderList.add(orders);
 		}
@@ -1013,8 +967,6 @@ public class UsersController {
 		
 		ArrayList<HashMap<String, Object>> bList = uService.selectBoardList(usersNo, bpi);
 		ArrayList<HashMap<String, Object>> rList = uService.selectReplyList(usersNo, rpi);
-		System.out.println(bList);
-		System.out.println(rList);
 		
 		model.addAttribute("bList", bList);
 		model.addAttribute("rList", rList);

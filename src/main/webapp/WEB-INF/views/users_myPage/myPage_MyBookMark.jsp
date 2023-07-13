@@ -377,6 +377,7 @@ th:first-child, td:first-child {
 	            location.href = "${contextPath}/myPage_MyBookMark.me?searchType=3";
 	        }
 	    });
+	    
 		window.onload = () => {
 			const list = document.getElementById('tbody');
 			const messageCell = document.querySelector('#tbody td[colspan="6"]');

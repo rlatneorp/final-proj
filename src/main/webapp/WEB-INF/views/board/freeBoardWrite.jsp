@@ -196,8 +196,16 @@ let firstWriter = '';
 		
 		const contentEdit = document.getElementsByClassName('note-editable');
 		for(let i = 0; i < contentEdit.length; i++){
-			const contents = contentEdit[i].innerHTML;
-			if(title.value != '' && contents != ''){
+			let contents = contentEdit[i].innerHTML;
+			let divContent = contentEdit[i].innerText;
+// 			let trimmedContent = content.replace(/\s+/g, "");
+// 			trimmedContent = content.replace(/&nbsp;/gi, "");	
+// 			if(divContent.includes("&nbsp;")){
+// 				divContent = contents.replace(/^\s*/, "");
+// 				divContent = contents.replace(/&nbsp;/gi, "");
+// 			}
+// 			divContent = divContent.trim();
+			if ($('#content').summernote('isEmpty') || $('#content').summernote('code').includes("&nbsp;")) {
 				$.ajax({
 					type: 'POST',
 					url: 'freeBoardWriting.bo',
@@ -233,10 +241,10 @@ let firstWriter = '';
 					}
 					
 				})
-				
+					
 			}else{
 				swal({
-					 text: "글 작성에 실패하였습니다. 공백 상태로 글을 작성할 수 없습니다",
+					 text: "글 작성에 실패하였습니다. 공백은 작성이 안 됩니다.",
 					 icon: "error",
 					 button: "확인",
 				});

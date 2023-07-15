@@ -191,6 +191,7 @@
 	<select id="boardList" resultMap="BoardResultSet">
 		select * from board
 		where users_No = #{ usersNo } and board_status = 'Y'
+		order by board_date desc
 	</select>
 	
 	<select id="reviewList" resultType="map">

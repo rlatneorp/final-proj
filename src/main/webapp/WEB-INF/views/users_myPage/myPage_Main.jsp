@@ -380,11 +380,11 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="followingLabel">프로필 수정</h1>
+					<h1 class="modal-title fs-5" id="followingLabel">프로필 등록</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<c:if test="${ empty loginUser.imageRenameName }">
-					<form method="post" enctype="multipart/form-data" id="insert">
+					<form action="${contextPath}/myPage_InsertProfile.me" method="post" enctype="multipart/form-data" id="insert">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
 							<img src="${ loginUser.socialProfileImg }" id="modalP">
@@ -400,18 +400,16 @@
 							자기소개&nbsp;&nbsp;&nbsp;&nbsp;
 							글자 수: <span id="characterCount">0</span>/100
 						</p>
-						* 내용을 한번 입력했다가 등록해주시길 바랍니다^^
-						<br>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<input type="hidden" name="usersNo" value="${ loginUser.usersNo }">
 					</div>
 					<div class="modal-footer">
-						<div data-bs-dismiss="modal"><button id="editB">수정하기</button></div>
+						<div data-bs-dismiss="modal"><button id="editB">등록하기</button></div>
 					</div>
 					</form>
 				</c:if>
 				<c:if test="${ !empty loginUser.imageRenameName }">
-					<form method="post" enctype="multipart/form-data" id="update">
+					<form action="${contextPath}/myPage_UpdateProfile.me" method="post" enctype="multipart/form-data" id="update">
 					<div class="modal-body">
 						<c:if test="${ !fn:contains(loginUser.usersPw, '$2a$')}">
 							<img src="${ contextPath }/resources/uploadFiles/${ loginUser.imageRenameName }" id="modalP">
@@ -428,8 +426,6 @@
 							자기소개&nbsp;&nbsp;&nbsp;&nbsp;
 							글자 수: <span id="characterCount">0</span>/100
 						</p>
-						* 내용을 한번 입력했다가 등록해주시길 바랍니다^^
-						<br>
 						<textarea class="summernote" name="usersSelfIntro">${ loginUser.usersSelfIntro }</textarea>
 						<input type="hidden" name="usersNo" value="${ loginUser.usersNo }">
 					</div>
@@ -470,8 +466,14 @@
 		    placeholder: '최대 100자 작성 가능합니다.'
 		});
 		
+		const inBtn = document.getElementById('editB');
+		const upBtn = document.getElementById('editC');
+		
 		$('.summernote').on('summernote.keyup', function() {
 		    const content = $(this).val().replace(/(<([^>]+)>)/gi, '').replace(/&nbsp;/g, ' ');
+		    console.log(content);
+		    const nbspContent = $(this).val().replace(/(<([^>]+)>)/gi, '');
+		    console.log(nbspContent);
 		    let length = content.length;
 		    
 		    $('#characterCount').html(length);
@@ -481,23 +483,30 @@
 		        
 		        const piece = content.substr(0, 100);
 		        $(this).summernote('code', piece);
-		        swal({
-		            title: "최대 글자수는 100자입니다.",
-		            text: "다시 입력해주세요.",
-		            icon: "error",
-		            button: "확인",
-		        });
+		        
+		        if(inBtn == null){
+		        	upBtn.disabled = true;
+		        } else {
+		        	inBtn.disabled = true;
+		        }
 		    } else {
 		        $('#characterCount').css('color', 'black'); // 숫자 색상을 원래대로 변경
+		        
+		        if(inBtn == null){
+		        	upBtn.disabled = false;
+		        } else {
+		        	inBtn.disabled = false;
+		        }
+		    }
+		    
+		    if(/^(&nbsp;|\s)+$/.test(nbspContent.trim())){
+		    	if(inBtn == null){
+		        	upBtn.disabled = true;
+		        } else {
+		        	inBtn.disabled = true;
+		        }
 		    }
 		});
-		
-		$(document).keypress(function (e) {
-			  if (e.which === 13) {
-			    e.preventDefault(); // 엔터 키 동작 취소
-			    e.stopPropagation(); // 이벤트 전파 중지
-			  }
-			});
 		
 		const profile = document.getElementById('modalP');
 		const fileInput = document.getElementById('fileInput');
@@ -559,86 +568,6 @@
 				}
 			});
 		}
-		
-		const insert = document.getElementById('insert');
-		const update = document.getElementById('update');
-		const inBtn = document.getElementById('editB');
-		const upBtn = document.getElementById('editC');
-		const count = document.getElementById('characterCount');
-		
-		if(inBtn != null){
-			let content = null;
-			$('.summernote').on('summernote.keyup', function() {
-			    content = $(this).val().replace(/(<([^>]+)>)/gi, '');
-			});
-			inBtn.addEventListener('click', (e) => {
-				if(count.style.color == 'red'){
-					e.preventDefault();
-					e.stopPropagation();
-					swal({
-						title : "최대 글자수는 100자입니다.",
-			            text: "다시 입력해주세요.",
-			            icon: "error",
-			            button: "확인",
-			        });
-				} else if(/^(&nbsp;|\s)+$/.test(content.trim())){
-					e.preventDefault();
-					swal({
-						title : "한 글자 이상 입력해주세요.",
-						text: "다시 입력해주세요.",
-			            icon: "error",
-			            button: "확인",
-			        });
-				} else {
-					insert.action = '${contextPath}/myPage_InsertProfile.me';
-			    	insert.submit();
-				}
-			});
-		}
-		
-		if(upBtn != null){
-			let content = null;
-			$('.summernote').on('summernote.keyup', function() {
-			    content = $(this).val().replace(/(<([^>]+)>)/gi, '');
-			});
-			upBtn.addEventListener('click', (e) => {
-				if(count.style.color == 'red'){
-					e.preventDefault();
-					e.stopPropagation();
-					swal({
-						title : "최대 글자수는 100자입니다.",
-			            text: "다시 입력해주세요.",
-			            icon: "error",
-			            button: "확인",
-			        });
-				} else if(/^(&nbsp;|\s)+$/.test(content.trim())){
-					e.preventDefault();
-					swal({
-						title : "한 글자 이상 입력해주세요.",
-						text: "다시 입력해주세요.",
-			            icon: "error",
-			            button: "확인",
-			        });
-				} else {
-					update.action = '${contextPath}/myPage_UpdateProfile.me';
-			    	update.submit();
-				}
-			})
-		}
-		
-		
-		
-// 		var loginUser = '${loginUser}';
-// 		if(loginUser != ''){
-// 			$.ajax({
-// 				url: 'point.ma',
-// 				success: function(info){
-// 					let myP = document.querySelector('#myP');
-// 					myP.innerHTML = info.point + ' P';
-// 				}
-				
-// 			});
-// 		}
 		
 		const usersNo = ${loginUser.usersNo};
 		

@@ -1965,7 +1965,7 @@ p b {
 		moCon.addEventListener("click", function(){
 			const mNo = this.childNodes[7].value;
 			console.log(mNo);
-			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page=" + ${page}; 
+			location.href="${contextPath}/menuDetail.mn?mNo=" + mNo + "&page="; 
 		})
 	}
 

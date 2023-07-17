@@ -11,136 +11,6 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 #dropdownMenu2{color: black; font-weight: bold; background: linear-gradient(to top, #B0DAFF 35%, transparent 5%);}
-
-/* .search { */
-/* 	position: relative; */
-/* 	width: 300px; */
-/* } */
-
-/* input, select { */
-/* 	box-shadow:0px 5px 0px black; */
-/* 	width: 100%; */
-/* 	border: 1px solid #bbb; */
-/* 	border-radius: 8px; */
-/* 	padding: 10px 12px; */
-/* 	font-size: 14px; */
-/* } */
-
-/* select { */
-/* 	-webkit-appearance: none; */
-/* 	/* Safari, Chrome 등의 웹킷 기반 브라우저에서 기본 스타일링 제거 */ */
-/* 	-moz-appearance: none; /* Firefox에서 기본 스타일링 제거 */ */
-/* 	appearance: none; /* 일반적인 브라우저에서 기본 스타일링 제거 */ */
-/* 	padding-right: 30px; /* 화살표를 오른쪽으로 옮기기 위한 우측 패딩 설정 */ */
-/* 	background: */
-/* 		url("https://img.icons8.com/fluency-systems-filled/48/sort-down.png") */
-/* 		no-repeat right center; /* 화살표 이미지 설정 */ */
-/* 	background-size: 12px; /* 화살표 이미지의 크기 설정 */ */
-/* /* 	border-bottom-right-radius: 0; */ */
-/* /* 	border-top-right-radius: 0; */ */
-/* 	background-position: right 10px center; */
-/* } */
-
-/* #search { */
-/* 	width: 300px; */
-/* } */
-
-/* #searchIcon { */
-/* 	position: absolute; */
-/* 	width: 20px; */
-/* 	top: 12px; */
-/* 	right: 12px; */
-/* 	margin-left: 30px; */
-/* } */
-
-/* #searchElement{ */
-/* 	width:1200px; */
-/* 	right:1200; */
-/* } */
-/* table { */
-/*    text-align: center; */
-/*    margin: 0 auto; */
-/*    width: 900px; */
-/*    border-top: 2px solid #444444; */
-/*    border-bottom: 2px solid #444444; */
-/*    border-collapse: collapse; */
-/* } */
-
-/* th, td { */
-/*    border-top: 1px solid #444444; */
-/*    border-left: 1px solid #444444; */
-/*    padding: 10px; */
-/* } */
-
-/* th:first-child, td:first-child { */
-/*    border-left: none; */
-/* } */
-/* .delete{ */
-/* 	box-shadow: none; */
-/* 	width: 20px; height: 20px; */
-/* } */
-/* #selectAllCheckBox{ */
-/* 	box-shadow: none; */
-/* 	width: 20px; height: 20px; */
-/* } */
-/* #trash{ */
-/* 	font-size: 30px; */
-/* } */
-/* #trash:hover{cursor: pointer;} */
-/* #delete{  */
-/* 	font-size: 18px; */
-/* 	margin-left: 806px; */
-/* } */
-/* #tbody tr {height: 70px;} */
-/* .edit{ */
-/* 	border: none; border-radius: 5px; */
-/* 	font-weight: bold; font-size: 12px; */
-/* 	width: 50px; height: 30px; */
-/* 	background: #B0DAFF; */
-/* 	box-shadow: none; padding: 0; */
-/* 	text-align: center; */
-/* } */
-/* .btn-3d { */
-/* 	text-decoration: none; */
-/* 	width: 100px; */
-/* 	height: 35px; */
-/* 	position: relative; */
-/* 	display: inline-block; */
-/* 	font-weight: bold; */
-/* 	font-size: 15px; */
-/* 	padding: 5px; */
-/* 	/*   padding: 20px 60px; */ */
-/* 	color: white; */
-/* 	margin: 20px 10px 10px; */
-/* 	border-radius: 6px; */
-/* 	text-align: center; */
-/* 	transition: top .01s linear; */
-/* 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15); */
-/* 	cursor: pointer; */
-/* 	margin-left: 450px; */
-/* } */
-
-/* .btn-3d.blue:hover { */
-/* 	color: white; */
-/* 	background-color: #699DD1; */
-/* } */
-
-/* .btn-3d:active { */
-/* 	top: 9px; */
-/* } */
-
-/* .btn-3d.blue { */
-/* 	background-color: #6DA2D9; */
-/* 	box-shadow: 0 0 0 1px #6698cb inset, 0 0 0 2px rgba(255, 255, 255, 0.15) */
-/* 		inset, 0 8px 0 0 rgba(110, 164, 219, .7), 0 8px 0 1px */
-/* 		rgba(0, 0, 0, .4), 0 8px 8px 1px rgba(0, 0, 0, 0.5); */
-/* } */
-
-/* .btn-3d.blue:active { */
-/* 	box-shadow: 0 0 0 1px #6191C2 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) */
-/* 		inset, 0 0 0 1px rgba(0, 0, 0, 0.4); */
-/* } */
-/* .review-star{width: 100px; font-size: 13px; margin: 10px;  text-align:right; color: gold;} */
 .fa-star{font-size: 14px; color: gold;}
 .page-link.disabled{color: lightgray;}
 .page-link.disabled:hover{background: white; color: lightgray;}
@@ -313,6 +183,7 @@
 											<thead>
 												<tr class="thead">
 													<th>글 제목</th>
+													<th>작성자</th>
 													<th>댓글 내용</th>
 													<th>작성 날짜</th>
 												</tr>
@@ -320,14 +191,16 @@
 											<tbody>
 												<c:if test="${ !empty rList }">
 													<c:forEach items="${rList}" var="r"> <!-- 모든 댓글 리스트 -->
-														<tr class="tbody2" onclick="location.href='${contextPath}/detailFreeBoard.bo?bId=' + '${ r.PRODUCT_NO }' + '&writer=' + '${ loginUser.nickName }' + '&page='">
+														<tr class="tbody2" onclick="boardClick('${r.BOARD_STATUS}', '${ r.PRODUCT_NO }', '${ r.NICKNAME }')">
 															<c:choose>
 															    <c:when test="${fn:length(r.BOARD_TITLE) > 20 || fn:length(r.REVIEW_CONTENT) > 20}">
 															    	<td>${fn:substring(r.BOARD_TITLE, 0, 20)}...</td>
+															    	<td>${ r.NICKNAME }</td>
 																	<td>${fn:substring(r.REVIEW_CONTENT, 0, 20)}...</td>
 															    </c:when>
 															    <c:otherwise>
 															        <td>${ r.BOARD_TITLE }</td>
+															        <td>${ r.NICKNAME }</td>
 																	<td>${ r.REVIEW_CONTENT }</td>
 															    </c:otherwise>
 															</c:choose>
@@ -476,33 +349,9 @@
 	        }); 
 	   }
 	   
-	   function recipeClick(status, usersId, productNo, currentPage) {
+	   function boardClick(status, productNo, nickName) {
 	        if (status == 'Y') {
-                location.href = '${contextPath}/recipeDetail.rc?rId=' + usersId + '&rNo=' + productNo + '&page=' + currentPage;
-	        } else {
-	        	swal({
-		            text: "해당 글을 삭제됐거나 없는 글입니다.",
-		            icon: "error",
-		            button: "확인",
-		        });
-	        }
-	    }
-	   
-	   function menuClick(status, productNo, currentPage) {
-	        if (status == 'Y') {
-	        	location.href='${contextPath}/menuDetail.mn?mNo=' + productNo + '&page=' + currentPage;
-	        } else {
-	        	swal({
-		            text: "해당 글을 삭제됐거나 없는 글입니다.",
-		            icon: "error",
-		            button: "확인",
-		        });
-	        }
-	    }
-	   
-	   function productClick(status, reviewNo) {
-	        if (status == 'Y') {
-	        	location.href='${contextPath}/editReview.ma?reviewNo=' + reviewNo;
+                location.href = '${contextPath}/detailFreeBoard.bo?bId=' + productNo + '&writer=' + nickName + '&page=';
 	        } else {
 	        	swal({
 		            text: "해당 글을 삭제됐거나 없는 글입니다.",

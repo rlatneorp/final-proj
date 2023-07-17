@@ -478,9 +478,10 @@
 	</select>
 	
 	<select id="selectReplyList" resultType="map">
-		select r.*, b.board_title
+		select r.*, b.board_title, b.board_status, nickname
         from review r
              left join board b on(r.product_no = b.board_no)
+             left join users u on(b.users_no = u.users_no)
         where r.users_no = #{usersNo} and review_status = 'Y' and order_no = -1
         order by review_no desc
 	</select>
